@@ -15,14 +15,24 @@ namespace hesp {
 
 class Component
 {
+	//#################### PROTECTED VARIABLES ####################
+protected:
+	Extents_Ptr m_extents;
+
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~Component() {}
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void fit(const Extents& extents) = 0;
 	virtual void render() const = 0;
+
+	//#################### PUBLIC METHODS ####################
+public:
+	virtual void fit(const Extents& extents)
+	{
+		m_extents = Extents_Ptr(new Extents(extents));
+	}
 };
 
 //#################### TYPEDEFS ####################

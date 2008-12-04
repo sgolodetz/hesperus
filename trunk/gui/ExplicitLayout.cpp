@@ -33,8 +33,6 @@ std::vector<LaidOutComponent> ExplicitLayout::fit(const Extents& extents) const
 	{
 		// TODO:	Check that the component fits within the container's extents, and clip
 		//			its own extents if not.
-
-		it->component->fit(it->extents);
 	}
 
 	return m_components;

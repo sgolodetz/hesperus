@@ -6,7 +6,9 @@
 #ifndef H_HESP_GUI_CONTAINER
 #define H_HESP_GUI_CONTAINER
 
-#include "Component.h"
+#include <vector>
+
+#include "LaidOutComponent.h"
 
 namespace hesp {
 
@@ -16,6 +18,7 @@ class Container : public Component
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Layout m_layout;
+	std::vector<LaidOutComponent> m_components;
 
 	//#################### PUBLIC METHODS ####################
 public:

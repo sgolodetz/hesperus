@@ -22,6 +22,10 @@ int main(int argc, char *argv[])
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "gui/Container.h"
+#include "gui/ExplicitLayout.h"
+using namespace hesp;
+
 static GLboolean should_rotate = GL_TRUE;
 
 static void quit_tutorial( int code )
@@ -281,7 +285,15 @@ static void setup_opengl( int width, int height )
 
 int main( int argc, char* argv[] )
 {
-    /* Information about the current video settings. */
+#if 1
+	// SMG
+	Container<ExplicitLayout> screen;
+	ExplicitLayout& layout = screen.layout();
+	screen.fit(Extents(0, 0, 1024, 768));
+	return 0;
+#endif
+
+	/* Information about the current video settings. */
     const SDL_VideoInfo* info = NULL;
     /* Dimensions of our window. */
     int width = 0;
