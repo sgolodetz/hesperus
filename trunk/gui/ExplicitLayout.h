@@ -6,16 +6,26 @@
 #ifndef H_HESP_GUI_EXPLICITLAYOUT
 #define H_HESP_GUI_EXPLICITLAYOUT
 
-#include "Component.h"
+#include <vector>
+
+#include "LaidOutComponent.h"
 
 namespace hesp {
 
+/**
+This class allows a Container to be laid out explicitly by specifying
+explicit extents for each component added.
+*/
 class ExplicitLayout
 {
+	//#################### PRIVATE VARIABLES ####################
+private:
+	std::vector<LaidOutComponent> m_components;
+
 	//#################### PUBLIC METHODS ####################
 public:
 	void add(const Component_Ptr& component, const Extents& extents);
-
+	std::vector<LaidOutComponent> fit(const Extents& extents) const;
 };
 
 }

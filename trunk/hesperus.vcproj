@@ -219,6 +219,10 @@
 						RelativePath=".\gui\Extents.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gui\LaidOutComponent.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
