@@ -199,6 +199,10 @@
 						RelativePath=".\gui\ExplicitLayout.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\gui\Picture.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -221,6 +225,10 @@
 					</File>
 					<File
 						RelativePath=".\gui\LaidOutComponent.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gui\Picture.h"
 						>
 					</File>
 				</Filter>

@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 
 #include "gui/Container.h"
 #include "gui/ExplicitLayout.h"
+#include "gui/Picture.h"
 using namespace hesp;
 
 static GLboolean should_rotate = GL_TRUE;
@@ -288,7 +289,10 @@ int main( int argc, char* argv[] )
 #if 1
 	// SMG
 	Container<ExplicitLayout> screen;
-	ExplicitLayout& layout = screen.layout();
+	screen.layout().add(new Picture, Extents(10, 10, 20, 20));
+	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
+	cont->layout().add(new Picture, Extents(5, 0, 20, 10));
+	screen.layout().add(cont, Extents(100, 100, 200, 200));
 	screen.fit(Extents(0, 0, 1024, 768));
 	return 0;
 #endif

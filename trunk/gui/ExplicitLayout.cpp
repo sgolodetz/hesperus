@@ -14,6 +14,17 @@ Adds a component to the layout and specifies explicit extents for it.
 @param component	The component to add
 @param extents		Explicit extents for the component (relative to its container)
 */
+void ExplicitLayout::add(Component *component, const Extents& extents)
+{
+	add(Component_Ptr(component), extents);
+}
+
+/**
+Adds a component to the layout and specifies explicit extents for it.
+
+@param component	The component to add
+@param extents		Explicit extents for the component (relative to its container)
+*/
 void ExplicitLayout::add(const Component_Ptr& component, const Extents& extents)
 {
 	m_components.push_back(LaidOutComponent(component, extents));
@@ -33,9 +44,11 @@ std::vector<LaidOutComponent> ExplicitLayout::fit(const Extents& extents) const
 	{
 		// TODO:	Check that the component fits within the container's extents, and clip
 		//			its own extents if not.
+
+		it->extents = it->extents.translate(extents.left(), extents.top());
 	}
 
-	return m_components;
+	return components;
 }
 
 }
