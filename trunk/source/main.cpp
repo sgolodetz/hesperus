@@ -294,7 +294,7 @@ int main( int argc, char* argv[] )
 	cont->layout().add(new Picture, Extents(5, 0, 20, 10));
 	screen.layout().add(cont, Extents(100, 100, 200, 200));
 	screen.fit(Extents(0, 0, 1024, 768));
-	return 0;
+	//return 0;
 #endif
 
 	/* Information about the current video settings. */
