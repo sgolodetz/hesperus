@@ -3,28 +3,19 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#if 0
-
 #include <SDL.h>
-
-int main(int argc, char *argv[])
-{
-	return 0;
-}
-
-#endif
-
-#include <SDL.h>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #include <GL/gl.h>
 #include <GL/glu.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "gui/Container.h"
 #include "gui/ExplicitLayout.h"
 #include "gui/Picture.h"
+#include "gui/Screen.h"
 using namespace hesp;
 
 static GLboolean should_rotate = GL_TRUE;
@@ -237,7 +228,7 @@ int main( int argc, char* argv[] )
 {
 #if 1
 	// SMG
-	Container<ExplicitLayout> screen;
+	Screen<ExplicitLayout> screen;
 	screen.layout().add(new Picture, Extents(10, 10, 20, 20));
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
 	cont->layout().add(new Picture, Extents(5, 0, 20, 10));
@@ -260,16 +251,21 @@ int main( int argc, char* argv[] )
 	int width = 1024;
 	int height = 768;
 	int bpp = 32;
-	int flags = SDL_OPENGL | SDL_FULLSCREEN;
+	int flags = SDL_OPENGL;// | SDL_FULLSCREEN;
 
 	if(SDL_SetVideoMode(width, height, bpp, flags) == 0) quit(EXIT_FAILURE);
 
+#if 0
 	setup_opengl(width, height);
+#endif
 
 	for(;;)
 	{
 		process_events();
+#if 0
 		draw_screen();
+#endif
+		screen.render();
 	}
 
 	return 0;

@@ -231,12 +231,20 @@
 						RelativePath=".\gui\Picture.h"
 						>
 					</File>
+					<File
+						RelativePath=".\gui\Screen.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
 					>
 					<File
 						RelativePath=".\gui\Container.tpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gui\Screen.tpp"
 						>
 					</File>
 				</Filter>
