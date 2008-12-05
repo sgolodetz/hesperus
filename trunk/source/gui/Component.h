@@ -18,6 +18,11 @@ class Component
 	//#################### PROTECTED VARIABLES ####################
 protected:
 	Extents_Ptr m_extents;
+	Component *m_parent;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	Component() : m_parent(NULL) {}
 
 	//#################### DESTRUCTOR ####################
 public:
@@ -29,9 +34,15 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	virtual void fit(const Extents& extents)
+	const Extents& extents() const
+	{
+		return *m_extents;
+	}
+
+	virtual void fit(const Extents& extents, Component *parent)
 	{
 		m_extents = Extents_Ptr(new Extents(extents));
+		m_parent = parent;
 	}
 };
 

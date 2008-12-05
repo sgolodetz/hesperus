@@ -10,14 +10,14 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 Container_HEADER
-void Container_THIS::fit(const Extents& extents)
+void Container_THIS::fit(const Extents& extents, Component *parent)
 {
-	Component::fit(extents);
+	Component::fit(extents, parent);
 
 	m_components = m_layout.fit(extents);
 	for(std::vector<LaidOutComponent>::iterator it=m_components.begin(), iend=m_components.end(); it!=iend; ++it)
 	{
-		it->component->fit(it->extents);
+		it->component->fit(it->extents, this);
 	}
 }
 

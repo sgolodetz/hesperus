@@ -228,7 +228,7 @@ int main( int argc, char* argv[] )
 {
 #if 1
 	// SMG
-	Screen<ExplicitLayout> screen;
+	Screen& screen = Screen::instance();
 	screen.layout().add(new Picture, Extents(10, 10, 20, 20));
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
 	cont->layout().add(new Picture, Extents(5, 0, 20, 10));

@@ -203,6 +203,10 @@
 						RelativePath=".\gui\Picture.cpp"
 						>
 					</File>
+					<File
+						RelativePath=".\gui\Screen.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -241,10 +245,6 @@
 					>
 					<File
 						RelativePath=".\gui\Container.tpp"
-						>
-					</File>
-					<File
-						RelativePath=".\gui\Screen.tpp"
 						>
 					</File>
 				</Filter>

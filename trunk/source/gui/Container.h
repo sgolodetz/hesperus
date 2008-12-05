@@ -22,7 +22,7 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void fit(const Extents& extents);
+	void fit(const Extents& extents, Component *parent);
 	Layout& layout();
 	void render() const;
 };
