@@ -5,10 +5,7 @@
 
 #include "Picture.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-#include <gl/gl.h>
+#include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
 #include "Screen.h"

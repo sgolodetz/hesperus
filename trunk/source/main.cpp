@@ -7,15 +7,12 @@
 #include <cstdlib>
 
 #include <SDL.h>
-#ifdef _WIN32
-#include <windows.h>
-#endif
-#include <gl/gl.h>
+#include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
-#include "gui/ExplicitLayout.h"
-#include "gui/Picture.h"
-#include "gui/Screen.h"
+#include <source/gui/ExplicitLayout.h>
+#include <source/gui/Picture.h>
+#include <source/gui/Screen.h>
 using namespace hesp;
 
 void quit(int code)
