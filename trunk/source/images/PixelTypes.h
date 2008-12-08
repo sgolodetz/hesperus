@@ -8,6 +8,9 @@
 
 namespace hesp {
 
+/**
+This class represents 8-bit pixels.
+*/
 class Pixel8
 {
 	//#################### PRIVATE VARIABLES ####################
@@ -56,6 +59,9 @@ private:
 	}
 };
 
+/**
+This class represents 24-bit RGB pixels.
+*/
 class Pixel24
 {
 	//#################### PRIVATE VARIABLES ####################

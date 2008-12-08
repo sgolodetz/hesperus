@@ -13,6 +13,9 @@ using boost::shared_array;
 
 namespace hesp {
 
+/**
+This class template provides a simple implementation of Image.
+*/
 template <typename Pixel>
 class SimpleImage : public Image<Pixel>
 {
