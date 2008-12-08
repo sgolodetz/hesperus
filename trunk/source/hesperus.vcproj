@@ -249,6 +249,46 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="images"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath=".\images\BitmapLoader.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath=".\images\BitmapLoader.h"
+						>
+					</File>
+					<File
+						RelativePath=".\images\Image.h"
+						>
+					</File>
+					<File
+						RelativePath=".\images\PixelTypes.h"
+						>
+					</File>
+					<File
+						RelativePath=".\images\SimpleImage.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath=".\images\SimpleImage.tpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
