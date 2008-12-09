@@ -315,6 +315,38 @@
 						RelativePath=".\exceptions\FileNotFoundException.h"
 						>
 					</File>
+					<File
+						RelativePath=".\exceptions\InvalidParameterException.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="textures"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath=".\textures\Texture.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\textures\TextureFactory.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath=".\textures\Texture.h"
+						>
+					</File>
+					<File
+						RelativePath=".\textures\TextureFactory.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
