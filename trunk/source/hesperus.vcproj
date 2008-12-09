@@ -301,6 +301,22 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="exceptions"
+				>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath=".\exceptions\Exception.h"
+						>
+					</File>
+					<File
+						RelativePath=".\exceptions\FileNotFoundException.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

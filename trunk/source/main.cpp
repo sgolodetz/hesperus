@@ -13,6 +13,9 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
+#if 1
+#include <source/images/BitmapLoader.h>
+#endif
 using namespace hesp;
 
 void quit(int code)
@@ -63,7 +66,7 @@ int main( int argc, char* argv[] )
 	int width = 1024;
 	int height = 768;
 	int bpp = 32;
-	int flags = SDL_OPENGL | SDL_FULLSCREEN;
+	int flags = SDL_OPENGL;// | SDL_FULLSCREEN;
 
 	if(SDL_SetVideoMode(width, height, bpp, flags) == 0) quit(EXIT_FAILURE);
 
@@ -74,6 +77,11 @@ int main( int argc, char* argv[] )
 	cont->layout().add(new Picture, Extents(5, 0, 20, 10));
 	screen.layout().add(cont, Extents(100, 100, 200, 200));
 	screen.fit(Extents(0, 0, 1024, 768));
+
+#if 1
+	// Attempt to load a bitmap for testing purposes.
+	Image24_Ptr image = BitmapLoader::load_image24("test.bmp");
+#endif
 
 	for(;;)
 	{
