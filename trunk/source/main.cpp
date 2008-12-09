@@ -13,9 +13,6 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#if 1
-#include <source/images/BitmapLoader.h>
-#endif
 using namespace hesp;
 
 void quit(int code)
@@ -72,16 +69,11 @@ int main( int argc, char* argv[] )
 
 	// Setup the screen.
 	Screen& screen = Screen::instance();
-	screen.layout().add(new Picture, Extents(10, 10, 20, 20));
+	screen.layout().add(new Picture("test.bmp"), Extents(10, 10, 200, 200));
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
-	cont->layout().add(new Picture, Extents(5, 0, 20, 10));
+	cont->layout().add(new Picture("test.bmp"), Extents(500, 0, 700, 50));
 	screen.layout().add(cont, Extents(100, 100, 200, 200));
 	screen.fit(Extents(0, 0, 1024, 768));
-
-#if 1
-	// Attempt to load a bitmap for testing purposes.
-	Image24_Ptr image = BitmapLoader::load_image24("test.bmp");
-#endif
 
 	for(;;)
 	{

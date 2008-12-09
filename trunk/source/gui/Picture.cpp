@@ -9,21 +9,37 @@
 #include <gl/glu.h>
 
 #include "Screen.h"
+#include <source/images/BitmapLoader.h>
+#include <source/textures/TextureFactory.h>
 
 namespace hesp {
+
+//#################### CONSTRUCTORS ####################
+Picture::Picture(const std::string& filename)
+{
+	m_texture = TextureFactory::create_texture24(BitmapLoader::load_image24(filename));
+}
 
 //#################### PUBLIC METHODS ####################
 void Picture::render() const
 {
 	Screen::instance().set_ortho_viewport(*m_extents);
 
-	glBegin(GL_POINTS);
-		glColor3d(1,0,0);
-		glVertex2d(0,0);
-		glVertex2d(10,0);
-		glVertex2d(10,10);
-		glVertex2d(0,10);
+	glPushAttrib(GL_ENABLE_BIT);
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_CULL_FACE);
+
+	int width = m_extents->right() - m_extents->left(), height = m_extents->bottom() - m_extents->top();
+	m_texture->bind();
+	glBegin(GL_QUADS);
+		glColor3d(1,1,1);
+		glTexCoord2d(0,0);	glVertex2d(0,0);
+		glTexCoord2d(1,0);	glVertex2d(width,0);
+		glTexCoord2d(1,1);	glVertex2d(width,height);
+		glTexCoord2d(0,1);	glVertex2d(0,height);
 	glEnd();
+
+	glPopAttrib();
 }
 
 }
