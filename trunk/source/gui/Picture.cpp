@@ -29,7 +29,7 @@ void Picture::render() const
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_CULL_FACE);
 
-	int width = m_extents->right() - m_extents->left(), height = m_extents->bottom() - m_extents->top();
+	int width = m_extents->width(), height = m_extents->height();
 	m_texture->bind();
 	glBegin(GL_QUADS);
 		glColor3d(1,1,1);

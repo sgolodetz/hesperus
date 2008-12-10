@@ -27,6 +27,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	int bottom() const	{ return m_bottom; }
+	int height() const	{ return m_bottom - m_top; }
 	int left() const	{ return m_left; }
 	int right() const	{ return m_right; }
 	int top() const		{ return m_top; }
@@ -35,6 +36,8 @@ public:
 	{
 		return Extents(m_left+dx, m_top+dy, m_right+dx, m_bottom+dy);
 	}
+
+	int width() const	{ return m_right - m_left; }
 };
 
 //#################### TYPEDEFS ####################
