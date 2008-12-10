@@ -69,9 +69,9 @@ int main( int argc, char* argv[] )
 
 	// Setup the screen.
 	Screen& screen = Screen::instance();
-	screen.layout().add(new Picture("test.bmp"), Extents(10, 10, 200, 200));
+	screen.layout().add(new Picture("../resources/title.bmp"), Extents(width/4, 0, width*3/4, width/8));
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
-	cont->layout().add(new Picture("test.bmp"), Extents(500, 0, 700, 50));
+	cont->layout().add(new Picture("../resources/title.bmp"), Extents(500, 0, 700, 50));
 	screen.layout().add(cont, Extents(100, 100, 200, 200));
 	screen.fit(Extents(0, 0, 1024, 768));
 

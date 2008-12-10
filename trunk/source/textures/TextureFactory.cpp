@@ -5,6 +5,8 @@
 
 #include "TextureFactory.h"
 
+#include <gl/glu.h>
+
 #include <source/exceptions/InvalidParameterException.h>
 
 namespace hesp {
@@ -26,8 +28,9 @@ Texture_Ptr TextureFactory::create_texture24(const Image24_CPtr& image)
 
 	glBindTexture(GL_TEXTURE_2D, id);
 
+	// Enable trilinear filtering for this texture when minifying.
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 	int size = width*height;
 	unsigned char *pixels = new unsigned char[size*3];
@@ -38,7 +41,7 @@ Texture_Ptr TextureFactory::create_texture24(const Image24_CPtr& image)
 		pixels[i*3+1]	= p.g();
 		pixels[i*3+2]	= p.b();
 	}
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 	delete[] pixels;
 
 	return Texture_Ptr(new Texture(id));
