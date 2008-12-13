@@ -1,0 +1,82 @@
+============================
+hbsp (Hesperus BSP Compiler)
+============================
+
+-----
+Usage
+-----
+
+hbsp [-w<number>] {-r|-c} <input filename> <output filename>
+
+Flags:
+
+-w		The ratio between the weights assigned to balance and split when
+		choosing a split plane at each internal node: the default ratio is 4:1
+		in favour of balance, and equivalent to specifying -w4. Note that it
+		is perfectly valid to use decimal ratios, e.g. -w2.5 is fine.
+
+-r		The input file contains rendering geometry (a list of polygons with
+		textures).
+
+-c		The input file contains collision geometry (a list of polygons with
+		flags indicating whether or not each polygon is to be used when
+		constructing navigation meshes).
+
+Example Usage:
+
+hbsp -w8 -r input.rgm output.rpt
+
+This inputs a file input.rgm containing rendering geometry and outputs a file
+output.rpt containing a rendering BSP tree. The BSP construction process will
+weight balance as 8 times more important than splits.
+
+In this instance, the filenames are arbitrary, but .rgm and .rpt were chosen to
+indicate "Rendering GeoMetry" and "Rendering Partition Tree" respectively.
+
+-----
+Input
+-----
+
+If the input file is specified to contain rendering geometry, it will be in the
+form of a series of lines, each representing a single polygon and being of the
+following form:
+
+<n = vertex count> ( x1 y1 z1 u1 v1 ) ... ( xn yn zn un vn ) <texture>
+
+If the input file is instead specified to contain collision geometry, each line
+will instead be of the form:
+
+<n = vertex count> ( x1 y1 z1 ) ... ( xn yn zn ) <navigation flag (0 or 1)>
+
+------
+Output
+------
+
+The output will be a BSP tree which has a split plane at each internal node,
+and a list of triangles in each leaf. In practice, the output file will use
+indexed triangles.
+
+If the input contained rendering geometry (-r), the output file will be
+structured as follows:
+
+<t = triangle count>
+1 ( x11 y11 z11 u11 v11 ) ( x12 y12 z12 u12 v12 ) ( x13 y13 z13 u13 v13 ) <texture>
+...
+t ( xt1 yt1 zt1 ut1 vt1 ) ( xt2 yt2 zt2 ut2 vt2 ) ( xt3 yt3 zt3 ut3 vt3 ) <texture>
+***
+<n = BSP tree node count>
+0 <left> <right> <parent> <split plane = ( a b c d ) where ax+by+cz+d = 0>
+...
+k <parent> <m = leaf triangle count> [ <tri_1> ... <tri_m> ]
+...
+n ?
+
+If the input instead contained collision geometry (-c), the output file will
+take the form:
+
+<t = triangle count>
+1 ( x11 y11 z11 ) ( x12 y12 z12 ) ( x13 y13 z13 ) <navigation flag>
+...
+t ( xt1 yt1 zt1 ) ( xt2 yt2 zt2 ) ( xt3 yt3 zt3 ) <navigation flag>
+***
+<BSP tree output as above>
