@@ -24,14 +24,14 @@ Flags:
 
 Example Usage:
 
-hbsp -w8 -r input.rgm output.rpt
+hbsp -w8 -r input.rgm output.rbt
 
 This inputs a file input.rgm containing rendering geometry and outputs a file
-output.rpt containing a rendering BSP tree. The BSP construction process will
+output.rbt containing a rendering BSP tree. The BSP construction process will
 weight balance as 8 times more important than splits.
 
-In this instance, the filenames are arbitrary, but .rgm and .rpt were chosen to
-indicate "Rendering GeoMetry" and "Rendering Partition Tree" respectively.
+In this instance, the filenames are arbitrary, but .rgm and .rbt were chosen to
+indicate "Rendering GeoMetry" and "Rendering BSP Tree" respectively.
 
 -----
 Input
