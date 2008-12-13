@@ -177,6 +177,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Resources Files"
+			>
+			<File
+				RelativePath=".\Specification.txt"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
