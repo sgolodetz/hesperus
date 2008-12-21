@@ -304,6 +304,46 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="math"
+			>
+			<Filter
+				Name="vectors"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\math\vectors\Vector3.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\math\vectors\Vector3.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\math\Constants.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\math\Constants.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
