@@ -350,6 +350,10 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\math\geom\GeomUtil.h"
+						>
+					</File>
+					<File
 						RelativePath="..\math\geom\Plane.h"
 						>
 					</File>
@@ -362,6 +366,10 @@
 					Name=".tpp"
 					>
 					<File
+						RelativePath="..\math\geom\GeomUtil.tpp"
+						>
+					</File>
+					<File
 						RelativePath="..\math\geom\Polygon.tpp"
 						>
 					</File>
@@ -369,6 +377,10 @@
 				<Filter
 					Name=".cpp"
 					>
+					<File
+						RelativePath="..\math\geom\GeomUtil.cpp"
+						>
+					</File>
 					<File
 						RelativePath="..\math\geom\Plane.cpp"
 						>

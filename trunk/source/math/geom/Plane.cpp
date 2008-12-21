@@ -41,33 +41,6 @@ Plane::Plane(const Vector3d& n, const Vector3d& x)
 
 //#################### PUBLIC METHODS ####################
 /**
-Classifies the point p against the plane.
-
-@param p	The point to be classified
-@return		CP_BACK, if the point is behind the plane; CP_COPLANAR, if it is on the plane; CP_FRONT, if it is in front of the plane
-*/
-Plane::CP Plane::classify_point(const Vector3d& p) const
-{
-	double value = m_n.dot(p) - m_d;
-
-	if(fabs(value) < EPSILON) return CP_COPLANAR;
-	else if(value > 0) return CP_FRONT;
-	else return CP_BACK;
-}
-
-/**
-Calculates the perpendicular distance between the plane and the point p.
-
-@param p	The point whose perpendicular distance from the plane we wish to determine
-@return		The perpendicular distance between p and the plane
-*/
-double Plane::distance_to_point(const Vector3d& p) const
-{
-	// Note that this equation is valid precisely because the stored normal is unit length.
-	return fabs(m_n.dot(p) - m_d);
-}
-
-/**
 Returns d, the plane distance value.
 
 @return	As stated
@@ -100,20 +73,20 @@ void Plane::ensure_invariant()
 }
 
 //#################### GLOBAL OPERATORS ####################
-std::ostream& operator<<(std::ostream& os, Plane::CP rhs)
+std::ostream& operator<<(std::ostream& os, PlaneClassifier rhs)
 {
 	switch(rhs)
 	{
-		case Plane::CP_BACK:
+		case CP_BACK:
 			os << "CP_BACK";
 			break;
-		case Plane::CP_COPLANAR:
+		case CP_COPLANAR:
 			os << "CP_COPLANAR";
 			break;
-		case Plane::CP_FRONT:
+		case CP_FRONT:
 			os << "CP_FRONT";
 			break;
-		case Plane::CP_STRADDLE:
+		case CP_STRADDLE:
 			os << "CP_STRADDLE";
 			break;
 	}

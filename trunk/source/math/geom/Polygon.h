@@ -20,39 +20,24 @@ This class template allows users to create polygons with a vertex type and auxil
 of their choosing. For instance, they can create textured polygons by specifying a vertex type
 with (u,v) texture coordinates and an auxiliary data type referencing the texture itself.
 */
-template <typename Vertex, typename AuxiliaryData>
+template <typename Vert, typename AuxData>
 class Polygon
 {
-	//#################### TYPEDEFS ####################
-private:
-	typedef shared_ptr<Polygon> Polygon_Ptr;
-
-	//#################### NESTED CLASSES ####################
-public:
-	struct SplitResults
-	{
-		Polygon_Ptr back;
-		Polygon_Ptr front;
-
-		SplitResults(const Polygon_Ptr& back_, const Polygon_Ptr& front) : back(back_), front(front_) {}
-	};
-
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<Vertex> m_vertices;
-	AuxiliaryData m_auxData;
+	std::vector<Vert> m_vertices;
+	AuxData m_auxData;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Polygon(const std::vector<Vertex>& vertices, const AuxiliaryData& auxData);
+	Polygon(const std::vector<Vert>& vertices, const AuxData& auxData);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const AuxiliaryData& auxiliary_data() const;
-	Plane::CP classify_against(const Plane& plane) const;
-	SplitResults split(const Plane& plane) const;
-	Vertex& vertex(int i);
-	const Vertex& vertex(int i) const;
+	const AuxData& auxiliary_data() const;
+	Vert& vertex(int i);
+	const Vert& vertex(int i) const;
+	int vertex_count() const;
 };
 
 }
