@@ -6,14 +6,9 @@ hbsp (Hesperus BSP Compiler)
 Usage
 -----
 
-hbsp [-w<number>] {-r|-c} <input filename> <output filename>
+hbsp {-r|-c} <input filename> <output filename> [-w<number>]
 
 Flags:
-
--w		The ratio between the weights assigned to balance and split when
-		choosing a split plane at each internal node: the default ratio is 4:1
-		in favour of balance, and equivalent to specifying -w4. Note that it
-		is perfectly valid to use decimal ratios, e.g. -w2.5 is fine.
 
 -r		The input file contains rendering geometry (a list of polygons with
 		textures).
@@ -22,9 +17,14 @@ Flags:
 		flags indicating whether or not each polygon is to be used when
 		constructing navigation meshes).
 
+-w		The ratio between the weights assigned to balance and split when
+		choosing a split plane at each internal node: the default ratio is 4:1
+		in favour of balance, and equivalent to specifying -w4. Note that it
+		is perfectly valid to use decimal ratios, e.g. -w2.5 is fine.
+
 Example Usage:
 
-hbsp -w8 -r input.rgm output.rbt
+hbsp -r input.rgm output.rbt -w8
 
 This inputs a file input.rgm containing rendering geometry and outputs a file
 output.rbt containing a rendering BSP tree. The BSP construction process will
