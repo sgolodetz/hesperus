@@ -43,4 +43,29 @@ double distance_to_plane(const Vector3d& p, const Plane& plane)
 	return fabs(n.dot(p) - d);
 }
 
+//################## HELPER METHODS FOR THE split_polygon FUNCTION ##################
+/**
+Returns the index of the next vertex (in winding order) after the one specified.
+
+@param index		Some vertex index
+@param vertCount	The number of vertices in the polygon
+@return				The index of the next vertex after the one specified
+*/
+int next_vert(int index, int vertCount)
+{
+	return (index+1)%vertCount;
+}
+
+/**
+Returns the index of the previous vertex (in winding order) before the one specified.
+
+@param index		Some vertex index
+@param vertCount	The number of vertices in the polygon
+@return				The index of the previous vertex before the one specified
+*/
+int prev_vert(int index, int vertCount)
+{
+	return (index+vertCount-1)%vertCount;
+}
+
 }

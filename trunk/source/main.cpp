@@ -13,7 +13,6 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#include <source/math/geom/GeomUtil.h>
 using namespace hesp;
 
 void quit(int code)
@@ -51,18 +50,6 @@ void process_events()
 	}
 }
 
-#if 1
-struct X
-{
-	double x, y, z, u, v;
-
-	operator Vector3d() const
-	{
-		return Vector3d(x,y,z);
-	}
-};
-#endif
-
 int main( int argc, char* argv[] )
 {
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
@@ -95,16 +82,6 @@ int main( int argc, char* argv[] )
 		process_events();
 		screen.render();
 	}
-
-#if 1
-	std::vector<X> verts;
-	hesp::Polygon<X,int> poly(verts, 23);
-	Plane plane(Vector3d(1,0,0), 1);
-	PlaneClassifier cp = classify_point_against_plane(poly.vertex(0), plane);
-	X x;
-	cp = classify_point_against_plane(x, plane);
-	cp = classify_polygon_against_plane(poly, plane);
-#endif
 
 	return 0;
 }
