@@ -6,7 +6,7 @@
 #ifndef H_HESP_MATH_VECTORS_VECTOR3D
 #define H_HESP_MATH_VECTORS_VECTOR3D
 
-#include <iostream>
+#include <ostream>
 
 namespace hesp {
 

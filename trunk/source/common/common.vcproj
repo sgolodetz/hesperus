@@ -343,6 +343,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="geom"
+				>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\math\geom\Plane.h"
+						>
+					</File>
+					<File
+						RelativePath="..\math\geom\Polygon.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\math\geom\Polygon.tpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\math\geom\Plane.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
