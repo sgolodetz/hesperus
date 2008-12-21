@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\common"
-			IntermediateDirectory="..\obj\common\$(ConfigurationName)"
+			OutputDirectory="..\..\bin\common"
+			IntermediateDirectory="..\..\obj\common\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -81,8 +81,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\common"
-			IntermediateDirectory="..\obj\common\$(ConfigurationName)"
+			OutputDirectory="..\..\bin\common"
+			IntermediateDirectory="..\..\obj\common\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -151,15 +151,15 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\source\exceptions\Exception.h"
+					RelativePath="..\exceptions\Exception.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\exceptions\FileNotFoundException.h"
+					RelativePath="..\exceptions\FileNotFoundException.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\exceptions\InvalidParameterException.h"
+					RelativePath="..\exceptions\InvalidParameterException.h"
 					>
 				</File>
 			</Filter>
@@ -171,11 +171,11 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\source\textures\Texture.cpp"
+					RelativePath="..\textures\Texture.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\source\textures\TextureFactory.cpp"
+					RelativePath="..\textures\TextureFactory.cpp"
 					>
 				</File>
 			</Filter>
@@ -183,11 +183,11 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\source\textures\Texture.h"
+					RelativePath="..\textures\Texture.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\textures\TextureFactory.h"
+					RelativePath="..\textures\TextureFactory.h"
 					>
 				</File>
 			</Filter>
@@ -199,15 +199,15 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\source\gui\ExplicitLayout.cpp"
+					RelativePath="..\gui\ExplicitLayout.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\Picture.cpp"
+					RelativePath="..\gui\Picture.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\Screen.cpp"
+					RelativePath="..\gui\Screen.cpp"
 					>
 				</File>
 			</Filter>
@@ -215,31 +215,31 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\source\gui\Component.h"
+					RelativePath="..\gui\Component.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\Container.h"
+					RelativePath="..\gui\Container.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\ExplicitLayout.h"
+					RelativePath="..\gui\ExplicitLayout.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\Extents.h"
+					RelativePath="..\gui\Extents.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\LaidOutComponent.h"
+					RelativePath="..\gui\LaidOutComponent.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\Picture.h"
+					RelativePath="..\gui\Picture.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\gui\Screen.h"
+					RelativePath="..\gui\Screen.h"
 					>
 				</File>
 			</Filter>
@@ -247,7 +247,7 @@
 				Name=".tpp"
 				>
 				<File
-					RelativePath="..\source\gui\Container.tpp"
+					RelativePath="..\gui\Container.tpp"
 					>
 				</File>
 			</Filter>
@@ -259,7 +259,7 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\source\images\BitmapLoader.cpp"
+					RelativePath="..\images\BitmapLoader.cpp"
 					>
 				</File>
 			</Filter>
@@ -267,19 +267,19 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\source\images\BitmapLoader.h"
+					RelativePath="..\images\BitmapLoader.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\images\Image.h"
+					RelativePath="..\images\Image.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\images\PixelTypes.h"
+					RelativePath="..\images\PixelTypes.h"
 					>
 				</File>
 				<File
-					RelativePath="..\source\images\SimpleImage.h"
+					RelativePath="..\images\SimpleImage.h"
 					>
 				</File>
 			</Filter>
@@ -287,7 +287,7 @@
 				Name=".tpp"
 				>
 				<File
-					RelativePath="..\source\images\SimpleImage.tpp"
+					RelativePath="..\images\SimpleImage.tpp"
 					>
 				</File>
 			</Filter>
@@ -299,7 +299,7 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\source\ogl\WrappedGL.h"
+					RelativePath="..\ogl\WrappedGL.h"
 					>
 				</File>
 			</Filter>
