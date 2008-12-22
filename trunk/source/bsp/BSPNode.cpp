@@ -13,7 +13,7 @@ BSPNode::BSPNode(int index)
 {}
 
 //#################### PUBLIC METHODS ####################
-BSPNode *BSPNode::parent()					{ return m_parent; }
+int BSPNode::index() const					{ return m_index; }
 const BSPNode *BSPNode::parent() const		{ return m_parent; }
 void BSPNode::set_parent(BSPNode *parent)	{ m_parent = parent; }
 

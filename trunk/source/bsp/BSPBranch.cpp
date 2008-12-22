@@ -13,14 +13,22 @@ BSPBranch::BSPBranch(int index, const Plane_Ptr& splitter, const BSPNode_Ptr& le
 {}
 
 //#################### PUBLIC METHODS ####################
-BSPBranch *BSPBranch::as_branch()				{ return this; }
 const BSPBranch *BSPBranch::as_branch() const	{ return this; }
-BSPLeaf *BSPBranch::as_leaf()					{ return NULL; }
 const BSPLeaf *BSPBranch::as_leaf() const		{ return NULL; }
 bool BSPBranch::is_leaf() const					{ return false; }
-BSPNode *BSPBranch::left()						{ return m_left.get(); }
 const BSPNode *BSPBranch::left() const			{ return m_left.get(); }
-BSPNode *BSPBranch::right()						{ return m_right.get(); }
+
+void BSPBranch::output_postorder_text(std::ostream& os) const
+{
+	if(m_left.get()) m_left->output_postorder_text(os);
+	if(m_right.get()) m_right->output_postorder_text(os);
+
+	int parentIndex = m_parent != NULL ? m_parent->index() : -1;
+	os << m_index << " B " << m_left->index() << ' ' << m_right->index() << ' ' << parentIndex << ' ';
+	// TODO
+	os << '\n';
+}
+
 const BSPNode *BSPBranch::right() const			{ return m_right.get(); }
 Plane_CPtr BSPBranch::splitter() const			{ return m_splitter; }
 

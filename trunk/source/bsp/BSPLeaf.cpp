@@ -29,12 +29,32 @@ BSPNode_Ptr BSPLeaf::make_solid_leaf(int index)
 }
 
 //#################### PUBLIC METHODS ####################
-BSPBranch *BSPLeaf::as_branch()								{ return NULL; }
 const BSPBranch *BSPLeaf::as_branch() const					{ return NULL; }
-BSPLeaf *BSPLeaf::as_leaf()									{ return this; }
 const BSPLeaf *BSPLeaf::as_leaf() const						{ return this; }
 bool BSPLeaf::is_leaf() const								{ return true; }
 bool BSPLeaf::is_solid() const								{ return m_isSolid; }
+
+void BSPLeaf::output_postorder_text(std::ostream& os) const
+{
+	os << m_index;
+	if(m_isSolid) os << " S ";
+	else os << " L ";
+	os << m_parent->index();
+
+	if(!m_isSolid)
+	{
+		size_t polyCount = m_polygonIndices.size();
+		os << ' ' << polyCount << " [ ";
+		for(size_t i=0; i<polyCount; ++i)
+		{
+			os << m_polygonIndices[i] << ' ';
+		}
+		os << "]";
+	}
+
+	os << '\n';
+}
+
 const std::vector<int>& BSPLeaf::polygon_indices() const	{ return m_polygonIndices; }
 
 }

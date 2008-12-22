@@ -15,7 +15,12 @@ BSPTree::BSPTree(const std::vector<BSPNode_Ptr>& nodes)
 //#################### PUBLIC METHODS ####################
 void BSPTree::output_postorder_text(std::ostream& os) const
 {
-	// TODO
+	root()->output_postorder_text(os);
+}
+
+BSPNode_CPtr BSPTree::root() const
+{
+	return m_nodes.back();
 }
 
 }

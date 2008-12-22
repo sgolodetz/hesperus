@@ -28,12 +28,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	BSPBranch *as_branch();
 	const BSPBranch *as_branch() const;
-	BSPLeaf *as_leaf();
 	const BSPLeaf *as_leaf() const;
 	bool is_leaf() const;
 	bool is_solid() const;
+	void output_postorder_text(std::ostream& os) const;
 	const std::vector<int>& polygon_indices() const;
 };
 

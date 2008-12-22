@@ -65,9 +65,9 @@ structured as follows:
 p <k' = vertex count> ( xp1 yp1 zp1 up1 vp1 ) ... ( xpk' ypk' zpk' upk' vpk' ) <texture>
 ***
 <n = BSP tree node count>
-0 <left> <right> <parent> <split plane = ( a b c d ) where ax+by+cz+d = 0>
+0 B <left> <right> <parent> <split plane = ( a b c d ) where ax+by+cz+d = 0>
 ...
-i <parent> <m = leaf triangle count> [ <poly_1> ... <poly_m> ]
+i L <parent> <m = leaf polygon count> [ <poly_1> ... <poly_m> ]
 ...
 n ?
 

@@ -114,7 +114,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	if(fs.fail()) quit_with_error("Couldn't open output file for writing");
 	write_polygons(fs, polygons);
 	fs << "***\n";
-	// TODO
+	tree->output_postorder_text(fs);
 }
 
 template <typename Vert, typename AuxData>

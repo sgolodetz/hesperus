@@ -26,14 +26,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	BSPBranch *as_branch();
 	const BSPBranch *as_branch() const;
-	BSPLeaf *as_leaf();
 	const BSPLeaf *as_leaf() const;
 	bool is_leaf() const;
-	BSPNode *left();
 	const BSPNode *left() const;
-	BSPNode *right();
+	void output_postorder_text(std::ostream& os) const;
 	const BSPNode *right() const;
 	Plane_CPtr splitter() const;
 };
