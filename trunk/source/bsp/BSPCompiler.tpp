@@ -10,15 +10,14 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 template <typename Vert, typename AuxData>
-BSPNode_Ptr BSPCompiler::build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
+BSPTree_Ptr BSPCompiler::build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
 {
 	int polyCount = static_cast<int>(polygons.size());
 	std::vector<PolyIndex> polyIndices;
 	polyIndices.reserve(polyCount);
 	for(int i=0; i<polyCount; ++i) polyIndices.push_back(PolyIndex(i, true));
 	BSPNode_Ptr root = build_subtree(polyIndices, polygons, weight);
-
-	return root;
+	return BSPTree_Ptr(new BSPTree(root));
 }
 
 //#################### PRIVATE METHODS ####################

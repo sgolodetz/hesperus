@@ -7,7 +7,7 @@
 #define H_HESP_BSP_BSPCOMPILER
 
 #include <source/math/geom/Polygon.h>
-#include "BSPNode.h"
+#include "BSPTree.h"
 
 namespace hesp {
 
@@ -26,7 +26,7 @@ class BSPCompiler
 	//#################### PUBLIC METHODS ####################
 public:
 	template <typename Vert, typename AuxData>
-	static BSPNode_Ptr build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight);
+	static BSPTree_Ptr build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight);
 
 	//#################### PRIVATE METHODS ####################
 private:

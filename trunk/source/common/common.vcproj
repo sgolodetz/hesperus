@@ -399,15 +399,15 @@
 					>
 				</File>
 				<File
-					RelativePath="..\bsp\BSPCompiler.tpp"
-					>
-				</File>
-				<File
 					RelativePath="..\bsp\BSPLeaf.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\bsp\BSPNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\BSPTree.cpp"
 					>
 				</File>
 			</Filter>
@@ -430,10 +430,18 @@
 					RelativePath="..\bsp\BSPNode.h"
 					>
 				</File>
+				<File
+					RelativePath="..\bsp\BSPTree.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".tpp"
 				>
+				<File
+					RelativePath="..\bsp\BSPCompiler.tpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>

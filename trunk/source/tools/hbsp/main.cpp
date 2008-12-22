@@ -107,7 +107,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	load_polygons(inputFilename, polygons);
 
 	// Build the BSP tree.
-	BSPNode_Ptr tree = BSPCompiler::build_tree(polygons, weight);
+	BSPTree_Ptr tree = BSPCompiler::build_tree(polygons, weight);
 
 	// Save the polygons and the BSP tree to the output file.
 	std::ofstream fs(outputFilename.c_str());
