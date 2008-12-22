@@ -33,7 +33,6 @@ public:
 	bool is_leaf() const;
 	BSPNode *left();
 	const BSPNode *left() const;
-	void map_polygon_indices(const std::map<int,int>& indexMap);
 	BSPNode *right();
 	const BSPNode *right() const;
 	Plane_CPtr splitter() const;

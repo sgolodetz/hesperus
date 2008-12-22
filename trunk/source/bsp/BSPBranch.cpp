@@ -20,13 +20,6 @@ const BSPLeaf *BSPBranch::as_leaf() const		{ return NULL; }
 bool BSPBranch::is_leaf() const					{ return false; }
 BSPNode *BSPBranch::left()						{ return m_left.get(); }
 const BSPNode *BSPBranch::left() const			{ return m_left.get(); }
-
-void BSPBranch::map_polygon_indices(const std::map<int,int>& indexMap)
-{
-	m_left->map_polygon_indices(indexMap);
-	m_right->map_polygon_indices(indexMap);
-}
-
 BSPNode *BSPBranch::right()						{ return m_right.get(); }
 const BSPNode *BSPBranch::right() const			{ return m_right.get(); }
 Plane_CPtr BSPBranch::splitter() const			{ return m_splitter; }

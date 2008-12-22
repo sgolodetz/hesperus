@@ -39,7 +39,6 @@ public:
 	virtual BSPLeaf *as_leaf() = 0;
 	virtual const BSPLeaf *as_leaf() const = 0;
 	virtual bool is_leaf() const = 0;
-	virtual void map_polygon_indices(const std::map<int,int>& indexMap) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
