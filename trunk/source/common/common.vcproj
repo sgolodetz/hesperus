@@ -334,11 +334,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\math\vectors\VertBuilder.h"
-						>
-					</File>
-					<File
-						RelativePath="..\math\vectors\VertOutputter.h"
+						RelativePath="..\math\vectors\VecUtil.h"
 						>
 					</File>
 				</Filter>
