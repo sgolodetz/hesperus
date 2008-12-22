@@ -50,27 +50,6 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	tree->output_postorder_text(os);
 }
 
-template <typename Vert, typename AuxData>
-void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
-{
-	typedef Polygon<Vert,AuxData> Poly;
-	typedef shared_ptr<Poly> Poly_Ptr;
-	typedef std::vector<Poly_Ptr> PolyVector;
-
-	os << polygons.size() << '\n';
-	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
-	{
-		const Poly& curPoly = **it;
-		int vertCount = curPoly.vertex_count();
-		os << vertCount << ' ';
-		for(int j=0; j<vertCount; ++j)
-		{
-			os << curPoly.vertex(j) << ' ';
-		}
-		os << curPoly.auxiliary_data() << '\n';
-	}
-}
-
 int main(int argc, char *argv[])
 {
 	if(argc != 4 && argc != 5) quit_with_usage();

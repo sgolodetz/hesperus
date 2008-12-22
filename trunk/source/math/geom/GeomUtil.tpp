@@ -285,6 +285,33 @@ SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, cons
 	return SplitResults<Vert,AuxData>(backPoly, frontPoly);
 }
 
+/**
+Writes a sequence of polygons to a stream, one per line.
+
+@param os		The stream to which to write
+@param polygons	The polygons to write to the stream
+*/
+template <typename Vert, typename AuxData>
+void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
+{
+	typedef Polygon<Vert,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
+	typedef std::vector<Poly_Ptr> PolyVector;
+
+	os << polygons.size() << '\n';
+	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
+	{
+		const Poly& curPoly = **it;
+		int vertCount = curPoly.vertex_count();
+		os << vertCount << ' ';
+		for(int j=0; j<vertCount; ++j)
+		{
+			os << curPoly.vertex(j) << ' ';
+		}
+		os << curPoly.auxiliary_data() << '\n';
+	}
+}
+
 //################## HELPER METHODS FOR THE split_polygon FUNCTION ##################
 /**
 Completes the original half of the split polygon (the side we did first). (It's used, obviously, in the
