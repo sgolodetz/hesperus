@@ -41,7 +41,7 @@ std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1,
 double distance_to_plane(const Vector3d& p, const Plane& plane);
 
 template <typename Vert, typename AuxData>
-void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
+void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
 
 template <typename Vert, typename AuxData>
 Plane make_plane(const Polygon<Vert,AuxData>& poly);

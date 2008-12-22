@@ -146,7 +146,7 @@ Loads a sequence of polygons from a stream, one per line.
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Vert, typename AuxData>
-void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
+void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -155,6 +155,8 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 	int n = 1;
 	while(std::getline(is, line))
 	{
+		if(n > maxToRead) break;
+
 		boost::trim(line);
 		if(line != "")
 		{
