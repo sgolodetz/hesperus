@@ -207,6 +207,10 @@
 				RelativePath=".\RenderingVector3d.h"
 				>
 			</File>
+			<File
+				RelativePath=".\VertBuilder.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
