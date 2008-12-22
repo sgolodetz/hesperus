@@ -56,21 +56,29 @@ The output will be a BSP tree which has a split plane at each internal node,
 and a list of polygons in each leaf. In practice, the output file will use
 indexed polygons.
 
-If the input contained rendering geometry (-r), the output file will be
-structured as follows:
+The output file will be structured as follows:
 
 <p = polygon count>
-1 <k = vertex count> ( x11 y11 z11 u11 v11 ) ... ( x1k y1k z1k u1k v1k ) <texture>
-...
-p <k' = vertex count> ( xp1 yp1 zp1 up1 vp1 ) ... ( xpk' ypk' zpk' upk' vpk' ) <texture>
+<polygon 0>
+<polygon p-1>
 ***
 <n = BSP tree node count>
 <node 0>
 ...
 <node n-1>
 
+If the input was rendering geometry, output polygons are stored as:
+
+<i = index> <k = vertcount> ( xi1 yi1 zi1 ui1 vi1 ) ... ( xik yik zik uik vik ) <texture>
+
+If the input was collision geometry, they are instead stored as:
+
+<i = index> <k = vertcount> ( xi1 yi1 zi1 ) ... ( xik yik zik ) <navigation flag>
+
 There are three types of nodes in the tree: branch nodes, empty leaf nodes, and
-solid leaf nodes. Branch nodes are stored as:
+solid leaf nodes.
+
+Branch nodes are stored as:
 
 <index> B <left> <right> <parent> <split plane = ( a b c d )>
 
@@ -81,13 +89,3 @@ Empty leaves are stored as:
 Solid leaves are stored as:
 
 <index> S <parent>
-
-If the input instead contains collision geometry (-c), the output file will
-take the form:
-
-<p = polygon count>
-1 <k> ( x11 y11 z11 ) ... ( x1k y1k z1k ) <navigation flag>
-...
-p <k'> ( xp1 yp1 zp1 ) ... ( xpk' ypk' zpk' ) <navigation flag>
-***
-<BSP tree output as above>
