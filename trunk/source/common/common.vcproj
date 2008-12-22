@@ -388,6 +388,42 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="bsp"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\bsp\BSPBranch.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\BSPLeaf.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\BSPNode.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\bsp\BSPBranch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\BSPLeaf.h"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\BSPNode.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
