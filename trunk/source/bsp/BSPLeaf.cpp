@@ -38,7 +38,7 @@ void BSPLeaf::output_postorder_text(std::ostream& os) const
 {
 	os << m_index;
 	if(m_isSolid) os << " S ";
-	else os << " L ";
+	else os << " E ";
 	os << m_parent->index();
 
 	if(!m_isSolid)

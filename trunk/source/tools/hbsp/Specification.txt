@@ -65,13 +65,24 @@ structured as follows:
 p <k' = vertex count> ( xp1 yp1 zp1 up1 vp1 ) ... ( xpk' ypk' zpk' upk' vpk' ) <texture>
 ***
 <n = BSP tree node count>
-0 B <left> <right> <parent> <split plane = ( a b c d ) where ax+by+cz+d = 0>
+<node 0>
 ...
-i L <parent> <m = leaf polygon count> [ <poly_1> ... <poly_m> ]
-...
-n ?
+<node n-1>
 
-If the input instead contained collision geometry (-c), the output file will
+There are three types of nodes in the tree: branch nodes, empty leaf nodes, and
+solid leaf nodes. Branch nodes are stored as:
+
+<index> B <left> <right> <parent> <split plane = ( a b c d )>
+
+Empty leaves are stored as:
+
+<index> E <parent> <m = leaf polygon count> [ <poly_1> ... <poly_m> ]
+
+Solid leaves are stored as:
+
+<index> S <parent>
+
+If the input instead contains collision geometry (-c), the output file will
 take the form:
 
 <p = polygon count>
