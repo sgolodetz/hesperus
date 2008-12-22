@@ -418,6 +418,10 @@
 					RelativePath="..\bsp\BSPTree.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\bsp\PortalGenerator.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
@@ -442,12 +446,20 @@
 					RelativePath="..\bsp\BSPTree.h"
 					>
 				</File>
+				<File
+					RelativePath="..\bsp\PortalGenerator.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".tpp"
 				>
 				<File
 					RelativePath="..\bsp\BSPCompiler.tpp"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\PortalGenerator.tpp"
 					>
 				</File>
 			</Filter>

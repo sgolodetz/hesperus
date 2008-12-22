@@ -23,6 +23,17 @@ Returns the auxiliary data stored with the polygon.
 @return	As stated
 */
 Polygon_HEADER
+AuxData& Polygon_THIS::auxiliary_data()
+{
+	return m_auxData;
+}
+
+/**
+Returns the auxiliary data stored with the polygon.
+
+@return	As stated
+*/
+Polygon_HEADER
 const AuxData& Polygon_THIS::auxiliary_data() const
 {
 	return m_auxData;

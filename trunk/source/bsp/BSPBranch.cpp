@@ -16,7 +16,7 @@ BSPBranch::BSPBranch(int index, const Plane_Ptr& splitter, const BSPNode_Ptr& le
 const BSPBranch *BSPBranch::as_branch() const	{ return this; }
 const BSPLeaf *BSPBranch::as_leaf() const		{ return NULL; }
 bool BSPBranch::is_leaf() const					{ return false; }
-const BSPNode *BSPBranch::left() const			{ return m_left.get(); }
+const BSPNode_Ptr& BSPBranch::left() const		{ return m_left; }
 
 void BSPBranch::output_postorder_text(std::ostream& os) const
 {
@@ -33,7 +33,7 @@ void BSPBranch::output_postorder_text(std::ostream& os) const
 	os << '\n';
 }
 
-const BSPNode *BSPBranch::right() const			{ return m_right.get(); }
+const BSPNode_Ptr& BSPBranch::right() const		{ return m_right; }
 Plane_CPtr BSPBranch::splitter() const			{ return m_splitter; }
 
 }

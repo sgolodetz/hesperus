@@ -36,6 +36,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	AuxData& auxiliary_data();
 	const AuxData& auxiliary_data() const;
 	const Vector3d& normal() const;
 	const Vert& vertex(int i) const;

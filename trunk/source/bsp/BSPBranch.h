@@ -29,9 +29,9 @@ public:
 	const BSPBranch *as_branch() const;
 	const BSPLeaf *as_leaf() const;
 	bool is_leaf() const;
-	const BSPNode *left() const;
+	const BSPNode_Ptr& left() const;
 	void output_postorder_text(std::ostream& os) const;
-	const BSPNode *right() const;
+	const BSPNode_Ptr& right() const;
 	Plane_CPtr splitter() const;
 };
 
