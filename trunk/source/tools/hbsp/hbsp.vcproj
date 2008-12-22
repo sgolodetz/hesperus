@@ -179,12 +179,32 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\QuitFunctions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RenderingVector3d.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			>
 			<File
 				RelativePath=".\Specification.txt"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".h"
+			>
+			<File
+				RelativePath=".\QuitFunctions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RenderingVector3d.h"
 				>
 			</File>
 		</Filter>

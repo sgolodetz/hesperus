@@ -20,6 +20,8 @@ using boost::lexical_cast;
 #include <source/math/geom/GeomUtil.h>
 #include <source/math/geom/Polygon.h>
 #include <source/math/vectors/Vector3.h>
+#include "QuitFunctions.h"
+#include "RenderingVector3d.h"
 using namespace hesp;
 
 //#################### ENUMERATIONS ####################
@@ -29,78 +31,7 @@ enum GeomType
 	RENDERING
 };
 
-//#################### FORWARD DECLARATIONS ####################
-void quit_with_error(const std::string& error);
-void quit_with_usage();
-
 //#################### CLASSES ####################
-struct RenderingVector3d
-{
-	double x, y, z, u, v;
-
-	RenderingVector3d() : x(0), y(0), z(0), u(0), v(0) {}
-
-	RenderingVector3d(double x_, double y_, double z_, double u_, double v_)
-	:	x(x_), y(y_), z(z_), u(u_), v(v_)
-	{}
-
-	RenderingVector3d& operator+=(const RenderingVector3d& rhs)
-	{
-		x += rhs.x;
-		y += rhs.y;
-		z += rhs.z;
-		u += rhs.u;
-		v += rhs.v;
-		return *this;
-	}
-
-	RenderingVector3d& operator-=(const RenderingVector3d& rhs)
-	{
-		x -= rhs.x;
-		y -= rhs.y;
-		z -= rhs.z;
-		u -= rhs.u;
-		v -= rhs.v;
-		return *this;
-	}
-
-	RenderingVector3d& operator*=(double factor)
-	{
-		x *= factor;
-		y *= factor;
-		z *= factor;
-		u *= factor;
-		v *= factor;
-		return *this;
-	}
-
-	operator Vector3d() const
-	{
-		return Vector3d(x,y,z);
-	}
-};
-
-RenderingVector3d operator+(const RenderingVector3d& lhs, const RenderingVector3d& rhs)
-{
-	RenderingVector3d copy(lhs);
-	copy += rhs;
-	return copy;
-}
-
-RenderingVector3d operator-(const RenderingVector3d& lhs, const RenderingVector3d& rhs)
-{
-	RenderingVector3d copy(lhs);
-	copy -= rhs;
-	return copy;
-}
-
-RenderingVector3d operator*(double factor, const RenderingVector3d& v)
-{
-	RenderingVector3d copy(v);
-	copy *= factor;
-	return copy;
-}
-
 template <typename Vert> struct VertBuilder;
 
 template <> struct VertBuilder<Vector3d>
@@ -328,18 +259,6 @@ void load_polygons(const std::string& inputFilename, std::vector<shared_ptr<Poly
 
 		++n;
 	}
-}
-
-void quit_with_error(const std::string& error)
-{
-	std::cout << "Error: " << error << std::endl;
-	exit(EXIT_FAILURE);
-}
-
-void quit_with_usage()
-{
-	std::cout << "Usage: hbsp {-r|-c} <input filename> <output filename> [-w<number>]" << std::endl;
-	exit(EXIT_FAILURE);
 }
 
 template <typename Vert, typename AuxData>
