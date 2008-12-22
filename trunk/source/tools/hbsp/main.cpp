@@ -82,58 +82,76 @@ template <> struct VertBuilder<RenderingVector3d>
 	}
 };
 
+struct PolyIndex
+{
+	int index;
+	bool splitCandidate;	// is the plane of the referenced polygon a split candidate?
+
+	PolyIndex(int index_, bool splitCandidate_)
+	:	index(index_), splitCandidate(splitCandidate_)
+	{}
+};
+
 //#################### FUNCTIONS ####################
 template <typename Vert, typename AuxData>
-BSPNode_Ptr build_subtree(const std::vector<int>& polyIndices, const std::vector<int>& extraIndices, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons,
-						  const double weight)
+BSPNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight,
+						  PlaneClassifier relativeToParent = CP_BACK)
 {
 	Plane_Ptr splitter = choose_split_plane(polyIndices, polygons, weight);
 
-	std::vector<int> backPolys, frontPolys;
-	std::vector<int> backExtra, frontExtra(extraIndices);
-
-	for(std::vector<int>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
+	if(splitter.get() == NULL)
 	{
-		int curIndex = *it;
+		if(relativeToParent == CP_BACK)
+		{
+			return BSPLeaf::make_solid_leaf();
+		}
+		else
+		{
+			std::vector<int> indicesOnly;
+			for(size_t i=0, size=polyIndices.size(); i<size; ++i) indicesOnly.push_back(polyIndices[i].index);
+			return BSPLeaf::make_empty_leaf(indicesOnly);
+		}
+	}
+
+	std::vector<PolyIndex> backPolys, frontPolys;
+
+	for(std::vector<PolyIndex>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
+	{
+		int curIndex = it->index;
 		const Polygon<Vert,AuxData>& curPoly = *polygons[curIndex];
 		switch(classify_polygon_against_plane(curPoly, *splitter))
 		{
 			case CP_BACK:
 			{
-				backPolys.push_back(curIndex);
+				backPolys.push_back(*it);
 				break;
 			}
 			case CP_COPLANAR:
 			{
-				if(splitter->normal().dot(curPoly.normal()) > 0) frontExtra.push_back(curIndex);
-				else backExtra.push_back(curIndex);
+				if(splitter->normal().dot(curPoly.normal()) > 0) frontPolys.push_back(PolyIndex(curIndex,false));
+				else backPolys.push_back(PolyIndex(curIndex,false));
 				break;
 			}
 			case CP_FRONT:
 			{
-				frontPolys.push_back(curIndex);
+				frontPolys.push_back(*it);
 				break;
 			}
 			case CP_STRADDLE:
 			{
 				SplitResults<Vert,AuxData> sr = split_polygon(curPoly, *splitter);
+				polygons[curIndex] = sr.back;
 				int k = static_cast<int>(polygons.size());
-				polygons.push_back(sr.back);
 				polygons.push_back(sr.front);
-				backPolys.push_back(k);
-				frontPolys.push_back(k+1);
+				backPolys.push_back(PolyIndex(curIndex,it->splitCandidate));
+				frontPolys.push_back(PolyIndex(k,it->splitCandidate));
 				break;
 			}
 		}
 	}
 
-	BSPNode_Ptr left, right;
-
-	if(frontPolys.empty()) left = BSPLeaf::make_empty_leaf(frontExtra);
-	else left = build_subtree(frontPolys, frontExtra, polygons, weight);
-
-	if(backPolys.empty()) right = BSPLeaf::make_solid_leaf();
-	else right = build_subtree(backPolys, backExtra, polygons, weight);
+	BSPNode_Ptr left = build_subtree(frontPolys, polygons, weight, CP_FRONT);
+	BSPNode_Ptr right = build_subtree(backPolys, polygons, weight, CP_BACK);
 
 	BSPNode_Ptr subtreeRoot(new BSPBranch(splitter, left, right));
 	left->set_parent(subtreeRoot.get());
@@ -145,20 +163,16 @@ template <typename Vert, typename AuxData>
 BSPNode_Ptr build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
 {
 	int polyCount = static_cast<int>(polygons.size());
-	std::vector<int> polyIndices(polyCount);
-	for(int i=0; i<polyCount; ++i) polyIndices[i] = i;
-	std::vector<int> extraIndices;
-	BSPNode_Ptr root = build_subtree(polyIndices, extraIndices, polygons, weight);
-
-	// TODO
-	std::map<int,int> testIndexMap;
-	root->map_polygon_indices(testIndexMap);
+	std::vector<PolyIndex> polyIndices;
+	polyIndices.reserve(polyCount);
+	for(int i=0; i<polyCount; ++i) polyIndices.push_back(PolyIndex(i, true));
+	BSPNode_Ptr root = build_subtree(polyIndices, polygons, weight);
 
 	return root;
 }
 
 template <typename Vert, typename AuxData>
-Plane_Ptr choose_split_plane(const std::vector<int>& polyIndices, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
+Plane_Ptr choose_split_plane(const std::vector<PolyIndex>& polyIndices, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
 {
 	Plane_Ptr bestPlane;
 	double bestMetric = INT_MAX;
@@ -166,14 +180,16 @@ Plane_Ptr choose_split_plane(const std::vector<int>& polyIndices, const std::vec
 	int indexCount = static_cast<int>(polyIndices.size());
 	for(int i=0; i<indexCount; ++i)
 	{
-		Plane plane = make_plane(*polygons[polyIndices[i]]);
+		if(!polyIndices[i].splitCandidate) continue;
+
+		Plane plane = make_plane(*polygons[polyIndices[i].index]);
 		int balance = 0, splits = 0;
 
 		for(int j=0; j<indexCount; ++j)
 		{
 			if(j == i) continue;
 
-			switch(classify_polygon_against_plane(*polygons[polyIndices[j]], plane))
+			switch(classify_polygon_against_plane(*polygons[polyIndices[j].index], plane))
 			{
 				case CP_BACK:
 					--balance;
