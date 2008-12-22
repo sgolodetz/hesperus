@@ -33,17 +33,14 @@ enum GeomType
 
 //#################### FUNCTIONS ####################
 template <typename Vert, typename AuxData>
-void load_polygons(const std::string& inputFilename, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
+void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
 
-	std::ifstream fs(inputFilename.c_str());
-	if(fs.fail()) quit_with_error("Input file does not exist");
-
 	std::string line;
 	int n = 1;
-	while(std::getline(fs, line))
+	while(std::getline(is, line))
 	{
 		boost::trim(line);
 		if(line != "")
@@ -103,18 +100,20 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	typedef std::vector<Poly_Ptr> PolyVector;
 
 	// Load the input polygons from disk.
+	std::ifstream is(inputFilename.c_str());
+	if(is.fail()) quit_with_error("Input file does not exist");
 	PolyVector polygons;
-	load_polygons(inputFilename, polygons);
+	load_polygons(is, polygons);
 
 	// Build the BSP tree.
 	BSPTree_Ptr tree = BSPCompiler::build_tree(polygons, weight);
 
 	// Save the polygons and the BSP tree to the output file.
-	std::ofstream fs(outputFilename.c_str());
-	if(fs.fail()) quit_with_error("Couldn't open output file for writing");
-	write_polygons(fs, polygons);
-	fs << "***\n";
-	tree->output_postorder_text(fs);
+	std::ofstream os(outputFilename.c_str());
+	if(os.fail()) quit_with_error("Couldn't open output file for writing");
+	write_polygons(os, polygons);
+	os << "***\n";
+	tree->output_postorder_text(os);
 }
 
 template <typename Vert, typename AuxData>
