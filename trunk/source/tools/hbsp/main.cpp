@@ -15,8 +15,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/bsp/BSPBranch.h>
-#include <source/bsp/BSPLeaf.h>
+#include <source/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/math/geom/Polygon.h>
 #include <source/math/vectors/Vector3.h>
@@ -33,141 +32,7 @@ enum GeomType
 	RENDERING
 };
 
-//#################### CLASSES ####################
-struct PolyIndex
-{
-	int index;
-	bool splitCandidate;	// is the plane of the referenced polygon a split candidate?
-
-	PolyIndex(int index_, bool splitCandidate_)
-	:	index(index_), splitCandidate(splitCandidate_)
-	{}
-};
-
 //#################### FUNCTIONS ####################
-template <typename Vert, typename AuxData>
-BSPNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight,
-						  PlaneClassifier relativeToParent = CP_BACK)
-{
-	Plane_Ptr splitter = choose_split_plane(polyIndices, polygons, weight);
-
-	if(splitter.get() == NULL)
-	{
-		if(relativeToParent == CP_BACK)
-		{
-			return BSPLeaf::make_solid_leaf();
-		}
-		else
-		{
-			std::vector<int> indicesOnly;
-			for(size_t i=0, size=polyIndices.size(); i<size; ++i) indicesOnly.push_back(polyIndices[i].index);
-			return BSPLeaf::make_empty_leaf(indicesOnly);
-		}
-	}
-
-	std::vector<PolyIndex> backPolys, frontPolys;
-
-	for(std::vector<PolyIndex>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
-	{
-		int curIndex = it->index;
-		const Polygon<Vert,AuxData>& curPoly = *polygons[curIndex];
-		switch(classify_polygon_against_plane(curPoly, *splitter))
-		{
-			case CP_BACK:
-			{
-				backPolys.push_back(*it);
-				break;
-			}
-			case CP_COPLANAR:
-			{
-				if(splitter->normal().dot(curPoly.normal()) > 0) frontPolys.push_back(PolyIndex(curIndex,false));
-				else backPolys.push_back(PolyIndex(curIndex,false));
-				break;
-			}
-			case CP_FRONT:
-			{
-				frontPolys.push_back(*it);
-				break;
-			}
-			case CP_STRADDLE:
-			{
-				SplitResults<Vert,AuxData> sr = split_polygon(curPoly, *splitter);
-				polygons[curIndex] = sr.back;
-				int k = static_cast<int>(polygons.size());
-				polygons.push_back(sr.front);
-				backPolys.push_back(PolyIndex(curIndex,it->splitCandidate));
-				frontPolys.push_back(PolyIndex(k,it->splitCandidate));
-				break;
-			}
-		}
-	}
-
-	BSPNode_Ptr left = build_subtree(frontPolys, polygons, weight, CP_FRONT);
-	BSPNode_Ptr right = build_subtree(backPolys, polygons, weight, CP_BACK);
-
-	BSPNode_Ptr subtreeRoot(new BSPBranch(splitter, left, right));
-	left->set_parent(subtreeRoot.get());
-	right->set_parent(subtreeRoot.get());
-	return subtreeRoot;
-}
-
-template <typename Vert, typename AuxData>
-BSPNode_Ptr build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
-{
-	int polyCount = static_cast<int>(polygons.size());
-	std::vector<PolyIndex> polyIndices;
-	polyIndices.reserve(polyCount);
-	for(int i=0; i<polyCount; ++i) polyIndices.push_back(PolyIndex(i, true));
-	BSPNode_Ptr root = build_subtree(polyIndices, polygons, weight);
-
-	return root;
-}
-
-template <typename Vert, typename AuxData>
-Plane_Ptr choose_split_plane(const std::vector<PolyIndex>& polyIndices, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
-{
-	Plane_Ptr bestPlane;
-	double bestMetric = INT_MAX;
-
-	int indexCount = static_cast<int>(polyIndices.size());
-	for(int i=0; i<indexCount; ++i)
-	{
-		if(!polyIndices[i].splitCandidate) continue;
-
-		Plane plane = make_plane(*polygons[polyIndices[i].index]);
-		int balance = 0, splits = 0;
-
-		for(int j=0; j<indexCount; ++j)
-		{
-			if(j == i) continue;
-
-			switch(classify_polygon_against_plane(*polygons[polyIndices[j].index], plane))
-			{
-				case CP_BACK:
-					--balance;
-					break;
-				case CP_COPLANAR:
-					break;
-				case CP_FRONT:
-					++balance;
-					break;
-				case CP_STRADDLE:
-					++splits;
-					break;
-			}
-		}
-
-		double metric = weight*balance + splits;
-		if(metric < bestMetric)
-		{
-			bestPlane = Plane_Ptr(new Plane(plane));
-			bestMetric = metric;
-		}
-	}
-
-	return bestPlane;
-}
-
 template <typename Vert, typename AuxData>
 void load_polygons(const std::string& inputFilename, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
 {
@@ -242,7 +107,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	load_polygons(inputFilename, polygons);
 
 	// Build the BSP tree.
-	BSPNode_Ptr tree = build_tree(polygons, weight);
+	BSPNode_Ptr tree = BSPCompiler::build_tree(polygons, weight);
 
 	// Save the polygons and the BSP tree to the output file.
 	std::ofstream fs(outputFilename.c_str());
