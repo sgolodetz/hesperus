@@ -183,10 +183,6 @@
 				RelativePath=".\QuitFunctions.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\RenderingVector3d.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -201,18 +197,6 @@
 			>
 			<File
 				RelativePath=".\QuitFunctions.h"
-				>
-			</File>
-			<File
-				RelativePath=".\RenderingVector3d.h"
-				>
-			</File>
-			<File
-				RelativePath=".\VertBuilder.h"
-				>
-			</File>
-			<File
-				RelativePath=".\VertOutputter.h"
 				>
 			</File>
 		</Filter>

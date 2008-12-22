@@ -18,11 +18,11 @@ using boost::lexical_cast;
 #include <source/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/math/geom/Polygon.h>
+#include <source/math/vectors/RenderingVector3d.h>
 #include <source/math/vectors/Vector3.h>
+#include <source/math/vectors/VertBuilder.h>
+#include <source/math/vectors/VertOutputter.h>
 #include "QuitFunctions.h"
-#include "RenderingVector3d.h"
-#include "VertBuilder.h"
-#include "VertOutputter.h"
 using namespace hesp;
 
 //#################### ENUMERATIONS ####################

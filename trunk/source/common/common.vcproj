@@ -314,6 +314,10 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\math\vectors\RenderingVector3d.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\math\vectors\Vector3.cpp"
 						>
 					</File>
@@ -322,7 +326,19 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\math\vectors\RenderingVector3d.h"
+						>
+					</File>
+					<File
 						RelativePath="..\math\vectors\Vector3.h"
+						>
+					</File>
+					<File
+						RelativePath="..\math\vectors\VertBuilder.h"
+						>
+					</File>
+					<File
+						RelativePath="..\math\vectors\VertOutputter.h"
 						>
 					</File>
 				</Filter>

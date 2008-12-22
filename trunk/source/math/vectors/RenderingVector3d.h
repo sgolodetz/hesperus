@@ -1,12 +1,12 @@
 /***
- * hbsp: RenderingVector3d.h
+ * hesperus: RenderingVector3d.h
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HBSP_RENDERINGVECTOR3D
-#define H_HBSP_RENDERINGVECTOR3D
+#ifndef H_HESP_MATH_VECTORS_RENDERINGVECTOR3D
+#define H_HESP_MATH_VECTORS_RENDERINGVECTOR3D
 
-#include <source/math/vectors/Vector3.h>
+#include "Vector3.h"
 
 namespace hesp {
 

@@ -1,5 +1,5 @@
 /***
- * hbsp: RenderingVector3d.cpp
+ * hesperus: RenderingVector3d.cpp
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
