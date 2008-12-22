@@ -83,7 +83,8 @@ void load_polygons(const std::string& inputFilename, std::vector<shared_ptr<Poly
 
 				std::vector<std::string> components;
 				std::copy(&tokens[offset+1], &tokens[offset+tokensPerVert-1], std::back_inserter(components));
-				vertices.push_back(VecUtil<Vert>::build_vector(components));
+				try					{ vertices.push_back(VecUtil<Vert>::build_vector(components)); }
+				catch(Exception& e)	{ quit_with_error(e.cause()); }
 			}
 
 			// Add the completed polygon to the list.
