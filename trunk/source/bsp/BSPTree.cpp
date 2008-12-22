@@ -8,8 +8,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-BSPTree::BSPTree(const BSPNode_Ptr& root)
-:	m_root(root)
+BSPTree::BSPTree(const std::vector<BSPNode_Ptr>& nodes)
+:	m_nodes(nodes)
 {}
 
 //#################### PUBLIC METHODS ####################

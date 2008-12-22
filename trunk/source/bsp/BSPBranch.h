@@ -22,7 +22,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BSPBranch(const Plane_Ptr& splitter, const BSPNode_Ptr& left, const BSPNode_Ptr& right);
+	BSPBranch(int index, const Plane_Ptr& splitter, const BSPNode_Ptr& left, const BSPNode_Ptr& right);
 
 	//#################### PUBLIC METHODS ####################
 public:

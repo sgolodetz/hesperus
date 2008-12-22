@@ -32,7 +32,7 @@ public:
 private:
 	template <typename Vert, typename AuxData>
 	static BSPNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight,
-									 PlaneClassifier relativeToParent = CP_BACK);
+									 std::vector<BSPNode_Ptr>& nodes, PlaneClassifier relativeToParent = CP_BACK);
 
 	template <typename Vert, typename AuxData>
 	static Plane_Ptr choose_split_plane(const std::vector<PolyIndex>& polyIndices, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight);

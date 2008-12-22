@@ -22,11 +22,12 @@ class BSPNode
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:
+	int m_index;
 	BSPNode *m_parent;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BSPNode();
+	BSPNode(int index);
 
 	//#################### DESTRUCTOR ####################
 public:

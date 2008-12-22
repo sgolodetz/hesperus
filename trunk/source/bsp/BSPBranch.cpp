@@ -8,8 +8,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-BSPBranch::BSPBranch(const Plane_Ptr& splitter, const BSPNode_Ptr& left, const BSPNode_Ptr& right)
-:	m_splitter(splitter), m_left(left), m_right(right)
+BSPBranch::BSPBranch(int index, const Plane_Ptr& splitter, const BSPNode_Ptr& left, const BSPNode_Ptr& right)
+:	BSPNode(index), m_splitter(splitter), m_left(left), m_right(right)
 {}
 
 //#################### PUBLIC METHODS ####################

@@ -16,14 +16,15 @@ BSPTree_Ptr BSPCompiler::build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData>
 	std::vector<PolyIndex> polyIndices;
 	polyIndices.reserve(polyCount);
 	for(int i=0; i<polyCount; ++i) polyIndices.push_back(PolyIndex(i, true));
-	BSPNode_Ptr root = build_subtree(polyIndices, polygons, weight);
-	return BSPTree_Ptr(new BSPTree(root));
+	std::vector<BSPNode_Ptr> nodes;
+	build_subtree(polyIndices, polygons, weight, nodes);
+	return BSPTree_Ptr(new BSPTree(nodes));
 }
 
 //#################### PRIVATE METHODS ####################
 template <typename Vert, typename AuxData>
 BSPNode_Ptr BSPCompiler::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight,
-									   PlaneClassifier relativeToParent)
+									   std::vector<BSPNode_Ptr>& nodes, PlaneClassifier relativeToParent)
 {
 	Plane_Ptr splitter = choose_split_plane(polyIndices, polygons, weight);
 
@@ -31,14 +32,15 @@ BSPNode_Ptr BSPCompiler::build_subtree(const std::vector<PolyIndex>& polyIndices
 	{
 		if(relativeToParent == CP_BACK)
 		{
-			return BSPLeaf::make_solid_leaf();
+			nodes.push_back(BSPLeaf::make_solid_leaf((int)nodes.size()));
 		}
 		else
 		{
 			std::vector<int> indicesOnly;
 			for(size_t i=0, size=polyIndices.size(); i<size; ++i) indicesOnly.push_back(polyIndices[i].index);
-			return BSPLeaf::make_empty_leaf(indicesOnly);
+			nodes.push_back(BSPLeaf::make_empty_leaf((int)nodes.size(), indicesOnly));
 		}
+		return nodes.back();
 	}
 
 	std::vector<PolyIndex> backPolys, frontPolys;
@@ -78,12 +80,13 @@ BSPNode_Ptr BSPCompiler::build_subtree(const std::vector<PolyIndex>& polyIndices
 		}
 	}
 
-	BSPNode_Ptr left = build_subtree(frontPolys, polygons, weight, CP_FRONT);
-	BSPNode_Ptr right = build_subtree(backPolys, polygons, weight, CP_BACK);
+	BSPNode_Ptr left = build_subtree(frontPolys, polygons, weight, nodes, CP_FRONT);
+	BSPNode_Ptr right = build_subtree(backPolys, polygons, weight, nodes, CP_BACK);
 
-	BSPNode_Ptr subtreeRoot(new BSPBranch(splitter, left, right));
+	BSPNode_Ptr subtreeRoot(new BSPBranch((int)nodes.size(), splitter, left, right));
 	left->set_parent(subtreeRoot.get());
 	right->set_parent(subtreeRoot.get());
+	nodes.push_back(subtreeRoot);
 	return subtreeRoot;
 }
 

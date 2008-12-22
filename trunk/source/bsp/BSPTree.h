@@ -14,11 +14,11 @@ class BSPTree
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	BSPNode_Ptr m_root;
+	std::vector<BSPNode_Ptr> m_nodes;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BSPTree(const BSPNode_Ptr& root);
+	BSPTree(const std::vector<BSPNode_Ptr>& nodes);
 
 	//#################### PUBLIC METHODS ####################
 public:

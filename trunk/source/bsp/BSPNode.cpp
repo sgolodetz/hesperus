@@ -8,8 +8,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-BSPNode::BSPNode()
-:	m_parent(NULL)
+BSPNode::BSPNode(int index)
+:	m_index(index), m_parent(NULL)
 {}
 
 //#################### PUBLIC METHODS ####################

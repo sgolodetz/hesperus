@@ -19,12 +19,12 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 private:
-	BSPLeaf() {}
+	BSPLeaf(int index) : BSPNode(index) {}
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static BSPNode_Ptr make_empty_leaf(const std::vector<int>& polygonIndices);
-	static BSPNode_Ptr make_solid_leaf();
+	static BSPNode_Ptr make_empty_leaf(int index, const std::vector<int>& polygonIndices);
+	static BSPNode_Ptr make_solid_leaf(int index);
 
 	//#################### PUBLIC METHODS ####################
 public:

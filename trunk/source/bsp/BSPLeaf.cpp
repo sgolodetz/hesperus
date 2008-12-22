@@ -13,17 +13,17 @@ using boost::lexical_cast;
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################
-BSPNode_Ptr BSPLeaf::make_empty_leaf(const std::vector<int>& polygonIndices)
+BSPNode_Ptr BSPLeaf::make_empty_leaf(int index, const std::vector<int>& polygonIndices)
 {
-	BSPLeaf *leaf = new BSPLeaf;
+	BSPLeaf *leaf = new BSPLeaf(index);
 	leaf->m_isSolid = false;
 	leaf->m_polygonIndices = polygonIndices;
 	return BSPNode_Ptr(leaf);
 }
 
-BSPNode_Ptr BSPLeaf::make_solid_leaf()
+BSPNode_Ptr BSPLeaf::make_solid_leaf(int index)
 {
-	BSPLeaf *leaf = new BSPLeaf;
+	BSPLeaf *leaf = new BSPLeaf(index);
 	leaf->m_isSolid = true;
 	return BSPNode_Ptr(leaf);
 }
