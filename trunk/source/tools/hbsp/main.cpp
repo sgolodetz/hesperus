@@ -23,6 +23,7 @@ using boost::lexical_cast;
 #include "QuitFunctions.h"
 #include "RenderingVector3d.h"
 #include "VertBuilder.h"
+#include "VertOutputter.h"
 using namespace hesp;
 
 //#################### ENUMERATIONS ####################
@@ -174,6 +175,7 @@ void load_polygons(const std::string& inputFilename, std::vector<shared_ptr<Poly
 	typedef shared_ptr<Poly> Poly_Ptr;
 
 	std::ifstream fs(inputFilename.c_str());
+	if(fs.fail()) quit_with_error("Input file does not exist");
 
 	std::string line;
 	int n = 1;
@@ -243,7 +245,33 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	BSPNode_Ptr tree = build_tree(polygons, weight);
 
 	// Save the polygons and the BSP tree to the output file.
+	std::ofstream fs(outputFilename.c_str());
+	if(fs.fail()) quit_with_error("Couldn't open output file for writing");
+	write_polygons(fs, polygons);
+	fs << "***\n";
 	// TODO
+}
+
+template <typename Vert, typename AuxData>
+void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
+{
+	typedef Polygon<Vert,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
+	typedef std::vector<Poly_Ptr> PolyVector;
+
+	os << polygons.size() << '\n';
+	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
+	{
+		const Poly& curPoly = **it;
+		int vertCount = curPoly.vertex_count();
+		os << vertCount << ' ';
+		for(int j=0; j<vertCount; ++j)
+		{
+			VertOutputter<Vert>::output(os, curPoly.vertex(j));
+			os << ' ';
+		}
+		os << curPoly.auxiliary_data() << '\n';
+	}
 }
 
 int main(int argc, char *argv[])

@@ -211,6 +211,10 @@
 				RelativePath=".\VertBuilder.h"
 				>
 			</File>
+			<File
+				RelativePath=".\VertOutputter.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

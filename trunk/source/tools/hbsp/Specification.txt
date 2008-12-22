@@ -53,30 +53,30 @@ Output
 ------
 
 The output will be a BSP tree which has a split plane at each internal node,
-and a list of triangles in each leaf. In practice, the output file will use
-indexed triangles.
+and a list of polygons in each leaf. In practice, the output file will use
+indexed polygons.
 
 If the input contained rendering geometry (-r), the output file will be
 structured as follows:
 
-<t = triangle count>
-1 ( x11 y11 z11 u11 v11 ) ( x12 y12 z12 u12 v12 ) ( x13 y13 z13 u13 v13 ) <texture>
+<p = polygon count>
+1 <k = vertex count> ( x11 y11 z11 u11 v11 ) ... ( x1k y1k z1k u1k v1k ) <texture>
 ...
-t ( xt1 yt1 zt1 ut1 vt1 ) ( xt2 yt2 zt2 ut2 vt2 ) ( xt3 yt3 zt3 ut3 vt3 ) <texture>
+p <k' = vertex count> ( xp1 yp1 zp1 up1 vp1 ) ... ( xpk' ypk' zpk' upk' vpk' ) <texture>
 ***
 <n = BSP tree node count>
 0 <left> <right> <parent> <split plane = ( a b c d ) where ax+by+cz+d = 0>
 ...
-k <parent> <m = leaf triangle count> [ <tri_1> ... <tri_m> ]
+i <parent> <m = leaf triangle count> [ <poly_1> ... <poly_m> ]
 ...
 n ?
 
 If the input instead contained collision geometry (-c), the output file will
 take the form:
 
-<t = triangle count>
-1 ( x11 y11 z11 ) ( x12 y12 z12 ) ( x13 y13 z13 ) <navigation flag>
+<p = polygon count>
+1 <k> ( x11 y11 z11 ) ... ( x1k y1k z1k ) <navigation flag>
 ...
-t ( xt1 yt1 zt1 ) ( xt2 yt2 zt2 ) ( xt3 yt3 zt3 ) <navigation flag>
+p <k'> ( xp1 yp1 zp1 ) ... ( xpk' ypk' zpk' ) <navigation flag>
 ***
 <BSP tree output as above>
