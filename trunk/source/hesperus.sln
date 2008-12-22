@@ -13,6 +13,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hbsp", "tools\hbsp\hbsp.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "common\common.vcproj", "{57B520D8-1A0C-4F5D-BE95-26C288CA60FC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hportal", "tools\hportal\hportal.vcproj", "{225FFC39-2C8D-4B8A-9362-F3687E423A14}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC} = {57B520D8-1A0C-4F5D-BE95-26C288CA60FC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +36,10 @@ Global
 		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC}.Debug|Win32.Build.0 = Debug|Win32
 		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC}.Release|Win32.ActiveCfg = Release|Win32
 		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC}.Release|Win32.Build.0 = Release|Win32
+		{225FFC39-2C8D-4B8A-9362-F3687E423A14}.Debug|Win32.ActiveCfg = Debug|Win32
+		{225FFC39-2C8D-4B8A-9362-F3687E423A14}.Debug|Win32.Build.0 = Debug|Win32
+		{225FFC39-2C8D-4B8A-9362-F3687E423A14}.Release|Win32.ActiveCfg = Release|Win32
+		{225FFC39-2C8D-4B8A-9362-F3687E423A14}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
