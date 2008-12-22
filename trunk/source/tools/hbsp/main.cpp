@@ -20,7 +20,6 @@ using boost::lexical_cast;
 #include <source/math/geom/Polygon.h>
 #include <source/math/vectors/RenderingVector3d.h>
 #include <source/math/vectors/Vector3.h>
-#include <source/math/vectors/VecUtil.h>
 #include "QuitFunctions.h"
 using namespace hesp;
 
@@ -80,7 +79,7 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 
 				std::vector<std::string> components;
 				std::copy(&tokens[offset+1], &tokens[offset+tokensPerVert-1], std::back_inserter(components));
-				try					{ vertices.push_back(VecUtil<Vert>::build_vector(components)); }
+				try					{ vertices.push_back(Vert(components)); }
 				catch(Exception& e)	{ quit_with_error(e.cause()); }
 			}
 
@@ -131,8 +130,7 @@ void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,
 		os << vertCount << ' ';
 		for(int j=0; j<vertCount; ++j)
 		{
-			VecUtil<Vert>::output_vector(os, curPoly.vertex(j));
-			os << ' ';
+			os << curPoly.vertex(j) << ' ';
 		}
 		os << curPoly.auxiliary_data() << '\n';
 	}

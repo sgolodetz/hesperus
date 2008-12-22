@@ -7,6 +7,8 @@
 #define H_HESP_MATH_VECTORS_VECTOR3D
 
 #include <ostream>
+#include <string>
+#include <vector>
 
 namespace hesp {
 
@@ -19,6 +21,7 @@ struct Vector3
 	//################## CONSTRUCTORS ##################//
 	Vector3();
 	Vector3(double x_, double y_, double z_);
+	Vector3(const std::vector<std::string>& components);
 
 	//################## PUBLIC OPERATORS ##################//
 	Vector3& operator+=(const Vector3& rhs);

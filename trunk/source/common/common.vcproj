@@ -333,10 +333,6 @@
 						RelativePath="..\math\vectors\Vector3.h"
 						>
 					</File>
-					<File
-						RelativePath="..\math\vectors\VecUtil.h"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter

@@ -21,6 +21,7 @@ struct RenderingVector3d
 	//#################### CONSTRUCTORS ####################
 	RenderingVector3d();
 	RenderingVector3d(double x_, double y_, double z_, double u_, double v_);
+	RenderingVector3d(const std::vector<std::string>& components);
 
 	//#################### PUBLIC OPERATORS ####################
 	RenderingVector3d& operator+=(const RenderingVector3d& rhs);
@@ -33,6 +34,7 @@ struct RenderingVector3d
 RenderingVector3d operator+(const RenderingVector3d& lhs, const RenderingVector3d& rhs);
 RenderingVector3d operator-(const RenderingVector3d& lhs, const RenderingVector3d& rhs);
 RenderingVector3d operator*(double factor, const RenderingVector3d& v);
+std::ostream& operator<<(std::ostream& os, const RenderingVector3d& v);
 
 }
 

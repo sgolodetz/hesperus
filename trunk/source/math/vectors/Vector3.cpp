@@ -7,6 +7,10 @@
 
 #include <cmath>
 
+#include <boost/lexical_cast.hpp>
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
+
 #include <source/exceptions/Exception.h>
 #include <source/math/Constants.h>
 
@@ -24,6 +28,20 @@ Vector3<T>::Vector3(double x_, double y_, double z_)
 	y(static_cast<T>(y_)),
 	z(static_cast<T>(z_))
 {}
+
+template <typename T>
+Vector3<T>::Vector3(const std::vector<std::string>& components)
+{
+	if(components.size() != 3) throw Exception("Incorrect number of vector components");
+
+	try
+	{
+		x = lexical_cast<T,std::string>(components[0]);
+		y = lexical_cast<T,std::string>(components[1]);
+		z = lexical_cast<T,std::string>(components[2]);
+	}
+	catch(bad_lexical_cast&) { throw Exception("One of the vector components is not a number"); }
+}
 
 //################## PUBLIC OPERATORS ##################//
 template <typename T>
@@ -178,7 +196,7 @@ Vector3<T> operator/(const Vector3<T>& v, double factor)
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Vector3<T>& v)
 {
-	os << '(' << v.x << ',' << v.y << ',' << v.z << ')';
+	os << "( " << v.x << ' ' << v.y << ' ' << v.z << " )";
 	return os;
 }
 
