@@ -134,6 +134,18 @@ std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1,
 }
 
 /**
+Makes a Plane object to represent the plane in which the specified polygon lies.
+
+@poly	The polygon whose plane we wish to make
+@return	The plane
+*/
+template <typename Vert, typename AuxData>
+Plane make_plane(const Polygon<Vert,AuxData>& poly)
+{
+	return Plane(poly.normal(), poly.vertex(0));
+}
+
+/**
 Splits the polygon across the specified plane.
 
 @param poly							The polygon to split across the plane

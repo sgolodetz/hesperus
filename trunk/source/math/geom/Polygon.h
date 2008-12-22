@@ -16,9 +16,10 @@ using boost::shared_ptr;
 namespace hesp {
 
 /**
-This class template allows users to create polygons with a vertex type and auxiliary data type
-of their choosing. For instance, they can create textured polygons by specifying a vertex type
-with (u,v) texture coordinates and an auxiliary data type referencing the texture itself.
+This class template allows users to create convex, planar polygons with a vertex type and
+auxiliary data type of their choosing. For instance, they can create textured polygons by
+specifying a vertex type with (u,v) texture coordinates and an auxiliary data type referencing
+the texture itself.
 */
 template <typename Vert, typename AuxData>
 class Polygon
@@ -26,6 +27,7 @@ class Polygon
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<Vert> m_vertices;
+	Vector3d m_normal;
 	AuxData m_auxData;
 
 	//#################### CONSTRUCTORS ####################
@@ -35,9 +37,13 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const AuxData& auxiliary_data() const;
-	Vert& vertex(int i);
+	const Vector3d& normal() const;
 	const Vert& vertex(int i) const;
 	int vertex_count() const;
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void calculate_normal();
 };
 
 }

@@ -6,6 +6,9 @@
 #ifndef H_HESP_MATH_GEOM_PLANE
 #define H_HESP_MATH_GEOM_PLANE
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -47,6 +50,10 @@ public:
 private:
 	void ensure_invariant();
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Plane> Plane_Ptr;
+typedef shared_ptr<const Plane> Plane_CPtr;
 
 //#################### GLOBAL OPERATORS ####################
 std::ostream& operator<<(std::ostream& os, PlaneClassifier rhs);

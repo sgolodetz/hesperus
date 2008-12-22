@@ -34,6 +34,7 @@ public:
 	const BSPLeaf *as_leaf() const;
 	bool is_leaf() const;
 	bool is_solid() const;
+	void map_polygon_indices(const std::map<int,int>& indexMap);
 	const std::vector<int>& polygon_indices() const;
 };
 

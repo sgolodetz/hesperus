@@ -15,6 +15,9 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/bsp/BSPBranch.h>
+#include <source/bsp/BSPLeaf.h>
+#include <source/math/geom/GeomUtil.h>
 #include <source/math/geom/Polygon.h>
 #include <source/math/vectors/Vector3.h>
 using namespace hesp;
@@ -35,10 +38,68 @@ struct RenderingVector3d
 {
 	double x, y, z, u, v;
 
+	RenderingVector3d() : x(0), y(0), z(0), u(0), v(0) {}
+
 	RenderingVector3d(double x_, double y_, double z_, double u_, double v_)
 	:	x(x_), y(y_), z(z_), u(u_), v(v_)
 	{}
+
+	RenderingVector3d& operator+=(const RenderingVector3d& rhs)
+	{
+		x += rhs.x;
+		y += rhs.y;
+		z += rhs.z;
+		u += rhs.u;
+		v += rhs.v;
+		return *this;
+	}
+
+	RenderingVector3d& operator-=(const RenderingVector3d& rhs)
+	{
+		x -= rhs.x;
+		y -= rhs.y;
+		z -= rhs.z;
+		u -= rhs.u;
+		v -= rhs.v;
+		return *this;
+	}
+
+	RenderingVector3d& operator*=(double factor)
+	{
+		x *= factor;
+		y *= factor;
+		z *= factor;
+		u *= factor;
+		v *= factor;
+		return *this;
+	}
+
+	operator Vector3d() const
+	{
+		return Vector3d(x,y,z);
+	}
 };
+
+RenderingVector3d operator+(const RenderingVector3d& lhs, const RenderingVector3d& rhs)
+{
+	RenderingVector3d copy(lhs);
+	copy += rhs;
+	return copy;
+}
+
+RenderingVector3d operator-(const RenderingVector3d& lhs, const RenderingVector3d& rhs)
+{
+	RenderingVector3d copy(lhs);
+	copy -= rhs;
+	return copy;
+}
+
+RenderingVector3d operator*(double factor, const RenderingVector3d& v)
+{
+	RenderingVector3d copy(v);
+	copy *= factor;
+	return copy;
+}
 
 template <typename Vert> struct VertBuilder;
 
@@ -92,9 +153,127 @@ template <> struct VertBuilder<RenderingVector3d>
 
 //#################### FUNCTIONS ####################
 template <typename Vert, typename AuxData>
-void load_polygons(const std::string& inputFilename, std::vector<Polygon<Vert,AuxData> >& polygons)
+BSPNode_Ptr build_subtree(const std::vector<int>& polyIndices, const std::vector<int>& extraIndices, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons,
+						  const double weight)
+{
+	Plane_Ptr splitter = choose_split_plane(polyIndices, polygons, weight);
+
+	std::vector<int> backPolys, frontPolys;
+	std::vector<int> backExtra, frontExtra(extraIndices);
+
+	for(std::vector<int>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
+	{
+		int curIndex = *it;
+		const Polygon<Vert,AuxData>& curPoly = *polygons[curIndex];
+		switch(classify_polygon_against_plane(curPoly, *splitter))
+		{
+			case CP_BACK:
+			{
+				backPolys.push_back(curIndex);
+				break;
+			}
+			case CP_COPLANAR:
+			{
+				if(splitter->normal().dot(curPoly.normal()) > 0) frontExtra.push_back(curIndex);
+				else backExtra.push_back(curIndex);
+				break;
+			}
+			case CP_FRONT:
+			{
+				frontPolys.push_back(curIndex);
+				break;
+			}
+			case CP_STRADDLE:
+			{
+				SplitResults<Vert,AuxData> sr = split_polygon(curPoly, *splitter);
+				int k = static_cast<int>(polygons.size());
+				polygons.push_back(sr.back);
+				polygons.push_back(sr.front);
+				backPolys.push_back(k);
+				frontPolys.push_back(k+1);
+				break;
+			}
+		}
+	}
+
+	BSPNode_Ptr left, right;
+
+	if(frontPolys.empty()) left = BSPLeaf::make_empty_leaf(frontExtra);
+	else left = build_subtree(frontPolys, frontExtra, polygons, weight);
+
+	if(backPolys.empty()) right = BSPLeaf::make_solid_leaf();
+	else right = build_subtree(backPolys, backExtra, polygons, weight);
+
+	BSPNode_Ptr subtreeRoot(new BSPBranch(splitter, left, right));
+	left->set_parent(subtreeRoot.get());
+	right->set_parent(subtreeRoot.get());
+	return subtreeRoot;
+}
+
+template <typename Vert, typename AuxData>
+BSPNode_Ptr build_tree(std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
+{
+	int polyCount = static_cast<int>(polygons.size());
+	std::vector<int> polyIndices(polyCount);
+	for(int i=0; i<polyCount; ++i) polyIndices[i] = i;
+	std::vector<int> extraIndices;
+	BSPNode_Ptr root = build_subtree(polyIndices, extraIndices, polygons, weight);
+
+	// TODO
+	std::map<int,int> testIndexMap;
+	root->map_polygon_indices(testIndexMap);
+
+	return root;
+}
+
+template <typename Vert, typename AuxData>
+Plane_Ptr choose_split_plane(const std::vector<int>& polyIndices, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const double weight)
+{
+	Plane_Ptr bestPlane;
+	double bestMetric = INT_MAX;
+
+	int indexCount = static_cast<int>(polyIndices.size());
+	for(int i=0; i<indexCount; ++i)
+	{
+		Plane plane = make_plane(*polygons[polyIndices[i]]);
+		int balance = 0, splits = 0;
+
+		for(int j=0; j<indexCount; ++j)
+		{
+			if(j == i) continue;
+
+			switch(classify_polygon_against_plane(*polygons[polyIndices[j]], plane))
+			{
+				case CP_BACK:
+					--balance;
+					break;
+				case CP_COPLANAR:
+					break;
+				case CP_FRONT:
+					++balance;
+					break;
+				case CP_STRADDLE:
+					++splits;
+					break;
+			}
+		}
+
+		double metric = weight*balance + splits;
+		if(metric < bestMetric)
+		{
+			bestPlane = Plane_Ptr(new Plane(plane));
+			bestMetric = metric;
+		}
+	}
+
+	return bestPlane;
+}
+
+template <typename Vert, typename AuxData>
+void load_polygons(const std::string& inputFilename, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
 {
 	typedef Polygon<Vert,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
 
 	std::ifstream fs(inputFilename.c_str());
 
@@ -144,7 +323,7 @@ void load_polygons(const std::string& inputFilename, std::vector<Polygon<Vert,Au
 			}
 
 			// Add the completed polygon to the list.
-			polygons.push_back(Poly(vertices, auxData));
+			polygons.push_back(Poly_Ptr(new Poly(vertices, auxData)));
 		}
 
 		++n;
@@ -167,11 +346,17 @@ template <typename Vert, typename AuxData>
 void run_compiler(const std::string& inputFilename, const std::string& outputFilename, const double weight)
 {
 	typedef Polygon<Vert,AuxData> Poly;
-	typedef std::vector<Poly> PolyVector;
+	typedef shared_ptr<Poly> Poly_Ptr;
+	typedef std::vector<Poly_Ptr> PolyVector;
 
+	// Load the input polygons from disk.
 	PolyVector polygons;
 	load_polygons(inputFilename, polygons);
 
+	// Build the BSP tree.
+	BSPNode_Ptr tree = build_tree(polygons, weight);
+
+	// Save the polygons and the BSP tree to the output file.
 	// TODO
 }
 

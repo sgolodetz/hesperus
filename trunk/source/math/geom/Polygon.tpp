@@ -12,7 +12,9 @@ namespace hesp {
 Polygon_HEADER
 Polygon_THIS::Polygon(const std::vector<Vert>& vertices, const AuxData& auxData)
 :	m_vertices(vertices), m_auxData(auxData)
-{}
+{
+	calculate_normal();
+}
 
 //#################### PUBLIC METHODS ####################
 /**
@@ -27,14 +29,14 @@ const AuxData& Polygon_THIS::auxiliary_data() const
 }
 
 /**
-Returns the i'th vertex of the polygon.
+Returns the polygon normal.
 
 @return	As stated
 */
 Polygon_HEADER
-Vert& Polygon_THIS::vertex(int i)
+const Vector3d& Polygon_THIS::normal() const
 {
-	return m_vertices[i];
+	return m_normal;
 }
 
 /**
@@ -57,6 +59,16 @@ Polygon_HEADER
 int Polygon_THIS::vertex_count() const
 {
 	return static_cast<int>(m_vertices.size());
+}
+
+//#################### PRIVATE METHODS ####################
+Polygon_HEADER
+void Polygon_THIS::calculate_normal()
+{
+	Vector3d v1 = m_vertices[1], v2 = m_vertices[2];
+	v1 -= m_vertices[0];
+	v2 -= m_vertices[0];
+	m_normal = v1.cross(v2).normalize();
 }
 
 }
