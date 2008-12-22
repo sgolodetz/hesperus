@@ -24,8 +24,12 @@ void BSPBranch::output_postorder_text(std::ostream& os) const
 	if(m_right.get()) m_right->output_postorder_text(os);
 
 	int parentIndex = m_parent != NULL ? m_parent->index() : -1;
-	os << m_index << " B " << m_left->index() << ' ' << m_right->index() << ' ' << parentIndex << ' ';
-	// TODO
+	os << m_index << " B " << m_left->index() << ' ' << m_right->index() << ' ' << parentIndex;
+
+	const Vector3d& n = m_splitter->normal();
+	double d = m_splitter->distance_value();
+	os << " ( " << n.x << ' ' << n.y << ' ' << n.z << ' ' << d << " )";
+
 	os << '\n';
 }
 
