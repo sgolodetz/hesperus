@@ -40,7 +40,7 @@ template <> struct VecUtil<RenderingVector3d>
 
 	static void output_vector(std::ostream& os, const RenderingVector3d& v)
 	{
-		os << "( " << v.x << ' ' << v.z << ' ' << v.z << ' ' << v.u << ' ' << v.v << " )";
+		os << "( " << v.x << ' ' << v.y << ' ' << v.z << ' ' << v.u << ' ' << v.v << " )";
 	}
 };
 
