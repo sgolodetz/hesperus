@@ -61,14 +61,27 @@ const Vector3d& Plane::normal() const
 }
 
 /**
-Returns a version of the plane ax + by + cz - d = 0 such that the first
-one of a, b, c or d to be non-zero is positive. For example, this would
-return 0x+1y-1z-23=0 for both 0x+1y-1z-23=0 and 0x-1y+1z+23=0.
+Returns a version of the plane ax + by + cz - d = 0 such that the
+first one of a, b, c to be non-zero is positive. For example, this
+would return 0x+1y-1z-23=0 for both 0x+1y-1z-23=0 and 0x-1y+1z+23=0.
 */
 Plane Plane::to_undirected_form() const
 {
-	// NYI
-	throw 23;
+	double x = m_n.x, y = m_n.y, z = m_n.z, d = m_d;
+
+	if(fabs(x) < EPSILON) x = 0;
+	if(fabs(y) < EPSILON) y = 0;
+	if(fabs(z) < EPSILON) z = 0;
+
+	bool zeroX = x == 0;
+	bool zeroY = y == 0;
+
+	bool flip = (x < 0) ||
+				(zeroX && y < 0) ||
+				(zeroX && zeroY && z < 0);
+
+	if(flip) return Plane(Vector3d(-x,-y,-z),-d);
+	else return Plane(Vector3d(x,y,z),d);
 }
 
 //#################### PRIVATE METHODS ####################
