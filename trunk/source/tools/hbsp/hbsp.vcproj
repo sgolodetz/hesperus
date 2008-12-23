@@ -179,10 +179,6 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\QuitFunctions.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -195,10 +191,6 @@
 		<Filter
 			Name=".h"
 			>
-			<File
-				RelativePath=".\QuitFunctions.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

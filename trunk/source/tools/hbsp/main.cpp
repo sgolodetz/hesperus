@@ -14,7 +14,6 @@
 #include <source/math/geom/Polygon.h>
 #include <source/math/vectors/RenderingVector3d.h>
 #include <source/math/vectors/Vector3.h>
-#include "QuitFunctions.h"
 using namespace hesp;
 
 //#################### ENUMERATIONS ####################
@@ -25,6 +24,18 @@ enum GeomType
 };
 
 //#################### FUNCTIONS ####################
+void quit_with_error(const std::string& error)
+{
+	std::cout << "Error: " << error << std::endl;
+	exit(EXIT_FAILURE);
+}
+
+void quit_with_usage()
+{
+	std::cout << "Usage: hbsp {-r|-c} <input filename> <output filename> [-w<number>]" << std::endl;
+	exit(EXIT_FAILURE);
+}
+
 template <typename Vert, typename AuxData>
 void run_compiler(const std::string& inputFilename, const std::string& outputFilename, const double weight)
 {
