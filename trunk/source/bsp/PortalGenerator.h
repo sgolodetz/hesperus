@@ -6,6 +6,7 @@
 #ifndef H_HESP_BSP_PORTALGENERATOR
 #define H_HESP_BSP_PORTALGENERATOR
 
+#include <cmath>
 #include <list>
 
 #include <source/math/geom/Polygon.h>
@@ -20,16 +21,26 @@ class PortalGenerator
 private:
 	struct PlaneRepPred
 	{
-		double m_angleTolerance, m_distTolerance;
+		double m_cosAngleTolerance, m_distTolerance;
 
 		PlaneRepPred(double angleTolerance, double distTolerance)
-		:	m_angleTolerance(angleTolerance), m_distTolerance(distTolerance)
+		:	m_cosAngleTolerance(cos(angleTolerance)), m_distTolerance(distTolerance)
 		{}
 
 		int operator()(const Plane& lhs, const Plane& rhs) const
 		{
-			// NYI
-			throw 23;
+			// Note:	This is based closely on a function on p.229 of Graphics Gems III
+			//			in the article "Grouping Nearly Coplanar Polygons".
+			double cosAngle = lhs.normal().dot(rhs.normal());
+			if(cosAngle < -m_cosAngleTolerance) return -1;
+			else if(cosAngle > m_cosAngleTolerance) return 1;
+			else
+			{
+				double dist = lhs.distance_value() - rhs.distance_value();
+				if(dist < -m_distTolerance) return -1;
+				else if(dist > m_distTolerance) return 1;
+				else return 0;
+			}
 		}
 	};
 
