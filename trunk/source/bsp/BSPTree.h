@@ -23,7 +23,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void output_postorder_text(std::ostream& os) const;
-	BSPNode_CPtr root() const;
+	BSPNode_Ptr root() const;
 };
 
 //#################### TYPEDEFS ####################

@@ -10,13 +10,23 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 template <typename Vert, typename AuxData>
-typename PortalGenerator::PortalVector_Ptr
+typename PortalGenerator::PortalList_Ptr
 PortalGenerator::generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
 {
+	PortalList_Ptr portals(new PortalList);
 	PlaneList_Ptr planes = find_unique_planes(polygons);
 
+	for(PlaneList::const_iterator it=planes->begin(), iend=planes->end(); it!=iend; ++it)
+	{
+		Portal_Ptr portal = make_initial_portal(*it);
+		portals->splice(portals->end(), clip_portal_to_tree(portal, tree));
+	}
+
+	// Generate the opposite-facing portals.
 	// NYI
 	throw 23;
+
+	return portals;
 }
 
 //#################### PRIVATE METHODS ####################

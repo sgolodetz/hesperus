@@ -14,6 +14,18 @@ namespace hesp {
 
 //#################### PRIVATE METHODS ####################
 /**
+Clips the portal to the tree and returns a list of portal fragments which survive the clipping process.
+
+@param portal	The portal to clip
+@param tree		The tree to which to clip it
+@return			The list of portal fragments which survived the clipping process
+*/
+std::list<Portal_Ptr> PortalGenerator::clip_portal_to_tree(const Portal_Ptr& portal, const BSPTree_Ptr& tree)
+{
+	return clip_portal_to_subtree(portal, tree->root()).first;
+}
+
+/**
 Clips the portal to the subtree and returns a list of portal fragments which survive the clipping process.
 
 @param portal				The portal to clip

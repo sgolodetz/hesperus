@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	std::vector<Poly_Ptr> polygons;
 	load_polygons(std::cin, polygons, 1);
 
-	shared_ptr<std::vector<Portal_Ptr> > portals = PortalGenerator::generate_portals(BSPTree_Ptr(), polygons);
+	shared_ptr<std::list<Portal_Ptr> > portals = PortalGenerator::generate_portals(BSPTree_Ptr(), polygons);
 
 	return 0;
 }

@@ -37,17 +37,19 @@ private:
 private:
 	typedef std::list<Plane> PlaneList;
 	typedef shared_ptr<PlaneList> PlaneList_Ptr;
-	typedef std::vector<Portal_Ptr> PortalVector;
-	typedef shared_ptr<PortalVector> PortalVector_Ptr;
+	typedef std::list<Portal_Ptr> PortalList;
+	typedef shared_ptr<PortalList> PortalList_Ptr;
 
 	//#################### PUBLIC METHODS ####################
 public:
 	template <typename Vert, typename AuxData>
-	static PortalVector_Ptr generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
+	static PortalList_Ptr generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
 
 	//#################### PRIVATE METHODS ####################
 private:
 	static std::pair<std::list<Portal_Ptr>,bool> clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE);
+
+	static std::list<Portal_Ptr> clip_portal_to_tree(const Portal_Ptr& portal, const BSPTree_Ptr& tree);
 
 	template <typename Vert, typename AuxData>
 	static PlaneList_Ptr find_unique_planes(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);

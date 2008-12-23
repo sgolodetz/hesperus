@@ -21,7 +21,7 @@ void BSPTree::output_postorder_text(std::ostream& os) const
 	root()->output_postorder_text(os);
 }
 
-BSPNode_CPtr BSPTree::root() const
+BSPNode_Ptr BSPTree::root() const
 {
 	return m_nodes.back();
 }
