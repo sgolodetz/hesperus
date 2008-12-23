@@ -10,6 +10,10 @@
 
 namespace hesp {
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<class BSPTree> BSPTree_Ptr;
+typedef shared_ptr<const class BSPTree> BSPTree_CPtr;
+
 class BSPTree
 {
 	//#################### PRIVATE VARIABLES ####################
@@ -22,13 +26,10 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	static BSPTree_Ptr load_postorder_text(std::istream& is);
 	void output_postorder_text(std::ostream& os) const;
 	BSPNode_Ptr root() const;
 };
-
-//#################### TYPEDEFS ####################
-typedef shared_ptr<BSPTree> BSPTree_Ptr;
-typedef shared_ptr<const BSPTree> BSPTree_CPtr;
 
 }
 

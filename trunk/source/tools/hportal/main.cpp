@@ -66,12 +66,13 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	std::getline(is, line);
 	if(line != "***") throw Exception("Bad separator between the polygons and BSP sections");
 
-	// NYI
-	return;
-
 	// Read the BSP tree.
 	BSPTree_Ptr tree;
-	// TODO
+	try
+	{
+		tree = BSPTree::load_postorder_text(is);
+	}
+	catch(Exception& e) { quit_with_error(e.cause()); }
 
 	// Generate the portals.
 	shared_ptr<std::list<Portal_Ptr> > portals = PortalGenerator::generate_portals(polygons, tree);
