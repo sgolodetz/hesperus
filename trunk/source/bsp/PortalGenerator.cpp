@@ -144,8 +144,7 @@ span the entire level space.
 */
 Portal_Ptr PortalGenerator::make_initial_portal(const Plane& plane)
 {
-	// NYI
-	throw 23;
+	return make_universe_polygon<LeafLink>(plane);
 }
 
 }

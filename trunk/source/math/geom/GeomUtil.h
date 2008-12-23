@@ -38,13 +38,22 @@ std::pair<Vec,double> determine_line_intersection_with_plane(const Vec& s, const
 template <typename Vec>
 std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1, const Vec& p2, const Plane& plane);
 
+double displacement_from_plane(const Vector3d& p, const Plane& plane);
+
 double distance_to_plane(const Vector3d& p, const Plane& plane);
+
+Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane);
 
 template <typename Vert, typename AuxData>
 void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
 
 template <typename Vert, typename AuxData>
 Plane make_plane(const Polygon<Vert,AuxData>& poly);
+
+template <typename AuxData>
+shared_ptr<Polygon<Vector3d,AuxData> > make_universe_polygon(const Plane& plane, const AuxData& auxData = AuxData());
+
+Vector3d nearest_point_in_plane(const Vector3d& p, const Plane& plane);
 
 template <typename Vert, typename AuxData>
 SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, const Plane& plane);

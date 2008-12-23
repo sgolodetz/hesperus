@@ -220,6 +220,42 @@ Plane make_plane(const Polygon<Vert,AuxData>& poly)
 }
 
 /**
+Returns a polygon on the specified plane which is large enough to
+span the entire level space.
+
+@param plane	The plane for which we want to make a universe polygon
+@return			A polygon poly s.t. classify_polygon_against_plane(poly, plane) == CP_COPLANAR
+				and the angle between the polygon and plane normals is less than EPSILON and
+				poly is large enough to span the entire level space
+*/
+template <typename AuxData>
+shared_ptr<Polygon<Vector3d,AuxData> > make_universe_polygon(const Plane& plane, const AuxData& auxData)
+{
+	typedef Polygon<Vector3d,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
+
+	Vector3d origin(0,0,0);
+	Vector3d centre = nearest_point_in_plane(origin, plane);
+
+	Vector3d planarVecs[2];
+	planarVecs[0] = generate_arbitrary_coplanar_unit_vector(plane);
+	planarVecs[1] = planarVecs[0].cross(plane.normal());
+	planarVecs[1].normalize();
+
+	const double HALFSIDELENGTH = 1000000;	// something arbitrarily huge (but not too big, to avoid floating-point issues)
+	for(int i=0; i<2; ++i) planarVecs[i] *= HALFSIDELENGTH;
+
+	std::vector<Vector3d> vertices;
+	for(int i=0; i<4; ++i) vertices.push_back(centre);
+	vertices[0] -= planarVecs[0];	vertices[0] -= planarVecs[1];
+	vertices[1] -= planarVecs[0];	vertices[1] += planarVecs[1];
+	vertices[2] += planarVecs[0];	vertices[2] += planarVecs[1];
+	vertices[3] += planarVecs[0];	vertices[3] -= planarVecs[1];
+
+	return Poly_Ptr(new Poly(vertices, auxData));
+}
+
+/**
 Splits the polygon across the specified plane.
 
 @param poly							The polygon to split across the plane

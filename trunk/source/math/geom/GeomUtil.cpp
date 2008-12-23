@@ -28,6 +28,22 @@ PlaneClassifier classify_point_against_plane(const Vector3d& p, const Plane& pla
 }
 
 /**
+Calculates the perpendicular displacement of the point p from the plane.
+
+@param p		The point whose perpendicular displacement from the plane we wish to determine
+@param plane	The plane
+@return			The perpendicular displacement of p from the plane
+*/
+double displacement_from_plane(const Vector3d& p, const Plane& plane)
+{
+	const Vector3d& n = plane.normal();
+	double d = plane.distance_value();
+
+	// Note that this equation is valid precisely because the plane normal is guaranteed to be unit length.
+	return n.dot(p) - d;
+}
+
+/**
 Calculates the perpendicular distance between the point p and the plane.
 
 @param p		The point whose perpendicular distance from the plane we wish to determine
@@ -36,11 +52,57 @@ Calculates the perpendicular distance between the point p and the plane.
 */
 double distance_to_plane(const Vector3d& p, const Plane& plane)
 {
-	const Vector3d& n = plane.normal();
-	double d = plane.distance_value();
+	return fabs(displacement_from_plane(p, plane));
+}
 
-	// Note that this equation is valid precisely because the plane normal is guaranteed to be unit length.
-	return fabs(n.dot(p) - d);
+/**
+Returns an arbitrary unit vector perpendicular to the specified plane's normal.
+
+@param plane	The plane to which our arbitrary unit vector is to be coplanar
+@return			An arbitrary unit vector v such that v.dot(plane.normal()) == 0
+*/
+Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane)
+{
+	const Vector3d& n = plane.normal();
+	Vector3d up(0,0,1);
+	if(fabs(n.x) < EPSILON && fabs(n.y) < EPSILON)
+	{
+		// Special Case: n is too close to the vertical and hence n x up is roughly equal to (0,0,0)
+
+		// Use a different vector instead of up (any different vector will do) and apply the same
+		// method as in the else clause using the new vector.
+		return n.cross(Vector3d(1,0,0)).normalize();
+	}
+	else
+	{
+		// The normalized cross product of n and up satisfies the requirements of being
+		// unit length and perpendicular to n (since we dealt with the special case where
+		// n x up is zero, in all other cases it must be non-zero and we can normalize it
+		// to give us a unit vector)
+		return n.cross(up).normalize();
+	}
+}
+
+/**
+Returns the point in the specified plane which is nearest to the specified point.
+
+@param p		The point whose nearest point in the plane we want to find
+@param plane	The plane
+@return			A point r s.t. classify_point_against_plane(r, plane) == CP_COPLANAR and there
+				is no point r' s.t. classify_point_against_plane(r', plane) == CP_COPLANAR &&
+				p.distance(r') < p.distance(r)
+*/
+Vector3d nearest_point_in_plane(const Vector3d& p, const Plane& plane)
+{
+	/*
+	Derivation of the algorithm:
+
+	The nearest point in the plane is the point we get if we head from p towards the plane
+	along the normal.
+	*/
+
+	double displacement = displacement_from_plane(p, plane);
+	return p - displacement * plane.normal();
 }
 
 //################## HELPER METHODS FOR THE split_polygon FUNCTION ##################
