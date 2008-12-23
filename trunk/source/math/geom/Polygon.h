@@ -24,6 +24,12 @@ the texture itself.
 template <typename Vert, typename AuxData>
 class Polygon
 {
+	//#################### TYPEDEFS ####################
+public:
+	// Expose the template arguments so that they can easily be used by client code.
+	typedef Vert Vert;
+	typedef AuxData AuxData;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<Vert> m_vertices;

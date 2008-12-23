@@ -447,6 +447,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\bsp\Portal.h"
+					>
+				</File>
+				<File
 					RelativePath="..\bsp\PortalGenerator.h"
 					>
 				</File>

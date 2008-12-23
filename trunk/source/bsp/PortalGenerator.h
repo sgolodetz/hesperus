@@ -10,18 +10,9 @@
 
 #include <source/math/geom/Polygon.h>
 #include "BSPTree.h"
+#include "Portal.h"
 
 namespace hesp {
-
-struct LeafLink
-{
-	int fromLeaf;
-	int toLeaf;
-};
-
-//#################### TYPEDEFS ####################
-typedef Polygon<Vector3d,LeafLink> Portal;
-typedef shared_ptr<Portal> Portal_Ptr;
 
 class PortalGenerator
 {

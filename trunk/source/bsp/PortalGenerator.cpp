@@ -23,8 +23,6 @@ Clips the portal to the subtree and returns a list of portal fragments which sur
 */
 std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal)
 {
-	std::list<Portal_Ptr> ret;
-
 	if(subtreeRoot->is_leaf())
 	{
 		const BSPLeaf *leaf = subtreeRoot->as_leaf();
@@ -45,7 +43,9 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 				throw Exception("The portal fragment has somehow ended up in a leaf which is straddling it: oops!");
 			}
 		}
+		std::list<Portal_Ptr> ret;
 		ret.push_back(portal);
+		return ret;
 	}
 	else
 	{
@@ -58,8 +58,25 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 			}
 			case CP_COPLANAR:
 			{
-				// TODO
-				break;
+				BSPNode_Ptr fromSubtree;
+				BSPNode_Ptr toSubtree;
+				if(branch->splitter()->normal().dot(portal->normal()) > 0)
+				{
+					fromSubtree = branch->right();
+					toSubtree = branch->left();
+				}
+				else
+				{
+					fromSubtree = branch->left();
+					toSubtree = branch->right();
+				}
+				std::list<Portal_Ptr> fromPortals = clip_portal_to_subtree(portal, fromSubtree, CP_BACK);
+				std::list<Portal_Ptr> ret;
+				for(std::list<Portal_Ptr>::const_iterator it=fromPortals.begin(), iend=fromPortals.end(); it!=iend; ++it)
+				{
+					ret.splice(ret.end(), clip_portal_to_subtree(*it, toSubtree, CP_FRONT));
+				}
+				return ret;
 			}
 			case CP_FRONT:
 			{
@@ -67,13 +84,18 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 			}
 			case CP_STRADDLE:
 			{
-				// TODO
-				break;
+				// Note: The leaf links for the two half polygons are inherited from the original polygon here.
+				SplitResults<Portal::Vert,Portal::AuxData> sr = split_polygon(*portal, *branch->splitter());
+				std::list<Portal_Ptr> ret = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
+				ret.splice(ret.end(), clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal));
+				return ret;
 			}
 		}
 	}
 
-	return ret;
+	// The code will never actually get here, because the switch above is exhaustive,
+	// but the compiler still warns us because it can't tell that.
+	throw Exception("This should never happen");
 }
 
 }
