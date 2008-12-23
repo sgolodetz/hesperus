@@ -239,8 +239,7 @@ shared_ptr<Polygon<Vector3d,AuxData> > make_universe_polygon(const Plane& plane,
 
 	Vector3d planarVecs[2];
 	planarVecs[0] = generate_arbitrary_coplanar_unit_vector(plane);
-	planarVecs[1] = planarVecs[0].cross(plane.normal());
-	planarVecs[1].normalize();
+	planarVecs[1] = planarVecs[0].cross(plane.normal()).normalize();
 
 	const double HALFSIDELENGTH = 1000000;	// something arbitrarily huge (but not too big, to avoid floating-point issues)
 	for(int i=0; i<2; ++i) planarVecs[i] *= HALFSIDELENGTH;

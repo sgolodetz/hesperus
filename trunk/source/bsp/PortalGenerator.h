@@ -16,15 +16,25 @@ namespace hesp {
 
 class PortalGenerator
 {
+	//#################### TYPEDEFS ####################
+private:
+	typedef std::list<Plane> PlaneList;
+	typedef shared_ptr<PlaneList> PlaneList_Ptr;
+	typedef std::vector<Portal_Ptr> PortalVector;
+	typedef shared_ptr<PortalVector> PortalVector_Ptr;
+
 	//#################### PUBLIC METHODS ####################
 public:
 	template <typename Vert, typename AuxData>
-	static std::vector<Portal_Ptr> generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
+	static PortalVector_Ptr generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
 
 	//#################### PRIVATE METHODS ####################
 private:
 	static std::pair<std::list<Portal_Ptr>,bool> clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE);
-	// TODO: std::set<Plane> find_unique_planes(polygons)
+
+	template <typename Vert, typename AuxData>
+	static PlaneList_Ptr find_unique_planes(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
+
 	static Portal_Ptr make_initial_portal(const Plane& plane);
 };
 
