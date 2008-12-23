@@ -40,6 +40,20 @@ const AuxData& Polygon_THIS::auxiliary_data() const
 }
 
 /**
+Returns a copy of this polygon with flipped winding order.
+
+@return	As stated
+*/
+Polygon_HEADER
+shared_ptr<Polygon_THIS> Polygon_THIS::flipped_winding() const
+{
+	std::vector<Vert> flippedVertices;
+	flippedVertices.reserve(m_vertices.size());
+	std::copy(m_vertices.rbegin(), m_vertices.rend(), std::back_inserter(flippedVertices));
+	return Polygon(flippedVertices, m_auxData);
+}
+
+/**
 Returns the polygon normal.
 
 @return	As stated

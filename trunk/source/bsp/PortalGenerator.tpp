@@ -28,7 +28,7 @@ PortalGenerator::generate_portals(const BSPTree_Ptr& tree, const std::vector<sha
 		Portal_Ptr portal = *it;
 
 		// Construct the reverse portal.
-		Portal_Ptr reversePortal(portal->flip_winding());
+		Portal_Ptr reversePortal(portal->flipped_winding());
 		const LeafLink& leafLink = portal->auxiliary_data();
 		reversePortal->auxiliary_data() = LeafLink(leafLink.toLeaf, leafLink.fromLeaf);
 
