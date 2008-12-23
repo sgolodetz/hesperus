@@ -40,6 +40,9 @@ std::pair<std::list<Portal_Ptr>,bool> PortalGenerator::clip_portal_to_subtree(co
 	if(subtreeRoot->is_leaf())
 	{
 		const BSPLeaf *leaf = subtreeRoot->as_leaf();
+
+		if(leaf->is_solid()) return std::make_pair(std::list<Portal_Ptr>(), false);
+
 		switch(relativeToPortal)
 		{
 			case CP_BACK:
@@ -54,7 +57,9 @@ std::pair<std::list<Portal_Ptr>,bool> PortalGenerator::clip_portal_to_subtree(co
 			}
 			default:	// CP_STRADDLE (note that CP_COPLANAR is not possible here)
 			{
-				throw Exception("The portal fragment has somehow ended up in a leaf which is straddling it: oops!");
+				// The portal fragment is in the middle of a leaf (this is not an error, but we do need to
+				// discard the portal fragment as we'd otherwise have a portal linking a leaf to itself).
+				return std::make_pair(std::list<Portal_Ptr>(), false);
 			}
 		}
 		std::list<Portal_Ptr> ret;
