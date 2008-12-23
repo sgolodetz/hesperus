@@ -18,6 +18,11 @@ struct LeafLink
 	int toLeaf;
 
 	LeafLink() : fromLeaf(-1), toLeaf(-1) {}
+
+	bool operator==(const LeafLink& rhs) const
+	{
+		return fromLeaf == rhs.fromLeaf && toLeaf == rhs.toLeaf;
+	}
 };
 
 //#################### TYPEDEFS ####################

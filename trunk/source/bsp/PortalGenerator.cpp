@@ -19,9 +19,11 @@ Clips the portal to the subtree and returns a list of portal fragments which sur
 @param portal				The portal to clip
 @param subtreeRoot			The root of the subtree
 @param relativeToPortal		The location of the subspace represented by the subtree relative to the portal (in front, behind, or straddling it)
-@return						The list of portal fragments mentioned above
+@return						A pair, the first component of which is the list of portal fragments mentioned above,
+							and the second of which is a boolean indicating whether the entirety of the initial
+							portal survived the clipping process
 */
-std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal)
+std::pair<std::list<Portal_Ptr>,bool> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal)
 {
 	if(subtreeRoot->is_leaf())
 	{
@@ -45,7 +47,7 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 		}
 		std::list<Portal_Ptr> ret;
 		ret.push_back(portal);
-		return ret;
+		return std::make_pair(ret, true);
 	}
 	else
 	{
@@ -70,13 +72,24 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 					fromSubtree = branch->left();
 					toSubtree = branch->right();
 				}
-				std::list<Portal_Ptr> fromPortals = clip_portal_to_subtree(portal, fromSubtree, CP_BACK);
-				std::list<Portal_Ptr> ret;
-				for(std::list<Portal_Ptr>::const_iterator it=fromPortals.begin(), iend=fromPortals.end(); it!=iend; ++it)
+				std::pair<std::list<Portal_Ptr>,bool> fromResult = clip_portal_to_subtree(portal, fromSubtree, CP_BACK);
+				std::list<Portal_Ptr>& fromPortals = fromResult.first;
+				if(fromResult.second)
 				{
-					ret.splice(ret.end(), clip_portal_to_subtree(*it, toSubtree, CP_FRONT));
+					// The entire portal survived whilst traversing the from subtree.
+					return clip_portal_to_subtree(portal, toSubtree, CP_FRONT);
 				}
-				return ret;
+				else
+				{
+					// The portal was clipped whilst traversing the from subtree, so all fragments need to be
+					// clipped down the to subtree.
+					std::list<Portal_Ptr> ret;
+					for(std::list<Portal_Ptr>::const_iterator it=fromPortals.begin(), iend=fromPortals.end(); it!=iend; ++it)
+					{
+						ret.splice(ret.end(), clip_portal_to_subtree(*it, toSubtree, CP_FRONT).first);
+					}
+					return std::make_pair(ret, false);
+				}
 			}
 			case CP_FRONT:
 			{
@@ -85,10 +98,34 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 			case CP_STRADDLE:
 			{
 				// Note: The leaf links for the two half polygons are inherited from the original polygon here.
-				SplitResults<Portal::Vert,Portal::AuxData> sr = split_polygon(*portal, *branch->splitter());
-				std::list<Portal_Ptr> ret = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
-				ret.splice(ret.end(), clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal));
-				return ret;
+				SplitResults<Vector3d,LeafLink> sr = split_polygon(*portal, *branch->splitter());
+				std::pair<std::list<Portal_Ptr>,bool> frontResult = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
+				std::pair<std::list<Portal_Ptr>,bool> backResult = clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal);
+
+				std::list<Portal_Ptr> ret;
+
+				// If both halves of the portal survived, then the original portal can be preserved
+				// (with its leaf link suitably updated, of course).
+				if(frontResult.second && backResult.second)
+				{
+					Portal_Ptr frontPortal = frontResult.first.front();
+					Portal_Ptr backPortal = backResult.first.front();
+
+					// Make sure that the two halves of the portal link the same leaves.
+					if(frontPortal->auxiliary_data() == backPortal->auxiliary_data())
+					{
+						// Copy the leaf link across to the original portal and return that
+						// in place of the two halves.
+						portal->auxiliary_data() = frontPortal->auxiliary_data();
+						ret.push_back(portal);
+						return std::make_pair(ret, true);
+					}
+				}
+
+				// If we get here, one or both halves of the portal must have been clipped.
+				ret.splice(ret.end(), frontResult.first);
+				ret.splice(ret.end(), backResult.first);
+				return std::make_pair(ret, false);
 			}
 		}
 	}
@@ -96,6 +133,19 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 	// The code will never actually get here, because the switch above is exhaustive,
 	// but the compiler still warns us because it can't tell that.
 	throw Exception("This should never happen");
+}
+
+/**
+Makes an initial portal on a given plane. This portal should be large enough to
+span the entire level space.
+
+@param plane	The plane on which to build the initial portal
+@retun			As stated
+*/
+Portal_Ptr PortalGenerator::make_initial_portal(const Plane& plane)
+{
+	// NYI
+	throw 23;
 }
 
 }

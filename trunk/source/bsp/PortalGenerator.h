@@ -23,7 +23,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static std::list<Portal_Ptr> clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE);
+	static std::pair<std::list<Portal_Ptr>,bool> clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE);
 	// TODO: std::set<Plane> find_unique_planes(polygons)
 	static Portal_Ptr make_initial_portal(const Plane& plane);
 };
