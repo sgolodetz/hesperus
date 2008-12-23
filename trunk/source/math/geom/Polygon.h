@@ -44,6 +44,7 @@ public:
 public:
 	AuxData& auxiliary_data();
 	const AuxData& auxiliary_data() const;
+	shared_ptr<Polygon> flip_winding() const;
 	const Vector3d& normal() const;
 	const Vert& vertex(int i) const;
 	int vertex_count() const;

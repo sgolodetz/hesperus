@@ -23,8 +23,19 @@ PortalGenerator::generate_portals(const BSPTree_Ptr& tree, const std::vector<sha
 	}
 
 	// Generate the opposite-facing portals.
-	// NYI
-	throw 23;
+	for(PortalList::iterator it=portals->begin(), iend=portals.end(); it!=iend; ++it)
+	{
+		Portal_Ptr portal = *it;
+
+		// Construct the reverse portal.
+		Portal_Ptr reversePortal(portal->flip_winding());
+		const LeafLink& leafLink = portal->auxiliary_data();
+		reversePortal->auxiliary_data() = LeafLink(leafLink.toLeaf, leafLink.fromLeaf);
+
+		// Insert it after the existing portal in the list.
+		++it;
+		it = portals->insert(it, reversePortal);
+	}
 
 	return portals;
 }
