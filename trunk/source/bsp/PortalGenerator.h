@@ -16,6 +16,23 @@ namespace hesp {
 
 class PortalGenerator
 {
+	//#################### NESTED CLASSES ####################
+private:
+	struct PlaneRepPred
+	{
+		double m_angleTolerance, m_distTolerance;
+
+		PlaneRepPred(double angleTolerance, double distTolerance)
+		:	m_angleTolerance(angleTolerance), m_distTolerance(distTolerance)
+		{}
+
+		int operator()(const Plane& lhs, const Plane& rhs) const
+		{
+			// NYI
+			throw 23;
+		}
+	};
+
 	//#################### TYPEDEFS ####################
 private:
 	typedef std::list<Plane> PlaneList;

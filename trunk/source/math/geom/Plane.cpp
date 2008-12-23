@@ -60,6 +60,17 @@ const Vector3d& Plane::normal() const
 	return m_n;
 }
 
+/**
+Returns a version of the plane ax + by + cz - d = 0 such that the first
+one of a, b, c or d to be non-zero is positive. For example, this would
+return 0x+1y-1z-23=0 for both 0x+1y-1z-23=0 and 0x-1y+1z+23=0.
+*/
+Plane Plane::to_undirected_form() const
+{
+	// NYI
+	throw 23;
+}
+
 //#################### PRIVATE METHODS ####################
 void Plane::ensure_invariant()
 {

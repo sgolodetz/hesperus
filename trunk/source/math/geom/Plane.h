@@ -45,6 +45,7 @@ public:
 public:
 	double distance_value() const;
 	const Vector3d& normal() const;
+	Plane to_undirected_form() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

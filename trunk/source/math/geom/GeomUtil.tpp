@@ -155,8 +155,6 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 	int n = 1;
 	while(std::getline(is, line))
 	{
-		if(n > maxToRead) break;
-
 		boost::trim(line);
 		if(line != "")
 		{
@@ -204,6 +202,7 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 		}
 
 		++n;
+		if(n > maxToRead) break;
 	}
 }
 

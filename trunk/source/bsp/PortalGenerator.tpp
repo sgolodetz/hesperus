@@ -3,12 +3,21 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
+#include <source/datastructures/RepresentativeTree.h>
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
-// TODO
+template <typename Vert, typename AuxData>
+typename PortalGenerator::PortalVector_Ptr
+PortalGenerator::generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
+{
+	PlaneList_Ptr planes = find_unique_planes(polygons);
+
+	// NYI
+	throw 23;
+}
 
 //#################### PRIVATE METHODS ####################
 /**
@@ -27,25 +36,17 @@ PortalGenerator::find_unique_planes(const std::vector<shared_ptr<Polygon<Vert,Au
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
-	PlaneList_Ptr initialPlanes;
+	const double angleTolerance = 0.5 * PI / 180;	// convert 0.5 degrees to radians
+	const double distTolerance = 0.001;
+	RepresentativeTree<Plane, PlaneRepPred> repTree(PlaneRepPred(angleTolerance, distTolerance));
 
 	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
 	{
-		Plane plane = make_plane(*it);
-
-		const Vector3d& n = plane.normal();
-		double d = plane.distance_value();
-
-		// Standardize the plane representation so that there is a 1-1 mapping
-		// between a unique plane and its representation. Thus, for example,
-		// the plane (-1,0,0) . p = -1, or -x = -1, will be converted to being
-		// (1,0,0) . p = 1, or x = 1. The planes are the same; what we are
-		// discarding is the extra information we have about the plane normal.
-		// TODO
+		Plane plane = make_plane(**it).to_undirected_form();
+		repTree.insert(plane);
 	}
 
-	// NYI
-	throw 23;
+	return repTree.representatives();
 }
 
 }
