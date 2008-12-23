@@ -468,6 +468,18 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="datastructures"
+			>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\datastructures\RepresentativeTree.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
