@@ -30,6 +30,8 @@ public:
 	typedef Vert Vert;
 	typedef AuxData AuxData;
 
+	typedef shared_ptr<Polygon> Polygon_Ptr;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<Vert> m_vertices;
@@ -44,7 +46,7 @@ public:
 public:
 	AuxData& auxiliary_data();
 	const AuxData& auxiliary_data() const;
-	shared_ptr<Polygon> flipped_winding() const;
+	Polygon_Ptr flipped_winding() const;
 	const Vector3d& normal() const;
 	const Vert& vertex(int i) const;
 	int vertex_count() const;

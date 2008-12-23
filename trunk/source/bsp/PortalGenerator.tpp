@@ -11,7 +11,7 @@ namespace hesp {
 //#################### PUBLIC METHODS ####################
 template <typename Vert, typename AuxData>
 typename PortalGenerator::PortalList_Ptr
-PortalGenerator::generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
+PortalGenerator::generate_portals(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const BSPTree_Ptr& tree)
 {
 	PortalList_Ptr portals(new PortalList);
 	PlaneList_Ptr planes = find_unique_planes(polygons);
@@ -23,7 +23,7 @@ PortalGenerator::generate_portals(const BSPTree_Ptr& tree, const std::vector<sha
 	}
 
 	// Generate the opposite-facing portals.
-	for(PortalList::iterator it=portals->begin(), iend=portals.end(); it!=iend; ++it)
+	for(PortalList::iterator it=portals->begin(), iend=portals->end(); it!=iend; ++it)
 	{
 		Portal_Ptr portal = *it;
 

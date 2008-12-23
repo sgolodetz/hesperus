@@ -54,7 +54,7 @@ private:
 	//#################### PUBLIC METHODS ####################
 public:
 	template <typename Vert, typename AuxData>
-	static PortalList_Ptr generate_portals(const BSPTree_Ptr& tree, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
+	static PortalList_Ptr generate_portals(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const BSPTree_Ptr& tree);
 
 	//#################### PRIVATE METHODS ####################
 private:
