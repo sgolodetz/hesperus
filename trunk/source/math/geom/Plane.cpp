@@ -97,6 +97,14 @@ void Plane::ensure_invariant()
 }
 
 //#################### GLOBAL OPERATORS ####################
+std::ostream& operator<<(std::ostream& os, const Plane& plane)
+{
+	const Vector3d& n = plane.normal();
+	double d = plane.distance_value();
+	os << "( " << n.x << ' ' << n.y << ' ' << n.z << ' ' << d << " )";
+	return os;
+}
+
 std::ostream& operator<<(std::ostream& os, PlaneClassifier rhs)
 {
 	switch(rhs)

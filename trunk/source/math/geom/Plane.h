@@ -57,6 +57,7 @@ typedef shared_ptr<Plane> Plane_Ptr;
 typedef shared_ptr<const Plane> Plane_CPtr;
 
 //#################### GLOBAL OPERATORS ####################
+std::ostream& operator<<(std::ostream& os, const Plane& plane);
 std::ostream& operator<<(std::ostream& os, PlaneClassifier rhs);
 
 }

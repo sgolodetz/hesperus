@@ -18,22 +18,22 @@ namespace hesp {
 class PortalGenerator
 {
 	//#################### NESTED CLASSES ####################
-private:
+public:
 	struct PlaneRepPred
 	{
-		double m_cosAngleTolerance, m_distTolerance;
+		double m_angleTolerance, m_distTolerance;
 
 		PlaneRepPred(double angleTolerance, double distTolerance)
-		:	m_cosAngleTolerance(cos(angleTolerance)), m_distTolerance(distTolerance)
+		:	m_angleTolerance(angleTolerance), m_distTolerance(distTolerance)
 		{}
 
 		int operator()(const Plane& lhs, const Plane& rhs) const
 		{
 			// Note:	This is based closely on a function on p.229 of Graphics Gems III
 			//			in the article "Grouping Nearly Coplanar Polygons".
-			double cosAngle = lhs.normal().dot(rhs.normal());
-			if(cosAngle < -m_cosAngleTolerance) return -1;
-			else if(cosAngle > m_cosAngleTolerance) return 1;
+			double angle = acos(lhs.normal().dot(rhs.normal()));
+			if(angle < -m_angleTolerance) return -1;
+			else if(angle > m_angleTolerance) return 1;
 			else
 			{
 				double dist = lhs.distance_value() - rhs.distance_value();
