@@ -7,6 +7,7 @@
 #define H_HESP_BSP_PORTAL
 
 #include <ostream>
+#include <sstream>
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
@@ -33,6 +34,7 @@ struct LeafLink
 
 //#################### GLOBAL OPERATORS ####################
 std::ostream& operator<<(std::ostream& os, const LeafLink& rhs);
+std::istream& operator>>(std::istream& is, LeafLink& rhs);
 
 //#################### TYPEDEFS ####################
 typedef Polygon<Vector3d,LeafLink> Portal;

@@ -167,16 +167,16 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 			catch(bad_lexical_cast&)	{ throw Exception("Bad vertex count on line " + lexical_cast<std::string,int>(n)); }
 
 			// Read the auxiliary data.
-			std::string::size_type R = line.find_last_of(") ");
-			if(R == std::string::npos || R+1 >= line.length()) throw Exception("Bad input on line " + lexical_cast<std::string,int>(n));
-			std::string auxDataString = line.substr(R+1);
+			std::string::size_type R = line.find_last_of(')');
+			if(R == std::string::npos || R+2 >= line.length()) throw Exception("Bad input on line " + lexical_cast<std::string,int>(n));
+			std::string auxDataString = line.substr(R+2);
 			boost::trim(auxDataString);
 			AuxData auxData;
 			try							{ auxData = lexical_cast<AuxData,std::string>(auxDataString); }
 			catch(bad_lexical_cast&)	{ throw Exception("Bad auxiliary data on line " + lexical_cast<std::string,int>(n)); }
 
 			// Read the vertices.
-			std::string verticesString = line.substr(L+1, R-L-1);
+			std::string verticesString = line.substr(L+1, R-L);
 			std::vector<Vert> vertices;
 
 			typedef boost::char_separator<char> sep;

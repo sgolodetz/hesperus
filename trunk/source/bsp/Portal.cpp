@@ -14,4 +14,16 @@ std::ostream& operator<<(std::ostream& os, const LeafLink& rhs)
 	return os;
 }
 
+std::istream& operator>>(std::istream& is, LeafLink& rhs)
+{
+	is.get();
+	is.get();
+	is >> rhs.fromLeaf;
+	is.get();
+	is >> rhs.toLeaf;
+	is.get();
+	is.get();
+	return is;
+}
+
 }

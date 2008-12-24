@@ -108,6 +108,11 @@ table. This helps avoid a lot of unnecessary clipping later on.
 */
 void VisCalculator::initial_portal_vis()
 {
+	int portalCount = static_cast<int>(m_portals.size());
+	m_portalVis = PortalVisTable_Ptr(new PortalVisTable(portalCount, VS_INITIALMAYBE));
+
+	// TODO
+
 	// NYI
 	throw 23;
 }

@@ -49,6 +49,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	PolyVector polygons;
 	try					{ load_polygons(is, polygons); }
 	catch(Exception& e)	{ quit_with_error(e.cause()); }
+	is.close();
 
 	// Build the BSP tree.
 	BSPTree_Ptr tree = BSPCompiler::build_tree(polygons, weight);
