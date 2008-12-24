@@ -33,6 +33,7 @@ public:
 private:
 	typedef VisTable<PortalVisState> PortalVisTable;
 	typedef shared_ptr<PortalVisTable> PortalVisTable_Ptr;
+public:
 	typedef VisTable<bool> LeafVisTable;
 	typedef shared_ptr<LeafVisTable> LeafVisTable_Ptr;
 

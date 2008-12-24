@@ -48,6 +48,11 @@ void run_calculator(const std::string& inputFilename, const std::string& outputF
 
 	is.close();
 
+	// Run the visibility calculator.
+	VisCalculator visCalc(portals);
+	VisCalculator::LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
+
+	// Write the leaf visibility table to the output file.
 	// TODO
 }
 

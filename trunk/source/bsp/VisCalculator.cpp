@@ -7,6 +7,11 @@
 
 namespace hesp {
 
+//#################### CONSTRUCTORS ####################
+VisCalculator::VisCalculator(const std::vector<Portal_Ptr>& portals)
+:	m_portals(portals)
+{}
+
 //#################### PUBLIC METHODS ####################
 /**
 Calculates the full leaf visibility table, which indicates which BSP leaves

@@ -188,10 +188,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name=".h"
-			>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
