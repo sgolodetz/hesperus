@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="hpvs"
-	ProjectGUID="{EA709B3B-5EFF-4C8B-A85D-507B99A13EC2}"
-	RootNamespace="hpvs"
+	Name="hvis"
+	ProjectGUID="{B37E1EBE-A89D-4500-A893-19D44E61575F}"
+	RootNamespace="hvis"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="..\..\..\bin\tools"
-			IntermediateDirectory="..\..\..\obj\tools\hpvs\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\obj\tools\hvis\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -94,7 +94,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="..\..\..\bin\tools"
-			IntermediateDirectory="..\..\..\obj\tools\hpvs\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\obj\tools\hvis\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
