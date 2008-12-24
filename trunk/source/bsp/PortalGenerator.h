@@ -19,28 +19,32 @@ class PortalGenerator
 {
 	//#################### NESTED CLASSES ####################
 public:
-	struct PlaneRepPred
+	struct PlanePred
 	{
 		double m_angleTolerance, m_distTolerance;
 
-		PlaneRepPred(double angleTolerance, double distTolerance)
-		:	m_angleTolerance(angleTolerance), m_distTolerance(distTolerance)
+		PlanePred(double angleTolerance, double distTolerance)
+		:	m_angleTolerance(fabs(angleTolerance)), m_distTolerance(fabs(distTolerance))
 		{}
 
-		int operator()(const Plane& lhs, const Plane& rhs) const
+		bool operator()(const Plane& lhs, const Plane& rhs) const
 		{
-			// Note:	This is based closely on a function on p.229 of Graphics Gems III
-			//			in the article "Grouping Nearly Coplanar Polygons".
+			// If these planes are nearly the same (in terms of normal direction
+			// and distance value), then !(lhs < rhs) && !(rhs < lhs).
 			double angle = acos(lhs.normal().dot(rhs.normal()));
-			if(angle < -m_angleTolerance) return -1;
-			else if(angle > m_angleTolerance) return 1;
-			else
-			{
-				double dist = lhs.distance_value() - rhs.distance_value();
-				if(dist < -m_distTolerance) return -1;
-				else if(dist > m_distTolerance) return 1;
-				else return 0;
-			}
+			double dist = lhs.distance_value() - rhs.distance_value();
+			if(fabs(angle) < m_angleTolerance && fabs(dist) < m_distTolerance) return false;
+
+			// Otherwise, compare the two planes "lexicographically".
+			const Vector3d& nL = lhs.normal(), nR = rhs.normal();
+			const double& aL = nL.x, bL = nL.y, cL = nL.z;
+			const double& aR = nR.x, bR = nR.y, cR = nR.z;
+			const double& dL = lhs.distance_value(), dR = rhs.distance_value();
+
+			return ((aL < aR) ||
+					(aL == aR && bL < bR) ||
+					(aL == aR && bL == bR && cL < cR) ||
+					(aL == aR && bL == bR && cL == cR && dL < dR));
 		}
 	};
 

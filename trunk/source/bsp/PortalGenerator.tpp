@@ -3,7 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#include <source/datastructures/RepresentativeTree.h>
+#include <set>
+
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
@@ -59,15 +60,15 @@ PortalGenerator::find_unique_planes(const std::vector<shared_ptr<Polygon<Vert,Au
 
 	const double angleTolerance = 0.5 * PI / 180;	// convert 0.5 degrees to radians
 	const double distTolerance = 0.001;
-	RepresentativeTree<Plane, PlaneRepPred> repTree(PlaneRepPred(angleTolerance, distTolerance));
+	std::set<Plane, PlanePred> planes(PlanePred(angleTolerance, distTolerance));
 
 	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
 	{
 		Plane plane = make_plane(**it).to_undirected_form();
-		repTree.insert(plane);
+		planes.insert(plane);
 	}
 
-	return repTree.representatives();
+	return PlaneList_Ptr(new PlaneList(planes.begin(), planes.end()));
 }
 
 }
