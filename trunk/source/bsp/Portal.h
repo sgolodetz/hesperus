@@ -6,8 +6,12 @@
 #ifndef H_HESP_BSP_PORTAL
 #define H_HESP_BSP_PORTAL
 
+#include <ostream>
+
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
+
+#include <source/math/geom/Polygon.h>
 
 namespace hesp {
 
@@ -26,6 +30,9 @@ struct LeafLink
 		return fromLeaf == rhs.fromLeaf && toLeaf == rhs.toLeaf;
 	}
 };
+
+//#################### GLOBAL OPERATORS ####################
+std::ostream& operator<<(std::ostream& os, const LeafLink& rhs);
 
 //#################### TYPEDEFS ####################
 typedef Polygon<Vector3d,LeafLink> Portal;

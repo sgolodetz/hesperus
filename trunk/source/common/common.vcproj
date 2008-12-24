@@ -419,6 +419,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\bsp\Portal.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\bsp\PortalGenerator.cpp"
 					>
 				</File>
