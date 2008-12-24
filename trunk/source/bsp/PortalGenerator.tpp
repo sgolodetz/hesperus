@@ -10,6 +10,13 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+/**
+Generates a list of portals for a 3D world.
+
+@param polygons	The world polygons
+@param tree		The BSP tree for the world
+@return			As stated
+*/
 template <typename Vert, typename AuxData>
 typename PortalGenerator::PortalList_Ptr
 PortalGenerator::generate_portals(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const BSPTree_Ptr& tree)
