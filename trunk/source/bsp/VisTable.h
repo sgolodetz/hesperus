@@ -12,26 +12,10 @@ namespace hesp {
 This class template represents a visibility table. It stores the
 visibility relation for an ordered set of objects (note that for
 the purposes of the PVS calculator, it can store the visibility
-relation for both portals and leaves). The client code can choose
-between an uncompressed or compressed visibility table at compile
-time.
+relation for both portals and leaves).
 */
-template <bool Compressed> class VisTable;
-
-//#################### UNCOMPRESSED VISTABLE ####################
-template <> class VisTable<false>
-{
-	//#################### CONSTRUCTORS ####################
-public:
-	// TODO
-
-	//#################### PUBLIC METHODS ####################
-public:
-	// TODO
-};
-
-//#################### COMPRESSED VISTABLE ####################
-template <> class VisTable<true>
+template <typename T>
+class VisTable
 {
 	//#################### CONSTRUCTORS ####################
 public:
@@ -43,5 +27,7 @@ public:
 };
 
 }
+
+#include "VisTable.tpp"
 
 #endif

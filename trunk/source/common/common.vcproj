@@ -430,10 +430,6 @@
 					RelativePath="..\bsp\VisCalculator.cpp"
 					>
 				</File>
-				<File
-					RelativePath="..\bsp\VisTable.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name=".h"
@@ -488,6 +484,10 @@
 				</File>
 				<File
 					RelativePath="..\bsp\PortalGenerator.tpp"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\VisTable.tpp"
 					>
 				</File>
 			</Filter>

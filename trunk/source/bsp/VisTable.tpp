@@ -1,9 +1,7 @@
 /***
- * hesperus: VisTable.cpp
+ * hesperus: VisTable.tpp
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
-
-#include "VisTable.h"
 
 namespace hesp {
 
