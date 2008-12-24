@@ -6,6 +6,9 @@
 #ifndef H_HESP_BSP_VISCALCULATOR
 #define H_HESP_BSP_VISCALCULATOR
 
+#include <map>
+#include <vector>
+
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
@@ -36,6 +39,7 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<Portal_Ptr> m_portals;
+	std::map<int,std::vector<int> > m_portalsFromLeaf;
 	PortalVisTable_Ptr m_portalVis;
 	LeafVisTable_Ptr m_leafVis;
 
@@ -49,6 +53,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	void build_portals_from_leaf_lookup();
 	void calculate_portal_pvs(const Portal_Ptr& originalSource);
 	void clean_intermediate();
 	void flood_fill();

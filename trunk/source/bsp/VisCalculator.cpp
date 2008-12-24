@@ -18,6 +18,7 @@ VisCalculator::LeafVisTable_Ptr VisCalculator::calculate_leaf_vis_table()
 {
 	if(!m_leafVis)
 	{
+		build_portals_from_leaf_lookup();
 		initial_portal_vis();
 		flood_fill();
 		full_portal_vis();
@@ -29,6 +30,20 @@ VisCalculator::LeafVisTable_Ptr VisCalculator::calculate_leaf_vis_table()
 }
 
 //#################### PRIVATE METHODS ####################
+/**
+Builds a table which allows us to look up which portals lead
+out of a given leaf.
+*/
+void VisCalculator::build_portals_from_leaf_lookup()
+{
+	int portalCount = static_cast<int>(m_portals.size());
+	for(int i=0; i<portalCount; ++i)
+	{
+		int fromLeaf = m_portals[i]->auxiliary_data().fromLeaf;
+		m_portalsFromLeaf[fromLeaf].push_back(i);
+	}
+}
+
 /**
 Calculates the set of portals that are potentially visible from
 the specified portal, and updates the portal visibility table
