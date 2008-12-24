@@ -426,10 +426,22 @@
 					RelativePath="..\bsp\PortalGenerator.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\bsp\VisCalculator.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\VisTable.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
 				>
+				<File
+					RelativePath="..\bsp\Antipenumbra.h"
+					>
+				</File>
 				<File
 					RelativePath="..\bsp\BSPBranch.h"
 					>
@@ -456,6 +468,14 @@
 				</File>
 				<File
 					RelativePath="..\bsp\PortalGenerator.h"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\VisCalculator.h"
+					>
+				</File>
+				<File
+					RelativePath="..\bsp\VisTable.h"
 					>
 				</File>
 			</Filter>
