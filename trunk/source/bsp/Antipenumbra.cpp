@@ -66,16 +66,17 @@ void Antipenumbra::add_clip_planes(const Portal_Ptr& from, const Portal_Ptr& to,
 			if(!plane) continue;
 
 			PlaneClassifier cpFrom = classify_polygon_against_plane(*from, *plane);
-			if(cpFrom == CP_COPLANAR || cpFrom == CP_STRADDLE) continue;
-			PlaneClassifier cpTo = classify_polygon_against_plane(*to, *plane);
-			if(cpTo == CP_COPLANAR || cpTo == CP_STRADDLE) continue;
-			if(cpFrom == cpTo) continue;
-
-			// If we get here, either cpFrom == CP_BACK && cpTo == CP_FRONT, or vice-versa.
-			if(cpFrom != desiredFromClassifier) m_planes.push_back(plane->flip());
-			else m_planes.push_back(*plane);
-
-			break;
+			if(cpFrom == CP_BACK || cpFrom == CP_FRONT)
+			{
+				PlaneClassifier cpTo = classify_polygon_against_plane(*to, *plane);
+				if((cpTo == CP_BACK || cpTo == CP_FRONT) && cpTo != cpFrom)
+				{
+					// If we get here, either cpFrom == CP_BACK && cpTo == CP_FRONT, or vice-versa.
+					if(cpFrom != desiredFromClassifier) m_planes.push_back(plane->flip());
+					else m_planes.push_back(*plane);
+					break;
+				}
+			}
 		}
 	}
 }
