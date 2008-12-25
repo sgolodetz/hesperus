@@ -17,27 +17,28 @@ using boost::shared_ptr;
 namespace hesp {
 
 //#################### CLASSES ####################
-struct LeafLink
+struct PortalInfo
 {
+	int index;		// the index of the portal in a portal array (-1 if not being used)
 	int fromLeaf;
 	int toLeaf;
 
-	LeafLink() : fromLeaf(-1), toLeaf(-1) {}
+	PortalInfo() : index(-1), fromLeaf(-1), toLeaf(-1) {}
 
-	LeafLink(int fromLeaf_, int toLeaf_) : fromLeaf(fromLeaf_), toLeaf(toLeaf_) {}
+	PortalInfo(int fromLeaf_, int toLeaf_) : index(-1), fromLeaf(fromLeaf_), toLeaf(toLeaf_) {}
 
-	bool operator==(const LeafLink& rhs) const
+	bool operator==(const PortalInfo& rhs) const
 	{
 		return fromLeaf == rhs.fromLeaf && toLeaf == rhs.toLeaf;
 	}
 };
 
 //#################### GLOBAL OPERATORS ####################
-std::ostream& operator<<(std::ostream& os, const LeafLink& rhs);
-std::istream& operator>>(std::istream& is, LeafLink& rhs);
+std::ostream& operator<<(std::ostream& os, const PortalInfo& rhs);
+std::istream& operator>>(std::istream& is, PortalInfo& rhs);
 
 //#################### TYPEDEFS ####################
-typedef Polygon<Vector3d,LeafLink> Portal;
+typedef Polygon<Vector3d,PortalInfo> Portal;
 typedef shared_ptr<Portal> Portal_Ptr;
 
 }

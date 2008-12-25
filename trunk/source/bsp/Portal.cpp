@@ -8,13 +8,13 @@
 namespace hesp {
 
 //#################### GLOBAL OPERATORS ####################
-std::ostream& operator<<(std::ostream& os, const LeafLink& rhs)
+std::ostream& operator<<(std::ostream& os, const PortalInfo& rhs)
 {
 	os << "[ " << rhs.fromLeaf << ' ' << rhs.toLeaf << " ]";
 	return os;
 }
 
-std::istream& operator>>(std::istream& is, LeafLink& rhs)
+std::istream& operator>>(std::istream& is, PortalInfo& rhs)
 {
 	is.get();
 	is.get();

@@ -37,8 +37,8 @@ PortalGenerator::generate_portals(const std::vector<shared_ptr<Polygon<Vert,AuxD
 
 		// Construct the reverse portal.
 		Portal_Ptr reversePortal(portal->flipped_winding());
-		const LeafLink& leafLink = portal->auxiliary_data();
-		reversePortal->auxiliary_data() = LeafLink(leafLink.toLeaf, leafLink.fromLeaf);
+		const PortalInfo& portalInfo = portal->auxiliary_data();
+		reversePortal->auxiliary_data() = PortalInfo(portalInfo.toLeaf, portalInfo.fromLeaf);
 
 		// Insert it after the existing portal in the list.
 		++it;

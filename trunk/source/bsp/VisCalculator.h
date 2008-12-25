@@ -69,12 +69,14 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_portals_from_leaf_lookup();
-	void calculate_portal_pvs(int originalSource);
+	void calculate_portal_pvs(const Portal_Ptr& originalSource);
 	void clean_intermediate();
 	void flood_fill();
 	void flood_from(int originalSource);
 	void full_portal_vis();
 	void initial_portal_vis();
+	int neighbour_leaf(const Portal_Ptr& portal) const;
+	int portal_index(const Portal_Ptr& portal) const;
 	void portal_to_leaf_vis();
 };
 

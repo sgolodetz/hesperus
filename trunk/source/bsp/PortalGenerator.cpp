@@ -115,7 +115,7 @@ std::pair<std::list<Portal_Ptr>,bool> PortalGenerator::clip_portal_to_subtree(co
 			case CP_STRADDLE:
 			{
 				// Note: The leaf links for the two half polygons are inherited from the original polygon here.
-				SplitResults<Vector3d,LeafLink> sr = split_polygon(*portal, *branch->splitter());
+				SplitResults<Vector3d,PortalInfo> sr = split_polygon(*portal, *branch->splitter());
 				std::pair<std::list<Portal_Ptr>,bool> frontResult = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
 				std::pair<std::list<Portal_Ptr>,bool> backResult = clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal);
 
@@ -161,7 +161,7 @@ span the entire level space.
 */
 Portal_Ptr PortalGenerator::make_initial_portal(const Plane& plane)
 {
-	return make_universe_polygon<LeafLink>(plane);
+	return make_universe_polygon<PortalInfo>(plane);
 }
 
 }

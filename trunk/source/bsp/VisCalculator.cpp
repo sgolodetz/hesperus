@@ -15,7 +15,14 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 VisCalculator::VisCalculator(const std::vector<Portal_Ptr>& portals)
 :	m_portals(portals)
-{}
+{
+	// Fill in the portal indices: these will be needed later.
+	int portalCount = static_cast<int>(m_portals.size());
+	for(int i=0; i<portalCount; ++i)
+	{
+		m_portals[i]->auxiliary_data().index = i;
+	}
+}
 
 //#################### PUBLIC METHODS ####################
 /**
@@ -61,42 +68,75 @@ accordingly.
 
 @param originalSource	The portal for which to calculate the PVS
 */
-void VisCalculator::calculate_portal_pvs(int originalSource)
+void VisCalculator::calculate_portal_pvs(const Portal_Ptr& originalSource)
 {
+	int originalSourceIndex = portal_index(originalSource);
+	Plane originalSourcePlane = make_plane(*originalSource);
+
 	std::stack<PortalTriple> st;
 
-	Portal_Ptr originalSourcePortal = m_portals[originalSource];
-	Plane originalSourcePlane = make_plane(*originalSourcePortal);
-	int origNeighbourLeaf = m_portals[originalSource]->auxiliary_data().toLeaf;
-	const std::vector<int>& origCandidates = m_portalsFromLeaf[origNeighbourLeaf];
-	for(size_t i=0, size=origCandidates.size(); i<size; ++i)
+	// Initialise the stack with triples targeting all the portals that can be
+	// seen from the original source. If only part of a target portal can be
+	// seen, we simply split it.
+	const std::vector<int>& originalCandidates = m_portalsFromLeaf[neighbour_leaf(originalSource)];
+	for(size_t i=0, size=originalCandidates.size(); i<size; ++i)
 	{
-		int target = origCandidates[i];
-		if((*m_portalVis)(originalSource, target) != VS_NO)
+		Portal_Ptr target = m_portals[originalCandidates[i]];
+		int targetIndex = originalCandidates[i];
+		if((*m_portalVis)(originalSourceIndex, targetIndex) != VS_NO)
 		{
-			Portal_Ptr targetPortal = m_portals[target];
-			if((*m_classifiers)(originalSource, target) == CP_STRADDLE)
+			if((*m_classifiers)(originalSourceIndex, targetIndex) == CP_STRADDLE)
 			{
-				targetPortal = split_polygon(*targetPortal, originalSourcePlane).front;
+				target = split_polygon(*target, originalSourcePlane).front;
 			}
-			st.push(PortalTriple(originalSourcePortal, Portal_Ptr(), targetPortal));
-			(*m_portalVis)(originalSource, target) = VS_YES;
+			st.push(PortalTriple(originalSource, Portal_Ptr(), target));
+			(*m_portalVis)(originalSourceIndex, targetIndex) = VS_YES;
 		}
 	}
 
+	// Run the actual visibility calculation process.
 	while(!st.empty())
 	{
 		PortalTriple triple = st.top();
 		Portal_Ptr source = triple.source, inter = triple.inter, target = triple.target;
+		int targetIndex = portal_index(target);
 		st.pop();
 
 		Antipenumbra ap(source, target);
 
-		// TODO
+		const std::vector<int>& candidates = m_portalsFromLeaf[neighbour_leaf(target)];
+		for(size_t i=0, size=candidates.size(); i<size; ++i)
+		{
+			Portal_Ptr generator = m_portals[candidates[i]];
+			int generatorIndex = candidates[i];
+
+			// If this generator portal might be visible from both the intermediate portal
+			// (if it exists) and the target portal, then we need to clip it to find out.
+			if((!inter || (*m_portalVis)(portal_index(inter), generatorIndex) != VS_NO) &&
+			   ((*m_portalVis)(targetIndex, generatorIndex) != VS_NO))
+			{
+				Portal_Ptr clippedGen = ap.clip(generator);
+				if(clippedGen)
+				{
+					Antipenumbra reverseAp(generator, target);
+					Portal_Ptr clippedSrc = reverseAp.clip(source);
+					if(clippedSrc)
+					{
+						st.push(PortalTriple(clippedSrc, target, clippedGen));
+						(*m_portalVis)(originalSourceIndex, generatorIndex) = VS_YES;
+					}
+				}
+			}
+		}
 	}
 
-	// NYI
-	throw 23;
+	// Any portals which haven't been definitely marked as potentially visible at this point can't be seen.
+	int portalCount = static_cast<int>(m_portals.size());
+	for(int i=0; i<portalCount; ++i)
+	{
+		if((*m_portalVis)(originalSourceIndex,i) != VS_YES)
+			(*m_portalVis)(originalSourceIndex,i) = VS_NO;
+	}
 }
 
 /**
@@ -166,10 +206,14 @@ in which the real PVS is calculated for each portal.
 */
 void VisCalculator::full_portal_vis()
 {
+	// FIXME:	We should process the portals in ascending order of the
+	//			number of other portals they can potentially see: this
+	//			will speed the whole thing up.
+
 	int portalCount = static_cast<int>(m_portals.size());
 	for(int i=0; i<portalCount; ++i)
 	{
-		calculate_portal_pvs(i);
+		calculate_portal_pvs(m_portals[i]);
 	}
 }
 
@@ -226,6 +270,28 @@ void VisCalculator::initial_portal_vis()
 				(*m_portalVis)(i,j) = VS_NO;
 		}
 	}
+}
+
+/**
+Returns the leaf into which the specified portal is facing.
+
+@param portal	The portal
+@return			The index of the leaf into which the portal is facing
+*/
+int VisCalculator::neighbour_leaf(const Portal_Ptr& portal) const
+{
+	return portal->auxiliary_data().toLeaf;
+}
+
+/**
+Returns the index of the specified portal.
+
+@param portal	The portal
+@return			As stated
+*/
+int VisCalculator::portal_index(const Portal_Ptr& portal) const
+{
+	return portal->auxiliary_data().index;
 }
 
 /**
