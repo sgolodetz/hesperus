@@ -60,8 +60,38 @@ accordingly.
 
 @param originalSource	The portal for which to calculate the PVS
 */
-void VisCalculator::calculate_portal_pvs(const Portal_Ptr& originalSource)
+void VisCalculator::calculate_portal_pvs(int originalSource)
 {
+	std::stack<PortalTriple> st;
+
+	Portal_Ptr originalSourcePortal = m_portals[originalSource];
+	Plane originalSourcePlane = make_plane(*originalSourcePortal);
+	int origNeighbourLeaf = m_portals[originalSource]->auxiliary_data().toLeaf;
+	const std::vector<int>& origCandidates = m_portalsFromLeaf[origNeighbourLeaf];
+	for(size_t i=0, size=origCandidates.size(); i<size; ++i)
+	{
+		int target = origCandidates[i];
+		if((*m_portalVis)(originalSource, target) != VS_NO)
+		{
+			Portal_Ptr targetPortal = m_portals[target];
+			if((*m_classifiers)(originalSource, target) == CP_STRADDLE)
+			{
+				targetPortal = split_polygon(*targetPortal, originalSourcePlane).front;
+			}
+			st.push(PortalTriple(originalSourcePortal, Portal_Ptr(), targetPortal));
+			(*m_portalVis)(originalSource, target) = VS_YES;
+		}
+	}
+
+	while(!st.empty())
+	{
+		PortalTriple triple = st.top();
+		Portal_Ptr source = triple.source, inter = triple.inter, target = triple.target;
+		st.pop();
+
+		// TODO
+	}
+
 	// NYI
 	throw 23;
 }
@@ -133,8 +163,11 @@ in which the real PVS is calculated for each portal.
 */
 void VisCalculator::full_portal_vis()
 {
-	// NYI
-	throw 23;
+	int portalCount = static_cast<int>(m_portals.size());
+	for(int i=0; i<portalCount; ++i)
+	{
+		calculate_portal_pvs(i);
+	}
 }
 
 /**
@@ -146,7 +179,7 @@ table. This helps avoid a lot of unnecessary clipping later on.
 void VisCalculator::initial_portal_vis()
 {
 	int portalCount = static_cast<int>(m_portals.size());
-	m_portalVis = PortalVisTable_Ptr(new PortalVisTable(portalCount, VS_INITIALMAYBE));
+	m_portalVis.reset(new PortalVisTable(portalCount, VS_INITIALMAYBE));
 
 	// Calculate the classification relation between the portals. Specifically,
 	// classifiers(i,j) will contain the classification of polygon j relative
@@ -155,14 +188,14 @@ void VisCalculator::initial_portal_vis()
 	// Note:	This bit could potentially be optimized if we required that portal pairs
 	//			occupied consecutive indices in the list (e.g. if 1 were necessarily the
 	//			reverse portal of 0, etc.).
-	VisTable<PlaneClassifier> classifiers(portalCount);
+	m_classifiers.reset(new ClassifierTable(portalCount));
 	for(int i=0; i<portalCount; ++i)
 	{
 		const Plane plane = make_plane(*m_portals[i]);
 		for(int j=0; j<portalCount; ++j)
 		{
-			if(j == i) classifiers(i,j) = CP_COPLANAR;
-			else classifiers(i,j) = classify_polygon_against_plane(*m_portals[j], plane);
+			if(j == i) (*m_classifiers)(i,j) = CP_COPLANAR;
+			else (*m_classifiers)(i,j) = classify_polygon_against_plane(*m_portals[j], plane);
 		}
 	}
 
@@ -181,12 +214,12 @@ void VisCalculator::initial_portal_vis()
 			// Note: Portals can only see through the back of other portals.
 
 			// If portal j is behind or on the plane of portal i, then i can't see it.
-			if(classifiers(i,j) == CP_BACK || classifiers(i,j) == CP_COPLANAR)
+			if((*m_classifiers)(i,j) == CP_BACK || (*m_classifiers)(i,j) == CP_COPLANAR)
 				(*m_portalVis)(i,j) = VS_NO;
 
 			// If portal i is completely in front of portal j, then it's facing i
 			// and i can't see through it.
-			if(classifiers(j,i) == CP_FRONT)
+			if((*m_classifiers)(j,i) == CP_FRONT)
 				(*m_portalVis)(i,j) = VS_NO;
 		}
 	}

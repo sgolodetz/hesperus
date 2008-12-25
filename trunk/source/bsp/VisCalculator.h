@@ -29,8 +29,21 @@ public:
 		VS_YES				// these portals definitely can see each other
 	};
 
+	//#################### NESTED CLASSES ####################
+private:
+	struct PortalTriple
+	{
+		Portal_Ptr source, inter, target;
+
+		PortalTriple(const Portal_Ptr& source_, const Portal_Ptr& inter_, const Portal_Ptr& target_)
+		:	source(source_), inter(inter_), target(target_)
+		{}
+	};
+
 	//#################### TYPEDEFS ####################
 private:
+	typedef VisTable<PlaneClassifier> ClassifierTable;
+	typedef shared_ptr<ClassifierTable> ClassifierTable_Ptr;
 	typedef VisTable<PortalVisState> PortalVisTable;
 	typedef shared_ptr<PortalVisTable> PortalVisTable_Ptr;
 public:
@@ -41,6 +54,7 @@ public:
 private:
 	std::vector<Portal_Ptr> m_portals;
 	std::map<int,std::vector<int> > m_portalsFromLeaf;
+	ClassifierTable_Ptr m_classifiers;
 	PortalVisTable_Ptr m_portalVis;
 	LeafVisTable_Ptr m_leafVis;
 
@@ -55,7 +69,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_portals_from_leaf_lookup();
-	void calculate_portal_pvs(const Portal_Ptr& originalSource);
+	void calculate_portal_pvs(int originalSource);
 	void clean_intermediate();
 	void flood_fill();
 	void flood_from(int originalSource);
