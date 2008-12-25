@@ -51,6 +51,16 @@ double Plane::distance_value() const
 }
 
 /**
+Returns a version of the plane whose normal points in the opposite direction.
+
+@return	As stated
+*/
+Plane Plane::flip() const
+{
+	return Plane(-m_n, -m_d);
+}
+
+/**
 Returns n, the plane normal.
 
 @return	As stated

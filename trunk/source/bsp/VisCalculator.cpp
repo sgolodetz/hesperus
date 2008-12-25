@@ -90,6 +90,8 @@ void VisCalculator::calculate_portal_pvs(int originalSource)
 		Portal_Ptr source = triple.source, inter = triple.inter, target = triple.target;
 		st.pop();
 
+		Antipenumbra ap(source, target);
+
 		// TODO
 	}
 

@@ -33,6 +33,10 @@ public:
 	template <typename Vert, typename AuxData>
 	shared_ptr<Polygon<Vert,AuxData> > clip(const shared_ptr<Polygon<Vert,AuxData> >& poly);
 
+	//#################### PRIVATE METHODS ####################
+private:
+	void add_clip_planes(const Portal_Ptr& from, const Portal_Ptr& to, PlaneClassifier desiredFromClassifier);
+	static Plane_Ptr construct_clip_plane(const Vector3d& a, const Vector3d& b, const Vector3d& c);
 };
 
 }

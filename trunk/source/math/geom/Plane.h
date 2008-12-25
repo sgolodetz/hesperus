@@ -44,6 +44,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	double distance_value() const;
+	Plane flip() const;
 	const Vector3d& normal() const;
 	Plane to_undirected_form() const;
 
