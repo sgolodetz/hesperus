@@ -8,6 +8,7 @@
 #include <stack>
 
 #include <source/math/geom/GeomUtil.h>
+#include "Antipenumbra.h"
 
 namespace hesp {
 

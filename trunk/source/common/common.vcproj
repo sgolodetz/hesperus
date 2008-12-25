@@ -403,6 +403,10 @@
 				Name=".cpp"
 				>
 				<File
+					RelativePath="..\bsp\Antipenumbra.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\bsp\BSPBranch.cpp"
 					>
 				</File>
@@ -478,6 +482,10 @@
 			<Filter
 				Name=".tpp"
 				>
+				<File
+					RelativePath="..\bsp\Antipenumbra.tpp"
+					>
+				</File>
 				<File
 					RelativePath="..\bsp\BSPCompiler.tpp"
 					>
