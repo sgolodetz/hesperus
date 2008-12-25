@@ -5,6 +5,8 @@
 
 #include "VisCalculator.h"
 
+#include <source/math/geom/GeomUtil.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -116,10 +118,46 @@ void VisCalculator::initial_portal_vis()
 	int portalCount = static_cast<int>(m_portals.size());
 	m_portalVis = PortalVisTable_Ptr(new PortalVisTable(portalCount, VS_INITIALMAYBE));
 
-	// TODO
+	// Calculate the classification relation between the portals. Specifically,
+	// classifiers(i,j) will contain the classification of polygon j relative
+	// to the plane of i.
 
-	// NYI
-	throw 23;
+	// Note:	This bit could potentially be optimized if we required that portal pairs
+	//			occupied consecutive indices in the list (e.g. if 1 were necessarily the
+	//			reverse portal of 0, etc.).
+	VisTable<PlaneClassifier> classifiers(portalCount);
+	for(int i=0; i<portalCount; ++i)
+	{
+		const Plane plane = make_plane(*m_portals[i]);
+		for(int j=0; j<portalCount; ++j)
+		{
+			if(j == i) classifiers(i,j) = CP_COPLANAR;
+			else classifiers(i,j) = classify_polygon_against_plane(*m_portals[j], plane);
+		}
+	}
+
+	for(int i=0; i<portalCount; ++i)
+	{
+		for(int j=0; j<portalCount; ++j)
+		{
+			if(j == i)
+			{
+				(*m_portalVis)(i,j) = VS_NO;
+				continue;
+			}
+
+			// Note: Portals can only see through the back of other portals.
+
+			// If portal j is behind or on the plane of portal i, then i can't see it.
+			if(classifiers(i,j) == CP_BACK || classifiers(i,j) == CP_COPLANAR)
+				(*m_portalVis)(i,j) = VS_NO;
+
+			// If portal i is completely in front of portal j, then it's facing i
+			// and i can't see through it.
+			if(classifiers(j,i) == CP_FRONT)
+				(*m_portalVis)(i,j) = VS_NO;
+		}
+	}
 }
 
 /**
