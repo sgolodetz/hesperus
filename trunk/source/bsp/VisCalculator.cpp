@@ -5,6 +5,8 @@
 
 #include "VisCalculator.h"
 
+#include <stack>
+
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
@@ -81,8 +83,19 @@ being to speed up the final calculation process.
 */
 void VisCalculator::flood_fill()
 {
-	// NYI
-	throw 23;
+	int portalCount = static_cast<int>(m_portals.size());
+	for(int i=0; i<portalCount; ++i)
+	{
+		flood_from(i);
+
+		// If any portals previously thought possible didn't get marked by the flood fill,
+		// then they're not actually possible and need to be marked as such.
+		for(int j=0; j<portalCount; ++j)
+		{
+			if((*m_portalVis)(i,j) == VS_INITIALMAYBE)
+				(*m_portalVis)(i,j) = VS_NO;
+		}
+	}
 }
 
 /**
@@ -91,10 +104,27 @@ PVS before it is calculated for real.
 
 @param originalSource	The portal from which to flood fill
 */
-void VisCalculator::flood_from(const Portal_Ptr& originalSource)
+void VisCalculator::flood_from(int originalSource)
 {
-	// NYI
-	throw 23;
+	std::stack<int> st;
+	st.push(originalSource);
+
+	while(!st.empty())
+	{
+		int curPortal = st.top();
+		st.pop();
+
+		if(curPortal != originalSource)
+			(*m_portalVis)(originalSource, curPortal) = VS_FLOODFILLMAYBE;
+
+		int leaf = m_portals[curPortal]->auxiliary_data().toLeaf;
+		const std::vector<int>& candidates = m_portalsFromLeaf[leaf];
+		for(size_t i=0, size=candidates.size(); i<size; ++i)
+		{
+			if((*m_portalVis)(originalSource, candidates[i]) == VS_INITIALMAYBE)
+				st.push(candidates[i]);
+		}
+	}
 }
 
 /**
@@ -136,6 +166,8 @@ void VisCalculator::initial_portal_vis()
 		}
 	}
 
+	// Run through the portal visibility table and mark (*m_portalVis)(i,j) as VS_NO
+	// if portal i definitely can't see through portal j.
 	for(int i=0; i<portalCount; ++i)
 	{
 		for(int j=0; j<portalCount; ++j)

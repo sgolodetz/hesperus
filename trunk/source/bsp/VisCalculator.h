@@ -58,7 +58,7 @@ private:
 	void calculate_portal_pvs(const Portal_Ptr& originalSource);
 	void clean_intermediate();
 	void flood_fill();
-	void flood_from(const Portal_Ptr& originalSource);
+	void flood_from(int originalSource);
 	void full_portal_vis();
 	void initial_portal_vis();
 	void portal_to_leaf_vis();
