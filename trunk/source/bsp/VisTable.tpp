@@ -29,4 +29,11 @@ const T& VisTable<T>::operator()(int i, int j) const
 	return m_table[i][j];
 }
 
+//#################### PUBLIC METHODS ####################
+template <typename T>
+int VisTable<T>::size() const
+{
+	return static_cast<int>(m_table.size());
+}
+
 }

@@ -16,7 +16,38 @@ using boost::lexical_cast;
 #include <source/math/geom/GeomUtil.h>
 using namespace hesp;
 
+//#################### TYPEDEFS ####################
+typedef VisCalculator::LeafVisTable LeafVisTable;
+typedef VisCalculator::LeafVisTable_Ptr LeafVisTable_Ptr;
+
 //#################### FUNCTIONS ####################
+void output_vis_table(std::ostream& os, const LeafVisTable_Ptr& leafVis)
+{
+	const LeafVisTable& table = *leafVis;
+
+	int size = table.size();
+	for(int i=0; i<size; ++i)
+	{
+		for(int j=0; j<size; ++j)
+		{
+			switch(table(i,j))
+			{
+				case VisCalculator::LV_NO:
+				{
+					os << '0';
+					break;
+				}
+				case VisCalculator::LV_YES:
+				{
+					os << '1';
+					break;
+				}
+			}
+		}
+		os << '\n';
+	}
+}
+
 void quit_with_error(const std::string& error)
 {
 	std::cout << "Error: " << error << std::endl;
@@ -31,10 +62,17 @@ void quit_with_usage()
 
 void run_calculator(const std::string& inputFilename, const std::string& outputFilename)
 {
-	// Read the input portals.
 	std::ifstream is(inputFilename.c_str());
 	if(is.fail()) quit_with_error("Input file does not exist");
 
+	// Note:	We try and open the output file now because the visibility calculation
+	//			process is a potentially lengthy one: it would be very annoying for users
+	//			if they spent ages waiting for the calculations to finish and then found
+	//			that it couldn't be written to file.
+	std::ofstream os(outputFilename.c_str());
+	if(os.fail()) quit_with_error("Output file could not be opened for writing");
+
+	// Read the input portals.
 	std::vector<Portal_Ptr> portals;
 	try
 	{
@@ -50,10 +88,10 @@ void run_calculator(const std::string& inputFilename, const std::string& outputF
 
 	// Run the visibility calculator.
 	VisCalculator visCalc(portals);
-	VisCalculator::LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
+	LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
 
 	// Write the leaf visibility table to the output file.
-	// TODO
+	output_vis_table(os, leafVis);
 }
 
 int main(int argc, char *argv[])

@@ -31,6 +31,10 @@ public:
 public:
 	T& operator()(int i, int j);
 	const T& operator()(int i, int j) const;
+
+	//#################### PUBLIC METHODS ####################
+public:
+	int size() const;
 };
 
 }
