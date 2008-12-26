@@ -35,6 +35,7 @@ BSPLeaf *BSPLeaf::as_leaf()									{ return this; }
 const BSPLeaf *BSPLeaf::as_leaf() const						{ return this; }
 bool BSPLeaf::is_leaf() const								{ return true; }
 bool BSPLeaf::is_solid() const								{ return m_isSolid; }
+int BSPLeaf::leaf_index() const								{ return m_leafIndex; }
 
 void BSPLeaf::output_postorder_text(std::ostream& os) const
 {

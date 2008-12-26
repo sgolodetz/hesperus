@@ -38,6 +38,7 @@ public:
 	const BSPLeaf *as_leaf() const;
 	bool is_leaf() const;
 	bool is_solid() const;
+	int leaf_index() const;
 	void output_postorder_text(std::ostream& os) const;
 	const std::vector<int>& polygon_indices() const;
 

@@ -47,12 +47,12 @@ std::pair<std::list<Portal_Ptr>,bool> PortalGenerator::clip_portal_to_subtree(co
 		{
 			case CP_BACK:
 			{
-				portal->auxiliary_data().fromLeaf = leaf->index();
+				portal->auxiliary_data().fromLeaf = leaf->leaf_index();
 				break;
 			}
 			case CP_FRONT:
 			{
-				portal->auxiliary_data().toLeaf = leaf->index();
+				portal->auxiliary_data().toLeaf = leaf->leaf_index();
 				break;
 			}
 			default:	// CP_STRADDLE (note that CP_COPLANAR is not possible here)
