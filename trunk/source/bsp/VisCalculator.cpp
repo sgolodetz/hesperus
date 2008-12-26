@@ -144,8 +144,9 @@ Clears all the intermediate data structures used during the calculation process.
 */
 void VisCalculator::clean_intermediate()
 {
-	// NYI
-	throw 23;
+	m_portalsFromLeaf.clear();
+	m_classifiers.reset();
+	m_portalVis.reset();
 }
 
 /**
@@ -310,7 +311,7 @@ void VisCalculator::portal_to_leaf_vis()
 
 	for(int i=0; i<leafCount; ++i)
 	{
-		// Leaf i can see itself, plus the union of whatever its portals can see.
+		// Leaf i can see itself, plus the union of whatever leaves its portals can see.
 		(*m_leafVis)(i, i) = LV_YES;
 
 		const std::vector<int>& ps = m_portalsFromLeaf[i];
