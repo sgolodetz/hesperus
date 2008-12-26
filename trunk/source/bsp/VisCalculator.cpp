@@ -83,14 +83,14 @@ void VisCalculator::calculate_portal_pvs(const Portal_Ptr& originalSource)
 	{
 		Portal_Ptr target = m_portals[originalCandidates[i]];
 		int targetIndex = originalCandidates[i];
-		if((*m_portalVis)(originalSourceIndex, targetIndex) != VS_NO)
+		if((*m_portalVis)(originalSourceIndex, targetIndex) != PV_NO)
 		{
 			if((*m_classifiers)(originalSourceIndex, targetIndex) == CP_STRADDLE)
 			{
 				target = split_polygon(*target, originalSourcePlane).front;
 			}
 			st.push(PortalTriple(originalSource, Portal_Ptr(), target));
-			(*m_portalVis)(originalSourceIndex, targetIndex) = VS_YES;
+			(*m_portalVis)(originalSourceIndex, targetIndex) = PV_YES;
 		}
 	}
 
@@ -112,8 +112,8 @@ void VisCalculator::calculate_portal_pvs(const Portal_Ptr& originalSource)
 
 			// If this generator portal might be visible from both the intermediate portal
 			// (if it exists) and the target portal, then we need to clip it to find out.
-			if((!inter || (*m_portalVis)(portal_index(inter), generatorIndex) != VS_NO) &&
-			   ((*m_portalVis)(targetIndex, generatorIndex) != VS_NO))
+			if((!inter || (*m_portalVis)(portal_index(inter), generatorIndex) != PV_NO) &&
+			   ((*m_portalVis)(targetIndex, generatorIndex) != PV_NO))
 			{
 				Portal_Ptr clippedGen = ap.clip(generator);
 				if(clippedGen)
@@ -123,7 +123,7 @@ void VisCalculator::calculate_portal_pvs(const Portal_Ptr& originalSource)
 					if(clippedSrc)
 					{
 						st.push(PortalTriple(clippedSrc, target, clippedGen));
-						(*m_portalVis)(originalSourceIndex, generatorIndex) = VS_YES;
+						(*m_portalVis)(originalSourceIndex, generatorIndex) = PV_YES;
 					}
 				}
 			}
@@ -134,8 +134,8 @@ void VisCalculator::calculate_portal_pvs(const Portal_Ptr& originalSource)
 	int portalCount = static_cast<int>(m_portals.size());
 	for(int i=0; i<portalCount; ++i)
 	{
-		if((*m_portalVis)(originalSourceIndex,i) != VS_YES)
-			(*m_portalVis)(originalSourceIndex,i) = VS_NO;
+		if((*m_portalVis)(originalSourceIndex,i) != PV_YES)
+			(*m_portalVis)(originalSourceIndex,i) = PV_NO;
 	}
 }
 
@@ -165,8 +165,8 @@ void VisCalculator::flood_fill()
 		// then they're not actually possible and need to be marked as such.
 		for(int j=0; j<portalCount; ++j)
 		{
-			if((*m_portalVis)(i,j) == VS_INITIALMAYBE)
-				(*m_portalVis)(i,j) = VS_NO;
+			if((*m_portalVis)(i,j) == PV_INITIALMAYBE)
+				(*m_portalVis)(i,j) = PV_NO;
 		}
 	}
 }
@@ -188,13 +188,13 @@ void VisCalculator::flood_from(int originalSource)
 		st.pop();
 
 		if(curPortal != originalSource)
-			(*m_portalVis)(originalSource, curPortal) = VS_FLOODFILLMAYBE;
+			(*m_portalVis)(originalSource, curPortal) = PV_FLOODFILLMAYBE;
 
 		int leaf = m_portals[curPortal]->auxiliary_data().toLeaf;
 		const std::vector<int>& candidates = m_portalsFromLeaf[leaf];
 		for(size_t i=0, size=candidates.size(); i<size; ++i)
 		{
-			if((*m_portalVis)(originalSource, candidates[i]) == VS_INITIALMAYBE)
+			if((*m_portalVis)(originalSource, candidates[i]) == PV_INITIALMAYBE)
 				st.push(candidates[i]);
 		}
 	}
@@ -226,7 +226,7 @@ table. This helps avoid a lot of unnecessary clipping later on.
 void VisCalculator::initial_portal_vis()
 {
 	int portalCount = static_cast<int>(m_portals.size());
-	m_portalVis.reset(new PortalVisTable(portalCount, VS_INITIALMAYBE));
+	m_portalVis.reset(new PortalVisTable(portalCount, PV_INITIALMAYBE));
 
 	// Calculate the classification relation between the portals. Specifically,
 	// classifiers(i,j) will contain the classification of polygon j relative
@@ -246,7 +246,7 @@ void VisCalculator::initial_portal_vis()
 		}
 	}
 
-	// Run through the portal visibility table and mark (*m_portalVis)(i,j) as VS_NO
+	// Run through the portal visibility table and mark (*m_portalVis)(i,j) as PV_NO
 	// if portal i definitely can't see through portal j.
 	for(int i=0; i<portalCount; ++i)
 	{
@@ -254,7 +254,7 @@ void VisCalculator::initial_portal_vis()
 		{
 			if(j == i)
 			{
-				(*m_portalVis)(i,j) = VS_NO;
+				(*m_portalVis)(i,j) = PV_NO;
 				continue;
 			}
 
@@ -262,12 +262,12 @@ void VisCalculator::initial_portal_vis()
 
 			// If portal j is behind or on the plane of portal i, then i can't see it.
 			if((*m_classifiers)(i,j) == CP_BACK || (*m_classifiers)(i,j) == CP_COPLANAR)
-				(*m_portalVis)(i,j) = VS_NO;
+				(*m_portalVis)(i,j) = PV_NO;
 
 			// If portal i is completely in front of portal j, then it's facing i
 			// and i can't see through it.
 			if((*m_classifiers)(j,i) == CP_FRONT)
-				(*m_portalVis)(i,j) = VS_NO;
+				(*m_portalVis)(i,j) = PV_NO;
 		}
 	}
 }
@@ -303,8 +303,34 @@ once we've finished calculating.
 */
 void VisCalculator::portal_to_leaf_vis()
 {
-	// NYI
-	throw 23;
+	const int portalCount = static_cast<int>(m_portals.size());
+
+	const int leafCount = static_cast<int>(m_portalsFromLeaf.size());
+	m_leafVis.reset(new LeafVisTable(leafCount, LV_NO));
+
+	for(int i=0; i<leafCount; ++i)
+	{
+		// Leaf i can see itself, plus the union of whatever its portals can see.
+		(*m_leafVis)(i, i) = LV_YES;
+
+		const std::vector<int>& ps = m_portalsFromLeaf[i];
+		for(std::vector<int>::const_iterator jt=ps.begin(), jend=ps.end(); jt!=jend; ++jt)
+		{
+			const int j = *jt;
+
+			// Leaf i can see the leaf pointed to by portal j (even though portal j can't see itself).
+			(*m_leafVis)(i, m_portals[j]->auxiliary_data().toLeaf) = LV_YES;
+
+			// Leaf i can see all the leaves pointed to by portals portal j can see.
+			for(int k=0; k<portalCount; ++k)
+			{
+				if((*m_portalVis)(j,k) == PV_YES)
+				{
+					(*m_leafVis)(i, m_portals[k]->auxiliary_data().toLeaf) = LV_YES;
+				}
+			}
+		}
+	}
 }
 
 }
