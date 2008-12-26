@@ -13,7 +13,9 @@ BSPBranch::BSPBranch(int index, const Plane_Ptr& splitter, const BSPNode_Ptr& le
 {}
 
 //#################### PUBLIC METHODS ####################
+BSPBranch *BSPBranch::as_branch()				{ return this; }
 const BSPBranch *BSPBranch::as_branch() const	{ return this; }
+BSPLeaf *BSPBranch::as_leaf()					{ return NULL; }
 const BSPLeaf *BSPBranch::as_leaf() const		{ return NULL; }
 bool BSPBranch::is_leaf() const					{ return false; }
 const BSPNode_Ptr& BSPBranch::left() const		{ return m_left; }

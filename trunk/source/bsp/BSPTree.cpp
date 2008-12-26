@@ -15,14 +15,15 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include "BSPBranch.h"
-#include "BSPLeaf.h"
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 BSPTree::BSPTree(const std::vector<BSPNode_Ptr>& nodes)
 :	m_nodes(nodes)
-{}
+{
+	index_empty_leaves(root());
+}
 
 //#################### PUBLIC METHODS ####################
 BSPTree_Ptr BSPTree::load_postorder_text(std::istream& is)
@@ -117,6 +118,27 @@ void BSPTree::output_postorder_text(std::ostream& os) const
 BSPNode_Ptr BSPTree::root() const
 {
 	return m_nodes.back();
+}
+
+//#################### PRIVATE METHODS ####################
+void BSPTree::index_empty_leaves(const BSPNode_Ptr& node)
+{
+	if(node->is_leaf())
+	{
+		BSPLeaf *leaf = node->as_leaf();
+		if(!leaf->is_solid())
+		{
+			int nextLeaf = static_cast<int>(m_emptyLeaves.size());
+			leaf->set_leaf_index(nextLeaf);
+			m_emptyLeaves.push_back(leaf);
+		}
+	}
+	else
+	{
+		const BSPBranch *branch = node->as_branch();
+		index_empty_leaves(branch->left());
+		index_empty_leaves(branch->right());
+	}
 }
 
 }

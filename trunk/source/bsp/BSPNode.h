@@ -35,7 +35,9 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual BSPBranch *as_branch() = 0;
 	virtual const BSPBranch *as_branch() const = 0;
+	virtual BSPLeaf *as_leaf() = 0;
 	virtual const BSPLeaf *as_leaf() const = 0;
 	virtual bool is_leaf() const = 0;
 	virtual void output_postorder_text(std::ostream& os) const = 0;

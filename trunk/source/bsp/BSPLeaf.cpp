@@ -29,7 +29,9 @@ BSPNode_Ptr BSPLeaf::make_solid_leaf(int index)
 }
 
 //#################### PUBLIC METHODS ####################
+BSPBranch *BSPLeaf::as_branch()								{ return NULL; }
 const BSPBranch *BSPLeaf::as_branch() const					{ return NULL; }
+BSPLeaf *BSPLeaf::as_leaf()									{ return this; }
 const BSPLeaf *BSPLeaf::as_leaf() const						{ return this; }
 bool BSPLeaf::is_leaf() const								{ return true; }
 bool BSPLeaf::is_solid() const								{ return m_isSolid; }
@@ -56,5 +58,11 @@ void BSPLeaf::output_postorder_text(std::ostream& os) const
 }
 
 const std::vector<int>& BSPLeaf::polygon_indices() const	{ return m_polygonIndices; }
+
+//#################### PRIVATE METHODS ####################
+void BSPLeaf::set_leaf_index(int leafIndex)
+{
+	m_leafIndex = leafIndex;
+}
 
 }

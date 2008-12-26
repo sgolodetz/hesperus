@@ -12,14 +12,18 @@ namespace hesp {
 
 class BSPLeaf : public BSPNode
 {
+	//#################### FRIENDS ####################
+	friend class BSPTree;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
+	int m_leafIndex;	// leaf index of leaf (as opposed to its tree node index): only empty leaves are indexed
 	bool m_isSolid;
 	std::vector<int> m_polygonIndices;
 
 	//#################### CONSTRUCTORS ####################
 private:
-	BSPLeaf(int index) : BSPNode(index) {}
+	BSPLeaf(int index) : BSPNode(index), m_leafIndex(-1) {}
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -28,12 +32,18 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	BSPBranch *as_branch();
 	const BSPBranch *as_branch() const;
+	BSPLeaf *as_leaf();
 	const BSPLeaf *as_leaf() const;
 	bool is_leaf() const;
 	bool is_solid() const;
 	void output_postorder_text(std::ostream& os) const;
 	const std::vector<int>& polygon_indices() const;
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void set_leaf_index(int leafIndex);
 };
 
 }

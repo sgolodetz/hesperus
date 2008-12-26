@@ -6,7 +6,7 @@
 #ifndef H_HESP_BSP_BSPTREE
 #define H_HESP_BSP_BSPTREE
 
-#include "BSPNode.h"
+#include "BSPLeaf.h"
 
 namespace hesp {
 
@@ -19,6 +19,7 @@ class BSPTree
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<BSPNode_Ptr> m_nodes;
+	std::vector<BSPLeaf*> m_emptyLeaves;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -29,6 +30,10 @@ public:
 	static BSPTree_Ptr load_postorder_text(std::istream& is);
 	void output_postorder_text(std::ostream& os) const;
 	BSPNode_Ptr root() const;
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void index_empty_leaves(const BSPNode_Ptr& node);
 };
 
 }
