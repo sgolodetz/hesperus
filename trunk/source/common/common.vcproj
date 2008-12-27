@@ -504,6 +504,18 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="util"
+			>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\util\PolygonTypes.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

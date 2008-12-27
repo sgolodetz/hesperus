@@ -11,9 +11,7 @@
 
 #include <source/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
-#include <source/math/geom/Polygon.h>
-#include <source/math/vectors/RenderingVector3d.h>
-#include <source/math/vectors/Vector3.h>
+#include <source/util/PolygonTypes.h>
 using namespace hesp;
 
 //#################### ENUMERATIONS ####################
@@ -36,10 +34,9 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-template <typename Vert, typename AuxData>
+template <typename Poly>
 void run_compiler(const std::string& inputFilename, const std::string& outputFilename, const double weight)
 {
-	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
@@ -89,12 +86,12 @@ int main(int argc, char *argv[])
 	{
 		case COLLISION:
 		{
-			run_compiler<Vector3d,bool>(inputFilename, outputFilename, weight);
+			run_compiler<CollisionPolygon>(inputFilename, outputFilename, weight);
 			break;
 		}
 		case RENDERING:
 		{
-			run_compiler<RenderingVector3d,std::string>(inputFilename, outputFilename, weight);
+			run_compiler<RenderingPolygon>(inputFilename, outputFilename, weight);
 			break;
 		}
 	}

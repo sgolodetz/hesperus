@@ -15,8 +15,7 @@ using boost::lexical_cast;
 #include <source/bsp/BSPTree.h>
 #include <source/bsp/PortalGenerator.h>
 #include <source/math/geom/GeomUtil.h>
-#include <source/math/vectors/RenderingVector3d.h>
-#include <source/math/vectors/Vector3.h>
+#include <source/util/PolygonTypes.h>
 using namespace hesp;
 
 //#################### ENUMERATIONS ####################
@@ -39,10 +38,9 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-template <typename Vert, typename AuxData>
+template <typename Poly>
 void run_generator(const std::string& inputFilename, const std::string& outputFilename)
 {
-	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
@@ -106,12 +104,12 @@ int main(int argc, char *argv[])
 	{
 		case COLLISION:
 		{
-			run_generator<Vector3d,bool>(inputFilename, outputFilename);
+			run_generator<CollisionPolygon>(inputFilename, outputFilename);
 			break;
 		}
 		case RENDERING:
 		{
-			run_generator<RenderingVector3d,std::string>(inputFilename, outputFilename);
+			run_generator<RenderingPolygon>(inputFilename, outputFilename);
 			break;
 		}
 	}
