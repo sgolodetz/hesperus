@@ -16,10 +16,6 @@ using boost::lexical_cast;
 #include <source/math/geom/GeomUtil.h>
 using namespace hesp;
 
-//#################### TYPEDEFS ####################
-typedef VisCalculator::LeafVisTable LeafVisTable;
-typedef VisCalculator::LeafVisTable_Ptr LeafVisTable_Ptr;
-
 //#################### FUNCTIONS ####################
 void output_vis_table(std::ostream& os, const LeafVisTable_Ptr& leafVis)
 {
@@ -32,12 +28,12 @@ void output_vis_table(std::ostream& os, const LeafVisTable_Ptr& leafVis)
 		{
 			switch(table(i,j))
 			{
-				case VisCalculator::LV_NO:
+				case LEAFVIS_NO:
 				{
 					os << '0';
 					break;
 				}
-				case VisCalculator::LV_YES:
+				case LEAFVIS_YES:
 				{
 					os << '1';
 					break;

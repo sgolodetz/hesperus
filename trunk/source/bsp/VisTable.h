@@ -10,6 +10,17 @@
 
 namespace hesp {
 
+//#################### ENUMERATIONS ####################
+// Note:	We don't use bool instead of LeafVisState because VisTable
+//			can be implemented internally using std::vector, and sadly
+//			std::vector<bool> is not a container (yuk!)
+enum LeafVisState
+{
+	LEAFVIS_NO,
+	LEAFVIS_YES
+};
+
+//#################### CLASSES ####################
 /**
 This class template represents a visibility table. It stores the
 visibility relation for an ordered set of objects (note that for
@@ -36,6 +47,10 @@ public:
 public:
 	int size() const;
 };
+
+//#################### TYPEDEFS ####################
+typedef VisTable<LeafVisState> LeafVisTable;
+typedef shared_ptr<LeafVisTable> LeafVisTable_Ptr;
 
 }
 

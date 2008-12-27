@@ -20,22 +20,13 @@ namespace hesp {
 class VisCalculator
 {
 	//#################### ENUMERATIONS ####################
-public:
+private:
 	enum PortalVisState
 	{
 		PV_NO,				// these portals definitely can't see each other
 		PV_INITIALMAYBE,	// after the initial calculations, it's still possible these portals can see each other
 		PV_FLOODFILLMAYBE,	// after the flood fill, it's still possible these portals can see each other
 		PV_YES				// these portals definitely can see each other
-	};
-
-	// Note:	We don't use bool instead of LeafVisState because VisTable
-	//			can be implemented internally using std::vector, and sadly
-	//			std::vector<bool> is not a container (yuk!)
-	enum LeafVisState
-	{
-		LV_NO,
-		LV_YES
 	};
 
 	//#################### NESTED CLASSES ####################
@@ -55,9 +46,6 @@ private:
 	typedef shared_ptr<ClassifierTable> ClassifierTable_Ptr;
 	typedef VisTable<PortalVisState> PortalVisTable;
 	typedef shared_ptr<PortalVisTable> PortalVisTable_Ptr;
-public:
-	typedef VisTable<LeafVisState> LeafVisTable;
-	typedef shared_ptr<LeafVisTable> LeafVisTable_Ptr;
 
 	//#################### PRIVATE VARIABLES ####################
 private:

@@ -31,7 +31,7 @@ can see each other in the game world.
 
 @return	The leaf visibility table
 */
-VisCalculator::LeafVisTable_Ptr VisCalculator::calculate_leaf_vis_table()
+LeafVisTable_Ptr VisCalculator::calculate_leaf_vis_table()
 {
 	if(!m_leafVis)
 	{
@@ -307,12 +307,12 @@ void VisCalculator::portal_to_leaf_vis()
 	const int portalCount = static_cast<int>(m_portals.size());
 
 	const int leafCount = static_cast<int>(m_portalsFromLeaf.size());
-	m_leafVis.reset(new LeafVisTable(leafCount, LV_NO));
+	m_leafVis.reset(new LeafVisTable(leafCount, LEAFVIS_NO));
 
 	for(int i=0; i<leafCount; ++i)
 	{
 		// Leaf i can see itself, plus the union of whatever leaves its portals can see.
-		(*m_leafVis)(i, i) = LV_YES;
+		(*m_leafVis)(i, i) = LEAFVIS_YES;
 
 		const std::vector<int>& ps = m_portalsFromLeaf[i];
 		for(std::vector<int>::const_iterator jt=ps.begin(), jend=ps.end(); jt!=jend; ++jt)
@@ -320,14 +320,14 @@ void VisCalculator::portal_to_leaf_vis()
 			const int j = *jt;
 
 			// Leaf i can see the leaf pointed to by portal j (even though portal j can't see itself).
-			(*m_leafVis)(i, m_portals[j]->auxiliary_data().toLeaf) = LV_YES;
+			(*m_leafVis)(i, m_portals[j]->auxiliary_data().toLeaf) = LEAFVIS_YES;
 
 			// Leaf i can see all the leaves pointed to by portals portal j can see.
 			for(int k=0; k<portalCount; ++k)
 			{
 				if((*m_portalVis)(j,k) == PV_YES)
 				{
-					(*m_leafVis)(i, m_portals[k]->auxiliary_data().toLeaf) = LV_YES;
+					(*m_leafVis)(i, m_portals[k]->auxiliary_data().toLeaf) = LEAFVIS_YES;
 				}
 			}
 		}
