@@ -9,6 +9,9 @@
 #include <vector>
 
 #include <source/util/PolygonTypes.h>
+#include "BSPTree.h"
+#include "Light.h"
+#include "VisTable.h"
 
 namespace hesp {
 
@@ -24,7 +27,8 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	LightmapGenerator(const std::vector<TexturedPolygon_Ptr>& inputPolygons, const BSPTree_Ptr& tree);
+	LightmapGenerator(const std::vector<TexturedPolygon_Ptr>& inputPolygons, const std::vector<Light>& lights,
+					  const BSPTree_Ptr& tree, const LeafVisTable_Ptr& vis);
 
 	//#################### PUBLIC METHODS ####################
 public:
