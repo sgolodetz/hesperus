@@ -314,7 +314,7 @@
 					Name=".cpp"
 					>
 					<File
-						RelativePath="..\math\vectors\RenderingVector3d.cpp"
+						RelativePath="..\math\vectors\TexturedVector3d.cpp"
 						>
 					</File>
 					<File
@@ -326,7 +326,7 @@
 					Name=".h"
 					>
 					<File
-						RelativePath="..\math\vectors\RenderingVector3d.h"
+						RelativePath="..\math\vectors\TexturedVector3d.h"
 						>
 					</File>
 					<File

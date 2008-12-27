@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	std::string inputFilename = args[2];
 	std::string outputFilename = args[3];
 
-	if(args[1] == "-r") run_generator<RenderingPolygon>(inputFilename, outputFilename);
+	if(args[1] == "-r") run_generator<TexturedPolygon>(inputFilename, outputFilename);
 	else if(args[1] == "-c") run_generator<CollisionPolygon>(inputFilename, outputFilename);
 	else quit_with_usage();
 

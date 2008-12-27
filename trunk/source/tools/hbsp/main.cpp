@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 		catch(bad_lexical_cast&)	{ quit_with_usage(); }
 	}
 
-	if(args[1] == "-r") run_compiler<RenderingPolygon>(inputFilename, outputFilename, weight);
+	if(args[1] == "-r") run_compiler<TexturedPolygon>(inputFilename, outputFilename, weight);
 	else if(args[1] == "-c") run_compiler<CollisionPolygon>(inputFilename, outputFilename, weight);
 	else quit_with_usage();
 
