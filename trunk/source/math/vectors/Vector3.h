@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_VECTORS_VECTOR3D
-#define H_HESP_MATH_VECTORS_VECTOR3D
+#ifndef H_HESP_MATH_VECTORS_VECTOR3
+#define H_HESP_MATH_VECTORS_VECTOR3
 
 #include <ostream>
 #include <string>

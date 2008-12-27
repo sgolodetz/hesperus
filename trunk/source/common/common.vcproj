@@ -314,6 +314,10 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\math\vectors\TexturedLitVector3d.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\math\vectors\TexturedVector3d.cpp"
 						>
 					</File>
@@ -325,6 +329,10 @@
 				<Filter
 					Name=".h"
 					>
+					<File
+						RelativePath="..\math\vectors\TexturedLitVector3d.h"
+						>
+					</File>
 					<File
 						RelativePath="..\math\vectors\TexturedVector3d.h"
 						>
