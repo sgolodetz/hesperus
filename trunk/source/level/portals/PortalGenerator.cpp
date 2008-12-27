@@ -6,9 +6,9 @@
 #include "PortalGenerator.h"
 
 #include <source/exceptions/Exception.h>
+#include <source/level/bsp/BSPBranch.h>
+#include <source/level/bsp/BSPLeaf.h>
 #include <source/math/geom/GeomUtil.h>
-#include "BSPBranch.h"
-#include "BSPLeaf.h"
 
 namespace hesp {
 

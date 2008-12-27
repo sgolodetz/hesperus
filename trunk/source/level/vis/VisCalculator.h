@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_BSP_VISCALCULATOR
-#define H_HESP_BSP_VISCALCULATOR
+#ifndef H_HESP_LEVEL_VIS_VISCALCULATOR
+#define H_HESP_LEVEL_VIS_VISCALCULATOR
 
 #include <map>
 #include <vector>
@@ -12,7 +12,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include "Portal.h"
+#include <source/level/portals/Portal.h>
 #include "VisTable.h"
 
 namespace hesp {

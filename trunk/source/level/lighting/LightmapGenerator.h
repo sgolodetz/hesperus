@@ -3,15 +3,15 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_BSP_LIGHTMAPGENERATOR
-#define H_HESP_BSP_LIGHTMAPGENERATOR
+#ifndef H_HESP_LEVEL_LIGHTING_LIGHTMAPGENERATOR
+#define H_HESP_LEVEL_LIGHTING_LIGHTMAPGENERATOR
 
 #include <vector>
 
+#include <source/level/bsp/BSPTree.h>
+#include <source/level/vis/VisTable.h>
 #include <source/util/PolygonTypes.h>
-#include "BSPTree.h"
 #include "Light.h"
-#include "VisTable.h"
 
 namespace hesp {
 

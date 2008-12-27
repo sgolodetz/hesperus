@@ -3,7 +3,7 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#include <source/bsp/LightmapGenerator.h>
+#include <source/level/lighting/LightmapGenerator.h>
 using namespace hesp;
 
 int main(int argc, char *argv[])

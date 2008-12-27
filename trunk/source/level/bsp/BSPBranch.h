@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_BSP_BSPBRANCH
-#define H_HESP_BSP_BSPBRANCH
+#ifndef H_HESP_LEVEL_BSP_BSPBRANCH
+#define H_HESP_LEVEL_BSP_BSPBRANCH
 
 #include "BSPNode.h"
 

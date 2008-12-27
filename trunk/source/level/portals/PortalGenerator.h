@@ -3,14 +3,14 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_BSP_PORTALGENERATOR
-#define H_HESP_BSP_PORTALGENERATOR
+#ifndef H_HESP_LEVEL_PORTALS_PORTALGENERATOR
+#define H_HESP_LEVEL_PORTALS_PORTALGENERATOR
 
 #include <cmath>
 #include <list>
 
+#include <source/level/bsp/BSPTree.h>
 #include <source/math/geom/Polygon.h>
-#include "BSPTree.h"
 #include "Portal.h"
 
 namespace hesp {

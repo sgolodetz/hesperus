@@ -12,7 +12,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/bsp/VisCalculator.h>
+#include <source/level/vis/VisCalculator.h>
 #include <source/math/geom/GeomUtil.h>
 using namespace hesp;
 

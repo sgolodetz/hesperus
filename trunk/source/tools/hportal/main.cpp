@@ -12,8 +12,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/bsp/BSPTree.h>
-#include <source/bsp/PortalGenerator.h>
+#include <source/level/bsp/BSPTree.h>
+#include <source/level/portals/PortalGenerator.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;

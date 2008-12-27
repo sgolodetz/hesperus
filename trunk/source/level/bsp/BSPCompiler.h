@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_BSP_BSPCOMPILER
-#define H_HESP_BSP_BSPCOMPILER
+#ifndef H_HESP_LEVEL_BSP_BSPCOMPILER
+#define H_HESP_LEVEL_BSP_BSPCOMPILER
 
 #include <source/math/geom/Polygon.h>
 #include "BSPTree.h"

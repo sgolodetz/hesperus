@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include <source/bsp/BSPCompiler.h>
+#include <source/level/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;

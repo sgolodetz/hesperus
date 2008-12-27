@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_BSP_ANTIPENUMBRA
-#define H_HESP_BSP_ANTIPENUMBRA
+#ifndef H_HESP_LEVEL_VIS_ANTIPENUMBRA
+#define H_HESP_LEVEL_VIS_ANTIPENUMBRA
 
 #include <vector>
 
@@ -13,7 +13,7 @@ using boost::shared_ptr;
 
 #include <source/math/geom/GeomUtil.h>
 #include <source/math/vectors/Vector3.h>
-#include "Portal.h"
+#include <source/level/portals/Portal.h>
 
 namespace hesp {
 

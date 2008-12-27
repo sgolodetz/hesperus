@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_BSP_VISTABLE
-#define H_HESP_BSP_VISTABLE
+#ifndef H_HESP_LEVEL_VIS_VISTABLE
+#define H_HESP_LEVEL_VIS_VISTABLE
 
 #include <vector>
 
