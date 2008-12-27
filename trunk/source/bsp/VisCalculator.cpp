@@ -118,7 +118,7 @@ void VisCalculator::calculate_portal_pvs(const Portal_Ptr& originalSource)
 				Portal_Ptr clippedGen = ap.clip(generator);
 				if(clippedGen)
 				{
-					Antipenumbra reverseAp(generator, target);
+					Antipenumbra reverseAp(clippedGen->flipped_winding(), target);
 					Portal_Ptr clippedSrc = reverseAp.clip(source);
 					if(clippedSrc)
 					{

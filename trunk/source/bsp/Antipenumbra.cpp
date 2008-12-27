@@ -10,7 +10,8 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 /**
 Constructs an antipenumbra from a source portal to a target portal.
-For each antipenumbral plane p, it is guaranteed to be the case that:
+For each antipenumbral plane p (except the source plane), it is
+guaranteed to be the case that:
 
 - classify_polygon_against_plane(*source, p) == CP_BACK
 - classify_polygon_against_plane(*target, p) == CP_FRONT
@@ -20,6 +21,8 @@ For each antipenumbral plane p, it is guaranteed to be the case that:
 */
 Antipenumbra::Antipenumbra(const Portal_Ptr& source, const Portal_Ptr& target)
 {
+	m_planes.push_back(make_plane(*source));
+
 	// Note: In both cases here, source lies behind the generated planes and target lies in front of them.
 	add_clip_planes(source, target, CP_BACK);	// add planes from source to target, with source behind them
 	add_clip_planes(target, source, CP_FRONT);	// add planes from target to source, with target in front of them
