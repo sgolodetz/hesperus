@@ -463,6 +463,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\bsp\LightmapGenerator.h"
+					>
+				</File>
+				<File
 					RelativePath="..\bsp\Portal.h"
 					>
 				</File>
