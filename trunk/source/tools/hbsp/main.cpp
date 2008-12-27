@@ -14,13 +14,6 @@
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
-//#################### ENUMERATIONS ####################
-enum GeomType
-{
-	COLLISION,
-	RENDERING
-};
-
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
 {
@@ -65,11 +58,6 @@ int main(int argc, char *argv[])
 
 	const std::vector<std::string> args(argv, argv+argc);
 
-	GeomType geomType;
-	if(args[1] == "-r") geomType = RENDERING;
-	else if(args[1] == "-c") geomType = COLLISION;
-	else quit_with_usage();
-
 	std::string inputFilename = args[2];
 	std::string outputFilename = args[3];
 
@@ -82,19 +70,9 @@ int main(int argc, char *argv[])
 		catch(bad_lexical_cast&)	{ quit_with_usage(); }
 	}
 
-	switch(geomType)
-	{
-		case COLLISION:
-		{
-			run_compiler<CollisionPolygon>(inputFilename, outputFilename, weight);
-			break;
-		}
-		case RENDERING:
-		{
-			run_compiler<RenderingPolygon>(inputFilename, outputFilename, weight);
-			break;
-		}
-	}
+	if(args[1] == "-r") run_compiler<RenderingPolygon>(inputFilename, outputFilename, weight);
+	else if(args[1] == "-c") run_compiler<CollisionPolygon>(inputFilename, outputFilename, weight);
+	else quit_with_usage();
 
 	return 0;
 }

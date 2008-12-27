@@ -18,13 +18,6 @@ using boost::lexical_cast;
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
-//#################### ENUMERATIONS ####################
-enum GeomType
-{
-	COLLISION,
-	RENDERING
-};
-
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
 {
@@ -92,27 +85,12 @@ int main(int argc, char *argv[])
 
 	const std::vector<std::string> args(argv, argv+argc);
 
-	GeomType geomType;
-	if(args[1] == "-r") geomType = RENDERING;
-	else if(args[1] == "-c") geomType = COLLISION;
-	else quit_with_usage();
-
 	std::string inputFilename = args[2];
 	std::string outputFilename = args[3];
 
-	switch(geomType)
-	{
-		case COLLISION:
-		{
-			run_generator<CollisionPolygon>(inputFilename, outputFilename);
-			break;
-		}
-		case RENDERING:
-		{
-			run_generator<RenderingPolygon>(inputFilename, outputFilename);
-			break;
-		}
-	}
+	if(args[1] == "-r") run_generator<RenderingPolygon>(inputFilename, outputFilename);
+	else if(args[1] == "-c") run_generator<CollisionPolygon>(inputFilename, outputFilename);
+	else quit_with_usage();
 
 	return 0;
 }
