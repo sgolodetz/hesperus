@@ -17,6 +17,7 @@ struct Light
 {
 	//#################### PUBLIC VARIABLES ####################
 	Vector3d position;
+	// TODO: colour, intensity, etc.
 
 	//#################### CONSTRUCTORS ####################
 public:

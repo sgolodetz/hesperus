@@ -19,20 +19,22 @@ class LightmapGenerator
 {
 	//#################### TYPEDEFS ####################
 private:
-	// TODO
+	typedef std::vector<TexturedPolygon_Ptr> TPolyVector;
+	typedef std::vector<TexturedLitPolygon_Ptr> TLPolyVector;
+	typedef shared_ptr<TLPolyVector> TLPolyVector_Ptr;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<TexturedPolygon_Ptr> m_inputPolygons;
+	TPolyVector m_inputPolygons;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	LightmapGenerator(const std::vector<TexturedPolygon_Ptr>& inputPolygons, const std::vector<Light>& lights,
-					  const BSPTree_Ptr& tree, const LeafVisTable_Ptr& vis);
+	LightmapGenerator(const TPolyVector& inputPolygons, const std::vector<Light>& lights, const BSPTree_Ptr& tree, const LeafVisTable_Ptr& leafVis);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	// TODO
+	// TODO: lightmaps()
+	TLPolyVector_Ptr lit_polygons() const;
 };
 
 }
