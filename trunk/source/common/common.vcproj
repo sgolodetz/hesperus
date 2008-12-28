@@ -330,6 +330,10 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\math\vectors\TexCoords.h"
+						>
+					</File>
+					<File
 						RelativePath="..\math\vectors\TexturedLitVector3d.h"
 						>
 					</File>
@@ -473,6 +477,10 @@
 						RelativePath="..\level\lighting\LightmapGenerator.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\lighting\LightmapGrid.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -491,6 +499,14 @@
 					</File>
 					<File
 						RelativePath="..\level\lighting\LightmapGrid.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\level\lighting\LightmapGrid.tpp"
 						>
 					</File>
 				</Filter>
