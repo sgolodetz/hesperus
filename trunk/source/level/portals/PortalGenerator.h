@@ -62,7 +62,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static std::pair<std::list<Portal_Ptr>,bool> clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE);
+	static std::list<Portal_Ptr> clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE);
 
 	static std::list<Portal_Ptr> clip_portal_to_tree(const Portal_Ptr& portal, const BSPTree_Ptr& tree);
 
