@@ -21,6 +21,7 @@ class LightmapGenerator
 {
 	//#################### TYPEDEFS ####################
 private:
+	typedef std::vector<LightmapGrid_Ptr> LightmapGridVector;
 	typedef std::vector<Lightmap_Ptr> LightmapVector;
 	typedef shared_ptr<LightmapVector> LightmapVector_Ptr;
 	typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
@@ -37,7 +38,7 @@ private:
 	LeafVisTable_Ptr m_leafVis;
 
 	// Intermediate data
-	std::vector<LightmapGrid_Ptr> m_grids;
+	LightmapGridVector m_grids;
 
 	// Output data
 	TexLitPolyVector_Ptr m_outputPolygons;
@@ -49,9 +50,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void generate_lightmaps();
 	LightmapVector_Ptr lightmaps() const;
 	TexLitPolyVector_Ptr lit_polygons() const;
-	void run();
 
 	//#################### PRIVATE METHODS ####################
 private:
