@@ -467,6 +467,14 @@
 				Name="lighting"
 				>
 				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\lighting\LightmapGenerator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
 					Name=".h"
 					>
 					<File
