@@ -474,7 +474,15 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\lighting\Lightmap.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\lighting\LightmapGenerator.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\lighting\LightmapGrid.h"
 						>
 					</File>
 				</Filter>
