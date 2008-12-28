@@ -116,32 +116,13 @@ std::pair<std::list<Portal_Ptr>,bool> PortalGenerator::clip_portal_to_subtree(co
 			{
 				// Note: The leaf links for the two half polygons are inherited from the original polygon here.
 				SplitResults<Vector3d,PortalInfo> sr = split_polygon(*portal, *branch->splitter());
-				std::pair<std::list<Portal_Ptr>,bool> frontResult = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
-				std::pair<std::list<Portal_Ptr>,bool> backResult = clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal);
+
+				std::list<Portal_Ptr> frontResult = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal).first;
+				std::list<Portal_Ptr> backResult = clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal).first;
 
 				std::list<Portal_Ptr> ret;
-
-				// If both halves of the portal survived, then the original portal can be preserved
-				// (with its leaf link suitably updated, of course).
-				if(frontResult.second && backResult.second)
-				{
-					Portal_Ptr frontPortal = frontResult.first.front();
-					Portal_Ptr backPortal = backResult.first.front();
-
-					// Make sure that the two halves of the portal link the same leaves.
-					if(frontPortal->auxiliary_data() == backPortal->auxiliary_data())
-					{
-						// Copy the leaf link across to the original portal and return that
-						// in place of the two halves.
-						portal->auxiliary_data() = frontPortal->auxiliary_data();
-						ret.push_back(portal);
-						return std::make_pair(ret, true);
-					}
-				}
-
-				// If we get here, one or both halves of the portal must have been clipped.
-				ret.splice(ret.end(), frontResult.first);
-				ret.splice(ret.end(), backResult.first);
+				ret.splice(ret.end(), frontResult);
+				ret.splice(ret.end(), backResult);
 				return std::make_pair(ret, false);
 			}
 		}
