@@ -254,13 +254,40 @@ shared_ptr<Polygon<Vector3d,AuxData> > make_universe_polygon(const Plane& plane,
 }
 
 /**
-TODO
+Determines whether or not p is inside poly (including its edges).
+
+@param p		A point in the plane of poly
+@param poly		A polygon
+@return			true, if p is inside poly, or false otherwise
 */
 template <typename Vert, typename AuxData>
 bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly)
 {
-	// NYI
-	throw 23;
+	assert(classify_point_against_plane(p, make_plane(poly)) == CP_COPLANAR);
+
+	const Vector3d zero(0,0,0);
+
+	std::vector<Vector3d> relVecs;	// relative to p
+	int vertCount = poly.vertex_count();
+	for(int i=0; i<vertCount; ++i)
+	{
+		relVecs[i] = Vector3d(poly.vertex(i)) - p;
+		if(relVecs[i].length_squared() < EPSILON*EPSILON)
+		{
+			// p is one of the vertices of poly
+			return true;
+		}
+		else relVecs[i].normalize();
+	}
+
+	double angleSum = 0;
+	for(int i=0; i<vertCount; ++i)
+	{
+		int j = (i+1)%vertCount;
+		angleSum += acos(relVecs[i].dot(relVecs[j]));
+	}
+
+	return fabs(angleSum - 2*PI) < EPSILON;
 }
 
 /**
