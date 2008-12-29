@@ -22,7 +22,7 @@ LightmapGrid::LightmapGrid(const Polygon<Vert,AuxData>& poly, std::vector<TexCoo
 	AxisPlane bestAxisPlane = find_best_axis_plane(poly.normal());
 	std::vector<Vector2d> projectedVertices = project_vertices_onto(poly, bestAxisPlane);
 	make_planar_grid(projectedVertices, bestAxisPlane, vertexLightmapCoords);
-	project_grid_onto_plane(make_plane(poly));
+	project_grid_onto_plane(make_plane(poly), bestAxisPlane);
 }
 
 /**
