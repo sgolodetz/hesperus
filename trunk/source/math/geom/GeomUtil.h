@@ -56,6 +56,9 @@ shared_ptr<Polygon<Vector3d,AuxData> > make_universe_polygon(const Plane& plane,
 Vector3d nearest_point_in_plane(const Vector3d& p, const Plane& plane);
 
 template <typename Vert, typename AuxData>
+bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly);
+
+template <typename Vert, typename AuxData>
 SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, const Plane& plane);
 
 template <typename Vert, typename AuxData>

@@ -60,7 +60,8 @@ private:
 
 	static Vector3d planar_to_real(const Vector2d& v, AxisPlane axisPlane);
 
-	void project_grid_onto_plane(const Plane& plane, AxisPlane axisPlane);
+	template <typename Vert, typename AuxData>
+	void project_grid_onto_polygon(const Polygon<Vert,AuxData>& poly, AxisPlane axisPlane);
 
 	static Vector2d project_vertex_onto(const Vector3d& v, AxisPlane axisPlane);
 

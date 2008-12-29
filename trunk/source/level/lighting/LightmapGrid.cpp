@@ -135,47 +135,6 @@ Vector3d LightmapGrid::planar_to_real(const Vector2d& v, AxisPlane axisPlane)
 }
 
 /**
-Project the planar grid (in the specified axis plane) onto the specified plane
-(in practice, the plane of the original polygon).
-
-@param plane		The plane of the original polygon
-@param axisPlane	The axis plane in which the planar grid lies
-*/
-void LightmapGrid::project_grid_onto_plane(const Plane& plane, AxisPlane axisPlane)
-{
-	Vector3d dir;
-	switch(axisPlane)
-	{
-		case YZ_PLANE:
-			dir = Vector3d(1,0,0);
-			break;
-		case XZ_PLANE:
-			dir = Vector3d(0,1,0);
-			break;
-		default:	// case XY_PLANE
-			dir = Vector3d(0,0,1);
-			break;
-	}
-
-	int rows = static_cast<int>(m_grid.size());
-	int cols = static_cast<int>(m_grid[0].size());
-
-	for(int i=0; i<rows; ++i)
-	{
-		for(int j=0; j<cols; ++j)
-		{
-			Vector3d& s = m_grid[i][j].position;
-			s = determine_line_intersection_with_plane(s, dir, plane).first;
-
-			// TODO: Check whether the grid point is within the polygon.
-		}
-	}
-
-	// NYI
-	throw 23;
-}
-
-/**
 Project the vertex onto a given axis plane.
 
 @param v		The vertex

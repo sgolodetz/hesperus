@@ -254,6 +254,16 @@ shared_ptr<Polygon<Vector3d,AuxData> > make_universe_polygon(const Plane& plane,
 }
 
 /**
+TODO
+*/
+template <typename Vert, typename AuxData>
+bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly)
+{
+	// NYI
+	throw 23;
+}
+
+/**
 Splits the polygon across the specified plane.
 
 @param poly							The polygon to split across the plane
