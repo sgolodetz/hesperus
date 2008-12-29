@@ -61,7 +61,7 @@ void LightmapGrid::make_planar_grid(const std::vector<Vector2d>& projectedVertic
 	minX = minY = INT_MAX;
 	maxX = maxY = INT_MIN;
 
-	int vertCount = static_cast<int>(projectedVertices.size());
+	const int vertCount = static_cast<int>(projectedVertices.size());
 	for(int i=0; i<vertCount; ++i)
 	{
 		const double& x = projectedVertices[i].x;
@@ -96,19 +96,22 @@ void LightmapGrid::make_planar_grid(const std::vector<Vector2d>& projectedVertic
 	for(int i=0; i<=lumelsY; ++i)
 	{
 		m_grid[i].reserve(lumelsX+1);
-		double y = minY + i * height / lumelsY;
+		double y = minY + i * lumelHeight;
 		for(int j=0; j<=lumelsX; ++j)
 		{
-			double x = minX + j * width / lumelsX;
+			double x = minX + j * lumelWidth;
 			m_grid[i].push_back(planar_to_real(Vector2d(x,y), axisPlane));
 		}
 	}
 
 	// Calculate the vertex lightmap coordinates.
-	// TODO
-
-	// NYI
-	throw 23;
+	vertexLightmapCoords.reserve(vertCount);
+	for(int i=0; i<vertCount; ++i)
+	{
+		double lu = (projectedVertices[i].x - minX) / width;
+		double lv = (projectedVertices[i].y - minY) / height;
+		vertexLightmapCoords.push_back(TexCoords(lu, lv));
+	}
 }
 
 /**
