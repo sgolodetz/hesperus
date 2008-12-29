@@ -267,11 +267,12 @@ bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly)
 
 	const Vector3d zero(0,0,0);
 
-	std::vector<Vector3d> relVecs;	// relative to p
+	std::vector<Vector3d> relVecs;	// position of vertices relative to p
 	int vertCount = poly.vertex_count();
+	relVecs.reserve(vertCount);
 	for(int i=0; i<vertCount; ++i)
 	{
-		relVecs[i] = Vector3d(poly.vertex(i)) - p;
+		relVecs.push_back(Vector3d(poly.vertex(i)) - p);
 		if(relVecs[i].length_squared() < EPSILON*EPSILON)
 		{
 			// p is one of the vertices of poly
