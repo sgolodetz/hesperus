@@ -14,6 +14,7 @@ using boost::shared_ptr;
 #include <source/level/bsp/BSPTree.h>
 #include <source/math/geom/Polygon.h>
 #include <source/math/vectors/TexCoords.h>
+#include <source/math/vectors/Vector2d.h>
 #include "Light.h"
 #include "Lightmap.h"
 
@@ -53,15 +54,17 @@ public:
 private:
 	static Axis find_best_axis(const Vector3d& n);
 
-	void make_planar_grid(const std::vector<Vector3d>& projectedVertices, std::vector<TexCoords>& vertexLightmapCoords);
+	void make_planar_grid(const std::vector<Vector2d>& projectedVertices, Axis axis, std::vector<TexCoords>& vertexLightmapCoords);
+
+	static Vector3d planar_to_real(const Vector2d& v, Axis axis);
 
 	template <typename Vert, typename AuxData>
 	void project_grid_onto_polygon(const Polygon<Vert,AuxData>& poly);
 
-	static Vector3d project_vertex_onto(const Vector3d& v, Axis axis);
+	static Vector2d project_vertex_onto(const Vector3d& v, Axis axis);
 
 	template <typename Vert, typename AuxData>
-	static std::vector<Vector3d> project_vertices_onto(const Polygon<Vert,AuxData>& poly, Axis axis);
+	static std::vector<Vector2d> project_vertices_onto(const Polygon<Vert,AuxData>& poly, Axis axis);
 };
 
 //#################### TYPEDEFS ####################
