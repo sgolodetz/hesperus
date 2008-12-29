@@ -56,11 +56,38 @@ lightmap coordinates for each vertex.
 */
 void LightmapGrid::make_planar_grid(const std::vector<Vector2d>& projectedVertices, AxisPlane axisPlane, std::vector<TexCoords>& vertexLightmapCoords)
 {
+	// Determine a 2D AABB for the projected vertices.
 	double minX, minY, maxX, maxY;
 	minX = minY = INT_MAX;
 	maxX = maxY = INT_MIN;
 
+	int vertCount = static_cast<int>(projectedVertices.size());
+	for(int i=0; i<vertCount; ++i)
+	{
+		const double& x = projectedVertices[i].x;
+		const double& y = projectedVertices[i].y;
+		if(x < minX) minX = x;
+		if(x > maxX) maxX = x;
+		if(y < minY) minY = y;
+		if(y > maxY) maxY = y;
+	}
 
+	double width = maxX - minX, height = maxY - minY;
+
+	// Figure out a good size for the lightmap. Start with 8x8 lumels, and subdivide if each lumel would be too large.
+	// (Note for the curious: lumel is short for 'luminance element'.)
+	const double MAX_LUMEL_SIZE = 0.5;
+	int lumelsX = 8;
+	int lumelsY = 8;
+	double lumelWidth = width / lumelsX, lumelHeight = height / lumelsY;
+	while(lumelWidth > MAX_LUMEL_SIZE && lumelsX < 64) lumelsX *= 2;
+	while(lumelHeight > MAX_LUMEL_SIZE && lumelsY < 64) lumelsY *= 2;
+
+	// Construct the planar lightmap grid.
+	// TODO
+
+	// Calculate the vertex lightmap coordinates.
+	// TODO
 
 	// NYI
 	throw 23;
