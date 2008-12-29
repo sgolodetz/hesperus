@@ -24,9 +24,9 @@ class LightmapGrid
 {
 	//#################### ENUMERATIONS ####################
 private:
-	enum Axis
+	enum AxisPlane
 	{
-		X_AXIS, Y_AXIS, Z_AXIS
+		YZ_PLANE, XZ_PLANE, XY_PLANE
 	};
 
 	//#################### NESTED CLASSES ####################
@@ -52,19 +52,19 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static Axis find_best_axis(const Vector3d& n);
+	static AxisPlane find_best_axis_plane(const Vector3d& n);
 
-	void make_planar_grid(const std::vector<Vector2d>& projectedVertices, Axis axis, std::vector<TexCoords>& vertexLightmapCoords);
+	void make_planar_grid(const std::vector<Vector2d>& projectedVertices, AxisPlane axisPlane, std::vector<TexCoords>& vertexLightmapCoords);
 
-	static Vector3d planar_to_real(const Vector2d& v, Axis axis);
+	static Vector3d planar_to_real(const Vector2d& v, AxisPlane axisPlane);
 
 	template <typename Vert, typename AuxData>
 	void project_grid_onto_polygon(const Polygon<Vert,AuxData>& poly);
 
-	static Vector2d project_vertex_onto(const Vector3d& v, Axis axis);
+	static Vector2d project_vertex_onto(const Vector3d& v, AxisPlane axisPlane);
 
 	template <typename Vert, typename AuxData>
-	static std::vector<Vector2d> project_vertices_onto(const Polygon<Vert,AuxData>& poly, Axis axis);
+	static std::vector<Vector2d> project_vertices_onto(const Polygon<Vert,AuxData>& poly, AxisPlane axisPlane);
 };
 
 //#################### TYPEDEFS ####################

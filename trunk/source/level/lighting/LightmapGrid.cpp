@@ -28,22 +28,22 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 Find the best axis plane onto which to project the polygon.
 
 @param n	The polygon's normal
-@return		The best axis
+@return		The best axis plane
 */
-LightmapGrid::Axis LightmapGrid::find_best_axis(const Vector3d& n)
+LightmapGrid::AxisPlane LightmapGrid::find_best_axis_plane(const Vector3d& n)
 {
 	double absX = fabs(n.x), absY = fabs(n.y), absZ = fabs(n.z);
 
-	Axis bestAxis = X_AXIS;
+	AxisPlane bestAxisPlane = YZ_PLANE;
 	double absLargest = absX;
 	if(absY > absLargest)
 	{
-		bestAxis = Y_AXIS;
+		bestAxisPlane = XZ_PLANE;
 		absLargest = absY;
 	}
-	if(absZ > absLargest) bestAxis = Z_AXIS;
+	if(absZ > absLargest) bestAxisPlane = XY_PLANE;
 
-	return bestAxis;
+	return bestAxisPlane;
 }
 
 /**
@@ -51,11 +51,17 @@ Makes an appropriately-sized grid around the projected vertices, and calculates
 lightmap coordinates for each vertex.
 
 @param projectedVertices		The projection of the original polygon's vertices onto the best axis plane
-@param axis						The axis plane
+@param axisPlane				The axis plane
 @param vertexLightmapCoords		Used to return lightmap coordinates for each vertex to the caller
 */
-void LightmapGrid::make_planar_grid(const std::vector<Vector2d>& projectedVertices, Axis axis, std::vector<TexCoords>& vertexLightmapCoords)
+void LightmapGrid::make_planar_grid(const std::vector<Vector2d>& projectedVertices, AxisPlane axisPlane, std::vector<TexCoords>& vertexLightmapCoords)
 {
+	double minX, minY, maxX, maxY;
+	minX = minY = INT_MAX;
+	maxX = maxY = INT_MIN;
+
+
+
 	// NYI
 	throw 23;
 }
@@ -63,45 +69,45 @@ void LightmapGrid::make_planar_grid(const std::vector<Vector2d>& projectedVertic
 /**
 Converts a vertex lying in one of the axis planes back into its 3D representation.
 
-@param v		The planar vertex
-@param axis		The axis plane
-@return			The 3D representation of the vertex
+@param v			The planar vertex
+@param axisPlane	The axis plane
+@return				The 3D representation of the vertex
 */
-Vector3d LightmapGrid::planar_to_real(const Vector2d& v, Axis axis)
+Vector3d LightmapGrid::planar_to_real(const Vector2d& v, AxisPlane axisPlane)
 {
-	switch(axis)
+	switch(axisPlane)
 	{
-		case X_AXIS:
+		case YZ_PLANE:
 			return Vector3d(0, v.x, v.y);
-		case Y_AXIS:
+		case XZ_PLANE:
 			return Vector3d(v.x, 0, v.y);
-		default:	// case Z_AXIS
+		default:	// case XY_PLANE
 			return Vector3d(v.x, v.y, 0);
 	}
 }
 
 /**
-Project the vertex onto a given axis.
+Project the vertex onto a given axis plane.
 
 @param v		The vertex
-@param axis		The axis
+@param axis		The axis plane
 @return			The projected vertex
 */
-Vector2d LightmapGrid::project_vertex_onto(const Vector3d& v, Axis axis)
+Vector2d LightmapGrid::project_vertex_onto(const Vector3d& v, AxisPlane axisPlane)
 {
-	switch(axis)
+	switch(axisPlane)
 	{
-		case X_AXIS:
+		case YZ_PLANE:
 		{
 			// Project onto x = 0, i.e. the y-z plane.
 			return Vector2d(v.y, v.z);
 		}
-		case Y_AXIS:
+		case XZ_PLANE:
 		{
 			// Project onto y = 0, i.e. the x-z plane.
 			return Vector2d(v.x, v.z);
 		}
-		default:	// case Z_AXIS
+		default:	// case XY_PLANE
 		{
 			// Project onto z = 0, i.e. the x-y plane.
 			return Vector2d(v.x, v.y);
