@@ -46,6 +46,13 @@ LightmapGrid::Axis LightmapGrid::find_best_axis(const Vector3d& n)
 	return bestAxis;
 }
 
+/**
+Makes an appropriately-sized grid around the projected vertices, and calculates
+lightmap coordinates for each vertex.
+
+@param projectedVertices		The projection of the original polygon's vertices onto the best axis plane
+@param vertexLightmapCoords		Used to return lightmap coordinates for each vertex to the caller
+*/
 void LightmapGrid::make_planar_grid(const std::vector<Vector3d>& projectedVertices, std::vector<TexCoords>& vertexLightmapCoords)
 {
 	// NYI
