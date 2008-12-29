@@ -322,6 +322,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\math\vectors\Vector2d.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\math\vectors\Vector3.cpp"
 						>
 					</File>
@@ -339,6 +343,10 @@
 					</File>
 					<File
 						RelativePath="..\math\vectors\TexturedVector3d.h"
+						>
+					</File>
+					<File
+						RelativePath="..\math\vectors\Vector2d.h"
 						>
 					</File>
 					<File
