@@ -21,6 +21,13 @@ namespace hesp {
 
 class LightmapGrid
 {
+	//#################### ENUMERATIONS ####################
+private:
+	enum Axis
+	{
+		X_AXIS, Y_AXIS, Z_AXIS
+	};
+
 	//#################### NESTED CLASSES ####################
 private:
 	struct GridPoint
@@ -33,14 +40,28 @@ private:
 private:
 	std::vector<std::vector<GridPoint> > m_grid;
 
-	//#################### STATIC FACTORY METHODS ####################
+	//#################### CONSTRUCTORS ####################
 public:
 	template <typename Vert, typename AuxData>
-	static LightmapGrid construct(const Polygon<Vert,AuxData>& poly, std::vector<TexCoords>& vertexLightmapCoords);
+	LightmapGrid(const Polygon<Vert,AuxData>& poly, std::vector<TexCoords>& vertexLightmapCoords);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	Lightmap_Ptr lightmap_from_light(const Light& light, const BSPTree_Ptr& tree) const;
+
+	//#################### PRIVATE METHODS ####################
+private:
+	static Axis find_best_axis(const Vector3d& n);
+
+	void make_planar_grid(const std::vector<Vector3d>& projectedVertices, std::vector<TexCoords>& vertexLightmapCoords);
+
+	template <typename Vert, typename AuxData>
+	void project_grid_onto_polygon(const Polygon<Vert,AuxData>& poly);
+
+	static Vector3d project_vertex_onto(const Vector3d& v, Axis axis);
+
+	template <typename Vert, typename AuxData>
+	static std::vector<Vector3d> project_vertices_onto(const Polygon<Vert,AuxData>& poly, Axis axis);
 };
 
 //#################### TYPEDEFS ####################

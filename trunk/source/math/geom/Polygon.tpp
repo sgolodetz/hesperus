@@ -3,16 +3,28 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
+#include <source/exceptions/InvalidParameterException.h>
+
 #define Polygon_HEADER	template <typename Vert, typename AuxData>
 #define Polygon_THIS	Polygon<Vert,AuxData>
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
+/**
+Constructs a polygon from the specified vertices and auxiliary data.
+
+- |vertices| >= 3
+
+@param vertices						The vertices
+@param auxData						The auxiliary data
+@throws InvalidParameterException	If the precondition is violated
+*/
 Polygon_HEADER
 Polygon_THIS::Polygon(const std::vector<Vert>& vertices, const AuxData& auxData)
 :	m_vertices(vertices), m_auxData(auxData)
 {
+	if(vertices.size() < 3) throw InvalidParameterException("A polygon must have at least 3 vertices");
 	calculate_normal();
 }
 
