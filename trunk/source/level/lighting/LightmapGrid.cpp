@@ -80,11 +80,29 @@ void LightmapGrid::make_planar_grid(const std::vector<Vector2d>& projectedVertic
 	int lumelsX = 8;
 	int lumelsY = 8;
 	double lumelWidth = width / lumelsX, lumelHeight = height / lumelsY;
-	while(lumelWidth > MAX_LUMEL_SIZE && lumelsX < 64) lumelsX *= 2;
-	while(lumelHeight > MAX_LUMEL_SIZE && lumelsY < 64) lumelsY *= 2;
+	while(lumelWidth > MAX_LUMEL_SIZE && lumelsX < 64)
+	{
+		lumelWidth /= 2;
+		lumelsX *= 2;
+	}
+	while(lumelHeight > MAX_LUMEL_SIZE && lumelsY < 64)
+	{
+		lumelHeight /= 2;
+		lumelsY *= 2;
+	}
 
 	// Construct the planar lightmap grid.
-	// TODO
+	m_grid.resize(lumelsY+1);
+	for(int i=0; i<=lumelsY; ++i)
+	{
+		m_grid[i].reserve(lumelsX+1);
+		double y = minY + i * height / lumelsY;
+		for(int j=0; j<=lumelsX; ++j)
+		{
+			double x = minX + j * width / lumelsX;
+			m_grid[i].push_back(planar_to_real(Vector2d(x,y), axisPlane));
+		}
+	}
 
 	// Calculate the vertex lightmap coordinates.
 	// TODO
@@ -111,6 +129,14 @@ Vector3d LightmapGrid::planar_to_real(const Vector2d& v, AxisPlane axisPlane)
 		default:	// case XY_PLANE
 			return Vector3d(v.x, v.y, 0);
 	}
+}
+
+void LightmapGrid::project_grid_onto_plane(const Plane& plane)
+{
+	// TODO: Check whether each grid point is within the polygon.
+
+	// NYI
+	throw 23;
 }
 
 /**

@@ -5,6 +5,8 @@
 
 #include <cmath>
 
+#include <source/math/geom/GeomUtil.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -20,14 +22,7 @@ LightmapGrid::LightmapGrid(const Polygon<Vert,AuxData>& poly, std::vector<TexCoo
 	AxisPlane bestAxisPlane = find_best_axis_plane(poly.normal());
 	std::vector<Vector2d> projectedVertices = project_vertices_onto(poly, bestAxisPlane);
 	make_planar_grid(projectedVertices, bestAxisPlane, vertexLightmapCoords);
-	project_grid_onto_polygon(poly);
-}
-
-template <typename Vert, typename AuxData>
-void LightmapGrid::project_grid_onto_polygon(const Polygon<Vert,AuxData>& poly)
-{
-	// NYI
-	throw 23;
+	project_grid_onto_plane(make_plane(poly));
 }
 
 /**
