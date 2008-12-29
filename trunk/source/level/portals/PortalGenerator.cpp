@@ -39,7 +39,7 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 	{
 		const BSPLeaf *leaf = subtreeRoot->as_leaf();
 
-		if(leaf->is_solid()) return std::list<Portal_Ptr>();
+		if(leaf->is_solid()) return PortalList();
 
 		switch(relativeToPortal)
 		{
@@ -57,10 +57,10 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 			{
 				// The portal fragment is in the middle of a leaf (this is not an error, but we do need to
 				// discard the portal fragment as we'd otherwise have a portal linking a leaf to itself).
-				return std::list<Portal_Ptr>();
+				return PortalList();
 			}
 		}
-		std::list<Portal_Ptr> ret;
+		PortalList ret;
 		ret.push_back(portal);
 		return ret;
 	}
@@ -87,9 +87,9 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 					fromSubtree = branch->left();
 					toSubtree = branch->right();
 				}
-				std::list<Portal_Ptr> fromPortals = clip_portal_to_subtree(portal, fromSubtree, CP_BACK);
-				std::list<Portal_Ptr> ret;
-				for(std::list<Portal_Ptr>::const_iterator it=fromPortals.begin(), iend=fromPortals.end(); it!=iend; ++it)
+				PortalList fromPortals = clip_portal_to_subtree(portal, fromSubtree, CP_BACK);
+				PortalList ret;
+				for(PortalList::const_iterator it=fromPortals.begin(), iend=fromPortals.end(); it!=iend; ++it)
 				{
 					ret.splice(ret.end(), clip_portal_to_subtree(*it, toSubtree, CP_FRONT));
 				}
@@ -104,10 +104,10 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 				// Note: The leaf links for the two half polygons are inherited from the original polygon here.
 				SplitResults<Vector3d,PortalInfo> sr = split_polygon(*portal, *branch->splitter());
 
-				std::list<Portal_Ptr> frontResult = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
-				std::list<Portal_Ptr> backResult = clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal);
+				PortalList frontResult = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
+				PortalList backResult = clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal);
 
-				std::list<Portal_Ptr> ret;
+				PortalList ret;
 				ret.splice(ret.end(), frontResult);
 				ret.splice(ret.end(), backResult);
 				return ret;
