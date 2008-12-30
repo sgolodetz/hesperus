@@ -121,6 +121,25 @@ the light can see.
 */
 void LightmapGenerator::process_light(int n)
 {
+	assert(m_tree->empty_leaf_count() == m_leafVis->size());
+
+	// Determine the BSP leaf in which the light resides.
+	const Light& light = m_lights[n];
+	int lightLeaf = m_tree->find_leaf_index(light.position);
+
+	// If the light is in a wall, we can simply ignore it.
+	if(lightLeaf >= m_tree->empty_leaf_count()) return;
+
+	int emptyLeafCount = m_leafVis->size();
+	for(int i=0; i<emptyLeafCount; ++i)
+	{
+		// If the light can potentially see this leaf, we need to process the polygons in it.
+		if((*m_leafVis)(lightLeaf, i))
+		{
+			
+		}
+	}
+
 	// NYI
 	throw 23;
 }
