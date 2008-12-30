@@ -6,19 +6,29 @@
 #ifndef H_HESP_LEVEL_LIGHTING_LIGHTMAP
 #define H_HESP_LEVEL_LIGHTING_LIGHTMAP
 
+#include <vector>
+
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
+
+#include <source/colours/Colour3d.h>
 
 namespace hesp {
 
 class Lightmap
 {
+	//#################### PRIVATE VARIABLES ####################
+private:
+	std::vector<std::vector<Colour3d> > m_lumels;
+
 	//#################### CONSTRUCTORS ####################
 public:
-	// TODO
+	Lightmap(int rows, int cols);
 
 	//#################### PUBLIC OPERATORS ####################
 public:
+	Colour3d& operator()(int row, int col);
+	const Colour3d& operator()(int row, int col) const;
 	Lightmap& operator+=(const Lightmap& rhs);
 
 	//#################### PUBLIC METHODS ####################

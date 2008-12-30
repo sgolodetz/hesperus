@@ -19,6 +19,44 @@ lights in the scene to make the final lightmap for the polygon.
 */
 Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree_Ptr& tree) const
 {
+	// First make the grid lightmap (this determines what light is falling on the four corners of each actual lumel).
+	int gridRows = static_cast<int>(m_grid.size());
+	int gridCols = static_cast<int>(m_grid[0].size());
+
+	Lightmap_Ptr gridLightmap(new Lightmap(gridRows, gridCols));
+	for(int r=0; r<gridRows; ++r)
+		for(int c=0; c<gridCols; ++c)
+		{
+			if(m_grid[r][c].withinPolygon)
+			{
+				const Vector3d& p = m_grid[r][c].position;
+				if(tree->line_of_sight(light.position, p))
+				{
+					// Use the light equation I = I_p . k_d . (N . L) . fAtt (see OUCL Computer Graphics notes - Set 8).
+					// In this, fAtt (the atmospheric attenuation coefficient) = min(1/(c1+c2.dL+c3.dL^2), 1), where
+					// c1, c2 and c3 are appropriately chosen constants and dL is the distance to the light.
+
+					const double Ip = 1.0, kd = 1.0;			// TODO: k_d (diffuse reflectivity coefficient) is a surface property, which we may or may not want to use.
+					const double c1 = 1.0, c2 = 0.0, c3 = 0.0;	// TODO: These settings mean there will be no atmospheric attenuation, but we can experiment later
+					const Vector3d& N = m_plane.normal();
+					Vector3d L = (light.position - p).normalize();
+
+					double NdotL = N.dot(L);
+					if(NdotL > 0)
+					{
+						double dL = p.distance(light.position);
+						double fAtt = std::min(1/(c1 + c2*dL + c3*dL*dL), 1.0);
+						double I = Ip * kd * NdotL * fAtt;
+
+						// TODO
+					}
+				}
+			}
+		}
+
+	// Now average the light falling on the four corners of each lumel to make the actual lightmap.
+	// TODO
+
 	// NYI
 	throw 23;
 }

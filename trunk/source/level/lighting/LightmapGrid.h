@@ -42,6 +42,7 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<std::vector<GridPoint> > m_grid;
+	Plane m_plane;
 
 	//#################### CONSTRUCTORS ####################
 public:

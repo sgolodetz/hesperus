@@ -620,6 +620,14 @@
 			Name="colours"
 			>
 			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\colours\Colour3d.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name=".h"
 				>
 				<File

@@ -3,6 +3,9 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
+#ifndef H_HESP_COLOURS_COLOUR3D
+#define H_HESP_COLOURS_COLOUR3D
+
 namespace hesp {
 
 struct Colour3d
@@ -15,4 +18,10 @@ struct Colour3d
 	Colour3d(double r_, double g_, double b_) : r(r_), g(g_), b(b_) {}
 };
 
+//#################### GLOBAL OPERATORS ####################
+Colour3d operator*(double factor, const Colour3d& c);
+Colour3d operator*(const Colour3d& c, double factor);
+
 }
+
+#endif

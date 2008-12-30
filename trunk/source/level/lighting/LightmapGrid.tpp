@@ -18,6 +18,7 @@ Constructs the lightmap grid for a polygon and calculates the lightmap coordinat
 */
 template <typename Vert, typename AuxData>
 LightmapGrid::LightmapGrid(const Polygon<Vert,AuxData>& poly, std::vector<TexCoords>& vertexLightmapCoords)
+:	m_plane(make_plane(poly))
 {
 	AxisPlane bestAxisPlane = find_best_axis_plane(poly.normal());
 	std::vector<Vector2d> projectedVertices = project_vertices_onto(poly, bestAxisPlane);
