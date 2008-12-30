@@ -20,6 +20,7 @@ class Lightmap
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<std::vector<Colour3d> > m_lumels;
+	int m_rows, m_cols;
 
 	//#################### CONSTRUCTORS ####################
 public:

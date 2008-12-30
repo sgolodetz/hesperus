@@ -5,11 +5,13 @@
 
 #include "Lightmap.h"
 
+#include <source/exceptions/InvalidParameterException.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Lightmap::Lightmap(int rows, int cols)
-:	m_lumels(rows)
+:	m_lumels(rows), m_rows(rows), m_cols(cols)
 {
 	for(int r=0; r<rows; ++r)
 	{
@@ -30,8 +32,18 @@ const Colour3d& Lightmap::operator()(int row, int col) const
 
 Lightmap& Lightmap::operator+=(const Lightmap& rhs)
 {
-	// NYI
-	throw 23;
+	if(m_rows != rhs.m_rows || m_cols != rhs.m_cols)
+		throw InvalidParameterException("Lightmaps are not of the same dimensions");
+
+	for(int r=0; r<m_rows; ++r)
+	{
+		for(int c=0; c<m_cols; ++c)
+		{
+			m_lumels[r][c] += rhs.m_lumels[r][c];
+		}
+	}
+
+	return *this;
 }
 
 }
