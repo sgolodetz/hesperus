@@ -616,6 +616,18 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="colours"
+			>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\colours\Colour3d.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
