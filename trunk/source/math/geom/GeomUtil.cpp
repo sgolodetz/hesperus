@@ -9,6 +9,30 @@ namespace hesp {
 
 //#################### GLOBAL FUNCTIONS ####################
 /**
+Classifies the line segment p1-p2 against the plane.
+
+@param p1		One endpoint of the line segment
+@param p2		The other endpoint of the line segment
+@param plane	The plane against which to classify the line segment
+@return			CP_BACK, if the line segment is behind the plane; CP_COPLANAR, if it is on the plane; CP_FRONT, if it is in front of the plane;
+				CP_STRADDLE, if it straddles the plane
+*/
+PlaneClassifier classify_linesegment_against_plane(const Vector3d& p1, const Vector3d& p2, const Plane& plane)
+{
+	PlaneClassifier cp1 = classify_point_against_plane(p1, plane);
+	PlaneClassifier cp2 = classify_point_against_plane(p2, plane);
+
+	bool backFlag = false, frontFlag = false;
+	if(cp1 == CP_BACK || cp2 == CP_BACK) backFlag = true;
+	if(cp1 == CP_FRONT || cp2 == CP_FRONT) frontFlag = true;
+
+	if(backFlag && frontFlag) return CP_STRADDLE;
+	else if(backFlag) return CP_BACK;
+	else if(frontFlag) return CP_FRONT;
+	else return CP_COPLANAR;
+}
+
+/**
 Classifies the point p against the plane.
 
 @param p		The point to be classified

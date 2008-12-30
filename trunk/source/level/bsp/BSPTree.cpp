@@ -81,6 +81,19 @@ const BSPLeaf *BSPTree::leaf(int n) const
 	else throw Exception("Leaf index out of range");
 }
 
+/**
+Determines whether or not there is line-of-sight between p1 and p2.
+
+@param p1	A point in the world
+@param p2	Another point in the world
+@return		true, if there is line-of-sight between the points, or false otherwise
+*/
+bool BSPTree::line_of_sight(const Vector3d& p1, const Vector3d& p2) const
+{
+	// NYI
+	throw 23;
+}
+
 BSPTree_Ptr BSPTree::load_postorder_text(std::istream& is)
 {
 	std::string line;

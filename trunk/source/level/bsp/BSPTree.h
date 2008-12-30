@@ -32,6 +32,7 @@ public:
 	int empty_leaf_count() const;
 	int find_leaf_index(const Vector3d& p) const;
 	const BSPLeaf *leaf(int n) const;
+	bool line_of_sight(const Vector3d& p1, const Vector3d& p2) const;
 	static BSPTree_Ptr load_postorder_text(std::istream& is);
 	void output_postorder_text(std::ostream& os) const;
 	BSPNode_Ptr root() const;
