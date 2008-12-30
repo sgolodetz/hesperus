@@ -49,15 +49,21 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	// Input data
+	int m_emptyLeafCount;
 	std::vector<Portal_Ptr> m_portals;
+
+	// Intermediate data
 	std::map<int,std::vector<int> > m_portalsFromLeaf;
 	ClassifierTable_Ptr m_classifiers;
 	PortalVisTable_Ptr m_portalVis;
+
+	// Output data
 	LeafVisTable_Ptr m_leafVis;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	VisCalculator(const std::vector<Portal_Ptr>& portals);
+	VisCalculator(int emptyLeafCount, const std::vector<Portal_Ptr>& portals);
 
 	//#################### PUBLIC METHODS ####################
 public:

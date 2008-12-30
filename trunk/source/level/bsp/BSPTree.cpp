@@ -28,6 +28,16 @@ BSPTree::BSPTree(const std::vector<BSPNode_Ptr>& nodes)
 
 //#################### PUBLIC METHODS ####################
 /**
+Returns the number of empty leaves in the tree.
+
+@return	As stated
+*/
+int BSPTree::empty_leaf_count() const
+{
+	return m_emptyLeafCount;
+}
+
+/**
 Finds the index of the leaf in which the specified point resides.
 
 @param p	The point

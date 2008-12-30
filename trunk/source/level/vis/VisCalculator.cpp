@@ -13,8 +13,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-VisCalculator::VisCalculator(const std::vector<Portal_Ptr>& portals)
-:	m_portals(portals)
+VisCalculator::VisCalculator(int emptyLeafCount, const std::vector<Portal_Ptr>& portals)
+:	m_emptyLeafCount(emptyLeafCount), m_portals(portals)
 {
 	// Fill in the portal indices: these will be needed later.
 	int portalCount = static_cast<int>(m_portals.size());
@@ -306,10 +306,9 @@ void VisCalculator::portal_to_leaf_vis()
 {
 	const int portalCount = static_cast<int>(m_portals.size());
 
-	const int leafCount = static_cast<int>(m_portalsFromLeaf.size());
-	m_leafVis.reset(new LeafVisTable(leafCount, LEAFVIS_NO));
+	m_leafVis.reset(new LeafVisTable(m_emptyLeafCount, LEAFVIS_NO));
 
-	for(int i=0; i<leafCount; ++i)
+	for(int i=0; i<m_emptyLeafCount; ++i)
 	{
 		// Leaf i can see itself, plus the union of whatever leaves its portals can see.
 		(*m_leafVis)(i, i) = LEAFVIS_YES;

@@ -75,6 +75,9 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	// Save the portals to the output file.
 	std::ofstream os(outputFilename.c_str());
 	if(os.fail()) quit_with_error("Could not open output file for writing");
+
+	os << tree->empty_leaf_count() << '\n';
+
 	std::vector<Portal_Ptr> vec(portals->begin(), portals->end());
 	write_polygons(os, vec);
 }

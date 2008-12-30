@@ -68,11 +68,20 @@ void run_calculator(const std::string& inputFilename, const std::string& outputF
 	std::ofstream os(outputFilename.c_str());
 	if(os.fail()) quit_with_error("Output file could not be opened for writing");
 
+	// Read the empty leaf count.
+	std::string line;
+	int emptyLeafCount;
+	try
+	{
+		std::getline(is, line);
+		emptyLeafCount = lexical_cast<int,std::string>(line);
+	}
+	catch(bad_lexical_cast&)	{ quit_with_error("The empty leaf count is not an integer"); }
+
 	// Read the input portals.
 	std::vector<Portal_Ptr> portals;
 	try
 	{
-		std::string line;
 		std::getline(is, line);
 		int portalCount = lexical_cast<int,std::string>(line);
 		load_polygons(is, portals, portalCount);
@@ -83,7 +92,7 @@ void run_calculator(const std::string& inputFilename, const std::string& outputF
 	is.close();
 
 	// Run the visibility calculator.
-	VisCalculator visCalc(portals);
+	VisCalculator visCalc(emptyLeafCount, portals);
 	LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
 
 	// Write the leaf visibility table to the output file.
