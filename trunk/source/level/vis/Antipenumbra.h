@@ -26,7 +26,6 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Antipenumbra(const Portal_Ptr& source, const Portal_Ptr& target);
-	Antipenumbra(const Vector3d& source, const Portal_Ptr& target);
 
 	//#################### PUBLIC METHODS ####################
 public:

@@ -28,22 +28,6 @@ Antipenumbra::Antipenumbra(const Portal_Ptr& source, const Portal_Ptr& target)
 	add_clip_planes(target, source, CP_FRONT);	// add planes from target to source, with target in front of them
 }
 
-/**
-Constructs an antipenumbra from a source point to a target portal.
-For each antipenumbral plane p, it is guaranteed to be the case that:
-
-- classify_point_against_plane(source, p) == CP_COPLANAR
-- classify_polygon_against_plane(*target, p) == CP_FRONT
-
-@param source	The source point
-@param target	The target portal
-*/
-Antipenumbra::Antipenumbra(const Vector3d& source, const Portal_Ptr& target)
-{
-	// NYI
-	throw 23;
-}
-
 //#################### PRIVATE METHODS ####################
 /**
 Adds clip planes which separate portal 'from' and portal 'to'. The classifier
