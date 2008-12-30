@@ -7,6 +7,10 @@
 
 namespace hesp {
 
-// TODO
+//#################### PUBLIC OPERATORS ####################
+TexturedLitVector3d::operator Vector3d() const
+{
+	return Vector3d(x,y,z);
+}
 
 }

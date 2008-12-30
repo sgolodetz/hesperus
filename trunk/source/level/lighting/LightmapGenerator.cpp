@@ -8,7 +8,7 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-LightmapGenerator::LightmapGenerator(const TexPolyVector_Ptr& inputPolygons, const std::vector<Light>& lights, const BSPTree_Ptr& tree, const LeafVisTable_Ptr& leafVis)
+LightmapGenerator::LightmapGenerator(const TexPolyVector& inputPolygons, const std::vector<Light>& lights, const BSPTree_Ptr& tree, const LeafVisTable_Ptr& leafVis)
 :	m_inputPolygons(inputPolygons), m_lights(lights), m_tree(tree), m_leafVis(leafVis)
 {}
 
@@ -56,14 +56,28 @@ void LightmapGenerator::clean_intermediate()
 }
 
 /**
-Constructs the lightmap grid for polygon i.
+Constructs the lightmap grid for polygon n.
 
-@param i	The index of the polygon for which to build a lightmap grid
+@param n	The index of the polygon for which to build a lightmap grid
 */
-void LightmapGenerator::construct_grid(int i)
+void LightmapGenerator::construct_grid(int n)
 {
-	// NYI
-	throw 23;
+	std::vector<TexCoords> vertexLightmapCoords;
+	m_grids[n].reset(new LightmapGrid(*m_inputPolygons[n], vertexLightmapCoords));
+
+	int vertCount = m_inputPolygons[n]->vertex_count();
+	std::vector<TexturedLitVector3d> vertices;
+	vertices.reserve(vertCount);
+	for(int i=0; i<vertCount; ++i)
+	{
+		const TexturedVector3d& v = m_inputPolygons[n]->vertex(i);
+		vertices.push_back(TexturedLitVector3d(v.x, v.y, v.z, v.u, v.v, vertexLightmapCoords[i].u, vertexLightmapCoords[i].v));
+	}
+
+	// Note:	We copy the texture across from the input polygon. We don't need to store a lightmap index
+	//			because lightmaps will be loaded into an array corresponding to the polygon array anyway
+	//			(there's one lightmap per polygon).
+	(*m_outputPolygons)[n].reset(new TexturedLitPolygon(vertices, m_inputPolygons[n]->auxiliary_data()));
 }
 
 /**
@@ -71,7 +85,8 @@ Constructs the lightmap grids for each polygon.
 */
 void LightmapGenerator::construct_grids()
 {
-	int polyCount = static_cast<int>(m_inputPolygons->size());
+	int polyCount = static_cast<int>(m_inputPolygons.size());
+	m_grids.resize(polyCount);
 	m_outputPolygons.reset(new TexLitPolyVector(polyCount));
 
 	for(int i=0; i<polyCount; ++i)
@@ -81,12 +96,12 @@ void LightmapGenerator::construct_grids()
 }
 
 /**
-Processes light i: this involves updating the lightmaps for all the polygons that
+Processes light n: this involves updating the lightmaps for all the polygons that
 the light can see.
 
-@param i	The index of the light to be processed
+@param n	The index of the light to be processed
 */
-void LightmapGenerator::process_light(int i)
+void LightmapGenerator::process_light(int n)
 {
 	// NYI
 	throw 23;

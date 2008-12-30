@@ -25,14 +25,13 @@ private:
 	typedef std::vector<Lightmap_Ptr> LightmapVector;
 	typedef shared_ptr<LightmapVector> LightmapVector_Ptr;
 	typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
-	typedef shared_ptr<TexPolyVector> TexPolyVector_Ptr;
 	typedef std::vector<TexturedLitPolygon_Ptr> TexLitPolyVector;
 	typedef shared_ptr<TexLitPolyVector> TexLitPolyVector_Ptr;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
 	// Input data
-	TexPolyVector_Ptr m_inputPolygons;
+	TexPolyVector m_inputPolygons;
 	std::vector<Light> m_lights;
 	BSPTree_Ptr m_tree;
 	LeafVisTable_Ptr m_leafVis;
@@ -46,7 +45,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	LightmapGenerator(const TexPolyVector_Ptr& inputPolygons, const std::vector<Light>& lights, const BSPTree_Ptr& tree, const LeafVisTable_Ptr& leafVis);
+	LightmapGenerator(const TexPolyVector& inputPolygons, const std::vector<Light>& lights, const BSPTree_Ptr& tree, const LeafVisTable_Ptr& leafVis);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -57,9 +56,9 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void clean_intermediate();
-	void construct_grid(int i);
+	void construct_grid(int n);
 	void construct_grids();
-	void process_light(int i);
+	void process_light(int n);
 	void process_lights();
 };
 
