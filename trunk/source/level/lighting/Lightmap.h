@@ -13,6 +13,16 @@ namespace hesp {
 
 class Lightmap
 {
+	//#################### CONSTRUCTORS ####################
+public:
+	// TODO
+
+	//#################### PUBLIC OPERATORS ####################
+public:
+	Lightmap& operator+=(const Lightmap& rhs);
+
+	//#################### PUBLIC METHODS ####################
+public:
 	// TODO
 };
 

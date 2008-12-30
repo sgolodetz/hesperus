@@ -21,6 +21,7 @@ void LightmapGenerator::generate_lightmaps()
 	if(!m_lightmaps)
 	{
 		construct_grids();
+		construct_ambient_lightmaps();
 		process_lights();
 		clean_intermediate();
 	}
@@ -53,6 +54,23 @@ Cleans up the intermediate data structures used during lightmap generation.
 void LightmapGenerator::clean_intermediate()
 {
 	m_grids.swap(LightmapGridVector());
+}
+
+/**
+Constructs the initial lightmaps based on the ambient light in the scene.
+*/
+void LightmapGenerator::construct_ambient_lightmaps()
+{
+	int polyCount = static_cast<int>(m_inputPolygons.size());
+	m_lightmaps.reset(new LightmapVector(polyCount));
+
+	for(int i=0; i<polyCount; ++i)
+	{
+		// TODO
+	}
+
+	// NYI
+	throw 23;
 }
 
 /**

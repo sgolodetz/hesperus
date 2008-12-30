@@ -6,6 +6,7 @@
 #ifndef H_HESP_LEVEL_BSP_BSPTREE
 #define H_HESP_LEVEL_BSP_BSPTREE
 
+#include <source/math/vectors/Vector3.h>
 #include "BSPLeaf.h"
 
 namespace hesp {
@@ -27,6 +28,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	int find_leaf_index(const Vector3d& p) const;
 	static BSPTree_Ptr load_postorder_text(std::istream& is);
 	void output_postorder_text(std::ostream& os) const;
 	BSPNode_Ptr root() const;

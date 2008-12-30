@@ -14,6 +14,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/math/geom/GeomUtil.h>
 #include "BSPBranch.h"
 
 namespace hesp {
@@ -26,6 +27,36 @@ BSPTree::BSPTree(const std::vector<BSPNode_Ptr>& nodes)
 }
 
 //#################### PUBLIC METHODS ####################
+/**
+Finds the index of the leaf in which the specified point resides.
+
+@param p	The point
+*/
+int BSPTree::find_leaf_index(const Vector3d& p) const
+{
+	BSPNode_Ptr cur = root();
+	while(!cur->is_leaf())
+	{
+		BSPBranch *branch = cur->as_branch();
+		switch(classify_point_against_plane(p, *branch->splitter()))
+		{
+			case CP_BACK:
+			{
+				cur = branch->right();
+				break;
+			}
+			default:	// CP_COPLANAR or CP_FRONT
+			{
+				cur = branch->left();
+				break;
+			}
+		}
+	}
+
+	BSPLeaf *leaf = cur->as_leaf();
+	return leaf->leaf_index();
+}
+
 BSPTree_Ptr BSPTree::load_postorder_text(std::istream& is)
 {
 	std::string line;
