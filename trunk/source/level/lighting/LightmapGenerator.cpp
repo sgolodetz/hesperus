@@ -136,12 +136,21 @@ void LightmapGenerator::process_light(int n)
 		// If the light can potentially see this leaf, we need to process the polygons in it.
 		if((*m_leafVis)(lightLeaf, i))
 		{
-			
+			const BSPLeaf *leaf = m_tree->leaf(i);
+			const std::vector<int>& polyIndices = leaf->polygon_indices();
+			for(std::vector<int>::const_iterator jt=polyIndices.begin(), jend=polyIndices.end(); jt!=jend; ++jt)
+			{
+				int j = *jt;
+
+				// First calculate the individual lightmap between this light and the polygon.
+				Lightmap_Ptr newLightmap = m_grids[j]->lightmap_from_light(light, m_tree);
+
+				// Then combine it with the existing lightmap for the polygon (from previously processed lights in the scene).
+				Lightmap_Ptr& curLightmap = (*m_lightmaps)[j];
+				*curLightmap += *newLightmap;
+			}
 		}
 	}
-
-	// NYI
-	throw 23;
 }
 
 /**

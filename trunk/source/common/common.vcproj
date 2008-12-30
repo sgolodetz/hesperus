@@ -482,6 +482,10 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\level\lighting\Lightmap.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\lighting\LightmapGenerator.cpp"
 						>
 					</File>

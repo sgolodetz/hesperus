@@ -67,6 +67,20 @@ int BSPTree::find_leaf_index(const Vector3d& p) const
 	return leaf->leaf_index();
 }
 
+/**
+Returns the leaf with leaf index n.
+
+@param n			The leaf index
+@return				As stated
+@throws Exception	If the leaf index is out of range
+*/
+const BSPLeaf *BSPTree::leaf(int n) const
+{
+	int leafCount = static_cast<int>(m_leaves.size());
+	if(n >= 0 && n < leafCount) return m_leaves[n];
+	else throw Exception("Leaf index out of range");
+}
+
 BSPTree_Ptr BSPTree::load_postorder_text(std::istream& is)
 {
 	std::string line;
