@@ -20,7 +20,8 @@ class BSPTree
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<BSPNode_Ptr> m_nodes;
-	std::vector<BSPLeaf*> m_emptyLeaves;
+	std::vector<BSPLeaf*> m_leaves;
+	int m_emptyLeafCount;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -35,7 +36,8 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void index_empty_leaves(const BSPNode_Ptr& node);
+	void index_leaves();
+	void index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag);
 };
 
 }

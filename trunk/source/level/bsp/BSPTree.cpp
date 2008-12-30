@@ -23,7 +23,7 @@ namespace hesp {
 BSPTree::BSPTree(const std::vector<BSPNode_Ptr>& nodes)
 :	m_nodes(nodes)
 {
-	index_empty_leaves(root());
+	index_leaves();
 }
 
 //#################### PUBLIC METHODS ####################
@@ -152,23 +152,30 @@ BSPNode_Ptr BSPTree::root() const
 }
 
 //#################### PRIVATE METHODS ####################
-void BSPTree::index_empty_leaves(const BSPNode_Ptr& node)
+void BSPTree::index_leaves()
+{
+	index_specific_leaves(root(), false);
+	m_emptyLeafCount = static_cast<int>(m_leaves.size());
+	index_specific_leaves(root(), true);
+}
+
+void BSPTree::index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag)
 {
 	if(node->is_leaf())
 	{
 		BSPLeaf *leaf = node->as_leaf();
-		if(!leaf->is_solid())
+		if(leaf->is_solid() == solidFlag)
 		{
-			int nextLeaf = static_cast<int>(m_emptyLeaves.size());
+			int nextLeaf = static_cast<int>(m_leaves.size());
 			leaf->set_leaf_index(nextLeaf);
-			m_emptyLeaves.push_back(leaf);
+			m_leaves.push_back(leaf);
 		}
 	}
 	else
 	{
 		const BSPBranch *branch = node->as_branch();
-		index_empty_leaves(branch->left());
-		index_empty_leaves(branch->right());
+		index_specific_leaves(branch->left(), solidFlag);
+		index_specific_leaves(branch->right(), solidFlag);
 	}
 }
 
