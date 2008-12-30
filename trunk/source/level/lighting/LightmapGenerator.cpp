@@ -56,12 +56,28 @@ void LightmapGenerator::clean_intermediate()
 }
 
 /**
+Constructs the lightmap grid for polygon i.
+
+@param i	The index of the polygon for which to build a lightmap grid
+*/
+void LightmapGenerator::construct_grid(int i)
+{
+	// NYI
+	throw 23;
+}
+
+/**
 Constructs the lightmap grids for each polygon.
 */
 void LightmapGenerator::construct_grids()
 {
-	// NYI
-	throw 23;
+	int polyCount = static_cast<int>(m_inputPolygons->size());
+	m_outputPolygons.reset(new TexLitPolyVector(polyCount));
+
+	for(int i=0; i<polyCount; ++i)
+	{
+		construct_grid(i);
+	}
 }
 
 /**

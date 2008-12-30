@@ -57,6 +57,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void clean_intermediate();
+	void construct_grid(int i);
 	void construct_grids();
 	void process_light(int i);
 	void process_lights();
