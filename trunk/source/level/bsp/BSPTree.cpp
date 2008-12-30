@@ -90,8 +90,7 @@ Determines whether or not there is line-of-sight between p1 and p2.
 */
 bool BSPTree::line_of_sight(const Vector3d& p1, const Vector3d& p2) const
 {
-	// NYI
-	throw 23;
+	return line_of_sight_sub(p1, p2, root());
 }
 
 BSPTree_Ptr BSPTree::load_postorder_text(std::istream& is)
@@ -213,6 +212,45 @@ void BSPTree::index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag)
 		const BSPBranch *branch = node->as_branch();
 		index_specific_leaves(branch->left(), solidFlag);
 		index_specific_leaves(branch->right(), solidFlag);
+	}
+}
+
+bool BSPTree::line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_Ptr& node) const
+{
+	if(node->is_leaf())
+	{
+		// If both points are in the same leaf, there's line-of-sight provided the leaf's not solid.
+		const BSPLeaf *leaf = node->as_leaf();
+		return !leaf->is_solid();
+	}
+
+	const BSPBranch *branch = node->as_branch();
+	PlaneClassifier cp1, cp2;
+	switch(classify_linesegment_against_plane(p1, p2, *branch->splitter(), cp1, cp2))
+	{
+		case CP_BACK:
+		{
+			return line_of_sight_sub(p1, p2, branch->right());
+		}
+		case CP_COPLANAR:
+		case CP_FRONT:
+		{
+			return line_of_sight_sub(p1, p2, branch->left());
+		}
+		default:	// case CP_STRADDLE
+		{
+			Vector3d q = determine_linesegment_intersection_with_plane(p1, p2, *branch->splitter()).first;
+			if(cp1 == CP_BACK)
+			{
+				// cp2 == CP_FRONT
+				return line_of_sight_sub(p1, q, branch->right()) && line_of_sight_sub(q, p2, branch->left());
+			}
+			else
+			{
+				// cp1 == CP_FRONT, cp2 == CP_BACK
+				return line_of_sight_sub(p1, q, branch->left()) && line_of_sight_sub(q, p2, branch->right());
+			}
+		}
 	}
 }
 

@@ -41,6 +41,7 @@ public:
 private:
 	void index_leaves();
 	void index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag);
+	bool line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_Ptr& node) const;
 };
 
 }

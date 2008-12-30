@@ -27,7 +27,7 @@ struct SplitResults
 };
 
 //#################### GLOBAL FUNCTIONS ####################
-PlaneClassifier classify_linesegment_against_plane(const Vector3d& p1, const Vector3d& p2, const Plane& plane);
+PlaneClassifier classify_linesegment_against_plane(const Vector3d& p1, const Vector3d& p2, const Plane& plane, PlaneClassifier& cp1, PlaneClassifier& cp2);
 
 PlaneClassifier classify_point_against_plane(const Vector3d& p, const Plane& plane);
 
