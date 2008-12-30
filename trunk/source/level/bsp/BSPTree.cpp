@@ -41,6 +41,7 @@ int BSPTree::empty_leaf_count() const
 Finds the index of the leaf in which the specified point resides.
 
 @param p	The point
+@return		The leaf index
 */
 int BSPTree::find_leaf_index(const Vector3d& p) const
 {
