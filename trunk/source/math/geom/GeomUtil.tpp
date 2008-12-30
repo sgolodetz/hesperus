@@ -285,7 +285,12 @@ bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly)
 	for(int i=0; i<vertCount; ++i)
 	{
 		int j = (i+1)%vertCount;
-		angleSum += acos(relVecs[i].dot(relVecs[j]));
+		double dotProd = relVecs[i].dot(relVecs[j]);
+
+		// Implicitly clamp the result of the dot product to the range [-1,1] to avoid problems with rounding errors when we call acos.
+		// Note that if dotProd = 1, acos(1) = 0, which is why this works.
+		if(dotProd <= -1) angleSum += PI;
+		else if(dotProd < 1) angleSum += acos(relVecs[i].dot(relVecs[j]));
 	}
 
 	return fabs(angleSum - 2*PI) < EPSILON;
