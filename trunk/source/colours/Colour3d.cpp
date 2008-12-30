@@ -7,6 +7,29 @@
 
 namespace hesp {
 
+//#################### PUBLIC OPERATORS ####################
+Colour3d& Colour3d::operator+=(const Colour3d& rhs)
+{
+	r += rhs.r;
+	g += rhs.g;
+	b += rhs.b;
+	return *this;
+}
+
+Colour3d& Colour3d::operator*=(double factor)
+{
+	r *= factor;
+	g *= factor;
+	b *= factor;
+	return *this;
+}
+
+Colour3d& Colour3d::operator/=(double factor)
+{
+	*this *= 1/factor;
+	return *this;
+}
+
 //#################### GLOBAL OPERATORS ####################
 Colour3d operator*(double factor, const Colour3d& c)
 {

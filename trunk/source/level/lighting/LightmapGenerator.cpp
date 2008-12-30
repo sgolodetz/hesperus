@@ -142,12 +142,15 @@ void LightmapGenerator::process_light(int n)
 			{
 				int j = *jt;
 
-				// First calculate the individual lightmap between this light and the polygon.
+				// Calculate the individual lightmap between this light and the polygon.
 				Lightmap_Ptr newLightmap = m_grids[j]->lightmap_from_light(light, m_tree);
 
-				// Then combine it with the existing lightmap for the polygon (from previously processed lights in the scene).
-				Lightmap_Ptr& curLightmap = (*m_lightmaps)[j];
-				*curLightmap += *newLightmap;
+				if(newLightmap)
+				{
+					// Combine it with the existing lightmap for the polygon (from previously processed lights in the scene).
+					Lightmap_Ptr& curLightmap = (*m_lightmaps)[j];
+					*curLightmap += *newLightmap;
+				}
 			}
 		}
 	}

@@ -19,6 +19,9 @@ lights in the scene to make the final lightmap for the polygon.
 */
 Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree_Ptr& tree) const
 {
+	// Early-out opportunity: the light is not in front of the polygon.
+	if(classify_point_against_plane(light.position, m_plane) != CP_FRONT) return Lightmap_Ptr();
+
 	// First make the grid lightmap (this determines what light is falling on the four corners of each actual lumel).
 	int gridRows = static_cast<int>(m_grid.size());
 	int gridCols = static_cast<int>(m_grid[0].size());
@@ -47,18 +50,28 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 						double dL = p.distance(light.position);
 						double fAtt = std::min(1/(c1 + c2*dL + c3*dL*dL), 1.0);
 						double I = Ip * kd * NdotL * fAtt;
-
-						// TODO
+						(*gridLightmap)(r,c) = I * light.colour;
 					}
 				}
 			}
 		}
 
 	// Now average the light falling on the four corners of each lumel to make the actual lightmap.
-	// TODO
+	int lumelsY = gridRows - 1;
+	int lumelsX = gridCols - 1;
+	Lightmap_Ptr actualLightmap(new Lightmap(lumelsY, lumelsX));
+	for(int y=0; y<lumelsY; ++y)
+		for(int x=0; x<lumelsX; ++x)
+		{
+			Colour3d& c = (*actualLightmap)(y,x);
+			c += (*gridLightmap)(y,x);
+			c += (*gridLightmap)(y,x+1);
+			c += (*gridLightmap)(y+1,x);
+			c += (*gridLightmap)(y+1,x+1);
+			c /= 4;
+		}
 
-	// NYI
-	throw 23;
+	return actualLightmap;
 }
 
 //#################### PRIVATE METHODS ####################
