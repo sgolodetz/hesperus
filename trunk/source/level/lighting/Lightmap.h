@@ -24,7 +24,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Lightmap(int rows, int cols);
+	Lightmap(int rows, int cols, const Colour3d& initial = Colour3d());
 
 	//#################### PUBLIC OPERATORS ####################
 public:

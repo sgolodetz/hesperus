@@ -74,6 +74,16 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 	return actualLightmap;
 }
 
+int LightmapGrid::lightmap_height() const
+{
+	return static_cast<int>(m_grid.size()) - 1;
+}
+
+int LightmapGrid::lightmap_width() const
+{
+	return static_cast<int>(m_grid[0].size()) - 1;
+}
+
 //#################### PRIVATE METHODS ####################
 /**
 Find the best axis plane onto which to project the polygon.

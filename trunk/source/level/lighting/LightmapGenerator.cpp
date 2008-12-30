@@ -64,13 +64,14 @@ void LightmapGenerator::construct_ambient_lightmaps()
 	int polyCount = static_cast<int>(m_inputPolygons.size());
 	m_lightmaps.reset(new LightmapVector(polyCount));
 
+	// Use the light equation I = I_a . k_a (see OUCL Computer Graphics notes - Set 8).
+	const double Ia = 0.2;
 	for(int i=0; i<polyCount; ++i)
 	{
-		// TODO
+		const double ka = 1.0;	// TODO: k_a (ambient reflection coefficient) is actually a surface property, which we may or may not want to use.
+		double I = Ia * ka;
+		(*m_lightmaps)[i].reset(new Lightmap(m_grids[i]->lightmap_height(), m_grids[i]->lightmap_width(), Colour3d(I,I,I)));
 	}
-
-	// NYI
-	throw 23;
 }
 
 /**

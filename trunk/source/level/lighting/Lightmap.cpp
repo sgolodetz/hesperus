@@ -10,12 +10,12 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Lightmap::Lightmap(int rows, int cols)
+Lightmap::Lightmap(int rows, int cols, const Colour3d& initial)
 :	m_lumels(rows), m_rows(rows), m_cols(cols)
 {
 	for(int r=0; r<rows; ++r)
 	{
-		m_lumels[r].resize(cols);
+		m_lumels[r].resize(cols, initial);
 	}
 }
 

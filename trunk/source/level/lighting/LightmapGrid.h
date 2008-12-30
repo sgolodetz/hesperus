@@ -52,6 +52,8 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	Lightmap_Ptr lightmap_from_light(const Light& light, const BSPTree_Ptr& tree) const;
+	int lightmap_height() const;
+	int lightmap_width() const;
 
 	//#################### PRIVATE METHODS ####################
 private:
