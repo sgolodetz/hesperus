@@ -30,7 +30,7 @@ Plane::Plane(const Vector3d& n, double d)
 Constructs a new plane representing n . x - d = 0 from n and x.
 
 @param n	The plane normal
-@param d	An arbitrary point on the plane
+@param x	An arbitrary point on the plane
 @throws InvalidParameterException	If |n| <= SMALL_EPSILON
 */
 Plane::Plane(const Vector3d& n, const Vector3d& x)
