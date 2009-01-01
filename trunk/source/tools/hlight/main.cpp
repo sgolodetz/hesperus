@@ -26,11 +26,12 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hlight <input tree> <input lights> <input vis> <output filename>" << std::endl;
+	std::cout << "Usage: hlight <input tree> <input lights> <input vis> <lightmap file prefix> <output filename>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void run_generator(const std::string& treeFilename, const std::string& lightsFilename, const std::string& visFilename, const std::string& outputFilename)
+void run_generator(const std::string& treeFilename, const std::string& lightsFilename, const std::string& visFilename,
+				   const std::string& lightmapPrefix, const std::string& outputFilename)
 {
 	// Read in the polygons and tree.
 	std::vector<TexturedPolygon_Ptr> polygons;
@@ -40,13 +41,44 @@ void run_generator(const std::string& treeFilename, const std::string& lightsFil
 		load_tree_file(treeFilename, polygons, tree);
 	}
 	catch(Exception& e) { quit_with_error(e.cause()); }
+
+	// Read in the lights.
+	std::vector<Light> lights;
+	// NYI
+	throw 23;
+
+	// Read in the vis table.
+	LeafVisTable_Ptr leafVis;
+	// NYI
+	throw 23;
+
+	// Generate the lit polygons and lightmaps.
+	LightmapGenerator lg(polygons, lights, tree, leafVis);
+	lg.generate_lightmaps();
+
+	typedef std::vector<Lightmap_Ptr> LightmapVector;
+	typedef shared_ptr<LightmapVector> LightmapVector_Ptr;
+	typedef std::vector<TexturedLitPolygon_Ptr> TexLitPolyVector;
+	typedef shared_ptr<TexLitPolyVector> TexLitPolyVector_Ptr;
+
+	TexLitPolyVector_Ptr litPolygons = lg.lit_polygons();
+	LightmapVector_Ptr lightmaps = lg.lightmaps();
+
+	// Write the lit polygons, tree and lightmap prefix to the output file.
+	std::ofstream os(outputFilename.c_str());
+	// NYI
+	throw 23;
+
+	// Write the lightmaps out as 24-bit bitmaps.
+	// NYI
+	throw 23;
 }
 
 int main(int argc, char *argv[])
 {
-	if(argc != 5) quit_with_usage();
+	if(argc != 6) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
-	run_generator(args[1], args[2], args[3], args[4]);
+	run_generator(args[1], args[2], args[3], args[4], args[5]);
 
 #if 0
 	std::vector<TexturedVector3d> vertices;
