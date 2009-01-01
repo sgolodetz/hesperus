@@ -12,6 +12,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/images/BitmapSaver.h>
 #include <source/io/FileUtil.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -73,6 +74,14 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	os.close();
 
 	// Write the lightmaps out as 24-bit bitmaps.
+	int lightmapCount = static_cast<int>(lightmaps->size());
+	for(int i=0; i<lightmapCount; ++i)
+	{
+		std::string lightmapFilename = lightmapPrefix + lexical_cast<std::string,int>(i);
+		Image24_Ptr image = (*lightmaps)[i]->to_image();
+		BitmapSaver::save_image24(lightmapFilename, image);
+	}
+
 	// NYI
 	throw 23;
 }
@@ -83,44 +92,5 @@ int main(int argc, char *argv[])
 	if(argc != 6) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
 	run_generator(args[1], args[2], args[3], args[4], args[5]);
-
-#if 0
-	std::vector<TexturedVector3d> vertices;
-	vertices.push_back(TexturedVector3d(2,3,5,0,0));
-	vertices.push_back(TexturedVector3d(2,1,5,0,1));
-	vertices.push_back(TexturedVector3d(10,3,6,1,0));
-	TexturedPolygon poly(vertices, "TEST");
-	std::vector<TexCoords> vertexLightmapCoords;
-	LightmapGrid grid(poly, vertexLightmapCoords);
-#else
-	std::vector<TexturedPolygon_Ptr> polys;
-	{
-		// Projected onto x-y plane.
-		std::vector<TexturedVector3d> vertices;
-		vertices.push_back(TexturedVector3d(2,3,5,0,0));
-		vertices.push_back(TexturedVector3d(2,1,5,0,1));
-		vertices.push_back(TexturedVector3d(10,3,6,1,0));
-		polys.push_back(TexturedPolygon_Ptr(new TexturedPolygon(vertices, "TEST")));
-	}
-	{
-		// Projected onto x-z plane.
-		std::vector<TexturedVector3d> vertices;
-		vertices.push_back(TexturedVector3d(1,5,1,0,1));
-		vertices.push_back(TexturedVector3d(3,5,10,1,0));
-		vertices.push_back(TexturedVector3d(3,6,1,1,1));
-		polys.push_back(TexturedPolygon_Ptr(new TexturedPolygon(vertices, "TEST")));
-	}
-	{
-		// Projected onto y-z plane.
-		std::vector<TexturedVector3d> vertices;
-		vertices.push_back(TexturedVector3d(-2,0,0,0,0));
-		vertices.push_back(TexturedVector3d(-2,10,-10,1,1));
-		vertices.push_back(TexturedVector3d(-3,0,-10,0,1));
-		polys.push_back(TexturedPolygon_Ptr(new TexturedPolygon(vertices, "TEST")));
-	}
-	LightmapGenerator lg(polys, std::vector<Light>(), BSPTree_Ptr(), LeafVisTable_Ptr());
-	lg.generate_lightmaps();
-#endif
-
 	return 0;
 }
