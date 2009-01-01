@@ -12,6 +12,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/io/FileUtil.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/portals/PortalGenerator.h>
 #include <source/math/geom/GeomUtil.h>
@@ -37,37 +38,14 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
-	// Open the input file.
-	std::ifstream is(inputFilename.c_str());
-	if(is.fail()) quit_with_error("Input file does not exist");
-
-	std::string line;
-
-	// Read the input polygons.
+	// Read in the polygons and tree.
 	PolyVector polygons;
-	try
-	{
-		std::getline(is, line);
-		int polyCount = lexical_cast<int,std::string>(line);
-		load_polygons(is, polygons, polyCount);
-	}
-	catch(bad_lexical_cast&)	{ quit_with_error("The polygon count is not an integer"); }
-	catch(Exception& e)			{ quit_with_error(e.cause()); }
-
-	// Read the separator.
-	std::getline(is, line);
-	if(line != "***") throw Exception("Bad separator between the polygons and BSP sections");
-
-	// Read the BSP tree.
 	BSPTree_Ptr tree;
 	try
 	{
-		tree = BSPTree::load_postorder_text(is);
+		load_tree_file(inputFilename, polygons, tree);
 	}
 	catch(Exception& e) { quit_with_error(e.cause()); }
-
-	// Close the input file.
-	is.close();
 
 	// Generate the portals.
 	shared_ptr<std::list<Portal_Ptr> > portals = PortalGenerator::generate_portals(polygons, tree);

@@ -636,6 +636,26 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="io"
+			>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\io\FileUtil.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".tpp"
+				>
+				<File
+					RelativePath="..\io\FileUtil.tpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
