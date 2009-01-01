@@ -22,6 +22,9 @@ void output_vis_table(std::ostream& os, const LeafVisTable_Ptr& leafVis)
 	const LeafVisTable& table = *leafVis;
 
 	int size = table.size();
+
+	os << size << '\n';
+
 	for(int i=0; i<size; ++i)
 	{
 		for(int j=0; j<size; ++j)
