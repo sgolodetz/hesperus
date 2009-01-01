@@ -6,6 +6,8 @@
 #ifndef H_HESP_MATH_VECTORS_TEXTUREDLITVECTOR3D
 #define H_HESP_MATH_VECTORS_TEXTUREDLITVECTOR3D
 
+#include <iosfwd>
+
 #include "Vector3.h"
 
 namespace hesp {
@@ -27,6 +29,9 @@ struct TexturedLitVector3d
 	//#################### PUBLIC OPERATORS ####################
 	operator Vector3d() const;
 };
+
+//#################### GLOBAL OPERATORS ####################
+std::ostream& operator<<(std::ostream& os, const TexturedLitVector3d& v);
 
 }
 
