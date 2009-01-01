@@ -6,6 +6,12 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+/**
+Clips the specified polygon to the antipenumbra.
+
+@param poly		The polygon
+@return			The clipped version of the polygon
+*/
 template <typename Vert, typename AuxData>
 shared_ptr<Polygon<Vert,AuxData> >
 Antipenumbra::clip(const shared_ptr<Polygon<Vert,AuxData> >& poly)

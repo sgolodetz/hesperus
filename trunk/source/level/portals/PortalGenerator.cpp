@@ -125,7 +125,7 @@ Makes an initial portal on a given plane. This portal should be large enough to
 span the entire level space.
 
 @param plane	The plane on which to build the initial portal
-@retun			As stated
+@return			As stated
 */
 Portal_Ptr PortalGenerator::make_initial_portal(const Plane& plane)
 {
