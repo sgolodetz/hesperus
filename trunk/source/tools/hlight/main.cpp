@@ -77,13 +77,10 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	int lightmapCount = static_cast<int>(lightmaps->size());
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		std::string lightmapFilename = lightmapPrefix + lexical_cast<std::string,int>(i);
+		std::string lightmapFilename = lightmapPrefix + lexical_cast<std::string,int>(i) + ".bmp";
 		Image24_Ptr image = (*lightmaps)[i]->to_image();
 		BitmapSaver::save_image24(lightmapFilename, image);
 	}
-
-	// NYI
-	throw 23;
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
