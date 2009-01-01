@@ -63,11 +63,10 @@ std::vector<Light> load_lights_file(const std::string& filename)
 		std::vector<std::string> positionComponents(&tokens[1], &tokens[4]);
 		std::vector<std::string> colourComponents(&tokens[6], &tokens[9]);
 
-		// TODO
+		Vector3d position(positionComponents);
+		Colour3d colour(colourComponents);
+		lights.push_back(Light(position, colour));
 	}
-
-	// NYI
-	throw 23;
 
 	return lights;
 }

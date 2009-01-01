@@ -6,6 +6,9 @@
 #ifndef H_HESP_COLOURS_COLOUR3D
 #define H_HESP_COLOURS_COLOUR3D
 
+#include <string>
+#include <vector>
+
 namespace hesp {
 
 struct Colour3d
@@ -14,8 +17,9 @@ struct Colour3d
 	double r, g, b;
 
 	//#################### CONSTRUCTORS ####################
-	Colour3d() : r(0), g(0), b(0) {}
-	Colour3d(double r_, double g_, double b_) : r(r_), g(g_), b(b_) {}
+	Colour3d();
+	Colour3d(double r_, double g_, double b_);
+	Colour3d(const std::vector<std::string>& components);
 
 	//#################### PUBLIC OPERATORS ####################
 	Colour3d& operator+=(const Colour3d& rhs);

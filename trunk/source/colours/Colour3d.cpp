@@ -5,7 +5,35 @@
 
 #include "Colour3d.h"
 
+#include <boost/lexical_cast.hpp>
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
+
+#include <source/exceptions/Exception.h>
+
 namespace hesp {
+
+//#################### CONSTRUCTORS ####################
+Colour3d::Colour3d()
+:	r(0), g(0), b(0)
+{}
+
+Colour3d::Colour3d(double r_, double g_, double b_)
+:	r(r_), g(g_), b(b_)
+{}
+
+Colour3d::Colour3d(const std::vector<std::string>& components)
+{
+	if(components.size() != 3) throw Exception("Incorrect number of colour components");
+
+	try
+	{
+		r = lexical_cast<double,std::string>(components[0]);
+		g = lexical_cast<double,std::string>(components[1]);
+		b = lexical_cast<double,std::string>(components[2]);
+	}
+	catch(bad_lexical_cast&) { throw Exception("One of the colour components is not a number"); }
+}
 
 //#################### PUBLIC OPERATORS ####################
 Colour3d& Colour3d::operator+=(const Colour3d& rhs)
