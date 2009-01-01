@@ -43,9 +43,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	std::vector<Light> lights = load_lights_file(lightsFilename);
 
 	// Read in the vis table.
-	LeafVisTable_Ptr leafVis;
-	// NYI
-	throw 23;
+	LeafVisTable_Ptr leafVis = load_vis_file(visFilename);
 
 	// Generate the lit polygons and lightmaps.
 	LightmapGenerator lg(polygons, lights, tree, leafVis);

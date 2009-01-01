@@ -71,4 +71,45 @@ std::vector<Light> load_lights_file(const std::string& filename)
 	return lights;
 }
 
+/**
+Loads a leaf visibility table from the specified file.
+
+@param filename	The name of the file from which to load the visibility table
+@return			The visibility table
+*/
+LeafVisTable_Ptr load_vis_file(const std::string& filename)
+{
+	LeafVisTable_Ptr leafVis;
+
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("The vis file could not be read");
+
+	std::string line;
+
+	// Read in the size of the vis table.
+	int size;
+	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read vis table size");
+	try							{ size = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The vis table size was not an integer"); }
+
+	// Construct an empty vis table of the right size.
+	leafVis.reset(new LeafVisTable(size));
+
+	// Read in the vis table itself.
+	for(int i=0; i<size; ++i)
+	{
+		if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read vis table row " + lexical_cast<std::string,int>(i));
+		if(line.length() != size) throw Exception("Bad vis table row " + lexical_cast<std::string,int>(i));
+
+		for(int j=0; j<size; ++j)
+		{
+			if(line[j] == '0') (*leafVis)(i,j) = LEAFVIS_NO;
+			else if(line[j] == '1') (*leafVis)(i,j) = LEAFVIS_YES;
+			else throw Exception("Bad vis table value in row " + lexical_cast<std::string,int>(i));
+		}
+	}
+
+	return leafVis;
+}
+
 }
