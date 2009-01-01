@@ -262,12 +262,20 @@
 					RelativePath="..\images\BitmapLoader.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\images\BitmapSaver.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
 				>
 				<File
 					RelativePath="..\images\BitmapLoader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\images\BitmapSaver.h"
 					>
 				</File>
 				<File
