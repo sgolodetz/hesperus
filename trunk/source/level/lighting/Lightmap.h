@@ -12,6 +12,7 @@
 using boost::shared_ptr;
 
 #include <source/colours/Colour3d.h>
+#include <source/images/Image.h>
 
 namespace hesp {
 
@@ -34,7 +35,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	// TODO
+	Image24_Ptr to_image() const;
 };
 
 //#################### TYPEDEFS ####################
