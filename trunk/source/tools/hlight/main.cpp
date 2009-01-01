@@ -32,20 +32,15 @@ void quit_with_usage()
 
 void run_generator(const std::string& treeFilename, const std::string& lightsFilename, const std::string& visFilename,
 				   const std::string& lightmapPrefix, const std::string& outputFilename)
+try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct).
 {
 	// Read in the polygons and tree.
 	std::vector<TexturedPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;
-	try
-	{
-		load_tree_file(treeFilename, polygons, tree);
-	}
-	catch(Exception& e) { quit_with_error(e.cause()); }
+	load_tree_file(treeFilename, polygons, tree);
 
 	// Read in the lights.
-	std::vector<Light> lights;
-	// NYI
-	throw 23;
+	std::vector<Light> lights = load_lights_file(lightsFilename);
 
 	// Read in the vis table.
 	LeafVisTable_Ptr leafVis;
@@ -73,6 +68,7 @@ void run_generator(const std::string& treeFilename, const std::string& lightsFil
 	// NYI
 	throw 23;
 }
+catch(Exception& e) { quit_with_error(e.cause()); }
 
 int main(int argc, char *argv[])
 {

@@ -191,8 +191,7 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 				int offset = i*tokensPerVert;
 				if(tokens[offset] != "(" || tokens[offset+tokensPerVert-1] != ")") throw Exception("Bad vertex data on line " + lexical_cast<std::string,int>(n));
 
-				std::vector<std::string> components;
-				std::copy(&tokens[offset+1], &tokens[offset+tokensPerVert-1], std::back_inserter(components));
+				std::vector<std::string> components(&tokens[offset+1], &tokens[offset+tokensPerVert-1]);
 				try					{ vertices.push_back(Vert(components)); }
 				catch(Exception& e)	{ throw Exception(e.cause()); }
 			}

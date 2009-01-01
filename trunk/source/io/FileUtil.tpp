@@ -16,7 +16,7 @@ template <typename Poly>
 void load_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree)
 {
 	std::ifstream is(filename.c_str());
-	if(is.fail()) throw Exception("Tree file does not exist");
+	if(is.fail()) throw Exception("The tree file could not be read");
 
 	// Read the polygons.
 	std::string line;
