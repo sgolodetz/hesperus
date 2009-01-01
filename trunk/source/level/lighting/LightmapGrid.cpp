@@ -40,7 +40,14 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 					// c1, c2 and c3 are appropriately chosen constants and dL is the distance to the light.
 
 					const double Ip = 1.0, kd = 1.0;			// TODO: k_d (diffuse reflectivity coefficient) is a surface property, which we may or may not want to use.
-					const double c1 = 1.0, c2 = 0.0, c3 = 0.0;	// TODO: These settings mean there will be no atmospheric attenuation, but we can experiment later
+
+					// No atmospheric attenuation
+					//const double c1 = 1.0, c2 = 0.0, c3 = 0.0;
+
+					// Quadratic atmospheric attenuation
+					const double tenthDist = 30;	// the distance at which fAtt = 0.1
+					const double c1 = 1.0, c2 = 0.0, c3 = 9/(tenthDist*tenthDist);
+
 					const Vector3d& N = m_plane.normal();
 					Vector3d L = (light.position - p).normalize();
 
