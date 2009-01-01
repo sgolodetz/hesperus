@@ -27,11 +27,11 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hlight <input tree> <input lights> <input vis> <lightmap file prefix> <output filename>" << std::endl;
+	std::cout << "Usage: hlight <input tree> <input vis> <input lights> <lightmap file prefix> <output filename>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void run_generator(const std::string& treeFilename, const std::string& lightsFilename, const std::string& visFilename,
+void run_generator(const std::string& treeFilename, const std::string& visFilename, const std::string& lightsFilename,
 				   const std::string& lightmapPrefix, const std::string& outputFilename)
 try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct).
 {
@@ -40,11 +40,11 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	BSPTree_Ptr tree;
 	load_tree_file(treeFilename, polygons, tree);
 
-	// Read in the lights.
-	std::vector<Light> lights = load_lights_file(lightsFilename);
-
 	// Read in the vis table.
 	LeafVisTable_Ptr leafVis = load_vis_file(visFilename);
+
+	// Read in the lights.
+	std::vector<Light> lights = load_lights_file(lightsFilename);
 
 	// Note:	We try and open the output file now because the lightmap generation process
 	//			is a potentially lengthy one: it would be very annoying for users if they
