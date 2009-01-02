@@ -34,8 +34,15 @@ std::vector<Light> FileUtil::load_lights_file(const std::string& filename)
 
 void FileUtil::load_portals_file(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals)
 {
-	// NYI
-	throw 23;
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("The portals file could not be read");
+
+	std::string line;
+	if(!std::getline(is, line)) throw Exception("The empty leaf count could not be read");
+	try							{ emptyLeafCount = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The empty leaf count was not an integer"); }
+
+	load_polygons_section(is, portals);
 }
 
 /**

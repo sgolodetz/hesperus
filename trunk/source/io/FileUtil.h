@@ -18,21 +18,6 @@ using boost::shared_ptr;
 
 namespace hesp {
 
-#if 0
-std::vector<Light> load_lights_file(const std::string& filename);
-
-template <typename Poly>
-void load_lit_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree, std::string& lightmapPrefix);
-
-template <typename Poly>
-void load_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree);
-
-template <typename Poly>
-void load_tree_file(std::istream& is, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree);
-
-LeafVisTable_Ptr load_vis_file(const std::string& filename);
-#endif
-
 class FileUtil
 {
 	//#################### PUBLIC METHODS ####################
