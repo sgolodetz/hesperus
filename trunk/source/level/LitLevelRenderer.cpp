@@ -37,8 +37,40 @@ LitLevelRenderer::LitLevelRenderer(const TexLitPolyVector& polygons, const std::
 //#################### PUBLIC METHODS ####################
 void LitLevelRenderer::render(const std::vector<int>& polyIndices) const
 {
-	// NYI
-	//throw 23;
+	// TEMPORARY: This should be replaced with render_proper() once the proper version is ready.
+	render_simple(polyIndices);
+}
+
+//#################### PRIVATE METHODS ####################
+void LitLevelRenderer::render_simple(const std::vector<int>& polyIndices) const
+{
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+
+	glEnable(GL_TEXTURE_2D);
+	glColor3d(1,1,1);
+
+	int indexCount = static_cast<int>(polyIndices.size());
+	for(int i=0; i<indexCount; ++i)
+	{
+		TexturedLitPolygon_Ptr poly = m_polygons[polyIndices[i]];
+
+		// Note:	If we got to this point, all textures were loaded successfully,
+		//			so the texture's definitely in the map.
+		std::map<std::string,Texture_Ptr>::const_iterator jt = m_textures.find(poly->auxiliary_data());
+		jt->second->bind();
+
+		int vertCount = poly->vertex_count();
+		glBegin(GL_POLYGON);
+			for(int j=0; j<vertCount; ++j)
+			{
+				const TexturedLitVector3d& v = poly->vertex(j);
+				glTexCoord2d(v.u, v.v);
+				glVertex3d(v.x, v.y, v.z);
+			}
+		glEnd();
+	}
+
+	glPopAttrib();
 }
 
 }
