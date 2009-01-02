@@ -30,16 +30,19 @@ void Level::render() const
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 
-	// Set up the z-buffer.
+	// Enable the z-buffer.
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
+	// TEMPORARY: The player position and look vector will eventually be obtained from elsewhere.
 	const Vector3d pos(5, 15, 2);
 	const Vector3d look(1,0,0);
+	
+	// Set the camera.
 	Vector3d at = pos + look;
-
 	gluLookAt(pos.x, pos.y, pos.z, at.x, at.y, at.z, 0, 0, 1);
 
+	// Determine which leaves are potentially visible from the current player position.
 	bool renderAllLeaves = false;
 	int curLeaf = m_tree->find_leaf_index(pos);
 	if(curLeaf >= m_tree->empty_leaf_count())
@@ -55,6 +58,7 @@ void Level::render() const
 		if(renderAllLeaves || (*m_leafVis)(curLeaf,i)) visibleLeaves.push_back(i);
 	}
 
+	// Make a list of all the polygons which need rendering and pass them to the renderer.
 	std::vector<int> polyIndices;
 	for(std::vector<int>::const_iterator it=visibleLeaves.begin(), iend=visibleLeaves.end(); it!=iend; ++it)
 	{
