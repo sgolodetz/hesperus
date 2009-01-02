@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
+#include <source/images/BitmapLoader.h>
 #include <source/io/FileUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -36,16 +37,21 @@ try
 	FileUtil::load_lit_tree_file(treeFilename, polygons, tree, lightmapPrefix);
 
 	// Load the portals.
-	// NYI
-	throw 23;
+	int emptyLeafCount;
+	std::vector<Portal_Ptr> portals;
+	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
 
 	// Load the vis table.
-	// NYI
-	throw 23;
+	LeafVisTable_Ptr leafVis = FileUtil::load_vis_file(visFilename);
 
 	// Load the lightmaps.
-	// NYI
-	throw 23;
+	int polyCount = static_cast<int>(polygons.size());
+	std::vector<Image24_Ptr> lightmaps(polyCount);
+	for(int i=0; i<polyCount; ++i)
+	{
+		std::string filename = lightmapPrefix + lexical_cast<std::string,int>(i) + ".bmp";
+		lightmaps[i] = BitmapLoader::load_image24(filename);
+	}
 
 	// Write everything to the output file.
 	// NYI
