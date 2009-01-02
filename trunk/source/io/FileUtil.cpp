@@ -75,6 +75,32 @@ Saves all the relevant pieces of information to the specified level file.
 @param tree			The BSP tree for the level
 @param portals		The portals for the level
 @param leafVis		The leaf visibility table for the level
+*/
+void FileUtil::save_level_file(const std::string& filename, const std::vector<TexturedPolygon_Ptr>& polygons,
+							   const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
+							   const LeafVisTable_Ptr& leafVis)
+{
+	std::ofstream os(filename.c_str(), std::ios_base::binary);
+	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
+
+	os << "HBSPU\n";
+	write_polygons(os, polygons);
+	os << "***\n";
+	tree->output_postorder_text(os);
+	os << "***\n";
+	write_polygons(os, portals);
+	os << "***\n";
+	save_vis_section(os, leafVis);
+}
+
+/**
+Saves all the relevant pieces of information to the specified level file.
+
+@param filename		The name of the output file
+@param polygons		The level polygons
+@param tree			The BSP tree for the level
+@param portals		The portals for the level
+@param leafVis		The leaf visibility table for the level
 @param lightmaps	The lightmaps for the level
 */
 void FileUtil::save_level_file(const std::string& filename, const std::vector<TexturedLitPolygon_Ptr>& polygons,
@@ -82,8 +108,9 @@ void FileUtil::save_level_file(const std::string& filename, const std::vector<Te
 							   const LeafVisTable_Ptr& leafVis, const std::vector<Image24_Ptr>& lightmaps)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
-	if(os.fail()) throw Exception("Could not open " + filename + " for reading");
+	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
 
+	os << "HBSPL\n";
 	write_polygons(os, polygons);
 	os << "***\n";
 	tree->output_postorder_text(os);

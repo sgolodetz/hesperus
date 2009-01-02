@@ -36,6 +36,10 @@ public:
 
 	static LeafVisTable_Ptr load_vis_file(const std::string& filename);
 
+	static void save_level_file(const std::string& filename, const std::vector<TexturedPolygon_Ptr>& polygons,
+								const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
+								const LeafVisTable_Ptr& leafVis);
+
 	static void save_level_file(const std::string& filename, const std::vector<TexturedLitPolygon_Ptr>& polygons,
 								const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
 								const LeafVisTable_Ptr& leafVis, const std::vector<Image24_Ptr>& lightmaps);

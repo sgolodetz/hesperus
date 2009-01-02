@@ -22,11 +22,11 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hcollate <input lit tree> <input portals> <input vis> <output filename>" << std::endl;
+	std::cout << "Usage: hcollate {+L <input lit tree> | -L <input tree>} <input portals> <input vis> <output filename>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void collate(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename, const std::string& outputFilename)
+void collate_lit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename, const std::string& outputFilename)
 try
 {
 	// Load the lit polygons, tree and lightmap prefix.
@@ -58,10 +58,36 @@ try
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
+void collate_unlit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename, const std::string& outputFilename)
+try
+{
+	// Load the unlit polygons and tree.
+	typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
+	TexPolyVector polygons;
+	BSPTree_Ptr tree;
+	FileUtil::load_tree_file(treeFilename, polygons, tree);
+
+	// Load the portals.
+	int emptyLeafCount;
+	std::vector<Portal_Ptr> portals;
+	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
+
+	// Load the vis table.
+	LeafVisTable_Ptr leafVis = FileUtil::load_vis_file(visFilename);
+
+	// Write everything to the output file.
+	FileUtil::save_level_file(outputFilename, polygons, tree, portals, leafVis);
+}
+catch(Exception& e) { quit_with_error(e.cause()); }
+
 int main(int argc, char *argv[])
 {
-	if(argc != 5) quit_with_usage();
+	if(argc != 6) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
-	collate(args[1], args[2], args[3], args[4]);
+
+	if(args[1] == "+L") collate_lit(args[2], args[3], args[4], args[5]);
+	else if(args[1] == "-L") collate_unlit(args[2], args[3], args[4], args[5]);
+	else quit_with_usage();
+
 	return 0;
 }
