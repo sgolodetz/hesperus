@@ -21,7 +21,7 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	TexLitPolyVector m_polygons;
-	// TODO
+	std::vector<Texture_Ptr> m_lightmaps;
 
 	//#################### CONSTRUCTORS ####################
 public:

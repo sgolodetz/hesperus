@@ -63,7 +63,7 @@ void process_events()
 int main(int argc, char* argv[])
 try
 {
-	Level_Ptr level = FileUtil::load_level_file("resources/simple.bsu");
+	Level_Ptr level = FileUtil::load_level_file("resources/simple.bsp");
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
 
