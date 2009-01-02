@@ -32,6 +32,13 @@ std::vector<Light> FileUtil::load_lights_file(const std::string& filename)
 	return load_lights_section(is);
 }
 
+/**
+Loads an empty leaf count and an array of portals from the specified file.
+
+@param filename			The name of the portals file
+@param emptyLeafCount	Used to return the empty leaf count to the caller
+@param portals			Used to return the portals to the caller
+*/
 void FileUtil::load_portals_file(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals)
 {
 	std::ifstream is(filename.c_str());
@@ -74,6 +81,12 @@ std::string FileUtil::load_lightmap_prefix_section(std::istream& is)
 	return lightmapPrefix;
 }
 
+/**
+Loads an array of lights from the specified std::istream.
+
+@param is	The std::istream
+@return		The array of lights
+*/
 std::vector<Light> FileUtil::load_lights_section(std::istream& is)
 {
 	std::vector<Light> lights;
@@ -119,6 +132,11 @@ std::vector<Light> FileUtil::load_lights_section(std::istream& is)
 	return lights;
 }
 
+/**
+Loads a separator (a line containing only ***) from the specified std::istream.
+
+@param is	The std::istream
+*/
 void FileUtil::load_separator(std::istream& is)
 {
 	std::string line;
@@ -126,11 +144,23 @@ void FileUtil::load_separator(std::istream& is)
 	if(line != "***") throw Exception("Bad separator");
 }
 
+/**
+Loads a tree from the specified std::istream.
+
+@param is	The std::istream
+@return		The tree
+*/
 BSPTree_Ptr FileUtil::load_tree_section(std::istream& is)
 {
 	return BSPTree::load_postorder_text(is);
 }
 
+/**
+Loads a leaf visibility table from the specified std::istream.
+
+@param is	The std::istream
+@return		The visibility table
+*/
 LeafVisTable_Ptr FileUtil::load_vis_section(std::istream& is)
 {
 	LeafVisTable_Ptr leafVis;
