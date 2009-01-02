@@ -21,7 +21,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void render(const std::vector<int>& indices) const = 0;
+	virtual void render(const std::vector<int>& polyIndices) const = 0;
 };
 
 //#################### TYPEDEFS ####################

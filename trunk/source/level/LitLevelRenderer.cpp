@@ -16,7 +16,7 @@ LitLevelRenderer::LitLevelRenderer(const TexLitPolyVector& polygons, const std::
 }
 
 //#################### PUBLIC METHODS ####################
-void LitLevelRenderer::render(const std::vector<int>& indices) const
+void LitLevelRenderer::render(const std::vector<int>& polyIndices) const
 {
 	// NYI
 	throw 23;

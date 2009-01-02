@@ -27,7 +27,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void render(const std::vector<int>& indices) const;
+	void render(const std::vector<int>& polyIndices) const;
 };
 
 }

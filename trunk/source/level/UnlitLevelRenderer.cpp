@@ -13,10 +13,9 @@ UnlitLevelRenderer::UnlitLevelRenderer(const std::vector<TexturedPolygon_Ptr>& p
 {}
 
 //#################### PUBLIC METHODS ####################
-void UnlitLevelRenderer::render(const std::vector<int>& indices) const
+void UnlitLevelRenderer::render(const std::vector<int>& polyIndices) const
 {
-	// NYI
-	throw 23;
+	// TODO
 }
 
 }
