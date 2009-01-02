@@ -14,6 +14,7 @@
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
 #include <source/io/FileUtil.h>
+#include <source/level/LevelViewer.h>
 using namespace hesp;
 
 void quit(int code)
@@ -53,6 +54,13 @@ void process_events()
 
 int main( int argc, char* argv[] )
 {
+	Level_Ptr level;
+	try
+	{
+		level = FileUtil::load_level_file("resources/simple.bsu");
+	}
+	catch(Exception&) { quit(EXIT_FAILURE); }
+
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
 
 	SDL_WM_SetCaption("The Scarlet Pimpernel", NULL);
@@ -73,20 +81,11 @@ int main( int argc, char* argv[] )
 	// Setup the screen.
 	Screen& screen = Screen::instance();
 	screen.layout().add(new Picture("resources/title.bmp"), Extents(width/4, 0, width*3/4, width/8));
+	screen.layout().add(new LevelViewer(level), Extents(200, 200, 600, 600));
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
 	cont->layout().add(new Picture("resources/title.bmp"), Extents(500, 0, 700, 50));
 	screen.layout().add(cont, Extents(100, 100, 200, 200));
 	screen.fit(Extents(0, 0, 1024, 768));
-
-#if 1
-	try
-	{
-		// Test level loading.
-		Level_Ptr unlitLevel = FileUtil::load_level_file("resources/simple.bsu");
-		Level_Ptr litLevel = FileUtil::load_level_file("resources/simple.bsp");
-	}
-	catch(Exception&) {}
-#endif
 
 	for(;;)
 	{
