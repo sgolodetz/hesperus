@@ -85,7 +85,7 @@ int main( int argc, char* argv[] )
 		Level_Ptr unlitLevel = FileUtil::load_level_file("resources/simple.bsu");
 		Level_Ptr litLevel = FileUtil::load_level_file("resources/simple.bsp");
 	}
-	catch(Exception& e) {}
+	catch(Exception&) {}
 #endif
 
 	for(;;)
