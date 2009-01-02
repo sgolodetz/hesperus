@@ -611,6 +611,42 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\level\Level.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\level\LitLevelRenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\level\UnlitLevelRenderer.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\level\Level.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\LevelRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\LitLevelRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\UnlitLevelRenderer.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"
