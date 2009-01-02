@@ -55,8 +55,19 @@ void Screen::set_ortho_viewport(const Extents& extents)
 
 void Screen::set_persp_viewport(const Extents& extents, double fovY, double zNear, double zFar)
 {
-	// NYI
-	throw 23;
+	int screenHeight = m_extents->bottom() - m_extents->top();
+
+	const int& x1 = extents.left(), y1 = extents.top(), x2 = extents.right(), y2 = extents.bottom();
+	glViewport(x1, screenHeight - y2, x2-x1, y2-y1);
+
+	double width = x2 - x1, height = y2 - y1;
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(fovY, width / height, zNear, zFar);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 }
