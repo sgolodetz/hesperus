@@ -26,6 +26,7 @@ public:
 	void fit(const Extents& extents);
 	void render() const;
 	void set_ortho_viewport(const Extents& extents);
+	void set_persp_viewport(const Extents& extents, double fovY, double zNear, double zFar);
 };
 
 }

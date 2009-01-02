@@ -53,4 +53,10 @@ void Screen::set_ortho_viewport(const Extents& extents)
 	glLoadIdentity();
 }
 
+void Screen::set_persp_viewport(const Extents& extents, double fovY, double zNear, double zFar)
+{
+	// NYI
+	throw 23;
+}
+
 }

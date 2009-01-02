@@ -619,6 +619,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\level\LevelViewer.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\level\LitLevelRenderer.cpp"
 					>
 				</File>
@@ -636,6 +640,10 @@
 				</File>
 				<File
 					RelativePath="..\level\LevelRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\LevelViewer.h"
 					>
 				</File>
 				<File
