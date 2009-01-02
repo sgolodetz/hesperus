@@ -14,11 +14,33 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/images/BitmapLoader.h>
 #include <source/images/BitmapSaver.h>
+#include <source/level/LitLevelRenderer.h>
+#include <source/level/UnlitLevelRenderer.h>
 
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+/**
+Loads a level from the specified file.
+
+@param filename	The name of the level file
+@return			The level
+*/
+Level_Ptr FileUtil::load_level_file(const std::string& filename)
+{
+	std::ifstream is(filename.c_str(), std::ios_base::binary);
+	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
+
+	std::string fileType;
+	if(!std::getline(is, fileType)) throw Exception("Unexpected EOF whilst trying to read file type");
+
+	if(fileType == "HBSPL") return load_lit_level_file(is);
+	else if(fileType == "HBSPU") return load_unlit_level_file(is);
+	else throw Exception(filename + " is not a valid level file");
+}
+
 /**
 Loads an array of lights from the specified file.
 
@@ -228,6 +250,41 @@ std::vector<Light> FileUtil::load_lights_section(std::istream& is)
 }
 
 /**
+Loads a lit level from the specified std::istream.
+
+@param is	The std::istream
+@return		The lit level
+*/
+Level_Ptr FileUtil::load_lit_level_file(std::istream& is)
+{
+	// Load the data.
+	std::vector<TexturedLitPolygon_Ptr> polygons;
+	BSPTree_Ptr tree;
+	std::vector<Portal_Ptr> portals;
+	LeafVisTable_Ptr leafVis;
+
+	load_polygons_section(is, polygons);
+	load_separator(is);
+	tree = load_tree_section(is);
+	load_separator(is);
+	load_polygons_section(is, portals);
+	load_separator(is);
+	leafVis = load_vis_section(is);
+	load_separator(is);
+
+	int polyCount = static_cast<int>(polygons.size());
+	std::vector<Image24_Ptr> lightmaps(polyCount);
+	for(int i=0; i<polyCount; ++i)
+	{
+		lightmaps[i] = BitmapLoader::load_image24(is);
+	}
+
+	// Construct and return the level.
+	LevelRenderer_Ptr levelRenderer(new LitLevelRenderer(polygons, lightmaps));
+	return Level_Ptr(new Level(levelRenderer, tree, portals, leafVis));
+}
+
+/**
 Loads a separator (a line containing only ***) from the specified std::istream.
 
 @param is	The std::istream
@@ -248,6 +305,33 @@ Loads a tree from the specified std::istream.
 BSPTree_Ptr FileUtil::load_tree_section(std::istream& is)
 {
 	return BSPTree::load_postorder_text(is);
+}
+
+/**
+Loads an unlit level from the specified std::istream.
+
+@param is	The std::istream
+@return		The unlit level
+*/
+Level_Ptr FileUtil::load_unlit_level_file(std::istream& is)
+{
+	// Load the data.
+	std::vector<TexturedPolygon_Ptr> polygons;
+	BSPTree_Ptr tree;
+	std::vector<Portal_Ptr> portals;
+	LeafVisTable_Ptr leafVis;
+
+	load_polygons_section(is, polygons);
+	load_separator(is);
+	tree = load_tree_section(is);
+	load_separator(is);
+	load_polygons_section(is, portals);
+	load_separator(is);
+	leafVis = load_vis_section(is);
+
+	// Construct and return the level.
+	LevelRenderer_Ptr levelRenderer(new UnlitLevelRenderer(polygons));
+	return Level_Ptr(new Level(levelRenderer, tree, portals, leafVis));
 }
 
 /**

@@ -6,23 +6,30 @@
 #ifndef H_HESP_LEVEL_LITLEVELRENDERER
 #define H_HESP_LEVEL_LITLEVELRENDERER
 
+#include <source/images/Image.h>
+#include <source/util/PolygonTypes.h>
 #include "LevelRenderer.h"
 
 namespace hesp {
 
 class LitLevelRenderer : public LevelRenderer
 {
+	//#################### TYPEDEFS ####################
+private:
+	typedef std::vector<TexturedLitPolygon_Ptr> TexLitPolyVector;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
+	TexLitPolyVector m_polygons;
 	// TODO
 
 	//#################### CONSTRUCTORS ####################
 public:
-	// TODO
+	LitLevelRenderer(const TexLitPolyVector& polygons, const std::vector<Image24_Ptr>& lightmaps);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	virtual void render() const = 0;
+	void render(const std::vector<int>& indices) const;
 };
 
 }

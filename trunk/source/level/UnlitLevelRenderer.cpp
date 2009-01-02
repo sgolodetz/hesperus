@@ -7,6 +7,16 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+UnlitLevelRenderer::UnlitLevelRenderer(const std::vector<TexturedPolygon_Ptr>& polygons)
+:	m_polygons(polygons)
+{}
+
+//#################### PUBLIC METHODS ####################
+void UnlitLevelRenderer::render(const std::vector<int>& indices) const
+{
+	// NYI
+	throw 23;
+}
 
 }

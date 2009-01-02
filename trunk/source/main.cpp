@@ -13,6 +13,7 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
+#include <source/io/FileUtil.h>
 using namespace hesp;
 
 void quit(int code)
@@ -76,6 +77,16 @@ int main( int argc, char* argv[] )
 	cont->layout().add(new Picture("resources/title.bmp"), Extents(500, 0, 700, 50));
 	screen.layout().add(cont, Extents(100, 100, 200, 200));
 	screen.fit(Extents(0, 0, 1024, 768));
+
+#if 1
+	try
+	{
+		// Test level loading.
+		Level_Ptr unlitLevel = FileUtil::load_level_file("resources/simple.bsu");
+		Level_Ptr litLevel = FileUtil::load_level_file("resources/simple.bsp");
+	}
+	catch(Exception& e) {}
+#endif
 
 	for(;;)
 	{

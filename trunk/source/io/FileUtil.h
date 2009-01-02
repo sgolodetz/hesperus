@@ -12,6 +12,7 @@
 using boost::shared_ptr;
 
 #include <source/images/Image.h>
+#include <source/level/Level.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/lighting/Light.h>
 #include <source/level/portals/Portal.h>
@@ -24,6 +25,8 @@ class FileUtil
 {
 	//#################### PUBLIC METHODS ####################
 public:
+	static Level_Ptr load_level_file(const std::string& filename);
+
 	static std::vector<Light> load_lights_file(const std::string& filename);
 
 	template <typename Poly>
@@ -52,12 +55,16 @@ private:
 
 	static std::vector<Light> load_lights_section(std::istream& is);
 
+	static Level_Ptr load_lit_level_file(std::istream& is);
+
 	template <typename Poly>
 	static void load_polygons_section(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
 
 	static void load_separator(std::istream& is);
 
 	static BSPTree_Ptr load_tree_section(std::istream& is);
+
+	static Level_Ptr load_unlit_level_file(std::istream& is);
 
 	static LeafVisTable_Ptr load_vis_section(std::istream& is);
 };

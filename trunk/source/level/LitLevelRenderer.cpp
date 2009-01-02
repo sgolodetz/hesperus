@@ -7,6 +7,19 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+LitLevelRenderer::LitLevelRenderer(const TexLitPolyVector& polygons, const std::vector<Image24_Ptr>& lightmaps)
+:	m_polygons(polygons)
+{
+	// NYI
+	// throw 23;
+}
+
+//#################### PUBLIC METHODS ####################
+void LitLevelRenderer::render(const std::vector<int>& indices) const
+{
+	// NYI
+	throw 23;
+}
 
 }

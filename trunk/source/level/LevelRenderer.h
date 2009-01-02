@@ -6,6 +6,11 @@
 #ifndef H_HESP_LEVEL_LEVELRENDERER
 #define H_HESP_LEVEL_LEVELRENDERER
 
+#include <vector>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 namespace hesp {
 
 class LevelRenderer
@@ -16,8 +21,12 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void render() const = 0;
+	virtual void render(const std::vector<int>& indices) const = 0;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<LevelRenderer> LevelRenderer_Ptr;
+typedef shared_ptr<const LevelRenderer> LevelRenderer_CPtr;
 
 }
 
