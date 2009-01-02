@@ -20,7 +20,7 @@ struct TextureDeleter
 
 //#################### CONSTRUCTORS ####################
 /**
-Constructs an empty new texture (the subclass constructor will initialise it).
+Constructs an empty texture (the subclass constructor will initialise it).
 */
 Texture::Texture() {}
 
