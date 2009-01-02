@@ -43,7 +43,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	BSPTree_Ptr tree;
 	try
 	{
-		load_tree_file(inputFilename, polygons, tree);
+		FileUtil::load_tree_file(inputFilename, polygons, tree);
 	}
 	catch(Exception& e) { quit_with_error(e.cause()); }
 

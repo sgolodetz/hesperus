@@ -33,7 +33,7 @@ try
 	TexLitPolyVector polygons;
 	BSPTree_Ptr tree;
 	std::string lightmapPrefix;
-	load_lit_tree_file(treeFilename, polygons, tree, lightmapPrefix);
+	FileUtil::load_lit_tree_file(treeFilename, polygons, tree, lightmapPrefix);
 
 	// Load the portals.
 	// NYI

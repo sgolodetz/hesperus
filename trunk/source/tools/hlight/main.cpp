@@ -38,13 +38,13 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	// Read in the polygons and tree.
 	std::vector<TexturedPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;
-	load_tree_file(treeFilename, polygons, tree);
+	FileUtil::load_tree_file(treeFilename, polygons, tree);
 
 	// Read in the vis table.
-	LeafVisTable_Ptr leafVis = load_vis_file(visFilename);
+	LeafVisTable_Ptr leafVis = FileUtil::load_vis_file(visFilename);
 
 	// Read in the lights.
-	std::vector<Light> lights = load_lights_file(lightsFilename);
+	std::vector<Light> lights = FileUtil::load_lights_file(lightsFilename);
 
 	// Note:	We try and open the output file now because the lightmap generation process
 	//			is a potentially lengthy one: it would be very annoying for users if they

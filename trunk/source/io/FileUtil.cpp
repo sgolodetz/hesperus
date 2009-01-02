@@ -17,18 +17,59 @@ using boost::lexical_cast;
 
 namespace hesp {
 
+//#################### PUBLIC METHODS ####################
 /**
 Loads an array of lights from the specified file.
 
 @param filename	The name of the file containing the list of lights
 @return			The array of lights
 */
-std::vector<Light> load_lights_file(const std::string& filename)
+std::vector<Light> FileUtil::load_lights_file(const std::string& filename)
 {
-	std::vector<Light> lights;
-
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The lights file could not be read");
+
+	return load_lights_section(is);
+}
+
+void FileUtil::load_portals_file(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals)
+{
+	// NYI
+	throw 23;
+}
+
+/**
+Loads a leaf visibility table from the specified file.
+
+@param filename	The name of the file from which to load the visibility table
+@return			The visibility table
+*/
+LeafVisTable_Ptr FileUtil::load_vis_file(const std::string& filename)
+{
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("The vis file could not be read");
+
+	return load_vis_section(is);
+}
+
+//#################### PRIVATE METHODS ####################
+/**
+Reads the lightmap prefix from the specified std::istream.
+
+@param is			The std::istream
+@return				The lightmap prefix
+@throws Exception	If EOF is encountered whilst trying to read the lightmap prefix
+*/
+std::string FileUtil::load_lightmap_prefix_section(std::istream& is)
+{
+	std::string lightmapPrefix;
+	if(!std::getline(is, lightmapPrefix)) throw Exception("Unexpected EOF whilst trying to read lightmap prefix");
+	return lightmapPrefix;
+}
+
+std::vector<Light> FileUtil::load_lights_section(std::istream& is)
+{
+	std::vector<Light> lights;
 
 	// Read in the light count.
 	int lightCount;
@@ -71,18 +112,21 @@ std::vector<Light> load_lights_file(const std::string& filename)
 	return lights;
 }
 
-/**
-Loads a leaf visibility table from the specified file.
+void FileUtil::load_separator(std::istream& is)
+{
+	std::string line;
+	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read separator");
+	if(line != "***") throw Exception("Bad separator");
+}
 
-@param filename	The name of the file from which to load the visibility table
-@return			The visibility table
-*/
-LeafVisTable_Ptr load_vis_file(const std::string& filename)
+BSPTree_Ptr FileUtil::load_tree_section(std::istream& is)
+{
+	return BSPTree::load_postorder_text(is);
+}
+
+LeafVisTable_Ptr FileUtil::load_vis_section(std::istream& is)
 {
 	LeafVisTable_Ptr leafVis;
-
-	std::ifstream is(filename.c_str());
-	if(is.fail()) throw Exception("The vis file could not be read");
 
 	std::string line;
 
