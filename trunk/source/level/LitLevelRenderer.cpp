@@ -3,6 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
+#include <gl/glew.h>
+
 #include "LitLevelRenderer.h"
 
 #include <source/textures/TextureFactory.h>
@@ -30,7 +32,7 @@ LitLevelRenderer::LitLevelRenderer(const TexLitPolyVector& polygons, const std::
 	m_lightmaps.resize(lightmapCount);
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		m_lightmaps[i] = TextureFactory::create_texture24(lightmaps[i]);
+		m_lightmaps[i] = TextureFactory::create_texture24(lightmaps[i]/*, GL_MODULATE*/);
 	}
 }
 
@@ -44,9 +46,17 @@ void LitLevelRenderer::render(const std::vector<int>& polyIndices) const
 //#################### PRIVATE METHODS ####################
 void LitLevelRenderer::render_simple(const std::vector<int>& polyIndices) const
 {
-	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT | GL_TEXTURE_BIT);
 
+	// Set up the two texture units.
+	glActiveTextureARB(GL_TEXTURE0_ARB);
 	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+	glActiveTextureARB(GL_TEXTURE1_ARB);
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
 	glColor3d(1,1,1);
 
 	int indexCount = static_cast<int>(polyIndices.size());
@@ -57,18 +67,27 @@ void LitLevelRenderer::render_simple(const std::vector<int>& polyIndices) const
 		// Note:	If we got to this point, all textures were loaded successfully,
 		//			so the texture's definitely in the map.
 		std::map<std::string,Texture_Ptr>::const_iterator jt = m_textures.find(poly->auxiliary_data());
+		glActiveTextureARB(GL_TEXTURE0_ARB);
 		jt->second->bind();
+
+		glActiveTextureARB(GL_TEXTURE1_ARB);
+		m_lightmaps[polyIndices[i]]->bind();
 
 		int vertCount = poly->vertex_count();
 		glBegin(GL_POLYGON);
 			for(int j=0; j<vertCount; ++j)
 			{
 				const TexturedLitVector3d& v = poly->vertex(j);
-				glTexCoord2d(v.u, v.v);
+				glMultiTexCoord2dARB(GL_TEXTURE0_ARB, v.u, v.v);
+				glMultiTexCoord2dARB(GL_TEXTURE1_ARB, v.lu, v.lv);
 				glVertex3d(v.x, v.y, v.z);
 			}
 		glEnd();
 	}
+
+	glActiveTextureARB(GL_TEXTURE1_ARB);
+	glDisable(GL_TEXTURE_2D);
+	glActiveTextureARB(GL_TEXTURE0_ARB);
 
 	glPopAttrib();
 }

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"

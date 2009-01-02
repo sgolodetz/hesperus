@@ -16,8 +16,8 @@ namespace hesp {
 /**
 Creates a texture from a 24-bit image.
 
-@param image	The image from which to create the texture
-@return			The created texture
+@param image		The image from which to create the texture
+@return				The created texture
 */
 Texture_Ptr TextureFactory::create_texture24(const Image24_CPtr& image)
 {

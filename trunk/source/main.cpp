@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include <SDL.h>
+#include <gl/glew.h>
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
@@ -81,6 +82,9 @@ try
 	int flags = SDL_OPENGL;// | SDL_FULLSCREEN;
 
 	if(SDL_SetVideoMode(width, height, bpp, flags) == 0) quit(EXIT_FAILURE);
+
+	if(glewInit() != GLEW_OK) quit_with_error("GLEW could not be initialised");
+	if(!glewGetExtension("GL_ARB_multitexture")) quit_with_error("Multitexturing not supported");
 
 	// Setup the screen.
 	Screen& screen = Screen::instance();

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,10 +61,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDLmain.lib SDL.lib opengl32.lib glu32.lib"
+				AdditionalDependencies="SDLmain.lib SDL.lib opengl32.lib glu32.lib glew32.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\..\hesperus_libraries\SDL-1.2.13\lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\hesperus_libraries\glew-1.5.1\lib&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\lib&quot;"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDLmain.lib SDL.lib opengl32.lib glu32.lib"
+				AdditionalDependencies="SDLmain.lib SDL.lib opengl32.lib glu32.lib glew32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;..\..\hesperus_libraries\SDL-1.2.13\lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\hesperus_libraries\glew-1.5.1\lib&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
