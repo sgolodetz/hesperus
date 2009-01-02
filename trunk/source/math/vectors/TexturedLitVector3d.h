@@ -22,9 +22,8 @@ struct TexturedLitVector3d
 	double x, y, z, u, v, lu, lv;
 
 	//#################### CONSTRUCTORS ####################
-	TexturedLitVector3d(double x_, double y_, double z_, double u_, double v_, double lu_, double lv_)
-	:	x(x_), y(y_), z(z_), u(u_), v(v_), lu(lu_), lv(lv_)
-	{}
+	TexturedLitVector3d(double x_, double y_, double z_, double u_, double v_, double lu_, double lv_);
+	TexturedLitVector3d(const std::vector<std::string>& components);
 
 	//#################### PUBLIC OPERATORS ####################
 	operator Vector3d() const;
