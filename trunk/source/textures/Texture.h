@@ -14,24 +14,34 @@ using boost::shared_ptr;
 namespace hesp {
 
 /**
-This class represents OpenGL textures. Essentially it's just a simple wrapper for an OpenGL texture ID.
+This class represents OpenGL textures. Essentially it's just a simple wrapper for an OpenGL texture ID,
+but with reloading capabilities (i.e. the texture will reload itself if the screen resolution is changed).
 */
 class Texture
 {
-	//#################### FRIENDS ####################
-	friend class TextureFactory;
-
-	//#################### PRIVATE VARIABLES ####################
-private:
-	shared_ptr<GLuint> m_id;
+	//#################### PROTECTED VARIABLES ####################
+protected:
+	mutable shared_ptr<GLuint> m_id;
 
 	//#################### CONSTRUCTORS ####################
-private:
-	Texture(GLuint id);
+protected:
+	Texture();
+
+	//#################### DESTRUCTOR ####################
+public:
+	virtual ~Texture();
+
+	//#################### PROTECTED ABSTRACT METHODS ####################
+protected:
+	virtual void reload() const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
 	void bind() const;
+
+	//#################### PROTECTED METHODS ####################
+protected:
+	void set_id(GLuint id) const;
 };
 
 //#################### TYPEDEFS ####################

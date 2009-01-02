@@ -13,28 +13,39 @@ struct TextureDeleter
 	void operator()(void *p)
 	{
 		GLuint *id = static_cast<GLuint*>(p);
-		glDeleteTextures(1, id);
+		if(glIsTexture(*id)) glDeleteTextures(1, id);
 		delete p;
 	}
 };
 
 //#################### CONSTRUCTORS ####################
 /**
-Constructs a new texture from an OpenGL texture ID.
-
-@param id	The OpenGL texture ID
+Constructs an empty new texture (the subclass constructor will initialise it).
 */
-Texture::Texture(GLuint id)
-:	m_id(shared_ptr<GLuint>(new GLuint(id), TextureDeleter()))
-{}
+Texture::Texture() {}
+
+//#################### DESTRUCTOR ####################
+Texture::~Texture() {}
 
 //#################### PUBLIC METHODS ####################
 /**
-Binds the texture to GL_TEXTURE_2D.
+Binds the texture to GL_TEXTURE_2D (reloads it first if necessary).
 */
 void Texture::bind() const
 {
+	if(!glIsTexture(*m_id)) reload();
 	glBindTexture(GL_TEXTURE_2D, *m_id);
+}
+
+//#################### PROTECTED METHODS ####################
+/**
+Sets the texture ID (for use by subclasses during reloading).
+
+@param id	The new texture ID
+*/
+void Texture::set_id(GLuint id) const
+{
+	m_id.reset(new GLuint(id), TextureDeleter());
 }
 
 }

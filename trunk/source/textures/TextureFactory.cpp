@@ -8,6 +8,7 @@
 #include <gl/glu.h>
 
 #include <source/exceptions/InvalidParameterException.h>
+#include "Image24Texture.h"
 
 namespace hesp {
 
@@ -22,29 +23,7 @@ Texture_Ptr TextureFactory::create_texture24(const Image24_CPtr& image)
 {
 	int width = image->width(), height = image->height();
 	check_dimensions(width, height);
-
-	GLuint id;
-	glGenTextures(1, &id);
-
-	glBindTexture(GL_TEXTURE_2D, id);
-
-	// Enable trilinear filtering for this texture when minifying.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-	int size = width*height;
-	unsigned char *pixels = new unsigned char[size*3];
-	for(int i=0; i<size; ++i)
-	{
-		const Image24::Pixel& p = (*image)(i);
-		pixels[i*3]		= p.r();
-		pixels[i*3+1]	= p.g();
-		pixels[i*3+2]	= p.b();
-	}
-	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels);
-	delete[] pixels;
-
-	return Texture_Ptr(new Texture(id));
+	return Texture_Ptr(new Image24Texture(image));
 }
 
 //#################### PRIVATE METHODS ####################

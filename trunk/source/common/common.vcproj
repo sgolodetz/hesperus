@@ -171,6 +171,10 @@
 				Name=".cpp"
 				>
 				<File
+					RelativePath="..\textures\Image24Texture.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\textures\Texture.cpp"
 					>
 				</File>
@@ -182,6 +186,10 @@
 			<Filter
 				Name=".h"
 				>
+				<File
+					RelativePath="..\textures\Image24Texture.h"
+					>
+				</File>
 				<File
 					RelativePath="..\textures\Texture.h"
 					>
