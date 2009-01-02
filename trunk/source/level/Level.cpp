@@ -36,7 +36,7 @@ void Level::render() const
 
 	// TEMPORARY: The player position and look vector will eventually be obtained from elsewhere.
 	const Vector3d pos(5, 15, 2);
-	const Vector3d look(1,0,0);
+	const Vector3d look(0,-1,0);
 	
 	// Set the camera.
 	Vector3d at = pos + look;
