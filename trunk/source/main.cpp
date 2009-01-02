@@ -5,6 +5,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 #include <SDL.h>
 #include <source/ogl/WrappedGL.h>
@@ -21,6 +22,13 @@ void quit(int code)
 {
 	SDL_Quit();
 	exit(code);
+}
+
+void quit_with_error(const std::string& error)
+{
+	SDL_Quit();
+	std::cout << "Error: " << error << std::endl;
+	exit(EXIT_FAILURE);
 }
 
 void handle_key_down(SDL_keysym *keysym)
@@ -52,14 +60,10 @@ void process_events()
 	}
 }
 
-int main( int argc, char* argv[] )
+int main(int argc, char* argv[])
+try
 {
-	Level_Ptr level;
-	try
-	{
-		level = FileUtil::load_level_file("resources/simple.bsu");
-	}
-	catch(Exception&) { quit(EXIT_FAILURE); }
+	Level_Ptr level = FileUtil::load_level_file("resources/simple.bsu");
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
 
@@ -94,4 +98,9 @@ int main( int argc, char* argv[] )
 	}
 
 	return 0;
+}
+catch(Exception& e)
+{
+	quit_with_error(e.cause());
+	return EXIT_FAILURE;	// to keep the compiler happy (this will never actually happen)
 }

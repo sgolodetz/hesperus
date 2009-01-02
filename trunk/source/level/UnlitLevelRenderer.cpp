@@ -5,15 +5,36 @@
 
 #include "UnlitLevelRenderer.h"
 
-#include <source/colours/Colour3d.h>
+#include <set>
+
 #include <source/ogl/WrappedGL.h>
+
+#include <source/colours/Colour3d.h>
+#include <source/images/BitmapLoader.h>
+#include <source/textures/TextureFactory.h>
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 UnlitLevelRenderer::UnlitLevelRenderer(const std::vector<TexturedPolygon_Ptr>& polygons)
 :	m_polygons(polygons)
-{}
+{
+	// Determine the set of unique texture names.
+	std::set<std::string> textureNames;
+	int polyCount = static_cast<int>(polygons.size());
+	for(int i=0; i<polyCount; ++i)
+	{
+		textureNames.insert(polygons[i]->auxiliary_data());
+	}
+
+	// Load the textures.
+	for(std::set<std::string>::const_iterator it=textureNames.begin(), iend=textureNames.end(); it!=iend; ++it)
+	{
+		std::string filename = "resources/textures/" + *it + ".bmp";
+		Image24_Ptr image = BitmapLoader::load_image24(filename);
+		m_textures.insert(std::make_pair(*it, TextureFactory::create_texture24(image)));
+	}
+}
 
 //#################### PUBLIC METHODS ####################
 void UnlitLevelRenderer::render(const std::vector<int>& polyIndices) const
