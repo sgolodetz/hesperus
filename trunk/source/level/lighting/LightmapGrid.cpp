@@ -45,13 +45,14 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 					//const double c1 = 1.0, c2 = 0.0, c3 = 0.0;
 
 					// Quadratic atmospheric attenuation
-					const double tenthDist = 30;	// the distance at which fAtt = 0.1
+					const double tenthDist = 20;	// the distance at which fAtt = 0.1
 					const double c1 = 1.0, c2 = 0.0, c3 = 9/(tenthDist*tenthDist);
 
 					const Vector3d& N = m_plane.normal();
 					Vector3d L = (light.position - p).normalize();
 
-					double NdotL = N.dot(L);
+					// Note: Using 1.0 instead of N . L seems to work better in practice (even though it's not 'right').
+					double NdotL = 1.0;	//N.dot(L);
 					if(NdotL > 0)
 					{
 						double dL = p.distance(light.position);

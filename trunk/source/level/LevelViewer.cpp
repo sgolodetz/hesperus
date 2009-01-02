@@ -21,7 +21,7 @@ LevelViewer::LevelViewer(const Level_Ptr& level)
 void LevelViewer::render() const
 {
 	// Draw the level itself.
-	Screen::instance().set_persp_viewport(*m_extents, 45.0, 0.1, 4096.0);
+	Screen::instance().set_persp_viewport(*m_extents, 60.0, 0.1, 4096.0);
 	m_level->render();
 
 	// Draw a white border round the component on the screen.

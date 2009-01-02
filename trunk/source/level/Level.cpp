@@ -35,8 +35,8 @@ void Level::render() const
 	glEnable(GL_DEPTH_TEST);
 
 	// TEMPORARY: The player position and look vector will eventually be obtained from elsewhere.
-	const Vector3d pos(5, 15, 2);
-	const Vector3d look(0,-1,0);
+	const Vector3d pos(1, 19, 2);
+	const Vector3d look(1,-0.5,0);
 	
 	// Set the camera.
 	Vector3d at = pos + look;
