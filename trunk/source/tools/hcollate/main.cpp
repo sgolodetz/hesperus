@@ -54,8 +54,7 @@ try
 	}
 
 	// Write everything to the output file.
-	// NYI
-	throw 23;
+	FileUtil::save_level_file(outputFilename, polygons, tree, portals, leafVis, lightmaps);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

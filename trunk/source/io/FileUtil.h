@@ -11,10 +11,12 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/images/Image.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/lighting/Light.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>
+#include <source/util/PolygonTypes.h>
 
 namespace hesp {
 
@@ -33,6 +35,12 @@ public:
 	static void load_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree);
 
 	static LeafVisTable_Ptr load_vis_file(const std::string& filename);
+
+	static void save_level_file(const std::string& filename, const std::vector<TexturedLitPolygon_Ptr>& polygons,
+								const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
+								const LeafVisTable_Ptr& leafVis, const std::vector<Image24_Ptr>& lightmaps);
+
+	static void save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis);
 
 	//#################### PRIVATE METHODS ####################
 private:

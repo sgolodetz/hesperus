@@ -18,36 +18,6 @@ using boost::lexical_cast;
 using namespace hesp;
 
 //#################### FUNCTIONS ####################
-void output_vis_table(std::ostream& os, const LeafVisTable_Ptr& leafVis)
-{
-	const LeafVisTable& table = *leafVis;
-
-	int size = table.size();
-
-	os << size << '\n';
-
-	for(int i=0; i<size; ++i)
-	{
-		for(int j=0; j<size; ++j)
-		{
-			switch(table(i,j))
-			{
-				case LEAFVIS_NO:
-				{
-					os << '0';
-					break;
-				}
-				case LEAFVIS_YES:
-				{
-					os << '1';
-					break;
-				}
-			}
-		}
-		os << '\n';
-	}
-}
-
 void quit_with_error(const std::string& error)
 {
 	std::cout << "Error: " << error << std::endl;
@@ -80,7 +50,7 @@ try
 	LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
 
 	// Write the leaf visibility table to the output file.
-	output_vis_table(os, leafVis);
+	FileUtil::save_vis_section(os, leafVis);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

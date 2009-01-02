@@ -14,6 +14,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/images/BitmapSaver.h>
 
 namespace hesp {
 
@@ -64,6 +65,73 @@ LeafVisTable_Ptr FileUtil::load_vis_file(const std::string& filename)
 	if(is.fail()) throw Exception("The vis file could not be read");
 
 	return load_vis_section(is);
+}
+
+/**
+Saves all the relevant pieces of information to the specified level file.
+
+@param filename		The name of the output file
+@param polygons		The level polygons
+@param tree			The BSP tree for the level
+@param portals		The portals for the level
+@param leafVis		The leaf visibility table for the level
+@param lightmaps	The lightmaps for the level
+*/
+void FileUtil::save_level_file(const std::string& filename, const std::vector<TexturedLitPolygon_Ptr>& polygons,
+							   const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
+							   const LeafVisTable_Ptr& leafVis, const std::vector<Image24_Ptr>& lightmaps)
+{
+	std::ofstream os(filename.c_str(), std::ios_base::binary);
+	if(os.fail()) throw Exception("Could not open " + filename + " for reading");
+
+	write_polygons(os, polygons);
+	os << "***\n";
+	tree->output_postorder_text(os);
+	os << "***\n";
+	write_polygons(os, portals);
+	os << "***\n";
+	save_vis_section(os, leafVis);
+	os << "***\n";
+
+	int lightmapCount = static_cast<int>(lightmaps.size());
+	for(int i=0; i<lightmapCount; ++i)
+	{
+		BitmapSaver::save_image24(os, lightmaps[i]);
+	}
+}
+
+/**
+Saves a leaf visibility table to a std::ostream.
+
+@param os		The std::ostream
+@param leafVis	The leaf visibility table
+*/
+void FileUtil::save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis)
+{
+	const LeafVisTable& table = *leafVis;
+
+	int size = table.size();
+	os << size << '\n';
+	for(int i=0; i<size; ++i)
+	{
+		for(int j=0; j<size; ++j)
+		{
+			switch(table(i,j))
+			{
+				case LEAFVIS_NO:
+				{
+					os << '0';
+					break;
+				}
+				case LEAFVIS_YES:
+				{
+					os << '1';
+					break;
+				}
+			}
+		}
+		os << '\n';
+	}
 }
 
 //#################### PRIVATE METHODS ####################
