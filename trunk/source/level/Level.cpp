@@ -23,23 +23,16 @@ Level::Level(const LevelRenderer_Ptr& levelRenderer, const BSPTree_Ptr& tree,
 //#################### PUBLIC METHODS ####################
 void Level::render() const
 {
-#if 0
-	gluLookAt(-1,-10,1, 0,0,0, 0,0,1);
-	
-	glBegin(GL_LINES);
-		glColor3d(1,0,0);
-		glVertex3d(0,0,0);
-		glVertex3d(10,0,0);
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 
-		glColor3d(0,1,0);
-		glVertex3d(0,0,0);
-		glVertex3d(0,10,0);
+	// Enable back-face culling.
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 
-		glColor3d(0,0,1);
-		glVertex3d(0,0,0);
-		glVertex3d(0,0,10);
-	glEnd();
-#endif
+	// Set up the z-buffer.
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
 
 	const bool RENDER_ALL_LEAVES = true;
 
@@ -53,6 +46,7 @@ void Level::render() const
 	std::vector<int> visibleLeaves;
 	for(int i=0, size=m_leafVis->size(); i<size; ++i)
 	{
+		// TODO: View frustum culling.
 		if(RENDER_ALL_LEAVES || (*m_leafVis)(curLeaf,i)) visibleLeaves.push_back(i);
 	}
 
@@ -63,6 +57,8 @@ void Level::render() const
 		std::copy(leaf->polygon_indices().begin(), leaf->polygon_indices().end(), std::back_inserter(polyIndices));
 	}
 	m_levelRenderer->render(polyIndices);
+
+	glPopAttrib();
 }
 
 }

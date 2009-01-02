@@ -28,6 +28,11 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void render(const std::vector<int>& polyIndices) const;
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void render_simple(const std::vector<int>& polyIndices) const;
+	void render_proper(const std::vector<int>& polyIndices) const;
 };
 
 }
