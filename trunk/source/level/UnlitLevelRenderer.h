@@ -6,10 +6,6 @@
 #ifndef H_HESP_LEVEL_UNLITLEVELRENDERER
 #define H_HESP_LEVEL_UNLITLEVELRENDERER
 
-#include <map>
-#include <string>
-
-#include <source/textures/Texture.h>
 #include <source/util/PolygonTypes.h>
 #include "LevelRenderer.h"
 
@@ -24,7 +20,6 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	TexPolyVector m_polygons;
-	std::map<std::string,Texture_Ptr> m_textures;
 
 	//#################### CONSTRUCTORS ####################
 public:
