@@ -34,20 +34,25 @@ void Level::render() const
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	const bool RENDER_ALL_LEAVES = true;
-
 	const Vector3d pos(5, 15, 2);
 	const Vector3d look(1,0,0);
 	Vector3d at = pos + look;
 
 	gluLookAt(pos.x, pos.y, pos.z, at.x, at.y, at.z, 0, 0, 1);
 
+	bool renderAllLeaves = false;
 	int curLeaf = m_tree->find_leaf_index(pos);
+	if(curLeaf >= m_tree->empty_leaf_count())
+	{
+		// If we're erroneously in a solid leaf, the best we can do is render the entire level.
+		renderAllLeaves = true;
+	}
+
 	std::vector<int> visibleLeaves;
 	for(int i=0, size=m_leafVis->size(); i<size; ++i)
 	{
 		// TODO: View frustum culling.
-		if(RENDER_ALL_LEAVES || (*m_leafVis)(curLeaf,i)) visibleLeaves.push_back(i);
+		if(renderAllLeaves || (*m_leafVis)(curLeaf,i)) visibleLeaves.push_back(i);
 	}
 
 	std::vector<int> polyIndices;
