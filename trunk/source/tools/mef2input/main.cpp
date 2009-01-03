@@ -184,14 +184,16 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 		MEFPolygon_Ptr poly = load_polygon<Vector3d,MEFAuxData>(line.substr(8));
 
 		// Convert polygon to hesperus form.
+		const double SCALE = 1.0/32;	// we want a 32-unit grid square to correspond to 1 metre in the world
 		std::vector<TexturedVector3d> newVertices;
 		TexturePlane_Ptr& texturePlane = poly->auxiliary_data().texturePlane;
 		texturePlane->determine_axis_vectors(poly->normal());
 		int vertCount = poly->vertex_count();
 		for(int j=0; j<vertCount; ++j)
 		{
-			const Vector3d& oldVert = poly->vertex(j);
+			Vector3d oldVert = poly->vertex(j);
 			TexCoords texCoords = texturePlane->calculate_coordinates(oldVert);
+			oldVert *= SCALE;
 			newVertices.push_back(TexturedVector3d(oldVert.x, oldVert.y, oldVert.z, texCoords.u, texCoords.v));
 		}
 		faces.push_back(TexturedPolygon_Ptr(new TexturedPolygon(newVertices, poly->auxiliary_data().texture)));
