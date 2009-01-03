@@ -149,6 +149,20 @@ void read_architecture_brush_composite(std::istream& is, std::vector<TexPolyhedr
 	}
 }
 
+void write_brushes(const std::string& filename, const std::vector<TexPolyhedralBrush_Ptr>& brushes)
+{
+	std::ofstream os(filename.c_str());
+	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
+
+	int brushCount = static_cast<int>(brushes.size());
+	for(int i=0; i<brushCount; ++i)
+	{
+		os << "{\n";
+		write_polygons(os, brushes[i]->faces());
+		os << "}\n";
+	}
+}
+
 void run_converter(const std::string& inputFilename, const std::string& brushesFilename, const std::string& entitiesFilename, const std::string& lightsFilename)
 {
 	std::vector<TexPolyhedralBrush_Ptr> brushes;
@@ -178,7 +192,7 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 	}
 
 	// Write the brushes to disk.
-	// TODO
+	write_brushes(brushesFilename, brushes);
 
 	// Write the entities to disk.
 	// TODO
