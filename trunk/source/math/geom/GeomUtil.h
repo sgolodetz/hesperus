@@ -47,6 +47,9 @@ double distance_to_plane(const Vector3d& p, const Plane& plane);
 Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane);
 
 template <typename Vert, typename AuxData>
+shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const std::string& n = "");
+
+template <typename Vert, typename AuxData>
 void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
 
 template <typename Vert, typename AuxData>

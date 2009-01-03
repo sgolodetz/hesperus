@@ -140,6 +140,60 @@ std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1,
 }
 
 /**
+Loads a polygon from a std::string (generally a line of text taken from a file).
+
+@param line	The std::string containing the polygon definition
+@param n	The number of the line in the file (if available), as a std::string
+@return		The polygon
+*/
+template <typename Vert, typename AuxData>
+shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const std::string& n)
+{
+	typedef Polygon<Vert,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
+
+	// Read the vertex count.
+	std::string::size_type L = line.find(' ');
+	if(L == std::string::npos) throw Exception("Bad input on line " + n);
+	std::string vertCountString = line.substr(0,L);
+	int vertCount;
+	try							{ vertCount = lexical_cast<int,std::string>(vertCountString); }
+	catch(bad_lexical_cast&)	{ throw Exception("Bad vertex count on line " + n); }
+
+	// Read the auxiliary data.
+	std::string::size_type R = line.find_last_of(')');
+	if(R == std::string::npos || R+2 >= line.length()) throw Exception("Bad input on line " + n);
+	std::string auxDataString = line.substr(R+2);
+	boost::trim(auxDataString);
+	AuxData auxData;
+	try							{ auxData = lexical_cast<AuxData,std::string>(auxDataString); }
+	catch(bad_lexical_cast&)	{ throw Exception("Bad auxiliary data on line " + n); }
+
+	// Read the vertices.
+	std::string verticesString = line.substr(L+1, R-L);
+	std::vector<Vert> vertices;
+
+	typedef boost::char_separator<char> sep;
+	typedef boost::tokenizer<sep> tokenizer;
+	tokenizer tok(verticesString.begin(), verticesString.end(), sep(" "));
+	std::vector<std::string> tokens(tok.begin(), tok.end());
+	int tokensPerVert = static_cast<int>(tokens.size()) / vertCount;
+	if(tokensPerVert < 3) throw Exception("Bad vertex data on line " + n);
+
+	for(int i=0; i<vertCount; ++i)
+	{
+		int offset = i*tokensPerVert;
+		if(tokens[offset] != "(" || tokens[offset+tokensPerVert-1] != ")") throw Exception("Bad vertex data on line " + n);
+
+		std::vector<std::string> components(&tokens[offset+1], &tokens[offset+tokensPerVert-1]);
+		try					{ vertices.push_back(Vert(components)); }
+		catch(Exception& e)	{ throw Exception(e.cause()); }
+	}
+
+	return Poly_Ptr(new Poly(vertices, auxData));
+}
+
+/**
 Loads a sequence of polygons from a stream, one per line.
 
 @param is		The stream from which to load
@@ -158,46 +212,7 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 		boost::trim(line);
 		if(line != "")
 		{
-			// Read the vertex count.
-			std::string::size_type L = line.find(' ');
-			if(L == std::string::npos) throw Exception("Bad input on line " + lexical_cast<std::string,int>(n));
-			std::string vertCountString = line.substr(0,L);
-			int vertCount;
-			try							{ vertCount = lexical_cast<int,std::string>(vertCountString); }
-			catch(bad_lexical_cast&)	{ throw Exception("Bad vertex count on line " + lexical_cast<std::string,int>(n)); }
-
-			// Read the auxiliary data.
-			std::string::size_type R = line.find_last_of(')');
-			if(R == std::string::npos || R+2 >= line.length()) throw Exception("Bad input on line " + lexical_cast<std::string,int>(n));
-			std::string auxDataString = line.substr(R+2);
-			boost::trim(auxDataString);
-			AuxData auxData;
-			try							{ auxData = lexical_cast<AuxData,std::string>(auxDataString); }
-			catch(bad_lexical_cast&)	{ throw Exception("Bad auxiliary data on line " + lexical_cast<std::string,int>(n)); }
-
-			// Read the vertices.
-			std::string verticesString = line.substr(L+1, R-L);
-			std::vector<Vert> vertices;
-
-			typedef boost::char_separator<char> sep;
-			typedef boost::tokenizer<sep> tokenizer;
-			tokenizer tok(verticesString.begin(), verticesString.end(), sep(" "));
-			std::vector<std::string> tokens(tok.begin(), tok.end());
-			int tokensPerVert = static_cast<int>(tokens.size()) / vertCount;
-			if(tokensPerVert < 3) throw Exception("Bad vertex data on line " + lexical_cast<std::string,int>(n));
-
-			for(int i=0; i<vertCount; ++i)
-			{
-				int offset = i*tokensPerVert;
-				if(tokens[offset] != "(" || tokens[offset+tokensPerVert-1] != ")") throw Exception("Bad vertex data on line " + lexical_cast<std::string,int>(n));
-
-				std::vector<std::string> components(&tokens[offset+1], &tokens[offset+tokensPerVert-1]);
-				try					{ vertices.push_back(Vert(components)); }
-				catch(Exception& e)	{ throw Exception(e.cause()); }
-			}
-
-			// Add the completed polygon to the list.
-			polygons.push_back(Poly_Ptr(new Poly(vertices, auxData)));
+			polygons.push_back(load_polygon<Vert,AuxData>(line, lexical_cast<std::string,int>(n)));
 		}
 
 		++n;
