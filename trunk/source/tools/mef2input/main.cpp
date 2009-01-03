@@ -37,6 +37,32 @@ void skip_section(std::istream& is)
 	} while(bracketCount > 0);
 }
 
+void read_polyhedral_brush(std::istream& is)
+{
+	skip_section(is);
+}
+
+void read_architecture_brush_composite(std::istream& is)
+{
+	std::string line;
+	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read ArchitectureBrushComposite");
+	if(line != "{") throw Exception("ArchitectureBrushComposite: Expected {");
+
+	for(;;)
+	{
+		if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read ArchitectureBrushComposite");
+		if(line == "}") break;
+
+		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is);
+		else if(line == "PolyhedralBrush") read_polyhedral_brush(is);
+		else
+		{
+			std::cout << "Warning: Don't know how to read a " << line << " subsection of ArchitectureBrushComposite" << std::endl;
+			skip_section(is);
+		}
+	}
+}
+
 void run_converter(const std::string& inputFilename, const std::string& brushesFilename, const std::string& entitiesFilename, const std::string& lightsFilename)
 {
 	std::ifstream is(inputFilename.c_str());
@@ -54,16 +80,8 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 
 	while(std::getline(is, line))
 	{
-		if(line == "ArchitectureBrushComposite")
-		{
-			// TODO
-			skip_section(is);
-		}
-		else if(line == "PolyhedralBrush")
-		{
-			// TODO
-			skip_section(is);
-		}
+		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is);
+		else if(line == "PolyhedralBrush") read_polyhedral_brush(is);
 		else
 		{
 			std::cout << "Warning: Don't know how to read a " << line << " section" << std::endl;
