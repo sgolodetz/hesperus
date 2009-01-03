@@ -667,6 +667,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="csg"
+				>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\csg\PolyhedralBrush.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\level\csg\PolyhedralBrush.tpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"

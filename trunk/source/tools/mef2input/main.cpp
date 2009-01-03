@@ -13,7 +13,19 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/level/csg/PolyhedralBrush.h>
+#include <source/math/geom/Polygon.h>
 using namespace hesp;
+
+//#################### CLASSES ####################
+struct MEFAuxData
+{
+	// TODO
+};
+
+//#################### TYPEDEFS ####################
+typedef Polygon<Vector3d,MEFAuxData> MEFPolygon;
+typedef shared_ptr<MEFPolygon> MEFPolygon_Ptr;
 
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
