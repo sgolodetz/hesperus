@@ -15,32 +15,106 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/level/csg/PolyhedralBrush.h>
 #include <source/math/geom/GeomUtil.h>
+#include <source/math/vectors/TexCoords.h>
+#include <source/math/vectors/Vector2d.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
 //#################### CLASSES ####################
-struct TexturePlane
+class TexturePlane
 {
-	double offsetU, offsetV, scaleU, scaleV, rotation;
+	//#################### CONSTANTS ####################
+private:
+	// FIXME:	These should technically be read from the texture, but MapEditor does it this way and
+	//			we need to be consistent. (It doesn't make any difference in practice, so it's not
+	//			even worth changing in MapEditor.)
+	enum
+	{
+		TEXTURE_WIDTH = 128,
+		TEXTURE_HEIGHT = 128
+	};
+
+	//#################### PRIVATE VARIABLES ####################
+private:
+	double m_scaleU, m_scaleV;
+	double m_offsetU, m_offsetV;	// the ou and ov texture offsets, in the texture coordinate system
+	Vector2d m_uAxis;				// the u texture axis (note that |m_uAxis| is always 1), in the texture coordinate system
+	Vector2d m_vAxis;				// the v texture axis (note that |m_vAxis| is always 1), in the texture coordinate system
+	Vector3d m_horizAxis;			// the base horizontal axis of the texture plane (e.g. (0,1,0) when the face normal's
+									// x component is largest), in the world coordinate system
+	Vector3d m_vertAxis;			// the base vertical axis of the texture plane (e.g. (0,0,-1) when the face normal's
+									// x component is largest), in the world coordinate system
+
+	//#################### CONSTRUCTORS ####################
+public:
+	TexturePlane(double offsetU, double offsetV, double scaleU, double scaleV, double angleDegrees)
+	:	m_offsetU(offsetU), m_offsetV(offsetV), m_scaleU(scaleU), m_scaleV(scaleV)
+	{
+		double angleRadians = angleDegrees * PI / 180;
+		m_uAxis = Vector2d(cos(angleRadians), sin(angleRadians));
+		m_vAxis = Vector2d(-sin(angleRadians), cos(angleRadians));
+	}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	TexCoords calculate_coordinates(const Vector3d& p3D) const
+	{
+		Vector2d p = project_to_texture_plane(p3D);
+		return TexCoords((p.dot(m_uAxis)/m_scaleU + m_offsetU)/TEXTURE_WIDTH, (p.dot(m_vAxis)/m_scaleV + m_offsetV)/TEXTURE_HEIGHT);
+	}
+
+	void determine_axis_vectors(const Vector3d& faceNormal)
+	{
+		double xAbs = fabs(faceNormal.x), yAbs = fabs(faceNormal.y), zAbs = fabs(faceNormal.z);
+		if(xAbs >= yAbs && xAbs >= zAbs)
+		{
+			// The x component of the face normal has the largest (absolute) value.
+			m_horizAxis = Vector3d(0,1,0);
+			m_vertAxis = Vector3d(0,0,-1);
+		}	
+		else if(yAbs >= zAbs)
+		{
+			// The y component of the face normal has the largest (absolute) value.
+			m_horizAxis = Vector3d(1,0,0);
+			m_vertAxis = Vector3d(0,0,-1);
+		}
+		else
+		{
+			// The z component of the face normal has the largest (absolute) value.
+			m_horizAxis = Vector3d(1,0,0);
+			m_vertAxis = Vector3d(0,-1,0);
+		}
+	}
+
+	//#################### PRIVATE METHODS ####################
+private:
+	Vector2d project_to_texture_plane(const Vector3d& p3D) const
+	{
+		return Vector2d(m_horizAxis.dot(p3D), m_vertAxis.dot(p3D));
+	}
 };
+
+typedef shared_ptr<TexturePlane> TexturePlane_Ptr;
 
 struct MEFAuxData
 {
 	std::string texture;
-	TexturePlane texturePlane;
+	TexturePlane_Ptr texturePlane;
 };
 
-std::istream& operator>>(std::istream& is, TexturePlane& rhs)
+TexturePlane_Ptr read_texture_plane(std::istream& is)
 {
 	std::string dummy;
-	is >> dummy >> rhs.offsetU >> rhs.offsetV >> rhs.scaleU >> rhs.scaleV >> rhs.rotation >> dummy;
-	return is;
+	double offsetU, offsetV, scaleU, scaleV, angleDegrees;
+	is >> dummy >> offsetU >> offsetV >> scaleU >> scaleV >> angleDegrees >> dummy;
+	return TexturePlane_Ptr(new TexturePlane(offsetU, offsetV, scaleU, scaleV, angleDegrees));
 }
 
 std::istream& operator>>(std::istream& is, MEFAuxData& rhs)
 {
 	is >> std::skipws;
-	is >> rhs.texture >> rhs.texturePlane;
+	is >> rhs.texture;
+	rhs.texturePlane = read_texture_plane(is);
 	is >> std::noskipws;
 	return is;
 }
@@ -109,7 +183,18 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 		// Parse polygon.
 		MEFPolygon_Ptr poly = load_polygon<Vector3d,MEFAuxData>(line.substr(8));
 
-		// TODO: Convert polygon to hesperus form.
+		// Convert polygon to hesperus form.
+		std::vector<TexturedVector3d> newVertices;
+		TexturePlane_Ptr& texturePlane = poly->auxiliary_data().texturePlane;
+		texturePlane->determine_axis_vectors(poly->normal());
+		int vertCount = poly->vertex_count();
+		for(int j=0; j<vertCount; ++j)
+		{
+			const Vector3d& oldVert = poly->vertex(j);
+			TexCoords texCoords = texturePlane->calculate_coordinates(oldVert);
+			newVertices.push_back(TexturedVector3d(oldVert.x, oldVert.y, oldVert.z, texCoords.u, texCoords.v));
+		}
+		faces.push_back(TexturedPolygon_Ptr(new TexturedPolygon(newVertices, poly->auxiliary_data().texture)));
 	}
 	brushes.push_back(TexPolyhedralBrush_Ptr(new TexPolyhedralBrush(faces)));
 
