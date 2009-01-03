@@ -124,7 +124,7 @@ Plane_Ptr BSPCompiler::choose_split_plane(const std::vector<PolyIndex>& polyIndi
 			}
 		}
 
-		double metric = weight * abs(balance) + splits;
+		double metric = abs(balance) + weight * splits;
 		if(metric < bestMetric)
 		{
 			bestPlane = Plane_Ptr(new Plane(plane));

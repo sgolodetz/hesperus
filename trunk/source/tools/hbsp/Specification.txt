@@ -19,7 +19,7 @@ Flags:
 
 -w		The ratio between the weights assigned to balance and split when
 		choosing a split plane at each internal node: the default ratio is 4:1
-		in favour of balance, and equivalent to specifying -w4. Note that it
+		in favour of splits, and equivalent to specifying -w4. Note that it
 		is perfectly valid to use decimal ratios, e.g. -w2.5 is fine.
 
 Example Usage:
@@ -28,7 +28,7 @@ hbsp -r input.rgm output.rbt -w8
 
 This inputs a file input.rgm containing rendering geometry and outputs a file
 output.rbt containing a rendering BSP tree. The BSP construction process will
-weight balance as 8 times more important than splits.
+weight splits as 8 times more important than balance.
 
 In this instance, the filenames are arbitrary, but .rgm and .rbt were chosen to
 indicate "Rendering GeoMetry" and "Rendering BSP Tree" respectively.
