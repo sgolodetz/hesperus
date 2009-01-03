@@ -181,6 +181,10 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\TexturePlane.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -189,6 +193,14 @@
 			>
 			<File
 				RelativePath=".\simple.mef"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".h"
+			>
+			<File
+				RelativePath=".\TexturePlane.h"
 				>
 			</File>
 		</Filter>
