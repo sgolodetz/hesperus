@@ -34,7 +34,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	PolyhedralBrush(const PolyVector& faces);
+	explicit PolyhedralBrush(const PolyVector& faces);
 
 	//#################### PUBLIC METHODS ####################
 public:

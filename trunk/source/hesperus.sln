@@ -34,6 +34,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hcollate", "tools\hcollate\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mef2input", "tools\mef2input\mef2input.vcproj", "{C059F72F-2436-4299-A3EB-46079A0C7FD7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC} = {57B520D8-1A0C-4F5D-BE95-26C288CA60FC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -14,18 +14,43 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/level/csg/PolyhedralBrush.h>
-#include <source/math/geom/Polygon.h>
+#include <source/math/geom/GeomUtil.h>
+#include <source/util/PolygonTypes.h>
 using namespace hesp;
 
 //#################### CLASSES ####################
+struct TexturePlane
+{
+	double offsetU, offsetV, scaleU, scaleV, rotation;
+};
+
 struct MEFAuxData
 {
-	// TODO
+	std::string texture;
+	TexturePlane texturePlane;
 };
+
+std::istream& operator>>(std::istream& is, TexturePlane& rhs)
+{
+	std::string dummy;
+	is >> dummy >> rhs.offsetU >> rhs.offsetV >> rhs.scaleU >> rhs.scaleV >> rhs.rotation >> dummy;
+	return is;
+}
+
+std::istream& operator>>(std::istream& is, MEFAuxData& rhs)
+{
+	is >> std::skipws;
+	is >> rhs.texture >> rhs.texturePlane;
+	is >> std::noskipws;
+	return is;
+}
 
 //#################### TYPEDEFS ####################
 typedef Polygon<Vector3d,MEFAuxData> MEFPolygon;
 typedef shared_ptr<MEFPolygon> MEFPolygon_Ptr;
+
+typedef PolyhedralBrush<TexturedVector3d,std::string> TexPolyhedralBrush;
+typedef shared_ptr<TexPolyhedralBrush> TexPolyhedralBrush_Ptr;
 
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
@@ -58,7 +83,7 @@ void skip_section(std::istream& is)
 	} while(bracketCount > 0);
 }
 
-void read_polyhedral_brush(std::istream& is)
+void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>& brushes)
 {
 	std::string line;
 
@@ -75,19 +100,24 @@ void read_polyhedral_brush(std::istream& is)
 	try							{ polyCount = lexical_cast<int,std::string>(line.substr(10)); }
 	catch(bad_lexical_cast&)	{ throw Exception("PolyhedralBrush: Polygon count is not an integer"); }
 
+	std::vector<TexturedPolygon_Ptr> faces;
 	for(int i=0; i<polyCount; ++i)
 	{
 		read_line(is, line, "read polygon");
 		if(line.substr(0,7) != "Polygon" || line.length() < 9) throw Exception("PolyhedralBrush: Expected Polygon");
 
-		// TODO: Parse polygon.
+		// Parse polygon.
+		MEFPolygon_Ptr poly = load_polygon<Vector3d,MEFAuxData>(line.substr(8));
+
+		// TODO: Convert polygon to hesperus form.
 	}
+	brushes.push_back(TexPolyhedralBrush_Ptr(new TexPolyhedralBrush(faces)));
 
 	read_line(is, line, "read PolyhedralBrush");
 	if(line != "}") throw Exception("PolyhedralBrush: Expected }");
 }
 
-void read_architecture_brush_composite(std::istream& is)
+void read_architecture_brush_composite(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>& brushes)
 {
 	std::string line;
 	read_line(is, line, "read ArchitectureBrushComposite");
@@ -98,8 +128,8 @@ void read_architecture_brush_composite(std::istream& is)
 		read_line(is, line, "read ArchitectureBrushComposite");
 		if(line == "}") break;
 
-		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is);
-		else if(line == "PolyhedralBrush") read_polyhedral_brush(is);
+		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is, brushes);
+		else if(line == "PolyhedralBrush") read_polyhedral_brush(is, brushes);
 		else
 		{
 			std::cout << "Warning: Don't know how to read a " << line << " subsection of ArchitectureBrushComposite" << std::endl;
@@ -110,10 +140,12 @@ void read_architecture_brush_composite(std::istream& is)
 
 void run_converter(const std::string& inputFilename, const std::string& brushesFilename, const std::string& entitiesFilename, const std::string& lightsFilename)
 {
+	std::vector<TexPolyhedralBrush_Ptr> brushes;
+
+	// Read in the MEF file.
 	std::ifstream is(inputFilename.c_str());
 	if(is.fail()) throw Exception("Could not open " + inputFilename + " for reading");
 
-	// Read in the MEF file.
 	std::string line;
 
 	read_line(is, line, "read MEF ID");
@@ -125,8 +157,8 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 
 	while(std::getline(is, line))
 	{
-		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is);
-		else if(line == "PolyhedralBrush") read_polyhedral_brush(is);
+		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is, brushes);
+		else if(line == "PolyhedralBrush") read_polyhedral_brush(is, brushes);
 		else
 		{
 			std::cout << "Warning: Don't know how to read a " << line << " section" << std::endl;
