@@ -47,7 +47,7 @@ void Screen::set_ortho_viewport(const Extents& extents)
 
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-	gluOrtho2D(0, x2+1-x1, y2-y1, -1);
+	gluOrtho2D(-1, x2+1-x1, y2+1-y1, -1);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
