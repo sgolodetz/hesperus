@@ -5,6 +5,8 @@
 
 #include "AABB.h"
 
+#include <boost/tokenizer.hpp>
+
 #include <source/exceptions/Exception.h>
 
 namespace hesp {
@@ -131,6 +133,26 @@ void AABB3d::check_invariant() const
 	{
 		throw Exception("The minimum bound is not strictly less than the maximum bound");
 	}
+}
+
+//#################### GLOBAL METHODS ####################
+template <>
+AABB3d read_aabb(const std::string& s, double scale)
+{
+	typedef boost::char_separator<char> sep;
+	typedef boost::tokenizer<sep> tokenizer;
+
+	tokenizer tok(s.begin(), s.end(), sep(" "));
+	std::vector<std::string> tokens(tok.begin(), tok.end());
+	if(tokens.size() != 10) throw Exception("PolyhedralBrush: Invalid bounds specification");
+
+	std::vector<std::string> minComponents(&tokens[1], &tokens[4]);
+	std::vector<std::string> maxComponents(&tokens[6], &tokens[9]);
+	Vector3d minimum(minComponents), maximum(maxComponents);
+	minimum *= scale;
+	maximum *= scale;
+
+	return AABB3d(minimum, maximum);
 }
 
 //#################### EXPLICIT INSTANTIATIONS ####################

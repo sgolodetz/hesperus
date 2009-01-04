@@ -12,6 +12,26 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+template <typename Vert, typename AuxData>
+std::vector<shared_ptr<PolyhedralBrush<Vert,AuxData> > > FileUtil::load_brushes_file(const std::string& filename)
+{
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
+
+	typedef PolyhedralBrush<Vert,AuxData> PolyBrush;
+	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
+	typedef std::vector<PolyBrush_Ptr> PolyBrushVector;
+
+	PolyBrushVector brushes;
+	PolyBrush_Ptr brush;
+	while(brush = load_polyhedral_brush<Vert,AuxData>(is))
+	{
+		brushes.push_back(brush);
+	}
+
+	return brushes;
+}
+
 /**
 Loads the polygons, tree and lightmap prefix from the specified lit tree file.
 
@@ -69,6 +89,33 @@ void FileUtil::load_polygons_section(std::istream& is, std::vector<shared_ptr<Po
 		load_polygons(is, polygons, polyCount);
 	}
 	catch(boost::bad_lexical_cast&) { throw Exception("The polygon count is not an integer"); }
+}
+
+template <typename Vert, typename AuxData>
+shared_ptr<PolyhedralBrush<Vert,AuxData> > FileUtil::load_polyhedral_brush(std::istream& is)
+{
+	typedef PolyhedralBrush<Vert,AuxData> PolyBrush;
+	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
+
+	std::string line;
+
+	if(!std::getline(is,line)) return PolyBrush_Ptr();
+	if(line != "{") throw Exception("Expected {");
+
+	// Read bounds.
+	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read bounds");
+	AABB3d bounds = read_aabb<Vector3d>(line);
+
+	// Read faces.
+	typedef hesp::Polygon<Vert,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
+	std::vector<Poly_Ptr> faces;
+	load_polygons_section(is, faces);
+
+	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read }");
+	if(line != "}") throw Exception("Expected }");
+
+	return PolyBrush_Ptr(new PolyBrush(bounds, faces));
 }
 
 }

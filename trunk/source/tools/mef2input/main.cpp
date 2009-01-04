@@ -9,7 +9,6 @@
 #include <vector>
 
 #include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
@@ -46,7 +45,7 @@ std::istream& operator>>(std::istream& is, MEFAuxData& rhs)
 }
 
 //#################### TYPEDEFS ####################
-typedef Polygon<Vector3d,MEFAuxData> MEFPolygon;
+typedef hesp::Polygon<Vector3d,MEFAuxData> MEFPolygon;
 typedef shared_ptr<MEFPolygon> MEFPolygon_Ptr;
 
 typedef PolyhedralBrush<TexturedVector3d,std::string> TexPolyhedralBrush;
@@ -96,19 +95,8 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	if(line.substr(0,6) != "Bounds" || line.length() < 8) throw Exception("PolyhedralBrush: Expected Bounds");
 
 	// Parse bounds.
-	typedef boost::char_separator<char> sep;
-	typedef boost::tokenizer<sep> tokenizer;
 	line = line.substr(7);
-	tokenizer tok(line.begin(), line.end(), sep(" "));
-	std::vector<std::string> tokens(tok.begin(), tok.end());
-	if(tokens.size() != 10) throw Exception("PolyhedralBrush: Invalid bounds specification");
-
-	std::vector<std::string> minComponents(&tokens[1], &tokens[4]);
-	std::vector<std::string> maxComponents(&tokens[6], &tokens[9]);
-	Vector3d minimum(minComponents), maximum(maxComponents);
-	minimum *= SCALE;
-	maximum *= SCALE;
-	AABB3d bounds(minimum, maximum);
+	AABB3d bounds = read_aabb<Vector3d>(line, SCALE);
 
 	// Read polygon count.
 	read_line(is, line, "read polygon count");

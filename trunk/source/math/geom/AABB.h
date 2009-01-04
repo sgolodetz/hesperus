@@ -40,6 +40,10 @@ private:
 typedef AABB<Vector2d> AABB2d;
 typedef AABB<Vector3d> AABB3d;
 
+//#################### GLOBAL METHODS ####################
+template <typename Vec>
+AABB<Vec> read_aabb(const std::string& s, double scale = 1.0);
+
 }
 
 #endif
