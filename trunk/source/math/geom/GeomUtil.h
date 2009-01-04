@@ -67,7 +67,7 @@ template <typename Vert, typename AuxData>
 SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, const Plane& plane);
 
 template <typename Vert, typename AuxData>
-void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons);
+void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount = true);
 
 //################## HELPER METHODS FOR THE split_polygon FUNCTION ##################
 int next_vert(int index, int vertCount);

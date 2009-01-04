@@ -379,11 +379,12 @@ SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, cons
 /**
 Writes a sequence of polygons to a stream, one per line.
 
-@param os		The stream to which to write
-@param polygons	The polygons to write to the stream
+@param os			The stream to which to write
+@param polygons		The polygons to write to the stream
+@param writeCount	Whether the polygon count should be output to the stream first
 */
 template <typename Vert, typename AuxData>
-void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
+void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
