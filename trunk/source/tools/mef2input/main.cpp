@@ -9,11 +9,13 @@
 #include <vector>
 
 #include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/level/csg/PolyhedralBrush.h>
+#include <source/math/geom/AABB.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
 #include "TexturePlane.h"
@@ -83,14 +85,30 @@ void skip_section(std::istream& is)
 
 void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>& brushes)
 {
+	const double SCALE = 1.0/32;	// we want a 32-unit grid square to correspond to 1 metre in the world
+
 	std::string line;
 
 	read_line(is, line, "read PolyhedralBrush");
 	if(line != "{") throw Exception("PolyhedralBrush: Expected {");
 
 	read_line(is, line, "read bounds");
-	if(line.substr(0,6) != "Bounds") throw Exception("PolyhedralBrush: Expected Bounds");
+	if(line.substr(0,6) != "Bounds" || line.length() < 8) throw Exception("PolyhedralBrush: Expected Bounds");
 
+	// Parse bounds.
+	typedef boost::char_separator<char> sep;
+	typedef boost::tokenizer<sep> tokenizer;
+	line = line.substr(7);
+	tokenizer tok(line.begin(), line.end(), sep(" "));
+	std::vector<std::string> tokens(tok.begin(), tok.end());
+	if(tokens.size() != 10) throw Exception("PolyhedralBrush: Invalid bounds specification");
+
+	std::vector<std::string> minComponents(&tokens[1], &tokens[4]);
+	std::vector<std::string> maxComponents(&tokens[6], &tokens[9]);
+	Vector3d minimum(minComponents), maximum(maxComponents);
+	AABB3d bounds(minimum, maximum);
+
+	// Read polygon count.
 	read_line(is, line, "read polygon count");
 	if(line.substr(0,9) != "PolyCount" || line.length() < 11) throw Exception("PolyhedralBrush: Expected PolyCount");
 
@@ -98,6 +116,7 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	try							{ polyCount = lexical_cast<int,std::string>(line.substr(10)); }
 	catch(bad_lexical_cast&)	{ throw Exception("PolyhedralBrush: Polygon count is not an integer"); }
 
+	// Read polygons.
 	std::vector<TexturedPolygon_Ptr> faces;
 	for(int i=0; i<polyCount; ++i)
 	{
@@ -108,7 +127,6 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 		MEFPolygon_Ptr poly = load_polygon<Vector3d,MEFAuxData>(line.substr(8));
 
 		// Convert polygon to hesperus form.
-		const double SCALE = 1.0/32;	// we want a 32-unit grid square to correspond to 1 metre in the world
 		std::vector<TexturedVector3d> newVertices;
 		TexturePlane_Ptr& texturePlane = poly->auxiliary_data().texturePlane;
 		texturePlane->determine_axis_vectors(poly->normal());
