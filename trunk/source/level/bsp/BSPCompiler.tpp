@@ -84,8 +84,6 @@ BSPNode_Ptr BSPCompiler::build_subtree(const std::vector<PolyIndex>& polyIndices
 	BSPNode_Ptr right = build_subtree(backPolys, polygons, weight, nodes, CP_BACK);
 
 	BSPNode_Ptr subtreeRoot(new BSPBranch((int)nodes.size(), splitter, left, right));
-	left->set_parent(subtreeRoot.get());
-	right->set_parent(subtreeRoot.get());
 	nodes.push_back(subtreeRoot);
 	return subtreeRoot;
 }

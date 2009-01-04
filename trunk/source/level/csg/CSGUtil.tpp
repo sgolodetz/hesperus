@@ -6,6 +6,8 @@
 #define CSGUtil_HEADER	template <typename Vert, typename AuxData>
 #define CSGUtil_THIS	CSGUtil<Vert,AuxData>
 
+#include <source/level/bsp/BSPBranch.h>
+
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
@@ -24,13 +26,14 @@ CSGUtil_THIS::union_all(const PolyBrushVector& brushes)
 	}
 
 	// Determine which brushes are within range of each other.
+	const double TOLERANCE = 1.0;
 	std::vector<std::vector<unsigned char> > withinRange(brushCount);
 	for(int i=0; i<brushCount; ++i)
 	{
 		withinRange[i].reserve(brushCount);
 		for(int j=0; j<brushCount; ++j)
 		{
-			withinRange.push_back(AABB::within_range(brushes[i]->bounds(), brushes[j]->bounds()));
+			withinRange[i].push_back(AABB3d::within_range(brushes[i]->bounds(), brushes[j]->bounds(), TOLERANCE));
 		}
 	}
 
@@ -50,7 +53,7 @@ CSGUtil_THIS::union_all(const PolyBrushVector& brushes)
 
 				fragments = clip_to_tree(fragments, trees[k], i < k);
 			}
-			ret.splice(ret.end(), fragments);
+			ret->splice(ret->end(), fragments);
 		}
 	}
 
@@ -61,8 +64,21 @@ CSGUtil_THIS::union_all(const PolyBrushVector& brushes)
 CSGUtil_HEADER
 BSPTree_Ptr CSGUtil_THIS::build_tree(const PolyBrush& brush)
 {
-	// NYI
-	throw 23;
+	const PolyVector& faces = brush.faces();
+	int faceCount = static_cast<int>(faces.size());
+
+	int nodeCount = 2*faceCount+1;
+	std::vector<BSPNode_Ptr> nodes(nodeCount);
+
+	for(int i=0; i<faceCount; ++i) nodes[i] = BSPLeaf::make_empty_leaf(i, std::vector<int>());
+	nodes[faceCount] = BSPLeaf::make_solid_leaf(faceCount);
+	for(int i=faceCount+1; i<nodeCount; ++i)
+	{
+		Plane_Ptr splitter(new Plane(make_plane(*faces[nodeCount-i-1])));
+		nodes[i].reset(new BSPBranch(i, splitter, nodes[nodeCount-i-1], nodes[i-1]));
+	}
+
+	return BSPTree_Ptr(new BSPTree(nodes));
 }
 
 CSGUtil_HEADER

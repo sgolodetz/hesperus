@@ -10,7 +10,10 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 BSPBranch::BSPBranch(int index, const Plane_Ptr& splitter, const BSPNode_Ptr& left, const BSPNode_Ptr& right)
 :	BSPNode(index), m_splitter(splitter), m_left(left), m_right(right)
-{}
+{
+	left->set_parent(this);
+	right->set_parent(this);
+}
 
 //#################### PUBLIC METHODS ####################
 BSPBranch *BSPBranch::as_branch()				{ return this; }
