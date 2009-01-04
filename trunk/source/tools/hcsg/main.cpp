@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
+#include <source/io/FileUtil.h>
 #include <source/level/csg/CSGUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
