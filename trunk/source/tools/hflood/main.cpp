@@ -6,6 +6,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -42,9 +43,9 @@ bool is_valid_portal(const Portal_Ptr& portal)
 	return true;
 }
 
-std::vector<int> valid_leaves(const std::vector<Portal_Ptr>& portals)
+std::set<int> valid_leaves(const std::vector<Portal_Ptr>& portals)
 {
-	std::vector<int> ret;
+	std::set<int> ret;
 
 	int portalCount = static_cast<int>(portals.size());
 	for(int i=0; i<portalCount; ++i)
@@ -52,7 +53,7 @@ std::vector<int> valid_leaves(const std::vector<Portal_Ptr>& portals)
 		if(is_valid_portal(portals[i]))
 		{
 			// If this portal's valid, then so is the leaf it can see.
-			ret.push_back(portals[i]->auxiliary_data().toLeaf);
+			ret.insert(portals[i]->auxiliary_data().toLeaf);
 		}
 	}
 
@@ -75,15 +76,14 @@ void run_cheap_flood(const std::string& treeFilename, const std::string& portals
 	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
 
 	// Figure out which leaves are valid.
-	std::vector<int> validLeaves = valid_leaves(portals);
+	std::set<int> validLeaves = valid_leaves(portals);
 
 	// Copy all the polygons from them to an array.
 	PolyVector validPolygons;
 	validPolygons.reserve(polygons.size());
-	int validLeafCount = static_cast<int>(validLeaves.size());
-	for(int i=0; i<validLeafCount; ++i)
+	for(std::set<int>::const_iterator it=validLeaves.begin(), iend=validLeaves.end(); it!=iend; ++it)
 	{
-		const BSPLeaf *leaf = tree->leaf(validLeaves[i]);
+		const BSPLeaf *leaf = tree->leaf(*it);
 		const std::vector<int>& polyIndices = leaf->polygon_indices();
 		for(std::vector<int>::const_iterator jt=polyIndices.begin(), jend=polyIndices.end(); jt!=jend; ++jt)
 		{
