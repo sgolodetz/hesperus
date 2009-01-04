@@ -6,11 +6,42 @@
 #ifndef H_HESP_LEVEL_CSG_CSGUTIL
 #define H_HESP_LEVEL_CSG_CSGUTIL
 
+#include <list>
+#include <vector>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
+#include <source/level/bsp/BSPTree.h>
+#include <source/math/geom/Polygon.h>
+#include "PolyhedralBrush.h"
+
 namespace hesp {
 
+template <typename Vert, typename AuxData>
 class CSGUtil
 {
-	// TODO
+	//#################### TYPEDEFS ####################
+private:
+	typedef Polygon<Vert,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
+	typedef std::list<Poly_Ptr> PolyList;
+	typedef shared_ptr<PolyList> PolyList_Ptr;
+	typedef std::vector<Poly_Ptr> PolyVector;
+
+	typedef PolyhedralBrush<Vert,AuxData> PolyBrush;
+	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
+	typedef std::vector<PolyBrush_Ptr> PolyBrushVector;
+
+	//#################### PUBLIC METHODS ####################
+public:
+	static PolyList_Ptr union_all(const PolyBrushVector& brushes);
+
+	//#################### PRIVATE METHODS ####################
+private:
+	static BSPTree_Ptr build_tree(const PolyBrush& brush);
+	static PolyList clip_to_subtree(const PolyList& polys, const BSPNode_Ptr& node, bool coplanarFlag);
+	static PolyList clip_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag);
 };
 
 }
