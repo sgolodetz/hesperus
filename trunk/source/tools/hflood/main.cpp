@@ -24,44 +24,56 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hflood {-r|-c} <input tree> <input portals> <output geometry>" << std::endl;
+	std::cout << "Usage: hflood {-r|-c} <input tree> <input portals> <input entities> <output geometry>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-bool is_valid_portal(const Portal_Ptr& portal)
+Vector3d load_player_pos(const std::string& entitiesFilename)
 {
-	const double MAXIMUM = 100000;
+	// TODO: This will need to be changed when we change the entities file format.
+	std::ifstream is(entitiesFilename.c_str());
+	if(is.fail()) throw Exception("Could not open " + entitiesFilename + " for reading");
 
-	// A portal is invalid if any of its vertices have components that are out of range.
-	int vertCount = portal->vertex_count();
-	for(int i=0; i<vertCount; ++i)
-	{
-		const Vector3d& v = portal->vertex(i);
-		if(fabs(v.x) > MAXIMUM || fabs(v.y) > MAXIMUM || fabs(v.z) > MAXIMUM) return false;
-	}
+	std::string line;
+	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read player position");
 
-	return true;
+	typedef boost::char_separator<char> sep;
+	typedef boost::tokenizer<sep> tokenizer;
+
+	tokenizer tok(line.begin(), line.end(), sep(" "));
+	std::vector<std::string> tokens(tok.begin(), tok.end());
+	if(tokens.size() != 5) throw Exception("Invalid player position specification");
+
+	std::vector<std::string> components(&tokens[1], &tokens[4]);
+
+	return Vector3d(components);
 }
 
-std::set<int> valid_leaves(const std::vector<Portal_Ptr>& portals)
+void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& validLeaves)
 {
-	std::set<int> ret;
-
-	int portalCount = static_cast<int>(portals.size());
-	for(int i=0; i<portalCount; ++i)
+	std::map<int,std::vector<Portal_Ptr> >::const_iterator it = portalsFromLeaf.find(leaf);
+	if(it != portalsFromLeaf.end())
 	{
-		if(is_valid_portal(portals[i]))
+		const std::vector<Portal_Ptr>& outPortals = it->second;
+		int outPortalCount = static_cast<int>(outPortals.size());
+		for(int j=0; j<outPortalCount; ++j)
 		{
-			// If this portal's valid, then so is the leaf it can see.
-			ret.insert(portals[i]->auxiliary_data().toLeaf);
+			Portal_Ptr outPortal = outPortals[j];
+			int toLeaf = outPortal->auxiliary_data().toLeaf;
+
+			// If the destination of this portal is already marked as valid, don't recurse.
+			if(validLeaves.find(toLeaf) != validLeaves.end()) continue;
+
+			// Otherwise, recursively flood from the leaf on the other side of this portal.
+			validLeaves.insert(toLeaf);
+			flood_from(toLeaf, portalsFromLeaf, validLeaves);
 		}
 	}
-
-	return ret;
 }
 
 template <typename Poly>
-void run_cheap_flood(const std::string& treeFilename, const std::string& portalsFilename, const std::string& outputFilename)
+void run_flood(const std::string& treeFilename, const std::string& portalsFilename, const std::string& entitiesFilename,
+			   const std::string& outputFilename)
 {
 	// Load the polygons and tree.
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -75,8 +87,21 @@ void run_cheap_flood(const std::string& treeFilename, const std::string& portals
 	std::vector<Portal_Ptr> portals;
 	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
 
-	// Figure out which leaves are valid.
-	std::set<int> validLeaves = valid_leaves(portals);
+	// Load the player position.
+	Vector3d playerPos = load_player_pos(entitiesFilename);
+
+	// Build the "portals from leaf" data structure.
+	std::map<int,std::vector<Portal_Ptr> > portalsFromLeaf;
+	for(std::vector<Portal_Ptr>::const_iterator it=portals.begin(), iend=portals.end(); it!=iend; ++it)
+	{
+		int fromLeaf = (*it)->auxiliary_data().fromLeaf;
+		portalsFromLeaf[fromLeaf].push_back(*it);
+	}
+
+	// Flood out from the player leaf to figure out which leaves are valid.
+	int playerLeaf = tree->find_leaf_index(playerPos);
+	std::set<int> validLeaves;
+	flood_from(playerLeaf, portalsFromLeaf, validLeaves);
 
 	// Copy all the polygons from them to an array.
 	PolyVector validPolygons;
@@ -100,11 +125,11 @@ void run_cheap_flood(const std::string& treeFilename, const std::string& portals
 int main(int argc, char *argv[])
 try
 {
-	if(argc != 5) quit_with_usage();
+	if(argc != 6) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
 
-	if(args[1] == "-r") run_cheap_flood<TexturedPolygon>(args[2], args[3], args[4]);
-	else if(args[1] == "-c") run_cheap_flood<CollisionPolygon>(args[2], args[3], args[4]);
+	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4], args[5]);
+	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4], args[5]);
 	else quit_with_usage();
 
 	return 0;
