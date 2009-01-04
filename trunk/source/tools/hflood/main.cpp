@@ -51,6 +51,8 @@ Vector3d load_player_pos(const std::string& entitiesFilename)
 
 void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& validLeaves)
 {
+	validLeaves.insert(leaf);
+
 	std::map<int,std::vector<Portal_Ptr> >::const_iterator it = portalsFromLeaf.find(leaf);
 	if(it != portalsFromLeaf.end())
 	{
@@ -65,7 +67,6 @@ void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsF
 			if(validLeaves.find(toLeaf) != validLeaves.end()) continue;
 
 			// Otherwise, recursively flood from the leaf on the other side of this portal.
-			validLeaves.insert(toLeaf);
 			flood_from(toLeaf, portalsFromLeaf, validLeaves);
 		}
 	}
