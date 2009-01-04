@@ -11,6 +11,12 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+/**
+Unions the polygons in a set of convex brushes to produce a valid set of polygon geometry
+
+@param brushes	The brushes
+@return			The valid polygon geometry
+*/
 CSGUtil_HEADER
 typename CSGUtil_THIS::PolyList_Ptr
 CSGUtil_THIS::union_all(const PolyBrushVector& brushes)
@@ -62,6 +68,14 @@ CSGUtil_THIS::union_all(const PolyBrushVector& brushes)
 }
 
 //#################### PRIVATE METHODS ####################
+/**
+Builds a BSP tree for the specified brush. Since the brush is
+a convex polyhedron, the tree will be right-linear and can be
+constructed relatively easily.
+
+@param brush	The brush
+@return			A right-linear tree for it
+*/
 CSGUtil_HEADER
 BSPTree_Ptr CSGUtil_THIS::build_tree(const PolyBrush& brush)
 {
@@ -82,6 +96,16 @@ BSPTree_Ptr CSGUtil_THIS::build_tree(const PolyBrush& brush)
 	return BSPTree_Ptr(new BSPTree(nodes));
 }
 
+/**
+Clips a polygon to a subtree.
+
+@param poly				The input polygon
+@param node				The root node of the subtree
+@param coplanarFlag		Whether same-facing coplanar polygons should be passed down the front side of the tree
+@return					A pair, the first component of which is a list of polygon fragments that survived the
+						clipping process, and the second component of which is a bool indicating whether the
+						whole input polygon survived the clip
+*/
 CSGUtil_HEADER
 std::pair<typename CSGUtil_THIS::PolyList, bool>
 CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& node, bool coplanarFlag)
@@ -147,6 +171,14 @@ CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& n
 	}
 }
 
+/**
+Clips a list of polygons to a tree.
+
+@param polys			The polygons
+@param tree				The tree
+@param coplanarFlag		Whether same-facing coplanar polygons should be passed down the front side of the tree
+@return					A list of polygon fragments that survived the clipping process
+*/
 CSGUtil_HEADER
 typename CSGUtil_THIS::PolyList
 CSGUtil_THIS::clip_polygons_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag)
