@@ -106,6 +106,8 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	std::vector<std::string> minComponents(&tokens[1], &tokens[4]);
 	std::vector<std::string> maxComponents(&tokens[6], &tokens[9]);
 	Vector3d minimum(minComponents), maximum(maxComponents);
+	minimum *= SCALE;
+	maximum *= SCALE;
 	AABB3d bounds(minimum, maximum);
 
 	// Read polygon count.
@@ -175,9 +177,7 @@ void write_brushes(const std::string& filename, const std::vector<TexPolyhedralB
 	int brushCount = static_cast<int>(brushes.size());
 	for(int i=0; i<brushCount; ++i)
 	{
-		os << "{\n";
-		write_polygons(os, brushes[i]->faces());
-		os << "}\n";
+		os << *brushes[i];
 	}
 }
 
