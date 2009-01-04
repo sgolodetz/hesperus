@@ -40,8 +40,8 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	static BSPTree_Ptr build_tree(const PolyBrush& brush);
-	static PolyList clip_to_subtree(const PolyList& polys, const BSPNode_Ptr& node, bool coplanarFlag);
-	static PolyList clip_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag);
+	static std::pair<PolyList,bool> clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& node, bool coplanarFlag);
+	static PolyList clip_polygons_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag);
 };
 
 }

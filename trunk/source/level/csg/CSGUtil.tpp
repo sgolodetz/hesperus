@@ -25,15 +25,16 @@ CSGUtil_THIS::union_all(const PolyBrushVector& brushes)
 		trees[i] = build_tree(*brushes[i]);
 	}
 
-	// Determine which brushes are within range of each other.
+	// Determine which brushes can interact with each other.
 	const double TOLERANCE = 1.0;
-	std::vector<std::vector<unsigned char> > withinRange(brushCount);
+	std::vector<std::vector<unsigned char> > brushesInteract(brushCount);
 	for(int i=0; i<brushCount; ++i)
 	{
-		withinRange[i].reserve(brushCount);
+		brushesInteract[i].reserve(brushCount);
 		for(int j=0; j<brushCount; ++j)
 		{
-			withinRange[i].push_back(AABB3d::within_range(brushes[i]->bounds(), brushes[j]->bounds(), TOLERANCE));
+			if(j == i) brushesInteract[i].push_back(false);
+			else brushesInteract[i].push_back(AABB3d::within_range(brushes[i]->bounds(), brushes[j]->bounds(), TOLERANCE));
 		}
 	}
 
@@ -48,10 +49,10 @@ CSGUtil_THIS::union_all(const PolyBrushVector& brushes)
 			fragments.push_back(faces[j]);
 			for(int k=0; k<brushCount; ++k)
 			{
-				if(k == i) continue;
-				if(!withinRange[i][k]) continue;
-
-				fragments = clip_to_tree(fragments, trees[k], i < k);
+				if(brushesInteract[i][k])
+				{
+					fragments = clip_polygons_to_tree(fragments, trees[k], i < k);
+				}
 			}
 			ret->splice(ret->end(), fragments);
 		}
@@ -82,18 +83,68 @@ BSPTree_Ptr CSGUtil_THIS::build_tree(const PolyBrush& brush)
 }
 
 CSGUtil_HEADER
-typename CSGUtil_THIS::PolyList
-CSGUtil_THIS::clip_to_subtree(const PolyList& polys, const BSPNode_Ptr& node, bool coplanarFlag)
+std::pair<typename CSGUtil_THIS::PolyList, bool>
+CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& node, bool coplanarFlag)
 {
-	// NYI
-	throw 23;
+	if(node->is_leaf())
+	{
+		// NYI
+		throw 23;
+	}
+	else
+	{
+		const BSPBranch *branch = node->as_branch();
+		switch(classify_polygon_against_plane(*poly, *branch->splitter()))
+		{
+			case CP_BACK:
+			{
+				return clip_polygon_to_subtree(poly, branch->right(), coplanarFlag);
+			}
+			case CP_COPLANAR:
+			{
+				// NYI
+				throw 23;
+				break;
+			}
+			case CP_FRONT:
+			{
+				return clip_polygon_to_subtree(poly, branch->left(), coplanarFlag);
+			}
+			default:	// CP_STRADDLE
+			{
+				SplitResults<Vert,AuxData> sr = split_polygon(*poly, *branch->splitter());
+				std::pair<PolyList,bool> frontResult = clip_polygon_to_subtree(sr.front, branch->left(), coplanarFlag);
+				std::pair<PolyList,bool> backResult = clip_polygon_to_subtree(sr.back, branch->right(), coplanarFlag);
+
+				if(frontResult.second && backResult.second)
+				{
+					// Both halves of the fragment survived, so keep the original fragment.
+					PolyList ret;
+					ret.push_back(poly);
+					return std::make_pair(ret, true);
+				}
+				else
+				{
+					PolyList ret;
+					ret.splice(ret.end(), frontResult.first);
+					ret.splice(ret.end(), backResult.first);
+					return std::make_pair(ret, false);
+				}
+			}
+		}
+	}
 }
 
 CSGUtil_HEADER
 typename CSGUtil_THIS::PolyList
-CSGUtil_THIS::clip_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag)
+CSGUtil_THIS::clip_polygons_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag)
 {
-	return clip_to_subtree(polys, tree->root(), coplanarFlag);
+	PolyList ret;
+	for(PolyList::const_iterator it=polys.begin(), iend=polys.end(); it!=iend; ++it)
+	{
+		ret.splice(ret.end(), clip_polygon_to_subtree(*it, tree->root(), coplanarFlag).first);
+	}
+	return ret;
 }
 
 }
