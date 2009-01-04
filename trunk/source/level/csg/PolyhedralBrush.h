@@ -11,6 +11,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/math/geom/AABB.h>
 #include <source/math/geom/Polygon.h>
 
 namespace hesp {
@@ -30,14 +31,16 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	AABB3d m_bounds;
 	PolyVector m_faces;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit PolyhedralBrush(const PolyVector& faces);
+	explicit PolyhedralBrush(const AABB3d& bounds, const PolyVector& faces);
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const AABB3d& bounds() const;
 	const PolyVector& faces() const;
 };
 

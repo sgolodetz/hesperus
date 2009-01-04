@@ -140,7 +140,7 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 		}
 		faces.push_back(TexturedPolygon_Ptr(new TexturedPolygon(newVertices, poly->auxiliary_data().texture)));
 	}
-	brushes.push_back(TexPolyhedralBrush_Ptr(new TexPolyhedralBrush(faces)));
+	brushes.push_back(TexPolyhedralBrush_Ptr(new TexPolyhedralBrush(bounds, faces)));
 
 	read_line(is, line, "read PolyhedralBrush");
 	if(line != "}") throw Exception("PolyhedralBrush: Expected }");
