@@ -88,8 +88,20 @@ CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& n
 {
 	if(node->is_leaf())
 	{
-		// NYI
-		throw 23;
+		BSPLeaf *leaf = node->as_leaf();
+
+		PolyList ret;
+		if(leaf->is_solid())
+		{
+			// The polygon ended up in a solid leaf, so discard it.
+			return std::make_pair(ret, false);
+		}
+		else
+		{
+			// The polygon ended up in an empty leaf, so keep it.
+			ret.push_back(poly);
+			return std::make_pair(ret, true);
+		}
 	}
 	else
 	{
@@ -102,9 +114,9 @@ CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& n
 			}
 			case CP_COPLANAR:
 			{
-				// NYI
-				throw 23;
-				break;
+				bool sameFacing = poly->normal().dot(branch->splitter()->normal()) > 0;
+				if(sameFacing && coplanarFlag) return clip_polygon_to_subtree(poly, branch->left(), coplanarFlag);
+				else return clip_polygon_to_subtree(poly, branch->right(), coplanarFlag);
 			}
 			case CP_FRONT:
 			{
