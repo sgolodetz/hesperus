@@ -12,6 +12,12 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+/**
+Loads an array of polyhedral brushes from the specified brushes file.
+
+@param filename	The name of the brushes file
+@return			The brushes
+*/
 template <typename Vert, typename AuxData>
 std::vector<shared_ptr<PolyhedralBrush<Vert,AuxData> > > FileUtil::load_brushes_file(const std::string& filename)
 {
@@ -91,6 +97,13 @@ void FileUtil::load_polygons_section(std::istream& is, std::vector<shared_ptr<Po
 	catch(boost::bad_lexical_cast&) { throw Exception("The polygon count is not an integer"); }
 }
 
+/**
+Loads a polyhedral brush from a std::istream.
+
+@param is			The std::istream
+@return				The polyhedral brush, or NULL if EOF was encountered
+@throws Exception	If anything else goes wrong whilst trying to read the polyhedral brush
+*/
 template <typename Vert, typename AuxData>
 shared_ptr<PolyhedralBrush<Vert,AuxData> > FileUtil::load_polyhedral_brush(std::istream& is)
 {
