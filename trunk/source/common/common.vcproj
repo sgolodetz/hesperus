@@ -682,6 +682,10 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\level\csg\CSGUtil.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\csg\PolyhedralBrush.h"
 						>
 					</File>
@@ -689,6 +693,10 @@
 				<Filter
 					Name=".tpp"
 					>
+					<File
+						RelativePath="..\level\csg\CSGUtil.tpp"
+						>
+					</File>
 					<File
 						RelativePath="..\level\csg\PolyhedralBrush.tpp"
 						>
