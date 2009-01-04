@@ -390,7 +390,7 @@ void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
-	os << polygons.size() << '\n';
+	if(writeCount) os << polygons.size() << '\n';
 	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
 	{
 		const Poly& curPoly = **it;
