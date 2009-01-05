@@ -5,8 +5,8 @@ IF [%1]==[] GOTO Finished
 cd %1
 set PATH=%PATH%;..\..\..\tools
 
-mef2input %1.mef %1.bru %1.ent %1.lum
-hcsg -r %1.bru %1.rg1
+mef2input %1.mef %1.rbr %1.ent %1.lum
+hcsg -r %1.rbr %1.rg1
 hbsp -r %1.rg1 %1.rt1
 hportal -r %1.rt1 %1.pr1
 hflood -r %1.rt1 %1.pr1 %1.ent %1.rg2
@@ -16,7 +16,7 @@ hvis %1.pr2 %1.vis
 hlight %1.rt2 %1.vis %1.lum LM %1.lbt
 hcollate +L %1.lbt %1.pr2 %1.vis %1.bsp
 
-del *.bru
+del *.rbr
 del *.rg*
 del *.rt*
 del *.pr*
