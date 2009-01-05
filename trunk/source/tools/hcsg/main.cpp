@@ -41,10 +41,10 @@ void run_csg(const std::string& inputFilename, const std::string& outputFilename
 	if(os.fail()) throw Exception("Can't open " + outputFilename + " for reading");
 
 	// Read in the brushes.
-	typedef PolyhedralBrush<Vert,AuxData> PolyBrush;
+	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
 	typedef std::vector<PolyBrush_Ptr> PolyBrushVector;
-	PolyBrushVector brushes = FileUtil::load_brushes_file<Vert,AuxData>(inputFilename);
+	PolyBrushVector brushes = FileUtil::load_brushes_file<Poly>(inputFilename);
 
 	// Perform the CSG union.
 	typedef shared_ptr<Poly> Poly_Ptr;

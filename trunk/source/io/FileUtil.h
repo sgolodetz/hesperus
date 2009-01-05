@@ -26,8 +26,8 @@ class FileUtil
 {
 	//#################### PUBLIC METHODS ####################
 public:
-	template <typename Vert, typename AuxData>
-	static std::vector<shared_ptr<PolyhedralBrush<Vert,AuxData> > > load_brushes_file(const std::string& filename);
+	template <typename Poly>
+	static std::vector<shared_ptr<PolyhedralBrush<Poly> > > load_brushes_file(const std::string& filename);
 
 	static Level_Ptr load_level_file(const std::string& filename);
 
@@ -64,8 +64,8 @@ private:
 	template <typename Poly>
 	static void load_polygons_section(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
 
-	template <typename Vert, typename AuxData>
-	static shared_ptr<PolyhedralBrush<Vert,AuxData> > load_polyhedral_brush(std::istream& is);
+	template <typename Poly>
+	static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush(std::istream& is);
 
 	static void load_separator(std::istream& is);
 

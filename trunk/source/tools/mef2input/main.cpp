@@ -48,7 +48,7 @@ std::istream& operator>>(std::istream& is, MEFAuxData& rhs)
 typedef hesp::Polygon<Vector3d,MEFAuxData> MEFPolygon;
 typedef shared_ptr<MEFPolygon> MEFPolygon_Ptr;
 
-typedef PolyhedralBrush<TexturedVector3d,std::string> TexPolyhedralBrush;
+typedef PolyhedralBrush<TexturedPolygon> TexPolyhedralBrush;
 typedef shared_ptr<TexPolyhedralBrush> TexPolyhedralBrush_Ptr;
 
 //#################### FUNCTIONS ####################

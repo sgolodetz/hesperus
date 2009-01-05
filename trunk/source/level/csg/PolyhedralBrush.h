@@ -21,12 +21,11 @@ namespace hesp {
 This class represents convex polyhedral brushes, in other words brushes consisting of convex faces which
 completely enclose a convex volume.
 */
-template <typename Vert, typename AuxData>
+template <typename Poly>
 class PolyhedralBrush
 {
 	//#################### TYPEDEFS ####################
 private:
-	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
@@ -46,8 +45,8 @@ public:
 };
 
 //#################### GLOBAL OPERATORS ####################
-template <typename Vert, typename AuxData>
-std::ostream& operator<<(std::ostream& os, const PolyhedralBrush<Vert,AuxData>& rhs);
+template <typename Poly>
+std::ostream& operator<<(std::ostream& os, const PolyhedralBrush<Poly>& rhs);
 
 }
 

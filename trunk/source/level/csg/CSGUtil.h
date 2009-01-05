@@ -29,7 +29,7 @@ private:
 	typedef shared_ptr<PolyList> PolyList_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
-	typedef PolyhedralBrush<Vert,AuxData> PolyBrush;
+	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
 	typedef std::vector<PolyBrush_Ptr> PolyBrushVector;
 

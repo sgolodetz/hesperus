@@ -18,19 +18,19 @@ Loads an array of polyhedral brushes from the specified brushes file.
 @param filename	The name of the brushes file
 @return			The brushes
 */
-template <typename Vert, typename AuxData>
-std::vector<shared_ptr<PolyhedralBrush<Vert,AuxData> > > FileUtil::load_brushes_file(const std::string& filename)
+template <typename Poly>
+std::vector<shared_ptr<PolyhedralBrush<Poly> > > FileUtil::load_brushes_file(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
 
-	typedef PolyhedralBrush<Vert,AuxData> PolyBrush;
+	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
 	typedef std::vector<PolyBrush_Ptr> PolyBrushVector;
 
 	PolyBrushVector brushes;
 	PolyBrush_Ptr brush;
-	while(brush = load_polyhedral_brush<Vert,AuxData>(is))
+	while(brush = load_polyhedral_brush<Poly>(is))
 	{
 		brushes.push_back(brush);
 	}
@@ -104,10 +104,10 @@ Loads a polyhedral brush from a std::istream.
 @return				The polyhedral brush, or NULL if EOF was encountered
 @throws Exception	If anything else goes wrong whilst trying to read the polyhedral brush
 */
-template <typename Vert, typename AuxData>
-shared_ptr<PolyhedralBrush<Vert,AuxData> > FileUtil::load_polyhedral_brush(std::istream& is)
+template <typename Poly>
+shared_ptr<PolyhedralBrush<Poly> > FileUtil::load_polyhedral_brush(std::istream& is)
 {
-	typedef PolyhedralBrush<Vert,AuxData> PolyBrush;
+	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
 
 	std::string line;
@@ -120,7 +120,6 @@ shared_ptr<PolyhedralBrush<Vert,AuxData> > FileUtil::load_polyhedral_brush(std::
 	AABB3d bounds = read_aabb<Vector3d>(line);
 
 	// Read faces.
-	typedef hesp::Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
 	std::vector<Poly_Ptr> faces;
 	load_polygons_section(is, faces);

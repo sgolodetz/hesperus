@@ -32,12 +32,10 @@ void quit_with_usage()
 void run_converter(const std::string& inputFilename, const std::string& outputFilename)
 {
 	// Read in the rendering brushes.
-	typedef TexturedPolygon::Vert TexVert;
-	typedef TexturedPolygon::AuxData TexAuxData;
-	typedef PolyhedralBrush<TexVert,TexAuxData> TexPolyBrush;
+	typedef PolyhedralBrush<TexturedPolygon> TexPolyBrush;
 	typedef shared_ptr<TexPolyBrush> TexPolyBrush_Ptr;
 	typedef std::vector<TexPolyBrush_Ptr> TexPolyBrushVector;
-	TexPolyBrushVector brushes = FileUtil::load_brushes_file<TexVert,TexAuxData>(inputFilename);
+	TexPolyBrushVector brushes = FileUtil::load_brushes_file<TexturedPolygon>(inputFilename);
 
 	// Convert each rendering brush into a collision brush.
 	// TODO
