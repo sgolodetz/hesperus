@@ -66,7 +66,7 @@ ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)
 			colVertices.push_back(texFaces[i]->vertex(j));
 		}
 		CollisionPolygon::AuxData colAuxData = make_aux_data(texFaces[i]->normal());
-		colFaces.push_back(CollisionPolygon_Ptr(new CollisionPolygon(colVertices, colAuxData)));
+		colFaces[i].reset(new CollisionPolygon(colVertices, colAuxData));
 	}
 
 	return ColPolyBrush_Ptr(new ColPolyBrush(bounds, colFaces));
