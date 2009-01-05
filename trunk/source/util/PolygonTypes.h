@@ -15,7 +15,7 @@
 namespace hesp {
 
 //#################### TYPEDEFS ####################
-typedef Polygon<Vector3d, bool> CollisionPolygon;
+typedef Polygon<Vector3d, std::string> CollisionPolygon;
 typedef shared_ptr<CollisionPolygon> CollisionPolygon_Ptr;
 typedef shared_ptr<const CollisionPolygon> CollisionPolygon_CPtr;
 
