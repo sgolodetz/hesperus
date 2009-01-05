@@ -43,6 +43,9 @@ public:
 
 	static LeafVisTable_Ptr load_vis_file(const std::string& filename);
 
+	template <typename Poly>
+	static void save_brushes_file(const std::string& filename, const std::vector<shared_ptr<PolyhedralBrush<Poly> > >& brushes);
+
 	static void save_level_file(const std::string& filename, const std::vector<TexturedPolygon_Ptr>& polygons,
 								const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
 								const LeafVisTable_Ptr& leafVis);

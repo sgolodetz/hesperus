@@ -77,6 +77,26 @@ void FileUtil::load_tree_file(const std::string& filename, std::vector<shared_pt
 	tree = load_tree_section(is);
 }
 
+/**
+Saves a brushes file to disk.
+
+@param filename		The name of the file to which to save the brushes
+@param brushes		The brushes to save
+@throws Exception	If the output file could not be opened for writing
+*/
+template <typename Poly>
+void FileUtil::save_brushes_file(const std::string& filename, const std::vector<shared_ptr<PolyhedralBrush<Poly> > >& brushes)
+{
+	std::ofstream os(filename.c_str());
+	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
+
+	int brushCount = static_cast<int>(brushes.size());
+	for(int i=0; i<brushCount; ++i)
+	{
+		os << *brushes[i];
+	}
+}
+
 //#################### PRIVATE METHODS ####################
 /**
 Reads a polygon count, n, followed by an array of n polygons from the specified std::istream.

@@ -15,7 +15,17 @@
 namespace hesp {
 
 //#################### TYPEDEFS ####################
-typedef Polygon<Vector3d, std::string> CollisionPolygon;
+/*
+TODO
+
+We will eventually want to store the following sorts of things:
+
+- walkability
+- type of surface (for sound effects)
+*/
+typedef bool CPAuxData;
+
+typedef Polygon<Vector3d, CPAuxData> CollisionPolygon;
 typedef shared_ptr<CollisionPolygon> CollisionPolygon_Ptr;
 typedef shared_ptr<const CollisionPolygon> CollisionPolygon_CPtr;
 
