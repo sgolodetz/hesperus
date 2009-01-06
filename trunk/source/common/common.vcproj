@@ -409,6 +409,10 @@
 						RelativePath="..\math\geom\Polygon.h"
 						>
 					</File>
+					<File
+						RelativePath="..\math\geom\UniquePlanePred.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
