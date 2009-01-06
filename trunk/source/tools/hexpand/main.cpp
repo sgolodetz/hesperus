@@ -75,8 +75,9 @@ void run_expander(const std::string& aabbsFilename, const std::string& inputFile
 
 	const std::string outputExtension = ".ebr";
 
-	// TODO
-	// for each AABB
+	// For each AABB, expand the brushes and write the expanded brushes to file.
+	int aabbCount = static_cast<int>(aabbs.size());
+	for(int i=0; i<aabbCount; ++i)
 	{
 		// TODO: Expand the brushes.
 

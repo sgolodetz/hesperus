@@ -12,7 +12,7 @@
 using boost::shared_ptr;
 
 #include <source/io/FileUtil.h>
-#include <source/level/csg/PolyhedralBrush.h>
+#include <source/level/brushes/PolyhedralBrush.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 

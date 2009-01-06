@@ -13,8 +13,8 @@ using boost::shared_ptr;
 
 #include <source/images/Image.h>
 #include <source/level/Level.h>
+#include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPTree.h>
-#include <source/level/csg/PolyhedralBrush.h>
 #include <source/level/lighting/Light.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>

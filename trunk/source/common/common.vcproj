@@ -685,10 +685,6 @@
 						RelativePath="..\level\csg\CSGUtil.h"
 						>
 					</File>
-					<File
-						RelativePath="..\level\csg\PolyhedralBrush.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
@@ -697,8 +693,36 @@
 						RelativePath="..\level\csg\CSGUtil.tpp"
 						>
 					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="brushes"
+				>
+				<Filter
+					Name=".h"
+					>
 					<File
-						RelativePath="..\level\csg\PolyhedralBrush.tpp"
+						RelativePath="..\level\brushes\BrushExpander.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\brushes\PolyhedralBrush.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\level\brushes\PolyhedralBrush.tpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\brushes\BrushExpander.cpp"
 						>
 					</File>
 				</Filter>

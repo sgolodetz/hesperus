@@ -14,7 +14,7 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/io/FileUtil.h>
-#include <source/level/csg/PolyhedralBrush.h>
+#include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/AABB.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>

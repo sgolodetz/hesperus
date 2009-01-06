@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_CSG_POLYHEDRALBRUSH
-#define H_HESP_LEVEL_CSG_POLYHEDRALBRUSH
+#ifndef H_HESP_LEVEL_BRUSHES_POLYHEDRALBRUSH
+#define H_HESP_LEVEL_BRUSHES_POLYHEDRALBRUSH
 
 #include <ostream>
 #include <vector>
@@ -18,8 +18,8 @@ using boost::shared_ptr;
 namespace hesp {
 
 /**
-This class represents convex polyhedral brushes, in other words brushes consisting of convex faces which
-completely enclose a convex volume.
+This class template represents convex polyhedral brushes, in other words brushes
+consisting of convex faces which completely enclose a convex volume.
 */
 template <typename Poly>
 class PolyhedralBrush
