@@ -19,7 +19,7 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 	brushPlanes = expand_brush_planes(brushPlanes, aabb);
 
 	// Generate the new collision faces from the expanded brush planes.
-	for(std::set<BrushPlane>::const_iterator it=brushPlanes->begin(), iend=brushPlanes->end(); it!=iend; ++it)
+	for(BrushPlaneSet::const_iterator it=brushPlanes->begin(), iend=brushPlanes->end(); it!=iend; ++it)
 	{
 		// Build a large initial face on each brush plane.
 		CollisionPolygon_Ptr face;
@@ -74,11 +74,22 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 	return brushPlanes;
 }
 
-BrushExpander::BrushPlaneSet_Ptr
-BrushExpander::expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const AABB3d& aabb)
+BrushExpander::BrushPlane
+BrushExpander::expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb)
 {
 	// NYI
 	throw 23;
+}
+
+BrushExpander::BrushPlaneSet_Ptr
+BrushExpander::expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const AABB3d& aabb)
+{
+	BrushPlaneSet_Ptr expandedBrushPlanes(new BrushPlaneSet);
+	for(BrushPlaneSet::const_iterator it=brushPlanes->begin(), iend=brushPlanes->end(); it!=iend; ++it)
+	{
+		expandedBrushPlanes->insert(expand_brush_plane(*it, aabb));
+	}
+	return expandedBrushPlanes;
 }
 
 }

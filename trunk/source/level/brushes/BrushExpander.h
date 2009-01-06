@@ -59,6 +59,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	static BrushPlaneSet_Ptr determine_brush_planes(const ColPolyBrush_Ptr& brush);
+	static BrushPlane expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb);
 	static BrushPlaneSet_Ptr expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const AABB3d& aabb);
 };
 
