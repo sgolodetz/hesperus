@@ -53,6 +53,16 @@ PlaneClassifier classify_polygon_against_plane(const Polygon<Vert,AuxData>& poly
 }
 
 /**
+TODO
+*/
+template <typename Vert, typename AuxData>
+AABB3d construct_bounding_box(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polys)
+{
+	// NYI
+	throw 23;
+}
+
+/**
 Determines the point at which the line r = s + tv intersects the specified plane.
 
 <p><b>Preconditions:</b>
