@@ -12,9 +12,9 @@ namespace hesp {
 //#################### PUBLIC METHODS ####################
 BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_Ptr& brush)
 {
-	std::set<BrushPlane> brushPlanes = determine_brush_planes(brush);
+	BrushPlaneSet_Ptr brushPlanes = determine_brush_planes(brush);
 
-	for(std::set<BrushPlane>::const_iterator it=brushPlanes.begin(), iend=brushPlanes.end(); it!=iend; ++it)
+	for(std::set<BrushPlane>::const_iterator it=brushPlanes->begin(), iend=brushPlanes->end(); it!=iend; ++it)
 	{
 		// Build a large initial face on each brush plane.
 		CollisionPolygon_Ptr face;
@@ -24,7 +24,7 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 		}
 		else
 		{
-			// Construct an appropriate CPAuxData for any (axis-aligned) bevel planes we needed to add.
+			// Construct an appropriate CPAuxData for any (axis-aligned) bevel plane we needed to add.
 
 			// A bevel plane is only walkable if its normal is (0,0,1). Note that the bevel
 			// planes are constructed manually in determine_brush_planes, so the normals are
@@ -44,9 +44,9 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 }
 
 //#################### PRIVATE METHODS ####################
-std::set<BrushExpander::BrushPlane> BrushExpander::determine_brush_planes(const ColPolyBrush_Ptr& brush)
+BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const ColPolyBrush_Ptr& brush)
 {
-	std::set<BrushPlane> brushPlanes;
+	BrushPlaneSet_Ptr brushPlanes(new BrushPlaneSet);
 
 	// NYI
 	throw 23;

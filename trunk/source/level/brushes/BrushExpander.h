@@ -29,13 +29,16 @@ private:
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;
 	typedef shared_ptr<ColPolyBrush> ColPolyBrush_Ptr;
 
+	typedef std::set<BrushPlane> BrushPlaneSet;
+	typedef shared_ptr<BrushPlaneSet> BrushPlaneSet_Ptr;
+
 	//#################### PUBLIC METHODS ####################
 public:
 	static ColPolyBrush_Ptr expand_brush(const ColPolyBrush_Ptr& brush);
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static std::set<BrushPlane> determine_brush_planes(const ColPolyBrush_Ptr& brush);
+	static BrushPlaneSet_Ptr determine_brush_planes(const ColPolyBrush_Ptr& brush);
 };
 
 }
