@@ -77,8 +77,50 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 BrushExpander::BrushPlane
 BrushExpander::expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb)
 {
-	// NYI
-	throw 23;
+	const Vector3d& n = brushPlane.plane.normal();
+	const double d = brushPlane.plane.distance_value();
+
+	const double minX = aabb.minimum().x, minY = aabb.minimum().y, minZ = aabb.minimum().z;
+	const double maxX = aabb.maximum().x, maxY = aabb.maximum().y, maxZ = aabb.maximum().z;
+
+	Vector3d v;		// a vector from the AABB origin to an AABB vertex which would first hit the brush plane
+	int xPlus = n.x >= 0 ? 4 : 0;
+	int yPlus = n.y >= 0 ? 2 : 0;
+	int zPlus = n.z >= 0 ? 1 : 0;
+	int code = xPlus + yPlus + zPlus;
+
+	switch(code)
+	{
+	case 0:
+		v = Vector3d(maxX, maxY, maxZ);		// n: x-, y-, z-
+		break;
+	case 1:
+		v = Vector3d(maxX, maxY, minZ);		// n: x-, y-, z+
+		break;
+	case 2:
+		v = Vector3d(maxX, minY, maxZ);		// n: x-, y+, z-
+		break;
+	case 3:
+		v = Vector3d(maxX, minY, minZ);		// n: x-, y+, z+
+		break;
+	case 4:
+		v = Vector3d(minX, maxY, maxZ);		// n: x+, y-, z-
+		break;
+	case 5:
+		v = Vector3d(minX, maxY, minZ);		// n: x+, y-, z+
+		break;
+	case 6:
+		v = Vector3d(minX, minY, maxZ);		// n: x+, y+, z-
+		break;
+	default:	// case 7
+		v = Vector3d(minX, minY, minZ);		// n: x+, y+, z+
+		break;
+	}
+
+	// v . -n = |v| cos theta (see p.26 of J.M.P. van Waveren's thesis on the Q3 bot for a diagram)
+	double expansionDistance = v.dot(-n);
+
+	return BrushPlane(Plane(n, d+expansionDistance), brushPlane.auxData);
 }
 
 BrushExpander::BrushPlaneSet_Ptr
