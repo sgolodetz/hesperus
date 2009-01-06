@@ -732,6 +732,14 @@
 			Name="util"
 			>
 			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\util\PolygonTypes.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name=".h"
 				>
 				<File

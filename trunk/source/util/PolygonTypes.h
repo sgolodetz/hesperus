@@ -6,6 +6,7 @@
 #ifndef H_HESP_UTIL_POLYGONTYPES
 #define H_HESP_UTIL_POLYGONTYPES
 
+#include <iosfwd>
 #include <string>
 
 #include <source/math/geom/Polygon.h>
@@ -14,17 +15,24 @@
 
 namespace hesp {
 
-//#################### TYPEDEFS ####################
+//#################### CLASSES ####################
 /*
 TODO
 
-We will eventually want to store the following sorts of things:
+We will eventually want to store the following sorts of things as well:
 
-- walkability
 - type of surface (for sound effects)
 */
-typedef bool CPAuxData;
+struct CPAuxData
+{
+	bool walkable;
+};
 
+//#################### GLOBAL OPERATORS ####################
+std::ostream& operator<<(std::ostream& os, const CPAuxData& rhs);
+std::istream& operator>>(std::istream& is, CPAuxData& rhs);
+
+//#################### TYPEDEFS ####################
 typedef Polygon<Vector3d, CPAuxData> CollisionPolygon;
 typedef shared_ptr<CollisionPolygon> CollisionPolygon_Ptr;
 typedef shared_ptr<const CollisionPolygon> CollisionPolygon_CPtr;

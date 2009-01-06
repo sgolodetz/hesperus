@@ -43,9 +43,13 @@ void quit_with_usage()
 CollisionPolygon::AuxData make_aux_data(const Vector3d& faceNormal)
 {
 	// TODO: CollisionPolygon::AuxData will eventually store more interesting things (see its definition).
+	CollisionPolygon::AuxData auxData;
+
 	const double MAX_ANGLE_TO_VERTICAL = 45 * PI/180;	// i.e. 45 degrees
 	double angleToVertical = acos(faceNormal.dot(Vector3d(0,0,1)));
-	return fabs(angleToVertical) <= MAX_ANGLE_TO_VERTICAL;
+	auxData.walkable = fabs(angleToVertical) <= MAX_ANGLE_TO_VERTICAL;
+
+	return auxData;
 }
 
 ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)
