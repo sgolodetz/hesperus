@@ -63,7 +63,7 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 	}
 
 	// Try and add bevel planes (any unnecessary ones will not be added to the set due to the unique plane predicate).
-	AABB3d bounds = construct_bounding_box(faces);
+	const AABB3d& bounds = brush->bounds();
 	// TODO
 
 	// NYI

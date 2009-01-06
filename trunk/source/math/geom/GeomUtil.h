@@ -35,9 +35,6 @@ PlaneClassifier classify_point_against_plane(const Vector3d& p, const Plane& pla
 template <typename Vert, typename AuxData>
 PlaneClassifier classify_polygon_against_plane(const Polygon<Vert,AuxData>& poly, const Plane& plane);
 
-template <typename Vert, typename AuxData>
-AABB3d construct_bounding_box(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polys);
-
 template <typename Vec>
 std::pair<Vec,double> determine_line_intersection_with_plane(const Vec& s, const Vec& v, const Plane& plane);
 
