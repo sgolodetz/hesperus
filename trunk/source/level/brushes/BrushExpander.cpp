@@ -64,10 +64,14 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 
 	// Try and add bevel planes (any unnecessary ones will not be added to the set due to the unique plane predicate).
 	const AABB3d& bounds = brush->bounds();
-	// TODO
+	brushPlanes->insert(BrushPlane(Plane(Vector3d(-1,0,0), -bounds.minimum().x)));
+	brushPlanes->insert(BrushPlane(Plane(Vector3d(0,-1,0), -bounds.minimum().y)));
+	brushPlanes->insert(BrushPlane(Plane(Vector3d(0,0,-1), -bounds.minimum().z)));
+	brushPlanes->insert(BrushPlane(Plane(Vector3d(1,0,0), bounds.maximum().x)));
+	brushPlanes->insert(BrushPlane(Plane(Vector3d(0,1,0), bounds.maximum().y)));
+	brushPlanes->insert(BrushPlane(Plane(Vector3d(0,0,1), bounds.maximum().z)));
 
-	// NYI
-	throw 23;
+	return brushPlanes;
 }
 
 BrushExpander::BrushPlaneSet_Ptr
