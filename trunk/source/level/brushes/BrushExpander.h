@@ -18,7 +18,11 @@ class BrushExpander
 {
 	//#################### NESTED CLASSES ####################
 private:
-	struct BrushPlane;
+	struct BrushPlane
+	{
+		Plane plane;
+		shared_ptr<CPAuxData> auxData;
+	};
 
 	//#################### TYPEDEFS ####################
 private:

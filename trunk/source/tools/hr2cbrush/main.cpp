@@ -40,16 +40,15 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-CollisionPolygon::AuxData make_aux_data(const Vector3d& faceNormal)
+CPAuxData make_aux_data(const Vector3d& faceNormal)
 {
-	// TODO: CollisionPolygon::AuxData will eventually store more interesting things (see its definition).
-	CollisionPolygon::AuxData auxData;
+	// TODO: CPAuxData will eventually store more interesting things (see its definition).
 
 	const double MAX_ANGLE_TO_VERTICAL = 45 * PI/180;	// i.e. 45 degrees
 	double angleToVertical = acos(faceNormal.dot(Vector3d(0,0,1)));
-	auxData.walkable = fabs(angleToVertical) <= MAX_ANGLE_TO_VERTICAL;
+	bool walkable = fabs(angleToVertical) <= MAX_ANGLE_TO_VERTICAL;
 
-	return auxData;
+	return CPAuxData(walkable);
 }
 
 ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)

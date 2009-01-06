@@ -26,6 +26,14 @@ We will eventually want to store the following sorts of things as well:
 struct CPAuxData
 {
 	bool walkable;
+
+	CPAuxData()
+	:	walkable(false)
+	{}
+
+	explicit CPAuxData(bool walkable_)
+	:	walkable(walkable_)
+	{}
 };
 
 //#################### GLOBAL OPERATORS ####################

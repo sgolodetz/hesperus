@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -13,6 +14,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/FileUtil.h>
+#include <source/level/brushes/BrushExpander.h>
 #include <source/math/geom/AABB.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -77,11 +79,20 @@ void run_expander(const std::string& aabbsFilename, const std::string& inputFile
 
 	// For each AABB, expand the brushes and write the expanded brushes to file.
 	int aabbCount = static_cast<int>(aabbs.size());
+	int brushCount = static_cast<int>(inputBrushes.size());
 	for(int i=0; i<aabbCount; ++i)
 	{
-		// TODO: Expand the brushes.
+		// Expand the brushes.
+		ColPolyBrushVector expandedBrushes(brushCount);
+		for(int j=0; j<brushCount; ++j)
+		{
+			expandedBrushes[i] = BrushExpander::expand_brush(inputBrushes[i]);
+		}
 
-		// TODO: Write the expanded brushes to file.
+		// Write the expanded brushes to file.
+		std::ostringstream oss;
+		oss << outputStem << i << outputExtension;
+		FileUtil::save_brushes_file(oss.str(), expandedBrushes);
 	}
 }
 
