@@ -8,8 +8,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
-using boost::bad_lexical_cast;
-using boost::lexical_cast;
 
 #include <source/exceptions/InvalidParameterException.h>
 #include <source/math/Constants.h>
@@ -157,8 +155,8 @@ shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const s
 	if(L == std::string::npos) throw Exception("Bad input on line " + n);
 	std::string vertCountString = line.substr(0,L);
 	int vertCount;
-	try							{ vertCount = lexical_cast<int,std::string>(vertCountString); }
-	catch(bad_lexical_cast&)	{ throw Exception("Bad vertex count on line " + n); }
+	try								{ vertCount = boost::lexical_cast<int,std::string>(vertCountString); }
+	catch(boost::bad_lexical_cast&)	{ throw Exception("Bad vertex count on line " + n); }
 
 	// Read the auxiliary data.
 	std::string::size_type R = line.find_last_of(')');
@@ -166,8 +164,8 @@ shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const s
 	std::string auxDataString = line.substr(R+2);
 	boost::trim(auxDataString);
 	AuxData auxData;
-	try							{ auxData = lexical_cast<AuxData,std::string>(auxDataString); }
-	catch(bad_lexical_cast&)	{ throw Exception("Bad auxiliary data on line " + n); }
+	try								{ auxData = boost::lexical_cast<AuxData,std::string>(auxDataString); }
+	catch(boost::bad_lexical_cast&)	{ throw Exception("Bad auxiliary data on line " + n); }
 
 	// Read the vertices.
 	std::string verticesString = line.substr(L+1, R-L);
@@ -212,7 +210,7 @@ void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData
 		boost::trim(line);
 		if(line != "")
 		{
-			polygons.push_back(load_polygon<Vert,AuxData>(line, lexical_cast<std::string,int>(n)));
+			polygons.push_back(load_polygon<Vert,AuxData>(line, boost::lexical_cast<std::string,int>(n)));
 		}
 
 		++n;

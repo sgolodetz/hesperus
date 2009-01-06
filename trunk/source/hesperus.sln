@@ -54,6 +54,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hr2cbrush", "tools\hr2cbrus
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hexpand", "tools\hexpand\hexpand.vcproj", "{4DC0B878-90B5-46B8-9A62-28C645AAAD57}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC} = {57B520D8-1A0C-4F5D-BE95-26C288CA60FC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

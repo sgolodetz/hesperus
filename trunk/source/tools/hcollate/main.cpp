@@ -7,6 +7,10 @@
 #include <string>
 #include <vector>
 
+#include <boost/lexical_cast.hpp>
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
+
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
 #include <source/io/FileUtil.h>

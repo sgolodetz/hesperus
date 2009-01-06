@@ -9,6 +9,10 @@
 #include <string>
 #include <vector>
 
+#include <boost/lexical_cast.hpp>
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
+
 #include <source/level/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
