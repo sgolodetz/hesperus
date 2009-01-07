@@ -53,6 +53,33 @@ PlaneClassifier classify_polygon_against_plane(const Polygon<Vert,AuxData>& poly
 }
 
 /**
+Constructs a bounding box around an array of polygons.
+
+@param polys	The polygons
+@return			The bounding box
+*/
+template <typename Vert, typename AuxData>
+AABB3d construct_bounding_box(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polys)
+{
+	Vector3d minimum(INT_MAX, INT_MAX, INT_MAX), maximum(INT_MIN, INT_MIN, INT_MIN);
+
+	int polyCount = static_cast<int>(polys.size());
+	for(int i=0; i<polyCount; ++i)
+	{
+		int vertCount = polys[i]->vertex_count();
+		for(int j=0; j<vertCount; ++j)
+		{
+			const Vector3d& v = polys[i]->vertex(j);
+			if(v.x < minimum.x) minimum.x = v.x;	if(v.x > maximum.x) maximum.x = v.x;
+			if(v.y < minimum.y) minimum.y = v.y;	if(v.y > maximum.y) maximum.y = v.y;
+			if(v.z < minimum.z) minimum.z = v.z;	if(v.z > maximum.z) maximum.z = v.z;
+		}
+	}
+
+	return AABB3d(minimum, maximum);
+}
+
+/**
 Determines the point at which the line r = s + tv intersects the specified plane.
 
 <p><b>Preconditions:</b>

@@ -18,6 +18,8 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 	// Expand the brush planes against the AABB.
 	brushPlanes = expand_brush_planes(brushPlanes, aabb);
 
+	std::vector<CollisionPolygon_Ptr> expandedFaces;
+
 	// Generate the new collision faces from the expanded brush planes.
 	for(BrushPlaneSet::const_iterator it=brushPlanes->begin(), iend=brushPlanes->end(); it!=iend; ++it)
 	{
@@ -39,13 +41,50 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 			face = make_universe_polygon<CPAuxData>(it->plane, CPAuxData(walkable));
 		}
 
-		// TODO: Clip it to the other planes.
-		// NYI
-		throw 23;
+		// Clip it to the other planes.
+		bool discard = false;
+		for(BrushPlaneSet::const_iterator jt=brushPlanes->begin(), jend=brushPlanes->end(); jt!=jend; ++jt)
+		{
+			if(jt == it) continue;
+
+			switch(classify_polygon_against_plane(*face, jt->plane))
+			{
+				case CP_BACK:
+				{
+					// The face is entirely behind this plane, so no clipping is needed.
+					continue;
+				}
+				case CP_COPLANAR:
+				{
+					// The planes are unique, so this should never happen.
+					throw Exception("BrushExpander: Unexpected duplicate plane");
+				}
+				case CP_FRONT:
+				{
+					// The face is entirely in front of this plane, so it's not part of the expanded brush.
+					discard = true;
+					break;
+				}
+				case CP_STRADDLE:
+				{
+					// The face straddles the plane, so split it and keep the bit behind it.
+					SplitResults<Vector3d,CPAuxData> sr = split_polygon(*face, jt->plane);
+					face = sr.back;
+					break;
+				}
+			}
+
+			if(discard) break;
+		}
+
+		// If it hasn't been clipped out of existence, add it to the expanded brush.
+		if(!discard) expandedFaces.push_back(face);
 	}
 
-	// NYI
-	throw 23;
+	// Construct a bounding box for the expanded brush.
+	AABB3d expandedBounds = construct_bounding_box(expandedFaces);
+
+	return ColPolyBrush_Ptr(new ColPolyBrush(expandedBounds, expandedFaces));
 }
 
 //#################### PRIVATE METHODS ####################
@@ -84,12 +123,12 @@ BrushExpander::expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aa
 	const double maxX = aabb.maximum().x, maxY = aabb.maximum().y, maxZ = aabb.maximum().z;
 
 	Vector3d v;		// a vector from the AABB origin to an AABB vertex which would first hit the brush plane
-	int xPlus = n.x >= 0 ? 4 : 0;
-	int yPlus = n.y >= 0 ? 2 : 0;
-	int zPlus = n.z >= 0 ? 1 : 0;
-	int code = xPlus + yPlus + zPlus;
+	int xCode = n.x > 0 ? 4 : 0;
+	int yCode = n.y > 0 ? 2 : 0;
+	int zCode = n.z > 0 ? 1 : 0;
+	int fullCode = xCode + yCode + zCode;
 
-	switch(code)
+	switch(fullCode)
 	{
 	case 0:
 		v = Vector3d(maxX, maxY, maxZ);		// n: x-, y-, z-
