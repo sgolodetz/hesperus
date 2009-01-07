@@ -7,7 +7,6 @@
 #define H_HESP_LEVEL_ONIONBSP_ONIONCOMPILER
 
 #include <map>
-#include <set>
 #include <vector>
 
 #include <source/math/geom/Plane.h>
@@ -21,10 +20,10 @@ class OnionCompiler
 {
 	//#################### TYPEDEFS ####################
 private:
+	typedef std::vector<OnionPlane> OnionPlaneVector;
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 	typedef shared_ptr<PolyVector> PolyVector_Ptr;
-	typedef std::set<OnionPlane_Ptr> OnionPlaneSet;
 
 	//#################### NESTED CLASSES ####################
 private:
@@ -42,13 +41,12 @@ private:
 private:
 	// Input data
 	double m_weight;
+	int m_mapCount;
 
 	// Intermediate data
-	OnionPlaneSet m_onionPlanes;
-	std::map<int,int> m_polyToOnionPlane;
-
-	// Intermediate / output data
 	PolyVector_Ptr m_polygons;
+	OnionPlaneVector m_onionPlanes;
+	std::map<int,int> m_polyToOnionPlane;
 
 	// Output data
 	OnionTree_Ptr m_tree;
@@ -68,7 +66,6 @@ private:
 	OnionNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
 								const std::vector<PlaneClassifier>& relativeToClosestAncestor);
 	OnionPlane_Ptr choose_split_plane(const std::vector<PolyIndex>& polyIndices);
-	void determine_onion_planes(const std::vector<PolyVector_Ptr>& maps);
 };
 
 }
