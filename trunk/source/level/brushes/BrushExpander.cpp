@@ -10,6 +10,14 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+/**
+Expand the brush in such a way that the expanded brush touches the AABB centre
+whenever the original brush touches the AABB.
+
+@param brush	The brush
+@param aabb		The AABB
+@return			The expanded brush
+*/
 BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_Ptr& brush, const AABB3d& aabb)
 {
 	// Determine which planes need expanding (these are the face planes + any bevel planes).
@@ -88,6 +96,13 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 }
 
 //#################### PRIVATE METHODS ####################
+/**
+Classifies the brush against a plane.
+
+@param brush	The brush
+@param plane	The plane
+@return			The brush classification against the plane
+*/
 PlaneClassifier BrushExpander::classify_brush_against_plane(const ColPolyBrush_Ptr& brush, const Plane& plane)
 {
 	bool backFlag = false, frontFlag = false;
@@ -118,6 +133,12 @@ PlaneClassifier BrushExpander::classify_brush_against_plane(const ColPolyBrush_P
 	else return CP_COPLANAR;
 }
 
+/**
+Determines which planes are necessary for building the expanded brush (including bevel planes).
+
+@param brush	The initial brush
+@return			The necessary brush planes
+*/
 BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const ColPolyBrush_Ptr& brush)
 {
 	BrushPlaneSet_Ptr brushPlanes(new BrushPlaneSet);
@@ -196,6 +217,14 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 	return brushPlanes;
 }
 
+/**
+Moves a brush plane along its normal so that the "expanded" plane will touch
+the centre of the AABB precisely when the original plane would touch the AABB.
+
+@param brushPlane	The original plane
+@param aabb			The AABB
+@return				The expanded plane
+*/
 BrushExpander::BrushPlane
 BrushExpander::expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb)
 {
@@ -229,6 +258,12 @@ BrushExpander::expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aa
 	return BrushPlane(Plane(n, d+expansionDistance), brushPlane.auxData);
 }
 
+/**
+Expands the set of brush planes against the AABB.
+
+@param brushPlanes	The brush planes
+@param aabb			The AABB
+*/
 BrushExpander::BrushPlaneSet_Ptr
 BrushExpander::expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const AABB3d& aabb)
 {
