@@ -11,18 +11,20 @@
 
 namespace hesp {
 
-struct PolyIndex
-{
-	int index;
-	bool splitCandidate;	// is the plane of the referenced polygon a split candidate?
-
-	PolyIndex(int index_, bool splitCandidate_)
-	:	index(index_), splitCandidate(splitCandidate_)
-	{}
-};
-
 class BSPCompiler
 {
+	//#################### NESTED CLASSES ####################
+private:
+	struct PolyIndex
+	{
+		int index;
+		bool splitCandidate;	// is the plane of the referenced polygon a split candidate?
+
+		PolyIndex(int index_, bool splitCandidate_)
+		:	index(index_), splitCandidate(splitCandidate_)
+		{}
+	};
+
 	//#################### PUBLIC METHODS ####################
 public:
 	template <typename Vert, typename AuxData>
