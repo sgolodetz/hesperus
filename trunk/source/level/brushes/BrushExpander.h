@@ -38,8 +38,8 @@ private:
 		//#################### PUBLIC OPERATORS ####################
 		bool operator<(const BrushPlane& rhs) const
 		{
-			const double angleTolerance = 0.5 * PI / 180;	// convert 0.5 degrees to radians
-			const double distTolerance = 0.001;
+			const double angleTolerance = 2 * PI / 180;	// convert 2 degrees to radians
+			const double distTolerance = 0.005;
 			return UniquePlanePred(angleTolerance, distTolerance)(plane, rhs.plane);
 		}
 	};
