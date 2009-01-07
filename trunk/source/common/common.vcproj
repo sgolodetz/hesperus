@@ -774,6 +774,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\onionbsp\OnionPlane.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\onionbsp\OnionTree.h"
 						>
 					</File>

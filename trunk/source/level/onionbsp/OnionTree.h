@@ -8,7 +8,10 @@
 
 namespace hesp {
 
-// TODO
+class OnionTree
+{
+	// TODO
+};
 
 }
 

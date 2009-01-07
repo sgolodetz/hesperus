@@ -6,9 +6,8 @@
 #ifndef H_HESP_LEVEL_BSP_BSPBRANCH
 #define H_HESP_LEVEL_BSP_BSPBRANCH
 
-#include "BSPNode.h"
-
 #include <source/math/geom/Plane.h>
+#include "BSPNode.h"
 
 namespace hesp {
 
