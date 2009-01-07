@@ -731,6 +731,62 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="onionbsp"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\onionbsp\OnionBranch.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionLeaf.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionNode.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionTree.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\onionbsp\OnionBranch.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionCompiler.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionLeaf.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionNode.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionTree.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\level\onionbsp\OnionCompiler.tpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"
