@@ -101,6 +101,9 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 
 	// Flood out from the player leaf to figure out which leaves are valid.
 	int playerLeaf = tree->find_leaf_index(playerPos);
+
+	if(tree->leaf(playerLeaf)->is_solid()) throw Exception("The player start position is in a wall!");
+
 	std::set<int> validLeaves;
 	flood_from(playerLeaf, portalsFromLeaf, validLeaves);
 

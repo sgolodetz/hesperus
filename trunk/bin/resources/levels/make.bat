@@ -24,6 +24,13 @@ REM Collision Section
 hr2cbrush %1.rbr %1.cbr
 hexpand ..\..\settings\AABBs.txt %1.cbr
 
+FOR %%f IN (*.ebr) DO (
+hcsg -c %%f %%~nf.cg1
+hbsp -c %%~nf.cg1 %%~nf.ct1
+hportal -c %%~nf.ct1 %%~nf.cp1
+hflood -c %%~nf.ct1 %%~nf.cp1 %1.ent %%~nf.cg2
+)
+
 REM Cleanup Rendering Section
 
 del *.rbr
@@ -38,6 +45,9 @@ REM Cleanup Collision Section
 
 del *.cbr
 del *.ebr
+del *.cg*
+del *.ct*
+del *.cp*
 
 cd ..
 
