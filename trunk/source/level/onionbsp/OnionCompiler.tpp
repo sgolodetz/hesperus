@@ -3,6 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
+#include <source/math/geom/GeomUtil.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -20,7 +22,8 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector_Ptr>& maps, doub
 			const Poly_Ptr& poly = *jt;
 			m_polygons->push_back(poly);
 
-			// TODO:	Determine the polygon's onion plane.
+			// Determine the polygon's (undirected) onion plane.
+			OnionPlane onionPlane(make_plane(*poly).to_undirected_form(), i);
 
 			// TODO:	Try adding it to the onion plane set. If it's not present,
 			//			add the new onion plane to the onion plane vector. If it
