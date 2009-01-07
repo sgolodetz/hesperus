@@ -7,7 +7,9 @@ set PATH=%PATH%;..\..\..\tools
 
 mef2input %1.mef %1.rbr %1.ent %1.lum
 
+REM #################
 REM Rendering Section
+REM #################
 
 hcsg -r %1.rbr %1.rg1
 hbsp -r %1.rg1 %1.rt1
@@ -18,7 +20,9 @@ hportal -r %1.rt2 %1.rp2
 hvis %1.rp2 %1.vis
 hlight %1.rt2 %1.vis %1.lum LM %1.lbt
 
+REM #################
 REM Collision Section
+REM #################
 
 hr2cbrush %1.rbr %1.cbr
 hexpand ..\..\settings\AABBs.txt %1.cbr
@@ -42,11 +46,15 @@ ENDLOCAL
 echo hoportal %1.obt %1.opr
 echo hnav %1.obt %1.opr %1.nav
 
+REM #################
 REM Collation Section (this will need updating ultimately)
+REM #################
 
 hcollate +L %1.lbt %1.rp2 %1.vis %1.bsp
 
+REM #########################
 REM Cleanup Rendering Section
+REM #########################
 
 del *.rbr
 del *.rg*
@@ -56,7 +64,9 @@ del *.vis
 del *.lbt
 del *.bmp
 
+REM #########################
 REM Cleanup Collision Section
+REM #########################
 
 del *.cbr
 del *.ebr
