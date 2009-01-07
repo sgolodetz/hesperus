@@ -20,7 +20,6 @@ class OnionCompiler
 {
 	//#################### TYPEDEFS ####################
 private:
-	typedef std::vector<OnionPlane> OnionPlaneVector;
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 	typedef shared_ptr<PolyVector> PolyVector_Ptr;
@@ -45,8 +44,7 @@ private:
 
 	// Intermediate data
 	PolyVector_Ptr m_polygons;
-	OnionPlaneVector m_onionPlanes;
-	std::map<int,int> m_polyToOnionPlane;
+	std::map<int,OnionPlane_Ptr> m_polyToOnionPlane;
 
 	// Output data
 	OnionTree_Ptr m_tree;
