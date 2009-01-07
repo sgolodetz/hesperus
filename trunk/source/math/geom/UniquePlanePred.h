@@ -24,7 +24,9 @@ struct UniquePlanePred
 	{
 		// If these planes are nearly the same (in terms of normal direction
 		// and distance value), then !(lhs < rhs) && !(rhs < lhs).
-		double angle = acos(lhs.normal().dot(rhs.normal()));
+		double dotProd = lhs.normal().dot(rhs.normal());
+		if(dotProd > 1.0) dotProd = 1.0;	// acos(x) is only defined for x <= 1, so clamp dotProd to avoid floating-point problems
+		double angle = acos(dotProd);
 		double dist = lhs.distance_value() - rhs.distance_value();
 		if(fabs(angle) < m_angleTolerance && fabs(dist) < m_distTolerance) return false;
 

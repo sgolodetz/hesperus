@@ -58,9 +58,11 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	static PlaneClassifier classify_brush_against_plane(const ColPolyBrush_Ptr& brush, const Plane& plane);
 	static BrushPlaneSet_Ptr determine_brush_planes(const ColPolyBrush_Ptr& brush);
 	static BrushPlane expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb);
 	static BrushPlaneSet_Ptr expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const AABB3d& aabb);
+	static Plane_Ptr make_bevel_plane(const Vector3d& p1, const Vector3d& p2, const Vector3d& axis);
 };
 
 }
