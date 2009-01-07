@@ -134,7 +134,6 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 	// Try and add bevel planes (any unnecessary ones will not be added to the set due to the unique plane predicate).
 
 	// Add "axial planes going through an edge or corner of the brush that are not already part of the brush".
-#if 0
 	const AABB3d& bounds = brush->bounds();
 	brushPlanes->insert(BrushPlane(Plane(Vector3d(-1,0,0), -bounds.minimum().x)));
 	brushPlanes->insert(BrushPlane(Plane(Vector3d(0,-1,0), -bounds.minimum().y)));
@@ -142,7 +141,6 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 	brushPlanes->insert(BrushPlane(Plane(Vector3d(1,0,0), bounds.maximum().x)));
 	brushPlanes->insert(BrushPlane(Plane(Vector3d(0,1,0), bounds.maximum().y)));
 	brushPlanes->insert(BrushPlane(Plane(Vector3d(0,0,1), bounds.maximum().z)));
-#endif
 
 	// Along edges, add "all planes that are parallel to one of the coordinate axes and do not change
 	// the shape of the brush".
@@ -170,9 +168,14 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 					BrushPlane possiblePlane(*possiblePlanes[m]);
 					BrushPlane flippedPossiblePlane(possiblePlanes[m]->flip());
 
+					// If this plane (or its flipped equivalent) isn't currently in the brush plane set.
 					if(	brushPlanes->find(possiblePlane) == brushPlanes->end() &&
 						brushPlanes->find(flippedPossiblePlane) == brushPlanes->end())
 					{
+						// If the brush is entirely behind this plane, it's a valid
+						// bevel plane, so add it. If the brush is entirely in front
+						// of it, its inverse plane is a valid bevel plane, so add
+						// that. Otherwise, carry on.
 						switch(classify_brush_against_plane(brush, possiblePlane.plane))
 						{
 						case CP_BACK:
