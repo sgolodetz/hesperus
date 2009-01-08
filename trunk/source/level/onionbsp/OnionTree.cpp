@@ -5,13 +5,44 @@
 
 #include "OnionTree.h"
 
+#include "OnionBranch.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes)
+:	m_nodes(nodes)
 {
-	// NYI
-	throw 23;
+	index_leaves();
+}
+
+//#################### PUBLIC METHODS ####################
+OnionNode_Ptr OnionTree::root() const
+{
+	return m_nodes.back();
+}
+
+//#################### PRIVATE METHODS ####################
+void OnionTree::index_leaves()
+{
+	index_leaves_sub(root());
+}
+
+void OnionTree::index_leaves_sub(const OnionNode_Ptr& node)
+{
+	if(node->is_leaf())
+	{
+		OnionLeaf *leaf = node->as_leaf();
+		int nextLeaf = static_cast<int>(m_leaves.size());
+		leaf->set_leaf_index(nextLeaf);
+		m_leaves.push_back(leaf);
+	}
+	else
+	{
+		const OnionBranch *branch = node->as_branch();
+		index_leaves_sub(branch->left());
+		index_leaves_sub(branch->right());
+	}
 }
 
 }
