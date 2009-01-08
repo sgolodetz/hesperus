@@ -30,25 +30,12 @@ private:
 	struct PolyIndex
 	{
 		int index;
-		bool splitCandidate;	// is the onion plane of the referenced polygon a split candidate?
+		int mapIndex;			// which map the polygon came from
+		bool splitCandidate;	// is the plane of the referenced polygon a split candidate?
 
-		PolyIndex(int index_, bool splitCandidate_)
-		:	index(index_), splitCandidate(splitCandidate_)
+		PolyIndex(int index_, int mapIndex_, bool splitCandidate_)
+		:	index(index_), mapIndex(mapIndex_), splitCandidate(splitCandidate_)
 		{}
-	};
-
-	struct OnionPlanePred
-	{
-		bool operator()(const OnionPlane_Ptr& lhs, const OnionPlane_Ptr& rhs) const
-		{
-			// If the two planes are in different maps, treat them as different and sort them by map index.
-			if(lhs->map_index() != rhs->map_index()) return lhs->map_index() < rhs->map_index();
-
-			// Otherwise, compare their undirected forms.
-			const double angleTolerance = 2 * PI / 180;	// convert 2 degrees to radians
-			const double distTolerance = 0.005;
-			return UniquePlanePred(angleTolerance, distTolerance)(lhs->undirected_plane(), rhs->undirected_plane());
-		}
 	};
 
 	//#################### PRIVATE VARIABLES ####################
@@ -59,8 +46,7 @@ private:
 
 	// Intermediate data
 	PolyVector_Ptr m_polygons;
-	std::vector<OnionPlane_Ptr> m_onionPlanes;
-	std::map<int,int> m_polyToOnionPlaneIndex;
+	std::vector<PolyIndex> m_polyIndices;
 
 	// Output data
 	OnionTree_Ptr m_tree;

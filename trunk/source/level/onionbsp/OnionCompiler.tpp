@@ -13,11 +13,6 @@ template <typename Poly>
 OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double weight)
 :	m_weight(weight), m_mapCount(static_cast<int>(maps.size())), m_polygons(new PolyVector)
 {
-	typedef std::map<OnionPlane_Ptr,int,OnionPlanePred> OnionPlaneMap;
-
-	// Build the set of unique onion planes, and a map from polygons to their respective planes.
-	OnionPlaneMap onionPlanes;
-
 	int mapCount = static_cast<int>(maps.size());
 	for(int i=0; i<mapCount; ++i)
 	{
@@ -26,24 +21,8 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double w
 			const Poly_Ptr& poly = *jt;
 			int polyIndex = static_cast<int>(m_polygons->size());
 			m_polygons->push_back(poly);
-
-			// Determine the polygon's onion plane.
-			OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*poly), i));
-
-			// Try and add the onion plane to the set of unique onion planes.
-			int onionPlaneIndex = static_cast<int>(onionPlanes.size());
-			OnionPlaneMap::iterator kt = onionPlanes.insert(std::make_pair(onionPlane,onionPlaneIndex)).first;
-
-			// This polygon's onion plane index is the one returned when we tried to do the insert.
-			// This will either be the one we tried to insert, or the one that was there before.
-			m_polyToOnionPlaneIndex.insert(std::make_pair(polyIndex, kt->second));
+			m_polyIndices.push_back(PolyIndex(polyIndex, i, true));
 		}
-	}
-
-	m_onionPlanes.resize(onionPlanes.size());
-	for(OnionPlaneMap::const_iterator it=onionPlanes.begin(), iend=onionPlanes.end(); it!=iend; ++it)
-	{
-		m_onionPlanes[it->second] = it->first;
 	}
 }
 
@@ -51,17 +30,12 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double w
 template <typename Poly>
 void OnionCompiler<Poly>::build_tree()
 {
-	int polyCount = static_cast<int>(m_polygons->size());
-	std::vector<PolyIndex> polyIndices;
-	polyIndices.reserve(polyCount);
-	for(int i=0; i<polyCount; ++i) polyIndices.push_back(PolyIndex(i, true));
-
 	std::vector<OnionNode_Ptr> nodes;
 
 	boost::dynamic_bitset<> solidityDescriptor(m_mapCount);
 	solidityDescriptor.set();
 
-	build_subtree(polyIndices, nodes, solidityDescriptor);
+	build_subtree(m_polyIndices, nodes, solidityDescriptor);
 
 	m_tree.reset(new OnionTree(nodes));
 }
@@ -103,6 +77,7 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 	for(std::vector<PolyIndex>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
 	{
 		int curIndex = it->index;
+		int curMapIndex = it->mapIndex;
 		const Poly& curPoly = *(*m_polygons)[curIndex];
 		switch(classify_polygon_against_plane(curPoly, splitter->plane()))
 		{
@@ -113,8 +88,13 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 			}
 			case CP_COPLANAR:
 			{
-				if(splitter->plane().normal().dot(curPoly.normal()) > 0) frontPolys.push_back(PolyIndex(curIndex,false));
-				else backPolys.push_back(PolyIndex(curIndex,false));
+				// If this polygon was a split candidate and is in a different map from the
+				// splitter, then it's still a split candidate afterwards.
+				bool futureSplitCandidate = it->splitCandidate && curMapIndex != splitter->map_index();
+				if(splitter->plane().normal().dot(curPoly.normal()) > 0)
+					frontPolys.push_back(PolyIndex(curIndex,curMapIndex,futureSplitCandidate));
+				else
+					backPolys.push_back(PolyIndex(curIndex,curMapIndex,futureSplitCandidate));
 				break;
 			}
 			case CP_FRONT:
@@ -129,14 +109,12 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 				// Copy the back half over the polygon being split.
 				(*m_polygons)[curIndex] = sr.back;
 
-				// Append the front half to the end of the polygon array and add the appropriate
-				// reference to its onion plane.
+				// Append the front half to the end of the polygon array.
 				int k = static_cast<int>(m_polygons->size());
 				m_polygons->push_back(sr.front);
-				m_polyToOnionPlaneIndex.insert(std::make_pair(k, m_polyToOnionPlaneIndex[curIndex]));
 
-				backPolys.push_back(PolyIndex(curIndex, it->splitCandidate));
-				frontPolys.push_back(PolyIndex(k, it->splitCandidate));
+				backPolys.push_back(PolyIndex(curIndex, curMapIndex, it->splitCandidate));
+				frontPolys.push_back(PolyIndex(k, curMapIndex, it->splitCandidate));
 				break;
 			}
 		}
@@ -168,18 +146,14 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 	{
 		if(!polyIndices[i].splitCandidate) continue;
 
-		std::map<int,int>::const_iterator kt = m_polyToOnionPlaneIndex.find(polyIndices[i].index);
-		if(kt == m_polyToOnionPlaneIndex.end()) throw Exception("The specified polygon doesn't have an onion plane - oops");
-		OnionPlane_Ptr onionPlane = m_onionPlanes[kt->second];
+		OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*(*m_polygons)[polyIndices[i].index]), polyIndices[i].mapIndex));
 
 		int balance = 0, splits = 0;
-
 		for(int j=0; j<indexCount; ++j)
 		{
 			if(j == i) continue;
 
-			Poly_Ptr poly = (*m_polygons)[polyIndices[j].index];
-			switch(classify_polygon_against_plane(*poly, onionPlane->plane()))
+			switch(classify_polygon_against_plane(*(*m_polygons)[polyIndices[j].index], onionPlane->plane()))
 			{
 				case CP_BACK:
 					--balance;

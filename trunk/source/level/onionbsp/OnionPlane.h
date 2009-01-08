@@ -20,7 +20,6 @@ class OnionPlane
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Plane m_plane;
-	Plane m_undirectedPlane;
 	int m_mapIndex;
 
 	//#################### CONSTRUCTORS ####################
@@ -31,7 +30,6 @@ public:
 public:
 	int map_index() const;
 	const Plane& plane() const;
-	const Plane& undirected_plane() const;
 };
 
 //#################### TYPEDEFS ####################
