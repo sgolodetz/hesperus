@@ -12,9 +12,10 @@ template <typename Poly>
 OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double weight)
 :	m_weight(weight), m_mapCount(static_cast<int>(maps.size())), m_polygons(new PolyVector)
 {
-	typedef std::set<OnionPlane_Ptr,OnionPlanePred> OnionPlaneSet;
+	typedef std::map<OnionPlane_Ptr,int,OnionPlanePred> OnionPlaneMap;
 
-	OnionPlaneSet onionPlanes;
+	// Build the set of unique onion planes, and a map from polygons to their respective planes.
+	OnionPlaneMap onionPlanes;
 
 	int mapCount = static_cast<int>(maps.size());
 	for(int i=0; i<mapCount; ++i)
@@ -29,17 +30,24 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double w
 			OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*poly).to_undirected_form(), i));
 
 			// Try and add the onion plane to the set of unique onion planes.
-			std::pair<OnionPlaneSet::iterator,bool> kt = onionPlanes.insert(onionPlane);
+			int onionPlaneIndex = static_cast<int>(onionPlanes.size());
+			std::pair<OnionPlaneMap::iterator,bool> kt = onionPlanes.insert(std::make_pair(onionPlane,onionPlaneIndex));
 
 			// If this onion plane duplicates an existing one, simply add this map's index to that plane.
 			if(kt.second == false)
 			{
-				(*kt.first)->add_map_index(i);
+				kt.first->first->add_map_index(i);
 			}
 
-			// In either case, this polygon's onion plane is the one returned when we tried to do the insert.
-			m_polyToOnionPlane.insert(std::make_pair(polyIndex, *kt.first));
+			// In either case, this polygon's onion plane index is the one returned when we tried to do the insert.
+			m_polyToOnionPlaneIndex.insert(std::make_pair(polyIndex, kt.first->second));
 		}
+	}
+
+	m_onionPlanes.resize(onionPlanes.size());
+	for(OnionPlaneMap::const_iterator it=onionPlanes.begin(), iend=onionPlanes.end(); it!=iend; ++it)
+	{
+		m_onionPlanes[it->second] = it->first;
 	}
 }
 

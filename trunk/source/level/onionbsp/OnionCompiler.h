@@ -55,7 +55,8 @@ private:
 
 	// Intermediate data
 	PolyVector_Ptr m_polygons;
-	std::map<int,OnionPlane_Ptr> m_polyToOnionPlane;
+	std::vector<OnionPlane_Ptr> m_onionPlanes;
+	std::map<int,int> m_polyToOnionPlaneIndex;
 
 	// Output data
 	OnionTree_Ptr m_tree;
