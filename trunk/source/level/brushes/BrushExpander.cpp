@@ -41,10 +41,10 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 		{
 			// Construct an appropriate CPAuxData for any (axis-aligned) bevel plane we needed to add.
 
-			// A bevel plane is only walkable if its normal is (0,0,1). Note that the bevel
-			// planes are constructed manually in determine_brush_planes, so the normals are
-			// exact (i.e. not subject to rounding errors).
-			bool walkable = it->plane.normal().z == 1;
+			// A bevel plane is only walkable if its normal is less than 45 degrees to the vertical.
+			const double MAX_ANGLE_TO_VERTICAL = 45 * PI/180;	// i.e. 45 degrees
+			double angleToVertical = acos(it->plane.normal().dot(Vector3d(0,0,1)));
+			bool walkable = fabs(angleToVertical) <= MAX_ANGLE_TO_VERTICAL;
 
 			face = make_universe_polygon<CPAuxData>(it->plane, CPAuxData(walkable));
 		}
