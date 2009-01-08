@@ -25,8 +25,19 @@ const OnionNode_Ptr& OnionBranch::left() const		{ return m_left; }
 
 void OnionBranch::output_postorder_text(std::ostream& os) const
 {
-	// NYI
-	throw 23;
+	if(m_left) m_left->output_postorder_text(os);
+	if(m_right) m_right->output_postorder_text(os);
+
+	int parentIndex = m_parent != NULL ? m_parent->index() : -1;
+	os << m_index << " B " << m_left->index() << ' ' << m_right->index() << ' ' << parentIndex;
+
+	const Vector3d& n = m_splitter->plane().normal();
+	double d = m_splitter->plane().distance_value();
+	os << " ( " << n.x << ' ' << n.y << ' ' << n.z << ' ' << d << " )";
+
+	// TODO: Output map indices.
+
+	os << '\n';
 }
 
 const OnionNode_Ptr& OnionBranch::right() const		{ return m_right; }

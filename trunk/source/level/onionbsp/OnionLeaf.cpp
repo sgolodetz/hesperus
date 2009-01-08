@@ -23,8 +23,19 @@ int OnionLeaf::leaf_index() const							{ return m_leafIndex; }
 
 void OnionLeaf::output_postorder_text(std::ostream& os) const
 {
-	// NYI
-	throw 23;
+	os << m_index;
+	os << " ( " << m_solidityDescriptor.to_ulong() << " ) ";
+	os << m_parent->index();
+
+	size_t polyCount = m_polygonIndices.size();
+	os << ' ' << polyCount << " [ ";
+	for(size_t i=0; i<polyCount; ++i)
+	{
+		os << m_polygonIndices[i] << ' ';
+	}
+	os << "]";
+
+	os << '\n';
 }
 
 const std::vector<int>& OnionLeaf::polygon_indices() const	{ return m_polygonIndices; }

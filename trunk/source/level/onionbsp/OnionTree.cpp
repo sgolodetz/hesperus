@@ -17,6 +17,12 @@ OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes)
 }
 
 //#################### PUBLIC METHODS ####################
+void OnionTree::output_postorder_text(std::ostream& os) const
+{
+	os << m_nodes.size() << '\n';
+	root()->output_postorder_text(os);
+}
+
 OnionNode_Ptr OnionTree::root() const
 {
 	return m_nodes.back();

@@ -47,7 +47,12 @@ void run_compiler(const std::vector<std::string>& inputFilenames, const std::str
 	OnionCompiler<Poly> compiler(maps, weight);
 	compiler.build_tree();
 
-	// TODO: Write the output polygons and onion tree to disk.
+	// Write the output polygons and onion tree to disk.
+	std::ofstream os(outputFilename.c_str());
+	if(os.fail()) quit_with_error("Couldn't open output file for writing");
+	write_polygons(os, *compiler.polygons());
+	os << "***\n";
+	compiler.tree()->output_postorder_text(os);
 }
 
 int main(int argc, char *argv[])

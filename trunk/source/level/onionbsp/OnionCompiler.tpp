@@ -169,6 +169,7 @@ template <typename Poly>
 OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyIndex>& polyIndices)
 {
 	OnionPlane_Ptr bestOnionPlane;
+	int bestLowestMapIndex = INT_MAX;
 	double bestMetric = INT_MAX;
 
 	int indexCount = static_cast<int>(polyIndices.size());
@@ -203,11 +204,26 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 			}
 		}
 
+		// We want to process all the planes that appear in each map in order before moving on to
+		// the next one: this is essential in order to ensure a correct tree. We therefore give
+		// priority to onion planes with a lower map index (i.e. we order planes first by lowest
+		// map index, and only then by metric).
+		int lowestMapIndex = *std::min_element(onionPlane->map_indices().begin(), onionPlane->map_indices().end());
 		double metric = abs(balance) + m_weight * splits;
-		if(metric < bestMetric)
+
+		if(lowestMapIndex < bestLowestMapIndex)
 		{
 			bestOnionPlane = onionPlane;
+			bestLowestMapIndex = lowestMapIndex;
 			bestMetric = metric;
+		}
+		else if(lowestMapIndex == bestLowestMapIndex)
+		{
+			if(metric < bestMetric)
+			{
+				bestOnionPlane = onionPlane;
+				bestMetric = metric;
+			}
 		}
 	}
 
