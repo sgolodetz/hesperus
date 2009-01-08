@@ -211,19 +211,11 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 		int lowestMapIndex = *std::min_element(onionPlane->map_indices().begin(), onionPlane->map_indices().end());
 		double metric = abs(balance) + m_weight * splits;
 
-		if(lowestMapIndex < bestLowestMapIndex)
+		if(lowestMapIndex < bestLowestMapIndex || (lowestMapIndex == bestLowestMapIndex && metric < bestMetric))
 		{
 			bestOnionPlane = onionPlane;
 			bestLowestMapIndex = lowestMapIndex;
 			bestMetric = metric;
-		}
-		else if(lowestMapIndex == bestLowestMapIndex)
-		{
-			if(metric < bestMetric)
-			{
-				bestOnionPlane = onionPlane;
-				bestMetric = metric;
-			}
 		}
 	}
 
