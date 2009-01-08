@@ -131,11 +131,18 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 			case CP_STRADDLE:
 			{
 				SplitResults<Vert,AuxData> sr = split_polygon(curPoly, splitter->plane());
+
+				// Copy the back half over the polygon being split.
 				(*m_polygons)[curIndex] = sr.back;
+
+				// Append the front half to the end of the polygon array and add the appropriate
+				// reference to its onion plane.
 				int k = static_cast<int>(m_polygons->size());
 				m_polygons->push_back(sr.front);
-				backPolys.push_back(PolyIndex(curIndex,it->splitCandidate));
-				frontPolys.push_back(PolyIndex(k,it->splitCandidate));
+				m_polyToOnionPlaneIndex.insert(std::make_pair(k, m_polyToOnionPlaneIndex[curIndex]));
+
+				backPolys.push_back(PolyIndex(curIndex, it->splitCandidate));
+				frontPolys.push_back(PolyIndex(k, it->splitCandidate));
 				break;
 			}
 		}
@@ -169,7 +176,10 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 	{
 		if(!polyIndices[i].splitCandidate) continue;
 
-		OnionPlane_Ptr onionPlane = m_onionPlanes[m_polyToOnionPlaneIndex[polyIndices[i].index]];
+		std::map<int,int>::const_iterator kt = m_polyToOnionPlaneIndex.find(polyIndices[i].index);
+		if(kt == m_polyToOnionPlaneIndex.end()) throw Exception("The specified polygon doesn't have an onion plane - oops");
+		OnionPlane_Ptr onionPlane = m_onionPlanes[kt->second];
+
 		int balance = 0, splits = 0;
 
 		for(int j=0; j<indexCount; ++j)
