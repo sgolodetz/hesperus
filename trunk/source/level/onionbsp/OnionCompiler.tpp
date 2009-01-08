@@ -160,7 +160,7 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 	OnionNode_Ptr left = build_subtree(frontPolys, nodes, leftSolidityDescriptor);
 	OnionNode_Ptr right = build_subtree(backPolys, nodes, rightSolidityDescriptor);
 
-	OnionNode_Ptr subtreeRoot(new OnionBranch((int)nodes.size(), splitter, left, right));
+	OnionNode_Ptr subtreeRoot(new OnionBranch((int)nodes.size(), Plane_Ptr(new Plane(splitter->plane())), left, right));
 	nodes.push_back(subtreeRoot);
 	return subtreeRoot;
 }
