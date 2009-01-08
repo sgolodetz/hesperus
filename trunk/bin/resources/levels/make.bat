@@ -39,7 +39,7 @@ set CG2FILES=
 FOR %%f IN (*.cg2) DO (
 set CG2FILES=!CG2FILES! %%f
 )
-echo hobsp %CG2FILES% %1.obt
+echo hobsp -c%CG2FILES% %1.obt
 set CG2FILES=
 ENDLOCAL
 
