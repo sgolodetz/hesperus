@@ -41,6 +41,10 @@ private:
 	{
 		bool operator()(const OnionPlane_Ptr& lhs, const OnionPlane_Ptr& rhs) const
 		{
+			// If the two planes are in different maps, treat them as different and sort them by map index.
+			if(lhs->map_index() != rhs->map_index()) return lhs->map_index() < rhs->map_index();
+
+			// Otherwise, compare their undirected forms.
 			const double angleTolerance = 2 * PI / 180;	// convert 2 degrees to radians
 			const double distTolerance = 0.005;
 			return UniquePlanePred(angleTolerance, distTolerance)(lhs->undirected_plane(), rhs->undirected_plane());

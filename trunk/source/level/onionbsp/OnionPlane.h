@@ -21,7 +21,7 @@ class OnionPlane
 private:
 	Plane m_plane;
 	Plane m_undirectedPlane;
-	std::set<int> m_mapIndices;
+	int m_mapIndex;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -29,8 +29,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void add_map_index(int mapIndex);
-	const std::set<int>& map_indices() const;
+	int map_index() const;
 	const Plane& plane() const;
 	const Plane& undirected_plane() const;
 };

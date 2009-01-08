@@ -30,19 +30,13 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double w
 			// Determine the polygon's onion plane.
 			OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*poly), i));
 
-			// Try and add the onion plane to the set of unique onion planes (note that the undirected
-			// form of the plane is used internally for sorting).
+			// Try and add the onion plane to the set of unique onion planes.
 			int onionPlaneIndex = static_cast<int>(onionPlanes.size());
-			std::pair<OnionPlaneMap::iterator,bool> kt = onionPlanes.insert(std::make_pair(onionPlane,onionPlaneIndex));
+			OnionPlaneMap::iterator kt = onionPlanes.insert(std::make_pair(onionPlane,onionPlaneIndex)).first;
 
-			// If this onion plane duplicates an existing one, simply add this map's index to that plane.
-			if(kt.second == false)
-			{
-				kt.first->first->add_map_index(i);
-			}
-
-			// In either case, this polygon's onion plane index is the one returned when we tried to do the insert.
-			m_polyToOnionPlaneIndex.insert(std::make_pair(polyIndex, kt.first->second));
+			// This polygon's onion plane index is the one returned when we tried to do the insert.
+			// This will either be the one we tried to insert, or the one that was there before.
+			m_polyToOnionPlaneIndex.insert(std::make_pair(polyIndex, kt->second));
 		}
 	}
 
@@ -150,12 +144,9 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 
 	boost::dynamic_bitset<> leftSolidityDescriptor = solidityDescriptor;
 	boost::dynamic_bitset<> rightSolidityDescriptor = solidityDescriptor;
-	const std::set<int>& mapIndices = splitter->map_indices();
-	for(std::set<int>::const_iterator it=mapIndices.begin(), iend=mapIndices.end(); it!=iend; ++it)
-	{
-		leftSolidityDescriptor.set(*it, false);
-		rightSolidityDescriptor.set(*it, true);
-	}
+	int mapIndex = splitter->map_index();
+	leftSolidityDescriptor.set(mapIndex, false);
+	rightSolidityDescriptor.set(mapIndex, true);
 
 	OnionNode_Ptr left = build_subtree(frontPolys, nodes, leftSolidityDescriptor);
 	OnionNode_Ptr right = build_subtree(backPolys, nodes, rightSolidityDescriptor);
@@ -169,7 +160,7 @@ template <typename Poly>
 OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyIndex>& polyIndices)
 {
 	OnionPlane_Ptr bestOnionPlane;
-	int bestLowestMapIndex = INT_MAX;
+	int bestMapIndex = INT_MAX;
 	double bestMetric = INT_MAX;
 
 	int indexCount = static_cast<int>(polyIndices.size());
@@ -208,13 +199,13 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 		// the next one: this is essential in order to ensure a correct tree. We therefore give
 		// priority to onion planes with a lower map index (i.e. we order planes first by lowest
 		// map index, and only then by metric).
-		int lowestMapIndex = *std::min_element(onionPlane->map_indices().begin(), onionPlane->map_indices().end());
+		int mapIndex = onionPlane->map_index();
 		double metric = abs(balance) + m_weight * splits;
 
-		if(lowestMapIndex < bestLowestMapIndex || (lowestMapIndex == bestLowestMapIndex && metric < bestMetric))
+		if(mapIndex < bestMapIndex || (mapIndex == bestMapIndex && metric < bestMetric))
 		{
 			bestOnionPlane = onionPlane;
-			bestLowestMapIndex = lowestMapIndex;
+			bestMapIndex = mapIndex;
 			bestMetric = metric;
 		}
 	}
