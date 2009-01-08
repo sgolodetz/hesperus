@@ -19,6 +19,11 @@ class OnionLeaf;
 
 class OnionNode
 {
+	//#################### PROTECTED VARIABLES ####################
+protected:
+	int m_index;
+	OnionNode *m_parent;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	OnionNode(int index);

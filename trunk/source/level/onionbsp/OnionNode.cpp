@@ -7,6 +7,9 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+OnionNode::OnionNode(int index)
+:	m_index(index), m_parent(NULL)
+{}
 
 }

@@ -19,13 +19,13 @@ class OnionLeaf : public OnionNode
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	int m_leafIndex;					// leaf index of leaf (as opposed to its tree node index): only empty leaves are indexed
-	boost::dynamic_bitset<> m_isSolid;	// indicates the solidity of the leaf in each of the various different maps
+	int m_leafIndex;								// leaf index of leaf (as opposed to its tree node index): only empty leaves are indexed
+	boost::dynamic_bitset<> m_solidityDescriptor;	// indicates the solidity of the leaf in each of the various different maps
 	std::vector<int> m_polygonIndices;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	OnionLeaf(int index, const boost::dynamic_bitset<>& isSolid, const std::vector<int>& polygonIndices);
+	OnionLeaf(int index, const boost::dynamic_bitset<>& solidityDescriptor, const std::vector<int>& polygonIndices);
 
 	//#################### PUBLIC METHODS ####################
 public:

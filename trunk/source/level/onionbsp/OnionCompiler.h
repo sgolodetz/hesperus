@@ -74,7 +74,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	OnionNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
-								const std::vector<PlaneClassifier>& relativeToClosestAncestor);
+								const boost::dynamic_bitset<>& solidityDescriptor);
 	OnionPlane_Ptr choose_split_plane(const std::vector<PolyIndex>& polyIndices);
 };
 

@@ -61,9 +61,11 @@ void OnionCompiler<Poly>::build_tree()
 	for(int i=0; i<polyCount; ++i) polyIndices.push_back(PolyIndex(i, true));
 
 	std::vector<OnionNode_Ptr> nodes;
-	std::vector<PlaneClassifier> relativeToClosestAncestor(m_mapCount, CP_BACK);
 
-	build_subtree(polyIndices, nodes, relativeToClosestAncestor);
+	boost::dynamic_bitset<> solidityDescriptor(m_mapCount);
+	solidityDescriptor.set();
+
+	build_subtree(polyIndices, nodes, solidityDescriptor);
 
 	m_tree.reset(new OnionTree(nodes));
 }
@@ -85,9 +87,17 @@ const OnionTree_Ptr& OnionCompiler<Poly>::tree() const
 template <typename Poly>
 OnionNode_Ptr
 OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
-								   const std::vector<PlaneClassifier>& relativeToClosestAncestor)
+								   const boost::dynamic_bitset<>& solidityDescriptor)
 {
 	OnionPlane_Ptr splitter = choose_split_plane(polyIndices);
+
+	if(!splitter)
+	{
+		std::vector<int> indicesOnly;
+		for(size_t i=0, size=polyIndices.size(); i<size; ++i) indicesOnly.push_back(polyIndices[i].index);
+		nodes.push_back(OnionNode_Ptr(new OnionLeaf((int)nodes.size(), solidityDescriptor, indicesOnly)));
+		return nodes.back();
+	}
 
 	// NYI
 	throw 23;
