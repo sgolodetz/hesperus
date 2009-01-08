@@ -4,6 +4,7 @@
  ***/
 
 #include <source/math/geom/GeomUtil.h>
+#include "OnionBranch.h"
 
 namespace hesp {
 
@@ -26,10 +27,11 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double w
 			int polyIndex = static_cast<int>(m_polygons->size());
 			m_polygons->push_back(poly);
 
-			// Determine the polygon's (undirected) onion plane.
-			OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*poly).to_undirected_form(), i));
+			// Determine the polygon's onion plane.
+			OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*poly), i));
 
-			// Try and add the onion plane to the set of unique onion planes.
+			// Try and add the onion plane to the set of unique onion planes (note that the undirected
+			// form of the plane is used internally for sorting).
 			int onionPlaneIndex = static_cast<int>(onionPlanes.size());
 			std::pair<OnionPlaneMap::iterator,bool> kt = onionPlanes.insert(std::make_pair(onionPlane,onionPlaneIndex));
 
@@ -89,6 +91,9 @@ OnionNode_Ptr
 OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
 								   const boost::dynamic_bitset<>& solidityDescriptor)
 {
+	typedef typename Poly::Vert Vert;
+	typedef typename Poly::AuxData AuxData;
+
 	OnionPlane_Ptr splitter = choose_split_plane(polyIndices);
 
 	if(!splitter)
@@ -99,8 +104,58 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 		return nodes.back();
 	}
 
-	// NYI
-	throw 23;
+	std::vector<PolyIndex> backPolys, frontPolys;
+
+	for(std::vector<PolyIndex>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
+	{
+		int curIndex = it->index;
+		const Poly& curPoly = *(*m_polygons)[curIndex];
+		switch(classify_polygon_against_plane(curPoly, splitter->plane()))
+		{
+			case CP_BACK:
+			{
+				backPolys.push_back(*it);
+				break;
+			}
+			case CP_COPLANAR:
+			{
+				if(splitter->plane().normal().dot(curPoly.normal()) > 0) frontPolys.push_back(PolyIndex(curIndex,false));
+				else backPolys.push_back(PolyIndex(curIndex,false));
+				break;
+			}
+			case CP_FRONT:
+			{
+				frontPolys.push_back(*it);
+				break;
+			}
+			case CP_STRADDLE:
+			{
+				SplitResults<Vert,AuxData> sr = split_polygon(curPoly, splitter->plane());
+				(*m_polygons)[curIndex] = sr.back;
+				int k = static_cast<int>(m_polygons->size());
+				m_polygons->push_back(sr.front);
+				backPolys.push_back(PolyIndex(curIndex,it->splitCandidate));
+				frontPolys.push_back(PolyIndex(k,it->splitCandidate));
+				break;
+			}
+		}
+	}
+
+	boost::dynamic_bitset<> leftSolidityDescriptor = solidityDescriptor;
+	boost::dynamic_bitset<> rightSolidityDescriptor = solidityDescriptor;
+	const std::set<int>& mapIndices = splitter->map_indices();
+	for(std::set<int>::const_iterator it=mapIndices.begin(), iend=mapIndices.end(); it!=iend; ++it)
+	{
+		leftSolidityDescriptor.set(*it, false);
+		rightSolidityDescriptor.set(*it, true);
+	}
+
+	OnionNode_Ptr left = build_subtree(frontPolys, nodes, leftSolidityDescriptor);
+	OnionNode_Ptr right = build_subtree(backPolys, nodes, rightSolidityDescriptor);
+
+	OnionNode_Ptr subtreeRoot(new OnionBranch((int)nodes.size(), splitter, left, right));
+	nodes.push_back(subtreeRoot);
+	return subtreeRoot;
 }
 
 template <typename Poly>

@@ -9,7 +9,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 OnionPlane::OnionPlane(const Plane& plane, int mapIndex)
-:	m_plane(plane)
+:	m_plane(plane), m_undirectedPlane(plane.to_undirected_form())
 {
 	add_map_index(mapIndex);
 }
@@ -28,6 +28,11 @@ const std::set<int>& OnionPlane::map_indices() const
 const Plane& OnionPlane::plane() const
 {
 	return m_plane;
+}
+
+const Plane& OnionPlane::undirected_plane() const
+{
+	return m_undirectedPlane;
 }
 
 }

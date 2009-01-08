@@ -43,7 +43,7 @@ private:
 		{
 			const double angleTolerance = 2 * PI / 180;	// convert 2 degrees to radians
 			const double distTolerance = 0.005;
-			return UniquePlanePred(angleTolerance, distTolerance)(lhs->plane(), rhs->plane());
+			return UniquePlanePred(angleTolerance, distTolerance)(lhs->undirected_plane(), rhs->undirected_plane());
 		}
 	};
 
