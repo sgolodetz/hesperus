@@ -39,12 +39,12 @@ set CG2FILES=
 FOR %%f IN (*.cg2) DO (
 set CG2FILES=!CG2FILES! %%f
 )
-echo hobsp -c%CG2FILES% %1.obt
+echo hobsp -c%CG2FILES% %1.ot
 set CG2FILES=
 ENDLOCAL
 
-echo hoportal %1.obt %1.opr
-echo hnav %1.obt %1.opr %1.nav
+echo hoportal %1.ot %1.op
+echo hnav %1.ot %1.op %1.nav
 
 REM #################
 REM Collation Section (this will need updating ultimately)

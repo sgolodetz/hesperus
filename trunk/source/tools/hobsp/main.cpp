@@ -12,6 +12,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/level/onionbsp/OnionCompiler.h>
+#include <source/util/PolygonTypes.h>
 using namespace hesp;
 
 //#################### FUNCTIONS ####################
@@ -52,7 +53,16 @@ try
 	// If we don't have (at a minimum) 'hobsp {-r|-c} <input geom 1> <output tree>', then the command is ill-formed.
 	if(args.size() < 4) quit_with_usage();
 
-	// TODO
+	std::vector<std::string> inputFilenames(&args[2], &args[args.size()-1]);
+	const std::string& outputFilename = args[args.size()-1];
+
+	size_t len = outputFilename.length();
+	if(len > 4 && outputFilename.substr(len-4) == ".cg2")
+		quit_with_error("The extension .cg2 is disallowed for the output tree filename to help prevent errors - sorry!");
+
+	if(args[1] == "-r") run_compiler<TexturedPolygon>(inputFilenames, outputFilename, weight);
+	else if(args[1] == "-c") run_compiler<CollisionPolygon>(inputFilenames, outputFilename, weight);
+	else quit_with_usage();
 
 	return 0;
 }
