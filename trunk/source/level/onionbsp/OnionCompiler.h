@@ -10,6 +10,7 @@
 #include <vector>
 
 #include <source/math/geom/Plane.h>
+#include <source/math/geom/UniquePlanePred.h>
 #include "OnionPlane.h"
 #include "OnionTree.h"
 
@@ -36,6 +37,16 @@ private:
 		{}
 	};
 
+	struct OnionPlanePred
+	{
+		bool operator()(const OnionPlane_Ptr& lhs, const OnionPlane_Ptr& rhs) const
+		{
+			const double angleTolerance = 2 * PI / 180;	// convert 2 degrees to radians
+			const double distTolerance = 0.005;
+			return UniquePlanePred(angleTolerance, distTolerance)(lhs->plane(), rhs->plane());
+		}
+	};
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	// Input data
@@ -51,7 +62,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	OnionCompiler(const std::vector<PolyVector_Ptr>& maps, double weight);
+	OnionCompiler(const std::vector<PolyVector>& maps, double weight);
 
 	//#################### PUBLIC METHODS ####################
 public:

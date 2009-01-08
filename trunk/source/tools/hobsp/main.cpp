@@ -11,6 +11,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/io/FileUtil.h>
 #include <source/level/onionbsp/OnionCompiler.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -31,7 +32,22 @@ void quit_with_usage()
 template <typename Poly>
 void run_compiler(const std::vector<std::string>& inputFilenames, const std::string& outputFilename, double weight)
 {
-	// TODO
+	typedef shared_ptr<Poly> Poly_Ptr;
+	typedef std::vector<Poly_Ptr> PolyVector;
+
+	// Read in the input maps.
+	size_t mapCount = inputFilenames.size();
+	std::vector<PolyVector> maps(mapCount);
+	for(size_t i=0; i<mapCount; ++i)
+	{
+		FileUtil::load_polygons_file(inputFilenames[i], maps[i]);
+	}
+
+	// Compile them into an onion tree.
+	OnionCompiler<Poly> compiler(maps, weight);
+	//compiler.build_tree();
+
+	// TODO: Write the output polygons and onion tree to disk.
 }
 
 int main(int argc, char *argv[])

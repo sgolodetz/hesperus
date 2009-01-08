@@ -36,6 +36,9 @@ public:
 	template <typename Poly>
 	static void load_lit_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree, std::string& lightmapPrefix);
 
+	template <typename Poly>
+	static void load_polygons_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons);
+
 	static void load_portals_file(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals);
 
 	template <typename Poly>

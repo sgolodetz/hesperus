@@ -60,6 +60,21 @@ void FileUtil::load_lit_tree_file(const std::string& filename, std::vector<share
 }
 
 /**
+Loads an array of polygons from the specified file.
+
+@param filename		The name of the file
+@param polygons		Used to return the polygons to the caller
+*/
+template <typename Poly>
+void FileUtil::load_polygons_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons)
+{
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("The polygons file could not be read");
+
+	load_polygons(is, polygons);
+}
+
+/**
 Loads the polygons and tree from the specified tree file.
 
 @param filename		The name of the tree file

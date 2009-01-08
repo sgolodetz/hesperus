@@ -7,6 +7,11 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes)
+{
+	// NYI
+	throw 23;
+}
 
 }

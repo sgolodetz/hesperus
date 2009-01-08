@@ -9,15 +9,17 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 template <typename Poly>
-OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector_Ptr>& maps, double weight)
+OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double weight)
 :	m_weight(weight), m_mapCount(static_cast<int>(maps.size())), m_polygons(new PolyVector)
 {
-	std::set<OnionPlane_Ptr, OnionPlanePred> onionPlanes;
+	typedef std::set<OnionPlane_Ptr,OnionPlanePred> OnionPlaneSet;
+
+	OnionPlaneSet onionPlanes;
 
 	int mapCount = static_cast<int>(maps.size());
 	for(int i=0; i<mapCount; ++i)
 	{
-		for(PolyVector::const_iterator jt=maps[i]->begin(), jend=maps[i]->end(); ++jt)
+		for(PolyVector::const_iterator jt=maps[i].begin(), jend=maps[i].end(); jt!=jend; ++jt)
 		{
 			const Poly_Ptr& poly = *jt;
 			int polyIndex = static_cast<int>(m_polygons->size());
@@ -27,7 +29,7 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector_Ptr>& maps, doub
 			OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*poly).to_undirected_form(), i));
 
 			// Try and add the onion plane to the set of unique onion planes.
-			std::pair<std::set<OnionPlane_Ptr>::iterator,bool> kt = onionPlanes.insert(onionPlane);
+			std::pair<OnionPlaneSet::iterator,bool> kt = onionPlanes.insert(onionPlane);
 
 			// If this onion plane duplicates an existing one, simply add this map's index to that plane.
 			if(kt.second == false)
