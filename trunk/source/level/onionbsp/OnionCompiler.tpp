@@ -87,6 +87,8 @@ OnionNode_Ptr
 OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
 								   const std::vector<PlaneClassifier>& relativeToClosestAncestor)
 {
+	OnionPlane_Ptr splitter = choose_split_plane(polyIndices);
+
 	// NYI
 	throw 23;
 }
@@ -94,8 +96,47 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 template <typename Poly>
 OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyIndex>& polyIndices)
 {
-	// NYI
-	throw 23;
+	OnionPlane_Ptr bestOnionPlane;
+	double bestMetric = INT_MAX;
+
+	int indexCount = static_cast<int>(polyIndices.size());
+	for(int i=0; i<indexCount; ++i)
+	{
+		if(!polyIndices[i].splitCandidate) continue;
+
+		OnionPlane_Ptr onionPlane = m_onionPlanes[m_polyToOnionPlaneIndex[polyIndices[i].index]];
+		int balance = 0, splits = 0;
+
+		for(int j=0; j<indexCount; ++j)
+		{
+			if(j == i) continue;
+
+			Poly_Ptr poly = (*m_polygons)[polyIndices[j].index];
+			switch(classify_polygon_against_plane(*poly, onionPlane->plane()))
+			{
+				case CP_BACK:
+					--balance;
+					break;
+				case CP_COPLANAR:
+					break;
+				case CP_FRONT:
+					++balance;
+					break;
+				case CP_STRADDLE:
+					++splits;
+					break;
+			}
+		}
+
+		double metric = abs(balance) + m_weight * splits;
+		if(metric < bestMetric)
+		{
+			bestOnionPlane = onionPlane;
+			bestMetric = metric;
+		}
+	}
+
+	return bestOnionPlane;
 }
 
 }

@@ -45,7 +45,7 @@ void run_compiler(const std::vector<std::string>& inputFilenames, const std::str
 
 	// Compile them into an onion tree.
 	OnionCompiler<Poly> compiler(maps, weight);
-	//compiler.build_tree();
+	compiler.build_tree();
 
 	// TODO: Write the output polygons and onion tree to disk.
 }
