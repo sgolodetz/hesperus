@@ -24,7 +24,15 @@ int OnionLeaf::leaf_index() const							{ return m_leafIndex; }
 void OnionLeaf::output_postorder_text(std::ostream& os) const
 {
 	os << m_index;
-	os << " ( " << m_solidityDescriptor.to_ulong() << " ) ";
+
+	os << " ( ";
+	size_t bitCount = m_solidityDescriptor.size();
+	for(size_t i=0; i<bitCount; ++i)
+	{
+		os << m_solidityDescriptor[i];
+	}
+	os << " ) ";
+
 	os << m_parent->index();
 
 	size_t polyCount = m_polygonIndices.size();
