@@ -787,6 +787,42 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="onionportals"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\onionportals\OnionPortal.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionportals\OnionPortalGenerator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\onionportals\OnionPortal.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionportals\OnionPortalGenerator.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\level\onionportals\OnionPortalGenerator.tpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"
