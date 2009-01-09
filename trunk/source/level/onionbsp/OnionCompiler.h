@@ -47,6 +47,8 @@ private:
 		{}
 	};
 
+	typedef shared_ptr<PolyIndex> PolyIndex_Ptr;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	// Input data
@@ -74,7 +76,7 @@ public:
 private:
 	OnionNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
 								const boost::dynamic_bitset<>& solidityDescriptor);
-	OnionPlane_Ptr choose_split_plane(const std::vector<PolyIndex>& polyIndices);
+	PolyIndex_Ptr choose_split_poly(const std::vector<PolyIndex>& polyIndices);
 };
 
 }

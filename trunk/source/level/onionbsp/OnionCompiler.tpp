@@ -66,9 +66,9 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 	std::cout << solidityDescriptor.to_ulong();
 #endif
 
-	OnionPlane_Ptr splitter = choose_split_plane(polyIndices);
+	PolyIndex_Ptr splitPoly = choose_split_poly(polyIndices);
 
-	if(!splitter)
+	if(!splitPoly)
 	{
 #ifdef ONION_TRACE
 		std::cout << '\n';
@@ -79,6 +79,8 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 		nodes.push_back(OnionNode_Ptr(new OnionLeaf((int)nodes.size(), solidityDescriptor, indicesOnly)));
 		return nodes.back();
 	}
+
+	OnionPlane_Ptr splitter(new OnionPlane(make_plane(*(*m_polygons)[splitPoly->index]), splitPoly->mapIndex));
 
 #ifdef ONION_TRACE
 	std::cout << ' ' << splitter->plane() << ' ' << splitter->map_index() << '\n';
@@ -159,10 +161,10 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 }
 
 template <typename Poly>
-OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyIndex>& polyIndices)
+typename OnionCompiler<Poly>::PolyIndex_Ptr
+OnionCompiler<Poly>::choose_split_poly(const std::vector<PolyIndex>& polyIndices)
 {
-	OnionPlane_Ptr bestOnionPlane;
-	int bestMapIndex = INT_MAX;
+	PolyIndex_Ptr bestPolyIndex;
 	double bestMetric = INT_MAX;
 
 	int indexCount = static_cast<int>(polyIndices.size());
@@ -170,14 +172,14 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 	{
 		if(polyIndices[i].usedFlag == UF_USED_SAMEMAP) continue;
 
-		OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*(*m_polygons)[polyIndices[i].index]), polyIndices[i].mapIndex));
+		Plane plane = make_plane(*(*m_polygons)[polyIndices[i].index]);
 
 		int balance = 0, splits = 0;
 		for(int j=0; j<indexCount; ++j)
 		{
 			if(j == i) continue;
 
-			switch(classify_polygon_against_plane(*(*m_polygons)[polyIndices[j].index], onionPlane->plane()))
+			switch(classify_polygon_against_plane(*(*m_polygons)[polyIndices[j].index], plane))
 			{
 				case CP_BACK:
 					--balance;
@@ -197,18 +199,18 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 		// the next one: this is essential in order to ensure a correct tree. We therefore give
 		// priority to onion planes with a lower map index (i.e. we order planes first by lowest
 		// map index, and only then by metric).
-		int mapIndex = onionPlane->map_index();
 		double metric = abs(balance) + m_weight * splits;
 
-		if(mapIndex < bestMapIndex || (mapIndex == bestMapIndex && metric < bestMetric))
+		if( bestPolyIndex == NULL ||
+			polyIndices[i].mapIndex < bestPolyIndex->mapIndex ||
+		   (polyIndices[i].mapIndex == bestPolyIndex->mapIndex && metric < bestMetric))
 		{
-			bestOnionPlane = onionPlane;
-			bestMapIndex = mapIndex;
+			bestPolyIndex.reset(new PolyIndex(polyIndices[i]));
 			bestMetric = metric;
 		}
 	}
 
-	return bestOnionPlane;
+	return bestPolyIndex;
 }
 
 }
