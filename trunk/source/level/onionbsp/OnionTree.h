@@ -21,10 +21,11 @@ class OnionTree
 private:
 	std::vector<OnionNode_Ptr> m_nodes;
 	std::vector<OnionLeaf*> m_leaves;
+	int m_mapCount;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	OnionTree(const std::vector<OnionNode_Ptr>& nodes);
+	OnionTree(const std::vector<OnionNode_Ptr>& nodes, int mapCount);
 
 	//#################### PUBLIC METHODS ####################
 public:

@@ -37,7 +37,7 @@ void OnionCompiler<Poly>::build_tree()
 
 	build_subtree(m_polyIndices, nodes, solidityDescriptor);
 
-	m_tree.reset(new OnionTree(nodes));
+	m_tree.reset(new OnionTree(nodes, m_mapCount));
 }
 
 template <typename Poly>

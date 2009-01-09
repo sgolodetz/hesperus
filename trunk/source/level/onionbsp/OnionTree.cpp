@@ -10,8 +10,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes)
-:	m_nodes(nodes)
+OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes, int mapCount)
+:	m_nodes(nodes), m_mapCount(mapCount)
 {
 	index_leaves();
 }
@@ -19,6 +19,7 @@ OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes)
 //#################### PUBLIC METHODS ####################
 void OnionTree::output_postorder_text(std::ostream& os) const
 {
+	os << m_mapCount << '\n';
 	os << m_nodes.size() << '\n';
 	root()->output_postorder_text(os);
 }
