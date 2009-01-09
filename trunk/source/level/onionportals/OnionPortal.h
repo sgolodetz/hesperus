@@ -6,9 +6,26 @@
 #ifndef H_HESP_LEVEL_ONIONPORTALS_ONIONPORTAL
 #define H_HESP_LEVEL_ONIONPORTALS_ONIONPORTAL
 
+#include <set>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
+#include <source/math/geom/Polygon.h>
+
 namespace hesp {
 
-// TODO
+//#################### CLASSES ####################
+struct OnionPortalInfo
+{
+	int fromLeaf;
+	int toLeaf;
+	std::set<int> mapIndices;	// the maps in which this portal appears
+};
+
+//#################### TYPEDEFS ####################
+typedef Polygon<Vector3d,OnionPortalInfo> OnionPortal;
+typedef shared_ptr<OnionPortal> OnionPortal_Ptr;
 
 }
 
