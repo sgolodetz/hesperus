@@ -59,7 +59,7 @@ OnionNode_Ptr
 OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
 								   const boost::dynamic_bitset<>& solidityDescriptor)
 {
-#define ONION_TRACE
+//#define ONION_TRACE
 
 	typedef typename Poly::Vert Vert;
 	typedef typename Poly::AuxData AuxData;
@@ -70,6 +70,7 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 
 	PolyIndex_Ptr splitPoly = choose_split_poly(polyIndices);
 
+	// If there were no suitable split candidates, we must have ended up in a leaf.
 	if(!splitPoly)
 	{
 #ifdef ONION_TRACE
@@ -85,6 +86,7 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 	Plane_Ptr splitter(new Plane(make_plane(*(*m_polygons)[splitPoly->index])));
 
 #ifdef ONION_TRACE
+	if(splitPoly->usedFlag == UF_USED_DIFFERENTMAP) std::cout << " DM";
 	std::cout << ' ' << *splitter << ' ' << splitPoly->mapIndex << '\n';
 #endif
 
@@ -154,12 +156,22 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 	leftSolidityDescriptor.set(mapIndex, false);
 	rightSolidityDescriptor.set(mapIndex, true);
 
-	OnionNode_Ptr left = build_subtree(frontPolys, nodes, leftSolidityDescriptor);
-	OnionNode_Ptr right = build_subtree(backPolys, nodes, rightSolidityDescriptor);
+	if(splitPoly->usedFlag == UF_UNUSED)
+	{
+		OnionNode_Ptr left = build_subtree(frontPolys, nodes, leftSolidityDescriptor);
+		OnionNode_Ptr right = build_subtree(backPolys, nodes, rightSolidityDescriptor);
 
-	OnionNode_Ptr subtreeRoot(new OnionBranch((int)nodes.size(), splitter, left, right));
-	nodes.push_back(subtreeRoot);
-	return subtreeRoot;
+		OnionNode_Ptr subtreeRoot(new OnionBranch((int)nodes.size(), splitter, left, right));
+		nodes.push_back(subtreeRoot);
+		return subtreeRoot;
+	}
+	else	// splitPoly->usedFlag == UF_USED_DIFFERENTMAP
+	{
+		// If the plane of this split polygon has been used before in a different map,
+		// we don't want it to appear as a node in the tree. We do need to use the
+		// modified solidity descriptor, however.
+		return build_subtree(frontPolys, nodes, leftSolidityDescriptor);
+	}
 }
 
 template <typename Poly>
