@@ -62,15 +62,27 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 	typedef typename Poly::Vert Vert;
 	typedef typename Poly::AuxData AuxData;
 
+#ifdef ONION_TRACE
+	std::cout << solidityDescriptor.to_ulong();
+#endif
+
 	OnionPlane_Ptr splitter = choose_split_plane(polyIndices);
 
 	if(!splitter)
 	{
+#ifdef ONION_TRACE
+		std::cout << '\n';
+#endif
+
 		std::vector<int> indicesOnly;
 		for(size_t i=0, size=polyIndices.size(); i<size; ++i) indicesOnly.push_back(polyIndices[i].index);
 		nodes.push_back(OnionNode_Ptr(new OnionLeaf((int)nodes.size(), solidityDescriptor, indicesOnly)));
 		return nodes.back();
 	}
+
+#ifdef ONION_TRACE
+	std::cout << ' ' << splitter->plane() << ' ' << splitter->map_index() << '\n';
+#endif
 
 	std::vector<PolyIndex> backPolys, frontPolys;
 
