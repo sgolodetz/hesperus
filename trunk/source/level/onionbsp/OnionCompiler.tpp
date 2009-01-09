@@ -59,6 +59,8 @@ OnionNode_Ptr
 OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
 								   const boost::dynamic_bitset<>& solidityDescriptor)
 {
+#define ONION_TRACE
+
 	typedef typename Poly::Vert Vert;
 	typedef typename Poly::AuxData AuxData;
 
@@ -80,10 +82,10 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 		return nodes.back();
 	}
 
-	OnionPlane_Ptr splitter(new OnionPlane(make_plane(*(*m_polygons)[splitPoly->index]), splitPoly->mapIndex));
+	Plane_Ptr splitter(new Plane(make_plane(*(*m_polygons)[splitPoly->index])));
 
 #ifdef ONION_TRACE
-	std::cout << ' ' << splitter->plane() << ' ' << splitter->map_index() << '\n';
+	std::cout << ' ' << *splitter << ' ' << splitPoly->mapIndex << '\n';
 #endif
 
 	std::vector<PolyIndex> backPolys, frontPolys;
@@ -93,7 +95,7 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 		int curIndex = it->index;
 		int curMapIndex = it->mapIndex;
 		const Poly& curPoly = *(*m_polygons)[curIndex];
-		switch(classify_polygon_against_plane(curPoly, splitter->plane()))
+		switch(classify_polygon_against_plane(curPoly, *splitter))
 		{
 			case CP_BACK:
 			{
@@ -112,12 +114,12 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 				USED_SAMEMAP		Either			USED_SAMEMAP
 				*/
 
-				bool sameMap = curMapIndex == splitter->map_index();
+				bool sameMap = curMapIndex == splitPoly->mapIndex;
 				UsedFlag newUsedFlag;
 				if(it->usedFlag == UF_USED_SAMEMAP) newUsedFlag = UF_USED_SAMEMAP;
 				else newUsedFlag = sameMap ? UF_USED_SAMEMAP : UF_USED_DIFFERENTMAP;
 
-				if(splitter->plane().normal().dot(curPoly.normal()) > 0)
+				if(splitter->normal().dot(curPoly.normal()) > 0)
 					frontPolys.push_back(PolyIndex(curIndex,curMapIndex,newUsedFlag));
 				else
 					backPolys.push_back(PolyIndex(curIndex,curMapIndex,newUsedFlag));
@@ -130,7 +132,7 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 			}
 			case CP_STRADDLE:
 			{
-				SplitResults<Vert,AuxData> sr = split_polygon(curPoly, splitter->plane());
+				SplitResults<Vert,AuxData> sr = split_polygon(curPoly, *splitter);
 
 				// Copy the back half over the polygon being split.
 				(*m_polygons)[curIndex] = sr.back;
@@ -148,14 +150,14 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 
 	boost::dynamic_bitset<> leftSolidityDescriptor = solidityDescriptor;
 	boost::dynamic_bitset<> rightSolidityDescriptor = solidityDescriptor;
-	int mapIndex = splitter->map_index();
+	int mapIndex = splitPoly->mapIndex;
 	leftSolidityDescriptor.set(mapIndex, false);
 	rightSolidityDescriptor.set(mapIndex, true);
 
 	OnionNode_Ptr left = build_subtree(frontPolys, nodes, leftSolidityDescriptor);
 	OnionNode_Ptr right = build_subtree(backPolys, nodes, rightSolidityDescriptor);
 
-	OnionNode_Ptr subtreeRoot(new OnionBranch((int)nodes.size(), Plane_Ptr(new Plane(splitter->plane())), left, right));
+	OnionNode_Ptr subtreeRoot(new OnionBranch((int)nodes.size(), splitter, left, right));
 	nodes.push_back(subtreeRoot);
 	return subtreeRoot;
 }

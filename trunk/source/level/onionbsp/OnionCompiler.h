@@ -11,7 +11,6 @@
 
 #include <source/math/geom/Plane.h>
 #include <source/math/geom/UniquePlanePred.h>
-#include "OnionPlane.h"
 #include "OnionTree.h"
 
 namespace hesp {

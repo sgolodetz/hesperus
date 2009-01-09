@@ -750,10 +750,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\onionbsp\OnionPlane.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\level\onionbsp\OnionTree.cpp"
 						>
 					</File>
@@ -775,10 +771,6 @@
 					</File>
 					<File
 						RelativePath="..\level\onionbsp\OnionNode.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\onionbsp\OnionPlane.h"
 						>
 					</File>
 					<File
