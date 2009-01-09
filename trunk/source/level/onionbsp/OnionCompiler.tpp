@@ -168,8 +168,8 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 	else	// splitPoly->usedFlag == UF_USED_DIFFERENTMAP
 	{
 		// If the plane of this split polygon has been used before in a different map,
-		// we don't want it to appear as a node in the tree. We do need to use the
-		// modified solidity descriptor, however.
+		// we don't want it to appear as a node in the tree. We do need to recurse with
+		// a modified solidity descriptor, however.
 		return build_subtree(frontPolys, nodes, leftSolidityDescriptor);
 	}
 }
