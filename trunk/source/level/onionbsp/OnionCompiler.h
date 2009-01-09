@@ -25,16 +25,25 @@ private:
 	typedef std::vector<Poly_Ptr> PolyVector;
 	typedef shared_ptr<PolyVector> PolyVector_Ptr;
 
+	//#################### ENUMERATIONS ####################
+private:
+	enum UsedFlag
+	{
+		UF_UNUSED,				// the plane of this polygon has not yet been used as a split plane
+		UF_USED_DIFFERENTMAP,	// the plane of this polygon has been used, but the polygon it came from was in a different map
+		UF_USED_SAMEMAP			// the plane of this polygon has been used, and its source polygon was in this map
+	};
+
 	//#################### NESTED CLASSES ####################
 private:
 	struct PolyIndex
 	{
 		int index;
 		int mapIndex;			// which map the polygon came from
-		bool splitCandidate;	// is the plane of the referenced polygon a split candidate?
+		UsedFlag usedFlag;
 
-		PolyIndex(int index_, int mapIndex_, bool splitCandidate_)
-		:	index(index_), mapIndex(mapIndex_), splitCandidate(splitCandidate_)
+		PolyIndex(int index_, int mapIndex_, UsedFlag usedFlag_)
+		:	index(index_), mapIndex(mapIndex_), usedFlag(usedFlag_)
 		{}
 	};
 

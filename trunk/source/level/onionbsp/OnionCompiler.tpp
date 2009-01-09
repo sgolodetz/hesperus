@@ -21,7 +21,7 @@ OnionCompiler<Poly>::OnionCompiler(const std::vector<PolyVector>& maps, double w
 			const Poly_Ptr& poly = *jt;
 			int polyIndex = static_cast<int>(m_polygons->size());
 			m_polygons->push_back(poly);
-			m_polyIndices.push_back(PolyIndex(polyIndex, i, true));
+			m_polyIndices.push_back(PolyIndex(polyIndex, i, UF_UNUSED));
 		}
 	}
 }
@@ -100,13 +100,25 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 			}
 			case CP_COPLANAR:
 			{
-				// If this polygon was a split candidate and is in a different map from the
-				// splitter, then it's still a split candidate afterwards.
-				bool futureSplitCandidate = it->splitCandidate && curMapIndex != splitter->map_index();
+				/*
+				Old					Same Map?		New
+
+				UNUSED				No				USED_DIFFERENTMAP
+				UNUSED				Yes				USED_SAMEMAP
+				USED_DIFFERENTMAP	No				USED_DIFFERENTMAP
+				USED_DIFFERENTMAP	Yes				USED_SAMEMAP
+				USED_SAMEMAP		Either			USED_SAMEMAP
+				*/
+
+				bool sameMap = curMapIndex == splitter->map_index();
+				UsedFlag newUsedFlag;
+				if(it->usedFlag == UF_USED_SAMEMAP) newUsedFlag = UF_USED_SAMEMAP;
+				else newUsedFlag = sameMap ? UF_USED_SAMEMAP : UF_USED_DIFFERENTMAP;
+
 				if(splitter->plane().normal().dot(curPoly.normal()) > 0)
-					frontPolys.push_back(PolyIndex(curIndex,curMapIndex,futureSplitCandidate));
+					frontPolys.push_back(PolyIndex(curIndex,curMapIndex,newUsedFlag));
 				else
-					backPolys.push_back(PolyIndex(curIndex,curMapIndex,futureSplitCandidate));
+					backPolys.push_back(PolyIndex(curIndex,curMapIndex,newUsedFlag));
 				break;
 			}
 			case CP_FRONT:
@@ -125,8 +137,8 @@ OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, st
 				int k = static_cast<int>(m_polygons->size());
 				m_polygons->push_back(sr.front);
 
-				backPolys.push_back(PolyIndex(curIndex, curMapIndex, it->splitCandidate));
-				frontPolys.push_back(PolyIndex(k, curMapIndex, it->splitCandidate));
+				backPolys.push_back(PolyIndex(curIndex, curMapIndex, it->usedFlag));
+				frontPolys.push_back(PolyIndex(k, curMapIndex, it->usedFlag));
 				break;
 			}
 		}
@@ -156,7 +168,7 @@ OnionPlane_Ptr OnionCompiler<Poly>::choose_split_plane(const std::vector<PolyInd
 	int indexCount = static_cast<int>(polyIndices.size());
 	for(int i=0; i<indexCount; ++i)
 	{
-		if(!polyIndices[i].splitCandidate) continue;
+		if(polyIndices[i].usedFlag == UF_USED_SAMEMAP) continue;
 
 		OnionPlane_Ptr onionPlane(new OnionPlane(make_plane(*(*m_polygons)[polyIndices[i].index]), polyIndices[i].mapIndex));
 
