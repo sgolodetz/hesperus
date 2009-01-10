@@ -649,10 +649,6 @@
 						RelativePath="..\level\portals\BasePortalGenerator.tpp"
 						>
 					</File>
-					<File
-						RelativePath="..\level\portals\OnionPortalGenerator.tpp"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
