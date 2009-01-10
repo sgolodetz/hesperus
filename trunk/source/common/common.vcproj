@@ -855,6 +855,10 @@
 				Name=".h"
 				>
 				<File
+					RelativePath="..\io\FileSectionUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FileUtil.h"
 					>
 				</File>
@@ -863,6 +867,14 @@
 				Name=".tpp"
 				>
 				<File
+					RelativePath="..\io\FileSectionUtil_Load.tpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\FileSectionUtil_Save.tpp"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FileUtil.tpp"
 					>
 				</File>
@@ -870,6 +882,14 @@
 			<Filter
 				Name=".cpp"
 				>
+				<File
+					RelativePath="..\io\FileSectionUtil_Load.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\FileSectionUtil_Save.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\io\FileUtil.cpp"
 					>

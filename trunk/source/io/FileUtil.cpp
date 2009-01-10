@@ -185,20 +185,6 @@ void FileUtil::save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVi
 
 //#################### PRIVATE METHODS ####################
 /**
-Reads the lightmap prefix from the specified std::istream.
-
-@param is			The std::istream
-@return				The lightmap prefix
-@throws Exception	If EOF is encountered whilst trying to read the lightmap prefix
-*/
-std::string FileUtil::load_lightmap_prefix_section(std::istream& is)
-{
-	std::string lightmapPrefix;
-	if(!std::getline(is, lightmapPrefix)) throw Exception("Unexpected EOF whilst trying to read lightmap prefix");
-	return lightmapPrefix;
-}
-
-/**
 Loads an array of lights from the specified std::istream.
 
 @param is	The std::istream

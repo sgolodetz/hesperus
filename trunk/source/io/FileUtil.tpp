@@ -8,6 +8,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include <source/math/geom/GeomUtil.h>
+#include "FileSectionUtil.h"
 
 namespace hesp {
 
@@ -56,7 +57,7 @@ void FileUtil::load_lit_tree_file(const std::string& filename, std::vector<share
 	load_separator(is);
 	tree = load_tree_section(is);
 	load_separator(is);
-	lightmapPrefix = load_lightmap_prefix_section(is);
+	lightmapPrefix = FileSectionUtil::load_lightmap_prefix_section(is);
 }
 
 /**

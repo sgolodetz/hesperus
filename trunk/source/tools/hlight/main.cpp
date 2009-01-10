@@ -13,6 +13,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/images/BitmapSaver.h>
+#include <source/io/FileSectionUtil.h>
 #include <source/io/FileUtil.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -70,7 +71,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	os << "***\n";
 	tree->output_postorder_text(os);
 	os << "***\n";
-	os << lightmapPrefix << '\n';
+	FileSectionUtil::save_lightmap_prefix_section(os, lightmapPrefix);
 	os.close();
 
 	// Write the lightmaps out as 24-bit bitmaps.

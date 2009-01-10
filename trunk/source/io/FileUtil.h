@@ -65,8 +65,6 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static std::string load_lightmap_prefix_section(std::istream& is);
-
 	static std::vector<Light> load_lights_section(std::istream& is);
 
 	static Level_Ptr load_lit_level_file(std::istream& is);
