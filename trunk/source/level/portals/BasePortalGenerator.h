@@ -13,7 +13,7 @@
 
 namespace hesp {
 
-template <typename PortalT, typename TreeT, typename NodeT>
+template <typename PortalT, typename TreeT, typename NodeT, typename BranchT, typename LeafT>
 class BasePortalGenerator
 {
 	//#################### TYPEDEFS ####################
@@ -28,8 +28,7 @@ private:
 
 	//#################### PRIVATE ABSTRACT METHODS ####################
 private:
-	virtual PortalTList clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_Ptr& subtreeRoot,
-											   PlaneClassifier relativeToPortal = CP_STRADDLE) const = 0;
+	virtual PortalTList clip_portal_to_leaf(const PortalT_Ptr& portal, const LeafT *leaf, PlaneClassifier relativeToPortal) const = 0;
 
 	//#################### DESTRUCTOR ####################
 public:
@@ -42,6 +41,8 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	PortalTList clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE) const;
+
 	PortalTList clip_portal_to_tree(const PortalT_Ptr& portal, const TreeT_Ptr& tree) const;
 
 	PortalT_Ptr make_initial_portal(const Plane& plane) const;

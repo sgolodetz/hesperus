@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#define BPG_HEADER	template <typename PortalT, typename TreeT, typename NodeT>
-#define BPG_THIS	BasePortalGenerator<PortalT, TreeT, NodeT>
+#define BPG_HEADER	template <typename PortalT, typename TreeT, typename NodeT, typename BranchT, typename LeafT>
+#define BPG_THIS	BasePortalGenerator<PortalT, TreeT, NodeT, BranchT, LeafT>
 
 namespace hesp {
 
@@ -48,6 +48,80 @@ BPG_THIS::generate_portals(const std::vector<shared_ptr<Poly> >& polygons, const
 }
 
 //#################### PRIVATE METHODS ####################
+/**
+Clips the portal to the subtree and returns a list of portal fragments which survive the clipping process.
+
+@param portal				The portal to clip
+@param subtreeRoot			The root of the subtree
+@param relativeToPortal		The location of the subspace represented by the subtree relative to the portal (in front, behind, or straddling it)
+@return						As stated
+*/
+BPG_HEADER
+typename BPG_THIS::PortalTList
+BPG_THIS::clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_Ptr& subtreeRoot, PlaneClassifier relativeToPortal) const
+{
+	if(subtreeRoot->is_leaf())
+	{
+		return clip_portal_to_leaf(portal, subtreeRoot->as_leaf(), relativeToPortal);
+	}
+	else
+	{
+		const BranchT *branch = subtreeRoot->as_branch();
+		switch(classify_polygon_against_plane(*portal, *branch->splitter()))
+		{
+			case CP_BACK:
+			{
+				return clip_portal_to_subtree(portal, branch->right(), relativeToPortal);
+			}
+			case CP_COPLANAR:
+			{
+				NodeT_Ptr fromSubtree;
+				NodeT_Ptr toSubtree;
+				if(branch->splitter()->normal().dot(portal->normal()) > 0)
+				{
+					fromSubtree = branch->right();
+					toSubtree = branch->left();
+				}
+				else
+				{
+					fromSubtree = branch->left();
+					toSubtree = branch->right();
+				}
+				PortalTList fromPortals = clip_portal_to_subtree(portal, fromSubtree, CP_BACK);
+				PortalTList ret;
+				for(PortalTList::const_iterator it=fromPortals.begin(), iend=fromPortals.end(); it!=iend; ++it)
+				{
+					ret.splice(ret.end(), clip_portal_to_subtree(*it, toSubtree, CP_FRONT));
+				}
+				return ret;
+			}
+			case CP_FRONT:
+			{
+				return clip_portal_to_subtree(portal, branch->left(), relativeToPortal);
+			}
+			case CP_STRADDLE:
+			{
+				// Note: The leaf links for the two half polygons are inherited from the original polygon here.
+				typedef typename PortalT::Vert PortalTVert;
+				typedef typename PortalT::AuxData PortalTAuxData;
+				SplitResults<typename PortalTVert,PortalTAuxData> sr = split_polygon(*portal, *branch->splitter());
+
+				PortalTList frontResult = clip_portal_to_subtree(sr.front, branch->left(), relativeToPortal);
+				PortalTList backResult = clip_portal_to_subtree(sr.back, branch->right(), relativeToPortal);
+
+				PortalTList ret;
+				ret.splice(ret.end(), frontResult);
+				ret.splice(ret.end(), backResult);
+				return ret;
+			}
+		}
+	}
+
+	// The code will never actually get here, because the switch above is exhaustive,
+	// but the compiler still warns us because it can't tell that.
+	throw Exception("This should never happen");
+}
+
 /**
 Clips the portal to the tree and returns a list of portal fragments which survive the clipping process.
 
