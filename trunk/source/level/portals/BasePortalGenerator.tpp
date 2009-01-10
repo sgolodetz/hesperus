@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#define BPG_HEADER	template <typename PortalT, typename TreeT, typename NodeT, typename BranchT, typename LeafT>
-#define BPG_THIS	BasePortalGenerator<PortalT, TreeT, NodeT, BranchT, LeafT>
+#define BPG_HEADER	template <typename PortalT, typename TreeT>
+#define BPG_THIS	BasePortalGenerator<PortalT, TreeT>
 
 namespace hesp {
 

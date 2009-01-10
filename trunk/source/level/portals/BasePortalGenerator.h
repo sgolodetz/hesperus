@@ -13,7 +13,7 @@
 
 namespace hesp {
 
-template <typename PortalT, typename TreeT, typename NodeT, typename BranchT, typename LeafT>
+template <typename PortalT, typename TreeT>
 class BasePortalGenerator
 {
 	//#################### TYPEDEFS ####################
@@ -24,6 +24,9 @@ private:
 	typedef std::list<PortalT_Ptr> PortalTList;
 	typedef shared_ptr<PortalTList> PortalTList_Ptr;
 	typedef shared_ptr<TreeT> TreeT_Ptr;
+	typedef typename TreeT::Branch BranchT;
+	typedef typename TreeT::Leaf LeafT;
+	typedef typename TreeT::Node NodeT;
 	typedef shared_ptr<NodeT> NodeT_Ptr;
 
 	//#################### PRIVATE ABSTRACT METHODS ####################

@@ -13,7 +13,7 @@
 
 namespace hesp {
 
-class PortalGenerator : public BasePortalGenerator<Portal,BSPTree,BSPNode,BSPBranch,BSPLeaf>
+class PortalGenerator : public BasePortalGenerator<Portal,BSPTree>
 {
 	//#################### TYPEDEFS ####################
 private:

@@ -17,6 +17,12 @@ typedef shared_ptr<const class BSPTree> BSPTree_CPtr;
 
 class BSPTree
 {
+	//#################### TYPEDEFS ####################
+public:
+	typedef BSPBranch Branch;
+	typedef BSPLeaf Leaf;
+	typedef BSPNode Node;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<BSPNode_Ptr> m_nodes;
