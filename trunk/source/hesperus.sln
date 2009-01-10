@@ -64,6 +64,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hobsp", "tools\hobsp\hobsp.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hoportal", "tools\hoportal\hoportal.vcproj", "{8E7ECF84-6047-4829-9D11-8B3AC935A681}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC} = {57B520D8-1A0C-4F5D-BE95-26C288CA60FC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

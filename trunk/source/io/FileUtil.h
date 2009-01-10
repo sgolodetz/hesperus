@@ -16,6 +16,7 @@ using boost::shared_ptr;
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/lighting/Light.h>
+#include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>
 #include <source/util/PolygonTypes.h>
@@ -35,6 +36,9 @@ public:
 
 	template <typename Poly>
 	static void load_lit_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree, std::string& lightmapPrefix);
+
+	template <typename Poly>
+	static void load_onion_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, OnionTree_Ptr& tree);
 
 	template <typename Poly>
 	static void load_polygons_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons);
@@ -66,6 +70,8 @@ private:
 	static std::vector<Light> load_lights_section(std::istream& is);
 
 	static Level_Ptr load_lit_level_file(std::istream& is);
+
+	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
 
 	template <typename Poly>
 	static void load_polygons_section(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);

@@ -164,8 +164,6 @@ BSPTree_Ptr BSPTree::load_postorder_text(std::istream& is)
 			{
 				Plane_Ptr splitter(new Plane(Vector3d(a,b,c), d));
 				nodes[n] = BSPNode_Ptr(new BSPBranch(n, splitter, left, right));
-				left->set_parent(nodes[n].get());
-				right->set_parent(nodes[n].get());
 			}
 			else throw Exception("The BSP nodes are not stored in postorder: the child nodes for this branch have not yet been loaded");
 		}

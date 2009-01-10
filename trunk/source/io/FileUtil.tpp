@@ -60,6 +60,24 @@ void FileUtil::load_lit_tree_file(const std::string& filename, std::vector<share
 }
 
 /**
+Loads the polygons and onion tree from the specified onion tree file.
+
+@param filename		The name of the onion tree file
+@param polygons		Used to return the polygons to the caller
+@param tree			Used to return the onion tree to the caller
+*/
+template <typename Poly>
+void FileUtil::load_onion_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, OnionTree_Ptr& tree)
+{
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("The onion tree file could not be read");
+
+	load_polygons_section(is, polygons);
+	load_separator(is);
+	tree = load_onion_tree_section(is);
+}
+
+/**
 Loads an array of polygons from the specified file.
 
 @param filename		The name of the file

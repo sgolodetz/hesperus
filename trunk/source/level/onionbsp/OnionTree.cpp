@@ -5,6 +5,13 @@
 
 #include "OnionTree.h"
 
+#include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
+
+#include <source/exceptions/Exception.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -15,6 +22,103 @@ OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes, int mapCount)
 }
 
 //#################### PUBLIC METHODS ####################
+OnionTree_Ptr OnionTree::load_postorder_text(std::istream& is)
+{
+	std::string line;
+
+	std::getline(is, line);
+	int mapCount;
+	try							{ mapCount = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The map count is not a number"); }
+
+	std::getline(is, line);
+	int nodeCount;
+	try							{ nodeCount = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The onion node count is not a number"); }
+
+	std::vector<OnionNode_Ptr> nodes(nodeCount);
+
+	int n = 0;
+	while(n < nodeCount && std::getline(is, line))
+	{
+		typedef boost::char_separator<char> sep;
+		typedef boost::tokenizer<sep> tokenizer;
+
+		tokenizer tok(line, sep(" "));
+		std::vector<std::string> tokens(tok.begin(), tok.end());
+		size_t tokenCount = tokens.size();
+		if(tokenCount < 2) throw Exception("Bad onion node: " + lexical_cast<std::string,int>(n));
+
+		if(tokens[1] == "B")
+		{
+			if(tokenCount != 11 || tokens[5] != "(" || tokens[10] != ")")
+				throw Exception("Bad branch node: " + lexical_cast<std::string,int>(n));
+
+			int leftIndex, rightIndex;
+			double a, b, c, d;
+			try
+			{
+				leftIndex = lexical_cast<int,std::string>(tokens[2]);
+				rightIndex = lexical_cast<int,std::string>(tokens[3]);
+				a = lexical_cast<double,std::string>(tokens[6]);
+				b = lexical_cast<double,std::string>(tokens[7]);
+				c = lexical_cast<double,std::string>(tokens[8]);
+				d = lexical_cast<double,std::string>(tokens[9]);
+			}
+			catch(bad_lexical_cast&)	{ throw Exception("One of the values was not a number in branch node: " + lexical_cast<std::string,int>(n)); }
+
+			OnionNode_Ptr left = nodes[leftIndex];
+			OnionNode_Ptr right = nodes[rightIndex];
+			if(left && right)
+			{
+				Plane_Ptr splitter(new Plane(Vector3d(a,b,c), d));
+				nodes[n] = OnionNode_Ptr(new OnionBranch(n, splitter, left, right));
+			}
+			else throw Exception("The onion nodes are not stored in postorder: the child nodes for this branch have not yet been loaded");
+		}
+		else
+		{
+			// We're dealing with an onion leaf.
+			if(tokenCount < 8 || tokens[1] != "(" || tokens[3] != ")" || tokens[6] != "[" || tokens[tokenCount-1] != "]")
+				throw Exception("Bad leaf node: " + lexical_cast<std::string,int>(n));
+
+			if(tokens[2].length() != mapCount)
+				throw Exception("Bad leaf solidity descriptor: " + lexical_cast<std::string,int>(n));
+
+			// Construct the solidity descriptor.
+			boost::dynamic_bitset<> solidityDescriptor(mapCount);
+			for(size_t i=0, len=tokens[2].length(); i<len; ++i)
+			{
+				if(tokens[2][i] == '0') solidityDescriptor.set(i, false);
+				else if(tokens[2][i] == '1') solidityDescriptor.set(i, true);
+				else throw Exception("Bad leaf solidity descriptor: " + lexical_cast<std::string,int>(n));
+			}
+
+			// Read in any polygon indices.
+			int polyCount;
+			try							{ polyCount = lexical_cast<int,std::string>(tokens[5]); }
+			catch(bad_lexical_cast&)	{ throw Exception("The leaf polygon count is not a number: " + lexical_cast<std::string,int>(n)); }
+
+			std::vector<int> polyIndices;
+
+			for(size_t i=7; i<tokenCount-1; ++i)
+			{
+				int polyIndex;
+				try							{ polyIndex = lexical_cast<int,std::string>(tokens[i]); }
+				catch(bad_lexical_cast&)	{ throw Exception("A polygon index is not a number in leaf: " + lexical_cast<std::string,int>(n)); }
+
+				polyIndices.push_back(polyIndex);
+			}
+
+			nodes[n].reset(new OnionLeaf(n, solidityDescriptor, polyIndices));
+		}
+
+		++n;
+	}
+
+	return OnionTree_Ptr(new OnionTree(nodes, mapCount));
+}
+
 void OnionTree::output_postorder_text(std::ostream& os) const
 {
 	os << m_mapCount << '\n';

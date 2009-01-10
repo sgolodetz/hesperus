@@ -285,6 +285,17 @@ Level_Ptr FileUtil::load_lit_level_file(std::istream& is)
 }
 
 /**
+Loads an onion tree from the specified std::istream.
+
+@param is	The std::istream
+@return		The onion tree
+*/
+OnionTree_Ptr FileUtil::load_onion_tree_section(std::istream& is)
+{
+	return OnionTree::load_postorder_text(is);
+}
+
+/**
 Loads a separator (a line containing only ***) from the specified std::istream.
 
 @param is	The std::istream
