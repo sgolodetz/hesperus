@@ -55,7 +55,7 @@ void FileUtil::load_lit_tree_file(const std::string& filename, std::vector<share
 
 	load_polygons_section(is, polygons);
 	load_separator(is);
-	tree = load_tree_section(is);
+	tree = FileSectionUtil::load_tree_section(is);
 	load_separator(is);
 	lightmapPrefix = FileSectionUtil::load_lightmap_prefix_section(is);
 }
@@ -108,7 +108,7 @@ void FileUtil::load_tree_file(const std::string& filename, std::vector<shared_pt
 
 	load_polygons_section(is, polygons);
 	load_separator(is);
-	tree = load_tree_section(is);
+	tree = FileSectionUtil::load_tree_section(is);
 }
 
 /**

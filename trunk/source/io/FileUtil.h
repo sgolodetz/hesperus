@@ -77,8 +77,6 @@ private:
 
 	static void load_separator(std::istream& is);
 
-	static BSPTree_Ptr load_tree_section(std::istream& is);
-
 	static Level_Ptr load_unlit_level_file(std::istream& is);
 };
 

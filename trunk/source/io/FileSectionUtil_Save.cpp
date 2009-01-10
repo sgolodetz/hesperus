@@ -11,7 +11,7 @@ namespace hesp {
 /**
 Saves a lightmap prefix to the specified std::ostream.
 
-@param is	The std::ostream
+@param os	The std::ostream
 @param		The lightmap prefix
 */
 void FileSectionUtil::save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix)
@@ -19,6 +19,20 @@ void FileSectionUtil::save_lightmap_prefix_section(std::ostream& os, const std::
 	os << "LightmapPrefix\n";
 	os << "{\n";
 	os << lightmapPrefix << '\n';
+	os << "}\n";
+}
+
+/**
+Saves a BSP tree to the specified std::ostream.
+
+@param os		The std::ostream
+@param tree		The BSP tree
+*/
+void FileSectionUtil::save_tree_section(std::ostream& os, const BSPTree_Ptr& tree)
+{
+	os << "BSPTree\n";
+	os << "{\n";
+	tree->output_postorder_text(os);
 	os << "}\n";
 }
 

@@ -13,6 +13,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/io/FileSectionUtil.h>
 #include <source/level/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
@@ -53,7 +54,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	if(os.fail()) quit_with_error("Couldn't open output file for writing");
 	write_polygons(os, polygons);
 	os << "***\n";
-	tree->output_postorder_text(os);
+	FileSectionUtil::save_tree_section(os, tree);
 }
 
 int main(int argc, char *argv[])

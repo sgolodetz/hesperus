@@ -69,7 +69,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	// Write the lit polygons, tree and lightmap prefix to the output file.
 	write_polygons(os, *litPolygons);
 	os << "***\n";
-	tree->output_postorder_text(os);
+	FileSectionUtil::save_tree_section(os, tree);
 	os << "***\n";
 	FileSectionUtil::save_lightmap_prefix_section(os, lightmapPrefix);
 	os.close();

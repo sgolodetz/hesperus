@@ -108,7 +108,7 @@ void FileUtil::save_level_file(const std::string& filename, const std::vector<Te
 	os << "HBSPU\n";
 	write_polygons(os, polygons);
 	os << "***\n";
-	tree->output_postorder_text(os);
+	FileSectionUtil::save_tree_section(os, tree);
 	os << "***\n";
 	write_polygons(os, portals);
 	os << "***\n";
@@ -135,7 +135,7 @@ void FileUtil::save_level_file(const std::string& filename, const std::vector<Te
 	os << "HBSPL\n";
 	write_polygons(os, polygons);
 	os << "***\n";
-	tree->output_postorder_text(os);
+	FileSectionUtil::save_tree_section(os, tree);
 	os << "***\n";
 	write_polygons(os, portals);
 	os << "***\n";
@@ -217,7 +217,7 @@ Level_Ptr FileUtil::load_lit_level_file(std::istream& is)
 
 	load_polygons_section(is, polygons);
 	load_separator(is);
-	tree = load_tree_section(is);
+	tree = FileSectionUtil::load_tree_section(is);
 	load_separator(is);
 	load_polygons_section(is, portals);
 	load_separator(is);
@@ -260,17 +260,6 @@ void FileUtil::load_separator(std::istream& is)
 }
 
 /**
-Loads a tree from the specified std::istream.
-
-@param is	The std::istream
-@return		The tree
-*/
-BSPTree_Ptr FileUtil::load_tree_section(std::istream& is)
-{
-	return BSPTree::load_postorder_text(is);
-}
-
-/**
 Loads an unlit level from the specified std::istream.
 
 @param is	The std::istream
@@ -286,7 +275,7 @@ Level_Ptr FileUtil::load_unlit_level_file(std::istream& is)
 
 	load_polygons_section(is, polygons);
 	load_separator(is);
-	tree = load_tree_section(is);
+	tree = FileSectionUtil::load_tree_section(is);
 	load_separator(is);
 	load_polygons_section(is, portals);
 	load_separator(is);

@@ -32,6 +32,22 @@ std::string FileSectionUtil::load_lightmap_prefix_section(std::istream& is)
 }
 
 /**
+Loads a BSP tree from the specified std::istream.
+
+@param is	The std::istream
+@return		The BSP tree
+*/
+BSPTree_Ptr FileSectionUtil::load_tree_section(std::istream& is)
+{
+	std::string line;
+	read_line(is, line, "BSPTree");
+	read_line(is, line, "{");
+	BSPTree_Ptr tree = BSPTree::load_postorder_text(is);
+	read_line(is, line, "}");
+	return tree;
+}
+
+/**
 Loads a leaf visibility table from the specified std::istream.
 
 @param is	The std::istream
