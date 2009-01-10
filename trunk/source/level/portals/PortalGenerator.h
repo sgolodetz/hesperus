@@ -6,7 +6,6 @@
 #ifndef H_HESP_LEVEL_PORTALS_PORTALGENERATOR
 #define H_HESP_LEVEL_PORTALS_PORTALGENERATOR
 
-#include <cmath>
 #include <list>
 
 #include <source/level/bsp/BSPTree.h>
