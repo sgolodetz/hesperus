@@ -6,39 +6,24 @@
 #ifndef H_HESP_LEVEL_PORTALS_PORTALGENERATOR
 #define H_HESP_LEVEL_PORTALS_PORTALGENERATOR
 
-#include <list>
-
 #include <source/level/bsp/BSPTree.h>
-#include <source/math/geom/Polygon.h>
+#include "BasePortalGenerator.h"
 #include "Portal.h"
 
 namespace hesp {
 
-class PortalGenerator
+class PortalGenerator : public BasePortalGenerator<Portal,BSPTree,BSPNode>
 {
 	//#################### TYPEDEFS ####################
 private:
-	typedef std::list<Plane> PlaneList;
-	typedef shared_ptr<PlaneList> PlaneList_Ptr;
 	typedef std::list<Portal_Ptr> PortalList;
 	typedef shared_ptr<PortalList> PortalList_Ptr;
 
-	//#################### PUBLIC METHODS ####################
-public:
-	template <typename Poly>
-	static PortalList_Ptr generate_portals(const std::vector<shared_ptr<Poly> >& polygons, const BSPTree_Ptr& tree);
-
 	//#################### PRIVATE METHODS ####################
 private:
-	static PortalList clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE);
-
-	static PortalList clip_portal_to_tree(const Portal_Ptr& portal, const BSPTree_Ptr& tree);
-
-	static Portal_Ptr make_initial_portal(const Plane& plane);
+	PortalList clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal) const;
 };
 
 }
-
-#include "PortalGenerator.tpp"
 
 #endif

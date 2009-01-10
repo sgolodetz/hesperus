@@ -48,7 +48,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	catch(Exception& e) { quit_with_error(e.cause()); }
 
 	// Generate the portals.
-	shared_ptr<std::list<Portal_Ptr> > portals = PortalGenerator::generate_portals(polygons, tree);
+	shared_ptr<std::list<Portal_Ptr> > portals = PortalGenerator().generate_portals(polygons, tree);
 
 	// Save the portals to the output file.
 	std::ofstream os(outputFilename.c_str());

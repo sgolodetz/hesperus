@@ -19,17 +19,26 @@ namespace hesp {
 //#################### CLASSES ####################
 struct PortalInfo
 {
+	//#################### PUBLIC VARIABLES ####################
 	int index;		// the index of the portal in a portal array (-1 if not being used)
 	int fromLeaf;
 	int toLeaf;
 
+	//#################### CONSTRUCTORS ####################
 	PortalInfo() : index(-1), fromLeaf(-1), toLeaf(-1) {}
 
 	PortalInfo(int fromLeaf_, int toLeaf_) : index(-1), fromLeaf(fromLeaf_), toLeaf(toLeaf_) {}
 
+	//#################### PUBLIC OPERATORS ####################
 	bool operator==(const PortalInfo& rhs) const
 	{
 		return fromLeaf == rhs.fromLeaf && toLeaf == rhs.toLeaf;
+	}
+
+	//#################### PUBLIC METHODS ####################
+	PortalInfo flip() const
+	{
+		return PortalInfo(toLeaf, fromLeaf);
 	}
 };
 

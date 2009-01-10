@@ -622,6 +622,10 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\level\portals\BasePortalGenerator.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\portals\OnionPortal.h"
 						>
 					</File>
@@ -642,11 +646,11 @@
 					Name=".tpp"
 					>
 					<File
-						RelativePath="..\level\portals\OnionPortalGenerator.tpp"
+						RelativePath="..\level\portals\BasePortalGenerator.tpp"
 						>
 					</File>
 					<File
-						RelativePath="..\level\portals\PortalGenerator.tpp"
+						RelativePath="..\level\portals\OnionPortalGenerator.tpp"
 						>
 					</File>
 				</Filter>

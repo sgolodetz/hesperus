@@ -11,6 +11,7 @@
 
 #include <source/exceptions/InvalidParameterException.h>
 #include <source/math/Constants.h>
+#include "UniquePlanePred.h"
 
 namespace hesp {
 

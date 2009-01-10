@@ -14,18 +14,6 @@ namespace hesp {
 
 //#################### PRIVATE METHODS ####################
 /**
-Clips the portal to the tree and returns a list of portal fragments which survive the clipping process.
-
-@param portal	The portal to clip
-@param tree		The tree to which to clip it
-@return			The list of portal fragments which survived the clipping process
-*/
-std::list<Portal_Ptr> PortalGenerator::clip_portal_to_tree(const Portal_Ptr& portal, const BSPTree_Ptr& tree)
-{
-	return clip_portal_to_subtree(portal, tree->root());
-}
-
-/**
 Clips the portal to the subtree and returns a list of portal fragments which survive the clipping process.
 
 @param portal				The portal to clip
@@ -33,7 +21,7 @@ Clips the portal to the subtree and returns a list of portal fragments which sur
 @param relativeToPortal		The location of the subspace represented by the subtree relative to the portal (in front, behind, or straddling it)
 @return						As stated
 */
-std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal)
+std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& portal, const BSPNode_Ptr& subtreeRoot, PlaneClassifier relativeToPortal) const
 {
 	if(subtreeRoot->is_leaf())
 	{
@@ -118,18 +106,6 @@ std::list<Portal_Ptr> PortalGenerator::clip_portal_to_subtree(const Portal_Ptr& 
 	// The code will never actually get here, because the switch above is exhaustive,
 	// but the compiler still warns us because it can't tell that.
 	throw Exception("This should never happen");
-}
-
-/**
-Makes an initial portal on a given plane. This portal should be large enough to
-span the entire level space.
-
-@param plane	The plane on which to build the initial portal
-@return			As stated
-*/
-Portal_Ptr PortalGenerator::make_initial_portal(const Plane& plane)
-{
-	return make_universe_polygon<PortalInfo>(plane);
 }
 
 }
