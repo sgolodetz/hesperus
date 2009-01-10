@@ -23,12 +23,68 @@ std::string FileSectionUtil::load_lightmap_prefix_section(std::istream& is)
 {
 	std::string line, lightmapPrefix;
 
-	read_line(is, line, "LightmapPrefix");
-	read_line(is, line, "{");
+	read_checked_line(is, line, "LightmapPrefix");
+	read_checked_line(is, line, "{");
 	read_line(is, lightmapPrefix, "lightmap prefix");
-	read_line(is, line, "}");
+	read_checked_line(is, line, "}");
 
 	return lightmapPrefix;
+}
+
+/**
+Loads an array of lights from the specified std::istream.
+
+@param is	The std::istream
+@return		The array of lights
+*/
+std::vector<Light> FileSectionUtil::load_lights_section(std::istream& is)
+{
+	std::vector<Light> lights;
+
+	std::string line;
+
+	read_checked_line(is, line, "Lights");
+	read_checked_line(is, line, "{");
+
+	// Read in the light count.
+	int lightCount;
+	try
+	{
+		std::getline(is, line);
+		lightCount = lexical_cast<int,std::string>(line);
+		lights.reserve(lightCount);
+	}
+	catch(bad_lexical_cast&) { throw Exception("The light count was not an integer"); }
+
+	// Read in the lights, one per line.
+	for(int i=0; i<lightCount; ++i)
+	{
+		if(!std::getline(is, line))
+		{
+			std::ostringstream oss;
+			oss << "Unexpected EOF at line " << i << " in the lights file";
+			throw Exception(oss.str());
+		}
+
+		// Parse the line.
+		typedef boost::char_separator<char> sep;
+		typedef boost::tokenizer<sep> tokenizer;
+		tokenizer tok(line.begin(), line.end(), sep(" "));
+		std::vector<std::string> tokens(tok.begin(), tok.end());
+
+		if(tokens.size() != 10) throw Exception("Bad light data at line " + lexical_cast<std::string,int>(i));
+
+		std::vector<std::string> positionComponents(&tokens[1], &tokens[4]);
+		std::vector<std::string> colourComponents(&tokens[6], &tokens[9]);
+
+		Vector3d position(positionComponents);
+		Colour3d colour(colourComponents);
+		lights.push_back(Light(position, colour));
+	}
+
+	read_checked_line(is, line, "}");
+
+	return lights;
 }
 
 /**
@@ -40,10 +96,10 @@ Loads a BSP tree from the specified std::istream.
 BSPTree_Ptr FileSectionUtil::load_tree_section(std::istream& is)
 {
 	std::string line;
-	read_line(is, line, "BSPTree");
-	read_line(is, line, "{");
+	read_checked_line(is, line, "BSPTree");
+	read_checked_line(is, line, "{");
 	BSPTree_Ptr tree = BSPTree::load_postorder_text(is);
-	read_line(is, line, "}");
+	read_checked_line(is, line, "}");
 	return tree;
 }
 
@@ -59,8 +115,8 @@ LeafVisTable_Ptr FileSectionUtil::load_vis_section(std::istream& is)
 
 	std::string line;
 
-	read_line(is, line, "VisTable");
-	read_line(is, line, "{");
+	read_checked_line(is, line, "VisTable");
+	read_checked_line(is, line, "{");
 
 	// Read in the size of the vis table.
 	read_line(is, line, "vis table size");
@@ -85,7 +141,7 @@ LeafVisTable_Ptr FileSectionUtil::load_vis_section(std::istream& is)
 		}
 	}
 
-	read_line(is, line, "}");
+	read_checked_line(is, line, "}");
 
 	return leafVis;
 }
@@ -96,12 +152,26 @@ Attempts to read a line from a std::istream into a string.
 
 @param is			The std::istream
 @param line			The string into which to read
-@param expected		A description of what we were expecting the line to contain
-@throws Exception	If the read fails
+@param description	A description of what we were trying to read (in case EOF is encountered)
+@throws Exception	If EOF is encountered
 */
-void FileSectionUtil::read_line(std::istream& is, std::string& line, const std::string& expected)
+void FileSectionUtil::read_line(std::istream& is, std::string& line, const std::string& description)
 {
-	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + expected);
+	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + description);
+}
+
+/**
+Attempts to read a line from a std::istream into a string and check its validity.
+
+@param is			The std::istream
+@param line			The string into which to read
+@param expected		What we expect the line to be
+@throws Exception	If EOF is encountered
+*/
+void FileSectionUtil::read_checked_line(std::istream& is, std::string& line, const std::string& expected)
+{
+	read_line(is, line, expected);
+	if(line != expected) throw Exception("Expected " + expected);
 }
 
 }

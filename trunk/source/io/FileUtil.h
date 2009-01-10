@@ -63,8 +63,6 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static std::vector<Light> load_lights_section(std::istream& is);
-
 	static Level_Ptr load_lit_level_file(std::istream& is);
 
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
