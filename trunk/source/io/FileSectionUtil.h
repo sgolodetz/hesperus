@@ -44,7 +44,7 @@ public:
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
-	static void read_line(std::istream& is, std::string& line, const std::string& errMsg);
+	static void read_line(std::istream& is, std::string& line, const std::string& expected);
 };
 
 }

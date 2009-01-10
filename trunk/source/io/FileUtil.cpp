@@ -86,7 +86,7 @@ LeafVisTable_Ptr FileUtil::load_vis_file(const std::string& filename)
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The vis file could not be read");
 
-	return load_vis_section(is);
+	return FileSectionUtil::load_vis_section(is);
 }
 
 /**
@@ -112,7 +112,7 @@ void FileUtil::save_level_file(const std::string& filename, const std::vector<Te
 	os << "***\n";
 	write_polygons(os, portals);
 	os << "***\n";
-	save_vis_section(os, leafVis);
+	FileSectionUtil::save_vis_section(os, leafVis);
 }
 
 /**
@@ -139,47 +139,13 @@ void FileUtil::save_level_file(const std::string& filename, const std::vector<Te
 	os << "***\n";
 	write_polygons(os, portals);
 	os << "***\n";
-	save_vis_section(os, leafVis);
+	FileSectionUtil::save_vis_section(os, leafVis);
 	os << "***\n";
 
 	int lightmapCount = static_cast<int>(lightmaps.size());
 	for(int i=0; i<lightmapCount; ++i)
 	{
 		BitmapSaver::save_image24(os, lightmaps[i]);
-	}
-}
-
-/**
-Saves a leaf visibility table to a std::ostream.
-
-@param os		The std::ostream
-@param leafVis	The leaf visibility table
-*/
-void FileUtil::save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis)
-{
-	const LeafVisTable& table = *leafVis;
-
-	int size = table.size();
-	os << size << '\n';
-	for(int i=0; i<size; ++i)
-	{
-		for(int j=0; j<size; ++j)
-		{
-			switch(table(i,j))
-			{
-				case LEAFVIS_NO:
-				{
-					os << '0';
-					break;
-				}
-				case LEAFVIS_YES:
-				{
-					os << '1';
-					break;
-				}
-			}
-		}
-		os << '\n';
 	}
 }
 
@@ -255,7 +221,7 @@ Level_Ptr FileUtil::load_lit_level_file(std::istream& is)
 	load_separator(is);
 	load_polygons_section(is, portals);
 	load_separator(is);
-	leafVis = load_vis_section(is);
+	leafVis = FileSectionUtil::load_vis_section(is);
 	load_separator(is);
 
 	int polyCount = static_cast<int>(polygons.size());
@@ -324,49 +290,11 @@ Level_Ptr FileUtil::load_unlit_level_file(std::istream& is)
 	load_separator(is);
 	load_polygons_section(is, portals);
 	load_separator(is);
-	leafVis = load_vis_section(is);
+	leafVis = FileSectionUtil::load_vis_section(is);
 
 	// Construct and return the level.
 	LevelRenderer_Ptr levelRenderer(new UnlitLevelRenderer(polygons));
 	return Level_Ptr(new Level(levelRenderer, tree, portals, leafVis));
-}
-
-/**
-Loads a leaf visibility table from the specified std::istream.
-
-@param is	The std::istream
-@return		The visibility table
-*/
-LeafVisTable_Ptr FileUtil::load_vis_section(std::istream& is)
-{
-	LeafVisTable_Ptr leafVis;
-
-	std::string line;
-
-	// Read in the size of the vis table.
-	int size;
-	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read vis table size");
-	try							{ size = lexical_cast<int,std::string>(line); }
-	catch(bad_lexical_cast&)	{ throw Exception("The vis table size was not an integer"); }
-
-	// Construct an empty vis table of the right size.
-	leafVis.reset(new LeafVisTable(size));
-
-	// Read in the vis table itself.
-	for(int i=0; i<size; ++i)
-	{
-		if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read vis table row " + lexical_cast<std::string,int>(i));
-		if(line.length() != size) throw Exception("Bad vis table row " + lexical_cast<std::string,int>(i));
-
-		for(int j=0; j<size; ++j)
-		{
-			if(line[j] == '0') (*leafVis)(i,j) = LEAFVIS_NO;
-			else if(line[j] == '1') (*leafVis)(i,j) = LEAFVIS_YES;
-			else throw Exception("Bad vis table value in row " + lexical_cast<std::string,int>(i));
-		}
-	}
-
-	return leafVis;
 }
 
 }

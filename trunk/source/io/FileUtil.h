@@ -61,8 +61,6 @@ public:
 								const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
 								const LeafVisTable_Ptr& leafVis, const std::vector<Image24_Ptr>& lightmaps);
 
-	static void save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis);
-
 	//#################### PRIVATE METHODS ####################
 private:
 	static std::vector<Light> load_lights_section(std::istream& is);
@@ -82,8 +80,6 @@ private:
 	static BSPTree_Ptr load_tree_section(std::istream& is);
 
 	static Level_Ptr load_unlit_level_file(std::istream& is);
-
-	static LeafVisTable_Ptr load_vis_section(std::istream& is);
 };
 
 }

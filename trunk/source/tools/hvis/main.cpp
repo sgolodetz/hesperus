@@ -50,7 +50,7 @@ try
 	LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
 
 	// Write the leaf visibility table to the output file.
-	FileUtil::save_vis_section(os, leafVis);
+	FileSectionUtil::save_vis_section(os, leafVis);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
