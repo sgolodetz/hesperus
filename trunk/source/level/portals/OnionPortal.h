@@ -26,6 +26,9 @@ struct OnionPortalInfo
 	std::set<int> toMapIndices;		// the maps in which this portal's to leaf appears (only used during portal generation)
 	std::set<int> mapIndices;		// the maps in which this portal appears
 
+	//#################### CONSTRUCTORS ####################
+	OnionPortalInfo() : fromLeaf(-1), toLeaf(-1) {}
+
 	//#################### PUBLIC METHODS ####################
 	OnionPortalInfo flip() const
 	{
