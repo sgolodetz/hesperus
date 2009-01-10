@@ -15,7 +15,6 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/math/geom/GeomUtil.h>
-#include "BSPBranch.h"
 
 namespace hesp {
 

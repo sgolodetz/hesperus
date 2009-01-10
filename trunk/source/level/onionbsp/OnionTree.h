@@ -7,6 +7,7 @@
 #define H_HESP_LEVEL_ONIONBSP_ONIONTREE
 
 #include <source/math/vectors/Vector3.h>
+#include "OnionBranch.h"
 #include "OnionLeaf.h"
 
 namespace hesp {
@@ -17,6 +18,12 @@ typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 class OnionTree
 {
+	//#################### TYPEDEFS ####################
+public:
+	typedef OnionBranch Branch;
+	typedef OnionLeaf Leaf;
+	typedef OnionNode Node;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<OnionNode_Ptr> m_nodes;

@@ -7,6 +7,7 @@
 #define H_HESP_LEVEL_BSP_BSPTREE
 
 #include <source/math/vectors/Vector3.h>
+#include "BSPBranch.h"
 #include "BSPLeaf.h"
 
 namespace hesp {

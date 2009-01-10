@@ -5,8 +5,6 @@
 
 #include "OnionTree.h"
 
-#include "OnionBranch.h"
-
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

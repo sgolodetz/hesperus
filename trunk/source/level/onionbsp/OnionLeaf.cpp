@@ -18,8 +18,20 @@ const OnionBranch *OnionLeaf::as_branch() const				{ return NULL; }
 OnionLeaf *OnionLeaf::as_leaf()								{ return this; }
 const OnionLeaf *OnionLeaf::as_leaf() const					{ return this; }
 bool OnionLeaf::is_leaf() const								{ return true; }
+bool OnionLeaf::is_completely_solid() const					{ return (~m_solidityDescriptor).none(); }
 bool OnionLeaf::is_solid(int mapIndex) const				{ return m_solidityDescriptor.test(mapIndex); }
 int OnionLeaf::leaf_index() const							{ return m_leafIndex; }
+
+std::set<int> OnionLeaf::map_indices() const
+{
+	std::set<int> ret;
+	int mapCount = static_cast<int>(m_solidityDescriptor.size());
+	for(int i=0; i<mapCount; ++i)
+	{
+		if(!m_solidityDescriptor.test(i)) ret.insert(i);
+	}
+	return ret;
+}
 
 void OnionLeaf::output_postorder_text(std::ostream& os) const
 {

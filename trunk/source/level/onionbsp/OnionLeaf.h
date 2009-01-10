@@ -6,6 +6,8 @@
 #ifndef H_HESP_LEVEL_ONIONBSP_ONIONLEAF
 #define H_HESP_LEVEL_ONIONBSP_ONIONLEAF
 
+#include <set>
+
 #include <boost/dynamic_bitset.hpp>
 
 #include "OnionNode.h"
@@ -33,9 +35,11 @@ public:
 	const OnionBranch *as_branch() const;
 	OnionLeaf *as_leaf();
 	const OnionLeaf *as_leaf() const;
+	bool is_completely_solid() const;
 	bool is_leaf() const;
 	bool is_solid(int mapIndex) const;
 	int leaf_index() const;
+	std::set<int> map_indices() const;
 	void output_postorder_text(std::ostream& os) const;
 	const std::vector<int>& polygon_indices() const;
 

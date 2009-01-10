@@ -20,7 +20,9 @@ struct OnionPortalInfo
 {
 	int fromLeaf;
 	int toLeaf;
-	std::set<int> mapIndices;	// the maps in which this portal appears
+	std::set<int> fromMapIndices;	// the maps in which this portal's from leaf appears
+	std::set<int> toMapIndices;		// the maps in which this portal's to leaf appears
+	std::set<int> mapIndices;		// the maps in which this portal appears
 };
 
 //#################### TYPEDEFS ####################
