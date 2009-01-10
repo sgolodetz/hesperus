@@ -43,7 +43,7 @@ hobsp -c%CG2FILES% %1.ot
 set CG2FILES=
 ENDLOCAL
 
-echo hoportal %1.ot %1.op
+hoportal -c %1.ot %1.op
 echo hnav %1.ot %1.op %1.nav
 
 REM #################
