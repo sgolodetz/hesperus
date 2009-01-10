@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_ONIONPORTALS_ONIONPORTAL
-#define H_HESP_LEVEL_ONIONPORTALS_ONIONPORTAL
+#ifndef H_HESP_LEVEL_PORTALS_ONIONPORTAL
+#define H_HESP_LEVEL_PORTALS_ONIONPORTAL
 
 #include <set>
 

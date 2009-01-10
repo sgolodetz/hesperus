@@ -602,6 +602,14 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\level\portals\OnionPortal.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\portals\OnionPortalGenerator.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\portals\Portal.cpp"
 						>
 					</File>
@@ -614,6 +622,14 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\level\portals\OnionPortal.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\portals\OnionPortalGenerator.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\portals\Portal.h"
 						>
 					</File>
@@ -625,6 +641,10 @@
 				<Filter
 					Name=".tpp"
 					>
+					<File
+						RelativePath="..\level\portals\OnionPortalGenerator.tpp"
+						>
+					</File>
 					<File
 						RelativePath="..\level\portals\PortalGenerator.tpp"
 						>
@@ -783,42 +803,6 @@
 					>
 					<File
 						RelativePath="..\level\onionbsp\OnionCompiler.tpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="onionportals"
-				>
-				<Filter
-					Name=".cpp"
-					>
-					<File
-						RelativePath="..\level\onionportals\OnionPortal.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\onionportals\OnionPortalGenerator.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".h"
-					>
-					<File
-						RelativePath="..\level\onionportals\OnionPortal.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\onionportals\OnionPortalGenerator.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".tpp"
-					>
-					<File
-						RelativePath="..\level\onionportals\OnionPortalGenerator.tpp"
 						>
 					</File>
 				</Filter>
