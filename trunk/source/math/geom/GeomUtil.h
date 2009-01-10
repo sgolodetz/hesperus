@@ -6,6 +6,7 @@
 #ifndef H_HESP_MATH_GEOM_GEOMUTIL
 #define H_HESP_MATH_GEOM_GEOMUTIL
 
+#include <list>
 #include <utility>
 
 #include "AABB.h"
@@ -47,6 +48,9 @@ std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1,
 double displacement_from_plane(const Vector3d& p, const Plane& plane);
 
 double distance_to_plane(const Vector3d& p, const Plane& plane);
+
+template <typename Poly>
+shared_ptr<std::list<Plane> > find_unique_planes(const std::vector<shared_ptr<Poly> >& polygons);
 
 Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane);
 

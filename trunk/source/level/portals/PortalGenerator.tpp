@@ -18,9 +18,9 @@ Generates a list of portals for a 3D world.
 @param tree		The BSP tree for the world
 @return			As stated
 */
-template <typename Vert, typename AuxData>
+template <typename Poly>
 typename PortalGenerator::PortalList_Ptr
-PortalGenerator::generate_portals(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, const BSPTree_Ptr& tree)
+PortalGenerator::generate_portals(const std::vector<shared_ptr<Poly> >& polygons, const BSPTree_Ptr& tree)
 {
 	PortalList_Ptr portals(new PortalList);
 	PlaneList_Ptr planes = find_unique_planes(polygons);
@@ -47,36 +47,6 @@ PortalGenerator::generate_portals(const std::vector<shared_ptr<Polygon<Vert,AuxD
 	}
 
 	return portals;
-}
-
-//#################### PRIVATE METHODS ####################
-/**
-Finds the unique set of planes in which the specified polygons lie.
-Note that planes which differ only in the orientation of their
-normal are treated as equivalent here.
-
-@param polygons	The polygons whose unique set of planes we wish to find
-@return			As stated
-*/
-template <typename Vert, typename AuxData>
-typename PortalGenerator::PlaneList_Ptr
-PortalGenerator::find_unique_planes(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons)
-{
-	typedef Polygon<Vert,AuxData> Poly;
-	typedef shared_ptr<Poly> Poly_Ptr;
-	typedef std::vector<Poly_Ptr> PolyVector;
-
-	const double angleTolerance = 0.5 * PI / 180;	// convert 0.5 degrees to radians
-	const double distTolerance = 0.001;
-	std::set<Plane, UniquePlanePred> planes(UniquePlanePred(angleTolerance, distTolerance));
-
-	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
-	{
-		Plane plane = make_plane(**it).to_undirected_form();
-		planes.insert(plane);
-	}
-
-	return PlaneList_Ptr(new PlaneList(planes.begin(), planes.end()));
 }
 
 }
