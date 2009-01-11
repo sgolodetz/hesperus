@@ -8,14 +8,9 @@
 #include <string>
 #include <vector>
 
-#include <boost/lexical_cast.hpp>
-using boost::bad_lexical_cast;
-using boost::lexical_cast;
-
-#include <source/io/FileUtil.h>
+#include <source/io/PortalsFileUtil.h>
 #include <source/io/VisFileUtil.h>
 #include <source/level/vis/VisCalculator.h>
-#include <source/math/geom/GeomUtil.h>
 using namespace hesp;
 
 //#################### FUNCTIONS ####################
@@ -37,7 +32,7 @@ try
 	// Read in the empty leaf count and portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	FileUtil::load_portals_file(inputFilename, emptyLeafCount, portals);
+	PortalsFileUtil::load(inputFilename, emptyLeafCount, portals);
 
 	// Run the visibility calculator.
 	VisCalculator visCalc(emptyLeafCount, portals);

@@ -12,9 +12,6 @@
 using boost::shared_ptr;
 
 #include <source/level/brushes/PolyhedralBrush.h>
-#include <source/level/bsp/BSPTree.h>
-#include <source/level/onionbsp/OnionTree.h>
-#include <source/level/portals/Portal.h>
 
 namespace hesp {
 
@@ -24,7 +21,6 @@ class FileUtil
 public:
 	template <typename Poly> static std::vector<shared_ptr<PolyhedralBrush<Poly> > > load_brushes_file(const std::string& filename);
 	template <typename Poly> static void load_polygons_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons);
-	static void load_portals_file(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals);
 
 	//#################### SAVING METHODS ####################
 public:

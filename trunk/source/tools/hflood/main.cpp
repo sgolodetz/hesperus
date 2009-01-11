@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <source/io/FileUtil.h>
+#include <source/io/PortalsFileUtil.h>
 #include <source/io/TreeFileUtil.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/util/PolygonTypes.h>
@@ -87,7 +88,7 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	// Load the portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
+	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
 
 	// Load the player position.
 	Vector3d playerPos = load_player_pos(entitiesFilename);

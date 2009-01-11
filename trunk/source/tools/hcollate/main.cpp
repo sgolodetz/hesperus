@@ -16,6 +16,7 @@ using boost::lexical_cast;
 #include <source/io/FileUtil.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
+#include <source/io/PortalsFileUtil.h>
 #include <source/io/TreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
 #include <source/util/PolygonTypes.h>
@@ -47,7 +48,7 @@ try
 	// Load the portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
+	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
 
 	// Load the vis table.
 	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
@@ -78,7 +79,7 @@ try
 	// Load the portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
+	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
 
 	// Load the vis table.
 	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);

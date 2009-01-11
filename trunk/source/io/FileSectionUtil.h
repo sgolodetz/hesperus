@@ -30,6 +30,7 @@ class FileSectionUtil
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;
 	friend struct OnionTreeFileUtil;
+	friend struct PortalsFileUtil;
 	friend struct TreeFileUtil;
 	friend struct VisFileUtil;
 

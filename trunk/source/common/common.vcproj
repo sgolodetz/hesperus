@@ -879,6 +879,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\PortalsFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\TreeFileUtil.h"
 					>
 				</File>
@@ -936,6 +940,10 @@
 				</File>
 				<File
 					RelativePath="..\io\LightsFileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\PortalsFileUtil.cpp"
 					>
 				</File>
 				<File

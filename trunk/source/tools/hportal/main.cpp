@@ -13,6 +13,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/FileUtil.h>
+#include <source/io/PortalsFileUtil.h>
 #include <source/io/TreeFileUtil.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/portals/PortalGenerator.h>
@@ -52,13 +53,8 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	shared_ptr<std::list<Portal_Ptr> > portals = PortalGenerator().generate_portals(polygons, tree);
 
 	// Save the portals to the output file.
-	std::ofstream os(outputFilename.c_str());
-	if(os.fail()) quit_with_error("Could not open output file for writing");
-
-	os << tree->empty_leaf_count() << '\n';
-
 	std::vector<Portal_Ptr> vec(portals->begin(), portals->end());
-	FileSectionUtil::save_polygons_section(os, "Portals", vec);
+	PortalsFileUtil::save(outputFilename, tree->empty_leaf_count(), vec);
 }
 
 int main(int argc, char *argv[])
