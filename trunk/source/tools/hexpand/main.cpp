@@ -47,7 +47,7 @@ std::vector<AABB3d> load_aabbs_file(const std::string& filename)
 	try							{ aabbCount = lexical_cast<int,std::string>(line); }
 	catch(bad_lexical_cast&)	{ throw Exception("The AABB count was not an integer"); }
 
-	// Read the AABBS.
+	// Read the AABBs.
 	for(int i=0; i<aabbCount; ++i)
 	{
 		if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read AABB");
