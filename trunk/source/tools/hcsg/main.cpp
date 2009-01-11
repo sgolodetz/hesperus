@@ -54,7 +54,7 @@ void run_csg(const std::string& inputFilename, const std::string& outputFilename
 
 	// Write the polygons to disk.
 	std::vector<Poly_Ptr> polygons(fragments->begin(), fragments->end());
-	write_polygons(os, polygons, false);
+	FileSectionUtil::write_polygons(os, polygons, false);
 }
 
 int main(int argc, char *argv[])

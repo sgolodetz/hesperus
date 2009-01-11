@@ -123,7 +123,7 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	// Write the polygons to the output file.
 	std::ofstream os(outputFilename.c_str());
 	if(os.fail()) throw Exception("Could not open " + outputFilename + " for reading");
-	write_polygons(os, validPolygons, false);
+	FileSectionUtil::write_polygons(os, validPolygons, false);
 }
 
 int main(int argc, char *argv[])

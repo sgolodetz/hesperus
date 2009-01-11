@@ -55,12 +55,6 @@ shared_ptr<std::list<Plane> > find_unique_planes(const std::vector<shared_ptr<Po
 Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane);
 
 template <typename Vert, typename AuxData>
-shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const std::string& n = "");
-
-template <typename Vert, typename AuxData>
-void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
-
-template <typename Vert, typename AuxData>
 Plane make_plane(const Polygon<Vert,AuxData>& poly);
 
 template <typename AuxData>
@@ -73,9 +67,6 @@ bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly);
 
 template <typename Vert, typename AuxData>
 SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, const Plane& plane);
-
-template <typename Vert, typename AuxData>
-void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount);
 
 //################## HELPER METHODS FOR THE split_polygon FUNCTION ##################
 int next_vert(int index, int vertCount);

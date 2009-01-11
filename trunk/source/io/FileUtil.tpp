@@ -90,7 +90,7 @@ void FileUtil::load_polygons_file(const std::string& filename, std::vector<share
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The polygons file could not be read");
 
-	load_polygons(is, polygons);
+	FileSectionUtil::load_polygons(is, polygons);
 }
 
 /**

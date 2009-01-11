@@ -42,7 +42,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	std::ifstream is(inputFilename.c_str());
 	if(is.fail()) quit_with_error("Input file does not exist");
 	PolyVector polygons;
-	try					{ load_polygons(is, polygons); }
+	try					{ FileSectionUtil::load_polygons(is, polygons); }
 	catch(Exception& e)	{ quit_with_error(e.cause()); }
 	is.close();
 
