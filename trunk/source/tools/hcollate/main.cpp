@@ -13,7 +13,6 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
-#include <source/io/FileUtil.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
 #include <source/io/PortalsFileUtil.h>

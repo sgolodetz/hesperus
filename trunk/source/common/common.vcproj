@@ -863,10 +863,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\FileUtil.h"
-					>
-				</File>
-				<File
 					RelativePath="..\io\GeometryFileUtil.h"
 					>
 				</File>
@@ -912,10 +908,6 @@
 				</File>
 				<File
 					RelativePath="..\io\FileSectionUtil_Save.tpp"
-					>
-				</File>
-				<File
-					RelativePath="..\io\FileUtil.tpp"
 					>
 				</File>
 				<File

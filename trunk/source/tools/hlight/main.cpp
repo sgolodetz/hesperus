@@ -14,7 +14,6 @@ using boost::lexical_cast;
 
 #include <source/images/BitmapSaver.h>
 #include <source/io/FileSectionUtil.h>
-#include <source/io/FileUtil.h>
 #include <source/io/LightsFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
 #include <source/io/TreeFileUtil.h>

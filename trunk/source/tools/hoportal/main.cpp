@@ -12,7 +12,6 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/FileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/OnionPortalGenerator.h>
