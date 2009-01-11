@@ -16,7 +16,6 @@ using boost::lexical_cast;
 #include <source/io/GeometryFileUtil.h>
 #include <source/io/TreeFileUtil.h>
 #include <source/level/bsp/BSPCompiler.h>
-#include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 

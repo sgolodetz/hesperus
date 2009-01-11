@@ -30,6 +30,7 @@ class FileSectionUtil
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;
+	friend struct OnionPortalsFileUtil;
 	friend struct OnionTreeFileUtil;
 	friend struct PortalsFileUtil;
 	friend struct TreeFileUtil;
@@ -48,9 +49,7 @@ private:
 private:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
-public:
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
-private:
 	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);
 	static void save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis);
 
