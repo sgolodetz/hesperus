@@ -20,10 +20,6 @@ class FileUtil
 	//#################### LOADING METHODS ####################
 public:
 	template <typename Poly> static void load_polygons_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons);
-
-	//#################### LOADING SUPPORT METHODS ####################
-private:
-	static void load_separator(std::istream& is);
 };
 
 }

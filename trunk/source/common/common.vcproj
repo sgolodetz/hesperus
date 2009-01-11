@@ -939,10 +939,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\FileUtil.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\io\LevelFileUtil.cpp"
 					>
 				</File>
