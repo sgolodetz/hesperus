@@ -55,12 +55,13 @@ private:
 	static void save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis);
 
 	//#################### LOADING SUPPORT METHODS ####################
-public:
+private:
 	template <typename Poly> static void load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
+public:
 	template <typename Vert, typename AuxData> static shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const std::string& n = "");
+private:
 	template <typename Poly> static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush(std::istream& is);
 	template <typename Poly> static void load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
-private:
 	template <typename Vert, typename AuxData> static void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
 	static void read_line(std::istream& is, std::string& line, const std::string& description);
 	static void read_checked_line(std::istream& is, const std::string& expected);
@@ -68,7 +69,6 @@ private:
 	//#################### SAVING SUPPORT METHODS ####################
 private:
 	template <typename Vert, typename AuxData> static void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount);
-public:
 	template <typename Poly> static void write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush);
 };
 

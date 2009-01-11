@@ -13,7 +13,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/FileSectionUtil.h>
+#include <source/io/GeometryFileUtil.h>
 #include <source/io/TreeFileUtil.h>
 #include <source/level/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
@@ -40,12 +40,8 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	typedef std::vector<Poly_Ptr> PolyVector;
 
 	// Load the input polygons from disk.
-	std::ifstream is(inputFilename.c_str());
-	if(is.fail()) quit_with_error("Input file does not exist");
 	PolyVector polygons;
-	try					{ FileSectionUtil::load_uncounted_polygons(is, polygons); }
-	catch(Exception& e)	{ quit_with_error(e.cause()); }
-	is.close();
+	GeometryFileUtil::load(inputFilename, polygons);
 
 	// Build the BSP tree.
 	BSPTree_Ptr tree = BSPCompiler::build_tree(polygons, weight);
@@ -55,6 +51,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 }
 
 int main(int argc, char *argv[])
+try
 {
 	if(argc != 4 && argc != 5) quit_with_usage();
 
@@ -78,3 +75,4 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+catch(Exception& e) { quit_with_error(e.cause()); }
