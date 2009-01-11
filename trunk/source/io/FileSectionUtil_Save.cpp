@@ -23,6 +23,20 @@ void FileSectionUtil::save_lightmap_prefix_section(std::ostream& os, const std::
 }
 
 /**
+Saves an onion tree to the specified std::ostream.
+
+@param os		The std::ostream
+@param tree		The onion tree
+*/
+void FileSectionUtil::save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree)
+{
+	os << "OnionTree\n";
+	os << "{\n";
+	tree->output_postorder_text(os);
+	os << "}\n";
+}
+
+/**
 Saves a BSP tree to the specified std::ostream.
 
 @param os		The std::ostream

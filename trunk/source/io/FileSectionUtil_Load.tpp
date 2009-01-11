@@ -16,11 +16,10 @@ Loads a polygon section from the specified std::istream.
 template <typename Poly>
 void FileSectionUtil::load_polygons_section(std::istream& is, const std::string& sectionName, std::vector<shared_ptr<Poly> >& polygons)
 {
-	std::string line;
-	read_checked_line(is, line, sectionName);
-	read_checked_line(is, line, "{");
+	read_checked_line(is, sectionName);
+	read_checked_line(is, "{");
 	load_counted_polygons(is, polygons);
-	read_checked_line(is, line, "}");
+	read_checked_line(is, "}");
 }
 
 //#################### LOADING SUPPORT METHODS ####################

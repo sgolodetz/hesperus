@@ -23,10 +23,10 @@ std::string FileSectionUtil::load_lightmap_prefix_section(std::istream& is)
 {
 	std::string line, lightmapPrefix;
 
-	read_checked_line(is, line, "LightmapPrefix");
-	read_checked_line(is, line, "{");
+	read_checked_line(is, "LightmapPrefix");
+	read_checked_line(is, "{");
 	read_line(is, lightmapPrefix, "lightmap prefix");
-	read_checked_line(is, line, "}");
+	read_checked_line(is, "}");
 
 	return lightmapPrefix;
 }
@@ -43,8 +43,8 @@ std::vector<Light> FileSectionUtil::load_lights_section(std::istream& is)
 
 	std::string line;
 
-	read_checked_line(is, line, "Lights");
-	read_checked_line(is, line, "{");
+	read_checked_line(is, "Lights");
+	read_checked_line(is, "{");
 
 	// Read in the light count.
 	int lightCount;
@@ -82,9 +82,24 @@ std::vector<Light> FileSectionUtil::load_lights_section(std::istream& is)
 		lights.push_back(Light(position, colour));
 	}
 
-	read_checked_line(is, line, "}");
+	read_checked_line(is, "}");
 
 	return lights;
+}
+
+/**
+Loads an onion tree from the specified std::istream.
+
+@param is	The std::istream
+@return		The onion tree
+*/
+OnionTree_Ptr FileSectionUtil::load_onion_tree_section(std::istream& is)
+{
+	read_checked_line(is, "OnionTree");
+	read_checked_line(is, "{");
+	OnionTree_Ptr tree = OnionTree::load_postorder_text(is);
+	read_checked_line(is, "}");
+	return tree;
 }
 
 /**
@@ -96,10 +111,10 @@ Loads a BSP tree from the specified std::istream.
 BSPTree_Ptr FileSectionUtil::load_tree_section(std::istream& is)
 {
 	std::string line;
-	read_checked_line(is, line, "BSPTree");
-	read_checked_line(is, line, "{");
+	read_checked_line(is, "BSPTree");
+	read_checked_line(is, "{");
 	BSPTree_Ptr tree = BSPTree::load_postorder_text(is);
-	read_checked_line(is, line, "}");
+	read_checked_line(is, "}");
 	return tree;
 }
 
@@ -115,8 +130,8 @@ LeafVisTable_Ptr FileSectionUtil::load_vis_section(std::istream& is)
 
 	std::string line;
 
-	read_checked_line(is, line, "VisTable");
-	read_checked_line(is, line, "{");
+	read_checked_line(is, "VisTable");
+	read_checked_line(is, "{");
 
 	// Read in the size of the vis table.
 	read_line(is, line, "vis table size");
@@ -141,7 +156,7 @@ LeafVisTable_Ptr FileSectionUtil::load_vis_section(std::istream& is)
 		}
 	}
 
-	read_checked_line(is, line, "}");
+	read_checked_line(is, "}");
 
 	return leafVis;
 }
@@ -164,12 +179,12 @@ void FileSectionUtil::read_line(std::istream& is, std::string& line, const std::
 Attempts to read a line from a std::istream into a string and check its validity.
 
 @param is			The std::istream
-@param line			The string into which to read
 @param expected		What we expect the line to be
 @throws Exception	If EOF is encountered
 */
-void FileSectionUtil::read_checked_line(std::istream& is, std::string& line, const std::string& expected)
+void FileSectionUtil::read_checked_line(std::istream& is, const std::string& expected)
 {
+	std::string line;
 	read_line(is, line, expected);
 	if(line != expected) throw Exception("Expected " + expected);
 }

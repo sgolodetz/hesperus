@@ -75,7 +75,7 @@ void FileUtil::load_onion_tree_file(const std::string& filename, std::vector<sha
 
 	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	load_separator(is);
-	tree = load_onion_tree_section(is);
+	tree = FileSectionUtil::load_onion_tree_section(is);
 }
 
 /**

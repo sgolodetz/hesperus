@@ -65,8 +65,6 @@ public:
 private:
 	static Level_Ptr load_lit_level_file(std::istream& is);
 
-	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
-
 	template <typename Poly>
 	static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush(std::istream& is);
 
