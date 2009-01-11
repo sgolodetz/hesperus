@@ -23,12 +23,13 @@ namespace hesp {
 class FileSectionUtil
 {
 	//#################### FRIENDS ####################
-	// We want to only allow access to the specific classes which should be doing file loading.
-	// This helps discourage random loading of data from elsewhere in the project.
+	// We want to only allow access to the specific classes which should be doing file I/O.
+	// This helps discourage random file I/O elsewhere in the project.
 	friend class FileUtil;
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;
+	friend struct OnionTreeFileUtil;
 	friend struct TreeFileUtil;
 	friend struct VisFileUtil;
 
@@ -44,8 +45,8 @@ private:
 	//#################### SAVING METHODS ####################
 private:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
-public:
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
+public:
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
 private:
 	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);

@@ -875,6 +875,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\OnionTreeFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\TreeFileUtil.h"
 					>
 				</File>
@@ -900,6 +904,10 @@
 				</File>
 				<File
 					RelativePath="..\io\LitTreeFileUtil.tpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\OnionTreeFileUtil.tpp"
 					>
 				</File>
 				<File

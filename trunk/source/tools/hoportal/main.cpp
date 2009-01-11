@@ -13,6 +13,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/FileUtil.h>
+#include <source/io/OnionTreeFileUtil.h>
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/OnionPortalGenerator.h>
 #include <source/math/geom/GeomUtil.h>
@@ -43,7 +44,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	OnionTree_Ptr tree;
 	try
 	{
-		FileUtil::load_onion_tree_file(inputFilename, polygons, tree);
+		OnionTreeFileUtil::load(inputFilename, polygons, tree);
 	}
 	catch(Exception& e) { quit_with_error(e.cause()); }
 

@@ -12,6 +12,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/FileUtil.h>
+#include <source/io/OnionTreeFileUtil.h>
 #include <source/level/onionbsp/OnionCompiler.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -48,11 +49,7 @@ void run_compiler(const std::vector<std::string>& inputFilenames, const std::str
 	compiler.build_tree();
 
 	// Write the output polygons and onion tree to disk.
-	std::ofstream os(outputFilename.c_str());
-	if(os.fail()) quit_with_error("Couldn't open output file for writing");
-	FileSectionUtil::save_polygons_section(os, "Polygons", *compiler.polygons());
-	os << "***\n";
-	FileSectionUtil::save_onion_tree_section(os, compiler.tree());
+	OnionTreeFileUtil::save(outputFilename, *compiler.polygons(), compiler.tree());
 }
 
 int main(int argc, char *argv[])

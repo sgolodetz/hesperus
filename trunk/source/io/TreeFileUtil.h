@@ -6,6 +6,8 @@
 #ifndef H_HESP_IO_TREEFILEUTIL
 #define H_HESP_IO_TREEFILEUTIL
 
+#include <source/level/bsp/BSPTree.h>
+
 namespace hesp {
 
 struct TreeFileUtil
