@@ -867,6 +867,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\GeometryFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\LevelFileUtil.h"
 					>
 				</File>
@@ -912,6 +916,10 @@
 				</File>
 				<File
 					RelativePath="..\io\FileUtil.tpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\GeometryFileUtil.tpp"
 					>
 				</File>
 				<File

@@ -11,7 +11,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/FileUtil.h>
+#include <source/io/GeometryFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
 #include <source/level/onionbsp/OnionCompiler.h>
 #include <source/util/PolygonTypes.h>
@@ -41,7 +41,7 @@ void run_compiler(const std::vector<std::string>& inputFilenames, const std::str
 	std::vector<PolyVector> maps(mapCount);
 	for(size_t i=0; i<mapCount; ++i)
 	{
-		FileUtil::load_polygons_file(inputFilenames[i], maps[i]);
+		GeometryFileUtil::load(inputFilenames[i], maps[i]);
 	}
 
 	// Compile them into an onion tree.

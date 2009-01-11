@@ -10,6 +10,7 @@
 
 #include <source/exceptions/Exception.h>
 #include <source/io/BrushesFileUtil.h>
+#include <source/io/GeometryFileUtil.h>
 #include <source/level/csg/CSGUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -33,13 +34,6 @@ void run_csg(const std::string& inputFilename, const std::string& outputFilename
 	typedef typename Poly::Vert Vert;
 	typedef typename Poly::AuxData AuxData;
 
-	// Note:	We try and open the output file now because the CSG process
-	//			is a potentially lengthy one: it would be very annoying for
-	//			users if they spent ages waiting for the calculations to finish
-	//			and then found that they couldn't be written to file.
-	std::ofstream os(outputFilename.c_str());
-	if(os.fail()) throw Exception("Can't open " + outputFilename + " for reading");
-
 	// Read in the brushes.
 	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
@@ -54,7 +48,7 @@ void run_csg(const std::string& inputFilename, const std::string& outputFilename
 
 	// Write the polygons to disk.
 	std::vector<Poly_Ptr> polygons(fragments->begin(), fragments->end());
-	FileSectionUtil::write_polygons(os, polygons, false);
+	GeometryFileUtil::save(outputFilename, polygons);
 }
 
 int main(int argc, char *argv[])

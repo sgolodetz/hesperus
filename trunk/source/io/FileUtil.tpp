@@ -13,6 +13,7 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
+#if 0
 /**
 Loads an array of polygons from the specified file.
 
@@ -27,5 +28,6 @@ void FileUtil::load_polygons_file(const std::string& filename, std::vector<share
 
 	FileSectionUtil::load_uncounted_polygons(is, polygons);
 }
+#endif
 
 }

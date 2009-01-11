@@ -25,8 +25,8 @@ class FileSectionUtil
 	//#################### FRIENDS ####################
 	// We want to only allow access to the specific classes which should be doing file I/O.
 	// This helps discourage random file I/O elsewhere in the project.
-	friend class FileUtil;
 	friend struct BrushesFileUtil;
+	friend struct GeometryFileUtil;
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;
@@ -66,8 +66,9 @@ private:
 	static void read_checked_line(std::istream& is, const std::string& expected);
 
 	//#################### SAVING SUPPORT METHODS ####################
-public:
+private:
 	template <typename Vert, typename AuxData> static void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount);
+public:
 	template <typename Poly> static void write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush);
 };
 
