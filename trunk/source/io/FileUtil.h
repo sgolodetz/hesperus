@@ -65,9 +65,6 @@ public:
 private:
 	static Level_Ptr load_lit_level_file(std::istream& is);
 
-	template <typename Poly>
-	static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush(std::istream& is);
-
 	static void load_separator(std::istream& is);
 
 	static Level_Ptr load_unlit_level_file(std::istream& is);

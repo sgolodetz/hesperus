@@ -31,7 +31,7 @@ std::vector<shared_ptr<PolyhedralBrush<Poly> > > FileUtil::load_brushes_file(con
 
 	PolyBrushVector brushes;
 	PolyBrush_Ptr brush;
-	while(brush = load_polyhedral_brush<Poly>(is))
+	while(brush = FileSectionUtil::load_polyhedral_brush<Poly>(is))
 	{
 		brushes.push_back(brush);
 	}
@@ -129,40 +129,6 @@ void FileUtil::save_brushes_file(const std::string& filename, const std::vector<
 	{
 		FileSectionUtil::write_polyhedral_brush(os, *brushes[i]);
 	}
-}
-
-//#################### PRIVATE METHODS ####################
-/**
-Loads a polyhedral brush from a std::istream.
-
-@param is			The std::istream
-@return				The polyhedral brush, or NULL if EOF was encountered
-@throws Exception	If anything else goes wrong whilst trying to read the polyhedral brush
-*/
-template <typename Poly>
-shared_ptr<PolyhedralBrush<Poly> > FileUtil::load_polyhedral_brush(std::istream& is)
-{
-	typedef PolyhedralBrush<Poly> PolyBrush;
-	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
-
-	std::string line;
-
-	if(!std::getline(is,line)) return PolyBrush_Ptr();
-	if(line != "{") throw Exception("Expected {");
-
-	// Read bounds.
-	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read bounds");
-	AABB3d bounds = read_aabb<Vector3d>(line);
-
-	// Read faces.
-	typedef shared_ptr<Poly> Poly_Ptr;
-	std::vector<Poly_Ptr> faces;
-	FileSectionUtil::load_counted_polygons(is, faces);
-
-	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read }");
-	if(line != "}") throw Exception("Expected }");
-
-	return PolyBrush_Ptr(new PolyBrush(bounds, faces));
 }
 
 }

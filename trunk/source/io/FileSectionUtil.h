@@ -28,14 +28,12 @@ public:
 	static std::vector<Light> load_lights_section(std::istream& is);
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
 	template <typename Poly> static void load_polygons_section(std::istream& is, const std::string& sectionName, std::vector<shared_ptr<Poly> >& polygons);
-	//template <typename Poly> static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush_section(std::istream& is);
 	static BSPTree_Ptr load_tree_section(std::istream& is);
 	static LeafVisTable_Ptr load_vis_section(std::istream& is);
 
 	//#################### SAVING METHODS ####################
 public:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
-	//~~static void save_lights_section(std::ostream& os, const std::vector<Light>& lights);
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
 	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);
@@ -45,6 +43,7 @@ public:
 public:
 	template <typename Poly> static void load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
 	template <typename Vert, typename AuxData> static shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const std::string& n = "");
+	template <typename Poly> static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush(std::istream& is);
 	template <typename Poly> static void load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
 private:
 	template <typename Vert, typename AuxData> static void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
