@@ -38,7 +38,6 @@ public:
 	//~~static void save_lights_section(std::ostream& os, const std::vector<Light>& lights);
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
-	//template <typename Poly> static void save_polyhedral_brush_section(std::ostream& os, const shared_ptr<PolyhedralBrush<Poly> >& brush);
 	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);
 	static void save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis);
 
@@ -55,6 +54,7 @@ private:
 	//#################### SAVING SUPPORT METHODS ####################
 public:
 	template <typename Vert, typename AuxData> static void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount);
+	template <typename Poly> static void write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush);
 };
 
 }

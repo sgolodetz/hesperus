@@ -3,7 +3,6 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include <source/io/FileSectionUtil.h>
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
@@ -26,17 +25,6 @@ const typename PolyhedralBrush<Poly>::PolyVector&
 PolyhedralBrush<Poly>::faces() const
 {
 	return m_faces;
-}
-
-//#################### GLOBAL OPERATORS ####################
-template <typename Poly>
-std::ostream& operator<<(std::ostream& os, const PolyhedralBrush<Poly>& rhs)
-{
-	os << "{\n";
-	os << rhs.bounds().minimum() << ' ' << rhs.bounds().maximum() << '\n';
-	FileSectionUtil::write_polygons(os, rhs.faces(), true);
-	os << "}\n";
-	return os;
 }
 
 }

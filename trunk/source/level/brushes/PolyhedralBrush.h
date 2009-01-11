@@ -6,7 +6,6 @@
 #ifndef H_HESP_LEVEL_BRUSHES_POLYHEDRALBRUSH
 #define H_HESP_LEVEL_BRUSHES_POLYHEDRALBRUSH
 
-#include <ostream>
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
@@ -43,10 +42,6 @@ public:
 	const AABB3d& bounds() const;
 	const PolyVector& faces() const;
 };
-
-//#################### GLOBAL OPERATORS ####################
-template <typename Poly>
-std::ostream& operator<<(std::ostream& os, const PolyhedralBrush<Poly>& rhs);
 
 }
 

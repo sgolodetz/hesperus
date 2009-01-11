@@ -127,7 +127,7 @@ void FileUtil::save_brushes_file(const std::string& filename, const std::vector<
 	int brushCount = static_cast<int>(brushes.size());
 	for(int i=0; i<brushCount; ++i)
 	{
-		os << *brushes[i];
+		FileSectionUtil::write_polyhedral_brush(os, *brushes[i]);
 	}
 }
 

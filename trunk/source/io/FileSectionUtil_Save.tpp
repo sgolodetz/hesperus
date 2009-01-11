@@ -53,4 +53,19 @@ void FileSectionUtil::write_polygons(std::ostream& os, const std::vector<shared_
 	}
 }
 
+/**
+Writes a polyhedral brush to a std::ostream.
+
+@param os		The std::ostream
+@param brush	The polyhedral brush
+*/
+template <typename Poly>
+void FileSectionUtil::write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush)
+{
+	os << "{\n";
+	os << brush.bounds().minimum() << ' ' << brush.bounds().maximum() << '\n';
+	write_polygons(os, brush.faces(), true);
+	os << "}\n";
+}
+
 }
