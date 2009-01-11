@@ -22,7 +22,6 @@ std::vector<Light> LightsFileUtil::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The lights file could not be read");
-
 	return FileSectionUtil::load_lights_section(is);
 }
 

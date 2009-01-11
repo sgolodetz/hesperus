@@ -15,7 +15,7 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#include <source/io/FileUtil.h>
+#include <source/io/LevelFileUtil.h>
 #include <source/level/LevelViewer.h>
 using namespace hesp;
 
@@ -64,7 +64,7 @@ void process_events()
 int main(int argc, char* argv[])
 try
 {
-	Level_Ptr level = FileUtil::load_level_file("resources/levels/tricky/tricky.bsp");
+	Level_Ptr level = LevelFileUtil::load("resources/levels/tricky/tricky.bsp");
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
 

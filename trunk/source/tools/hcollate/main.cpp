@@ -14,6 +14,7 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
 #include <source/io/FileUtil.h>
+#include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
 #include <source/util/PolygonTypes.h>
@@ -60,7 +61,7 @@ try
 	}
 
 	// Write everything to the output file.
-	FileUtil::save_level_file(outputFilename, polygons, tree, portals, leafVis, lightmaps);
+	LevelFileUtil::save_lit(outputFilename, polygons, tree, portals, leafVis, lightmaps);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
@@ -82,7 +83,7 @@ try
 	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
 
 	// Write everything to the output file.
-	FileUtil::save_level_file(outputFilename, polygons, tree, portals, leafVis);
+	LevelFileUtil::save_unlit(outputFilename, polygons, tree, portals, leafVis);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

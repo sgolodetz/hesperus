@@ -26,6 +26,7 @@ class FileSectionUtil
 	// We want to only allow access to the specific classes which should be doing file loading.
 	// This helps discourage random loading of data from elsewhere in the project.
 	friend class FileUtil;
+	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;
 	friend struct VisFileUtil;

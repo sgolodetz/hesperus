@@ -863,6 +863,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\LevelFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\LightsFileUtil.h"
 					>
 				</File>
@@ -908,6 +912,10 @@
 				</File>
 				<File
 					RelativePath="..\io\FileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\LevelFileUtil.cpp"
 					>
 				</File>
 				<File
