@@ -862,6 +862,10 @@
 					RelativePath="..\io\FileUtil.h"
 					>
 				</File>
+				<File
+					RelativePath="..\io\LightsFileUtil.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".tpp"
@@ -892,6 +896,10 @@
 				</File>
 				<File
 					RelativePath="..\io\FileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\LightsFileUtil.cpp"
 					>
 				</File>
 			</Filter>

@@ -15,6 +15,7 @@ using boost::lexical_cast;
 #include <source/images/BitmapSaver.h>
 #include <source/io/FileSectionUtil.h>
 #include <source/io/FileUtil.h>
+#include <source/io/LightsFileUtil.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -45,7 +46,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	LeafVisTable_Ptr leafVis = FileUtil::load_vis_file(visFilename);
 
 	// Read in the lights.
-	std::vector<Light> lights = FileUtil::load_lights_file(lightsFilename);
+	std::vector<Light> lights = LightsFileUtil::load_lights_file(lightsFilename);
 
 	// Note:	We try and open the output file now because the lightmap generation process
 	//			is a potentially lengthy one: it would be very annoying for users if they
