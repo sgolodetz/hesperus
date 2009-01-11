@@ -13,6 +13,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/FileUtil.h>
+#include <source/io/VisFileUtil.h>
 #include <source/level/vis/VisCalculator.h>
 #include <source/math/geom/GeomUtil.h>
 using namespace hesp;
@@ -33,13 +34,6 @@ void quit_with_usage()
 void run_calculator(const std::string& inputFilename, const std::string& outputFilename)
 try
 {
-	// Note:	We try and open the output file now because the visibility calculation
-	//			process is a potentially lengthy one: it would be very annoying for users
-	//			if they spent ages waiting for the calculations to finish and then found
-	//			that it couldn't be written to file.
-	std::ofstream os(outputFilename.c_str());
-	if(os.fail()) quit_with_error("Output file could not be opened for writing");
-
 	// Read in the empty leaf count and portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
@@ -50,7 +44,7 @@ try
 	LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
 
 	// Write the leaf visibility table to the output file.
-	FileSectionUtil::save_vis_section(os, leafVis);
+	VisFileUtil::save(outputFilename, leafVis);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

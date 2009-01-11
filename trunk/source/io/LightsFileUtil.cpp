@@ -11,13 +11,14 @@
 
 namespace hesp {
 
+//#################### LOADING METHODS ####################
 /**
 Loads an array of lights from the specified file.
 
 @param filename	The name of the file containing the list of lights
 @return			The array of lights
 */
-std::vector<Light> LightsFileUtil::load_lights_file(const std::string& filename)
+std::vector<Light> LightsFileUtil::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The lights file could not be read");

@@ -15,7 +15,7 @@ namespace hesp {
 struct LightsFileUtil
 {
 	//#################### LOADING METHODS ####################
-	static std::vector<Light> load_lights_file(const std::string& filename);
+	static std::vector<Light> load(const std::string& filename);
 };
 
 }

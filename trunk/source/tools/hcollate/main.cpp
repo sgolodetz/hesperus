@@ -14,6 +14,7 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
 #include <source/io/FileUtil.h>
+#include <source/io/VisFileUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
@@ -46,7 +47,7 @@ try
 	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
 
 	// Load the vis table.
-	LeafVisTable_Ptr leafVis = FileUtil::load_vis_file(visFilename);
+	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
 
 	// Load the lightmaps.
 	int polyCount = static_cast<int>(polygons.size());
@@ -77,7 +78,7 @@ try
 	FileUtil::load_portals_file(portalsFilename, emptyLeafCount, portals);
 
 	// Load the vis table.
-	LeafVisTable_Ptr leafVis = FileUtil::load_vis_file(visFilename);
+	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
 
 	// Write everything to the output file.
 	FileUtil::save_level_file(outputFilename, polygons, tree, portals, leafVis);
