@@ -9,7 +9,7 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/FileUtil.h>
+#include <source/io/BrushesFileUtil.h>
 #include <source/level/csg/CSGUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -44,7 +44,7 @@ void run_csg(const std::string& inputFilename, const std::string& outputFilename
 	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
 	typedef std::vector<PolyBrush_Ptr> PolyBrushVector;
-	PolyBrushVector brushes = FileUtil::load_brushes_file<Poly>(inputFilename);
+	PolyBrushVector brushes = BrushesFileUtil::load<Poly>(inputFilename);
 
 	// Perform the CSG union.
 	typedef shared_ptr<Poly> Poly_Ptr;

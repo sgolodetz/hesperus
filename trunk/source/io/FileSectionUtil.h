@@ -26,6 +26,7 @@ class FileSectionUtil
 	// We want to only allow access to the specific classes which should be doing file I/O.
 	// This helps discourage random file I/O elsewhere in the project.
 	friend class FileUtil;
+	friend struct BrushesFileUtil;
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;

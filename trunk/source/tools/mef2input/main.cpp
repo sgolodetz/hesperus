@@ -13,7 +13,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
-#include <source/io/FileUtil.h>
+#include <source/io/BrushesFileUtil.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/AABB.h>
 #include <source/math/geom/GeomUtil.h>
@@ -187,7 +187,7 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 	}
 
 	// Write the brushes to disk.
-	FileUtil::save_brushes_file(brushesFilename, brushes);
+	BrushesFileUtil::save(brushesFilename, brushes);
 
 	// Write the entities to disk.
 	// TODO

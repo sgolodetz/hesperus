@@ -13,7 +13,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/FileUtil.h>
+#include <source/io/BrushesFileUtil.h>
 #include <source/level/brushes/BrushExpander.h>
 #include <source/math/geom/AABB.h>
 #include <source/util/PolygonTypes.h>
@@ -67,7 +67,7 @@ void run_expander(const std::string& aabbsFilename, const std::string& inputFile
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;
 	typedef shared_ptr<ColPolyBrush> ColPolyBrush_Ptr;
 	typedef std::vector<ColPolyBrush_Ptr> ColPolyBrushVector;
-	ColPolyBrushVector inputBrushes = FileUtil::load_brushes_file<CollisionPolygon>(inputFilename);
+	ColPolyBrushVector inputBrushes = BrushesFileUtil::load<CollisionPolygon>(inputFilename);
 
 	// Calculate the output stem and extension.
 	std::string::size_type k = inputFilename.find('.');
@@ -92,7 +92,7 @@ void run_expander(const std::string& aabbsFilename, const std::string& inputFile
 		// Write the expanded brushes to file.
 		std::ostringstream oss;
 		oss << outputStem << i << outputExtension;
-		FileUtil::save_brushes_file(oss.str(), expandedBrushes);
+		BrushesFileUtil::save(oss.str(), expandedBrushes);
 	}
 }
 

@@ -855,6 +855,10 @@
 				Name=".h"
 				>
 				<File
+					RelativePath="..\io\BrushesFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FileSectionUtil.h"
 					>
 				</File>
@@ -894,6 +898,10 @@
 			<Filter
 				Name=".tpp"
 				>
+				<File
+					RelativePath="..\io\BrushesFileUtil.tpp"
+					>
+				</File>
 				<File
 					RelativePath="..\io\FileSectionUtil_Load.tpp"
 					>
