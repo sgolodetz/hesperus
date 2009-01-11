@@ -57,7 +57,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	os << tree->empty_leaf_count() << '\n';
 
 	std::vector<Portal_Ptr> vec(portals->begin(), portals->end());
-	write_polygons(os, vec);
+	FileSectionUtil::save_polygons_section(os, "Portals", vec);
 }
 
 int main(int argc, char *argv[])

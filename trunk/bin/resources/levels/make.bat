@@ -52,6 +52,8 @@ REM #################
 
 hcollate +L %1.lbt %1.rp2 %1.vis %1.bsp
 
+REM GOTO Finished
+
 REM #########################
 REM Cleanup Rendering Section
 REM #########################

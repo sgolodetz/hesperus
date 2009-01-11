@@ -53,7 +53,7 @@ void FileUtil::load_lit_tree_file(const std::string& filename, std::vector<share
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The lit tree file could not be read");
 
-	load_polygons_section(is, polygons);
+	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	load_separator(is);
 	tree = FileSectionUtil::load_tree_section(is);
 	load_separator(is);
@@ -73,7 +73,7 @@ void FileUtil::load_onion_tree_file(const std::string& filename, std::vector<sha
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The onion tree file could not be read");
 
-	load_polygons_section(is, polygons);
+	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	load_separator(is);
 	tree = load_onion_tree_section(is);
 }
@@ -106,7 +106,7 @@ void FileUtil::load_tree_file(const std::string& filename, std::vector<shared_pt
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The tree file could not be read");
 
-	load_polygons_section(is, polygons);
+	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	load_separator(is);
 	tree = FileSectionUtil::load_tree_section(is);
 }
@@ -133,25 +133,6 @@ void FileUtil::save_brushes_file(const std::string& filename, const std::vector<
 
 //#################### PRIVATE METHODS ####################
 /**
-Reads a polygon count, n, followed by an array of n polygons from the specified std::istream.
-
-@param is			The std::istream
-@param polygons		Used to return the polygons to the caller
-*/
-template <typename Poly>
-void FileUtil::load_polygons_section(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
-{
-	std::string line;
-	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read polygon count");
-	try
-	{
-		int polyCount = boost::lexical_cast<int,std::string>(line);
-		load_polygons(is, polygons, polyCount);
-	}
-	catch(boost::bad_lexical_cast&) { throw Exception("The polygon count is not an integer"); }
-}
-
-/**
 Loads a polyhedral brush from a std::istream.
 
 @param is			The std::istream
@@ -176,7 +157,7 @@ shared_ptr<PolyhedralBrush<Poly> > FileUtil::load_polyhedral_brush(std::istream&
 	// Read faces.
 	typedef shared_ptr<Poly> Poly_Ptr;
 	std::vector<Poly_Ptr> faces;
-	load_polygons_section(is, faces);
+	FileSectionUtil::load_counted_polygons(is, faces);
 
 	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read }");
 	if(line != "}") throw Exception("Expected }");

@@ -67,7 +67,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	LightmapVector_Ptr lightmaps = lg.lightmaps();
 
 	// Write the lit polygons, tree and lightmap prefix to the output file.
-	write_polygons(os, *litPolygons);
+	FileSectionUtil::save_polygons_section(os, "Polygons", *litPolygons);
 	os << "***\n";
 	FileSectionUtil::save_tree_section(os, tree);
 	os << "***\n";

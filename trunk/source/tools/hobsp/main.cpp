@@ -50,7 +50,7 @@ void run_compiler(const std::vector<std::string>& inputFilenames, const std::str
 	// Write the output polygons and onion tree to disk.
 	std::ofstream os(outputFilename.c_str());
 	if(os.fail()) quit_with_error("Couldn't open output file for writing");
-	write_polygons(os, *compiler.polygons());
+	FileSectionUtil::save_polygons_section(os, "Polygons", *compiler.polygons());
 	os << "***\n";
 	compiler.tree()->output_postorder_text(os);
 }

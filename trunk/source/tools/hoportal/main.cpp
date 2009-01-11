@@ -55,7 +55,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	if(os.fail()) quit_with_error("Could not open output file for writing");
 
 	std::vector<OnionPortal_Ptr> vec(portals->begin(), portals->end());
-	write_polygons(os, vec);
+	FileSectionUtil::save_polygons_section(os, "OnionPortals", vec);
 }
 
 int main(int argc, char *argv[])

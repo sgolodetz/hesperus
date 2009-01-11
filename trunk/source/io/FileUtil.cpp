@@ -72,7 +72,7 @@ void FileUtil::load_portals_file(const std::string& filename, int& emptyLeafCoun
 	try							{ emptyLeafCount = lexical_cast<int,std::string>(line); }
 	catch(bad_lexical_cast&)	{ throw Exception("The empty leaf count was not an integer"); }
 
-	load_polygons_section(is, portals);
+	FileSectionUtil::load_polygons_section(is, "Portals", portals);
 }
 
 /**
@@ -106,11 +106,11 @@ void FileUtil::save_level_file(const std::string& filename, const std::vector<Te
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
 
 	os << "HBSPU\n";
-	write_polygons(os, polygons);
+	FileSectionUtil::save_polygons_section(os, "Polygons", polygons);
 	os << "***\n";
 	FileSectionUtil::save_tree_section(os, tree);
 	os << "***\n";
-	write_polygons(os, portals);
+	FileSectionUtil::save_polygons_section(os, "Portals", portals);
 	os << "***\n";
 	FileSectionUtil::save_vis_section(os, leafVis);
 }
@@ -133,11 +133,11 @@ void FileUtil::save_level_file(const std::string& filename, const std::vector<Te
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
 
 	os << "HBSPL\n";
-	write_polygons(os, polygons);
+	FileSectionUtil::save_polygons_section(os, "Polygons", polygons);
 	os << "***\n";
 	FileSectionUtil::save_tree_section(os, tree);
 	os << "***\n";
-	write_polygons(os, portals);
+	FileSectionUtil::save_polygons_section(os, "Portals", portals);
 	os << "***\n";
 	FileSectionUtil::save_vis_section(os, leafVis);
 	os << "***\n";
@@ -164,11 +164,11 @@ Level_Ptr FileUtil::load_lit_level_file(std::istream& is)
 	std::vector<Portal_Ptr> portals;
 	LeafVisTable_Ptr leafVis;
 
-	load_polygons_section(is, polygons);
+	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	load_separator(is);
 	tree = FileSectionUtil::load_tree_section(is);
 	load_separator(is);
-	load_polygons_section(is, portals);
+	FileSectionUtil::load_polygons_section(is, "Portals", portals);
 	load_separator(is);
 	leafVis = FileSectionUtil::load_vis_section(is);
 	load_separator(is);
@@ -222,11 +222,11 @@ Level_Ptr FileUtil::load_unlit_level_file(std::istream& is)
 	std::vector<Portal_Ptr> portals;
 	LeafVisTable_Ptr leafVis;
 
-	load_polygons_section(is, polygons);
+	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	load_separator(is);
 	tree = FileSectionUtil::load_tree_section(is);
 	load_separator(is);
-	load_polygons_section(is, portals);
+	FileSectionUtil::load_polygons_section(is, "Portals", portals);
 	load_separator(is);
 	leafVis = FileSectionUtil::load_vis_section(is);
 

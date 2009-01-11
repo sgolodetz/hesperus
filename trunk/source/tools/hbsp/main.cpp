@@ -52,7 +52,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	// Save the polygons and the BSP tree to the output file.
 	std::ofstream os(outputFilename.c_str());
 	if(os.fail()) quit_with_error("Couldn't open output file for writing");
-	write_polygons(os, polygons);
+	FileSectionUtil::save_polygons_section(os, "Polygons", polygons);
 	os << "***\n";
 	FileSectionUtil::save_tree_section(os, tree);
 }

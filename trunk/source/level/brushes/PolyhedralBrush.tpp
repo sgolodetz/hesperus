@@ -33,7 +33,7 @@ std::ostream& operator<<(std::ostream& os, const PolyhedralBrush<Poly>& rhs)
 {
 	os << "{\n";
 	os << rhs.bounds().minimum() << ' ' << rhs.bounds().maximum() << '\n';
-	write_polygons(os, rhs.faces());
+	write_polygons(os, rhs.faces(), true);
 	os << "}\n";
 	return os;
 }

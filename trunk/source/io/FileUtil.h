@@ -68,9 +68,6 @@ private:
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
 
 	template <typename Poly>
-	static void load_polygons_section(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
-
-	template <typename Poly>
 	static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush(std::istream& is);
 
 	static void load_separator(std::istream& is);
