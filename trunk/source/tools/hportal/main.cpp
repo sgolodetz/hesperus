@@ -13,6 +13,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/FileUtil.h>
+#include <source/io/TreeFileUtil.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/portals/PortalGenerator.h>
 #include <source/math/geom/GeomUtil.h>
@@ -43,7 +44,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	BSPTree_Ptr tree;
 	try
 	{
-		FileUtil::load_tree_file(inputFilename, polygons, tree);
+		TreeFileUtil::load(inputFilename, polygons, tree);
 	}
 	catch(Exception& e) { quit_with_error(e.cause()); }
 

@@ -29,6 +29,7 @@ class FileSectionUtil
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;
+	friend struct TreeFileUtil;
 	friend struct VisFileUtil;
 
 	//#################### LOADING METHODS ####################
@@ -46,8 +47,8 @@ private:
 public:
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
-	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);
 private:
+	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);
 	static void save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis);
 
 	//#################### LOADING SUPPORT METHODS ####################

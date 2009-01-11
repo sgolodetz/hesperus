@@ -26,7 +26,6 @@ public:
 	template <typename Poly> static void load_onion_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, OnionTree_Ptr& tree);
 	template <typename Poly> static void load_polygons_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons);
 	static void load_portals_file(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals);
-	template <typename Poly> static void load_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree);
 
 	//#################### SAVING METHODS ####################
 public:

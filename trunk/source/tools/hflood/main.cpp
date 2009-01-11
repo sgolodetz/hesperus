@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <source/io/FileUtil.h>
+#include <source/io/TreeFileUtil.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -81,7 +82,7 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	typedef std::vector<Poly_Ptr> PolyVector;
 	PolyVector polygons;
 	BSPTree_Ptr tree;
-	FileUtil::load_tree_file(treeFilename, polygons, tree);
+	TreeFileUtil::load(treeFilename, polygons, tree);
 
 	// Load the portals.
 	int emptyLeafCount;

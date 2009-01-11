@@ -14,6 +14,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/FileSectionUtil.h>
+#include <source/io/TreeFileUtil.h>
 #include <source/level/bsp/BSPCompiler.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
@@ -50,11 +51,7 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 	BSPTree_Ptr tree = BSPCompiler::build_tree(polygons, weight);
 
 	// Save the polygons and the BSP tree to the output file.
-	std::ofstream os(outputFilename.c_str());
-	if(os.fail()) quit_with_error("Couldn't open output file for writing");
-	FileSectionUtil::save_polygons_section(os, "Polygons", polygons);
-	os << "***\n";
-	FileSectionUtil::save_tree_section(os, tree);
+	TreeFileUtil::save(outputFilename, polygons, tree);
 }
 
 int main(int argc, char *argv[])

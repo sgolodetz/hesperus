@@ -73,24 +73,6 @@ void FileUtil::load_polygons_file(const std::string& filename, std::vector<share
 }
 
 /**
-Loads the polygons and tree from the specified tree file.
-
-@param filename		The name of the tree file
-@param polygons		Used to return the polygons to the caller
-@param tree			Used to return the tree to the caller
-*/
-template <typename Poly>
-void FileUtil::load_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree)
-{
-	std::ifstream is(filename.c_str());
-	if(is.fail()) throw Exception("The tree file could not be read");
-
-	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
-	load_separator(is);
-	tree = FileSectionUtil::load_tree_section(is);
-}
-
-/**
 Saves a brushes file to disk.
 
 @param filename		The name of the file to which to save the brushes

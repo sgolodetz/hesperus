@@ -16,6 +16,7 @@ using boost::lexical_cast;
 #include <source/io/FileUtil.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
+#include <source/io/TreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -72,7 +73,7 @@ try
 	typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
 	TexPolyVector polygons;
 	BSPTree_Ptr tree;
-	FileUtil::load_tree_file(treeFilename, polygons, tree);
+	TreeFileUtil::load(treeFilename, polygons, tree);
 
 	// Load the portals.
 	int emptyLeafCount;

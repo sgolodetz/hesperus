@@ -17,6 +17,7 @@ using boost::lexical_cast;
 #include <source/io/FileUtil.h>
 #include <source/io/LightsFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
+#include <source/io/TreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -42,7 +43,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	// Read in the polygons and tree.
 	std::vector<TexturedPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;
-	FileUtil::load_tree_file(treeFilename, polygons, tree);
+	TreeFileUtil::load(treeFilename, polygons, tree);
 
 	// Read in the vis table.
 	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
