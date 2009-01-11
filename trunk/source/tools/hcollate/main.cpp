@@ -14,6 +14,7 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
 #include <source/io/FileUtil.h>
+#include <source/io/LitTreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -39,7 +40,7 @@ try
 	TexLitPolyVector polygons;
 	BSPTree_Ptr tree;
 	std::string lightmapPrefix;
-	FileUtil::load_lit_tree_file(treeFilename, polygons, tree, lightmapPrefix);
+	LitTreeFileUtil::load(treeFilename, polygons, tree, lightmapPrefix);
 
 	// Load the portals.
 	int emptyLeafCount;

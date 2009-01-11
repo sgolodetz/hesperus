@@ -61,22 +61,6 @@ void FileUtil::load_portals_file(const std::string& filename, int& emptyLeafCoun
 	FileSectionUtil::load_polygons_section(is, "Portals", portals);
 }
 
-#if 0
-/**
-Loads a leaf visibility table from the specified file.
-
-@param filename	The name of the file from which to load the visibility table
-@return			The visibility table
-*/
-LeafVisTable_Ptr FileUtil::load_vis_file(const std::string& filename)
-{
-	std::ifstream is(filename.c_str());
-	if(is.fail()) throw Exception("The vis file could not be read");
-
-	return FileSectionUtil::load_vis_section(is);
-}
-#endif
-
 /**
 Saves all the relevant pieces of information to the specified level file.
 

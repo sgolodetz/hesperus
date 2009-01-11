@@ -40,27 +40,6 @@ std::vector<shared_ptr<PolyhedralBrush<Poly> > > FileUtil::load_brushes_file(con
 }
 
 /**
-Loads the polygons, tree and lightmap prefix from the specified lit tree file.
-
-@param filename			The name of the lit tree file
-@param polygons			Used to return the polygons to the caller
-@param tree				Used to return the tree to the caller
-@param lightmapPrefix	Used to return the lightmap prefix to the caller
-*/
-template <typename Poly>
-void FileUtil::load_lit_tree_file(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree, std::string& lightmapPrefix)
-{
-	std::ifstream is(filename.c_str());
-	if(is.fail()) throw Exception("The lit tree file could not be read");
-
-	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
-	load_separator(is);
-	tree = FileSectionUtil::load_tree_section(is);
-	load_separator(is);
-	lightmapPrefix = FileSectionUtil::load_lightmap_prefix_section(is);
-}
-
-/**
 Loads the polygons and onion tree from the specified onion tree file.
 
 @param filename		The name of the onion tree file

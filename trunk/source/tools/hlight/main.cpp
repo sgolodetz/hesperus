@@ -16,6 +16,7 @@ using boost::lexical_cast;
 #include <source/io/FileSectionUtil.h>
 #include <source/io/FileUtil.h>
 #include <source/io/LightsFileUtil.h>
+#include <source/io/LitTreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -49,13 +50,6 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	// Read in the lights.
 	std::vector<Light> lights = LightsFileUtil::load(lightsFilename);
 
-	// Note:	We try and open the output file now because the lightmap generation process
-	//			is a potentially lengthy one: it would be very annoying for users if they
-	//			spent ages waiting for the calculations to finish and then found that they
-	//			couldn't be written to file.
-	std::ofstream os(outputFilename.c_str());
-	if(os.fail()) quit_with_error("Couldn't open output file for writing");
-
 	// Generate the lit polygons and lightmaps.
 	LightmapGenerator lg(polygons, lights, tree, leafVis);
 	lg.generate_lightmaps();
@@ -69,12 +63,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	LightmapVector_Ptr lightmaps = lg.lightmaps();
 
 	// Write the lit polygons, tree and lightmap prefix to the output file.
-	FileSectionUtil::save_polygons_section(os, "Polygons", *litPolygons);
-	os << "***\n";
-	FileSectionUtil::save_tree_section(os, tree);
-	os << "***\n";
-	FileSectionUtil::save_lightmap_prefix_section(os, lightmapPrefix);
-	os.close();
+	LitTreeFileUtil::save(outputFilename, *litPolygons, tree, lightmapPrefix);
 
 	// Write the lightmaps out as 24-bit bitmaps.
 	int lightmapCount = static_cast<int>(lightmaps->size());

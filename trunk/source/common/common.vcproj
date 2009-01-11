@@ -867,6 +867,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\LitTreeFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\VisFileUtil.h"
 					>
 				</File>
@@ -884,6 +888,10 @@
 				</File>
 				<File
 					RelativePath="..\io\FileUtil.tpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\LitTreeFileUtil.tpp"
 					>
 				</File>
 			</Filter>

@@ -75,6 +75,8 @@ del *.ebr
 del *.cg*
 del *.ct
 del *.cp
+del *.ot
+del *.op
 
 cd ..
 

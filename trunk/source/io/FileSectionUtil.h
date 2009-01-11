@@ -22,8 +22,16 @@ namespace hesp {
 
 class FileSectionUtil
 {
+	//#################### FRIENDS ####################
+	// We want to only allow access to the specific classes which should be doing file loading.
+	// This helps discourage random loading of data from elsewhere in the project.
+	friend class FileUtil;
+	friend struct LightsFileUtil;
+	friend struct LitTreeFileUtil;
+	friend struct VisFileUtil;
+
 	//#################### LOADING METHODS ####################
-public:
+private:
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
@@ -32,11 +40,13 @@ public:
 	static LeafVisTable_Ptr load_vis_section(std::istream& is);
 
 	//#################### SAVING METHODS ####################
-public:
+private:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
+public:
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
 	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);
+private:
 	static void save_vis_section(std::ostream& os, const LeafVisTable_Ptr& leafVis);
 
 	//#################### LOADING SUPPORT METHODS ####################
