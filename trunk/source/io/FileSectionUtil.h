@@ -46,8 +46,9 @@ public:
 public:
 	template <typename Poly> static void load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
 	template <typename Vert, typename AuxData> static shared_ptr<Polygon<Vert,AuxData> > load_polygon(const std::string& line, const std::string& n = "");
-	template <typename Vert, typename AuxData> static void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
+	template <typename Poly> static void load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
 private:
+	template <typename Vert, typename AuxData> static void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
 	static void read_line(std::istream& is, std::string& line, const std::string& description);
 	static void read_checked_line(std::istream& is, std::string& line, const std::string& expected);
 

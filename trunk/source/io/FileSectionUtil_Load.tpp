@@ -25,7 +25,11 @@ void FileSectionUtil::load_polygons_section(std::istream& is, const std::string&
 
 //#################### LOADING SUPPORT METHODS ####################
 /**
-TODO
+Loads a sequence of polygons of known length from a std::istream, one per line.
+The polygon count is stored on a separate line before the polygons.
+
+@param is		The std::istream
+@param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Poly>
 void FileSectionUtil::load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
@@ -120,6 +124,18 @@ void FileSectionUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Pol
 		++n;
 		if(n > maxToRead) break;
 	}
+}
+
+/**
+Loads a sequence of polygons of unknown length from a std::istream, one per line.
+
+@param is		The std::istream
+@param polygons	The std::vector into which to write the loaded polygons
+*/
+template <typename Poly>
+void FileSectionUtil::load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
+{
+	return load_polygons(is, polygons);
 }
 
 }
