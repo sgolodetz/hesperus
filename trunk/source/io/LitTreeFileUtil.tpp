@@ -30,7 +30,12 @@ void LitTreeFileUtil::load(const std::string& filename, std::vector<shared_ptr<P
 
 //#################### SAVING METHODS ####################
 /**
-TODO
+Saves the polygons, tree and lightmap prefix to the specified lit tree file.
+
+@param filename			The name of the lit tree file
+@param polygons			The polygons
+@param tree				The tree
+@param lightmapPrefix	The lightmap prefix
 */
 template <typename Poly>
 void LitTreeFileUtil::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons,
