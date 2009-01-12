@@ -8,6 +8,8 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
+#include <source/io/OnionTreeFileUtil.h>
+#include <source/util/PolygonTypes.h>
 using namespace hesp;
 
 //#################### FUNCTIONS ####################
@@ -25,6 +27,17 @@ void quit_with_usage()
 
 void run_generator(const std::string& inputFilename, const std::string& outputFilename)
 {
+	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
+
+	// Read in the polygons and onion tree.
+	ColPolyVector polygons;
+	OnionTree_Ptr tree;
+	OnionTreeFileUtil::load(inputFilename, polygons, tree);
+
+	// Generate the navigation mesh.
+	// TODO
+
+	// Write the navigation mesh to disk.
 	// TODO
 }
 

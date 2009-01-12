@@ -69,6 +69,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hoportal", "tools\hoportal\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hnav", "tools\hnav\hnav.vcproj", "{DB4F9436-072F-4014-B638-0293AD18F0B3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC} = {57B520D8-1A0C-4F5D-BE95-26C288CA60FC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

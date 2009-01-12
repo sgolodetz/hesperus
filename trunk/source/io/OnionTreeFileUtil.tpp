@@ -3,6 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
+#include <fstream>
+
 #include <source/exceptions/Exception.h>
 #include "FileSectionUtil.h"
 

@@ -3,7 +3,6 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
