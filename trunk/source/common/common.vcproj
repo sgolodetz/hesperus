@@ -807,6 +807,34 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="nav"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\nav\NavMesh.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\NavMeshGenerator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\nav\NavMesh.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\NavMeshGenerator.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"
