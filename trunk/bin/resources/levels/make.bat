@@ -52,7 +52,7 @@ REM #################
 
 hcollate +L %1.lbt %1.rp2 %1.vis %1.bsp
 
-REM GOTO Finished
+IF [%2]==[noclean] GOTO SkipCleanup
 
 REM #########################
 REM Cleanup Rendering Section
@@ -77,6 +77,8 @@ del *.ct
 del *.cp
 del *.ot
 del *.op
+
+:SkipCleanup
 
 cd ..
 
