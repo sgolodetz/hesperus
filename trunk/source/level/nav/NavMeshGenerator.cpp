@@ -9,9 +9,11 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTree_Ptr& tree)
+:	m_tree(tree)
 {
 	// Traverse the tree and build a map from polygons -> leaf indices.
-	// TODO
+	std::vector<int> polyToLeafMap(polygons.size());
+	build_polygon_to_leaf_map(polyToLeafMap, tree->root());
 
 	// Convert all the collision polygons into navigation polygons. Store NULL in the array
 	// for those that aren't walkable. Note that we have to keep the arrays the same size
@@ -19,6 +21,28 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTre
 	for(ColPolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
 	{
 		// TODO
+	}
+}
+
+//#################### PRIVATE METHODS ####################
+void NavMeshGenerator::build_polygon_to_leaf_map(std::vector<int>& polyToLeafMap, const OnionNode_Ptr& node)
+{
+	if(node->is_leaf())
+	{
+		OnionLeaf *leaf = node->as_leaf();
+		int leafIndex = leaf->leaf_index();
+		const std::vector<int>& polyIndices = leaf->polygon_indices();
+		int polyCount = static_cast<int>(polyIndices.size());
+		for(int i=0; i<polyCount; ++i)
+		{
+			polyToLeafMap[polyIndices[i]] = leafIndex;
+		}
+	}
+	else
+	{
+		OnionBranch *branch = node->as_branch();
+		build_polygon_to_leaf_map(polyToLeafMap, branch->left());
+		build_polygon_to_leaf_map(polyToLeafMap, branch->right());
 	}
 }
 

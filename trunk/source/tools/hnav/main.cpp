@@ -9,6 +9,7 @@
 
 #include <source/exceptions/Exception.h>
 #include <source/io/OnionTreeFileUtil.h>
+#include <source/level/nav/NavMeshGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
@@ -35,6 +36,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	OnionTreeFileUtil::load(inputFilename, polygons, tree);
 
 	// Generate the navigation mesh.
+	NavMeshGenerator generator(polygons, tree);
 	// TODO
 
 	// Write the navigation mesh to disk.
