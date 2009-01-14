@@ -10,15 +10,15 @@
 namespace hesp {
 
 //#################### GLOBAL OPERATORS ####################
-std::ostream& operator<<(std::ostream& os, const CPAuxData& rhs)
+std::ostream& operator<<(std::ostream& os, const ColPolyAuxData& rhs)
 {
-	os << rhs.walkable;
+	os << rhs.m_walkable;
 	return os;
 }
 
-std::istream& operator>>(std::istream& is, CPAuxData& rhs)
+std::istream& operator>>(std::istream& is, ColPolyAuxData& rhs)
 {
-	is >> rhs.walkable;
+	is >> rhs.m_walkable;
 	return is;
 }
 

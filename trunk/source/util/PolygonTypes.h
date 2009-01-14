@@ -23,25 +23,37 @@ We will eventually want to store the following sorts of things as well:
 
 - type of surface (for sound effects)
 */
-struct CPAuxData
+class ColPolyAuxData
 {
-	bool walkable;
+	//#################### FRIENDS ####################
+	friend std::ostream& operator<<(std::ostream& os, const ColPolyAuxData& rhs);
+	friend std::istream& operator>>(std::istream& is, ColPolyAuxData& rhs);
 
-	CPAuxData()
-	:	walkable(false)
+	//#################### PRIVATE VARIABLES ####################
+private:
+	bool m_walkable;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	ColPolyAuxData()
+	:	m_walkable(false)
 	{}
 
-	explicit CPAuxData(bool walkable_)
-	:	walkable(walkable_)
+	explicit ColPolyAuxData(bool walkable)
+	:	m_walkable(walkable)
 	{}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	bool walkable() const	{ return m_walkable; }
 };
 
 //#################### GLOBAL OPERATORS ####################
-std::ostream& operator<<(std::ostream& os, const CPAuxData& rhs);
-std::istream& operator>>(std::istream& is, CPAuxData& rhs);
+std::ostream& operator<<(std::ostream& os, const ColPolyAuxData& rhs);
+std::istream& operator>>(std::istream& is, ColPolyAuxData& rhs);
 
 //#################### TYPEDEFS ####################
-typedef Polygon<Vector3d, CPAuxData> CollisionPolygon;
+typedef Polygon<Vector3d, ColPolyAuxData> CollisionPolygon;
 typedef shared_ptr<CollisionPolygon> CollisionPolygon_Ptr;
 typedef shared_ptr<const CollisionPolygon> CollisionPolygon_CPtr;
 

@@ -20,7 +20,7 @@ class BrushExpander
 {
 	//#################### TYPEDEFS ####################
 private:
-	typedef shared_ptr<CPAuxData> CPAuxData_Ptr;
+	typedef shared_ptr<ColPolyAuxData> ColPolyAuxData_Ptr;
 
 	//#################### NESTED CLASSES ####################
 private:
@@ -28,10 +28,10 @@ private:
 	{
 		//#################### PUBLIC VARIABLES ####################
 		Plane plane;
-		CPAuxData_Ptr auxData;
+		ColPolyAuxData_Ptr auxData;
 
 		//#################### CONSTRUCTORS ####################
-		explicit BrushPlane(const Plane& plane_, const CPAuxData_Ptr auxData_ = CPAuxData_Ptr())
+		explicit BrushPlane(const Plane& plane_, const ColPolyAuxData_Ptr auxData_ = ColPolyAuxData_Ptr())
 		:	plane(plane_), auxData(auxData_)
 		{}
 

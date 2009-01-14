@@ -821,16 +821,28 @@
 						RelativePath="..\level\nav\NavMeshGenerator.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\nav\NavPolygon.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
 					>
+					<File
+						RelativePath="..\level\nav\NavLink.h"
+						>
+					</File>
 					<File
 						RelativePath="..\level\nav\NavMesh.h"
 						>
 					</File>
 					<File
 						RelativePath="..\level\nav\NavMeshGenerator.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\NavPolygon.h"
 						>
 					</File>
 				</Filter>

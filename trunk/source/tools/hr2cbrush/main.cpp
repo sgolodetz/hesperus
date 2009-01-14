@@ -40,7 +40,7 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-CPAuxData make_aux_data(const Vector3d& faceNormal)
+ColPolyAuxData make_aux_data(const Vector3d& faceNormal)
 {
 	// TODO: CPAuxData will eventually store more interesting things (see its definition).
 
@@ -48,7 +48,7 @@ CPAuxData make_aux_data(const Vector3d& faceNormal)
 	double angleToVertical = acos(faceNormal.dot(Vector3d(0,0,1)));
 	bool walkable = fabs(angleToVertical) <= MAX_ANGLE_TO_VERTICAL;
 
-	return CPAuxData(walkable);
+	return ColPolyAuxData(walkable);
 }
 
 ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)

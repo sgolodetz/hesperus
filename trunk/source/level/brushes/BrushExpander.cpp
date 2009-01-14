@@ -35,7 +35,7 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 		CollisionPolygon_Ptr face;
 		if(it->auxData)
 		{
-			face = make_universe_polygon<CPAuxData>(it->plane, *(it->auxData));
+			face = make_universe_polygon<ColPolyAuxData>(it->plane, *(it->auxData));
 		}
 		else
 		{
@@ -46,7 +46,7 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 			double angleToVertical = acos(it->plane.normal().dot(Vector3d(0,0,1)));
 			bool walkable = fabs(angleToVertical) <= MAX_ANGLE_TO_VERTICAL;
 
-			face = make_universe_polygon<CPAuxData>(it->plane, CPAuxData(walkable));
+			face = make_universe_polygon<ColPolyAuxData>(it->plane, ColPolyAuxData(walkable));
 		}
 
 		// Clip it to the other planes.
@@ -76,7 +76,7 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 				case CP_STRADDLE:
 				{
 					// The face straddles the plane, so split it and keep the bit behind it.
-					SplitResults<Vector3d,CPAuxData> sr = split_polygon(*face, jt->plane);
+					SplitResults<Vector3d,ColPolyAuxData> sr = split_polygon(*face, jt->plane);
 					face = sr.back;
 					break;
 				}
@@ -148,7 +148,7 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 	int faceCount = static_cast<int>(faces.size());
 	for(int i=0; i<faceCount; ++i)
 	{
-		CPAuxData_Ptr auxData(new CPAuxData(faces[i]->auxiliary_data()));
+		ColPolyAuxData_Ptr auxData(new ColPolyAuxData(faces[i]->auxiliary_data()));
 		brushPlanes->insert(BrushPlane(make_plane(*faces[i]), auxData));
 	}
 
