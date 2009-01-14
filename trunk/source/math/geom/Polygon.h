@@ -24,6 +24,9 @@ the texture itself.
 template <typename Vert, typename AuxData>
 class Polygon
 {
+	//#################### FRIENDS ####################
+	friend class Polygon;
+
 	//#################### TYPEDEFS ####################
 public:
 	// Expose the template arguments so that they can easily be used by client code.
@@ -41,6 +44,7 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Polygon(const std::vector<Vert>& vertices, const AuxData& auxData);
+	template <typename OtherAuxData> Polygon(const Polygon<Vert,OtherAuxData>& otherPoly, const AuxData& auxData);
 
 	//#################### PUBLIC METHODS ####################
 public:

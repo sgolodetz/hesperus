@@ -28,6 +28,18 @@ Polygon_THIS::Polygon(const std::vector<Vert>& vertices, const AuxData& auxData)
 	calculate_normal();
 }
 
+/**
+Constructs a polygon from another polygon with the same vertex type.
+
+@param otherPoly	The other polygon
+@param auxData		Auxiliary data for the new polygon
+*/
+Polygon_HEADER
+template <typename OtherAuxData>
+Polygon_THIS::Polygon(const Polygon<Vert,OtherAuxData>& otherPoly, const AuxData& auxData)
+:	m_vertices(otherPoly.m_vertices), m_normal(otherPoly.m_normal), m_auxData(auxData)
+{}
+
 //#################### PUBLIC METHODS ####################
 /**
 Returns the auxiliary data stored with the polygon.
