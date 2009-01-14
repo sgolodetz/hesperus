@@ -23,9 +23,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavPolyAuxData(const ColPolyAuxData& rhs, int leafIndex)
-	:	ColPolyAuxData(rhs.walkable()), m_leafIndex(leafIndex)
-	{}
+	NavPolyAuxData(const ColPolyAuxData& rhs, int leafIndex);
 
 	//#################### PUBLIC METHODS ####################
 public:

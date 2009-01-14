@@ -7,7 +7,7 @@
 #define H_HESP_LEVEL_NAV_NAVMESHGENERATOR
 
 #include <source/level/onionbsp/OnionTree.h>
-#include <source/util/PolygonTypes.h>
+#include "NavPolygon.h"
 
 namespace hesp {
 
@@ -16,10 +16,11 @@ class NavMeshGenerator
 	//#################### TYPEDEFS ####################
 private:
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
+	typedef std::vector<NavPolygon_Ptr> NavPolyVector;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	ColPolyVector m_polygons;
+	NavPolyVector m_polygons;
 
 	//#################### CONSTRUCTORS ####################
 public:
