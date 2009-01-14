@@ -17,9 +17,11 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTre
 	std::vector<int> polyToLeafMap(polyCount);
 	build_polygon_to_leaf_map(polyToLeafMap, tree->root());
 
-	// Convert all the collision polygons into navigation polygons. Store NULL in the array
-	// for those that aren't walkable. Note that we have to keep the arrays the same size
-	// because otherwise the polygon indices in the tree wouldn't be valid any more.
+	// Convert all the collision polygons into navigation polygons. Store NULL in the base array
+	// for those that aren't walkable. Note that we have to keep the base array the same size
+	// because otherwise the polygon indices in the tree wouldn't be valid any more. To make up
+	// for this, we maintain a separate "walkable polygons" array which we use when actually
+	// building the navigation mesh.
 	m_polygons.resize(polyCount);
 	for(int i=0; i<polyCount; ++i)
 	{
@@ -27,11 +29,29 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTre
 		{
 			NavPolyAuxData auxData(polygons[i]->auxiliary_data(), polyToLeafMap[i]);
 			m_polygons[i].reset(new NavPolygon(*polygons[i], auxData));
+			m_walkablePolygons.push_back(m_polygons[i]);
 		}
 	}
 }
 
+//#################### PUBLIC METHODS ####################
+void NavMeshGenerator::generate_mesh()
+{
+	build_edge_plane_table();
+	// TODO
+}
+
 //#################### PRIVATE METHODS ####################
+void NavMeshGenerator::build_edge_plane_table()
+{
+	int walkablePolyCount = static_cast<int>(m_walkablePolygons.size());
+
+	for(int i=0; i<walkablePolyCount; ++i)
+	{
+		// TODO
+	}
+}
+
 void NavMeshGenerator::build_polygon_to_leaf_map(std::vector<int>& polyToLeafMap, const OnionNode_Ptr& node)
 {
 	if(node->is_leaf())

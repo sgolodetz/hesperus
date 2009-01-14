@@ -814,6 +814,10 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\level\nav\EdgePlane.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\nav\NavMesh.cpp"
 						>
 					</File>
@@ -829,6 +833,10 @@
 				<Filter
 					Name=".h"
 					>
+					<File
+						RelativePath="..\level\nav\EdgePlane.h"
+						>
+					</File>
 					<File
 						RelativePath="..\level\nav\NavLink.h"
 						>
