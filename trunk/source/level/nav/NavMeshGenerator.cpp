@@ -5,11 +5,13 @@
 
 #include "NavMeshGenerator.h"
 
+#include <source/math/Constants.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTree_Ptr& tree)
-:	m_tree(tree)
+:	m_tree(tree), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
 {
 	int polyCount = static_cast<int>(polygons.size());
 
@@ -48,7 +50,15 @@ void NavMeshGenerator::build_edge_plane_table()
 
 	for(int i=0; i<walkablePolyCount; ++i)
 	{
-		// TODO
+		const NavPolygon& curPoly = *m_walkablePolygons[i];
+		int vertCount = curPoly.vertex_count();
+		for(int j=0; j<vertCount; ++j)
+		{
+			int k = (j+1)%vertCount;
+			const Vector3d& p1 = curPoly.vertex(j);
+			const Vector3d& p2 = curPoly.vertex(k);
+			m_edgePlaneTable[make_edge_plane(p1,p2)].push_back(EdgeReference(i,j));
+		}
 	}
 }
 
@@ -71,6 +81,20 @@ void NavMeshGenerator::build_polygon_to_leaf_map(std::vector<int>& polyToLeafMap
 		build_polygon_to_leaf_map(polyToLeafMap, branch->left());
 		build_polygon_to_leaf_map(polyToLeafMap, branch->right());
 	}
+}
+
+Plane NavMeshGenerator::make_edge_plane(const Vector3d& p1, const Vector3d& p2)
+{
+	// TODO:	This is very similar to BrushExpander::make_bevel_plane(). It's a good idea to
+	//			factor out the commonality at some point.
+	Vector3d u = (p2 - p1).normalize();
+	Vector3d v(0,0,1);
+	Vector3d n = u.cross(v);
+
+	if(n.length_squared() < EPSILON*EPSILON)
+		throw Exception("Bad input to the navigation mesh generator: one of the polygons was vertical");
+
+	return Plane(n, p1).to_undirected_form();
 }
 
 }
