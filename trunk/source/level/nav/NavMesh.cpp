@@ -7,6 +7,9 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+NavMesh::NavMesh(const NavPolyVector& polygons)
+:	m_polygons(polygons)
+{}
 
 }

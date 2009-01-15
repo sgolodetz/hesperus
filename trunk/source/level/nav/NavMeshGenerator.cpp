@@ -58,10 +58,15 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons)
 }
 
 //#################### PUBLIC METHODS ####################
-void NavMeshGenerator::generate_mesh()
+NavMesh_CPtr NavMeshGenerator::generate_mesh()
 {
-	build_edge_plane_table();
-	determine_links();
+	if(!m_mesh)
+	{
+		build_edge_plane_table();
+		determine_links();
+		m_mesh.reset(new NavMesh(m_walkablePolygons));
+	}
+	return m_mesh;
 }
 
 //#################### PRIVATE METHODS ####################

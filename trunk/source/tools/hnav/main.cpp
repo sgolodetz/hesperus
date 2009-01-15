@@ -37,7 +37,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 
 	// Generate the navigation mesh.
 	NavMeshGenerator generator(polygons);
-	generator.generate_mesh();
+	NavMesh_CPtr mesh = generator.generate_mesh();
 
 	// Write the navigation mesh to disk.
 	// TODO

@@ -12,7 +12,7 @@
 #include <source/math/Interval.h>
 #include <source/math/geom/UniquePlanePred.h>
 #include <source/math/vectors/Vector2d.h>
-#include "NavPolygon.h"
+#include "NavMesh.h"
 
 namespace hesp {
 
@@ -67,10 +67,11 @@ private:
 	ColPolyVector m_polygons;
 
 	// Intermediate data
+	NavPolyVector m_walkablePolygons;
 	EdgePlaneTable m_edgePlaneTable;
 
 	// Output data
-	NavPolyVector m_walkablePolygons;
+	NavMesh_Ptr m_mesh;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -78,7 +79,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void generate_mesh();
+	NavMesh_CPtr generate_mesh();
 
 	//#################### PRIVATE METHODS ####################
 private:
