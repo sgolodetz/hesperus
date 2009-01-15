@@ -378,12 +378,20 @@
 					RelativePath="..\math\Constants.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\math\Interval.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
 				>
 				<File
 					RelativePath="..\math\Constants.h"
+					>
+				</File>
+				<File
+					RelativePath="..\math\Interval.h"
 					>
 				</File>
 			</Filter>
