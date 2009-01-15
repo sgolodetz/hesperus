@@ -28,7 +28,7 @@ public:
 		m_o = nearest_point_in_plane(origin, plane);
 		m_n = plane.normal();
 		m_u = generate_specific_coplanar_unit_vector(plane);
-		m_v = m_u.cross(m_n).normalize();
+		m_v = Vector3d(0,0,1);	// == m_u.cross(m_n).normalize();
 	}
 
 	//#################### PUBLIC METHODS ####################
@@ -194,7 +194,7 @@ void NavMeshGenerator::determine_links()
 {
 	for(EdgePlaneTable::const_iterator it=m_edgePlaneTable.begin(), iend=m_edgePlaneTable.end(); it!=iend; ++it)
 	{
-		// Generate (n,u,v) coordinate system for plane.
+		// Generate (n,u,v) coordinate system for plane, where v = (0,0,1).
 		const Plane& plane = it->first;
 		OrthonormalCoordSystem2D coordSystem(plane);
 
