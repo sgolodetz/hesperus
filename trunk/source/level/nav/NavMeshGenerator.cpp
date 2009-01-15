@@ -113,6 +113,7 @@ void NavMeshGenerator::determine_links()
 			const Vector3d& p1J = colPolyJ.vertex(edgeJ.startVertex);
 			const Vector3d& p2J = colPolyJ.vertex((edgeJ.startVertex+1) % colPolyJ.vertex_count());
 			Vector2d q1J = coordSystem.from_canonical(p1J), q2J = coordSystem.from_canonical(p2J);
+			double minxJ = std::min(q1J.x, q2J.x), maxxJ = std::max(q1J.x, q2J.x);
 
 			for(int k=0; k<oppFacingEdgeRefCount; ++k)
 			{
@@ -129,7 +130,11 @@ void NavMeshGenerator::determine_links()
 				const Vector3d& p2K = colPolyK.vertex((edgeK.startVertex+1) % colPolyK.vertex_count());
 				Vector2d q1K = coordSystem.from_canonical(p1K), q2K = coordSystem.from_canonical(p2K);
 
-				// TODO: Calculate the overlap etc. between the 2D edges.
+				// Calculate the x overlap between the 2D edges. If there's no overlap,
+				// then we don't need to carry on looking for a link.
+				double minxK = std::min(q1K.x, q2K.x), maxxK = std::max(q1K.x, q2K.x);
+				if(minxK >= maxxJ || minxJ >= maxxK) continue;
+				// TODO
 
 				// TODO
 
