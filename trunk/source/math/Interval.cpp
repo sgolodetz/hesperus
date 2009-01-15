@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include <source/exceptions/Exception.h>
 #include "Constants.h"
 
 namespace hesp {
@@ -28,9 +29,21 @@ Interval::Interval(double low, double high)
 	m_empty = m_high - m_low < EPSILON;
 }
 
+/**
+Constructs an empty Interval.
+*/
+Interval::Interval()
+:	m_empty(false)
+{}
+
 //#################### PUBLIC METHODS ####################
 bool Interval::empty() const	{ return m_empty; }
-double Interval::high() const	{ return m_high; }
+
+double Interval::high() const
+{
+	if(!m_empty) return m_high;
+	else throw Exception("The interval is empty and thus has no high end");
+}
 
 /**
 Calculates the intersection of this interval with another.
@@ -40,22 +53,17 @@ Calculates the intersection of this interval with another.
 */
 Interval Interval::intersect(const Interval& rhs) const
 {
+	if(empty() || rhs.empty()) return Interval();
+
 	double largerLow = std::max(m_low, rhs.m_low);
 	double smallerHigh = std::min(m_high, rhs.m_high);
 	return Interval(largerLow, smallerHigh);
 }
 
-double Interval::low() const	{ return m_low; }
-
-/**
-Determines whether this interval overlaps another.
-
-@param rhs	The other interval
-@return		true, if they overlap, or false otherwise
-*/
-bool Interval::overlaps(const Interval& rhs) const
+double Interval::low() const
 {
-	return !(m_low >= rhs.m_high || rhs.m_low >= m_high);
+	if(!m_empty) return m_low;
+	else throw Exception("The interval is empty and thus has no low end");
 }
 
 }

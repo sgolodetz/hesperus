@@ -18,6 +18,8 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Interval(double low, double high);
+private:
+	Interval();
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -25,7 +27,6 @@ public:
 	double high() const;
 	Interval intersect(const Interval& rhs) const;
 	double low() const;
-	bool overlaps(const Interval& rhs) const;
 };
 
 }

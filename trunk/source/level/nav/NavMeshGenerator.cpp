@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include <source/math/Constants.h>
+#include <source/math/Interval.h>
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
@@ -113,7 +114,7 @@ void NavMeshGenerator::determine_links()
 			const Vector3d& p1J = colPolyJ.vertex(edgeJ.startVertex);
 			const Vector3d& p2J = colPolyJ.vertex((edgeJ.startVertex+1) % colPolyJ.vertex_count());
 			Vector2d q1J = coordSystem.from_canonical(p1J), q2J = coordSystem.from_canonical(p2J);
-			double minxJ = std::min(q1J.x, q2J.x), maxxJ = std::max(q1J.x, q2J.x);
+			Interval xIntervalJ(std::min(q1J.x,q2J.x), std::max(q1J.x,q2J.x));
 
 			for(int k=0; k<oppFacingEdgeRefCount; ++k)
 			{
@@ -132,9 +133,9 @@ void NavMeshGenerator::determine_links()
 
 				// Calculate the x overlap between the 2D edges. If there's no overlap,
 				// then we don't need to carry on looking for a link.
-				double minxK = std::min(q1K.x, q2K.x), maxxK = std::max(q1K.x, q2K.x);
-				if(minxK >= maxxJ || minxJ >= maxxK) continue;
-				// TODO
+				Interval xIntervalK(std::min(q1K.x,q2K.x), std::max(q1K.x,q2K.x));
+				Interval xOverlap = xIntervalJ.intersect(xIntervalK);
+				if(xOverlap.empty()) continue;
 
 				// TODO
 
