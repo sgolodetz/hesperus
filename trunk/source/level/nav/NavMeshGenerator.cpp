@@ -80,7 +80,8 @@ void NavMeshGenerator::determine_links()
 				if(mapIndexJ != mapIndexK) continue;
 
 				// We can early-out if the two polygons are on the same side of the plane.
-				// This will always be the case if their normals point in the same direction.
+				// This will always be the case if the normals of the edge planes point in
+				// the same direction.
 				double dotProd = edgeJ.plane.normal().dot(edgeK.plane.normal());
 				if(dotProd > 0) continue;
 
