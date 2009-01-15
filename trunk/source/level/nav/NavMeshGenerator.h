@@ -35,14 +35,15 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	// Input data
+	ColPolyVector m_polygons;
 	OnionTree_CPtr m_tree;
 
 	// Intermediate data
-	NavPolyVector m_walkablePolygons;
 	EdgePlaneTable m_edgePlaneTable;
 
-	// Intermediate/output data
-	NavPolyVector m_polygons;
+	// Output data
+	NavPolyVector m_walkablePolygons;
+	std::vector<int> m_colToNavMap;
 
 	//#################### CONSTRUCTORS ####################
 public:

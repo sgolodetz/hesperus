@@ -13,25 +13,25 @@
 
 namespace hesp {
 
-//#################### CLASSES ####################
-class NavPolyAuxData : public ColPolyAuxData
+class NavPolygon
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	int m_leafIndex;					// in which leaf the polygon resides
+	int m_polyIndex;					// the index of the collision polygon on which this is based
+	int m_leafIndex;					// the index of the leaf in which the polygon resides
 	std::vector<NavLink_Ptr> m_links;	// navigation links to other polygons
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavPolyAuxData(const ColPolyAuxData& rhs, int leafIndex);
+	NavPolygon(int polyIndex, int leafIndex);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_link(const NavLink_Ptr& link);
+	int poly_index() const;
 };
 
 //#################### TYPEDEFS ####################
-typedef Polygon<Vector3d, NavPolyAuxData> NavPolygon;
 typedef shared_ptr<NavPolygon> NavPolygon_Ptr;
 typedef shared_ptr<const NavPolygon> NavPolygon_CPtr;
 

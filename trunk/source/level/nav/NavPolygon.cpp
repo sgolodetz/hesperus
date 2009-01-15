@@ -8,15 +8,14 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-NavPolyAuxData::NavPolyAuxData(const ColPolyAuxData& rhs, int leafIndex)
-:	ColPolyAuxData(rhs.walkable()), m_leafIndex(leafIndex)
+NavPolygon::NavPolygon(int polyIndex, int leafIndex)
+:	m_polyIndex(polyIndex), m_leafIndex(leafIndex)
 {}
 
 //#################### PUBLIC METHODS ####################
-void NavPolyAuxData::add_link(const NavLink_Ptr& link)
+int NavPolygon::poly_index() const
 {
-	// NYI
-	throw 23;
+	return m_polyIndex;
 }
 
 }

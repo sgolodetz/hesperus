@@ -11,7 +11,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTree_Ptr& tree)
-:	m_tree(tree), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
+:	m_polygons(polygons), m_tree(tree), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
 {
 	int polyCount = static_cast<int>(polygons.size());
 
@@ -19,19 +19,14 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTre
 	std::vector<int> polyToLeafMap(polyCount);
 	build_polygon_to_leaf_map(polyToLeafMap, tree->root());
 
-	// Convert all the collision polygons into navigation polygons. Store NULL in the base array
-	// for those that aren't walkable. Note that we have to keep the base array the same size
-	// because otherwise the polygon indices in the tree wouldn't be valid any more. To make up
-	// for this, we maintain a separate "walkable polygons" array which we use when actually
-	// building the navigation mesh.
-	m_polygons.resize(polyCount);
+	// Construct the walkable polygon array.
+	m_colToNavMap.resize(polyCount, -1);
 	for(int i=0; i<polyCount; ++i)
 	{
-		if(polygons[i]->auxiliary_data().walkable())
+		if(m_polygons[i]->auxiliary_data().walkable())
 		{
-			NavPolyAuxData auxData(polygons[i]->auxiliary_data(), polyToLeafMap[i]);
-			m_polygons[i].reset(new NavPolygon(*polygons[i], auxData));
-			m_walkablePolygons.push_back(m_polygons[i]);
+			m_colToNavMap[i] = static_cast<int>(m_walkablePolygons.size());
+			m_walkablePolygons.push_back(NavPolygon_Ptr(new NavPolygon(i, polyToLeafMap[i])));
 		}
 	}
 }
@@ -50,7 +45,7 @@ void NavMeshGenerator::build_edge_plane_table()
 
 	for(int i=0; i<walkablePolyCount; ++i)
 	{
-		const NavPolygon& curPoly = *m_walkablePolygons[i];
+		const CollisionPolygon& curPoly = *m_polygons[m_walkablePolygons[i]->poly_index()];
 		int vertCount = curPoly.vertex_count();
 		for(int j=0; j<vertCount; ++j)
 		{
