@@ -111,14 +111,26 @@ NavMeshGenerator::calculate_link_intervals(const Vector2d& s1, const Vector2d& s
 	if(fabs(deltaM) > EPSILON)
 	{
 		// We want to find:
-		// (a) The point at which yD = yS
-		// (b) The point at which yD - yS = MAX_HEIGHT_DIFFERENCE
-		// (c) The point at which yS - yD = MAX_HEIGHT_DIFFERENCE
+		// (a) The point walkX at which yD = yS
+		// (b) The point stepUpX at which yD - yS = MAX_HEIGHT_DIFFERENCE
+		// (c) The point stepDownX at which yS - yD = MAX_HEIGHT_DIFFERENCE
 
-		// TODO
+		// (a) deltaM . walkX + deltaC = 0
+		double walkX = -deltaC / deltaM;
 
-		// NYI
-		throw 23;
+		// (b) deltaM . stepUpX + deltaC = MAX_HEIGHT_DIFFERENCE
+		double stepUpX = (MAX_HEIGHT_DIFFERENCE - deltaC) / deltaM;
+
+		// (c) deltaM . stepDownX + deltaC = -MAX_HEIGHT_DIFFERENCE
+		double stepDownX = (-MAX_HEIGHT_DIFFERENCE - deltaC) / deltaM;
+
+		// Now construct the link intervals and clip them to the known x overlap interval.
+		Interval stepDownInterval(std::min(walkX,stepDownX), std::max(walkX,stepDownX));
+		Interval stepUpInterval(std::min(walkX,stepUpX), std::max(walkX,stepUpX));
+		stepDownInterval = stepDownInterval.intersect(xOverlap);
+		stepUpInterval = stepUpInterval.intersect(xOverlap);
+		if(!stepDownInterval.empty()) linkIntervals.stepDownInterval.reset(new Interval(stepDownInterval));
+		if(!stepUpInterval.empty()) linkIntervals.stepUpInterval.reset(new Interval(stepUpInterval));
 	}
 	else
 	{
