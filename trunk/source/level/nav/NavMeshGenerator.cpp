@@ -13,6 +13,32 @@
 
 namespace hesp {
 
+//#################### LOCAL CLASSES ####################
+class OrthonormalCoordSystem2D
+{
+	//#################### PRIVATE VARIABLES ####################
+private:
+	Vector3d m_o, m_n, m_u, m_v;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	OrthonormalCoordSystem2D(const Plane& plane)
+	{
+		Vector3d origin(0,0,0);
+		m_o = nearest_point_in_plane(origin, plane);
+		m_n = plane.normal();
+		m_u = generate_specific_coplanar_unit_vector(plane);
+		m_v = m_u.cross(m_n).normalize();
+	}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	Vector2d from_canonical(const Vector3d& x) const
+	{
+		return Vector2d((x-m_o).dot(m_u), (x-m_o).dot(m_v));
+	}
+};
+
 //#################### CONSTRUCTORS ####################
 NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons)
 :	m_polygons(polygons), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
@@ -68,11 +94,7 @@ void NavMeshGenerator::determine_links()
 	{
 		// Generate (n,u,v) coordinate system for plane.
 		const Plane& plane = it->first;
-		Vector3d origin(0,0,0);
-		Vector3d centre = nearest_point_in_plane(origin, plane);
-		const Vector3d& n = plane.normal();
-		Vector3d u = generate_specific_coplanar_unit_vector(plane);
-		Vector3d v = u.cross(n).normalize();
+		OrthonormalCoordSystem2D coordSystem(plane);
 
 		// Check pairs of different-facing edges to see whether we need to create any links.
 		const EdgeReferences& sameFacingEdgeRefs = it->second.sameFacing;
@@ -85,23 +107,29 @@ void NavMeshGenerator::determine_links()
 			const EdgeReference& edgeJ = sameFacingEdgeRefs[j];
 			const NavPolygon& navPolyJ = *m_walkablePolygons[edgeJ.polyIndex];
 			const CollisionPolygon& colPolyJ = *m_polygons[navPolyJ.poly_index()];
-			int vertCountJ = colPolyJ.vertex_count();
 			int mapIndexJ = colPolyJ.auxiliary_data().map_index();
-			const Vector3d& p1J = colPolyJ.vertex(edgeJ.startVertex);	const Vector3d& p2J = colPolyJ.vertex((edgeJ.startVertex+1)%vertCountJ);
-			Vector2d q1J((p1J-centre).dot(u), (p1J-centre).dot(v));		Vector2d q2J((p2J-centre).dot(u), (p2J-centre).dot(v));
+
+			// Calculate the 2D coordinates of edgeJ in the plane.
+			const Vector3d& p1J = colPolyJ.vertex(edgeJ.startVertex);
+			const Vector3d& p2J = colPolyJ.vertex((edgeJ.startVertex+1) % colPolyJ.vertex_count());
+			Vector2d q1J = coordSystem.from_canonical(p1J), q2J = coordSystem.from_canonical(p2J);
 
 			for(int k=0; k<oppFacingEdgeRefCount; ++k)
 			{
 				const EdgeReference& edgeK = oppFacingEdgeRefs[k];
 				const NavPolygon& navPolyK = *m_walkablePolygons[edgeK.polyIndex];
 				const CollisionPolygon& colPolyK = *m_polygons[navPolyK.poly_index()];
-				int vertCountK = colPolyK.vertex_count();
 				int mapIndexK = colPolyK.auxiliary_data().map_index();
-				const Vector3d& p1K = colPolyK.vertex(edgeK.startVertex);	const Vector3d& p2K = colPolyK.vertex((edgeK.startVertex+1)%vertCountK);
-				Vector2d q1K((p1K-centre).dot(u), (p1K-centre).dot(v));		Vector2d q2K((p2K-centre).dot(u), (p2K-centre).dot(v));
 
 				// We only want to create links between polygons in the same map.
 				if(mapIndexJ != mapIndexK) continue;
+
+				// Calculate the 2D coordinates of edgeK in the plane.
+				const Vector3d& p1K = colPolyK.vertex(edgeK.startVertex);
+				const Vector3d& p2K = colPolyK.vertex((edgeK.startVertex+1) % colPolyK.vertex_count());
+				Vector2d q1K = coordSystem.from_canonical(p1K), q2K = coordSystem.from_canonical(p2K);
+
+				// TODO: Calculate the overlap etc. between the 2D edges.
 
 				// TODO
 
