@@ -17,17 +17,17 @@ class NavPolygon
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	int m_polyIndex;					// the index of the collision polygon on which this is based
+	int m_colPolyIndex;					// the index of the collision polygon on which this is based
 	std::vector<NavLink_Ptr> m_links;	// navigation links to other polygons
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit NavPolygon(int polyIndex);
+	explicit NavPolygon(int colPolyIndex);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_link(const NavLink_Ptr& link);
-	int poly_index() const;
+	int collision_poly_index() const;
 };
 
 //#################### TYPEDEFS ####################

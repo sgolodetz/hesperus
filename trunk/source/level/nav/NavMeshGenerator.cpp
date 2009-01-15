@@ -37,6 +37,11 @@ public:
 	{
 		return Vector2d((x-m_o).dot(m_u), (x-m_o).dot(m_v));
 	}
+
+	Vector3d to_canonical(const Vector2d& x) const
+	{
+		return m_o + x.x*m_u + x.y*m_v;
+	}
 };
 
 //#################### CONSTRUCTORS ####################
@@ -70,7 +75,7 @@ void NavMeshGenerator::build_edge_plane_table()
 
 	for(int i=0; i<walkablePolyCount; ++i)
 	{
-		const CollisionPolygon& curPoly = *m_polygons[m_walkablePolygons[i]->poly_index()];
+		const CollisionPolygon& curPoly = *m_polygons[m_walkablePolygons[i]->collision_poly_index()];
 		int vertCount = curPoly.vertex_count();
 		for(int j=0; j<vertCount; ++j)
 		{
@@ -202,8 +207,8 @@ void NavMeshGenerator::determine_links()
 		for(int j=0; j<sameFacingEdgeRefCount; ++j)
 		{
 			const EdgeReference& edgeJ = sameFacingEdgeRefs[j];
-			const NavPolygon& navPolyJ = *m_walkablePolygons[edgeJ.polyIndex];
-			const CollisionPolygon& colPolyJ = *m_polygons[navPolyJ.poly_index()];
+			NavPolygon& navPolyJ = *m_walkablePolygons[edgeJ.navPolyIndex];
+			const CollisionPolygon& colPolyJ = *m_polygons[navPolyJ.collision_poly_index()];
 			int mapIndexJ = colPolyJ.auxiliary_data().map_index();
 
 			// Calculate the 2D coordinates of edgeJ in the plane.
@@ -215,8 +220,8 @@ void NavMeshGenerator::determine_links()
 			for(int k=0; k<oppFacingEdgeRefCount; ++k)
 			{
 				const EdgeReference& edgeK = oppFacingEdgeRefs[k];
-				const NavPolygon& navPolyK = *m_walkablePolygons[edgeK.polyIndex];
-				const CollisionPolygon& colPolyK = *m_polygons[navPolyK.poly_index()];
+				NavPolygon& navPolyK = *m_walkablePolygons[edgeK.navPolyIndex];
+				const CollisionPolygon& colPolyK = *m_polygons[navPolyK.collision_poly_index()];
 				int mapIndexK = colPolyK.auxiliary_data().map_index();
 
 				// We only want to create links between polygons in the same map.
@@ -240,23 +245,43 @@ void NavMeshGenerator::determine_links()
 				if(linkSegments.stepDownSourceToDestSegment)
 				{
 					assert(linkSegments.stepUpDestToSourceSegment != NULL);
-					// TODO: Add a step down link from j -> k, and a step up one from k -> j.
-					std::cout << "Step Down: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ
-							  << " : " << linkSegments.stepDownSourceToDestSegment->p1 << ' ' << linkSegments.stepDownSourceToDestSegment->p2 << '\n';
+
+					// Add a step down link from j -> k, and a step up one from k -> j.
+					{
+						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->p1);
+						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->p2);
+						navPolyJ.add_link(NavLink_Ptr(new StepDownLink(mapIndexJ, edgeK.navPolyIndex, p1, p2)));
+					}
+					{
+						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->p1);
+						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->p2);
+						navPolyK.add_link(NavLink_Ptr(new StepUpLink(mapIndexJ, edgeJ.navPolyIndex, p1, p2)));
+					}
 				}
 				if(linkSegments.stepUpSourceToDestSegment)
 				{
 					assert(linkSegments.stepDownDestToSourceSegment != NULL);
-					// TODO: Add a step up link from j -> k, and a step down one from k -> j.
-					//std::cout << "Step Up: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.stepUpInterval << '\n';
+
+					// Add a step up link from j -> k, and a step down one from k -> j.
+					{
+						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->p1);
+						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->p2);
+						navPolyJ.add_link(NavLink_Ptr(new StepUpLink(mapIndexJ, edgeK.navPolyIndex, p1, p2)));
+					}
+					{
+						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->p1);
+						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->p2);
+						navPolyK.add_link(NavLink_Ptr(new StepDownLink(mapIndexJ, edgeJ.navPolyIndex, p1, p2)));
+					}
 				}
 				if(linkSegments.walkSegment)
 				{
-					// TODO: Add a walk link from j -> k, and one from k -> j.
-					//std::cout << "Walk: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.walkInterval << '\n';
+					// Add a walk link from j -> k, and one from k -> j.
+					Vector3d p1 = coordSystem.to_canonical(linkSegments.walkSegment->p1);
+					Vector3d p2 = coordSystem.to_canonical(linkSegments.walkSegment->p2);
+					navPolyJ.add_link(NavLink_Ptr(new WalkLink(mapIndexJ, edgeK.navPolyIndex, p1, p2)));
+					navPolyK.add_link(NavLink_Ptr(new WalkLink(mapIndexJ, edgeJ.navPolyIndex, p1, p2)));
 				}
-
-				//std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
 			}
 		}
 	}

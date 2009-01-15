@@ -8,11 +8,12 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-NavPolygon::NavPolygon(int polyIndex)
-:	m_polyIndex(polyIndex)
+NavPolygon::NavPolygon(int colPolyIndex)
+:	m_colPolyIndex(colPolyIndex)
 {}
 
 //#################### PUBLIC METHODS ####################
-int NavPolygon::poly_index() const	{ return m_polyIndex; }
+void NavPolygon::add_link(const NavLink_Ptr& link)	{ m_links.push_back(link); }
+int NavPolygon::collision_poly_index() const		{ return m_colPolyIndex; }
 
 }

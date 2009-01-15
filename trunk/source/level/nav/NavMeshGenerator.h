@@ -22,10 +22,10 @@ class NavMeshGenerator
 private:
 	struct EdgeReference
 	{
-		int polyIndex;		// the index of the nav polygon in which this edge resides
+		int navPolyIndex;	// the index of the nav polygon in which this edge resides
 		int startVertex;
 
-		EdgeReference(int polyIndex_, int startVertex_) : polyIndex(polyIndex_), startVertex(startVertex_) {}
+		EdgeReference(int navPolyIndex_, int startVertex_) : navPolyIndex(navPolyIndex_), startVertex(startVertex_) {}
 	};
 
 	typedef std::vector<EdgeReference> EdgeReferences;
@@ -54,16 +54,6 @@ private:
 		LinkSegment_Ptr stepUpDestToSourceSegment;
 		LinkSegment_Ptr walkSegment;
 	};
-
-#if 0
-	struct LinkIntervals
-	{
-		// TODO: We can add jump down and jump up intervals here if we want.
-		Interval_Ptr stepDownInterval;
-		Interval_Ptr stepUpInterval;
-		Interval_Ptr walkInterval;
-	};
-#endif
 
 	//#################### TYPEDEFS ####################
 private:
