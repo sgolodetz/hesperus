@@ -5,9 +5,6 @@
 
 #include "NavMeshGenerator.h"
 
-// TEMPORARY
-#include <iostream>
-
 #include <source/math/Constants.h>
 #include <source/math/geom/GeomUtil.h>
 
@@ -55,7 +52,6 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons)
 	{
 		if(m_polygons[i]->auxiliary_data().walkable())
 		{
-			m_colToNavMap[i] = static_cast<int>(m_walkablePolygons.size());
 			m_walkablePolygons.push_back(NavPolygon_Ptr(new NavPolygon(i)));
 		}
 	}

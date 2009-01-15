@@ -71,7 +71,6 @@ private:
 
 	// Output data
 	NavPolyVector m_walkablePolygons;
-	std::map<int,int> m_colToNavMap;
 
 	//#################### CONSTRUCTORS ####################
 public:
