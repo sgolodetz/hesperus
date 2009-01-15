@@ -51,7 +51,12 @@ void NavMeshGenerator::build_edge_plane_table()
 			const Vector3d& p1 = curPoly.vertex(j);
 			const Vector3d& p2 = curPoly.vertex(k);
 			Plane edgePlane = make_edge_plane(p1,p2);
-			m_edgePlaneTable[edgePlane.to_undirected_form()].push_back(EdgeReference(i,j,edgePlane));
+			Plane undirectedEdgePlane = edgePlane.to_undirected_form();
+			bool sameFacing = edgePlane.normal().dot(undirectedEdgePlane.normal()) > 0;
+			if(sameFacing)
+				m_edgePlaneTable[undirectedEdgePlane].sameFacing.push_back(EdgeReference(i,j));
+			else
+				m_edgePlaneTable[undirectedEdgePlane].oppFacing.push_back(EdgeReference(i,j));
 		}
 	}
 }
@@ -62,28 +67,25 @@ void NavMeshGenerator::determine_links()
 	{
 		// TODO: Generate coordinate system for plane.
 
-		const EdgeReferences& edgeRefs = it->second;
-		int edgeRefCount = static_cast<int>(edgeRefs.size());
-		for(int j=0; j<edgeRefCount-1; ++j)
+		const EdgeReferences& sameFacingEdgeRefs = it->second.sameFacing;
+		const EdgeReferences& oppFacingEdgeRefs = it->second.oppFacing;
+		int sameFacingEdgeRefCount = static_cast<int>(sameFacingEdgeRefs.size());
+		int oppFacingEdgeRefCount = static_cast<int>(oppFacingEdgeRefs.size());
+
+		for(int j=0; j<sameFacingEdgeRefCount; ++j)
 		{
-			const EdgeReference& edgeJ = edgeRefs[j];
+			const EdgeReference& edgeJ = sameFacingEdgeRefs[j];
 			const NavPolygon& polyJ = *m_walkablePolygons[edgeJ.polyIndex];
 			int mapIndexJ = m_polygons[polyJ.poly_index()]->auxiliary_data().map_index();
 
-			for(int k=j+1; k<edgeRefCount; ++k)
+			for(int k=0; k<oppFacingEdgeRefCount; ++k)
 			{
-				const EdgeReference& edgeK = edgeRefs[k];
+				const EdgeReference& edgeK = oppFacingEdgeRefs[k];
 				const NavPolygon& polyK = *m_walkablePolygons[edgeK.polyIndex];
 				int mapIndexK = m_polygons[polyK.poly_index()]->auxiliary_data().map_index();
 
 				// We only want to create links between polygons in the same map.
 				if(mapIndexJ != mapIndexK) continue;
-
-				// We can early-out if the two polygons are on the same side of the plane.
-				// This will always be the case if the normals of the edge planes point in
-				// the same direction.
-				double dotProd = edgeJ.plane.normal().dot(edgeK.plane.normal());
-				if(dotProd > 0) continue;
 
 				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
 			}

@@ -21,18 +21,23 @@ private:
 	struct EdgeReference
 	{
 		int polyIndex, startVertex;
-		Plane plane;
 
-		EdgeReference(int polyIndex_, int startVertex_, const Plane& plane_)
-		:	polyIndex(polyIndex_), startVertex(startVertex_), plane(plane_) {}
+		EdgeReference(int polyIndex_, int startVertex_) : polyIndex(polyIndex_), startVertex(startVertex_) {}
+	};
+
+	typedef std::vector<EdgeReference> EdgeReferences;
+
+	struct EdgeReferencesPair
+	{
+		EdgeReferences sameFacing;	// the edge planes for these edges face the same way as the undirected edge planes
+		EdgeReferences oppFacing;	// the edge planes for these edges face the opposite way to the undirected edge planes
 	};
 
 	//#################### TYPEDEFS ####################
 private:
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 	typedef std::vector<NavPolygon_Ptr> NavPolyVector;
-	typedef std::vector<EdgeReference> EdgeReferences;
-	typedef std::map<Plane,EdgeReferences,UniquePlanePred> EdgePlaneTable;
+	typedef std::map<Plane,EdgeReferencesPair,UniquePlanePred> EdgePlaneTable;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
