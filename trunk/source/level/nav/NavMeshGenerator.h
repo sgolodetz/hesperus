@@ -73,8 +73,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_edge_plane_table();
-	LinkIntervals calculate_link_intervals(const Vector2d& s1, const Vector2d& s2,
-										   const Vector2d& d1, const Vector2d& d2) const;
+	LinkIntervals calculate_link_intervals(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2, const Interval& xOverlap) const;
 	void determine_links();
 	static Plane make_edge_plane(const Vector3d& p1, const Vector3d& p2);
 };

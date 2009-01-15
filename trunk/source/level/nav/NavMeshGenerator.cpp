@@ -89,12 +89,60 @@ void NavMeshGenerator::build_edge_plane_table()
 }
 
 NavMeshGenerator::LinkIntervals
-NavMeshGenerator::calculate_link_intervals(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2) const
+NavMeshGenerator::calculate_link_intervals(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2,
+										   const Interval& xOverlap) const
 {
+	const double MAX_HEIGHT_DIFFERENCE = 1.0;	// FIXME: This depends on the player and should be a parameter.
+
 	LinkIntervals linkIntervals;
 
-	// NYI
-	throw 23;
+	// Calculate the line equations yS = mS.x + cS and yD = mD.x + cD.
+	assert(fabs(s2.x - s1.x) > EPSILON);
+	assert(fabs(d2.x - d1.x) > EPSILON);
+
+	double mS = (s2.y - s1.y) / (s2.x - s1.x);
+	double mD = (d2.y - d1.y) / (d2.x - d1.x);
+	double cS = s1.y - mS * s1.x;
+	double cD = d1.y - mD * d1.x;
+
+	double deltaM = mD - mS;
+	double deltaC = cD - cS;
+
+	if(fabs(deltaM) > EPSILON)
+	{
+		// We want to find:
+		// (a) The point at which yD = yS
+		// (b) The point at which yD - yS = MAX_HEIGHT_DIFFERENCE
+		// (c) The point at which yS - yD = MAX_HEIGHT_DIFFERENCE
+
+		// TODO
+
+		// NYI
+		throw 23;
+	}
+	else
+	{
+		// The lines are parallel.
+		if(deltaC < MAX_HEIGHT_DIFFERENCE)
+		{
+			// There's a link between the lines, but we need to check the sign of deltaC to see which type.
+			if(deltaC > SMALL_EPSILON)
+			{
+				// The destination is higher than the source: step up.
+				linkIntervals.stepUpInterval.reset(new Interval(xOverlap));
+			}
+			else if(deltaC < -SMALL_EPSILON)
+			{
+				// The destination is lower than the source: step down.
+				linkIntervals.stepDownInterval.reset(new Interval(xOverlap));
+			}
+			else	// |deltaC| < SMALL_EPSILON
+			{
+				// The destination and source are at the same level: just walk across.
+				linkIntervals.walkInterval.reset(new Interval(xOverlap));
+			}
+		}
+	}
 
 	return linkIntervals;
 }
@@ -148,7 +196,7 @@ void NavMeshGenerator::determine_links()
 				if(xOverlap.empty()) continue;
 
 				// Calculate the intervals for the various types of link.
-				LinkIntervals linkIntervals = calculate_link_intervals(q1J, q2J, q1K, q2K);
+				LinkIntervals linkIntervals = calculate_link_intervals(q1J, q2J, q1K, q2K, xOverlap);
 
 				// Add the appropriate links.
 				if(linkIntervals.stepDownInterval)
