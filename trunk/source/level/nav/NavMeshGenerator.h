@@ -36,6 +36,26 @@ private:
 		EdgeReferences oppFacing;	// the edge planes for these edges face the opposite way to the undirected edge planes
 	};
 
+	struct LinkSegment
+	{
+		Vector2d p1, p2;
+
+		LinkSegment(const Vector2d& p1_, const Vector2d& p2_) : p1(p1_), p2(p2_) {}
+	};
+
+	typedef shared_ptr<LinkSegment> LinkSegment_Ptr;
+
+	struct LinkSegments
+	{
+		// TODO: We can add jump down and jump up segments here if we want.
+		LinkSegment_Ptr stepDownSourceToDestSegment;
+		LinkSegment_Ptr stepDownDestToSourceSegment;
+		LinkSegment_Ptr stepUpSourceToDestSegment;
+		LinkSegment_Ptr stepUpDestToSourceSegment;
+		LinkSegment_Ptr walkSegment;
+	};
+
+#if 0
 	struct LinkIntervals
 	{
 		// TODO: We can add jump down and jump up intervals here if we want.
@@ -43,6 +63,7 @@ private:
 		Interval_Ptr stepUpInterval;
 		Interval_Ptr walkInterval;
 	};
+#endif
 
 	//#################### TYPEDEFS ####################
 private:
@@ -73,7 +94,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_edge_plane_table();
-	LinkIntervals calculate_link_intervals(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2, const Interval& xOverlap) const;
+	LinkSegments calculate_link_segments(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2, const Interval& xOverlap) const;
 	void determine_links();
 	static Plane make_edge_plane(const Vector3d& p1, const Vector3d& p2);
 };

@@ -88,13 +88,13 @@ void NavMeshGenerator::build_edge_plane_table()
 	}
 }
 
-NavMeshGenerator::LinkIntervals
-NavMeshGenerator::calculate_link_intervals(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2,
-										   const Interval& xOverlap) const
+NavMeshGenerator::LinkSegments
+NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2,
+										  const Interval& xOverlap) const
 {
 	const double MAX_HEIGHT_DIFFERENCE = 1.0;	// FIXME: This depends on the player and should be a parameter.
 
-	LinkIntervals linkIntervals;
+	LinkSegments linkSegments;
 
 	// Calculate the line equations yS = mS.x + cS and yD = mD.x + cD.
 	assert(fabs(s2.x - s1.x) > EPSILON);
@@ -129,34 +129,60 @@ NavMeshGenerator::calculate_link_intervals(const Vector2d& s1, const Vector2d& s
 		Interval stepUpInterval(std::min(walkX,stepUpX), std::max(walkX,stepUpX));
 		stepDownInterval = stepDownInterval.intersect(xOverlap);
 		stepUpInterval = stepUpInterval.intersect(xOverlap);
-		if(!stepDownInterval.empty()) linkIntervals.stepDownInterval.reset(new Interval(stepDownInterval));
-		if(!stepUpInterval.empty()) linkIntervals.stepUpInterval.reset(new Interval(stepUpInterval));
+
+		// Finally, construct the link segments from the link intervals.
+		if(!stepDownInterval.empty())
+		{
+			Vector2d sL(stepDownInterval.low(), mS*stepDownInterval.low()+cS);
+			Vector2d sH(stepDownInterval.high(), mS*stepDownInterval.high()+cS);
+			linkSegments.stepDownSourceToDestSegment.reset(new LinkSegment(sL,sH));
+
+			Vector2d dL(stepDownInterval.low(), mD*stepDownInterval.low()+cD);
+			Vector2d dH(stepDownInterval.high(), mD*stepDownInterval.high()+cD);
+			linkSegments.stepUpDestToSourceSegment.reset(new LinkSegment(dL,dH));
+		}
+
+		if(!stepUpInterval.empty())
+		{
+			Vector2d sL(stepUpInterval.low(), mS*stepUpInterval.low()+cS);
+			Vector2d sH(stepUpInterval.high(), mS*stepUpInterval.high()+cS);
+			linkSegments.stepUpSourceToDestSegment.reset(new LinkSegment(sL,sH));
+
+			Vector2d dL(stepUpInterval.low(), mD*stepUpInterval.low()+cD);
+			Vector2d dH(stepUpInterval.high(), mD*stepUpInterval.high()+cD);
+			linkSegments.stepDownDestToSourceSegment.reset(new LinkSegment(dL,dH));
+		}
 	}
 	else
 	{
 		// The lines are parallel.
 		if(deltaC < MAX_HEIGHT_DIFFERENCE)
 		{
+			Vector2d p1(xOverlap.low(), mS*xOverlap.low()+cS);
+			Vector2d p2(xOverlap.high(), mS*xOverlap.high()+cS);
+
 			// There's a link between the lines, but we need to check the sign of deltaC to see which type.
 			if(deltaC > SMALL_EPSILON)
 			{
 				// The destination is higher than the source: step up.
-				linkIntervals.stepUpInterval.reset(new Interval(xOverlap));
+				linkSegments.stepUpSourceToDestSegment.reset(new LinkSegment(p1,p2));
+				linkSegments.stepDownDestToSourceSegment.reset(new LinkSegment(p1,p2));
 			}
 			else if(deltaC < -SMALL_EPSILON)
 			{
 				// The destination is lower than the source: step down.
-				linkIntervals.stepDownInterval.reset(new Interval(xOverlap));
+				linkSegments.stepDownSourceToDestSegment.reset(new LinkSegment(p1,p2));
+				linkSegments.stepUpDestToSourceSegment.reset(new LinkSegment(p1,p2));
 			}
 			else	// |deltaC| < SMALL_EPSILON
 			{
 				// The destination and source are at the same level: just walk across.
-				linkIntervals.walkInterval.reset(new Interval(xOverlap));
+				linkSegments.walkSegment.reset(new LinkSegment(p1,p2));
 			}
 		}
 	}
 
-	return linkIntervals;
+	return linkSegments;
 }
 
 void NavMeshGenerator::determine_links()
@@ -207,24 +233,27 @@ void NavMeshGenerator::determine_links()
 				Interval xOverlap = xIntervalJ.intersect(xIntervalK);
 				if(xOverlap.empty()) continue;
 
-				// Calculate the intervals for the various types of link.
-				LinkIntervals linkIntervals = calculate_link_intervals(q1J, q2J, q1K, q2K, xOverlap);
+				// Calculate the segments for the various types of link.
+				LinkSegments linkSegments = calculate_link_segments(q1J, q2J, q1K, q2K, xOverlap);
 
 				// Add the appropriate links.
-				if(linkIntervals.stepDownInterval)
+				if(linkSegments.stepDownSourceToDestSegment)
 				{
+					assert(linkSegments.stepUpDestToSourceSegment != NULL);
 					// TODO: Add a step down link from j -> k, and a step up one from k -> j.
-					std::cout << "Step Down: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.stepDownInterval << '\n';
+					std::cout << "Step Down: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ
+							  << " : " << linkSegments.stepDownSourceToDestSegment->p1 << ' ' << linkSegments.stepDownSourceToDestSegment->p2 << '\n';
 				}
-				if(linkIntervals.stepUpInterval)
+				if(linkSegments.stepUpSourceToDestSegment)
 				{
+					assert(linkSegments.stepDownDestToSourceSegment != NULL);
 					// TODO: Add a step up link from j -> k, and a step down one from k -> j.
-					std::cout << "Step Up: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.stepUpInterval << '\n';
+					//std::cout << "Step Up: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.stepUpInterval << '\n';
 				}
-				if(linkIntervals.walkInterval)
+				if(linkSegments.walkSegment)
 				{
 					// TODO: Add a walk link from j -> k, and one from k -> j.
-					std::cout << "Walk: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.walkInterval << '\n';
+					//std::cout << "Walk: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.walkInterval << '\n';
 				}
 
 				//std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
