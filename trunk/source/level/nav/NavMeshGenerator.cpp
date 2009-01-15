@@ -70,6 +70,14 @@ NavMesh_Ptr NavMeshGenerator::generate_mesh()
 }
 
 //#################### PRIVATE METHODS ####################
+/**
+Builds the edge plane table. This tells us, for each (undirected) vertical
+plane running through a nav polygon edge, which edges lie in it. We split
+them into edges whose directed edge plane faces the same way as the undirected
+one, and those whose directed edge plane faces the opposite way. The purpose
+of this is to make sure we only look for links between nav polygons on either
+side of the undirected plane.
+*/
 void NavMeshGenerator::build_edge_plane_table()
 {
 	int walkablePolyCount = static_cast<int>(m_walkablePolygons.size());
@@ -128,10 +136,13 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 
 	if(fabs(deltaM) > EPSILON)
 	{
+		// If the gradients of the source and destination edges are different, then we get
+		// a combination of step up/step down links.
+
 		// We want to find:
 		// (a) The point walkX at which yD = yS
-		// (b) The point stepUpX at which yD - yS = MAX_HEIGHT_DIFFERENCE
-		// (c) The point stepDownX at which yS - yD = MAX_HEIGHT_DIFFERENCE
+		// (b) The point stepUpX at which yD - yS = MAX_HEIGHT_DIFFERENCE (this is the furthest point at which you can step up)
+		// (c) The point stepDownX at which yS - yD = MAX_HEIGHT_DIFFERENCE (this is the furthest point at which you can step down)
 
 		// (a) deltaM . walkX + deltaC = 0
 		double walkX = -deltaC / deltaM;
@@ -173,7 +184,8 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 	}
 	else
 	{
-		// The lines are parallel.
+		// If the gradients of the source and destination edges are the same (i.e. the edges are parallel),
+		// then we either get a step up/step down combination, or a walk link in either direction.
 		if(deltaC < MAX_HEIGHT_DIFFERENCE)
 		{
 			Vector2d p1(xOverlap.low(), mS*xOverlap.low()+cS);
