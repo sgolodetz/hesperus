@@ -9,7 +9,9 @@
 #include <map>
 
 #include <source/level/onionbsp/OnionTree.h>
+#include <source/math/Interval.h>
 #include <source/math/geom/UniquePlanePred.h>
+#include <source/math/vectors/Vector2d.h>
 #include "NavPolygon.h"
 
 namespace hesp {
@@ -32,6 +34,14 @@ private:
 	{
 		EdgeReferences sameFacing;	// the edge planes for these edges face the same way as the undirected edge planes
 		EdgeReferences oppFacing;	// the edge planes for these edges face the opposite way to the undirected edge planes
+	};
+
+	struct LinkIntervals
+	{
+		// TODO: We can add jump down and jump up intervals here if we want.
+		Interval_Ptr stepDownInterval;
+		Interval_Ptr stepUpInterval;
+		Interval_Ptr walkInterval;
 	};
 
 	//#################### TYPEDEFS ####################
@@ -63,6 +73,8 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_edge_plane_table();
+	LinkIntervals calculate_link_intervals(const Vector2d& s1, const Vector2d& s2,
+										   const Vector2d& d1, const Vector2d& d2) const;
 	void determine_links();
 	static Plane make_edge_plane(const Vector3d& p1, const Vector3d& p2);
 };

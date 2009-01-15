@@ -6,6 +6,9 @@
 #ifndef H_HESP_MATH_INTERVAL
 #define H_HESP_MATH_INTERVAL
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 namespace hesp {
 
 class Interval
@@ -28,6 +31,9 @@ public:
 	Interval intersect(const Interval& rhs) const;
 	double low() const;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Interval> Interval_Ptr;
 
 }
 

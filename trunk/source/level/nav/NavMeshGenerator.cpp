@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include <source/math/Constants.h>
-#include <source/math/Interval.h>
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
@@ -89,6 +88,17 @@ void NavMeshGenerator::build_edge_plane_table()
 	}
 }
 
+NavMeshGenerator::LinkIntervals
+NavMeshGenerator::calculate_link_intervals(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2) const
+{
+	LinkIntervals linkIntervals;
+
+	// NYI
+	throw 23;
+
+	return linkIntervals;
+}
+
 void NavMeshGenerator::determine_links()
 {
 	for(EdgePlaneTable::const_iterator it=m_edgePlaneTable.begin(), iend=m_edgePlaneTable.end(); it!=iend; ++it)
@@ -137,7 +147,22 @@ void NavMeshGenerator::determine_links()
 				Interval xOverlap = xIntervalJ.intersect(xIntervalK);
 				if(xOverlap.empty()) continue;
 
-				// TODO
+				// Calculate the intervals for the various types of link.
+				LinkIntervals linkIntervals = calculate_link_intervals(q1J, q2J, q1K, q2K);
+
+				// Add the appropriate links.
+				if(linkIntervals.stepDownInterval)
+				{
+					// TODO: Add a step down link from j -> k, and a step up one from k -> j.
+				}
+				if(linkIntervals.stepUpInterval)
+				{
+					// TODO: Add a step up link from j -> k, and a step down one from k -> j.
+				}
+				if(linkIntervals.walkInterval)
+				{
+					// TODO: Add a walk link from j -> k, and one from k -> j.
+				}
 
 				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
 			}
