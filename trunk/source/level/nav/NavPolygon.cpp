@@ -8,12 +8,11 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-NavPolygon::NavPolygon(int polyIndex, int leafIndex)
-:	m_polyIndex(polyIndex), m_leafIndex(leafIndex)
+NavPolygon::NavPolygon(int polyIndex)
+:	m_polyIndex(polyIndex)
 {}
 
 //#################### PUBLIC METHODS ####################
-int NavPolygon::leaf_index() const	{ return m_leafIndex; }
 int NavPolygon::poly_index() const	{ return m_polyIndex; }
 
 }

@@ -46,6 +46,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	int map_index() const				{ return m_mapIndex; }
 	void set_map_index(int mapIndex)	{ m_mapIndex = mapIndex; }
 	bool walkable() const				{ return m_walkable; }
 };

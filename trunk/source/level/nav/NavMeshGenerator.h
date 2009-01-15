@@ -56,7 +56,6 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_edge_plane_table();
-	void build_polygon_to_leaf_map(std::vector<int>& polyToLeafMap, const OnionNode_Ptr& node);
 	void determine_links();
 	static Plane make_edge_plane(const Vector3d& p1, const Vector3d& p2);
 };

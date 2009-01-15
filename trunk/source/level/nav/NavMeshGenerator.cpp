@@ -18,17 +18,13 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTre
 {
 	int polyCount = static_cast<int>(polygons.size());
 
-	// Traverse the tree and build a map from polygons -> leaf indices.
-	std::vector<int> polyToLeafMap(polyCount);
-	build_polygon_to_leaf_map(polyToLeafMap, tree->root());
-
 	// Construct the walkable polygon array.
 	for(int i=0; i<polyCount; ++i)
 	{
 		if(m_polygons[i]->auxiliary_data().walkable())
 		{
 			m_colToNavMap[i] = static_cast<int>(m_walkablePolygons.size());
-			m_walkablePolygons.push_back(NavPolygon_Ptr(new NavPolygon(i, polyToLeafMap[i])));
+			m_walkablePolygons.push_back(NavPolygon_Ptr(new NavPolygon(i)));
 		}
 	}
 }
@@ -59,27 +55,6 @@ void NavMeshGenerator::build_edge_plane_table()
 	}
 }
 
-void NavMeshGenerator::build_polygon_to_leaf_map(std::vector<int>& polyToLeafMap, const OnionNode_Ptr& node)
-{
-	if(node->is_leaf())
-	{
-		OnionLeaf *leaf = node->as_leaf();
-		int leafIndex = leaf->leaf_index();
-		const std::vector<int>& polyIndices = leaf->polygon_indices();
-		int polyCount = static_cast<int>(polyIndices.size());
-		for(int i=0; i<polyCount; ++i)
-		{
-			polyToLeafMap[polyIndices[i]] = leafIndex;
-		}
-	}
-	else
-	{
-		OnionBranch *branch = node->as_branch();
-		build_polygon_to_leaf_map(polyToLeafMap, branch->left());
-		build_polygon_to_leaf_map(polyToLeafMap, branch->right());
-	}
-}
-
 void NavMeshGenerator::determine_links()
 {
 	for(EdgePlaneTable::const_iterator it=m_edgePlaneTable.begin(), iend=m_edgePlaneTable.end(); it!=iend; ++it)
@@ -92,17 +67,18 @@ void NavMeshGenerator::determine_links()
 		{
 			const EdgeReference& edgeJ = edgeRefs[j];
 			const NavPolygon& polyJ = *m_walkablePolygons[edgeJ.polyIndex];
-			const boost::dynamic_bitset<>& solidityDescriptorJ = m_tree->leaf(polyJ.leaf_index())->solidity_descriptor();
+			int mapIndexJ = m_polygons[polyJ.poly_index()]->auxiliary_data().map_index();
 
 			for(int k=j+1; k<edgeRefCount; ++k)
 			{
 				const EdgeReference& edgeK = edgeRefs[k];
 				const NavPolygon& polyK = *m_walkablePolygons[edgeK.polyIndex];
-				const boost::dynamic_bitset<>& solidityDescriptorK = m_tree->leaf(polyK.leaf_index())->solidity_descriptor();
+				int mapIndexK = m_polygons[polyK.poly_index()]->auxiliary_data().map_index();
 
-				// TODO
+				// We only want to create links between polygons in the same map.
+				if(mapIndexJ != mapIndexK) continue;
 
-				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in maps " << solidityDescriptorJ << '\n';
+				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
 			}
 		}
 	}
@@ -110,7 +86,7 @@ void NavMeshGenerator::determine_links()
 
 Plane NavMeshGenerator::make_edge_plane(const Vector3d& p1, const Vector3d& p2)
 {
-	// TODO:	This is very similar to BrushExpander::make_bevel_plane(). It's a good idea to
+	// FIXME:	This is very similar to BrushExpander::make_bevel_plane(). It's a good idea to
 	//			factor out the commonality at some point.
 	Vector3d u = (p2 - p1).normalize();
 	Vector3d v(0,0,1);
