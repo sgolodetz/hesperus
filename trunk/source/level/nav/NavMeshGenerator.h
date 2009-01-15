@@ -20,7 +20,8 @@ class NavMeshGenerator
 private:
 	struct EdgeReference
 	{
-		int polyIndex, startVertex;
+		int polyIndex;		// the index of the nav polygon in which this edge resides
+		int startVertex;
 
 		EdgeReference(int polyIndex_, int startVertex_) : polyIndex(polyIndex_), startVertex(startVertex_) {}
 	};

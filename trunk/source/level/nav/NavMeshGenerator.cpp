@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include <source/math/Constants.h>
+#include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
 
@@ -65,8 +66,15 @@ void NavMeshGenerator::determine_links()
 {
 	for(EdgePlaneTable::const_iterator it=m_edgePlaneTable.begin(), iend=m_edgePlaneTable.end(); it!=iend; ++it)
 	{
-		// TODO: Generate coordinate system for plane.
+		// Generate (n,u,v) coordinate system for plane.
+		const Plane& plane = it->first;
+		Vector3d origin(0,0,0);
+		Vector3d centre = nearest_point_in_plane(origin, plane);
+		const Vector3d& n = plane.normal();
+		Vector3d u = generate_specific_coplanar_unit_vector(plane);
+		Vector3d v = u.cross(n).normalize();
 
+		// Check pairs of different-facing edges to see whether we need to create any links.
 		const EdgeReferences& sameFacingEdgeRefs = it->second.sameFacing;
 		const EdgeReferences& oppFacingEdgeRefs = it->second.oppFacing;
 		int sameFacingEdgeRefCount = static_cast<int>(sameFacingEdgeRefs.size());
@@ -75,17 +83,27 @@ void NavMeshGenerator::determine_links()
 		for(int j=0; j<sameFacingEdgeRefCount; ++j)
 		{
 			const EdgeReference& edgeJ = sameFacingEdgeRefs[j];
-			const NavPolygon& polyJ = *m_walkablePolygons[edgeJ.polyIndex];
-			int mapIndexJ = m_polygons[polyJ.poly_index()]->auxiliary_data().map_index();
+			const NavPolygon& navPolyJ = *m_walkablePolygons[edgeJ.polyIndex];
+			const CollisionPolygon& colPolyJ = *m_polygons[navPolyJ.poly_index()];
+			int vertCountJ = colPolyJ.vertex_count();
+			int mapIndexJ = colPolyJ.auxiliary_data().map_index();
+			const Vector3d& p1J = colPolyJ.vertex(edgeJ.startVertex);	const Vector3d& p2J = colPolyJ.vertex((edgeJ.startVertex+1)%vertCountJ);
+			Vector2d q1J((p1J-centre).dot(u), (p1J-centre).dot(v));		Vector2d q2J((p2J-centre).dot(u), (p2J-centre).dot(v));
 
 			for(int k=0; k<oppFacingEdgeRefCount; ++k)
 			{
 				const EdgeReference& edgeK = oppFacingEdgeRefs[k];
-				const NavPolygon& polyK = *m_walkablePolygons[edgeK.polyIndex];
-				int mapIndexK = m_polygons[polyK.poly_index()]->auxiliary_data().map_index();
+				const NavPolygon& navPolyK = *m_walkablePolygons[edgeK.polyIndex];
+				const CollisionPolygon& colPolyK = *m_polygons[navPolyK.poly_index()];
+				int vertCountK = colPolyK.vertex_count();
+				int mapIndexK = colPolyK.auxiliary_data().map_index();
+				const Vector3d& p1K = colPolyK.vertex(edgeK.startVertex);	const Vector3d& p2K = colPolyK.vertex((edgeK.startVertex+1)%vertCountK);
+				Vector2d q1K((p1K-centre).dot(u), (p1K-centre).dot(v));		Vector2d q2K((p2K-centre).dot(u), (p2K-centre).dot(v));
 
 				// We only want to create links between polygons in the same map.
 				if(mapIndexJ != mapIndexK) continue;
+
+				// TODO
 
 				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
 			}
