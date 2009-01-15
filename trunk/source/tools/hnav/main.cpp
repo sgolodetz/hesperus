@@ -36,7 +36,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	OnionTreeFileUtil::load(inputFilename, polygons, tree);
 
 	// Generate the navigation mesh.
-	NavMeshGenerator generator(polygons, tree);
+	NavMeshGenerator generator(polygons);
 	generator.generate_mesh();
 
 	// Write the navigation mesh to disk.

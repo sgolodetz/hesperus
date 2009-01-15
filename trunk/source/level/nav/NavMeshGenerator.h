@@ -44,7 +44,6 @@ private:
 private:
 	// Input data
 	ColPolyVector m_polygons;
-	OnionTree_CPtr m_tree;
 
 	// Intermediate data
 	EdgePlaneTable m_edgePlaneTable;
@@ -55,7 +54,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavMeshGenerator(const ColPolyVector& polygons, const OnionTree_Ptr& tree);
+	NavMeshGenerator(const ColPolyVector& polygons);
 
 	//#################### PUBLIC METHODS ####################
 public:

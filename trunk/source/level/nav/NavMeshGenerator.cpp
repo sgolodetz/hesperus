@@ -14,8 +14,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTree_Ptr& tree)
-:	m_polygons(polygons), m_tree(tree), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
+NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons)
+:	m_polygons(polygons), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
 {
 	int polyCount = static_cast<int>(polygons.size());
 
