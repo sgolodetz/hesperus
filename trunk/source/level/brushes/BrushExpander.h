@@ -54,7 +54,7 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static ColPolyBrush_Ptr expand_brush(const ColPolyBrush_Ptr& brush, const AABB3d& aabb);
+	static ColPolyBrush_Ptr expand_brush(const ColPolyBrush_Ptr& brush, const AABB3d& aabb, int mapIndex);
 
 	//#################### PRIVATE METHODS ####################
 private:

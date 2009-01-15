@@ -86,7 +86,7 @@ void run_expander(const std::string& aabbsFilename, const std::string& inputFile
 		ColPolyBrushVector expandedBrushes(brushCount);
 		for(int j=0; j<brushCount; ++j)
 		{
-			expandedBrushes[j] = BrushExpander::expand_brush(inputBrushes[j], aabbs[i]);
+			expandedBrushes[j] = BrushExpander::expand_brush(inputBrushes[j], aabbs[i], i);
 		}
 
 		// Write the expanded brushes to file.

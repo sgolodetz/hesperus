@@ -31,21 +31,23 @@ class ColPolyAuxData
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	int m_mapIndex;
 	bool m_walkable;
 
 	//#################### CONSTRUCTORS ####################
 public:
 	ColPolyAuxData()
-	:	m_walkable(false)
+	:	m_mapIndex(-1), m_walkable(false)
 	{}
 
 	explicit ColPolyAuxData(bool walkable)
-	:	m_walkable(walkable)
+	:	m_mapIndex(-1), m_walkable(walkable)
 	{}
 
 	//#################### PUBLIC METHODS ####################
 public:
-	bool walkable() const	{ return m_walkable; }
+	void set_map_index(int mapIndex)	{ m_mapIndex = mapIndex; }
+	bool walkable() const				{ return m_walkable; }
 };
 
 //#################### GLOBAL OPERATORS ####################

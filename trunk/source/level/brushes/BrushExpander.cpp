@@ -14,11 +14,12 @@ namespace hesp {
 Expand the brush in such a way that the expanded brush touches the AABB centre
 whenever the original brush touches the AABB.
 
-@param brush	The brush
-@param aabb		The AABB
-@return			The expanded brush
+@param brush		The brush
+@param aabb			The AABB
+@param mapIndex		The index of the map the expanded brush will be in (i.e. the index of this AABB in the AABB array)
+@return				The expanded brush
 */
-BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_Ptr& brush, const AABB3d& aabb)
+BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_Ptr& brush, const AABB3d& aabb, int mapIndex)
 {
 	// Determine which planes need expanding (these are the face planes + any bevel planes).
 	BrushPlaneSet_Ptr brushPlanes = determine_brush_planes(brush);
@@ -48,6 +49,9 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 
 			face = make_universe_polygon<ColPolyAuxData>(it->plane, ColPolyAuxData(walkable));
 		}
+
+		// Set its map index.
+		face->auxiliary_data().set_map_index(mapIndex);
 
 		// Clip it to the other planes.
 		bool discard = false;
