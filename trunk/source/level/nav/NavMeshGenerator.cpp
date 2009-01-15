@@ -25,7 +25,7 @@ public:
 		m_o = nearest_point_in_plane(origin, plane);
 		m_n = plane.normal();
 		m_u = generate_specific_coplanar_unit_vector(plane);
-		m_v = Vector3d(0,0,1);	// == m_u.cross(m_n).normalize();
+		m_v = Vector3d(0,0,1);	// == m_u.cross(m_n).normalize()
 	}
 
 	//#################### PUBLIC METHODS ####################
@@ -94,6 +94,18 @@ void NavMeshGenerator::build_edge_plane_table()
 	}
 }
 
+/**
+Calculates the segments joining nav polygons at a link. For example, the walk link
+between two polygons will contain the edge segment where they meet. Note that this
+function implicitly calculates whether there is a link between two polygons, since
+that is dependent on whether or not an appropriate edge segment can be found.
+
+@param s1			One of the 2D endpoints of the source edge in the plane
+@param s2			The other 2D endpoint of the source edge in the plane
+@param d1			One of the 2D endpoints of the destination edge in the plane
+@param d2			The other 2D endpoint of the destination edge in the plane
+@param xOverlap		The horizontal overlap interval between the 2D edges in the plane
+*/
 NavMeshGenerator::LinkSegments
 NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2,
 										  const Interval& xOverlap) const
