@@ -42,6 +42,7 @@ public:
 	std::set<int> map_indices() const;
 	void output_postorder_text(std::ostream& os) const;
 	const std::vector<int>& polygon_indices() const;
+	const boost::dynamic_bitset<>& solidity_descriptor() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

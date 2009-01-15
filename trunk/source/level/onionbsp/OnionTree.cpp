@@ -22,6 +22,11 @@ OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes, int mapCount)
 }
 
 //#################### PUBLIC METHODS ####################
+const OnionLeaf *OnionTree::leaf(int n) const
+{
+	return m_leaves[n];
+}
+
 OnionTree_Ptr OnionTree::load_postorder_text(std::istream& is)
 {
 	std::string line;

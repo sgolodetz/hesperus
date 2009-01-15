@@ -28,6 +28,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_link(const NavLink_Ptr& link);
+	int leaf_index() const;
 	int poly_index() const;
 };
 

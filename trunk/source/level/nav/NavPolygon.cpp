@@ -13,9 +13,7 @@ NavPolygon::NavPolygon(int polyIndex, int leafIndex)
 {}
 
 //#################### PUBLIC METHODS ####################
-int NavPolygon::poly_index() const
-{
-	return m_polyIndex;
-}
+int NavPolygon::leaf_index() const	{ return m_leafIndex; }
+int NavPolygon::poly_index() const	{ return m_polyIndex; }
 
 }

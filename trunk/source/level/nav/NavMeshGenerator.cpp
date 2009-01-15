@@ -5,6 +5,9 @@
 
 #include "NavMeshGenerator.h"
 
+// TEMPORARY
+#include <iostream>
+
 #include <source/math/Constants.h>
 
 namespace hesp {
@@ -20,7 +23,6 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTre
 	build_polygon_to_leaf_map(polyToLeafMap, tree->root());
 
 	// Construct the walkable polygon array.
-	m_colToNavMap.resize(polyCount, -1);
 	for(int i=0; i<polyCount; ++i)
 	{
 		if(m_polygons[i]->auxiliary_data().walkable())
@@ -35,7 +37,7 @@ NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, const OnionTre
 void NavMeshGenerator::generate_mesh()
 {
 	build_edge_plane_table();
-	// TODO
+	determine_links();
 }
 
 //#################### PRIVATE METHODS ####################
@@ -75,6 +77,34 @@ void NavMeshGenerator::build_polygon_to_leaf_map(std::vector<int>& polyToLeafMap
 		OnionBranch *branch = node->as_branch();
 		build_polygon_to_leaf_map(polyToLeafMap, branch->left());
 		build_polygon_to_leaf_map(polyToLeafMap, branch->right());
+	}
+}
+
+void NavMeshGenerator::determine_links()
+{
+	for(EdgePlaneTable::const_iterator it=m_edgePlaneTable.begin(), iend=m_edgePlaneTable.end(); it!=iend; ++it)
+	{
+		// TODO: Generate coordinate system for plane.
+
+		const EdgeReferences& edgeRefs = it->second;
+		int edgeRefCount = static_cast<int>(edgeRefs.size());
+		for(int j=0; j<edgeRefCount-1; ++j)
+		{
+			const EdgeReference& edgeJ = edgeRefs[j];
+			const NavPolygon& polyJ = *m_walkablePolygons[edgeJ.polyIndex];
+			const boost::dynamic_bitset<>& solidityDescriptorJ = m_tree->leaf(polyJ.leaf_index())->solidity_descriptor();
+
+			for(int k=j+1; k<edgeRefCount; ++k)
+			{
+				const EdgeReference& edgeK = edgeRefs[k];
+				const NavPolygon& polyK = *m_walkablePolygons[edgeK.polyIndex];
+				const boost::dynamic_bitset<>& solidityDescriptorK = m_tree->leaf(polyK.leaf_index())->solidity_descriptor();
+
+				// TODO
+
+				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in maps " << solidityDescriptorJ << '\n';
+			}
+		}
 	}
 }
 
