@@ -23,6 +23,36 @@ void FileSectionUtil::save_lightmap_prefix_section(std::ostream& os, const std::
 }
 
 /**
+Saves a navigation mesh to the specified std::ostream.
+*/
+void FileSectionUtil::save_navmesh_section(std::ostream& os, const NavMesh_Ptr& mesh)
+{
+	os << "NavMesh\n";
+	os << "{\n";
+
+	const std::vector<NavPolygon_Ptr>& polygons = mesh->polygons();
+	int polyCount = static_cast<int>(polygons.size());
+	for(int i=0; i<polyCount; ++i)
+	{
+		os << i << ' ' << polygons[i]->collision_poly_index() << '\n';
+
+		os << "{\n";
+
+		const std::vector<NavLink_Ptr>& links = polygons[i]->links();
+		int linkCount = static_cast<int>(links.size());
+		for(int j=0; j<linkCount; ++j)
+		{
+			links[j]->output(os);
+			os << '\n';
+		}
+
+		os << "}\n";
+	}
+
+	os << "}\n";
+}
+
+/**
 Saves an onion tree to the specified std::ostream.
 
 @param os		The std::ostream

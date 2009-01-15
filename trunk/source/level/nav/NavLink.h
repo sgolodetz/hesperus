@@ -6,6 +6,8 @@
 #ifndef H_HESP_LEVEL_NAV_NAVLINK
 #define H_HESP_LEVEL_NAV_NAVLINK
 
+#include <ostream>
+
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
@@ -17,22 +19,30 @@ class NavLink
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:
-	int m_mapIndex;
 	int m_destPoly;
 	Vector3d m_p1, m_p2;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavLink(int mapIndex, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	m_mapIndex(mapIndex), m_destPoly(destPoly), m_p1(p1), m_p2(p2)
+	NavLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	m_destPoly(destPoly), m_p1(p1), m_p2(p2)
 	{}
 
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~NavLink() {}
 
+	//#################### PRIVATE ABSTRACT METHODS ####################
+private:
+	virtual std::string link_name() const = 0;
+
 	//#################### PUBLIC METHODS ####################
 public:
+	void output(std::ostream& os) const
+	{
+		os << link_name() << ' ' << m_destPoly << ' ' << m_p1 << ' ' << m_p2;
+	}
+
 	// TODO: Vector3d traverse(Vector3d oldPosition)
 };
 
@@ -40,27 +50,48 @@ class StepDownLink : public NavLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	StepDownLink(int mapIndex, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(mapIndex, destPoly, p1, p2)
+	StepDownLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	NavLink(destPoly, p1, p2)
 	{}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	std::string link_name() const
+	{
+		return "StepDown";
+	}
 };
 
 class StepUpLink : public NavLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	StepUpLink(int mapIndex, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(mapIndex, destPoly, p1, p2)
+	StepUpLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	NavLink(destPoly, p1, p2)
 	{}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	std::string link_name() const
+	{
+		return "StepUp";
+	}
 };
 
 class WalkLink : public NavLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	WalkLink(int mapIndex, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(mapIndex, destPoly, p1, p2)
+	WalkLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	NavLink(destPoly, p1, p2)
 	{}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	std::string link_name() const
+	{
+		return "Walk";
+	}
 };
 
 //#################### TYPEDEFS ####################

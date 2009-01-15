@@ -927,6 +927,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\NavFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\OnionPortalsFileUtil.h"
 					>
 				</File>
@@ -996,6 +1000,10 @@
 				</File>
 				<File
 					RelativePath="..\io\LightsFileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\NavFileUtil.cpp"
 					>
 				</File>
 				<File

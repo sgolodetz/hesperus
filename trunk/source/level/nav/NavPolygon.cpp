@@ -13,7 +13,8 @@ NavPolygon::NavPolygon(int colPolyIndex)
 {}
 
 //#################### PUBLIC METHODS ####################
-void NavPolygon::add_link(const NavLink_Ptr& link)	{ m_links.push_back(link); }
-int NavPolygon::collision_poly_index() const		{ return m_colPolyIndex; }
+void NavPolygon::add_link(const NavLink_Ptr& link)			{ m_links.push_back(link); }
+int NavPolygon::collision_poly_index() const				{ return m_colPolyIndex; }
+const std::vector<NavLink_Ptr>& NavPolygon::links() const	{ return m_links; }
 
 }

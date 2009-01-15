@@ -23,6 +23,10 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	NavMesh(const NavPolyVector& polygons);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	const NavPolyVector& polygons() const;
 };
 
 //#################### TYPEDEFS ####################

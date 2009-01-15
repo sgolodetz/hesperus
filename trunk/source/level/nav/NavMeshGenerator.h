@@ -79,7 +79,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	NavMesh_CPtr generate_mesh();
+	NavMesh_Ptr generate_mesh();
 
 	//#################### PRIVATE METHODS ####################
 private:

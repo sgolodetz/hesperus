@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
+#include <source/io/NavFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
 #include <source/level/nav/NavMeshGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -37,10 +38,10 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 
 	// Generate the navigation mesh.
 	NavMeshGenerator generator(polygons);
-	NavMesh_CPtr mesh = generator.generate_mesh();
+	NavMesh_Ptr mesh = generator.generate_mesh();
 
 	// Write the navigation mesh to disk.
-	// TODO
+	NavFileUtil::save(outputFilename, mesh);
 }
 
 int main(int argc, char *argv[])

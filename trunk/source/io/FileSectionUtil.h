@@ -14,6 +14,7 @@ using boost::shared_ptr;
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/lighting/Light.h>
+#include <source/level/nav/NavMesh.h>
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>
@@ -30,6 +31,7 @@ class FileSectionUtil
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
 	friend struct LitTreeFileUtil;
+	friend struct NavFileUtil;
 	friend struct OnionPortalsFileUtil;
 	friend struct OnionTreeFileUtil;
 	friend struct PortalsFileUtil;
@@ -48,6 +50,7 @@ private:
 	//#################### SAVING METHODS ####################
 private:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
+	static void save_navmesh_section(std::ostream& os, const NavMesh_Ptr& mesh);
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
 	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);

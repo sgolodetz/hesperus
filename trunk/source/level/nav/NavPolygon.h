@@ -28,6 +28,7 @@ public:
 public:
 	void add_link(const NavLink_Ptr& link);
 	int collision_poly_index() const;
+	const std::vector<NavLink_Ptr>& links() const;
 };
 
 //#################### TYPEDEFS ####################
