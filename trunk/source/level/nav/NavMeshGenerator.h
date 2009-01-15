@@ -21,8 +21,10 @@ private:
 	struct EdgeReference
 	{
 		int polyIndex, startVertex;
+		Plane plane;
 
-		EdgeReference(int polyIndex_, int startVertex_) : polyIndex(polyIndex_), startVertex(startVertex_) {}
+		EdgeReference(int polyIndex_, int startVertex_, const Plane& plane_)
+		:	polyIndex(polyIndex_), startVertex(startVertex_), plane(plane_) {}
 	};
 
 	//#################### TYPEDEFS ####################

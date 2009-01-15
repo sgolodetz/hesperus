@@ -50,7 +50,8 @@ void NavMeshGenerator::build_edge_plane_table()
 			int k = (j+1)%vertCount;
 			const Vector3d& p1 = curPoly.vertex(j);
 			const Vector3d& p2 = curPoly.vertex(k);
-			m_edgePlaneTable[make_edge_plane(p1,p2)].push_back(EdgeReference(i,j));
+			Plane edgePlane = make_edge_plane(p1,p2);
+			m_edgePlaneTable[edgePlane.to_undirected_form()].push_back(EdgeReference(i,j,edgePlane));
 		}
 	}
 }
@@ -78,6 +79,11 @@ void NavMeshGenerator::determine_links()
 				// We only want to create links between polygons in the same map.
 				if(mapIndexJ != mapIndexK) continue;
 
+				// We can early-out if the two polygons are on the same side of the plane.
+				// This will always be the case if their normals point in the same direction.
+				double dotProd = edgeJ.plane.normal().dot(edgeK.plane.normal());
+				if(dotProd > 0) continue;
+
 				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
 			}
 		}
@@ -95,7 +101,7 @@ Plane NavMeshGenerator::make_edge_plane(const Vector3d& p1, const Vector3d& p2)
 	if(n.length_squared() < EPSILON*EPSILON)
 		throw Exception("Bad input to the navigation mesh generator: one of the polygons was vertical");
 
-	return Plane(n, p1).to_undirected_form();
+	return Plane(n, p1);
 }
 
 }
