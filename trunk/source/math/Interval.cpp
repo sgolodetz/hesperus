@@ -6,6 +6,7 @@
 #include "Interval.h"
 
 #include <algorithm>
+#include <ostream>
 
 #include <source/exceptions/Exception.h>
 #include "Constants.h"
@@ -64,6 +65,14 @@ double Interval::low() const
 {
 	if(!m_empty) return m_low;
 	else throw Exception("The interval is empty and thus has no low end");
+}
+
+//#################### GLOBAL OPERATORS ####################
+std::ostream& operator<<(std::ostream& os, const Interval& rhs)
+{
+	if(rhs.empty()) os << "[]";
+	else os << '[' << rhs.low() << ',' << rhs.high() << ']';
+	return os;
 }
 
 }

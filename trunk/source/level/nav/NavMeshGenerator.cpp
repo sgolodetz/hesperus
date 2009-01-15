@@ -214,17 +214,20 @@ void NavMeshGenerator::determine_links()
 				if(linkIntervals.stepDownInterval)
 				{
 					// TODO: Add a step down link from j -> k, and a step up one from k -> j.
+					std::cout << "Step Down: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.stepDownInterval << '\n';
 				}
 				if(linkIntervals.stepUpInterval)
 				{
 					// TODO: Add a step up link from j -> k, and a step down one from k -> j.
+					std::cout << "Step Up: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.stepUpInterval << '\n';
 				}
 				if(linkIntervals.walkInterval)
 				{
 					// TODO: Add a walk link from j -> k, and one from k -> j.
+					std::cout << "Walk: " << edgeJ.polyIndex << " to " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << " : " << *linkIntervals.walkInterval << '\n';
 				}
 
-				std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
+				//std::cout << "Possible link between walkable polygons " << edgeJ.polyIndex << " and " << edgeK.polyIndex << " on plane " << it->first << " in map " << mapIndexJ << '\n';
 			}
 		}
 	}

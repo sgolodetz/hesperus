@@ -6,6 +6,8 @@
 #ifndef H_HESP_MATH_INTERVAL
 #define H_HESP_MATH_INTERVAL
 
+#include <iosfwd>
+
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
@@ -31,6 +33,9 @@ public:
 	Interval intersect(const Interval& rhs) const;
 	double low() const;
 };
+
+//#################### GLOBAL OPERATORS ####################
+std::ostream& operator<<(std::ostream& os, const Interval& rhs);
 
 //#################### TYPEDEFS ####################
 typedef shared_ptr<Interval> Interval_Ptr;
