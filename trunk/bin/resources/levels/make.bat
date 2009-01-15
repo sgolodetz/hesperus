@@ -44,7 +44,7 @@ set CG2FILES=
 ENDLOCAL
 
 hoportal -c %1.ot %1.op
-echo hnav %1.ot %1.op %1.nav
+hnav %1.ot %1.nav
 
 REM #################
 REM Collation Section (this will need updating ultimately)
@@ -77,6 +77,7 @@ del *.ct
 del *.cp
 del *.ot
 del *.op
+del *.nav
 
 :SkipCleanup
 
