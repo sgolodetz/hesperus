@@ -54,6 +54,8 @@ shared_ptr<std::list<Plane> > find_unique_planes(const std::vector<shared_ptr<Po
 
 Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane);
 
+Vector3d generate_specific_coplanar_unit_vector(const Plane& plane);
+
 template <typename Vert, typename AuxData>
 Plane make_plane(const Polygon<Vert,AuxData>& poly);
 

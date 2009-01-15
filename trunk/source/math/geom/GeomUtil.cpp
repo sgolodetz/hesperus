@@ -89,14 +89,27 @@ Returns an arbitrary unit vector perpendicular to the specified plane's normal.
 */
 Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane)
 {
+	return generate_specific_coplanar_unit_vector(plane);
+}
+
+/**
+Returns the normalized cross product of the specified plane's normal and
+another vector which is non-parallel to the normal. This vector will be
+the up vector (0,0,1), unless that is parallel to the normal, in which
+case (1,0,0) will be used instead. The resulting vector lies in the plane.
+
+@param plane	The plane in which the result vector is to lie
+@return			The unit coplanar vector v as specified, satisfying v.dot(plane.normal()) == 0
+*/
+Vector3d generate_specific_coplanar_unit_vector(const Plane& plane)
+{
 	const Vector3d& n = plane.normal();
 	Vector3d up(0,0,1);
 	if(fabs(n.x) < EPSILON && fabs(n.y) < EPSILON)
 	{
 		// Special Case: n is too close to the vertical and hence n x up is roughly equal to (0,0,0)
 
-		// Use a different vector instead of up (any different vector will do) and apply the same
-		// method as in the else clause using the new vector.
+		// Use (1,0,0) instead of up and apply the same method as in the else clause.
 		return n.cross(Vector3d(1,0,0)).normalize();
 	}
 	else
