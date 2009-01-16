@@ -29,7 +29,7 @@ struct LineSegment
 template <typename Vec>
 std::ostream& operator<<(std::ostream& os, const LineSegment<Vec>& rhs)
 {
-	os << "{ " << rhs.e1 << ' ' << rhs.e2 << " }";
+	os << "[ " << rhs.e1 << ' ' << rhs.e2 << " ]";
 	return os;
 }
 

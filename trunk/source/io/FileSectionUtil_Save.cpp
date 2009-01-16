@@ -31,6 +31,7 @@ void FileSectionUtil::save_navmesh_section(std::ostream& os, const NavMesh_Ptr& 
 	os << "{\n";
 
 	// Output the nav links.
+	os << "NavLinks\n";
 	os << "{\n";
 	const std::vector<NavLink_Ptr>& links = mesh->links();
 	int linkCount = static_cast<int>(links.size());
@@ -42,25 +43,26 @@ void FileSectionUtil::save_navmesh_section(std::ostream& os, const NavMesh_Ptr& 
 	os << "}\n";
 
 	// Output the polygons.
+	os << "NavPolygons\n";
+	os << "{\n";
 	const std::vector<NavPolygon_Ptr>& polygons = mesh->polygons();
 	int polyCount = static_cast<int>(polygons.size());
 	for(int i=0; i<polyCount; ++i)
 	{
-		os << i << ' ' << polygons[i]->collision_poly_index() << '\n';
+		os << i << ' ' << polygons[i]->collision_poly_index();
 
-		os << "{\n";
+		os << " [ ";
 
 		const std::vector<int>& linkIndices = polygons[i]->link_indices();
 		int linkIndicesCount = static_cast<int>(linkIndices.size());
 		for(int j=0; j<linkIndicesCount; ++j)
 		{
-			os << linkIndices[j];
-			if(j < linkIndicesCount-1) os << ' ';
-			else os << '\n';
+			os << linkIndices[j] << ' ';
 		}
 
-		os << "}\n";
+		os << "]\n";
 	}
+	os << "}\n";
 
 	os << "}\n";
 }
