@@ -64,12 +64,19 @@ NavMesh_Ptr NavMeshGenerator::generate_mesh()
 	{
 		build_edge_plane_table();
 		determine_links();
-		m_mesh.reset(new NavMesh(m_walkablePolygons));
+		m_mesh.reset(new NavMesh(m_walkablePolygons, m_navLinks));
 	}
 	return m_mesh;
 }
 
 //#################### PRIVATE METHODS ####################
+void NavMeshGenerator::add_nav_link(NavPolygon& navPoly, const NavLink_Ptr& navLink)
+{
+	int linkIndex = static_cast<int>(m_navLinks.size());
+	m_navLinks.push_back(navLink);
+	navPoly.add_link_index(linkIndex);
+}
+
 /**
 Builds the edge plane table. This tells us, for each (undirected) vertical
 plane running through a nav polygon edge, which edges lie in it. We split
@@ -275,12 +282,12 @@ void NavMeshGenerator::determine_links()
 					{
 						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->p1);
 						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->p2);
-						navPolyJ.add_link(NavLink_Ptr(new StepDownLink(edgeK.navPolyIndex, p1, p2)));
+						add_nav_link(navPolyJ, NavLink_Ptr(new StepDownLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, p1, p2)));
 					}
 					{
 						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->p1);
 						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->p2);
-						navPolyK.add_link(NavLink_Ptr(new StepUpLink(edgeJ.navPolyIndex, p1, p2)));
+						add_nav_link(navPolyK, NavLink_Ptr(new StepUpLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, p1, p2)));
 					}
 				}
 				if(linkSegments.stepUpSourceToDestSegment)
@@ -291,12 +298,12 @@ void NavMeshGenerator::determine_links()
 					{
 						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->p1);
 						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->p2);
-						navPolyJ.add_link(NavLink_Ptr(new StepUpLink(edgeK.navPolyIndex, p1, p2)));
+						add_nav_link(navPolyJ, NavLink_Ptr(new StepUpLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, p1, p2)));
 					}
 					{
 						Vector3d p1 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->p1);
 						Vector3d p2 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->p2);
-						navPolyK.add_link(NavLink_Ptr(new StepDownLink(edgeJ.navPolyIndex, p1, p2)));
+						add_nav_link(navPolyK, NavLink_Ptr(new StepDownLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, p1, p2)));
 					}
 				}
 				if(linkSegments.walkSegment)
@@ -304,8 +311,8 @@ void NavMeshGenerator::determine_links()
 					// Add a walk link from j -> k, and one from k -> j.
 					Vector3d p1 = coordSystem.to_canonical(linkSegments.walkSegment->p1);
 					Vector3d p2 = coordSystem.to_canonical(linkSegments.walkSegment->p2);
-					navPolyJ.add_link(NavLink_Ptr(new WalkLink(edgeK.navPolyIndex, p1, p2)));
-					navPolyK.add_link(NavLink_Ptr(new WalkLink(edgeJ.navPolyIndex, p1, p2)));
+					add_nav_link(navPolyJ, NavLink_Ptr(new WalkLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, p1, p2)));
+					add_nav_link(navPolyK, NavLink_Ptr(new WalkLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, p1, p2)));
 				}
 			}
 		}

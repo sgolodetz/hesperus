@@ -14,18 +14,21 @@ class NavMesh
 {
 	//#################### TYPEDEFS ####################
 private:
+	typedef std::vector<NavLink_Ptr> NavLinkVector;
 	typedef std::vector<NavPolygon_Ptr> NavPolyVector;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	NavLinkVector m_links;
 	NavPolyVector m_polygons;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavMesh(const NavPolyVector& polygons);
+	NavMesh(const NavPolyVector& polygons, const NavLinkVector& links);
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const NavLinkVector& links() const;
 	const NavPolyVector& polygons() const;
 };
 

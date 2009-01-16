@@ -19,13 +19,13 @@ class NavLink
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:
-	int m_destPoly;
+	int m_sourcePoly, m_destPoly;
 	Vector3d m_p1, m_p2;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	m_destPoly(destPoly), m_p1(p1), m_p2(p2)
+	NavLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	m_sourcePoly(sourcePoly), m_destPoly(destPoly), m_p1(p1), m_p2(p2)
 	{}
 
 	//#################### DESTRUCTOR ####################
@@ -40,7 +40,7 @@ private:
 public:
 	void output(std::ostream& os) const
 	{
-		os << link_name() << ' ' << m_destPoly << ' ' << m_p1 << ' ' << m_p2;
+		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_p1 << ' ' << m_p2;
 	}
 
 	// TODO: Vector3d traverse(Vector3d oldPosition)
@@ -50,8 +50,8 @@ class StepDownLink : public NavLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	StepDownLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(destPoly, p1, p2)
+	StepDownLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	NavLink(sourcePoly, destPoly, p1, p2)
 	{}
 
 	//#################### PUBLIC METHODS ####################
@@ -66,8 +66,8 @@ class StepUpLink : public NavLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	StepUpLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(destPoly, p1, p2)
+	StepUpLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	NavLink(sourcePoly, destPoly, p1, p2)
 	{}
 
 	//#################### PUBLIC METHODS ####################
@@ -82,8 +82,8 @@ class WalkLink : public NavLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	WalkLink(int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(destPoly, p1, p2)
+	WalkLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
+	:	NavLink(sourcePoly, destPoly, p1, p2)
 	{}
 
 	//#################### PUBLIC METHODS ####################
