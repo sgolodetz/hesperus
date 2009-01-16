@@ -410,6 +410,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\math\geom\LineSegment.h"
+						>
+					</File>
+					<File
 						RelativePath="..\math\geom\Plane.h"
 						>
 					</File>
