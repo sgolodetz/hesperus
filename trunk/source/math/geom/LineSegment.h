@@ -37,6 +37,9 @@ std::ostream& operator<<(std::ostream& os, const LineSegment<Vec>& rhs)
 typedef LineSegment<Vector2d> LineSegment2d;
 typedef LineSegment<Vector3d> LineSegment3d;
 
+typedef shared_ptr<LineSegment2d> LineSegment2d_Ptr;
+typedef shared_ptr<LineSegment3d> LineSegment3d_Ptr;
+
 }
 
 #endif

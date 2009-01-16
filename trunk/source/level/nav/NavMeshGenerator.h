@@ -10,6 +10,7 @@
 
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/math/Interval.h>
+#include <source/math/geom/LineSegment.h>
 #include <source/math/geom/UniquePlanePred.h>
 #include <source/math/vectors/Vector2d.h>
 #include "NavMesh.h"
@@ -36,23 +37,14 @@ private:
 		EdgeReferences oppFacing;	// the edge planes for these edges face the opposite way to the undirected edge planes
 	};
 
-	struct LinkSegment
-	{
-		Vector2d p1, p2;
-
-		LinkSegment(const Vector2d& p1_, const Vector2d& p2_) : p1(p1_), p2(p2_) {}
-	};
-
-	typedef shared_ptr<LinkSegment> LinkSegment_Ptr;
-
 	struct LinkSegments
 	{
 		// TODO: We can add jump down and jump up segments here if we want.
-		LinkSegment_Ptr stepDownSourceToDestSegment;
-		LinkSegment_Ptr stepDownDestToSourceSegment;
-		LinkSegment_Ptr stepUpSourceToDestSegment;
-		LinkSegment_Ptr stepUpDestToSourceSegment;
-		LinkSegment_Ptr walkSegment;
+		LineSegment2d_Ptr stepDownSourceToDestSegment;
+		LineSegment2d_Ptr stepDownDestToSourceSegment;
+		LineSegment2d_Ptr stepUpSourceToDestSegment;
+		LineSegment2d_Ptr stepUpDestToSourceSegment;
+		LineSegment2d_Ptr walkSegment;
 	};
 
 	//#################### TYPEDEFS ####################

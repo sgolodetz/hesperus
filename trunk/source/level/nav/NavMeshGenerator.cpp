@@ -171,22 +171,22 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 		{
 			Vector2d sL(stepDownInterval.low(), mS*stepDownInterval.low()+cS);
 			Vector2d sH(stepDownInterval.high(), mS*stepDownInterval.high()+cS);
-			linkSegments.stepDownSourceToDestSegment.reset(new LinkSegment(sL,sH));
+			linkSegments.stepDownSourceToDestSegment.reset(new LineSegment2d(sL,sH));
 
 			Vector2d dL(stepDownInterval.low(), mD*stepDownInterval.low()+cD);
 			Vector2d dH(stepDownInterval.high(), mD*stepDownInterval.high()+cD);
-			linkSegments.stepUpDestToSourceSegment.reset(new LinkSegment(dL,dH));
+			linkSegments.stepUpDestToSourceSegment.reset(new LineSegment2d(dL,dH));
 		}
 
 		if(!stepUpInterval.empty())
 		{
 			Vector2d sL(stepUpInterval.low(), mS*stepUpInterval.low()+cS);
 			Vector2d sH(stepUpInterval.high(), mS*stepUpInterval.high()+cS);
-			linkSegments.stepUpSourceToDestSegment.reset(new LinkSegment(sL,sH));
+			linkSegments.stepUpSourceToDestSegment.reset(new LineSegment2d(sL,sH));
 
 			Vector2d dL(stepUpInterval.low(), mD*stepUpInterval.low()+cD);
 			Vector2d dH(stepUpInterval.high(), mD*stepUpInterval.high()+cD);
-			linkSegments.stepDownDestToSourceSegment.reset(new LinkSegment(dL,dH));
+			linkSegments.stepDownDestToSourceSegment.reset(new LineSegment2d(dL,dH));
 		}
 	}
 	else
@@ -202,19 +202,19 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 			if(deltaC > SMALL_EPSILON)
 			{
 				// The destination is higher than the source: step up.
-				linkSegments.stepUpSourceToDestSegment.reset(new LinkSegment(p1,p2));
-				linkSegments.stepDownDestToSourceSegment.reset(new LinkSegment(p1,p2));
+				linkSegments.stepUpSourceToDestSegment.reset(new LineSegment2d(p1,p2));
+				linkSegments.stepDownDestToSourceSegment.reset(new LineSegment2d(p1,p2));
 			}
 			else if(deltaC < -SMALL_EPSILON)
 			{
 				// The destination is lower than the source: step down.
-				linkSegments.stepDownSourceToDestSegment.reset(new LinkSegment(p1,p2));
-				linkSegments.stepUpDestToSourceSegment.reset(new LinkSegment(p1,p2));
+				linkSegments.stepDownSourceToDestSegment.reset(new LineSegment2d(p1,p2));
+				linkSegments.stepUpDestToSourceSegment.reset(new LineSegment2d(p1,p2));
 			}
 			else	// |deltaC| < SMALL_EPSILON
 			{
 				// The destination and source are at the same level: just walk across.
-				linkSegments.walkSegment.reset(new LinkSegment(p1,p2));
+				linkSegments.walkSegment.reset(new LineSegment2d(p1,p2));
 			}
 		}
 	}
@@ -279,10 +279,10 @@ void NavMeshGenerator::determine_links()
 					assert(linkSegments.stepUpDestToSourceSegment != NULL);
 
 					// Add a step down link from j -> k, and a step up one from k -> j.
-					Vector3d j1 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->p1);
-					Vector3d j2 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->p2);
-					Vector3d k1 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->p1);
-					Vector3d k2 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->p2);
+					Vector3d j1 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->e1);
+					Vector3d j2 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->e2);
+					Vector3d k1 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->e1);
+					Vector3d k2 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->e2);
 					add_nav_link(navPolyJ, NavLink_Ptr(new StepDownLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, j1, j2, k1, k2)));
 					add_nav_link(navPolyK, NavLink_Ptr(new StepUpLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, k1, k2, j1, j2)));
 				}
@@ -291,20 +291,20 @@ void NavMeshGenerator::determine_links()
 					assert(linkSegments.stepDownDestToSourceSegment != NULL);
 
 					// Add a step up link from j -> k, and a step down one from k -> j.
-					Vector3d j1 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->p1);
-					Vector3d j2 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->p2);
-					Vector3d k1 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->p1);
-					Vector3d k2 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->p2);
+					Vector3d j1 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->e1);
+					Vector3d j2 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->e2);
+					Vector3d k1 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->e1);
+					Vector3d k2 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->e2);
 					add_nav_link(navPolyJ, NavLink_Ptr(new StepUpLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, j1, j2, k1, k2)));
 					add_nav_link(navPolyK, NavLink_Ptr(new StepDownLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, k1, k2, j1, j2)));
 				}
 				if(linkSegments.walkSegment)
 				{
 					// Add a walk link from j -> k, and one from k -> j.
-					Vector3d p1 = coordSystem.to_canonical(linkSegments.walkSegment->p1);
-					Vector3d p2 = coordSystem.to_canonical(linkSegments.walkSegment->p2);
-					add_nav_link(navPolyJ, NavLink_Ptr(new WalkLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, p1, p2)));
-					add_nav_link(navPolyK, NavLink_Ptr(new WalkLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, p1, p2)));
+					Vector3d e1 = coordSystem.to_canonical(linkSegments.walkSegment->e1);
+					Vector3d e2 = coordSystem.to_canonical(linkSegments.walkSegment->e2);
+					add_nav_link(navPolyJ, NavLink_Ptr(new WalkLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, e1, e2)));
+					add_nav_link(navPolyK, NavLink_Ptr(new WalkLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, e1, e2)));
 				}
 			}
 		}
