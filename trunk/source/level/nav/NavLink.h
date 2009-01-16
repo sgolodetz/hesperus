@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/math/vectors/Vector3.h>
+#include <source/math/geom/LineSegment.h>
 
 namespace hesp {
 
@@ -20,12 +20,12 @@ class NavLink
 	//#################### PROTECTED VARIABLES ####################
 protected:
 	int m_sourcePoly, m_destPoly;
-	Vector3d m_p1, m_p2;
+	LineSegment3d m_sourceSegment;
 
 	//#################### CONSTRUCTORS ####################
 public:
 	NavLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	m_sourcePoly(sourcePoly), m_destPoly(destPoly), m_p1(p1), m_p2(p2)
+	:	m_sourcePoly(sourcePoly), m_destPoly(destPoly), m_sourceSegment(p1,p2)
 	{}
 
 	//#################### DESTRUCTOR ####################
@@ -40,10 +40,10 @@ private:
 public:
 	void output(std::ostream& os) const
 	{
-		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_p1 << ' ' << m_p2;
+		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_sourceSegment;
 	}
 
-	// TODO: Vector3d traverse(Vector3d oldPosition)
+	// TODO: <TraversalFunctor> traverse(Vector3d sourcePosition)
 };
 
 class StepDownLink : public NavLink

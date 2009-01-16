@@ -6,6 +6,8 @@
 #ifndef H_HESP_MATH_GEOM_LINESEGMENT
 #define H_HESP_MATH_GEOM_LINESEGMENT
 
+#include <ostream>
+
 #include <source/math/vectors/Vector2d.h>
 #include <source/math/vectors/Vector3.h>
 
@@ -22,6 +24,14 @@ struct LineSegment
 	:	e1(e1_), e2(e2_)
 	{}
 };
+
+//#################### GLOBAL OPERATORS ####################
+template <typename Vec>
+std::ostream& operator<<(std::ostream& os, const LineSegment<Vec>& rhs)
+{
+	os << "{ " << rhs.e1 << ' ' << rhs.e2 << " }";
+	return os;
+}
 
 //#################### TYPEDEFS ####################
 typedef LineSegment<Vector2d> LineSegment2d;
