@@ -20,17 +20,35 @@ class NavLink
 	//#################### PROTECTED VARIABLES ####################
 protected:
 	int m_sourcePoly, m_destPoly;
-	LineSegment3d m_sourceSegment;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	m_sourcePoly(sourcePoly), m_destPoly(destPoly), m_sourceSegment(p1,p2)
+	NavLink(int sourcePoly, int destPoly)
+	:	m_sourcePoly(sourcePoly), m_destPoly(destPoly)
 	{}
 
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~NavLink() {}
+
+	//#################### PUBLIC ABSTRACT METHODS ####################
+public:
+	virtual void output(std::ostream& os) const = 0;
+
+	// TODO: <TraversalFunctor> traverse(Vector3d sourcePosition)
+};
+
+class StepLink : public NavLink
+{
+	//#################### PROTECTED VARIABLES ####################
+protected:
+	LineSegment3d m_sourceEdge, m_destEdge;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	StepLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vector3d& s2, const Vector3d& d1, const Vector3d& d2)
+	:	NavLink(sourcePoly, destPoly), m_sourceEdge(s1,s2), m_destEdge(d1,d2)
+	{}
 
 	//#################### PRIVATE ABSTRACT METHODS ####################
 private:
@@ -40,18 +58,16 @@ private:
 public:
 	void output(std::ostream& os) const
 	{
-		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_sourceSegment;
+		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_sourceEdge << ' ' << m_destEdge;
 	}
-
-	// TODO: <TraversalFunctor> traverse(Vector3d sourcePosition)
 };
 
-class StepDownLink : public NavLink
+class StepDownLink : public StepLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	StepDownLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(sourcePoly, destPoly, p1, p2)
+	StepDownLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vector3d& s2, const Vector3d& d1, const Vector3d& d2)
+	:	StepLink(sourcePoly, destPoly, s1, s2, d1, d2)
 	{}
 
 	//#################### PUBLIC METHODS ####################
@@ -62,12 +78,12 @@ public:
 	}
 };
 
-class StepUpLink : public NavLink
+class StepUpLink : public StepLink
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	StepUpLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(sourcePoly, destPoly, p1, p2)
+	StepUpLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vector3d& s2, const Vector3d& d1, const Vector3d& d2)
+	:	StepLink(sourcePoly, destPoly, s1, s2, d1, d2)
 	{}
 
 	//#################### PUBLIC METHODS ####################
@@ -80,17 +96,21 @@ public:
 
 class WalkLink : public NavLink
 {
+	//#################### PRIVATE VARIABLES ####################
+private:
+	LineSegment3d m_edge;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	WalkLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(sourcePoly, destPoly, p1, p2)
+	:	NavLink(sourcePoly, destPoly), m_edge(p1, p2)
 	{}
 
 	//#################### PUBLIC METHODS ####################
 public:
-	std::string link_name() const
+	void output(std::ostream& os) const
 	{
-		return "Walk";
+		os << "Walk " << m_sourcePoly << ' ' << m_destPoly << ' ' << m_edge;
 	}
 };
 
