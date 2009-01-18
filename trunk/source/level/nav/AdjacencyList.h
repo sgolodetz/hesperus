@@ -9,6 +9,9 @@
 #include <list>
 #include <vector>
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include "NavMesh.h"
 
 namespace hesp {
@@ -55,6 +58,10 @@ public:
 	const std::list<Edge>& adjacent_edges(int node) const;
 	int size() const;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<AdjacencyList> AdjacencyList_Ptr;
+typedef shared_ptr<const AdjacencyList> AdjacencyList_CPtr;
 
 }
 

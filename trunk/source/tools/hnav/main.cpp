@@ -58,12 +58,12 @@ void run(const std::string& inputFilename, const std::string& outputStem)
 		NavMesh_Ptr mesh = generator.generate_mesh();
 
 		// Build the navigation graph adjacency list.
-		AdjacencyList adjList(mesh);
+		AdjacencyList_Ptr adjList(new AdjacencyList(mesh));
 
 		// Build the navigation graph adjacency table (note that this is a very inefficient
 		// representation for the sparse graph in terms of space, but it's needed for the
 		// Floyd-Warshall algorithm used when building the path table).
-		AdjacencyTable adjTable(adjList);
+		AdjacencyTable adjTable(*adjList);
 
 		// Generate the path table.
 		PathTable_Ptr pathTable = PathTableGenerator::floyd_warshall(adjTable);
