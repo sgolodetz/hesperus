@@ -10,6 +10,7 @@
 #include <source/exceptions/Exception.h>
 #include <source/io/NavFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
+#include <source/level/nav/AdjacencyList.h>
 #include <source/level/nav/NavMeshGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -39,6 +40,13 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	// Generate the navigation mesh.
 	NavMeshGenerator generator(polygons);
 	NavMesh_Ptr mesh = generator.generate_mesh();
+
+	// Build the adjacency list.
+	AdjacencyList adjList(mesh);
+
+	// TODO: Build the adjacency table.
+
+	// TODO: Build the path table.
 
 	// Write the navigation mesh to disk.
 	NavFileUtil::save(outputFilename, mesh);

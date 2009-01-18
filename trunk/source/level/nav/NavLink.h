@@ -33,8 +33,9 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual Vector3d dest_position() const = 0;
 	virtual void output(std::ostream& os) const = 0;
-	virtual Vector3d position() const = 0;
+	virtual Vector3d source_position() const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -62,12 +63,17 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	Vector3d dest_position() const
+	{
+		return (m_destEdge.e1 + m_destEdge.e2) / 2;
+	}
+
 	void output(std::ostream& os) const
 	{
 		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_sourceEdge << ' ' << m_destEdge;
 	}
 
-	Vector3d position() const
+	Vector3d source_position() const
 	{
 		return (m_sourceEdge.e1 + m_sourceEdge.e2) / 2;
 	}
@@ -119,12 +125,17 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	Vector3d dest_position() const
+	{
+		return (m_edge.e1 + m_edge.e2) / 2;
+	}
+
 	void output(std::ostream& os) const
 	{
 		os << "Walk " << m_sourcePoly << ' ' << m_destPoly << ' ' << m_edge;
 	}
 
-	Vector3d position() const
+	Vector3d source_position() const
 	{
 		return (m_edge.e1 + m_edge.e2) / 2;
 	}

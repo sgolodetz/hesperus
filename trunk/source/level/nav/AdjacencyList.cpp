@@ -16,13 +16,29 @@ AdjacencyList::AdjacencyList(const NavMesh_Ptr& navMesh)
 	m_size = static_cast<int>(links.size());
 	m_adjacentEdges.resize(m_size);
 
-	for(std::vector<NavPolygon_Ptr>::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
+	size_t polyCount = polygons.size();
+	for(size_t i=0; i<polyCount; ++i)
 	{
-		// TODO
-	}
+		const std::vector<int>& inLinks = polygons[i]->in_links();
+		const std::vector<int>& outLinks = polygons[i]->out_links();
 
-	// NYI
-	throw 23;
+		// Add edges from each in link to each out link in this polygon.
+		int inLinkCount = static_cast<int>(inLinks.size());
+		int outLinkCount = static_cast<int>(outLinks.size());
+		for(int j=0; j<inLinkCount; ++j)
+		{
+			const NavLink& inLink = *links[inLinks[j]];
+			for(int k=0; k<outLinkCount; ++k)
+			{
+				const NavLink& outLink = *links[outLinks[k]];
+				float length = static_cast<float>(inLink.dest_position().distance(outLink.source_position()));
+				if(outLink.dest_poly() != inLink.source_poly())
+				{
+					m_adjacentEdges[inLinks[j]].push_back(Edge(outLinks[k], length));
+				}
+			}
+		}
+	}
 }
 
 //#################### PUBLIC METHODS ####################
