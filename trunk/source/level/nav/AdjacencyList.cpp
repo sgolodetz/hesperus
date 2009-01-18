@@ -5,6 +5,8 @@
 
 #include "AdjacencyList.h"
 
+#include <source/exceptions/Exception.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -44,8 +46,8 @@ AdjacencyList::AdjacencyList(const NavMesh_Ptr& navMesh)
 //#################### PUBLIC METHODS ####################
 const std::list<AdjacencyList::Edge>& AdjacencyList::adjacent_edges(int node) const
 {
-	// NYI
-	throw 23;
+	if(node < 0 || node >= m_size) throw Exception("adjacent_edges: Node index out of range");
+	return m_adjacentEdges[node];
 }
 
 int AdjacencyList::size() const
