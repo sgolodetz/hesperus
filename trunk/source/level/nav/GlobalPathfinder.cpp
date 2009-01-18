@@ -5,6 +5,8 @@
 
 #include "GlobalPathfinder.h"
 
+#include <queue>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -28,22 +30,61 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 								 const Vector3d& destPos, int destPoly,
 								 std::list<int>& path) const
 {
-	// Step 1:	Find any unblocked path-table paths from a source navlink to a dest navlink.
-	// TODO
+	// Step 1:	Find the shortest unblocked path-table path from a source navlink to a dest navlink.
+	//			If such a path was found, use it.
+	const std::vector<NavLink_Ptr>& links = m_navMesh->links();
+	const std::vector<NavPolygon_Ptr>& polygons = m_navMesh->polygons();
+	const std::vector<int>& sourceLinkIndices = polygons[sourcePoly]->out_links();
+	const std::vector<int>& destLinkIndices = polygons[destPoly]->in_links();
 
-	// Step 2:	If any unblocked path-table paths exist, pick the shortest one.
-	// TODO
+	// Work out the costs of all the possible paths and get them ready to be processed in ascending order of cost.
+	std::priority_queue<PathDescriptor> pq;
+	int sourceLinkCount = static_cast<int>(sourceLinkIndices.size());
+	int destLinkCount = static_cast<int>(destLinkIndices.size());
+	for(int i=0; i<sourceLinkCount; ++i)
+		for(int j=0; j<destLinkCount; ++j)
+		{
+			// The cost of going from sourcePos to destPos via the shortest path-table path
+			// between the two navlinks is the sum of the cost of going to the source navlink,
+			// the cost of going from the source navlink to the dest navlink, and the cost of
+			// going from the dest navlink to destPos.
+			const NavLink_Ptr& sourceLink = links[sourceLinkIndices[i]];
+			const NavLink_Ptr& destLink = links[destLinkIndices[j]];
+			float sourceCost = static_cast<float>(sourcePos.distance(sourceLink->source_position()));
+			float destCost = static_cast<float>(destPos.distance(destLink->dest_position()));
+			float interlinkCost = m_pathTable->cost(i,j);
+			pq.push(PathDescriptor(sourceCost + interlinkCost + destCost, i, j));
+		}
 
-	// Step 3:	If no unblocked path-table paths exist, do an A* search on the adjacency list
+	// Started from the least costly path, construct it and see whether it's blocked or not. If not, use it.
+	while(!pq.empty())
+	{
+		PathDescriptor desc = pq.top();
+		pq.pop();
+
+		path = m_pathTable->construct_path(desc.sourceLink, desc.destLink);
+
+		if(!is_blocked(sourcePos, path, destPos))
+			return true;	// note that the path to be returned has already been stored in the out parameter
+	}
+
+	// Step 2:	If no unblocked path-table paths exist, do an A* search on the adjacency list
 	//			representation of the navigation graph. Use a temporary node in both the source
 	//			and destination polygons to represent the actual position of the player.
 	// TODO
 
-	// Step 4:	If an A* path was found, use it. Otherwise, no valid path exists.
+	// Step 3:	If an A* path was found, use it. Otherwise, no valid path exists.
 	// TODO
 
 	// NYI
 	throw 23;
+}
+
+//#################### PRIVATE METHODS ####################
+bool GlobalPathfinder::is_blocked(const Vector3d& sourcePos, const std::list<int>& potentialPath, const Vector3d& destPos) const
+{
+	// NYI
+	return false;
 }
 
 }
