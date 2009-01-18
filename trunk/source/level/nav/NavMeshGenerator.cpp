@@ -65,6 +65,7 @@ NavMesh_Ptr NavMeshGenerator::generate_mesh()
 		build_edge_plane_table();
 		determine_links();
 		m_mesh.reset(new NavMesh(m_walkablePolygons, m_navLinks));
+		clean_intermediate();
 	}
 	return m_mesh;
 }
@@ -220,6 +221,15 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 	}
 
 	return linkSegments;
+}
+
+/**
+Clears all the intermediate data used when generating the mesh.
+*/
+void NavMeshGenerator::clean_intermediate()
+{
+	m_edgePlaneTable.clear();
+	m_navLinks.swap(NavLinkVector());
 }
 
 void NavMeshGenerator::determine_links()

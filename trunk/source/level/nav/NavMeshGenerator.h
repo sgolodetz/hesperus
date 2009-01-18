@@ -58,9 +58,9 @@ private:
 private:
 	// Input data
 	ColPolyVector m_polygons;
+	NavPolyVector m_walkablePolygons;
 
 	// Intermediate data
-	NavPolyVector m_walkablePolygons;
 	EdgePlaneTable m_edgePlaneTable;
 	NavLinkVector m_navLinks;
 
@@ -80,6 +80,7 @@ private:
 	void add_nav_link(NavPolygon& navPoly, const NavLink_Ptr& navLink);
 	void build_edge_plane_table();
 	LinkSegments calculate_link_segments(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2, const Interval& xOverlap) const;
+	void clean_intermediate();
 	void determine_links();
 	static Plane make_edge_plane(const Vector3d& p1, const Vector3d& p2);
 };
