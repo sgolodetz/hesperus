@@ -12,6 +12,7 @@
 #include <source/io/OnionTreeFileUtil.h>
 #include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavMeshGenerator.h>
+#include <source/level/nav/PathTableGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
@@ -28,7 +29,7 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-void run_generator(const std::string& inputFilename, const std::string& outputFilename)
+void run(const std::string& inputFilename, const std::string& outputFilename)
 {
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 
@@ -41,17 +42,19 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	NavMeshGenerator generator(polygons);
 	NavMesh_Ptr mesh = generator.generate_mesh();
 
-	// Build the adjacency list.
+	// Build the navigation graph adjacency list.
 	AdjacencyList adjList(mesh);
 
-	// Build the adjacency table (note that this is a very inefficient representation for the
-	// sparse graph in terms of space, but it's needed for the Floyd-Warshall algorithm used
-	// when building the path table).
+	// Build the navigation graph adjacency table (note that this is a very inefficient
+	// representation for the sparse graph in terms of space, but it's needed for the
+	// Floyd-Warshall algorithm used when building the path table).
 	AdjacencyTable adjTable(adjList);
 
-	// TODO: Build the path table.
+	// Generate the path table.
+	PathTable_Ptr pathTable = PathTableGenerator::floyd_warshall(adjTable);
 
 	// Write the navigation mesh to disk.
+	// TODO: Save the adjacency list and path table as well.
 	NavFileUtil::save(outputFilename, mesh);
 }
 
@@ -60,7 +63,7 @@ try
 {
 	if(argc != 3) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
-	run_generator(args[1], args[2]);
+	run(args[1], args[2]);
 	return 0;
 }
 catch(Exception& e) { quit_with_error(e.cause()); }

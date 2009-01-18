@@ -14,7 +14,7 @@ AdjacencyTable::AdjacencyTable(const AdjacencyList& adjList)
 	m_table.resize(m_size);
 	for(int i=0; i<m_size; ++i)
 	{
-		m_table[i].resize(m_size, -1.0f);	// use an arbitrary -ve weight to indicate +inf (i.e. no edge)
+		m_table[i].resize(m_size, (float)INT_MAX);	// use a very large weight to represent +inf (i.e. no edge)
 		m_table[i][i] = 0.0f;
 
 		const std::list<AdjacencyList::Edge>& adjEdges = adjList.adjacent_edges(i);

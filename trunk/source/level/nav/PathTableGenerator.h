@@ -6,9 +6,17 @@
 #ifndef H_HESP_LEVEL_NAV_PATHTABLEGENERATOR
 #define H_HESP_LEVEL_NAV_PATHTABLEGENERATOR
 
+#include "AdjacencyTable.h"
+#include "PathTable.h"
+
 namespace hesp {
 
-// TODO
+class PathTableGenerator
+{
+	//#################### PUBLIC METHODS ####################
+public:
+	static PathTable_Ptr floyd_warshall(const AdjacencyTable& adjTable);
+};
 
 }
 
