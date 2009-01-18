@@ -8,7 +8,14 @@
 
 namespace hesp {
 
-// TODO
+class PathTable
+{
+	//#################### PUBLIC METHODS ####################
+public:
+	float cost(int i, int j) const;
+	int next_node(int i, int j) const;
+	int size() const;
+};
 
 }
 
