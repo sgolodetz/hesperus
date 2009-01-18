@@ -124,6 +124,11 @@ OnionTree_Ptr OnionTree::load_postorder_text(std::istream& is)
 	return OnionTree_Ptr(new OnionTree(nodes, mapCount));
 }
 
+int OnionTree::map_count() const
+{
+	return m_mapCount;
+}
+
 void OnionTree::output_postorder_text(std::ostream& os) const
 {
 	os << m_mapCount << '\n';

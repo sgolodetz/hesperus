@@ -40,6 +40,7 @@ public:
 	const OnionLeaf *leaf(int n) const;
 	bool line_of_sight(int mapIndex, const Vector3d& p1, const Vector3d& p2) const;
 	static OnionTree_Ptr load_postorder_text(std::istream& is);
+	int map_count() const;
 	void output_postorder_text(std::ostream& os) const;
 	OnionNode_Ptr root() const;
 

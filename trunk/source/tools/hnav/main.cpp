@@ -25,11 +25,11 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hnav <input onion tree> <output navmesh>" << std::endl;
+	std::cout << "Usage: hnav <input onion tree> <output navmesh stem>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void run(const std::string& inputFilename, const std::string& outputFilename)
+void run(const std::string& inputFilename, const std::string& outputStem)
 {
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 
@@ -38,24 +38,41 @@ void run(const std::string& inputFilename, const std::string& outputFilename)
 	OnionTree_Ptr tree;
 	OnionTreeFileUtil::load(inputFilename, polygons, tree);
 
-	// Generate the navigation mesh.
-	NavMeshGenerator generator(polygons);
-	NavMesh_Ptr mesh = generator.generate_mesh();
+	// For each separate map.
+	int mapCount = tree->map_count();
+	for(int i=0; i<mapCount; ++i)
+	{
+		// Make a copy of the polygon array in which all the polygons that aren't
+		// in this map are set to non-walkable.
+		int polyCount = static_cast<int>(polygons.size());
+		ColPolyVector mapPolygons(polyCount);
+		for(int j=0; j<polyCount; ++j)
+		{
+			mapPolygons[j].reset(new CollisionPolygon(*polygons[j]));
+			if(mapPolygons[j]->auxiliary_data().map_index() != i)
+				mapPolygons[j]->auxiliary_data().set_walkable(false);
+		}
 
-	// Build the navigation graph adjacency list.
-	AdjacencyList adjList(mesh);
+		// Generate the navigation mesh.
+		NavMeshGenerator generator(mapPolygons);
+		NavMesh_Ptr mesh = generator.generate_mesh();
 
-	// Build the navigation graph adjacency table (note that this is a very inefficient
-	// representation for the sparse graph in terms of space, but it's needed for the
-	// Floyd-Warshall algorithm used when building the path table).
-	AdjacencyTable adjTable(adjList);
+		// Build the navigation graph adjacency list.
+		AdjacencyList adjList(mesh);
 
-	// Generate the path table.
-	PathTable_Ptr pathTable = PathTableGenerator::floyd_warshall(adjTable);
+		// Build the navigation graph adjacency table (note that this is a very inefficient
+		// representation for the sparse graph in terms of space, but it's needed for the
+		// Floyd-Warshall algorithm used when building the path table).
+		AdjacencyTable adjTable(adjList);
 
-	// Write the navigation mesh to disk.
-	// TODO: Save the adjacency list and path table as well.
-	NavFileUtil::save(outputFilename, mesh);
+		// Generate the path table.
+		PathTable_Ptr pathTable = PathTableGenerator::floyd_warshall(adjTable);
+
+		// Write the navigation mesh to disk.
+		// TODO: Save the adjacency lists and path tables as well.
+		std::string outputFilename = outputStem + "-" + boost::lexical_cast<std::string,int>(i) + ".nav";
+		NavFileUtil::save(outputFilename, mesh);
+	}
 }
 
 int main(int argc, char *argv[])
