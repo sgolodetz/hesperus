@@ -10,6 +10,13 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
+/**
+Constructs an adjacency list representation of the graph for a navigation mesh.
+The nodes of this graph are the links of the navmesh, and appropriate edges are
+added between links in the same polygon.
+
+@param navMesh	The navigation mesh
+*/
 AdjacencyList::AdjacencyList(const NavMesh_Ptr& navMesh)
 {
 	const std::vector<NavLink_Ptr> links = navMesh->links();
