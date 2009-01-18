@@ -6,6 +6,7 @@
 #ifndef H_HESP_LEVEL_NAV_PATHTABLE
 #define H_HESP_LEVEL_NAV_PATHTABLE
 
+#include <list>
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
@@ -36,6 +37,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	std::list<int> construct_path(int i, int j) const;
 	float& cost(int i, int j);
 	float cost(int i, int j) const;
 	int& next_node(int i, int j);
