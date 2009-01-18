@@ -10,7 +10,7 @@
 #include <source/exceptions/Exception.h>
 #include <source/io/NavFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
-#include <source/level/nav/AdjacencyList.h>
+#include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavMeshGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -44,7 +44,10 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	// Build the adjacency list.
 	AdjacencyList adjList(mesh);
 
-	// TODO: Build the adjacency table.
+	// Build the adjacency table (note that this is a very inefficient representation for the
+	// sparse graph in terms of space, but it's needed for the Floyd-Warshall algorithm used
+	// when building the path table).
+	AdjacencyTable adjTable(adjList);
 
 	// TODO: Build the path table.
 

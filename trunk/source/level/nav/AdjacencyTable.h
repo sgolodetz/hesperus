@@ -6,12 +6,23 @@
 #ifndef H_HESP_LEVEL_NAV_ADJACENCYTABLE
 #define H_HESP_LEVEL_NAV_ADJACENCYTABLE
 
+#include <vector>
+
 #include "AdjacencyList.h"
 
 namespace hesp {
 
+/**
+This class provides an adjacency table representation of a +ve-weighted,
+directed graph.
+*/
 class AdjacencyTable
 {
+	//#################### PRIVATE VARIABLES ####################
+private:
+	std::vector<std::vector<float> > m_table;
+	int m_size;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	AdjacencyTable(const AdjacencyList& adjList);

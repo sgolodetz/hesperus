@@ -14,7 +14,7 @@
 namespace hesp {
 
 /**
-This class provides an adjacency list representation of a weighted,
+This class provides an adjacency list representation of a +ve-weighted,
 directed graph. This allows us to quickly retrieve the list of edges
 leading out of a given node, without requiring copious amounts of
 storage space.
