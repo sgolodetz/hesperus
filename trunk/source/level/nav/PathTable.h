@@ -12,6 +12,4 @@ namespace hesp {
 
 }
 
-#include "PathTable.tpp"
-
 #endif

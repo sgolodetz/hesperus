@@ -845,6 +845,10 @@
 						RelativePath="..\level\nav\NavPolygon.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\nav\PathTable.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -885,10 +889,6 @@
 				<Filter
 					Name=".tpp"
 					>
-					<File
-						RelativePath="..\level\nav\PathTable.tpp"
-						>
-					</File>
 					<File
 						RelativePath="..\level\nav\PathTableGenerator.tpp"
 						>
