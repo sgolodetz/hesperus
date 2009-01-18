@@ -34,6 +34,7 @@ public:
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual void output(std::ostream& os) const = 0;
+	virtual Vector3d position() const = 0;
 
 	// TODO: <TraversalFunctor> traverse(Vector3d sourcePosition)
 };
@@ -59,6 +60,11 @@ public:
 	void output(std::ostream& os) const
 	{
 		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_sourceEdge << ' ' << m_destEdge;
+	}
+
+	Vector3d position() const
+	{
+		return (m_sourceEdge.e1 + m_sourceEdge.e2) / 2;
 	}
 };
 
@@ -111,6 +117,11 @@ public:
 	void output(std::ostream& os) const
 	{
 		os << "Walk " << m_sourcePoly << ' ' << m_destPoly << ' ' << m_edge;
+	}
+
+	Vector3d position() const
+	{
+		return (m_edge.e1 + m_edge.e2) / 2;
 	}
 };
 
