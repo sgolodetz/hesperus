@@ -834,6 +834,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\nav\GlobalPathfinder.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\nav\NavMesh.cpp"
 						>
 					</File>
@@ -863,6 +867,10 @@
 					</File>
 					<File
 						RelativePath="..\level\nav\AdjacencyTable.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\GlobalPathfinder.h"
 						>
 					</File>
 					<File
