@@ -826,6 +826,14 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\level\nav\AdjacencyList.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\AdjacencyTable.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\nav\NavMesh.cpp"
 						>
 					</File>
@@ -842,6 +850,14 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\level\nav\AdjacencyList.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\AdjacencyTable.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\nav\NavLink.h"
 						>
 					</File>
@@ -855,6 +871,26 @@
 					</File>
 					<File
 						RelativePath="..\level\nav\NavPolygon.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\PathTable.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\PathTableGenerator.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\level\nav\PathTable.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\PathTableGenerator.tpp"
 						>
 					</File>
 				</Filter>
