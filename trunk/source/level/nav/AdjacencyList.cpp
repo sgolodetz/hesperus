@@ -18,12 +18,7 @@ AdjacencyList::AdjacencyList(const NavMesh_Ptr& navMesh)
 
 	for(std::vector<NavPolygon_Ptr>::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
 	{
-		const std::vector<int>& linkIndices = (*it)->link_indices();
-		size_t linkIndexCount = linkIndices.size();
-		for(size_t j=0; j<linkIndexCount; ++j)
-		{
-			// TODO
-		}
+		// TODO
 	}
 
 	// NYI

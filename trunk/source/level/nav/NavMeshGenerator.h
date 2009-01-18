@@ -77,7 +77,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void add_nav_link(NavPolygon& navPoly, const NavLink_Ptr& navLink);
+	void add_nav_link(const NavLink_Ptr& navLink);
 	void build_edge_plane_table();
 	LinkSegments calculate_link_segments(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2, const Interval& xOverlap) const;
 	void clean_intermediate();

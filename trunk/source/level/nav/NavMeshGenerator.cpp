@@ -71,11 +71,12 @@ NavMesh_Ptr NavMeshGenerator::generate_mesh()
 }
 
 //#################### PRIVATE METHODS ####################
-void NavMeshGenerator::add_nav_link(NavPolygon& navPoly, const NavLink_Ptr& navLink)
+void NavMeshGenerator::add_nav_link(const NavLink_Ptr& navLink)
 {
 	int linkIndex = static_cast<int>(m_navLinks.size());
 	m_navLinks.push_back(navLink);
-	navPoly.add_link_index(linkIndex);
+	m_walkablePolygons[navLink->source_poly()]->add_out_link(linkIndex);
+	m_walkablePolygons[navLink->dest_poly()]->add_in_link(linkIndex);
 }
 
 /**
@@ -293,8 +294,8 @@ void NavMeshGenerator::determine_links()
 					Vector3d j2 = coordSystem.to_canonical(linkSegments.stepDownSourceToDestSegment->e2);
 					Vector3d k1 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->e1);
 					Vector3d k2 = coordSystem.to_canonical(linkSegments.stepUpDestToSourceSegment->e2);
-					add_nav_link(navPolyJ, NavLink_Ptr(new StepDownLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, j1, j2, k1, k2)));
-					add_nav_link(navPolyK, NavLink_Ptr(new StepUpLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, k1, k2, j1, j2)));
+					add_nav_link(NavLink_Ptr(new StepDownLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, j1, j2, k1, k2)));
+					add_nav_link(NavLink_Ptr(new StepUpLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, k1, k2, j1, j2)));
 				}
 				if(linkSegments.stepUpSourceToDestSegment)
 				{
@@ -305,16 +306,16 @@ void NavMeshGenerator::determine_links()
 					Vector3d j2 = coordSystem.to_canonical(linkSegments.stepUpSourceToDestSegment->e2);
 					Vector3d k1 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->e1);
 					Vector3d k2 = coordSystem.to_canonical(linkSegments.stepDownDestToSourceSegment->e2);
-					add_nav_link(navPolyJ, NavLink_Ptr(new StepUpLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, j1, j2, k1, k2)));
-					add_nav_link(navPolyK, NavLink_Ptr(new StepDownLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, k1, k2, j1, j2)));
+					add_nav_link(NavLink_Ptr(new StepUpLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, j1, j2, k1, k2)));
+					add_nav_link(NavLink_Ptr(new StepDownLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, k1, k2, j1, j2)));
 				}
 				if(linkSegments.walkSegment)
 				{
 					// Add a walk link from j -> k, and one from k -> j.
 					Vector3d e1 = coordSystem.to_canonical(linkSegments.walkSegment->e1);
 					Vector3d e2 = coordSystem.to_canonical(linkSegments.walkSegment->e2);
-					add_nav_link(navPolyJ, NavLink_Ptr(new WalkLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, e1, e2)));
-					add_nav_link(navPolyK, NavLink_Ptr(new WalkLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, e1, e2)));
+					add_nav_link(NavLink_Ptr(new WalkLink(edgeJ.navPolyIndex, edgeK.navPolyIndex, e1, e2)));
+					add_nav_link(NavLink_Ptr(new WalkLink(edgeK.navPolyIndex, edgeJ.navPolyIndex, e1, e2)));
 				}
 			}
 		}

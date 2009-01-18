@@ -51,16 +51,20 @@ void FileSectionUtil::save_navmesh_section(std::ostream& os, const NavMesh_Ptr& 
 	{
 		os << i << ' ' << polygons[i]->collision_poly_index();
 
+		// Output the in links for this polygon.
 		os << " [ ";
+		const std::vector<int>& inLinks = polygons[i]->in_links();
+		size_t inLinkCount = inLinks.size();
+		for(size_t j=0; j<inLinkCount; ++j) os << inLinks[j] << ' ';
+		os << "]";
 
-		const std::vector<int>& linkIndices = polygons[i]->link_indices();
-		int linkIndicesCount = static_cast<int>(linkIndices.size());
-		for(int j=0; j<linkIndicesCount; ++j)
-		{
-			os << linkIndices[j] << ' ';
-		}
-
+		// Output the out links for this polygon.
+		os << " [ ";
+		const std::vector<int>& outLinks = polygons[i]->out_links();
+		size_t outLinkCount = outLinks.size();
+		for(size_t j=0; j<outLinkCount; ++j) os << outLinks[j] << ' ';
 		os << "]\n";
+
 	}
 	os << "}\n";
 

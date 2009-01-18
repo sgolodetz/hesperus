@@ -36,6 +36,11 @@ public:
 	virtual void output(std::ostream& os) const = 0;
 	virtual Vector3d position() const = 0;
 
+	//#################### PUBLIC METHODS ####################
+public:
+	int dest_poly() const		{ return m_destPoly; }
+	int source_poly() const		{ return m_sourcePoly; }
+
 	// TODO: <TraversalFunctor> traverse(Vector3d sourcePosition)
 };
 
