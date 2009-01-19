@@ -31,7 +31,8 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 								 std::list<int>& path) const
 {
 	// Step 1:	Find the shortest unblocked path-table path from a source navlink to a dest navlink.
-	//			If such a path was found, use it.
+	//			If such a path is found, and it's no more than (say) 25% longer than the optimal path
+	//			we'd have if we ignored blocks, then use it.
 	const std::vector<NavLink_Ptr>& links = m_navMesh->links();
 	const std::vector<NavPolygon_Ptr>& polygons = m_navMesh->polygons();
 	const std::vector<int>& sourceLinkIndices = polygons[sourcePoly]->out_links();
@@ -61,21 +62,32 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 		}
 	}
 
-	// Started from the least costly path, construct it and see whether it's blocked or not. If not, use it.
-	while(!pq.empty())
+	// Starting from the least costly path (if any), construct it and see whether it's blocked or not. If not, use it.
+	if(!pq.empty())
 	{
-		PathDescriptor desc = pq.top();
-		pq.pop();
+		// We accept path-table paths which are no more than 25% longer than the shortest
+		// path-table path we found without considering blocks: they are "good enough",
+		// and are MUCH quicker to calculate than paths we might find using A*.
+		const float WORST_ACCEPTABLE_COST = 1.25f * pq.top().cost;
 
-		path = m_pathTable->construct_path(desc.sourceLink, desc.destLink);
+		while(!pq.empty())
+		{
+			PathDescriptor desc = pq.top();
+			pq.pop();
 
-		if(!is_blocked(sourcePos, path, destPos))
-			return true;	// note that the path to be returned has already been stored in the out parameter
+			if(desc.cost > WORST_ACCEPTABLE_COST) break;
+
+			path = m_pathTable->construct_path(desc.sourceLink, desc.destLink);
+
+			if(!is_blocked(sourcePos, path, destPos))
+				return true;	// note that the path to be returned has already been stored in the out parameter
+		}
 	}
 
-	// Step 2:	If no unblocked path-table paths exist, do an A* search on the adjacency list
-	//			representation of the navigation graph. Use a temporary node in both the source
-	//			and destination polygons to represent the actual position of the player.
+	// Step 2:	If a reasonable unblocked path-table path does not exist, do an A* search on
+	//			the adjacency list representation of the navigation graph. Use a temporary node
+	//			in both the source and destination polygons to represent the actual position of
+	//			the player.
 	// TODO
 
 	// Step 3:	If an A* path was found, use it. Otherwise, no valid path exists.
