@@ -31,9 +31,9 @@ private:
 		:	cost(cost_), sourceLink(sourceLink_), destLink(destLink_)
 		{}
 
-		bool operator<(const PathDescriptor& rhs) const
+		bool operator>(const PathDescriptor& rhs) const
 		{
-			return cost < rhs.cost;
+			return cost > rhs.cost;
 		}
 	};
 

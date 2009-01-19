@@ -38,23 +38,28 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 	const std::vector<int>& destLinkIndices = polygons[destPoly]->in_links();
 
 	// Work out the costs of all the possible paths and get them ready to be processed in ascending order of cost.
-	std::priority_queue<PathDescriptor> pq;
+	std::priority_queue<PathDescriptor, std::vector<PathDescriptor>, std::greater<PathDescriptor> > pq;
 	int sourceLinkCount = static_cast<int>(sourceLinkIndices.size());
 	int destLinkCount = static_cast<int>(destLinkIndices.size());
 	for(int i=0; i<sourceLinkCount; ++i)
+	{
+		int sourceLinkIndex = sourceLinkIndices[i];
+		const NavLink_Ptr& sourceLink = links[sourceLinkIndex];
+		float sourceCost = static_cast<float>(sourcePos.distance(sourceLink->source_position()));
+
 		for(int j=0; j<destLinkCount; ++j)
 		{
 			// The cost of going from sourcePos to destPos via the shortest path-table path
 			// between the two navlinks is the sum of the cost of going to the source navlink,
 			// the cost of going from the source navlink to the dest navlink, and the cost of
 			// going from the dest navlink to destPos.
-			const NavLink_Ptr& sourceLink = links[sourceLinkIndices[i]];
-			const NavLink_Ptr& destLink = links[destLinkIndices[j]];
-			float sourceCost = static_cast<float>(sourcePos.distance(sourceLink->source_position()));
+			int destLinkIndex = destLinkIndices[j];
+			const NavLink_Ptr& destLink = links[destLinkIndex];
 			float destCost = static_cast<float>(destPos.distance(destLink->dest_position()));
-			float interlinkCost = m_pathTable->cost(i,j);
-			pq.push(PathDescriptor(sourceCost + interlinkCost + destCost, i, j));
+			float interlinkCost = m_pathTable->cost(sourceLinkIndex, destLinkIndex);
+			pq.push(PathDescriptor(sourceCost + interlinkCost + destCost, sourceLinkIndex, destLinkIndex));
 		}
+	}
 
 	// Started from the least costly path, construct it and see whether it's blocked or not. If not, use it.
 	while(!pq.empty())
@@ -77,7 +82,7 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 	// TODO
 
 	// NYI
-	throw 23;
+	return false;
 }
 
 //#################### PRIVATE METHODS ####################
