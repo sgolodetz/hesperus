@@ -15,7 +15,7 @@ namespace hesp {
 //#################### SAVING METHODS ####################
 void NavFileUtil::save(const std::string& filename, const std::vector<NavDataset_Ptr>& datasets)
 {
-	std::ofstream os(filename.c_str());
+	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
 
 	FileSectionUtil::save_nav_section(os, datasets);
