@@ -23,50 +23,29 @@ void FileSectionUtil::save_lightmap_prefix_section(std::ostream& os, const std::
 }
 
 /**
-Saves a navigation mesh to the specified std::ostream.
+Saves an array of navigation datasets to the specified std::ostream.
+
+@param os			The std::ostream
+@param datasets		The navigation datasets
 */
-void FileSectionUtil::save_navmesh_section(std::ostream& os, const NavMesh_Ptr& mesh)
+void FileSectionUtil::save_nav_section(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets)
 {
-	os << "NavMesh\n";
+	os << "Nav\n";
 	os << "{\n";
 
-	// Output the nav links.
-	os << "NavLinks\n";
-	os << "{\n";
-	const std::vector<NavLink_Ptr>& links = mesh->links();
-	int linkCount = static_cast<int>(links.size());
-	for(int i=0; i<linkCount; ++i)
+	// Output the datasets sequentially.
+	int datasetCount = static_cast<int>(datasets.size());
+	for(int i=0; i<datasetCount; ++i)
 	{
-		links[i]->output(os);
-		os << '\n';
+		os << "Dataset\n";
+		os << "{\n";
+
+		write_navmesh(os, datasets[i]->nav_mesh());
+		write_adjacency_list(os, datasets[i]->adjacency_list());
+		write_path_table(os, datasets[i]->path_table());
+
+		os << "}\n";
 	}
-	os << "}\n";
-
-	// Output the polygons.
-	os << "NavPolygons\n";
-	os << "{\n";
-	const std::vector<NavPolygon_Ptr>& polygons = mesh->polygons();
-	int polyCount = static_cast<int>(polygons.size());
-	for(int i=0; i<polyCount; ++i)
-	{
-		os << i << ' ' << polygons[i]->collision_poly_index();
-
-		// Output the in links for this polygon.
-		os << " [ ";
-		const std::vector<int>& inLinks = polygons[i]->in_links();
-		size_t inLinkCount = inLinks.size();
-		for(size_t j=0; j<inLinkCount; ++j) os << inLinks[j] << ' ';
-		os << "]";
-
-		// Output the out links for this polygon.
-		os << " [ ";
-		const std::vector<int>& outLinks = polygons[i]->out_links();
-		size_t outLinkCount = outLinks.size();
-		for(size_t j=0; j<outLinkCount; ++j) os << outLinks[j] << ' ';
-		os << "]\n";
-
-	}
-	os << "}\n";
 
 	os << "}\n";
 }
@@ -134,6 +113,79 @@ void FileSectionUtil::save_vis_section(std::ostream& os, const LeafVisTable_Ptr&
 		}
 		os << '\n';
 	}
+
+	os << "}\n";
+}
+
+//#################### SAVING SUPPORT METHODS ####################
+/**
+Writes an adjacency list to the specified std::ostream.
+*/
+void FileSectionUtil::write_adjacency_list(std::ostream& os, const AdjacencyList_Ptr& adjList)
+{
+	os << "AdjacencyList\n";
+	os << "{\n";
+
+	// TODO
+
+	os << "}\n";
+}
+
+/**
+Writes a navigation mesh to the specified std::ostream.
+*/
+void FileSectionUtil::write_navmesh(std::ostream& os, const NavMesh_Ptr& mesh)
+{
+	os << "Mesh\n";
+	os << "{\n";
+
+	// Output the nav links.
+	os << "Links\n";
+	os << "{\n";
+	const std::vector<NavLink_Ptr>& links = mesh->links();
+	int linkCount = static_cast<int>(links.size());
+	for(int i=0; i<linkCount; ++i)
+	{
+		links[i]->output(os);
+		os << '\n';
+	}
+	os << "}\n";
+
+	// Output the polygons.
+	os << "Polygons\n";
+	os << "{\n";
+	const std::vector<NavPolygon_Ptr>& polygons = mesh->polygons();
+	int polyCount = static_cast<int>(polygons.size());
+	for(int i=0; i<polyCount; ++i)
+	{
+		os << i << ' ' << polygons[i]->collision_poly_index();
+
+		// Output the in links for this polygon.
+		os << " [ ";
+		const std::vector<int>& inLinks = polygons[i]->in_links();
+		size_t inLinkCount = inLinks.size();
+		for(size_t j=0; j<inLinkCount; ++j) os << inLinks[j] << ' ';
+		os << "]";
+
+		// Output the out links for this polygon.
+		os << " [ ";
+		const std::vector<int>& outLinks = polygons[i]->out_links();
+		size_t outLinkCount = outLinks.size();
+		for(size_t j=0; j<outLinkCount; ++j) os << outLinks[j] << ' ';
+		os << "]\n";
+
+	}
+	os << "}\n";
+
+	os << "}\n";
+}
+
+void FileSectionUtil::write_path_table(std::ostream& os, const PathTable_Ptr& pathTable)
+{
+	os << "PathTable\n";
+	os << "{\n";
+
+	// TODO
 
 	os << "}\n";
 }

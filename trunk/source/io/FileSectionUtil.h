@@ -14,7 +14,7 @@ using boost::shared_ptr;
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/lighting/Light.h>
-#include <source/level/nav/NavMesh.h>
+#include <source/level/nav/NavDataset.h>
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>
@@ -50,7 +50,7 @@ private:
 	//#################### SAVING METHODS ####################
 private:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
-	static void save_navmesh_section(std::ostream& os, const NavMesh_Ptr& mesh);
+	static void save_nav_section(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets);
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);
 	static void save_tree_section(std::ostream& os, const BSPTree_Ptr& tree);
@@ -70,6 +70,9 @@ private:
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
+	static void write_adjacency_list(std::ostream& os, const AdjacencyList_Ptr& adjList);
+	static void write_navmesh(std::ostream& os, const NavMesh_Ptr& mesh);
+	static void write_path_table(std::ostream& os, const PathTable_Ptr& pathTable);
 	template <typename Vert, typename AuxData> static void write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount);
 	template <typename Poly> static void write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush);
 };
