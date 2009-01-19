@@ -874,6 +874,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\nav\NavDataset.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\nav\NavLink.h"
 						>
 					</File>

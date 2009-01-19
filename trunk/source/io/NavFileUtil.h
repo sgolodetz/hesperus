@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include <source/level/nav/NavMesh.h>
+#include <source/level/nav/NavDataset.h>
 
 namespace hesp {
 
@@ -18,7 +18,7 @@ struct NavFileUtil
 	// TODO
 
 	//#################### SAVING METHODS ####################
-	static void save(const std::string& filename, const NavMesh_Ptr& mesh);
+	static void save(const std::string& filename, const std::vector<NavDataset_Ptr>& datasets);
 };
 
 }

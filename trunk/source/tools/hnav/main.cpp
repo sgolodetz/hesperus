@@ -11,6 +11,7 @@
 #include <source/io/NavFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
 #include <source/level/nav/AdjacencyTable.h>
+#include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavMeshGenerator.h>
 #include <source/level/nav/PathTableGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -29,7 +30,7 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-void run(const std::string& inputFilename, const std::string& outputStem)
+void run(const std::string& inputFilename, const std::string& outputFilename)
 {
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 
@@ -37,6 +38,8 @@ void run(const std::string& inputFilename, const std::string& outputStem)
 	ColPolyVector polygons;
 	OnionTree_Ptr tree;
 	OnionTreeFileUtil::load(inputFilename, polygons, tree);
+
+	std::vector<NavDataset_Ptr> datasets;
 
 	// For each separate map.
 	int mapCount = tree->map_count();
@@ -68,11 +71,11 @@ void run(const std::string& inputFilename, const std::string& outputStem)
 		// Generate the path table.
 		PathTable_Ptr pathTable = PathTableGenerator::floyd_warshall(adjTable);
 
-		// Write the navigation mesh to disk.
-		// TODO: Save the adjacency lists and path tables as well.
-		std::string outputFilename = outputStem + "-" + boost::lexical_cast<std::string,int>(i) + ".nav";
-		NavFileUtil::save(outputFilename, mesh);
+		datasets.push_back(NavDataset_Ptr(new NavDataset(adjList, mesh, pathTable)));
 	}
+
+	// Write the navigation datasets to disk.
+	NavFileUtil::save(outputFilename, datasets);
 }
 
 int main(int argc, char *argv[])
