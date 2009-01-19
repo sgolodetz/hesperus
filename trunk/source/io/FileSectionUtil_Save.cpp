@@ -126,7 +126,20 @@ void FileSectionUtil::write_adjacency_list(std::ostream& os, const AdjacencyList
 	os << "AdjacencyList\n";
 	os << "{\n";
 
-	// TODO
+	int size = adjList->size();
+	os << size << '\n';
+	for(int i=0; i<size; ++i)
+	{
+		os << i << ' ';
+		const std::list<AdjacencyList::Edge>& adjEdges = adjList->adjacent_edges(i);
+		for(std::list<AdjacencyList::Edge>::const_iterator jt=adjEdges.begin(), jend=adjEdges.end(); jt!=jend;)
+		{
+			os << "( " << jt->to_node() << ' ' << jt->length() << " )";
+			++jt;
+			if(jt != jend) os << ' ';
+		}
+		os << '\n';
+	}
 
 	os << "}\n";
 }
