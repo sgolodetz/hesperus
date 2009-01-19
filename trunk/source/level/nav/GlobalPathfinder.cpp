@@ -73,9 +73,8 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 		while(!pq.empty())
 		{
 			PathDescriptor desc = pq.top();
-			pq.pop();
-
 			if(desc.cost > WORST_ACCEPTABLE_COST) break;
+			pq.pop();
 
 			path = m_pathTable->construct_path(desc.sourceLink, desc.destLink);
 
