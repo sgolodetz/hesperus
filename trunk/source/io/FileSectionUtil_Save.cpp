@@ -198,9 +198,18 @@ void FileSectionUtil::write_path_table(std::ostream& os, const PathTable_Ptr& pa
 	os << "PathTable\n";
 	os << "{\n";
 
-	// TODO
+	int size = pathTable->size();
+	os << size << '\n';
 
-	os << "}\n";
+	for(int i=0; i<size; ++i)
+		for(int j=0; j<size; ++j)
+		{
+			// TODO: There may be endian issues with this if we ever port to another platform.
+			os.write(reinterpret_cast<const char*>(&pathTable->next_node(i,j)), sizeof(int));
+			os.write(reinterpret_cast<const char*>(&pathTable->cost(i,j)), sizeof(float));
+		}
+
+	os << "\n}\n";
 }
 
 }
