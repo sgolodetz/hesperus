@@ -193,6 +193,9 @@ void FileSectionUtil::write_navmesh(std::ostream& os, const NavMesh_Ptr& mesh)
 	os << "}\n";
 }
 
+/**
+Writes a path table to the specified std::ostream in binary format.
+*/
 void FileSectionUtil::write_path_table(std::ostream& os, const PathTable_Ptr& pathTable)
 {
 	os << "PathTable\n";
