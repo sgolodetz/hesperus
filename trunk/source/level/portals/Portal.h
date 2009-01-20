@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_PORTALS_PORTAL
-#define H_HESP_LEVEL_PORTALS_PORTAL
+#ifndef H_HESP_PORTAL
+#define H_HESP_PORTAL
 
 #include <ostream>
 #include <sstream>

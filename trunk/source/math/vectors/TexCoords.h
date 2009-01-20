@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_VECTORS_TEXCOORDS
-#define H_HESP_MATH_VECTORS_TEXCOORDS
+#ifndef H_HESP_TEXCOORDS
+#define H_HESP_TEXCOORDS
 
 namespace hesp {
 

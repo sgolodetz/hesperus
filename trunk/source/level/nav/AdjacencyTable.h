@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_ADJACENCYTABLE
-#define H_HESP_LEVEL_NAV_ADJACENCYTABLE
+#ifndef H_HESP_ADJACENCYTABLE
+#define H_HESP_ADJACENCYTABLE
 
 #include <vector>
 

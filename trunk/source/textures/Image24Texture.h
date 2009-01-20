@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_TEXTURES_IMAGE24TEXTURE
-#define H_HESP_TEXTURES_IMAGE24TEXTURE
+#ifndef H_HESP_IMAGE24TEXTURE
+#define H_HESP_IMAGE24TEXTURE
 
 #include <source/images/Image.h>
 #include "Texture.h"

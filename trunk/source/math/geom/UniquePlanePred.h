@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_GEOM_UNIQUEPLANEPRED
-#define H_HESP_MATH_GEOM_UNIQUEPLANEPRED
+#ifndef H_HESP_UNIQUEPLANEPRED
+#define H_HESP_UNIQUEPLANEPRED
 
 #include <cmath>
 

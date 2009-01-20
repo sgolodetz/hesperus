@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_PORTALS_PORTALGENERATOR
-#define H_HESP_LEVEL_PORTALS_PORTALGENERATOR
+#ifndef H_HESP_PORTALGENERATOR
+#define H_HESP_PORTALGENERATOR
 
 #include <source/level/bsp/BSPTree.h>
 #include "BasePortalGenerator.h"

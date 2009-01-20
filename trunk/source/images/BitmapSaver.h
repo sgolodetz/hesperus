@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IMAGES_BITMAPSAVER
-#define H_HESP_IMAGES_BITMAPSAVER
+#ifndef H_HESP_BITMAPSAVER
+#define H_HESP_BITMAPSAVER
 
 #include <iosfwd>
 #include <string>

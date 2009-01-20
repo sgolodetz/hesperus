@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_NAVMESHGENERATOR
-#define H_HESP_LEVEL_NAV_NAVMESHGENERATOR
+#ifndef H_HESP_NAVMESHGENERATOR
+#define H_HESP_NAVMESHGENERATOR
 
 #include <map>
 

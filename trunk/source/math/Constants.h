@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_CONSTANTS
-#define H_HESP_MATH_CONSTANTS
+#ifndef H_HESP_CONSTANTS
+#define H_HESP_CONSTANTS
 
 namespace hesp {
 

@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_BRUSHES_POLYHEDRALBRUSH
-#define H_HESP_LEVEL_BRUSHES_POLYHEDRALBRUSH
+#ifndef H_HESP_POLYHEDRALBRUSH
+#define H_HESP_POLYHEDRALBRUSH
 
 #include <vector>
 

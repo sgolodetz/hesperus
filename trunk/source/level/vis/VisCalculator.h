@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_VIS_VISCALCULATOR
-#define H_HESP_LEVEL_VIS_VISCALCULATOR
+#ifndef H_HESP_VISCALCULATOR
+#define H_HESP_VISCALCULATOR
 
 #include <map>
 #include <vector>

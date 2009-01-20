@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_IMAGES_PIXELTYPES
-#define H_HESP_IMAGES_PIXELTYPES
+#ifndef H_HESP_PIXELTYPES
+#define H_HESP_PIXELTYPES
 
 namespace hesp {
 

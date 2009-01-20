@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_PORTALS_ONIONPORTALGENERATOR
-#define H_HESP_LEVEL_PORTALS_ONIONPORTALGENERATOR
+#ifndef H_HESP_ONIONPORTALGENERATOR
+#define H_HESP_ONIONPORTALGENERATOR
 
 #include <source/level/onionbsp/OnionTree.h>
 #include "BasePortalGenerator.h"

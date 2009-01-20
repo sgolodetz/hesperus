@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_IMAGES_SIMPLEIMAGE
-#define H_HESP_IMAGES_SIMPLEIMAGE
+#ifndef H_HESP_SIMPLEIMAGE
+#define H_HESP_SIMPLEIMAGE
 
 #include <boost/shared_array.hpp>
 using boost::shared_array;

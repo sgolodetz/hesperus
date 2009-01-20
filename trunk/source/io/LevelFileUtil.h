@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_LEVELFILEUTIL
-#define H_HESP_IO_LEVELFILEUTIL
+#ifndef H_HESP_LEVELFILEUTIL
+#define H_HESP_LEVELFILEUTIL
 
 #include <source/images/Image.h>
 #include <source/level/Level.h>

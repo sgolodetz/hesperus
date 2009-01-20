@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_GUI_CONTAINER
-#define H_HESP_GUI_CONTAINER
+#ifndef H_HESP_CONTAINER
+#define H_HESP_CONTAINER
 
 #include <vector>
 

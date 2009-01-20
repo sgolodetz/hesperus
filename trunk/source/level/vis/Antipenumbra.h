@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_VIS_ANTIPENUMBRA
-#define H_HESP_LEVEL_VIS_ANTIPENUMBRA
+#ifndef H_HESP_ANTIPENUMBRA
+#define H_HESP_ANTIPENUMBRA
 
 #include <vector>
 

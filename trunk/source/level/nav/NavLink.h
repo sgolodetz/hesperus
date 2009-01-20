@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_NAVLINK
-#define H_HESP_LEVEL_NAV_NAVLINK
+#ifndef H_HESP_NAVLINK
+#define H_HESP_NAVLINK
 
 #include <ostream>
 

@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_ONIONBSP_ONIONTREE
-#define H_HESP_LEVEL_ONIONBSP_ONIONTREE
+#ifndef H_HESP_ONIONTREE
+#define H_HESP_ONIONTREE
 
 #include <source/math/vectors/Vector3.h>
 #include "OnionBranch.h"

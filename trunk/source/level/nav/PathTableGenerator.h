@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_PATHTABLEGENERATOR
-#define H_HESP_LEVEL_NAV_PATHTABLEGENERATOR
+#ifndef H_HESP_PATHTABLEGENERATOR
+#define H_HESP_PATHTABLEGENERATOR
 
 #include "AdjacencyTable.h"
 #include "PathTable.h"

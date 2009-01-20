@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_GUI_COMPONENT
-#define H_HESP_GUI_COMPONENT
+#ifndef H_HESP_COMPONENT
+#define H_HESP_COMPONENT
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;

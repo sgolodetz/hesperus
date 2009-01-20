@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_GUI_SCREEN
-#define H_HESP_GUI_SCREEN
+#ifndef H_HESP_SCREEN
+#define H_HESP_SCREEN
 
 #include "Container.h"
 #include "ExplicitLayout.h"

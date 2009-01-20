@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_GUI_LAIDOUTCOMPONENT
-#define H_HESP_GUI_LAIDOUTCOMPONENT
+#ifndef H_HESP_LAIDOUTCOMPONENT
+#define H_HESP_LAIDOUTCOMPONENT
 
 #include "Component.h"
 

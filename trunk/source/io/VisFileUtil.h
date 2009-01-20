@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_VISFILEUTIL
-#define H_HESP_IO_VISFILEUTIL
+#ifndef H_HESP_VISFILEUTIL
+#define H_HESP_VISFILEUTIL
 
 #include <iosfwd>
 #include <vector>

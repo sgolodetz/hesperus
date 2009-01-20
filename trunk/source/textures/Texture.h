@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_TEXTURES_TEXTURE
-#define H_HESP_TEXTURES_TEXTURE
+#ifndef H_HESP_TEXTURE
+#define H_HESP_TEXTURE
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;

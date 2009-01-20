@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_PORTALS_BASEPORTALGENERATOR
-#define H_HESP_LEVEL_PORTALS_BASEPORTALGENERATOR
+#ifndef H_HESP_BASEPORTALGENERATOR
+#define H_HESP_BASEPORTALGENERATOR
 
 #include <list>
 #include <vector>

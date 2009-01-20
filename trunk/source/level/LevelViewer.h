@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_LEVELVIEWER
-#define H_HESP_LEVEL_LEVELVIEWER
+#ifndef H_HESP_LEVELVIEWER
+#define H_HESP_LEVELVIEWER
 
 #include <source/gui/Component.h>
 #include "Level.h"

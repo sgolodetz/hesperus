@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_GEOM_AABB
-#define H_HESP_MATH_GEOM_AABB
+#ifndef H_HESP_AABB
+#define H_HESP_AABB
 
 #include <source/math/vectors/Vector2d.h>
 #include <source/math/vectors/Vector3.h>

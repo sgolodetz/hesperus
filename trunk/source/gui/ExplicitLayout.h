@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_GUI_EXPLICITLAYOUT
-#define H_HESP_GUI_EXPLICITLAYOUT
+#ifndef H_HESP_EXPLICITLAYOUT
+#define H_HESP_EXPLICITLAYOUT
 
 #include <vector>
 

@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_PATHTABLE
-#define H_HESP_LEVEL_NAV_PATHTABLE
+#ifndef H_HESP_PATHTABLE
+#define H_HESP_PATHTABLE
 
 #include <list>
 #include <vector>

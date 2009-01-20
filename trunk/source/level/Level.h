@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_LEVEL
-#define H_HESP_LEVEL_LEVEL
+#ifndef H_HESP_LEVEL
+#define H_HESP_LEVEL
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;

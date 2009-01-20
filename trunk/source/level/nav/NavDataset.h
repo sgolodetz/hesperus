@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_NAVDATASET
-#define H_HESP_LEVEL_NAV_NAVDATASET
+#ifndef H_HESP_NAVDATASET
+#define H_HESP_NAVDATASET
 
 #include "AdjacencyList.h"
 #include "NavMesh.h"

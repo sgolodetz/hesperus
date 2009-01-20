@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_GLOBALPATHFINDER
-#define H_HESP_LEVEL_NAV_GLOBALPATHFINDER
+#ifndef H_HESP_GLOBALPATHFINDER
+#define H_HESP_GLOBALPATHFINDER
 
 #include "AdjacencyList.h"
 #include "PathTable.h"

@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_LITLEVELRENDERER
-#define H_HESP_LEVEL_LITLEVELRENDERER
+#ifndef H_HESP_LITLEVELRENDERER
+#define H_HESP_LITLEVELRENDERER
 
 #include <source/images/Image.h>
 #include <source/util/PolygonTypes.h>

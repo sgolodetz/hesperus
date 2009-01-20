@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_LIGHTING_LIGHT
-#define H_HESP_LEVEL_LIGHTING_LIGHT
+#ifndef H_HESP_LIGHT
+#define H_HESP_LIGHT
 
 #include <source/colours/Colour3d.h>
 #include <source/math/vectors/Vector3.h>

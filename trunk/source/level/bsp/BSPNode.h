@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_BSP_BSPNODE
-#define H_HESP_LEVEL_BSP_BSPNODE
+#ifndef H_HESP_BSPNODE
+#define H_HESP_BSPNODE
 
 #include <map>
 #include <vector>

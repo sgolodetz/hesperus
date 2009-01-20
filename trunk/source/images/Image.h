@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_IMAGES_IMAGE
-#define H_HESP_IMAGES_IMAGE
+#ifndef H_HESP_IMAGE
+#define H_HESP_IMAGE
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;

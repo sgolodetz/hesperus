@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_EXCEPTIONS_EXCEPTION
-#define H_HESP_EXCEPTIONS_EXCEPTION
+#ifndef H_HESP_EXCEPTION
+#define H_HESP_EXCEPTION
 
 #include <string>
 

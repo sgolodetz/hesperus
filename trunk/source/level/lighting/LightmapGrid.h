@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_LIGHTING_LIGHTMAPGRID
-#define H_HESP_LEVEL_LIGHTING_LIGHTMAPGRID
+#ifndef H_HESP_LIGHTMAPGRID
+#define H_HESP_LIGHTMAPGRID
 
 #include <vector>
 

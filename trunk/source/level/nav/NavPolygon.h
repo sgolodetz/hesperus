@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_NAV_NAVPOLYGON
-#define H_HESP_LEVEL_NAV_NAVPOLYGON
+#ifndef H_HESP_NAVPOLYGON
+#define H_HESP_NAVPOLYGON
 
 #include <vector>
 

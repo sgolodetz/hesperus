@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_COLOURS_COLOUR3D
-#define H_HESP_COLOURS_COLOUR3D
+#ifndef H_HESP_COLOUR3D
+#define H_HESP_COLOUR3D
 
 #include <string>
 #include <vector>

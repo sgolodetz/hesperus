@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_ONIONBSP_ONIONBRANCH
-#define H_HESP_LEVEL_ONIONBSP_ONIONBRANCH
+#ifndef H_HESP_ONIONBRANCH
+#define H_HESP_ONIONBRANCH
 
 #include <source/math/geom/Plane.h>
 #include "OnionNode.h"

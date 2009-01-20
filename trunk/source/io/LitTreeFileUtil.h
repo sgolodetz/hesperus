@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_LITTREEFILEUTIL
-#define H_HESP_IO_LITTREEFILEUTIL
+#ifndef H_HESP_LITTREEFILEUTIL
+#define H_HESP_LITTREEFILEUTIL
 
 namespace hesp {
 

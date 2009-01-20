@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_ONIONPORTALSFILEUTIL
-#define H_HESP_IO_ONIONPORTALSFILEUTIL
+#ifndef H_HESP_ONIONPORTALSFILEUTIL
+#define H_HESP_ONIONPORTALSFILEUTIL
 
 #include <string>
 #include <vector>

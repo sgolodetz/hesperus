@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_GEOM_LINESEGMENT
-#define H_HESP_MATH_GEOM_LINESEGMENT
+#ifndef H_HESP_LINESEGMENT
+#define H_HESP_LINESEGMENT
 
 #include <ostream>
 

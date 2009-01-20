@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_BRUSHESFILEUTIL
-#define H_HESP_IO_BRUSHESFILEUTIL
+#ifndef H_HESP_BRUSHESFILEUTIL
+#define H_HESP_BRUSHESFILEUTIL
 
 #include <string>
 #include <vector>

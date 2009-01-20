@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_LEVELRENDERER
-#define H_HESP_LEVEL_LEVELRENDERER
+#ifndef H_HESP_LEVELRENDERER
+#define H_HESP_LEVELRENDERER
 
 #include <map>
 #include <set>

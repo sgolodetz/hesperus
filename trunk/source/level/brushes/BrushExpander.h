@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_BRUSHES_BRUSHEXPANDER
-#define H_HESP_LEVEL_BRUSHES_BRUSHEXPANDER
+#ifndef H_HESP_BRUSHEXPANDER
+#define H_HESP_BRUSHEXPANDER
 
 #include <set>
 

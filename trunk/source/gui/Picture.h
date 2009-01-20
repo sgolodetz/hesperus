@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_GUI_PICTURE
-#define H_HESP_GUI_PICTURE
+#ifndef H_HESP_PICTURE
+#define H_HESP_PICTURE
 
 #include <string>
 

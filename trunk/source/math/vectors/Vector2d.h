@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_VECTORS_VECTOR2D
-#define H_HESP_MATH_VECTORS_VECTOR2D
+#ifndef H_HESP_VECTOR2D
+#define H_HESP_VECTOR2D
 
 #include <iosfwd>
 

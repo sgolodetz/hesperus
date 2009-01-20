@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_FILESECTIONUTIL
-#define H_HESP_IO_FILESECTIONUTIL
+#ifndef H_HESP_FILESECTIONUTIL
+#define H_HESP_FILESECTIONUTIL
 
 #include <string>
 

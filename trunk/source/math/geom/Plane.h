@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_GEOM_PLANE
-#define H_HESP_MATH_GEOM_PLANE
+#ifndef H_HESP_PLANE
+#define H_HESP_PLANE
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;

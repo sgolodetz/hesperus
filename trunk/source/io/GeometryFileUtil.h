@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_GEOMETRYFILEUTIL
-#define H_HESP_IO_GEOMETRYFILEUTIL
+#ifndef H_HESP_GEOMETRYFILEUTIL
+#define H_HESP_GEOMETRYFILEUTIL
 
 #include <string>
 #include <vector>

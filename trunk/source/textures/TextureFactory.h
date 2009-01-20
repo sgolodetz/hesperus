@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_TEXTURES_TEXTUREFACTORY
-#define H_HESP_TEXTURES_TEXTUREFACTORY
+#ifndef H_HESP_TEXTUREFACTORY
+#define H_HESP_TEXTUREFACTORY
 
 #include <source/images/Image.h>
 #include "Texture.h"

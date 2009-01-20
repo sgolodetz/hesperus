@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_ONIONTREEFILEUTIL
-#define H_HESP_IO_ONIONTREEFILEUTIL
+#ifndef H_HESP_ONIONTREEFILEUTIL
+#define H_HESP_ONIONTREEFILEUTIL
 
 #include <source/level/onionbsp/OnionTree.h>
 

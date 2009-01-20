@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_VECTORS_TEXTUREDVECTOR3D
-#define H_HESP_MATH_VECTORS_TEXTUREDVECTOR3D
+#ifndef H_HESP_TEXTUREDVECTOR3D
+#define H_HESP_TEXTUREDVECTOR3D
 
 #include "Vector3.h"
 

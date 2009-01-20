@@ -3,6 +3,9 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
+#ifndef H_HESP_FILENOTFOUNDEXCEPTION
+#define H_HESP_FILENOTFOUNDEXCEPTION
+
 #include "Exception.h"
 
 namespace hesp {
@@ -17,3 +20,5 @@ public:
 };
 
 }
+
+#endif

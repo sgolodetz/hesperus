@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_TREEFILEUTIL
-#define H_HESP_IO_TREEFILEUTIL
+#ifndef H_HESP_TREEFILEUTIL
+#define H_HESP_TREEFILEUTIL
 
 #include <source/level/bsp/BSPTree.h>
 

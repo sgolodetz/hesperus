@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_IMAGES_BITMAPLOADER
-#define H_HESP_IMAGES_BITMAPLOADER
+#ifndef H_HESP_BITMAPLOADER
+#define H_HESP_BITMAPLOADER
 
 #include <istream>
 #include <string>

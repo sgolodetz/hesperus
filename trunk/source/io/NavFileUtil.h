@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_NAVFILEUTIL
-#define H_HESP_IO_NAVFILEUTIL
+#ifndef H_HESP_NAVFILEUTIL
+#define H_HESP_NAVFILEUTIL
 
 #include <string>
 

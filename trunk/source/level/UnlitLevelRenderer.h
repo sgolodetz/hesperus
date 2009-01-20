@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_UNLITLEVELRENDERER
-#define H_HESP_LEVEL_UNLITLEVELRENDERER
+#ifndef H_HESP_UNLITLEVELRENDERER
+#define H_HESP_UNLITLEVELRENDERER
 
 #include <source/util/PolygonTypes.h>
 #include "LevelRenderer.h"

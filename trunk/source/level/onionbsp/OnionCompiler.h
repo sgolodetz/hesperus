@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_ONIONBSP_ONIONCOMPILER
-#define H_HESP_LEVEL_ONIONBSP_ONIONCOMPILER
+#ifndef H_HESP_ONIONCOMPILER
+#define H_HESP_ONIONCOMPILER
 
 #include <map>
 #include <vector>

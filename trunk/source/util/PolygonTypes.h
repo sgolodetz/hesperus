@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_UTIL_POLYGONTYPES
-#define H_HESP_UTIL_POLYGONTYPES
+#ifndef H_HESP_POLYGONTYPES
+#define H_HESP_POLYGONTYPES
 
 #include <iosfwd>
 #include <string>

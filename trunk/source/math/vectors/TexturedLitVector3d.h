@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_VECTORS_TEXTUREDLITVECTOR3D
-#define H_HESP_MATH_VECTORS_TEXTUREDLITVECTOR3D
+#ifndef H_HESP_TEXTUREDLITVECTOR3D
+#define H_HESP_TEXTUREDLITVECTOR3D
 
 #include <iosfwd>
 

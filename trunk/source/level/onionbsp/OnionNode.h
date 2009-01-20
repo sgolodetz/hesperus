@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_ONIONBSP_ONIONNODE
-#define H_HESP_LEVEL_ONIONBSP_ONIONNODE
+#ifndef H_HESP_ONIONNODE
+#define H_HESP_ONIONNODE
 
 #include <iosfwd>
 

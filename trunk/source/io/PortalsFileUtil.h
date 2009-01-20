@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IO_PORTALSFILEUTIL
-#define H_HESP_IO_PORTALSFILEUTIL
+#ifndef H_HESP_PORTALSFILEUTIL
+#define H_HESP_PORTALSFILEUTIL
 
 #include <string>
 #include <vector>

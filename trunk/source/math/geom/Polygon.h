@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_GEOM_POLYGON
-#define H_HESP_MATH_GEOM_POLYGON
+#ifndef H_HESP_POLYGON
+#define H_HESP_POLYGON
 
 #include <vector>
 

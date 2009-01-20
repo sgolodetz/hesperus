@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATH_GEOM_GEOMUTIL
-#define H_HESP_MATH_GEOM_GEOMUTIL
+#ifndef H_HESP_GEOMUTIL
+#define H_HESP_GEOMUTIL
 
 #include <list>
 #include <utility>

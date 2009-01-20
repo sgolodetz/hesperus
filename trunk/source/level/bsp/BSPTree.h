@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVEL_BSP_BSPTREE
-#define H_HESP_LEVEL_BSP_BSPTREE
+#ifndef H_HESP_BSPTREE
+#define H_HESP_BSPTREE
 
 #include <source/math/vectors/Vector3.h>
 #include "BSPBranch.h"
