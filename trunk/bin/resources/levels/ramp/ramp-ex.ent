@@ -44,6 +44,6 @@ Position = ( 7 10 5 )
 Instance guard
 {
 Health = 75
-Position = ( 20 15 0 )
+Position = ( 20 15 9 )
 }
 }
