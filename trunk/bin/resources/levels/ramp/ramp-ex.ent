@@ -6,42 +6,44 @@ AABBs
 1 = ( -0.5 -0.5 -1 ) ( 0.5 0.5 1 )
 }
 ***
-Class player
+Trait Collidable
 {
-Pose : {crouch|stand}
-Health : int 0 100
+AABBs : Array<int>
+Pose : int
+}
+Trait Locatable
+{
 Position : Vector3d
 }
-Class enemy
+Trait Mortal
 {
-Pose : {stand}
 Health : int 0 100
-Position : Vector3d
+}
+Trait Visible
+{
+GameModel : string
 }
 ***
-Type player : player
+Class Player : Collidable, Locatable, Mortal, Visible
 {
-AABB crouch = 0
-AABB stand = 1
+AABBs = {0,1}
 GameModel = player.x
----
-Pose = stand
 Health = 100
+Pose = 1
 }
-Type guard : enemy
+Class Guard : Collidable, Locatable, Mortal, Visible
 {
-AABB stand = 1
+AABBs = {1}
 GameModel = guard.x
----
-Pose = stand
 Health = 50
+Pose = 1
 }
 ***
-Instance player
+Instance Player
 {
 Position = ( 7 10 5 )
 }
-Instance guard
+Instance Guard
 {
 Health = 75
 Position = ( 20 15 9 )
