@@ -10,6 +10,7 @@
 using boost::shared_ptr;
 
 #include <source/level/bsp/BSPTree.h>
+#include <source/level/entities/Player.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>
 #include "LevelRenderer.h"
