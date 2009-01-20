@@ -906,6 +906,30 @@
 			<Filter
 				Name="entities"
 				>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\entities\CollidableEntity.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\LocatableEntity.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\MortalEntity.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\Player.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\VisibleEntity.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
