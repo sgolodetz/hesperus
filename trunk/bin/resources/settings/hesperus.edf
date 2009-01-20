@@ -1,0 +1,38 @@
+HENTDEF
+Traits
+{
+Trait Collidable : Locatable
+{
+AABBs : [int]
+Pose : int
+}
+Trait Locatable
+{
+Position : Vector3d
+}
+Trait Mortal
+{
+Health : int
+}
+Trait Visible
+{
+GameModel : string
+}
+}
+Classes
+{
+Class Player : Collidable, Mortal, Visible
+{
+AABBs = [0,1]
+GameModel = player.x
+Health = 100
+Pose = 1
+}
+Class Guard : Collidable, Mortal, Visible
+{
+AABBs = [1]
+GameModel = guard.x
+Health = 50
+Pose = 1
+}
+}

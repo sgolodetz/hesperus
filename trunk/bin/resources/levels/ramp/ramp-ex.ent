@@ -5,47 +5,23 @@ AABBs
 0 = ( -0.5 -0.5 -0.5 ) ( 0.5 0.5 0.5 )
 1 = ( -0.5 -0.5 -1 ) ( 0.5 0.5 1 )
 }
-***
-Trait Collidable
+Instances
 {
-AABBs : Array<int>
-Pose : int
-}
-Trait Locatable
+Instance Player
 {
-Position : Vector3d
-}
-Trait Mortal
-{
-Health : int 0 100
-}
-Trait Visible
-{
-GameModel : string
-}
-***
-Class Player : Collidable, Locatable, Mortal, Visible
-{
-AABBs = {0,1}
+AABBs = [0,1]
 GameModel = player.x
 Health = 100
 Pose = 1
-}
-Class Guard : Collidable, Locatable, Mortal, Visible
-{
-AABBs = {1}
-GameModel = guard.x
-Health = 50
-Pose = 1
-}
-***
-Instance Player
-{
 Position = ( 7 10 5 )
 }
 Instance Guard
 {
+AABBs = [1]
+GameModel = guard.x
 Health = 75
+Pose = 1
 Position = ( 20 15 9 )
+}
 }
 }

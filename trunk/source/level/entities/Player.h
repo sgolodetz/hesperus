@@ -7,7 +7,6 @@
 #define H_HESP_PLAYER
 
 #include "CollidableEntity.h"
-#include "LocatableEntity.h"
 #include "MortalEntity.h"
 #include "VisibleEntity.h"
 
@@ -17,10 +16,9 @@ namespace hesp {
 This class represents the player.
 */
 class Player
-:	public CollidableEntity,
-	public LocatableEntity,
-	public MortalEntity,
-	public VisibleEntity		// in third-person view
+:	virtual public CollidableEntity,
+	virtual public MortalEntity,
+	virtual public VisibleEntity		// in third-person view
 {
 	// TODO
 };
