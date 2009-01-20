@@ -903,6 +903,10 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="entities"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"

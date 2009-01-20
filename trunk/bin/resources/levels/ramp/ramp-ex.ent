@@ -1,0 +1,49 @@
+Entities
+{
+AABBs
+{
+0 = ( -0.5 -0.5 -0.5 ) ( 0.5 0.5 0.5 )
+1 = ( -0.5 -0.5 -1 ) ( 0.5 0.5 1 )
+}
+***
+Class player
+{
+Pose : {crouch|stand}
+Health : int 0 100
+Position : Vector3d
+}
+Class enemy
+{
+Pose : {stand}
+Health : int 0 100
+Position : Vector3d
+}
+***
+Type player : player
+{
+AABB crouch = 0
+AABB stand = 1
+GameModel = player.x
+---
+Pose = stand
+Health = 100
+}
+Type guard : enemy
+{
+AABB stand = 1
+GameModel = guard.x
+---
+Pose = stand
+Health = 50
+}
+***
+Instance player
+{
+Position = ( 7 10 5 )
+}
+Instance guard
+{
+Health = 75
+Position = ( 20 15 0 )
+}
+}
