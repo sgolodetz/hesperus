@@ -57,7 +57,7 @@ void run(const std::string& inputFilename, const std::string& outputFilename)
 		}
 
 		// Generate the navigation mesh.
-		NavMeshGenerator generator(mapPolygons);
+		NavMeshGenerator generator(mapPolygons, 1.0);	// TODO: Replace 1.0 with half the height of the AABB for this map
 		NavMesh_Ptr mesh = generator.generate_mesh();
 
 		// Build the navigation graph adjacency list.

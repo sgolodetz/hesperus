@@ -59,6 +59,7 @@ private:
 	// Input data
 	ColPolyVector m_polygons;
 	NavPolyVector m_walkablePolygons;
+	double m_maxHeightDifference;
 
 	// Intermediate data
 	EdgePlaneTable m_edgePlaneTable;
@@ -69,7 +70,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavMeshGenerator(const ColPolyVector& polygons);
+	NavMeshGenerator(const ColPolyVector& polygons, double maxHeightDifference);
 
 	//#################### PUBLIC METHODS ####################
 public:

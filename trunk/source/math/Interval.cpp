@@ -34,7 +34,7 @@ Interval::Interval(double low, double high)
 Constructs an empty Interval.
 */
 Interval::Interval()
-:	m_empty(false)
+:	m_empty(true)
 {}
 
 //#################### PUBLIC METHODS ####################

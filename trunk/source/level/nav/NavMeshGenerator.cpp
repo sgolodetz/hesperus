@@ -42,8 +42,14 @@ public:
 };
 
 //#################### CONSTRUCTORS ####################
-NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons)
-:	m_polygons(polygons), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
+/**
+Constructs a NavMeshGenerator.
+
+@param polygons				The input array of collision polygons
+@param maxHeightDifference	The maximum distance that the character can step up/down (depends on the AABB map for which we're generating a navmesh)
+*/
+NavMeshGenerator::NavMeshGenerator(const ColPolyVector& polygons, double maxHeightDifference)
+:	m_polygons(polygons), m_maxHeightDifference(maxHeightDifference), m_edgePlaneTable(UniquePlanePred(2 * PI/180, 0.005))
 {
 	int polyCount = static_cast<int>(polygons.size());
 
@@ -127,8 +133,6 @@ NavMeshGenerator::LinkSegments
 NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2, const Vector2d& d1, const Vector2d& d2,
 										  const Interval& xOverlap) const
 {
-	const double MAX_HEIGHT_DIFFERENCE = 1.0;	// FIXME: This depends on the player and should be a parameter.
-
 	LinkSegments linkSegments;
 
 	// Calculate the line equations yS = mS.x + cS and yD = mD.x + cD.
@@ -157,10 +161,10 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 		double walkX = -deltaC / deltaM;
 
 		// (b) deltaM . stepUpX + deltaC = MAX_HEIGHT_DIFFERENCE
-		double stepUpX = (MAX_HEIGHT_DIFFERENCE - deltaC) / deltaM;
+		double stepUpX = (m_maxHeightDifference - deltaC) / deltaM;
 
 		// (c) deltaM . stepDownX + deltaC = -MAX_HEIGHT_DIFFERENCE
-		double stepDownX = (-MAX_HEIGHT_DIFFERENCE - deltaC) / deltaM;
+		double stepDownX = (-m_maxHeightDifference - deltaC) / deltaM;
 
 		// Now construct the link intervals and clip them to the known x overlap interval.
 		Interval stepDownInterval(std::min(walkX,stepDownX), std::max(walkX,stepDownX));
@@ -195,28 +199,30 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 	{
 		// If the gradients of the source and destination edges are the same (i.e. the edges are parallel),
 		// then we either get a step up/step down combination, or a walk link in either direction.
-		if(deltaC < MAX_HEIGHT_DIFFERENCE)
+		if(deltaC <= m_maxHeightDifference)
 		{
-			Vector2d p1(xOverlap.low(), mS*xOverlap.low()+cS);
-			Vector2d p2(xOverlap.high(), mS*xOverlap.high()+cS);
+			Vector2d s1(xOverlap.low(), mS*xOverlap.low()+cS);
+			Vector2d s2(xOverlap.high(), mS*xOverlap.high()+cS);
+			Vector2d d1(xOverlap.low(), mD*xOverlap.low()+cD);
+			Vector2d d2(xOverlap.high(), mD*xOverlap.high()+cD);
 
 			// There's a link between the lines, but we need to check the sign of deltaC to see which type.
 			if(deltaC > SMALL_EPSILON)
 			{
 				// The destination is higher than the source: step up.
-				linkSegments.stepUpSourceToDestSegment.reset(new LineSegment2d(p1,p2));
-				linkSegments.stepDownDestToSourceSegment.reset(new LineSegment2d(p1,p2));
+				linkSegments.stepUpSourceToDestSegment.reset(new LineSegment2d(s1,s2));
+				linkSegments.stepDownDestToSourceSegment.reset(new LineSegment2d(d1,d2));
 			}
 			else if(deltaC < -SMALL_EPSILON)
 			{
 				// The destination is lower than the source: step down.
-				linkSegments.stepDownSourceToDestSegment.reset(new LineSegment2d(p1,p2));
-				linkSegments.stepUpDestToSourceSegment.reset(new LineSegment2d(p1,p2));
+				linkSegments.stepDownSourceToDestSegment.reset(new LineSegment2d(s1,s2));
+				linkSegments.stepUpDestToSourceSegment.reset(new LineSegment2d(d1,d2));
 			}
 			else	// |deltaC| < SMALL_EPSILON
 			{
 				// The destination and source are at the same level: just walk across.
-				linkSegments.walkSegment.reset(new LineSegment2d(p1,p2));
+				linkSegments.walkSegment.reset(new LineSegment2d(s1,s2));
 			}
 		}
 	}
