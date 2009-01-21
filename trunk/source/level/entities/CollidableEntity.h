@@ -8,7 +8,6 @@
 
 #include <vector>
 
-#include <source/math/geom/AABB.h>
 #include "LocatableEntity.h"
 
 namespace hesp {

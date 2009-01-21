@@ -983,6 +983,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\EntDefFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FileSectionUtil.h"
 					>
 				</File>
@@ -1062,6 +1066,10 @@
 			<Filter
 				Name=".cpp"
 				>
+				<File
+					RelativePath="..\io\EntDefFileUtil.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\io\FileSectionUtil_Load.cpp"
 					>

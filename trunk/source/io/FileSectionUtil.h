@@ -27,6 +27,7 @@ class FileSectionUtil
 	// We want to only allow access to the specific classes which should be doing file I/O.
 	// This helps discourage random file I/O elsewhere in the project.
 	friend struct BrushesFileUtil;
+	friend struct EntDefFileUtil;
 	friend struct GeometryFileUtil;
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
@@ -40,6 +41,7 @@ class FileSectionUtil
 
 	//#################### LOADING METHODS ####################
 private:
+	static std::vector<AABB3d> load_aabbs_section(std::istream& is);
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
