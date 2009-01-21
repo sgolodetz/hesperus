@@ -43,10 +43,14 @@ void run(const std::string& entDefFilename, const std::string& treeFilename, con
 	OnionTree_Ptr tree;
 	OnionTreeFileUtil::load(treeFilename, polygons, tree);
 
+	// Check that the number of AABBs and the number of maps in the tree match up.
+	int aabbCount = static_cast<int>(aabbs.size());
+	int mapCount = tree->map_count();
+	if(aabbCount != mapCount) throw Exception("There must be exactly one AABB per map in the onion tree");
+
 	std::vector<NavDataset_Ptr> datasets;
 
 	// For each separate map.
-	int mapCount = tree->map_count();
 	for(int i=0; i<mapCount; ++i)
 	{
 		// Make a copy of the polygon array in which all the polygons that aren't
