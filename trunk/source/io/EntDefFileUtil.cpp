@@ -13,6 +13,12 @@
 namespace hesp {
 
 //#################### LOADING METHODS ####################
+/**
+Loads an array of AABBs from the specified entity definition file.
+
+@param filename	The name of the file from which to load the AABBs
+@return			The AABBs
+*/
 std::vector<AABB3d> EntDefFileUtil::load_aabbs_only(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
