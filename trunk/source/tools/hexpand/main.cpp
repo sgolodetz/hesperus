@@ -14,6 +14,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/BrushesFileUtil.h>
+#include <source/io/EntDefFileUtil.h>
 #include <source/level/brushes/BrushExpander.h>
 #include <source/math/geom/AABB.h>
 #include <source/util/PolygonTypes.h>
@@ -32,36 +33,10 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-std::vector<AABB3d> load_aabbs_file(const std::string& filename)
-{
-	std::vector<AABB3d> aabbs;
-
-	std::ifstream is(filename.c_str());
-	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-
-	// Read the AABB count.
-	std::string line;
-	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read AABB count");
-
-	int aabbCount;
-	try							{ aabbCount = lexical_cast<int,std::string>(line); }
-	catch(bad_lexical_cast&)	{ throw Exception("The AABB count was not an integer"); }
-
-	// Read the AABBs.
-	for(int i=0; i<aabbCount; ++i)
-	{
-		if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read AABB");
-		AABB3d aabb = read_aabb<Vector3d>(line);
-		aabbs.push_back(aabb);
-	}
-
-	return aabbs;
-}
-
 void run_expander(const std::string& aabbsFilename, const std::string& inputFilename)
 {
 	// Read in the input AABBs.
-	std::vector<AABB3d> aabbs = load_aabbs_file(aabbsFilename);
+	std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only(aabbsFilename);
 
 	// Read in the input brushes.
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;

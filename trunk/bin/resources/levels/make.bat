@@ -25,7 +25,7 @@ REM Collision Section
 REM #################
 
 hr2cbrush %1.rbr %1.cbr
-hexpand ..\..\settings\AABBs.txt %1.cbr
+hexpand ..\..\settings\hesperus.edf %1.cbr
 
 FOR %%f IN (*.ebr) DO (
 hcsg -c %%f %%~nf.cg1
