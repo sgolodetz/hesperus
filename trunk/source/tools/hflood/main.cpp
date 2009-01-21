@@ -21,6 +21,10 @@ namespace bf = boost::filesystem;
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
 {
@@ -115,6 +119,25 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	GeometryFileUtil::save(outputFilename, validPolygons);
 }
 
+bf::path determine_settings_directory()
+{
+#ifdef _WIN32
+	std::wstring ws;
+	ws.resize(512);
+	::GetModuleFileName(NULL, &ws[0], 512);
+
+	std::string s(ws.begin(), ws.end());
+
+	bf::path settingsDir = s;
+	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/tools/
+	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/
+	settingsDir /= "resources/settings/";		// -> hesperus/bin/resources/settings
+	return settingsDir;
+#else
+	#error Can't yet determine the settings directory on non-Windows platforms
+#endif
+}
+
 int main(int argc, char *argv[])
 try
 {
@@ -122,11 +145,7 @@ try
 	std::vector<std::string> args(argv, argv + argc);
 
 	// Work out the path to the settings directory.
-	bf::path settingsDir = args[0];
-	if(!settingsDir.is_complete()) settingsDir = bf::initial_path() / args[0];
-	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/tools/
-	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/
-	settingsDir /= "resources/settings/";		// -> hesperus/bin/resources/settings
+	bf::path settingsDir = determine_settings_directory();
 
 	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4], args[5], settingsDir);
 	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4], args[5], settingsDir);
