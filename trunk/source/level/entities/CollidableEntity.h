@@ -16,16 +16,17 @@ namespace hesp {
 This class represents a collidable entity (i.e. other things can collide
 with this entity, so it maintains appropriate collision AABBs).
 */
-class CollidableEntity : virtual public LocatableEntity
+class CollidableEntity : public LocatableEntity
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:
 	std::vector<int> m_aabbIndices;
+	int m_pose;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CollidableEntity(const Vector3d& position, const std::vector<int>& aabbIndices)
-	:	LocatableEntity(position), m_aabbIndices(aabbIndices)
+	CollidableEntity(const Vector3d& position, const std::vector<int>& aabbIndices, int pose)
+	:	LocatableEntity(position), m_aabbIndices(aabbIndices), m_pose(pose)
 	{}
 
 	//#################### PUBLIC METHODS ####################
@@ -33,6 +34,11 @@ public:
 	const std::vector<int>& aabb_indices() const
 	{
 		return m_aabbIndices;
+	}
+
+	int pose() const
+	{
+		return m_pose;
 	}
 };
 

@@ -244,19 +244,6 @@ LeafVisTable_Ptr FileSectionUtil::load_vis_section(std::istream& is)
 
 //#################### LOADING SUPPORT METHODS ####################
 /**
-Attempts to read a line from a std::istream into a string.
-
-@param is			The std::istream
-@param line			The string into which to read
-@param description	A description of what we were trying to read (in case EOF is encountered)
-@throws Exception	If EOF is encountered
-*/
-void FileSectionUtil::read_line(std::istream& is, std::string& line, const std::string& description)
-{
-	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + description);
-}
-
-/**
 Attempts to read a line from a std::istream into a string and check its validity.
 
 @param is			The std::istream
@@ -268,6 +255,19 @@ void FileSectionUtil::read_checked_line(std::istream& is, const std::string& exp
 	std::string line;
 	read_line(is, line, expected);
 	if(line != expected) throw Exception("Expected " + expected);
+}
+
+/**
+Attempts to read a line from a std::istream into a string.
+
+@param is			The std::istream
+@param line			The string into which to read
+@param description	A description of what we were trying to read (in case EOF is encountered)
+@throws Exception	If EOF is encountered
+*/
+void FileSectionUtil::read_line(std::istream& is, std::string& line, const std::string& description)
+{
+	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + description);
 }
 
 }

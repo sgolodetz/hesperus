@@ -941,6 +941,18 @@
 						RelativePath="..\level\entities\EntityManager.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\entities\Player.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\level\entities\EntityManager.tpp"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

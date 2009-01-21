@@ -36,30 +36,8 @@ void quit_with_usage()
 
 Vector3d load_player_pos(const std::string& entitiesFilename, const bf::path& settingsDir)
 {
-#if 1
-	// TODO: This will need to be changed when we change the entities file format.
-	std::ifstream is(entitiesFilename.c_str());
-	if(is.fail()) throw Exception("Could not open " + entitiesFilename + " for reading");
-
-	std::string line;
-	if(!std::getline(is,line)) throw Exception("Unexpected EOF whilst trying to read player position");
-
-	typedef boost::char_separator<char> sep;
-	typedef boost::tokenizer<sep> tokenizer;
-
-	tokenizer tok(line.begin(), line.end(), sep(" "));
-	std::vector<std::string> tokens(tok.begin(), tok.end());
-	if(tokens.size() != 5) throw Exception("Invalid player position specification");
-
-	std::vector<std::string> components(&tokens[1], &tokens[4]);
-
-	return Vector3d(components);
-#else
 	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
-
-	// NYI
-	throw 23;
-#endif
+	return entityManager->player()->position();
 }
 
 void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& validLeaves)

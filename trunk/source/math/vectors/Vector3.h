@@ -49,6 +49,7 @@ template <typename T> Vector3<T> operator*(double factor, const Vector3<T>& v);
 template <typename T> Vector3<T> operator*(const Vector3<T>& v, double factor);
 template <typename T> Vector3<T> operator/(const Vector3<T>& v, double factor);
 template <typename T> std::ostream& operator<<(std::ostream& os, const Vector3<T>& v);
+template <typename T> std::istream& operator>>(std::istream& is, Vector3<T>& v);
 
 //################## TYPEDEFS ##################//
 typedef Vector3<float> Vector3f;

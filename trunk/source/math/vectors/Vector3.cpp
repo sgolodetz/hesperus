@@ -200,6 +200,16 @@ std::ostream& operator<<(std::ostream& os, const Vector3<T>& v)
 	return os;
 }
 
+template <typename T>
+std::istream& operator>>(std::istream& is, Vector3<T>& v)
+{
+	is >> std::skipws;
+	std::string dummy;
+	is >> dummy >> v.x >> v.y >> v.z >> dummy;
+	is >> std::noskipws;
+	return is;
+}
+
 //################## EXPLICIT INSTANTIATIONS ##################//
 template struct Vector3<float>;
 template Vector3f operator+(const Vector3f& lhs, const Vector3f& rhs);
@@ -208,6 +218,7 @@ template Vector3f operator*(double factor, const Vector3f& v);
 template Vector3f operator*(const Vector3f& v, double factor);
 template Vector3f operator/(const Vector3f& v, double factor);
 template std::ostream& operator<<(std::ostream& os, const Vector3f& v);
+template std::istream& operator>>(std::istream& is, Vector3f& v);
 
 template struct Vector3<double>;
 template Vector3d operator+(const Vector3d& lhs, const Vector3d& rhs);
@@ -216,5 +227,6 @@ template Vector3d operator*(double factor, const Vector3d& v);
 template Vector3d operator*(const Vector3d& v, double factor);
 template Vector3d operator/(const Vector3d& v, double factor);
 template std::ostream& operator<<(std::ostream& os, const Vector3d& v);
+template std::istream& operator>>(std::istream& is, Vector3d& v);
 
 }
