@@ -914,6 +914,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\EntityManager.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\LocatableEntity.h"
 						>
 					</File>
@@ -927,6 +931,14 @@
 					</File>
 					<File
 						RelativePath="..\level\entities\VisibleEntity.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\entities\EntityManager.cpp"
 						>
 					</File>
 				</Filter>
