@@ -15,9 +15,9 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Level::Level(const LevelRenderer_Ptr& levelRenderer, const BSPTree_Ptr& tree,
+Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 			 const PortalVector& portals, const LeafVisTable_Ptr& leafVis)
-:	m_levelRenderer(levelRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis)
+:	m_geomRenderer(geomRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -65,7 +65,7 @@ void Level::render() const
 		const BSPLeaf *leaf = m_tree->leaf(*it);
 		std::copy(leaf->polygon_indices().begin(), leaf->polygon_indices().end(), std::back_inserter(polyIndices));
 	}
-	m_levelRenderer->render(polyIndices);
+	m_geomRenderer->render(polyIndices);
 
 	glPopAttrib();
 }

@@ -1,17 +1,17 @@
 /***
- * hesperus: UnlitLevelRenderer.h
+ * hesperus: UnlitGeometryRenderer.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_UNLITLEVELRENDERER
-#define H_HESP_UNLITLEVELRENDERER
+#ifndef H_HESP_UNLITGEOMETRYRENDERER
+#define H_HESP_UNLITGEOMETRYRENDERER
 
 #include <source/util/PolygonTypes.h>
-#include "LevelRenderer.h"
+#include "GeometryRenderer.h"
 
 namespace hesp {
 
-class UnlitLevelRenderer : public LevelRenderer
+class UnlitGeometryRenderer : public GeometryRenderer
 {
 	//#################### TYPEDEFS ####################
 private:
@@ -23,7 +23,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	UnlitLevelRenderer(const TexPolyVector& polygons);
+	UnlitGeometryRenderer(const TexPolyVector& polygons);
 
 	//#################### PUBLIC METHODS ####################
 public:

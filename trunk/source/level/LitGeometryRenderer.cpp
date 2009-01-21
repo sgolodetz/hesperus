@@ -1,18 +1,18 @@
 /***
- * hesperus: LitLevelRenderer.cpp
+ * hesperus: LitGeometryRenderer.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
 #include <gl/glew.h>
 
-#include "LitLevelRenderer.h"
+#include "LitGeometryRenderer.h"
 
 #include <source/textures/TextureFactory.h>
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-LitLevelRenderer::LitLevelRenderer(const TexLitPolyVector& polygons, const std::vector<Image24_Ptr>& lightmaps)
+LitGeometryRenderer::LitGeometryRenderer(const TexLitPolyVector& polygons, const std::vector<Image24_Ptr>& lightmaps)
 :	m_polygons(polygons)
 {
 	assert(polygons.size() == lightmaps.size());
@@ -37,14 +37,14 @@ LitLevelRenderer::LitLevelRenderer(const TexLitPolyVector& polygons, const std::
 }
 
 //#################### PUBLIC METHODS ####################
-void LitLevelRenderer::render(const std::vector<int>& polyIndices) const
+void LitGeometryRenderer::render(const std::vector<int>& polyIndices) const
 {
 	// TEMPORARY: This should be replaced with render_proper() once the proper version is ready.
 	render_simple(polyIndices);
 }
 
 //#################### PRIVATE METHODS ####################
-void LitLevelRenderer::render_simple(const std::vector<int>& polyIndices) const
+void LitGeometryRenderer::render_simple(const std::vector<int>& polyIndices) const
 {
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT | GL_TEXTURE_BIT);
 

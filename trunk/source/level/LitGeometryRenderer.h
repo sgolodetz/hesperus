@@ -1,18 +1,18 @@
 /***
- * hesperus: LitLevelRenderer.h
+ * hesperus: LitGeometryRenderer.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LITLEVELRENDERER
-#define H_HESP_LITLEVELRENDERER
+#ifndef H_HESP_LITGEOMETRYRENDERER
+#define H_HESP_LITGEOMETRYRENDERER
 
 #include <source/images/Image.h>
 #include <source/util/PolygonTypes.h>
-#include "LevelRenderer.h"
+#include "GeometryRenderer.h"
 
 namespace hesp {
 
-class LitLevelRenderer : public LevelRenderer
+class LitGeometryRenderer : public GeometryRenderer
 {
 	//#################### TYPEDEFS ####################
 private:
@@ -25,7 +25,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	LitLevelRenderer(const TexLitPolyVector& polygons, const std::vector<Image24_Ptr>& lightmaps);
+	LitGeometryRenderer(const TexLitPolyVector& polygons, const std::vector<Image24_Ptr>& lightmaps);
 
 	//#################### PUBLIC METHODS ####################
 public:

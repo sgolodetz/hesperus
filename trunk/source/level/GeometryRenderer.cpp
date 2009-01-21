@@ -1,9 +1,9 @@
 /***
- * hesperus: LevelRenderer.cpp
+ * hesperus: GeometryRenderer.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "LevelRenderer.h"
+#include "GeometryRenderer.h"
 
 #include <source/images/BitmapLoader.h>
 #include <source/textures/TextureFactory.h>
@@ -11,7 +11,7 @@
 namespace hesp {
 
 //#################### PROTECTED METHODS ####################
-void LevelRenderer::load_textures(const std::set<std::string>& textureNames)
+void GeometryRenderer::load_textures(const std::set<std::string>& textureNames)
 {
 	for(std::set<std::string>::const_iterator it=textureNames.begin(), iend=textureNames.end(); it!=iend; ++it)
 	{

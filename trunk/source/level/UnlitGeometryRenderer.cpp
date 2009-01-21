@@ -1,9 +1,9 @@
 /***
- * hesperus: UnlitLevelRenderer.cpp
+ * hesperus: UnlitGeometryRenderer.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "UnlitLevelRenderer.h"
+#include "UnlitGeometryRenderer.h"
 
 #include <source/ogl/WrappedGL.h>
 
@@ -12,7 +12,7 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-UnlitLevelRenderer::UnlitLevelRenderer(const std::vector<TexturedPolygon_Ptr>& polygons)
+UnlitGeometryRenderer::UnlitGeometryRenderer(const std::vector<TexturedPolygon_Ptr>& polygons)
 :	m_polygons(polygons)
 {
 	// Determine the set of unique texture names.
@@ -27,14 +27,14 @@ UnlitLevelRenderer::UnlitLevelRenderer(const std::vector<TexturedPolygon_Ptr>& p
 }
 
 //#################### PUBLIC METHODS ####################
-void UnlitLevelRenderer::render(const std::vector<int>& polyIndices) const
+void UnlitGeometryRenderer::render(const std::vector<int>& polyIndices) const
 {
 	// TEMPORARY: This should be replaced with render_proper() once the proper version is ready.
 	render_simple(polyIndices);
 }
 
 //#################### PRIVATE METHODS ####################
-void UnlitLevelRenderer::render_simple(const std::vector<int>& polyIndices) const
+void UnlitGeometryRenderer::render_simple(const std::vector<int>& polyIndices) const
 {
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 

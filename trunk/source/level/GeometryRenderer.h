@@ -1,10 +1,10 @@
 /***
- * hesperus: LevelRenderer.h
+ * hesperus: GeometryRenderer.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVELRENDERER
-#define H_HESP_LEVELRENDERER
+#ifndef H_HESP_GEOMETRYRENDERER
+#define H_HESP_GEOMETRYRENDERER
 
 #include <map>
 #include <set>
@@ -18,7 +18,7 @@ using boost::shared_ptr;
 
 namespace hesp {
 
-class LevelRenderer
+class GeometryRenderer
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:
@@ -26,7 +26,7 @@ protected:
 
 	//#################### DESTRUCTOR ####################
 public:
-	virtual ~LevelRenderer() {}
+	virtual ~GeometryRenderer() {}
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
@@ -38,8 +38,8 @@ protected:
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<LevelRenderer> LevelRenderer_Ptr;
-typedef shared_ptr<const LevelRenderer> LevelRenderer_CPtr;
+typedef shared_ptr<GeometryRenderer> GeometryRenderer_Ptr;
+typedef shared_ptr<const GeometryRenderer> GeometryRenderer_CPtr;
 
 }
 

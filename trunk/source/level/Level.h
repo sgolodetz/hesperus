@@ -13,7 +13,7 @@ using boost::shared_ptr;
 #include <source/level/entities/Player.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>
-#include "LevelRenderer.h"
+#include "GeometryRenderer.h"
 
 namespace hesp {
 
@@ -25,14 +25,14 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	LevelRenderer_Ptr m_levelRenderer;
+	GeometryRenderer_Ptr m_geomRenderer;
 	BSPTree_Ptr m_tree;
 	PortalVector m_portals;
 	LeafVisTable_Ptr m_leafVis;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Level(const LevelRenderer_Ptr& levelRenderer, const BSPTree_Ptr& tree,
+	Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 		  const PortalVector& portals, const LeafVisTable_Ptr& leafVis);
 
 	//#################### PUBLIC METHODS ####################

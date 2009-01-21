@@ -9,8 +9,8 @@
 
 #include <source/images/BitmapLoader.h>
 #include <source/images/BitmapSaver.h>
-#include <source/level/LitLevelRenderer.h>
-#include <source/level/UnlitLevelRenderer.h>
+#include <source/level/LitGeometryRenderer.h>
+#include <source/level/UnlitGeometryRenderer.h>
 #include "FileSectionUtil.h"
 
 namespace hesp {
@@ -117,8 +117,8 @@ Level_Ptr LevelFileUtil::load_lit(std::istream& is)
 	}
 
 	// Construct and return the level.
-	LevelRenderer_Ptr levelRenderer(new LitLevelRenderer(polygons, lightmaps));
-	return Level_Ptr(new Level(levelRenderer, tree, portals, leafVis));
+	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis));
 }
 
 /**
@@ -141,8 +141,8 @@ Level_Ptr LevelFileUtil::load_unlit(std::istream& is)
 	leafVis = FileSectionUtil::load_vis_section(is);
 
 	// Construct and return the level.
-	LevelRenderer_Ptr levelRenderer(new UnlitLevelRenderer(polygons));
-	return Level_Ptr(new Level(levelRenderer, tree, portals, leafVis));
+	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis));
 }
 
 }

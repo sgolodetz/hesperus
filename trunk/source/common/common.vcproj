@@ -667,11 +667,11 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\level\Level.cpp"
+					RelativePath="..\level\GeometryRenderer.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\level\LevelRenderer.cpp"
+					RelativePath="..\level\Level.cpp"
 					>
 				</File>
 				<File
@@ -679,11 +679,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\level\LitLevelRenderer.cpp"
+					RelativePath="..\level\LitGeometryRenderer.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\level\UnlitLevelRenderer.cpp"
+					RelativePath="..\level\UnlitGeometryRenderer.cpp"
 					>
 				</File>
 			</Filter>
@@ -691,11 +691,11 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\level\Level.h"
+					RelativePath="..\level\GeometryRenderer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\level\LevelRenderer.h"
+					RelativePath="..\level\Level.h"
 					>
 				</File>
 				<File
@@ -703,11 +703,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\level\LitLevelRenderer.h"
+					RelativePath="..\level\LitGeometryRenderer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\level\UnlitLevelRenderer.h"
+					RelativePath="..\level\UnlitGeometryRenderer.h"
 					>
 				</File>
 			</Filter>
