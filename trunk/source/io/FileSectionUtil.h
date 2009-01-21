@@ -9,6 +9,7 @@
 #include <string>
 
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem/operations.hpp>
 using boost::shared_ptr;
 
 #include <source/level/brushes/PolyhedralBrush.h>
@@ -44,7 +45,7 @@ class FileSectionUtil
 	//#################### LOADING METHODS ####################
 private:
 	static std::vector<AABB3d> load_aabbs_section(std::istream& is);
-	static EntityManager_Ptr load_entities_section(std::istream& is);
+	static EntityManager_Ptr load_entities_section(std::istream& is, const boost::filesystem::path& settingsDir);
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);

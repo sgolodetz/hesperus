@@ -6,6 +6,7 @@
 #include "FileSectionUtil.h"
 
 #include <boost/lexical_cast.hpp>
+namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
@@ -48,10 +49,11 @@ std::vector<AABB3d> FileSectionUtil::load_aabbs_section(std::istream& is)
 Loads a set of entities from the specified std::istream.
 
 @param is			The std::istream
+@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
 @return				An EntityManager containing the loaded entities
 @throws Exception	If EOF is encountered whilst trying to read the entities
 */
-EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is)
+EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is, const bf::path& settingsDir)
 {
 	read_checked_line(is, "Entities");
 	read_checked_line(is, "{");
@@ -63,7 +65,7 @@ EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is)
 		// Read in the AABBs.
 		std::string entDefFilename;
 		read_line(is, entDefFilename, "entity definitions filename");
-		std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only(entDefFilename);
+		std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only((settingsDir / entDefFilename).file_string());
 
 	read_checked_line(is, "}");
 

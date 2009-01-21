@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include <boost/filesystem/operations.hpp>
+
 #include <source/level/entities/EntityManager.h>
 
 namespace hesp {
@@ -15,7 +17,7 @@ namespace hesp {
 struct EntitiesFileUtil
 {
 	//#################### LOADING METHODS ####################
-	static EntityManager_Ptr load(const std::string& filename);
+	static EntityManager_Ptr load(const std::string& filename, const boost::filesystem::path& settingsDir);
 };
 
 }

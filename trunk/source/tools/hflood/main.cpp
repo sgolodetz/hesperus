@@ -10,6 +10,10 @@
 #include <string>
 #include <vector>
 
+#include <boost/filesystem/operations.hpp>
+namespace bf = boost::filesystem;
+
+#include <source/io/EntitiesFileUtil.h>
 #include <source/io/GeometryFileUtil.h>
 #include <source/io/PortalsFileUtil.h>
 #include <source/io/TreeFileUtil.h>
@@ -30,8 +34,9 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-Vector3d load_player_pos(const std::string& entitiesFilename)
+Vector3d load_player_pos(const std::string& entitiesFilename, const bf::path& settingsDir)
 {
+#if 1
 	// TODO: This will need to be changed when we change the entities file format.
 	std::ifstream is(entitiesFilename.c_str());
 	if(is.fail()) throw Exception("Could not open " + entitiesFilename + " for reading");
@@ -49,6 +54,12 @@ Vector3d load_player_pos(const std::string& entitiesFilename)
 	std::vector<std::string> components(&tokens[1], &tokens[4]);
 
 	return Vector3d(components);
+#else
+	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
+
+	// NYI
+	throw 23;
+#endif
 }
 
 void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& validLeaves)
@@ -76,7 +87,7 @@ void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsF
 
 template <typename Poly>
 void run_flood(const std::string& treeFilename, const std::string& portalsFilename, const std::string& entitiesFilename,
-			   const std::string& outputFilename)
+			   const std::string& outputFilename, const bf::path& settingsDir)
 {
 	// Load the polygons and tree.
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -91,7 +102,7 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
 
 	// Load the player position.
-	Vector3d playerPos = load_player_pos(entitiesFilename);
+	Vector3d playerPos = load_player_pos(entitiesFilename, settingsDir);
 
 	// Build the "portals from leaf" data structure.
 	std::map<int,std::vector<Portal_Ptr> > portalsFromLeaf;
@@ -132,8 +143,15 @@ try
 	if(argc != 6) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
 
-	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4], args[5]);
-	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4], args[5]);
+	// Work out the path to the settings directory.
+	bf::path settingsDir = args[0];
+	if(!settingsDir.is_complete()) settingsDir = bf::initial_path() / args[0];
+	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/tools/
+	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/
+	settingsDir /= "resources/settings/";		// -> hesperus/bin/resources/settings
+
+	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4], args[5], settingsDir);
+	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4], args[5], settingsDir);
 	else quit_with_usage();
 
 	return 0;

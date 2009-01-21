@@ -7,6 +7,8 @@
 
 #include <fstream>
 
+namespace bf = boost::filesystem;
+
 #include <source/exceptions/Exception.h>
 #include "FileSectionUtil.h"
 
@@ -16,14 +18,15 @@ namespace hesp {
 /**
 Loads a set of entities from the specified entities file.
 
-@param filename	The name of the file from which to load the entities
-@return			An EntityManager containing the loaded entities
+@param filename		The name of the file from which to load the entities
+@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
+@return				An EntityManager containing the loaded entities
 */
-EntityManager_Ptr EntitiesFileUtil::load(const std::string& filename)
+EntityManager_Ptr EntitiesFileUtil::load(const std::string& filename, const bf::path& settingsDir)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	return FileSectionUtil::load_entities_section(is);
+	return FileSectionUtil::load_entities_section(is, settingsDir);
 }
 
 }
