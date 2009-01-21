@@ -13,6 +13,12 @@
 namespace hesp {
 
 //#################### LOADING METHODS ####################
+/**
+Loads a set of entities from the specified entities file.
+
+@param filename	The name of the file from which to load the entities
+@return			An EntityManager containing the loaded entities
+*/
 EntityManager_Ptr EntitiesFileUtil::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
