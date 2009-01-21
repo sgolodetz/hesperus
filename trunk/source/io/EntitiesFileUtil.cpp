@@ -5,9 +5,19 @@
 
 #include "EntitiesFileUtil.h"
 
+#include <fstream>
+
+#include <source/exceptions/Exception.h>
+#include "FileSectionUtil.h"
+
 namespace hesp {
 
 //#################### LOADING METHODS ####################
-// TODO
+EntityManager_Ptr EntitiesFileUtil::load(const std::string& filename)
+{
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
+	return FileSectionUtil::load_entities_section(is);
+}
 
 }

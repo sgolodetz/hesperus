@@ -43,6 +43,19 @@ std::vector<AABB3d> FileSectionUtil::load_aabbs_section(std::istream& is)
 }
 
 /**
+Loads a set of entities from the specified std::istream.
+
+@param is			The std::istream
+@return				An EntityManager containing the loaded entities
+@throws Exception	If EOF is encountered whilst trying to read the entities
+*/
+EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is)
+{
+	// NYI
+	throw 23;
+}
+
+/**
 Loads a lightmap prefix from the specified std::istream.
 
 @param is			The std::istream

@@ -13,6 +13,7 @@ using boost::shared_ptr;
 
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPTree.h>
+#include <source/level/entities/EntityManager.h>
 #include <source/level/lighting/Light.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/onionbsp/OnionTree.h>
@@ -28,6 +29,7 @@ class FileSectionUtil
 	// This helps discourage random file I/O elsewhere in the project.
 	friend struct BrushesFileUtil;
 	friend struct EntDefFileUtil;
+	friend struct EntitiesFileUtil;
 	friend struct GeometryFileUtil;
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
@@ -42,6 +44,7 @@ class FileSectionUtil
 	//#################### LOADING METHODS ####################
 private:
 	static std::vector<AABB3d> load_aabbs_section(std::istream& is);
+	static EntityManager_Ptr load_entities_section(std::istream& is);
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
