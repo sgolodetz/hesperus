@@ -7,6 +7,16 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+EntityManager::EntityManager(const std::vector<AABB3d>& aabbs)
+:	m_aabbs(aabbs)
+{}
+
+//#################### PUBLIC METHODS ####################
+void EntityManager::load_entity(std::istream& is)
+{
+	// NYI
+	throw 23;
+}
 
 }
