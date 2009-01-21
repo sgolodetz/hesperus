@@ -987,6 +987,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\EntitiesFileUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FileSectionUtil.h"
 					>
 				</File>
@@ -1068,6 +1072,10 @@
 				>
 				<File
 					RelativePath="..\io\EntDefFileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\EntitiesFileUtil.cpp"
 					>
 				</File>
 				<File
