@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
+#include <source/io/EntDefFileUtil.h>
 #include <source/io/NavFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
 #include <source/level/nav/AdjacencyTable.h>
@@ -26,18 +27,21 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hnav <input onion tree> <output navmesh stem>" << std::endl;
+	std::cout << "Usage: hnav <input entity definitions> <input onion tree> <output navmesh stem>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void run(const std::string& inputFilename, const std::string& outputFilename)
+void run(const std::string& entDefFilename, const std::string& treeFilename, const std::string& outputFilename)
 {
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
+
+	// Read in the AABBs.
+	std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only(entDefFilename);
 
 	// Read in the polygons and onion tree.
 	ColPolyVector polygons;
 	OnionTree_Ptr tree;
-	OnionTreeFileUtil::load(inputFilename, polygons, tree);
+	OnionTreeFileUtil::load(treeFilename, polygons, tree);
 
 	std::vector<NavDataset_Ptr> datasets;
 
@@ -57,7 +61,8 @@ void run(const std::string& inputFilename, const std::string& outputFilename)
 		}
 
 		// Generate the navigation mesh.
-		NavMeshGenerator generator(mapPolygons, 1.0);	// TODO: Replace 1.0 with half the height of the AABB for this map
+		double maxHeightDifference = (aabbs[i].maximum().z - aabbs[i].minimum().z) / 2;
+		NavMeshGenerator generator(mapPolygons, maxHeightDifference);
 		NavMesh_Ptr mesh = generator.generate_mesh();
 
 		// Build the navigation graph adjacency list.
@@ -81,9 +86,9 @@ void run(const std::string& inputFilename, const std::string& outputFilename)
 int main(int argc, char *argv[])
 try
 {
-	if(argc != 3) quit_with_usage();
+	if(argc != 4) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
-	run(args[1], args[2]);
+	run(args[1], args[2], args[3]);
 	return 0;
 }
 catch(Exception& e) { quit_with_error(e.cause()); }

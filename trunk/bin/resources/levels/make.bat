@@ -44,7 +44,7 @@ set CG2FILES=
 ENDLOCAL
 
 hoportal -c %1.ot %1.op
-hnav %1.ot %1.nav
+hnav ..\..\settings\hesperus.edf %1.ot %1.nav
 
 REM #################
 REM Collation Section (this will need updating ultimately)

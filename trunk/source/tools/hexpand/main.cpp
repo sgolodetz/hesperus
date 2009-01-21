@@ -29,14 +29,14 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hexpand <input AABBs> <input brushes>" << std::endl;
+	std::cout << "Usage: hexpand <input entity definitions> <input brushes>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void run_expander(const std::string& aabbsFilename, const std::string& inputFilename)
+void run_expander(const std::string& entDefFilename, const std::string& inputFilename)
 {
 	// Read in the input AABBs.
-	std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only(aabbsFilename);
+	std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only(entDefFilename);
 
 	// Read in the input brushes.
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;
