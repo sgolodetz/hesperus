@@ -94,6 +94,9 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 		portalsFromLeaf[fromLeaf].push_back(*it);
 	}
 
+	// FIXME:	We should be flooding from the positions of all the animate entities, not just the player.
+	//			Note that this requires a bit of thought - don't dive straight in!
+
 	// Flood out from the player leaf to figure out which leaves are valid.
 	int playerLeaf = tree->find_leaf_index(playerPos);
 
@@ -122,10 +125,10 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 bf::path determine_settings_directory()
 {
 #ifdef _WIN32
+	// FIXME:	This platform-specific code to determine the executable path should be moved into a utility function in the common library.
 	std::wstring ws;
 	ws.resize(512);
 	::GetModuleFileName(NULL, &ws[0], 512);
-
 	std::string s(ws.begin(), ws.end());
 
 	bf::path settingsDir = s;
