@@ -47,17 +47,17 @@ void run_compiler(const std::vector<std::string>& geomFilenames, const std::vect
 	}
 
 	// Read in the input trees.
-	std::vector<BSPTree_Ptr> trees;
+	std::vector<BSPTree_CPtr> mapTrees;
 	for(size_t i=0; i<mapCount; ++i)	// note: there's guaranteed to be exactly one tree per map
 	{
 		PolyVector polygons;
-		BSPTree_Ptr tree;
-		TreeFileUtil::load(treeFilenames[i], polygons, tree);
-		trees.push_back(tree);
+		BSPTree_Ptr mapTree;
+		TreeFileUtil::load(treeFilenames[i], polygons, mapTree);
+		mapTrees.push_back(mapTree);
 	}
 
 	// Compile them into an onion tree.
-	OnionCompiler<Poly> compiler(maps, weight);
+	OnionCompiler<Poly> compiler(maps, mapTrees, weight);
 	compiler.build_tree();
 
 	// Write the output polygons and onion tree to disk.

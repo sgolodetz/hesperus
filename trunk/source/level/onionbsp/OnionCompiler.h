@@ -24,35 +24,28 @@ private:
 	typedef std::vector<Poly_Ptr> PolyVector;
 	typedef shared_ptr<PolyVector> PolyVector_Ptr;
 
-	//#################### ENUMERATIONS ####################
-private:
-	enum UsedFlag
-	{
-		UF_UNUSED,				// the plane of this polygon has not yet been used as a split plane
-		UF_USED_DIFFERENTMAP,	// the plane of this polygon has been used, but the polygon it came from was in a different map
-		UF_USED_SAMEMAP			// the plane of this polygon has been used, and its source polygon was in this map
-	};
-
 	//#################### NESTED CLASSES ####################
 private:
 	struct PolyIndex
 	{
 		int index;
-		int mapIndex;			// which map the polygon came from
-		UsedFlag usedFlag;
+		bool splitCandidate;	// is the plane of the referenced polygon a split candidate?
 
-		PolyIndex(int index_, int mapIndex_, UsedFlag usedFlag_)
-		:	index(index_), mapIndex(mapIndex_), usedFlag(usedFlag_)
+		PolyIndex(int index_, bool splitCandidate_)
+		:	index(index_), splitCandidate(splitCandidate_)
 		{}
 	};
 
 	typedef shared_ptr<PolyIndex> PolyIndex_Ptr;
 
+	struct NullAuxData {};
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	// Input data
-	double m_weight;
 	int m_mapCount;
+	std::vector<BSPTree_CPtr> m_mapTrees;
+	double m_weight;
 
 	// Intermediate data
 	PolyVector_Ptr m_polygons;
@@ -63,7 +56,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	OnionCompiler(const std::vector<PolyVector>& maps, double weight);
+	OnionCompiler(const std::vector<PolyVector>& maps, const std::vector<BSPTree_CPtr>& mapTrees, double weight);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -73,9 +66,10 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	OnionNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes,
-								const boost::dynamic_bitset<>& solidityDescriptor);
-	PolyIndex_Ptr choose_split_poly(const std::vector<PolyIndex>& polyIndices);
+	OnionNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes, std::vector<Plane_Ptr>& ancestorPlanes);
+	PolyIndex_Ptr choose_split_poly(const std::vector<PolyIndex>& polyIndices) const;
+	boost::dynamic_bitset<> determine_leaf_solidity(const std::vector<Plane_Ptr>& ancestorPlanes) const;
+	static Vector3d find_arbitrary_leaf_point(const std::vector<Plane_Ptr>& ancestorPlanes);
 };
 
 }
