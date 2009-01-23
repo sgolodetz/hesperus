@@ -1039,6 +1039,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\NavLinkFactory.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\OnionPortalsFileUtil.h"
 					>
 				</File>
@@ -1120,6 +1124,10 @@
 				</File>
 				<File
 					RelativePath="..\io\NavFileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\NavLinkFactory.cpp"
 					>
 				</File>
 				<File

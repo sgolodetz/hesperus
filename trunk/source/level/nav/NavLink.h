@@ -45,6 +45,11 @@ public:
 	// TODO: <TraversalFunctor> traverse(Vector3d sourcePosition)
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<NavLink> NavLink_Ptr;
+typedef shared_ptr<const NavLink> NavLink_CPtr;
+
+//#################### DERIVED CLASSES ####################
 class StepLink : public NavLink
 {
 	//#################### PROTECTED VARIABLES ####################
@@ -93,6 +98,12 @@ public:
 	{
 		return "StepDown";
 	}
+
+	static NavLink_Ptr load(const std::string& line)
+	{
+		// NYI
+		throw 23;
+	}
 };
 
 class StepUpLink : public StepLink
@@ -108,6 +119,12 @@ public:
 	std::string link_name() const
 	{
 		return "StepUp";
+	}
+
+	static NavLink_Ptr load(const std::string& line)
+	{
+		// NYI
+		throw 23;
 	}
 };
 
@@ -130,6 +147,12 @@ public:
 		return (m_edge.e1 + m_edge.e2) / 2;
 	}
 
+	static NavLink_Ptr load(const std::string& line)
+	{
+		// NYI
+		throw 23;
+	}
+
 	void output(std::ostream& os) const
 	{
 		os << "Walk " << m_sourcePoly << ' ' << m_destPoly << ' ' << m_edge;
@@ -140,10 +163,6 @@ public:
 		return (m_edge.e1 + m_edge.e2) / 2;
 	}
 };
-
-//#################### TYPEDEFS ####################
-typedef shared_ptr<NavLink> NavLink_Ptr;
-typedef shared_ptr<const NavLink> NavLink_CPtr;
 
 }
 
