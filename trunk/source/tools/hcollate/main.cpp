@@ -30,11 +30,13 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hcollate {+L <input lit tree> | -L <input tree>} <input portals> <input vis> <output filename>" << std::endl;
+	std::cout << "Usage: hcollate {+L <input lit tree> | -L <input tree>} <input portals> <input vis> <input onion tree> <input onion portals> <input nav data> <output filename>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void collate_lit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename, const std::string& outputFilename)
+void collate_lit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename,
+				 const std::string& onionTreeFilename, const std::string& onionPortalsFilename,
+				 const std::string& navFilename, const std::string& outputFilename)
 try
 {
 	// Load the lit polygons, tree and lightmap prefix.
@@ -61,12 +63,18 @@ try
 		lightmaps[i] = BitmapLoader::load_image24(filename);
 	}
 
+	// TODO: Load the onion tree.
+	// TODO: Load the onion portals.
+	// TODO: Load the navigation data.
+
 	// Write everything to the output file.
 	LevelFileUtil::save_lit(outputFilename, polygons, tree, portals, leafVis, lightmaps);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
-void collate_unlit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename, const std::string& outputFilename)
+void collate_unlit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename,
+				   const std::string& onionTreeFilename, const std::string& onionPortalsFilename,
+				   const std::string& navFilename, const std::string& outputFilename)
 try
 {
 	// Load the unlit polygons and tree.
@@ -83,6 +91,10 @@ try
 	// Load the vis table.
 	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
 
+	// TODO: Load the onion tree.
+	// TODO: Load the onion portals.
+	// TODO: Load the navigation data.
+
 	// Write everything to the output file.
 	LevelFileUtil::save_unlit(outputFilename, polygons, tree, portals, leafVis);
 }
@@ -90,11 +102,11 @@ catch(Exception& e) { quit_with_error(e.cause()); }
 
 int main(int argc, char *argv[])
 {
-	if(argc != 6) quit_with_usage();
+	if(argc != 9) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
 
-	if(args[1] == "+L") collate_lit(args[2], args[3], args[4], args[5]);
-	else if(args[1] == "-L") collate_unlit(args[2], args[3], args[4], args[5]);
+	if(args[1] == "+L") collate_lit(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+	else if(args[1] == "-L") collate_unlit(args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 	else quit_with_usage();
 
 	return 0;
