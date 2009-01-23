@@ -11,6 +11,15 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 /**
+Constructs an empty adjacency list for a graph with the specified size in nodes.
+
+@param size	The number of nodes in the graph
+*/
+AdjacencyList::AdjacencyList(int size)
+:	m_size(size), m_adjacentEdges(size)
+{}
+
+/**
 Constructs an adjacency list representation of the graph for a navigation mesh.
 The nodes of this graph are the links of the navmesh, and appropriate edges are
 added between links in the same polygon.
@@ -51,6 +60,12 @@ AdjacencyList::AdjacencyList(const NavMesh_Ptr& navMesh)
 }
 
 //#################### PUBLIC METHODS ####################
+void AdjacencyList::add_edge(int fromNode, const Edge& edge)
+{
+	if(fromNode < 0 || fromNode >= m_size) throw Exception("add_edge: From node index out of range");
+	m_adjacentEdges[fromNode].push_back(edge);
+}
+
 const std::list<AdjacencyList::Edge>& AdjacencyList::adjacent_edges(int node) const
 {
 	if(node < 0 || node >= m_size) throw Exception("adjacent_edges: Node index out of range");

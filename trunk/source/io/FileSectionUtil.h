@@ -76,8 +76,11 @@ private:
 	template <typename Poly> static shared_ptr<PolyhedralBrush<Poly> > load_polyhedral_brush(std::istream& is);
 	template <typename Poly> static void load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
 	template <typename Vert, typename AuxData> static void load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead = INT_MAX);
-	static void read_line(std::istream& is, std::string& line, const std::string& description);
+	static AdjacencyList_Ptr read_adjacency_list(std::istream& is);
 	static void read_checked_line(std::istream& is, const std::string& expected);
+	static void read_line(std::istream& is, std::string& line, const std::string& description);
+	static NavMesh_Ptr read_navmesh(std::istream& is);
+	static PathTable_Ptr read_path_table(std::istream& is);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:

@@ -59,6 +59,7 @@ void FileSectionUtil::save_nav_section(std::ostream& os, const std::vector<NavDa
 
 	// Output the datasets sequentially.
 	int datasetCount = static_cast<int>(datasets.size());
+	os << datasetCount << '\n';
 	for(int i=0; i<datasetCount; ++i)
 	{
 		os << "Dataset\n";

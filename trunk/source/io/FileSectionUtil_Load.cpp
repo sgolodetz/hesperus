@@ -210,8 +210,34 @@ Loads an array of navigation datasets from the specified std::istream.
 */
 std::vector<NavDataset_Ptr> FileSectionUtil::load_nav_section(std::istream& is)
 {
-	// NYI
-	return std::vector<NavDataset_Ptr>();
+	std::vector<NavDataset_Ptr> datasets;
+
+	read_checked_line(is, "Nav");
+	read_checked_line(is, "{");
+
+	std::string line;
+	read_line(is, line, "navigation dataset count");
+	int datasetCount;
+	try							{ datasetCount = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The navigation dataset count was not an integer"); }
+
+	for(int i=0; i<datasetCount; ++i)
+	{
+		read_checked_line(is, "Dataset");
+		read_checked_line(is, "{");
+
+		NavMesh_Ptr navMesh = read_navmesh(is);
+		AdjacencyList_Ptr adjList = read_adjacency_list(is);
+		PathTable_Ptr pathTable = read_path_table(is);
+
+		datasets.push_back(NavDataset_Ptr(new NavDataset(adjList, navMesh, pathTable)));
+
+		read_checked_line(is, "}");
+	}
+
+	read_checked_line(is, "}");
+
+	return datasets;
 }
 
 /**
@@ -290,6 +316,70 @@ LeafVisTable_Ptr FileSectionUtil::load_vis_section(std::istream& is)
 
 //#################### LOADING SUPPORT METHODS ####################
 /**
+Reads an adjacency list from the specified std::istream.
+*/
+AdjacencyList_Ptr FileSectionUtil::read_adjacency_list(std::istream& is)
+{
+	read_checked_line(is, "AdjacencyList");
+	read_checked_line(is, "{");
+
+	std::string line;
+	read_line(is, line, "adjacency list size");
+	int size;
+	try							{ size = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The adjacency list size was not an integer"); }
+
+	AdjacencyList_Ptr adjList(new AdjacencyList(size));
+
+	for(int i=0; i<size; ++i)
+	{
+		read_line(is, line, "adjacency list entry");
+
+		typedef boost::char_separator<char> sep;
+		typedef boost::tokenizer<sep> tokenizer;
+		tokenizer tok(line.begin(), line.end(), sep(" "));
+		std::vector<std::string> tokens(tok.begin(), tok.end());
+
+		// Check the adjacency list entry for validity.
+		int tokenCount = static_cast<int>(tokens.size());
+		if(tokenCount == 0) throw Exception("Missing adjacency list entry " + lexical_cast<std::string,int>(i));
+		if(tokenCount % 4 != 1) throw Exception("Bad adjacency list entry " + lexical_cast<std::string,int>(i));
+
+		try
+		{
+			int checkI = lexical_cast<int,std::string>(tokens[0]);
+			if(checkI != i) throw Exception("Bad adjacency list entry " + lexical_cast<std::string,int>(i));
+		}
+		catch(bad_lexical_cast&)
+		{
+			throw Exception("The first token in the adjacency list entry was not an integer");
+		}
+
+		// Parse the edges.
+		for(int j=1; j<tokenCount; j += 4)
+		{
+			if(tokens[j] != "(") throw Exception("Expected ( to start adjacency list entry edge");
+			if(tokens[j+3] != ")") throw Exception("Expected ) to finish adjacency list entry edge");
+
+			try
+			{
+				int toNode = lexical_cast<int,std::string>(tokens[j+1]);
+				float length = lexical_cast<float,std::string>(tokens[j+2]);
+				adjList->add_edge(i, AdjacencyList::Edge(toNode, length));
+			}
+			catch(bad_lexical_cast&)
+			{
+				throw Exception("Bad edge in adjacency list entry " + lexical_cast<std::string,int>(i));
+			}
+		}
+	}
+
+	read_checked_line(is, "}");
+
+	return adjList;
+}
+
+/**
 Attempts to read a line from a std::istream into a string and check its validity.
 
 @param is			The std::istream
@@ -314,6 +404,89 @@ Attempts to read a line from a std::istream into a string.
 void FileSectionUtil::read_line(std::istream& is, std::string& line, const std::string& description)
 {
 	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + description);
+}
+
+/**
+Reads a navigation mesh from the specified std::istream.
+*/
+NavMesh_Ptr FileSectionUtil::read_navmesh(std::istream& is)
+{
+	read_checked_line(is, "Mesh");
+	read_checked_line(is, "{");
+
+	// Read in the nav links.
+	read_checked_line(is, "Links");
+	read_checked_line(is, "{");
+
+#if 0
+	// FIXME: Load the links, rather than skipping over them.
+
+	read_checked_line(is, "}");
+#else
+	{
+		std::string line;
+		for(;;)
+		{
+			std::getline(is, line);
+			if(line == "}") break;
+		}
+	}
+#endif
+
+	// Read in the nav polygons.
+	read_checked_line(is, "Polygons");
+	read_checked_line(is, "{");
+
+#if 0
+	// FIXME: Load the polygons, rather than skipping over them.
+
+	read_checked_line(is, "}");
+#else
+	{
+		std::string line;
+		for(;;)
+		{
+			std::getline(is, line);
+			if(line == "}") break;
+		}
+	}
+#endif
+
+	read_checked_line(is, "}");
+
+	// NYI
+	return NavMesh_Ptr();
+}
+
+/**
+Reads a (binary format) path table from the specified std::istream.
+*/
+PathTable_Ptr FileSectionUtil::read_path_table(std::istream& is)
+{
+	read_checked_line(is, "PathTable");
+	read_checked_line(is, "{");
+
+	std::string line;
+	read_line(is, line, "path table size");
+	int size;
+	try							{ size = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The path table size was not an integer"); }
+
+	PathTable_Ptr pathTable(new PathTable(size));
+
+	for(int i=0; i<size; ++i)
+		for(int j=0; j<size; ++j)
+		{
+			// TODO: There may be endian issues with this if we ever port to another platform.
+			is.read(reinterpret_cast<char*>(&pathTable->next_node(i,j)), sizeof(int));
+			is.read(reinterpret_cast<char*>(&pathTable->cost(i,j)), sizeof(float));
+		}
+
+	if(is.get() != '\n') throw Exception("Expected newline after path table");
+
+	read_checked_line(is, "}");
+
+	return pathTable;
 }
 
 }

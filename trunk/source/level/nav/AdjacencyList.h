@@ -51,10 +51,12 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
+	AdjacencyList(int size);
 	AdjacencyList(const NavMesh_Ptr& navMesh);
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void add_edge(int fromNode, const Edge& edge);
 	const std::list<Edge>& adjacent_edges(int node) const;
 	int size() const;
 };
