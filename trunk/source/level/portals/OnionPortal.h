@@ -44,6 +44,7 @@ struct OnionPortalInfo
 
 //#################### GLOBAL OPERATORS ####################
 std::ostream& operator<<(std::ostream& os, const OnionPortalInfo& rhs);
+std::istream& operator>>(std::istream& is, OnionPortalInfo& rhs);
 
 //#################### TYPEDEFS ####################
 typedef Polygon<Vector3d,OnionPortalInfo> OnionPortal;

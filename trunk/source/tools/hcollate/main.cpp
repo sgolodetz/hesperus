@@ -15,6 +15,8 @@ using boost::lexical_cast;
 #include <source/images/BitmapLoader.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
+#include <source/io/OnionPortalsFileUtil.h>
+#include <source/io/OnionTreeFileUtil.h>
 #include <source/io/PortalsFileUtil.h>
 #include <source/io/TreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
@@ -63,9 +65,17 @@ try
 		lightmaps[i] = BitmapLoader::load_image24(filename);
 	}
 
-	// TODO: Load the onion tree.
-	// TODO: Load the onion portals.
+	// Load the onion tree.
+	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
+	ColPolyVector onionPolygons;
+	OnionTree_Ptr onionTree;
+	OnionTreeFileUtil::load(onionTreeFilename, onionPolygons, onionTree);
+
+	// Load the onion portals.
+	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFileUtil::load(onionPortalsFilename);
+
 	// TODO: Load the navigation data.
+	// TODO: Load the entities.
 
 	// Write everything to the output file.
 	LevelFileUtil::save_lit(outputFilename, polygons, tree, portals, leafVis, lightmaps);
@@ -91,9 +101,17 @@ try
 	// Load the vis table.
 	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
 
-	// TODO: Load the onion tree.
-	// TODO: Load the onion portals.
+	// Load the onion tree.
+	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
+	ColPolyVector onionPolygons;
+	OnionTree_Ptr onionTree;
+	OnionTreeFileUtil::load(onionTreeFilename, onionPolygons, onionTree);
+
+	// Load the onion portals.
+	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFileUtil::load(onionPortalsFilename);
+
 	// TODO: Load the navigation data.
+	// TODO: Load the entities.
 
 	// Write everything to the output file.
 	LevelFileUtil::save_unlit(outputFilename, polygons, tree, portals, leafVis);

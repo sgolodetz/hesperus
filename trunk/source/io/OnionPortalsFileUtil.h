@@ -16,7 +16,7 @@ namespace hesp {
 struct OnionPortalsFileUtil
 {
 	//#################### LOADING METHODS ####################
-	// TODO
+	static std::vector<OnionPortal_Ptr> load(const std::string& filename);
 
 	//#################### SAVING METHODS ####################
 	static void save(const std::string& filename, const std::vector<OnionPortal_Ptr>& portals);

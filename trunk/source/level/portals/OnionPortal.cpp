@@ -7,6 +7,10 @@
 
 #include <ostream>
 
+#include <boost/lexical_cast.hpp>
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
+
 namespace hesp {
 
 //#################### GLOBAL OPERATORS ####################
@@ -25,6 +29,33 @@ std::ostream& operator<<(std::ostream& os, const OnionPortalInfo& rhs)
 
 	os << " ]";
 	return os;
+}
+
+std::istream& operator>>(std::istream& is, OnionPortalInfo& rhs)
+{
+	is >> std::skipws;
+
+	std::string temp;
+	is >> temp >> rhs.fromLeaf >> rhs.toLeaf >> temp;	// read [ fromLeaf toLeaf {
+	for(;;)
+	{
+		is >> temp;
+		if(temp == "}") break;
+
+		try	
+		{
+			int mapIndex = lexical_cast<int,std::string>(temp);
+			rhs.mapIndices.insert(mapIndex);
+		}
+		catch(bad_lexical_cast&)
+		{
+			throw Exception("One of the map indices was not an integer");
+		}
+	}
+	is >> temp;		// read the trailing ]
+
+	is >> std::noskipws;
+	return is;
 }
 
 }
