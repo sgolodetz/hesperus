@@ -29,18 +29,19 @@ hexpand ..\..\settings\hesperus.edf %1.cbr
 
 FOR %%f IN (*.ebr) DO (
 hcsg -c %%f %%~nf.cg1
-hbsp -c %%~nf.cg1 %%~nf.ct
-hportal -c %%~nf.ct %%~nf.cp
-hflood -c %%~nf.ct %%~nf.cp %1.ent %%~nf.cg2
+hbsp -c %%~nf.cg1 %%~nf.ct1
+hportal -c %%~nf.ct1 %%~nf.cp
+hflood -c %%~nf.ct1 %%~nf.cp %1.ent %%~nf.cg2
+hbsp -c %%~nf.cg2 %%~nf.ct2
 )
 
 SETLOCAL ENABLEDELAYEDEXPANSION
-set CG2FILES=
+set GEOMTREEPAIRS=
 FOR %%f IN (*.cg2) DO (
-set CG2FILES=!CG2FILES! %%f
+set GEOMTREEPAIRS=!GEOMTREEPAIRS! %%f %%~nf.ct2
 )
-hobsp -c%CG2FILES% %1.ot
-set CG2FILES=
+hobsp -c%GEOMTREEPAIRS% %1.ot
+set GEOMTREEPAIRS=
 ENDLOCAL
 
 hoportal -c %1.ot %1.op
@@ -73,7 +74,7 @@ REM #########################
 del *.cbr
 del *.ebr
 del *.cg*
-del *.ct
+del *.ct*
 del *.cp
 del *.ot
 del *.op

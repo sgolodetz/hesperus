@@ -13,6 +13,7 @@ using boost::lexical_cast;
 
 #include <source/io/GeometryFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
+#include <source/io/TreeFileUtil.h>
 #include <source/level/onionbsp/OnionCompiler.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -26,22 +27,33 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hobsp {-r|-c} <input geom 1> ... <input geom n> <output tree> [-w<number>]" << std::endl;
+	std::cout << "Usage: hobsp {-r|-c} <input geom 1> <input tree 1> ... <input geom n> <input tree n> <output tree> [-w<number>]" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
 template <typename Poly>
-void run_compiler(const std::vector<std::string>& inputFilenames, const std::string& outputFilename, double weight)
+void run_compiler(const std::vector<std::string>& geomFilenames, const std::vector<std::string>& treeFilenames,
+				  const std::string& outputFilename, double weight)
 {
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
 
 	// Read in the input maps.
-	size_t mapCount = inputFilenames.size();
+	size_t mapCount = geomFilenames.size();
 	std::vector<PolyVector> maps(mapCount);
 	for(size_t i=0; i<mapCount; ++i)
 	{
-		GeometryFileUtil::load(inputFilenames[i], maps[i]);
+		GeometryFileUtil::load(geomFilenames[i], maps[i]);
+	}
+
+	// Read in the input trees.
+	std::vector<BSPTree_Ptr> trees;
+	for(size_t i=0; i<mapCount; ++i)	// note: there's guaranteed to be exactly one tree per map
+	{
+		PolyVector polygons;
+		BSPTree_Ptr tree;
+		TreeFileUtil::load(treeFilenames[i], polygons, tree);
+		trees.push_back(tree);
 	}
 
 	// Compile them into an onion tree.
@@ -68,18 +80,32 @@ try
 		args.pop_back();
 	}
 
-	// If we don't have (at a minimum) 'hobsp {-r|-c} <input geom 1> <output tree>', then the command is ill-formed.
-	if(args.size() < 4) quit_with_usage();
+	// If we don't have (at a minimum) 'hobsp {-r|-c} <input geom 1> <input tree 1> <output tree>', then the command is ill-formed.
+	if(args.size() < 5) quit_with_usage();
 
-	std::vector<std::string> inputFilenames(&args[2], &args[args.size()-1]);
-	const std::string& outputFilename = args[args.size()-1];
+	std::vector<std::string> geomFilenames;
+	std::vector<std::string> treeFilenames;
+	int argCount = static_cast<int>(args.size());
+	if(argCount % 2 == 0) quit_with_usage();		// we should have n (geom,tree) pairs plus an output tree
+	for(int i=2; i<argCount-1; i+=2)
+	{
+		geomFilenames.push_back(args[i]);
+		treeFilenames.push_back(args[i+1]);
+	}
+	const std::string& outputFilename = args[argCount-1];
 
 	size_t len = outputFilename.length();
-	if(len > 4 && outputFilename.substr(len-4) == ".cg2")
-		quit_with_error("The extension .cg2 is disallowed for the output tree filename to help prevent errors - sorry!");
+	if(len > 4)
+	{
+		std::string outputExtension = outputFilename.substr(len-4);
+		if(outputExtension == ".cg2" || outputExtension == ".ct2")
+		{
+			quit_with_error("The extension " + outputExtension + " is disallowed for the output tree filename to help prevent errors - sorry!");
+		}
+	}
 
-	if(args[1] == "-r") run_compiler<TexturedPolygon>(inputFilenames, outputFilename, weight);
-	else if(args[1] == "-c") run_compiler<CollisionPolygon>(inputFilenames, outputFilename, weight);
+	if(args[1] == "-r") run_compiler<TexturedPolygon>(geomFilenames, treeFilenames, outputFilename, weight);
+	else if(args[1] == "-c") run_compiler<CollisionPolygon>(geomFilenames, treeFilenames, outputFilename, weight);
 	else quit_with_usage();
 
 	return 0;
