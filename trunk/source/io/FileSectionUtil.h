@@ -50,6 +50,7 @@ private:
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Image24_Ptr> load_lightmaps_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
+	static std::vector<NavDataset_Ptr> load_nav_section(std::istream& is);
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
 	template <typename Poly> static void load_polygons_section(std::istream& is, const std::string& sectionName, std::vector<shared_ptr<Poly> >& polygons);
 	static BSPTree_Ptr load_tree_section(std::istream& is);
@@ -57,6 +58,7 @@ private:
 
 	//#################### SAVING METHODS ####################
 private:
+	static void save_entities_section(std::ostream& os, const EntityManager_Ptr& entityManager);
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
 	static void save_lightmaps_section(std::ostream& os, const std::vector<Image24_Ptr>& lightmaps);
 	static void save_nav_section(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets);

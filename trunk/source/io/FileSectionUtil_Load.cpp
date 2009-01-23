@@ -203,6 +203,18 @@ std::vector<Light> FileSectionUtil::load_lights_section(std::istream& is)
 }
 
 /**
+Loads an array of navigation datasets from the specified std::istream.
+
+@param is	The std::istream
+@return		The navigation datasets
+*/
+std::vector<NavDataset_Ptr> FileSectionUtil::load_nav_section(std::istream& is)
+{
+	// NYI
+	return std::vector<NavDataset_Ptr>();
+}
+
+/**
 Loads an onion tree from the specified std::istream.
 
 @param is	The std::istream

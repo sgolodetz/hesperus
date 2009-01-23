@@ -15,6 +15,7 @@ using boost::lexical_cast;
 #include <source/images/BitmapLoader.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
+#include <source/io/NavFileUtil.h>
 #include <source/io/OnionPortalsFileUtil.h>
 #include <source/io/OnionTreeFileUtil.h>
 #include <source/io/PortalsFileUtil.h>
@@ -74,7 +75,9 @@ try
 	// Load the onion portals.
 	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFileUtil::load(onionPortalsFilename);
 
-	// TODO: Load the navigation data.
+	// Load the navigation data.
+	std::vector<NavDataset_Ptr> navDatasets = NavFileUtil::load(navFilename);
+
 	// TODO: Load the entities.
 
 	// Write everything to the output file.
@@ -116,7 +119,9 @@ try
 	// Load the onion portals.
 	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFileUtil::load(onionPortalsFilename);
 
-	// TODO: Load the navigation data.
+	// Load the navigation data.
+	std::vector<NavDataset_Ptr> navDatasets = NavFileUtil::load(navFilename);
+
 	// TODO: Load the entities.
 
 	// Write everything to the output file.

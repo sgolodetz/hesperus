@@ -15,7 +15,7 @@ namespace hesp {
 struct NavFileUtil
 {
 	//#################### LOADING METHODS ####################
-	// TODO
+	static std::vector<NavDataset_Ptr> load(const std::string& filename);
 
 	//#################### SAVING METHODS ####################
 	static void save(const std::string& filename, const std::vector<NavDataset_Ptr>& datasets);
