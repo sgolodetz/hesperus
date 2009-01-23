@@ -12,6 +12,7 @@
 #include <boost/filesystem/operations.hpp>
 using boost::shared_ptr;
 
+#include <source/images/Image.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/entities/EntityManager.h>
@@ -47,6 +48,7 @@ private:
 	static std::vector<AABB3d> load_aabbs_section(std::istream& is);
 	static EntityManager_Ptr load_entities_section(std::istream& is, const boost::filesystem::path& settingsDir);
 	static std::string load_lightmap_prefix_section(std::istream& is);
+	static std::vector<Image24_Ptr> load_lightmaps_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
 	static OnionTree_Ptr load_onion_tree_section(std::istream& is);
 	template <typename Poly> static void load_polygons_section(std::istream& is, const std::string& sectionName, std::vector<shared_ptr<Poly> >& polygons);
@@ -56,6 +58,7 @@ private:
 	//#################### SAVING METHODS ####################
 private:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
+	static void save_lightmaps_section(std::ostream& os, const std::vector<Image24_Ptr>& lightmaps);
 	static void save_nav_section(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets);
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);

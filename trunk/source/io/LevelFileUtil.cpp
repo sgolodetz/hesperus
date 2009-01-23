@@ -58,12 +58,7 @@ void LevelFileUtil::save_lit(const std::string& filename, const std::vector<Text
 	FileSectionUtil::save_tree_section(os, tree);
 	FileSectionUtil::save_polygons_section(os, "Portals", portals);
 	FileSectionUtil::save_vis_section(os, leafVis);
-
-	int lightmapCount = static_cast<int>(lightmaps.size());
-	for(int i=0; i<lightmapCount; ++i)
-	{
-		BitmapSaver::save_image24(os, lightmaps[i]);
-	}
+	FileSectionUtil::save_lightmaps_section(os, lightmaps);
 }
 
 /**
@@ -108,13 +103,7 @@ Level_Ptr LevelFileUtil::load_lit(std::istream& is)
 	tree = FileSectionUtil::load_tree_section(is);
 	FileSectionUtil::load_polygons_section(is, "Portals", portals);
 	leafVis = FileSectionUtil::load_vis_section(is);
-
-	int polyCount = static_cast<int>(polygons.size());
-	std::vector<Image24_Ptr> lightmaps(polyCount);
-	for(int i=0; i<polyCount; ++i)
-	{
-		lightmaps[i] = BitmapLoader::load_image24(is);
-	}
+	std::vector<Image24_Ptr> lightmaps = FileSectionUtil::load_lightmaps_section(is);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));

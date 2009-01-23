@@ -10,6 +10,7 @@ namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/images/BitmapLoader.h>
 #include "EntDefFileUtil.h"
 
 namespace hesp {
@@ -102,7 +103,7 @@ Loads a lightmap prefix from the specified std::istream.
 */
 std::string FileSectionUtil::load_lightmap_prefix_section(std::istream& is)
 {
-	std::string line, lightmapPrefix;
+	std::string lightmapPrefix;
 
 	read_checked_line(is, "LightmapPrefix");
 	read_checked_line(is, "{");
@@ -110,6 +111,39 @@ std::string FileSectionUtil::load_lightmap_prefix_section(std::istream& is)
 	read_checked_line(is, "}");
 
 	return lightmapPrefix;
+}
+
+/**
+Loads an array of lightmaps from the specified std::istream.
+
+@param is			The std::istream
+@return				The lightmaps
+@throws Exception	If EOF is encountered whilst trying to read the lightmaps
+*/
+std::vector<Image24_Ptr> FileSectionUtil::load_lightmaps_section(std::istream& is)
+{
+	std::vector<Image24_Ptr> lightmaps;
+
+	read_checked_line(is, "Lightmaps");
+	read_checked_line(is, "{");
+
+	std::string line;
+	read_line(is, line, "lightmap count");
+	int lightmapCount;
+	try							{ lightmapCount = lexical_cast<int,std::string>(line); }
+	catch(bad_lexical_cast&)	{ throw Exception("The lightmap count was not an integer"); }
+
+	lightmaps.resize(lightmapCount);
+	for(int i=0; i<lightmapCount; ++i)
+	{
+		lightmaps[i] = BitmapLoader::load_image24(is);
+	}
+
+	if(is.get() != '\n') throw Exception("Expected newline after lightmaps");
+
+	read_checked_line(is, "}");
+
+	return lightmaps;
 }
 
 /**

@@ -5,6 +5,8 @@
 
 #include "FileSectionUtil.h"
 
+#include <source/images/BitmapSaver.h>
+
 namespace hesp {
 
 //#################### SAVING METHODS ####################
@@ -20,6 +22,28 @@ void FileSectionUtil::save_lightmap_prefix_section(std::ostream& os, const std::
 	os << "{\n";
 	os << lightmapPrefix << '\n';
 	os << "}\n";
+}
+
+/**
+Saves an array of lightmaps to the specified std::ostream.
+
+@param os			The std::ostream
+@param lightmaps	The lightmaps
+*/
+void FileSectionUtil::save_lightmaps_section(std::ostream& os, const std::vector<Image24_Ptr>& lightmaps)
+{
+	os << "Lightmaps\n";
+	os << "{\n";
+
+	int lightmapCount = static_cast<int>(lightmaps.size());
+	os << lightmapCount << '\n';
+
+	for(int i=0; i<lightmapCount; ++i)
+	{
+		BitmapSaver::save_image24(os, lightmaps[i]);
+	}
+
+	os << "\n}\n";
 }
 
 /**
