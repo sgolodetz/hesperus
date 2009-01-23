@@ -5,6 +5,9 @@
 
 #include "NavMeshGenerator.h"
 
+#include <source/level/nav/StepDownLink.h>
+#include <source/level/nav/StepUpLink.h>
+#include <source/level/nav/WalkLink.h>
 #include <source/math/Constants.h>
 #include <source/math/geom/GeomUtil.h>
 

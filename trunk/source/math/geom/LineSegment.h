@@ -8,6 +8,9 @@
 
 #include <ostream>
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include <source/math/vectors/Vector2d.h>
 #include <source/math/vectors/Vector3.h>
 

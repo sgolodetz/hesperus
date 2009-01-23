@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/math/geom/LineSegment.h>
+#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 
@@ -48,121 +48,6 @@ public:
 //#################### TYPEDEFS ####################
 typedef shared_ptr<NavLink> NavLink_Ptr;
 typedef shared_ptr<const NavLink> NavLink_CPtr;
-
-//#################### DERIVED CLASSES ####################
-class StepLink : public NavLink
-{
-	//#################### PROTECTED VARIABLES ####################
-protected:
-	LineSegment3d m_sourceEdge, m_destEdge;
-
-	//#################### CONSTRUCTORS ####################
-public:
-	StepLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vector3d& s2, const Vector3d& d1, const Vector3d& d2)
-	:	NavLink(sourcePoly, destPoly), m_sourceEdge(s1,s2), m_destEdge(d1,d2)
-	{}
-
-	//#################### PRIVATE ABSTRACT METHODS ####################
-private:
-	virtual std::string link_name() const = 0;
-
-	//#################### PUBLIC METHODS ####################
-public:
-	Vector3d dest_position() const
-	{
-		return (m_destEdge.e1 + m_destEdge.e2) / 2;
-	}
-
-	void output(std::ostream& os) const
-	{
-		os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_sourceEdge << ' ' << m_destEdge;
-	}
-
-	Vector3d source_position() const
-	{
-		return (m_sourceEdge.e1 + m_sourceEdge.e2) / 2;
-	}
-};
-
-class StepDownLink : public StepLink
-{
-	//#################### CONSTRUCTORS ####################
-public:
-	StepDownLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vector3d& s2, const Vector3d& d1, const Vector3d& d2)
-	:	StepLink(sourcePoly, destPoly, s1, s2, d1, d2)
-	{}
-
-	//#################### PUBLIC METHODS ####################
-public:
-	std::string link_name() const
-	{
-		return "StepDown";
-	}
-
-	static NavLink_Ptr load(const std::string& line)
-	{
-		// NYI
-		throw 23;
-	}
-};
-
-class StepUpLink : public StepLink
-{
-	//#################### CONSTRUCTORS ####################
-public:
-	StepUpLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vector3d& s2, const Vector3d& d1, const Vector3d& d2)
-	:	StepLink(sourcePoly, destPoly, s1, s2, d1, d2)
-	{}
-
-	//#################### PUBLIC METHODS ####################
-public:
-	std::string link_name() const
-	{
-		return "StepUp";
-	}
-
-	static NavLink_Ptr load(const std::string& line)
-	{
-		// NYI
-		throw 23;
-	}
-};
-
-class WalkLink : public NavLink
-{
-	//#################### PRIVATE VARIABLES ####################
-private:
-	LineSegment3d m_edge;
-
-	//#################### CONSTRUCTORS ####################
-public:
-	WalkLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2)
-	:	NavLink(sourcePoly, destPoly), m_edge(p1, p2)
-	{}
-
-	//#################### PUBLIC METHODS ####################
-public:
-	Vector3d dest_position() const
-	{
-		return (m_edge.e1 + m_edge.e2) / 2;
-	}
-
-	static NavLink_Ptr load(const std::string& line)
-	{
-		// NYI
-		throw 23;
-	}
-
-	void output(std::ostream& os) const
-	{
-		os << "Walk " << m_sourcePoly << ' ' << m_destPoly << ' ' << m_edge;
-	}
-
-	Vector3d source_position() const
-	{
-		return (m_edge.e1 + m_edge.e2) / 2;
-	}
-};
 
 }
 

@@ -857,6 +857,22 @@
 						RelativePath="..\level\nav\PathTableGenerator.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\nav\StepDownLink.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\StepLink.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\StepUpLink.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\WalkLink.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -899,6 +915,22 @@
 					</File>
 					<File
 						RelativePath="..\level\nav\PathTableGenerator.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\StepDownLink.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\StepLink.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\StepUpLink.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\WalkLink.h"
 						>
 					</File>
 				</Filter>

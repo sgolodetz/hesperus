@@ -5,6 +5,10 @@
 
 #include "NavLinkFactory.h"
 
+#include <source/level/nav/StepDownLink.h>
+#include <source/level/nav/StepUpLink.h>
+#include <source/level/nav/WalkLink.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
