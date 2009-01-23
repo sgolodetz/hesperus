@@ -39,16 +39,23 @@ Level_Ptr LevelFileUtil::load(const std::string& filename)
 /**
 Saves all the relevant pieces of information to the specified level file.
 
-@param filename		The name of the output file
-@param polygons		The level polygons
-@param tree			The BSP tree for the level
-@param portals		The portals for the level
-@param leafVis		The leaf visibility table for the level
-@param lightmaps	The lightmaps for the level
+@param filename			The name of the output file
+@param polygons			The level polygons
+@param tree				The BSP tree for the level
+@param portals			The portals for the level
+@param leafVis			The leaf visibility table for the level
+@param lightmaps		The lightmaps for the level
+@param onionPolygons	The polygons for the onion tree
+@param onionTree		The onion tree for the level
+@param onionPortals		The onion portals for the level
 */
-void LevelFileUtil::save_lit(const std::string& filename, const std::vector<TexturedLitPolygon_Ptr>& polygons,
-							 const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
-							 const LeafVisTable_Ptr& leafVis, const std::vector<Image24_Ptr>& lightmaps)
+void LevelFileUtil::save_lit(const std::string& filename,
+							 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+							 const std::vector<Portal_Ptr>& portals,
+							 const LeafVisTable_Ptr& leafVis,
+							 const std::vector<Image24_Ptr>& lightmaps,
+							 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+							 const std::vector<OnionPortal_Ptr>& onionPortals)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -59,6 +66,9 @@ void LevelFileUtil::save_lit(const std::string& filename, const std::vector<Text
 	FileSectionUtil::save_polygons_section(os, "Portals", portals);
 	FileSectionUtil::save_vis_section(os, leafVis);
 	FileSectionUtil::save_lightmaps_section(os, lightmaps);
+	FileSectionUtil::save_polygons_section(os, "OnionPolygons", onionPolygons);
+	FileSectionUtil::save_onion_tree_section(os, onionTree);
+	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
 }
 
 /**
@@ -69,10 +79,16 @@ Saves all the relevant pieces of information to the specified level file.
 @param tree			The BSP tree for the level
 @param portals		The portals for the level
 @param leafVis		The leaf visibility table for the level
+@param onionPolygons	The polygons for the onion tree
+@param onionTree		The onion tree for the level
+@param onionPortals		The onion portals for the level
 */
-void LevelFileUtil::save_unlit(const std::string& filename, const std::vector<TexturedPolygon_Ptr>& polygons,
-							   const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
-							   const LeafVisTable_Ptr& leafVis)
+void LevelFileUtil::save_unlit(const std::string& filename,
+							   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+							   const std::vector<Portal_Ptr>& portals,
+							   const LeafVisTable_Ptr& leafVis,
+							   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+							   const std::vector<OnionPortal_Ptr>& onionPortals)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -82,6 +98,9 @@ void LevelFileUtil::save_unlit(const std::string& filename, const std::vector<Te
 	FileSectionUtil::save_tree_section(os, tree);
 	FileSectionUtil::save_polygons_section(os, "Portals", portals);
 	FileSectionUtil::save_vis_section(os, leafVis);
+	FileSectionUtil::save_polygons_section(os, "OnionPolygons", onionPolygons);
+	FileSectionUtil::save_onion_tree_section(os, onionTree);
+	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
 }
 
 //#################### LOADING SUPPORT METHODS ####################

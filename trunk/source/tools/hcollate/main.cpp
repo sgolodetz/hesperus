@@ -78,7 +78,13 @@ try
 	// TODO: Load the entities.
 
 	// Write everything to the output file.
-	LevelFileUtil::save_lit(outputFilename, polygons, tree, portals, leafVis, lightmaps);
+	LevelFileUtil::save_lit(outputFilename,
+							polygons, tree,
+							portals,
+							leafVis,
+							lightmaps,
+							onionPolygons, onionTree,
+							onionPortals);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
@@ -114,7 +120,12 @@ try
 	// TODO: Load the entities.
 
 	// Write everything to the output file.
-	LevelFileUtil::save_unlit(outputFilename, polygons, tree, portals, leafVis);
+	LevelFileUtil::save_unlit(outputFilename,
+							  polygons, tree,
+							  portals,
+							  leafVis,
+							  onionPolygons, onionTree,
+							  onionPortals);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

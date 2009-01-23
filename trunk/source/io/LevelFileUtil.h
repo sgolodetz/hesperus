@@ -20,12 +20,19 @@ public:
 
 	//#################### SAVING METHODS ####################
 public:
-	static void save_lit(const std::string& filename, const std::vector<TexturedLitPolygon_Ptr>& polygons,
-						 const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
-						 const LeafVisTable_Ptr& leafVis, const std::vector<Image24_Ptr>& lightmaps);
-	static void save_unlit(const std::string& filename, const std::vector<TexturedPolygon_Ptr>& polygons,
-						   const BSPTree_Ptr& tree, const std::vector<Portal_Ptr>& portals,
-						   const LeafVisTable_Ptr& leafVis);
+	static void save_lit(const std::string& filename,
+						 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+						 const std::vector<Portal_Ptr>& portals,
+						 const LeafVisTable_Ptr& leafVis,
+						 const std::vector<Image24_Ptr>& lightmaps,
+						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+						 const std::vector<OnionPortal_Ptr>& onionPortals);
+	static void save_unlit(const std::string& filename,
+						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+						   const std::vector<Portal_Ptr>& portals,
+						   const LeafVisTable_Ptr& leafVis,
+						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+						   const std::vector<OnionPortal_Ptr>& onionPortals);
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
