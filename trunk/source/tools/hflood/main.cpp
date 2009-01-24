@@ -13,6 +13,7 @@
 #include <boost/filesystem/operations.hpp>
 namespace bf = boost::filesystem;
 
+#include <source/io/DirectoryFinder.h>
 #include <source/io/EntitiesFileUtil.h>
 #include <source/io/GeometryFileUtil.h>
 #include <source/io/PortalsFileUtil.h>
@@ -20,10 +21,6 @@ namespace bf = boost::filesystem;
 #include <source/level/bsp/BSPTree.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
-
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
@@ -38,8 +35,9 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-Vector3d load_player_pos(const std::string& entitiesFilename, const bf::path& settingsDir)
+Vector3d load_player_pos(const std::string& entitiesFilename)
 {
+	bf::path settingsDir = determine_settings_directory_from_tool();
 	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
 	return entityManager->player()->position();
 }
@@ -69,7 +67,7 @@ void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsF
 
 template <typename Poly>
 void run_flood(const std::string& treeFilename, const std::string& portalsFilename, const std::string& entitiesFilename,
-			   const std::string& outputFilename, const bf::path& settingsDir)
+			   const std::string& outputFilename)
 {
 	// Load the polygons and tree.
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -84,7 +82,7 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
 
 	// Load the player position.
-	Vector3d playerPos = load_player_pos(entitiesFilename, settingsDir);
+	Vector3d playerPos = load_player_pos(entitiesFilename);
 
 	// Build the "portals from leaf" data structure.
 	std::map<int,std::vector<Portal_Ptr> > portalsFromLeaf;
@@ -122,36 +120,14 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	GeometryFileUtil::save(outputFilename, validPolygons);
 }
 
-bf::path determine_settings_directory()
-{
-#ifdef _WIN32
-	// FIXME:	This platform-specific code to determine the executable path should be moved into a utility function in the common library.
-	std::wstring ws;
-	ws.resize(512);
-	::GetModuleFileName(NULL, &ws[0], 512);
-	std::string s(ws.begin(), ws.end());
-
-	bf::path settingsDir = s;
-	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/tools/
-	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/
-	settingsDir /= "resources/settings/";		// -> hesperus/bin/resources/settings
-	return settingsDir;
-#else
-	#error Can't yet determine the settings directory on non-Windows platforms
-#endif
-}
-
 int main(int argc, char *argv[])
 try
 {
 	if(argc != 6) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
 
-	// Work out the path to the settings directory.
-	bf::path settingsDir = determine_settings_directory();
-
-	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4], args[5], settingsDir);
-	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4], args[5], settingsDir);
+	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4], args[5]);
+	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4], args[5]);
 	else quit_with_usage();
 
 	return 0;

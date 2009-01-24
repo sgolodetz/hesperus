@@ -1039,6 +1039,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\DirectoryFinder.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\EntDefFileUtil.h"
 					>
 				</File>
@@ -1130,6 +1134,10 @@
 			<Filter
 				Name=".cpp"
 				>
+				<File
+					RelativePath="..\io\DirectoryFinder.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\io\EntDefFileUtil.cpp"
 					>

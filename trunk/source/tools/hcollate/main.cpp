@@ -7,12 +7,16 @@
 #include <string>
 #include <vector>
 
+#include <boost/filesystem/operations.hpp>
 #include <boost/lexical_cast.hpp>
+namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
+#include <source/io/DirectoryFinder.h>
+#include <source/io/EntitiesFileUtil.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
 #include <source/io/NavFileUtil.h>
@@ -78,7 +82,9 @@ try
 	// Load the navigation data.
 	std::vector<NavDataset_Ptr> navDatasets = NavFileUtil::load(navFilename);
 
-	// TODO: Load the entities.
+	// Load the entities.
+	bf::path settingsDir = determine_settings_directory_from_tool();
+	EntityManager_Ptr entities = EntitiesFileUtil::load(entitiesFilename, settingsDir);
 
 	// Write everything to the output file.
 	LevelFileUtil::save_lit(outputFilename,
@@ -123,7 +129,9 @@ try
 	// Load the navigation data.
 	std::vector<NavDataset_Ptr> navDatasets = NavFileUtil::load(navFilename);
 
-	// TODO: Load the entities.
+	// Load the entities.
+	bf::path settingsDir = determine_settings_directory_from_tool();
+	EntityManager_Ptr entities = EntitiesFileUtil::load(entitiesFilename, settingsDir);
 
 	// Write everything to the output file.
 	LevelFileUtil::save_unlit(outputFilename,
