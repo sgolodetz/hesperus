@@ -38,9 +38,8 @@ EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& se
 	FileSectionUtil::read_checked_line(is, "{");
 
 		// Read in the AABBs.
-		std::string entDefFilename;
-		FileSectionUtil::read_line(is, entDefFilename, "entity definitions filename");
-		m_aabbs = EntDefFileUtil::load_aabbs_only((settingsDir / entDefFilename).file_string());
+		FileSectionUtil::read_line(is, m_entDefFilename, "entity definitions filename");
+		m_aabbs = EntDefFileUtil::load_aabbs_only((settingsDir / m_entDefFilename).file_string());
 
 	FileSectionUtil::read_checked_line(is, "}");
 
@@ -65,6 +64,30 @@ EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& se
 }
 
 //#################### PUBLIC METHODS ####################
+void EntityManager::output(std::ostream& os)
+{
+	os << "Entities\n";
+	os << "{\n";
+
+	os << "DefinitionFile\n";
+	os << "{\n";
+	os << m_entDefFilename << '\n';
+	os << "}\n";
+
+	os << "Instances\n";
+	os << "{\n";
+	// TODO
+	os << "}\n";
+
+	os << "}\n";
+}
+
+Player_Ptr EntityManager::player() const
+{
+	return m_player;
+}
+
+//#################### PRIVATE METHODS ####################
 void EntityManager::load_entity(std::istream& is)
 {
 	std::string line;
@@ -84,12 +107,6 @@ void EntityManager::load_entity(std::istream& is)
 	else skip_entity(is, entityClass);
 }
 
-Player_Ptr EntityManager::player() const
-{
-	return m_player;
-}
-
-//#################### PRIVATE METHODS ####################
 Player_Ptr EntityManager::load_player(std::istream& is)
 {
 	std::vector<int> aabbIndices = read_intarray_field(is, "AABBs");

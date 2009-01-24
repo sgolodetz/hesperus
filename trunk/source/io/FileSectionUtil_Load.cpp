@@ -6,7 +6,6 @@
 #include "FileSectionUtil.h"
 
 #include <boost/lexical_cast.hpp>
-namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 

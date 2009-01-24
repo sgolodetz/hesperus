@@ -21,6 +21,8 @@ class EntityManager
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
+	std::string m_entDefFilename;
+
 	std::vector<AABB3d> m_aabbs;
 	Player_Ptr m_player;
 
@@ -30,11 +32,12 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void load_entity(std::istream& is);
+	void output(std::ostream& os);
 	Player_Ptr player() const;
 
 	//#################### PRIVATE METHODS ####################
 private:
+	void load_entity(std::istream& is);
 	static Player_Ptr load_player(std::istream& is);
 	static void read_checked_line(std::istream& is, const std::string& expected);
 	static std::string read_field(std::istream& is, const std::string& expectedFieldName);

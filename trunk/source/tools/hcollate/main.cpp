@@ -84,7 +84,7 @@ try
 
 	// Load the entities.
 	bf::path settingsDir = determine_settings_directory_from_tool();
-	EntityManager_Ptr entities = EntitiesFileUtil::load(entitiesFilename, settingsDir);
+	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
 
 	// Write everything to the output file.
 	LevelFileUtil::save_lit(outputFilename,
@@ -94,7 +94,8 @@ try
 							lightmaps,
 							onionPolygons, onionTree,
 							onionPortals,
-							navDatasets);
+							navDatasets,
+							entityManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
@@ -131,7 +132,7 @@ try
 
 	// Load the entities.
 	bf::path settingsDir = determine_settings_directory_from_tool();
-	EntityManager_Ptr entities = EntitiesFileUtil::load(entitiesFilename, settingsDir);
+	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
 
 	// Write everything to the output file.
 	LevelFileUtil::save_unlit(outputFilename,
@@ -140,7 +141,8 @@ try
 							  leafVis,
 							  onionPolygons, onionTree,
 							  onionPortals,
-							  navDatasets);
+							  navDatasets,
+							  entityManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

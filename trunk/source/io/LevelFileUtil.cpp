@@ -57,7 +57,8 @@ void LevelFileUtil::save_lit(const std::string& filename,
 							 const std::vector<Image24_Ptr>& lightmaps,
 							 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
 							 const std::vector<OnionPortal_Ptr>& onionPortals,
-							 const std::vector<NavDataset_Ptr>& navDatasets)
+							 const std::vector<NavDataset_Ptr>& navDatasets,
+							 const EntityManager_Ptr& entityManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -72,6 +73,7 @@ void LevelFileUtil::save_lit(const std::string& filename,
 	FileSectionUtil::save_onion_tree_section(os, onionTree);
 	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
 	FileSectionUtil::save_nav_section(os, navDatasets);
+	entityManager->output(os);
 }
 
 /**
@@ -93,7 +95,8 @@ void LevelFileUtil::save_unlit(const std::string& filename,
 							   const LeafVisTable_Ptr& leafVis,
 							   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
 							   const std::vector<OnionPortal_Ptr>& onionPortals,
-							   const std::vector<NavDataset_Ptr>& navDatasets)
+							   const std::vector<NavDataset_Ptr>& navDatasets,
+							   const EntityManager_Ptr& entityManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -107,6 +110,7 @@ void LevelFileUtil::save_unlit(const std::string& filename,
 	FileSectionUtil::save_onion_tree_section(os, onionTree);
 	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
 	FileSectionUtil::save_nav_section(os, navDatasets);
+	entityManager->output(os);
 }
 
 //#################### LOADING SUPPORT METHODS ####################

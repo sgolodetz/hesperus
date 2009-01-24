@@ -10,7 +10,7 @@
 using boost::shared_ptr;
 
 #include <source/level/bsp/BSPTree.h>
-#include <source/level/entities/Player.h>
+#include <source/level/entities/EntityManager.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/OnionPortal.h>
