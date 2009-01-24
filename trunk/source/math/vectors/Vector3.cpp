@@ -203,10 +203,14 @@ std::ostream& operator<<(std::ostream& os, const Vector3<T>& v)
 template <typename T>
 std::istream& operator>>(std::istream& is, Vector3<T>& v)
 {
-	is >> std::skipws;
+	std::ios_base::fmtflags oldFlags = is.flags();
+	is.setf(std::ios_base::skipws);
+
 	std::string dummy;
 	is >> dummy >> v.x >> v.y >> v.z >> dummy;
-	is >> std::noskipws;
+
+	is.flags(oldFlags);
+
 	return is;
 }
 

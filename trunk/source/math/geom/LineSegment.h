@@ -23,6 +23,8 @@ struct LineSegment
 	Vec e1, e2;		// endpoints
 
 	//#################### CONSTRUCTORS ####################
+	LineSegment() {}
+
 	LineSegment(const Vec& e1_, const Vec& e2_)
 	:	e1(e1_), e2(e2_)
 	{}
@@ -34,6 +36,20 @@ std::ostream& operator<<(std::ostream& os, const LineSegment<Vec>& rhs)
 {
 	os << "[ " << rhs.e1 << ' ' << rhs.e2 << " ]";
 	return os;
+}
+
+template <typename Vec>
+std::istream& operator>>(std::istream& is, LineSegment<Vec>& rhs)
+{
+	std::ios_base::fmtflags oldFlags = is.flags();
+	is.setf(std::ios_base::skipws);
+
+	std::string dummy;
+	is >> dummy >> rhs.e1 >> rhs.e2 >> dummy;
+
+	is.flags(oldFlags);
+
+	return is;
 }
 
 //#################### TYPEDEFS ####################

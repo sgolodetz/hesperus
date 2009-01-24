@@ -12,6 +12,10 @@ StepLink::StepLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vecto
 :	NavLink(sourcePoly, destPoly), m_sourceEdge(s1,s2), m_destEdge(d1,d2)
 {}
 
+StepLink::StepLink(int sourcePoly, int destPoly, const LineSegment3d& sourceEdge, const LineSegment3d& destEdge)
+:	NavLink(sourcePoly, destPoly), m_sourceEdge(sourceEdge), m_destEdge(destEdge)
+{}
+
 //#################### PUBLIC METHODS ####################
 Vector3d StepLink::dest_position() const
 {

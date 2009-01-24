@@ -20,6 +20,7 @@ protected:
 	//#################### CONSTRUCTORS ####################
 public:
 	StepLink(int sourcePoly, int destPoly, const Vector3d& s1, const Vector3d& s2, const Vector3d& d1, const Vector3d& d2);
+	StepLink(int sourcePoly, int destPoly, const LineSegment3d& sourceEdge, const LineSegment3d& destEdge);
 
 	//#################### PRIVATE ABSTRACT METHODS ####################
 private:

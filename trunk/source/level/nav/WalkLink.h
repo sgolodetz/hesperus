@@ -20,11 +20,12 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	WalkLink(int sourcePoly, int destPoly, const Vector3d& p1, const Vector3d& p2);
+	WalkLink(int sourcePoly, int destPoly, const LineSegment3d& edge);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	Vector3d dest_position() const;
-	static NavLink_Ptr load(const std::string& line);
+	static NavLink_Ptr load(const std::string& data);
 	void output(std::ostream& os) const;
 	Vector3d source_position() const;
 };

@@ -12,6 +12,7 @@ using boost::lexical_cast;
 
 #include <source/images/BitmapLoader.h>
 #include "EntDefFileUtil.h"
+#include "NavLinkFactory.h"
 
 namespace hesp {
 
@@ -418,20 +419,18 @@ NavMesh_Ptr FileSectionUtil::read_navmesh(std::istream& is)
 	read_checked_line(is, "Links");
 	read_checked_line(is, "{");
 
-#if 0
-	// FIXME: Load the links, rather than skipping over them.
+	// Load the links.
+	NavLinkFactory navLinkFactory;
 
-	read_checked_line(is, "}");
-#else
+	std::vector<NavLink_Ptr> navLinks;
+
+	std::string line;
+	for(;;)
 	{
-		std::string line;
-		for(;;)
-		{
-			std::getline(is, line);
-			if(line == "}") break;
-		}
+		std::getline(is, line);
+		if(line == "}") break;
+		else navLinks.push_back(navLinkFactory.construct_navlink(line));
 	}
-#endif
 
 	// Read in the nav polygons.
 	read_checked_line(is, "Polygons");

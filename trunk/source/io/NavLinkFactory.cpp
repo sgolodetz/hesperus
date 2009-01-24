@@ -5,6 +5,7 @@
 
 #include "NavLinkFactory.h"
 
+#include <source/exceptions/Exception.h>
 #include <source/level/nav/StepDownLink.h>
 #include <source/level/nav/StepUpLink.h>
 #include <source/level/nav/WalkLink.h>
@@ -22,8 +23,17 @@ NavLinkFactory::NavLinkFactory()
 //#################### PUBLIC METHODS ####################
 NavLink_Ptr NavLinkFactory::construct_navlink(const std::string& line) const
 {
-	// NYI
-	throw 23;
+	size_t n = line.find(' ');
+	if(n == std::string::npos) throw Exception("Bad nav link: " + line);
+
+	std::string type = line.substr(0,n);
+	std::string data = line.substr(n+1);
+
+	std::map<std::string,NavLinkLoader>::const_iterator it = m_loaders.find(type);
+	if(it == m_loaders.end()) throw Exception("Unknown nav link type: " + type);
+
+	NavLinkLoader loader = it->second;
+	return loader(data);
 }
 
 }
