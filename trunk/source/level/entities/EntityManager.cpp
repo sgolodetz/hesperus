@@ -113,22 +113,9 @@ void EntityManager::load_entity(std::istream& is)
 	if(entityClass == "Player")
 	{
 		if(m_player) throw Exception("The level contains multiple Player entities");
-		m_player = load_player(is);
+		m_player = Player::load(is);
 	}
 	else skip_entity(is, entityClass);
-}
-
-Player_Ptr EntityManager::load_player(std::istream& is)
-{
-	std::vector<int> aabbIndices = FieldIO::read_intarray_field(is, "AABBs");
-	std::string modelFilename = FieldIO::read_field(is, "GameModel");
-	int health = FieldIO::read_typed_field<int>(is, "Health");
-	int pose = FieldIO::read_typed_field<int>(is, "Pose");
-	Vector3d position = FieldIO::read_typed_field<Vector3d>(is, "Position");
-
-	LineIO::read_checked_line(is, "}");
-
-	return Player_Ptr(new Player(aabbIndices, modelFilename, health, pose, position));
 }
 
 void EntityManager::skip_entity(std::istream& is, const std::string& entityClass)

@@ -3,6 +3,10 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
+#include <boost/lexical_cast.hpp>
+
+#include <source/exceptions/Exception.h>
+
 namespace hesp {
 
 //#################### READING METHODS ####################
@@ -12,10 +16,10 @@ T FieldIO::read_typed_field(std::istream& is, const std::string& expectedFieldNa
 	std::string fieldString = read_field(is, expectedFieldName);
 	try
 	{
-		T field = lexical_cast<T,std::string>(fieldString);
+		T field = boost::lexical_cast<T,std::string>(fieldString);
 		return field;
 	}
-	catch(bad_lexical_cast&)
+	catch(boost::bad_lexical_cast&)
 	{
 		throw Exception("The value for " + expectedFieldName + " was not of the right type");
 	}

@@ -38,7 +38,6 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void load_entity(std::istream& is);
-	static Player_Ptr load_player(std::istream& is);
 	static void skip_entity(std::istream& is, const std::string& entityClass);
 };
 

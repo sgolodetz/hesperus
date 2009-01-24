@@ -37,7 +37,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	//static Player_Ptr load(std::istream& is);
+	static Player_Ptr load(std::istream& is);
 	void save(std::ostream& os) const;
 };
 
