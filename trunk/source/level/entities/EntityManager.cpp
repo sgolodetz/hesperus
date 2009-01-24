@@ -76,7 +76,18 @@ void EntityManager::output(std::ostream& os)
 
 	os << "Instances\n";
 	os << "{\n";
+
+	// Calculate and output the entity count.
+	int entityCount = 0;
+	if(m_player) ++entityCount;
 	// TODO
+
+	os << entityCount << '\n';
+
+	// Output the entities.
+	if(m_player) m_player->save(os);
+	// TODO
+
 	os << "}\n";
 
 	os << "}\n";

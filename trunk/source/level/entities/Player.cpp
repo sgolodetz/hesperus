@@ -18,4 +18,15 @@ Player::Player(const std::vector<int>& aabbIndices,
 	VisibleEntity(/*modelFilename*/)
 {}
 
+//#################### PUBLIC METHODS ####################
+void Player::save(std::ostream& os) const
+{
+	os << "Instance Player\n";
+	os << "{\n";
+
+	// TODO
+
+	os << "}\n";
+}
+
 }

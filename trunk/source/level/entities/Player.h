@@ -15,6 +15,10 @@ using boost::shared_ptr;
 
 namespace hesp {
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<class Player> Player_Ptr;
+typedef shared_ptr<const class Player> Player_CPtr;
+
 /**
 This class represents the player.
 */
@@ -30,11 +34,12 @@ public:
 		   int health,
 		   int pose,
 		   const Vector3d& position);
-};
 
-//#################### TYPEDEFS ####################
-typedef shared_ptr<Player> Player_Ptr;
-typedef shared_ptr<const Player> Player_CPtr;
+	//#################### PUBLIC METHODS ####################
+public:
+	//static Player_Ptr load(std::istream& is);
+	void save(std::ostream& os) const;
+};
 
 }
 
