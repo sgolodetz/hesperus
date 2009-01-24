@@ -40,10 +40,7 @@ private:
 	void load_entity(std::istream& is);
 	static Player_Ptr load_player(std::istream& is);
 	static void read_checked_line(std::istream& is, const std::string& expected);
-	static std::string read_field(std::istream& is, const std::string& expectedFieldName);
-	static std::vector<int> read_intarray_field(std::istream& is, const std::string& expectedFieldName);
 	static void read_line(std::istream& is, std::string& line, const std::string& description);
-	template <typename T> static T read_typed_field(std::istream& is, const std::string& expectedFieldName);
 	static void skip_entity(std::istream& is, const std::string& entityClass);
 };
 
@@ -52,7 +49,5 @@ typedef shared_ptr<EntityManager> EntityManager_Ptr;
 typedef shared_ptr<const EntityManager> EntityManager_CPtr;
 
 }
-
-#include "EntityManager.tpp"
 
 #endif

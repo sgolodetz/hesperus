@@ -1,13 +1,13 @@
 /***
- * hesperus: EntityManager.tpp
+ * hesperus: FieldIO.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
 namespace hesp {
 
-//#################### PRIVATE METHODS ####################
+//#################### READING METHODS ####################
 template <typename T>
-T EntityManager::read_typed_field(std::istream& is, const std::string& expectedFieldName)
+T FieldIO::read_typed_field(std::istream& is, const std::string& expectedFieldName)
 {
 	std::string fieldString = read_field(is, expectedFieldName);
 	try

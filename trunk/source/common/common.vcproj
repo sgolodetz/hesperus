@@ -1051,6 +1051,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\FieldIO.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FileSectionUtil.h"
 					>
 				</File>
@@ -1107,6 +1111,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\FieldIO.tpp"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FileSectionUtil_Load.tpp"
 					>
 				</File>
@@ -1144,6 +1152,10 @@
 				</File>
 				<File
 					RelativePath="..\io\EntitiesFileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\FieldIO.cpp"
 					>
 				</File>
 				<File

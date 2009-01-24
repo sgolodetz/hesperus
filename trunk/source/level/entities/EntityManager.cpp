@@ -15,6 +15,7 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/io/EntDefFileUtil.h>
+#include <source/io/FieldIO.h>
 #include <source/io/FileSectionUtil.h>
 #include <source/math/vectors/Vector3.h>
 
@@ -120,11 +121,11 @@ void EntityManager::load_entity(std::istream& is)
 
 Player_Ptr EntityManager::load_player(std::istream& is)
 {
-	std::vector<int> aabbIndices = read_intarray_field(is, "AABBs");
-	std::string modelFilename = read_field(is, "GameModel");
-	int health = read_typed_field<int>(is, "Health");
-	int pose = read_typed_field<int>(is, "Pose");
-	Vector3d position = read_typed_field<Vector3d>(is, "Position");
+	std::vector<int> aabbIndices = FieldIO::read_intarray_field(is, "AABBs");
+	std::string modelFilename = FieldIO::read_field(is, "GameModel");
+	int health = FieldIO::read_typed_field<int>(is, "Health");
+	int pose = FieldIO::read_typed_field<int>(is, "Pose");
+	Vector3d position = FieldIO::read_typed_field<Vector3d>(is, "Position");
 
 	read_checked_line(is, "}");
 
@@ -136,43 +137,6 @@ void EntityManager::read_checked_line(std::istream& is, const std::string& expec
 	std::string line;
 	read_line(is, line, expected);
 	if(line != expected) throw Exception("Expected " + expected);
-}
-
-std::string EntityManager::read_field(std::istream& is, const std::string& expectedFieldName)
-{
-	std::string field;
-
-	read_line(is, field, expectedFieldName);
-
-	size_t i = field.find('=');
-	if(i == std::string::npos) throw Exception("Bad field " + expectedFieldName);
-
-	std::string fieldName = field.substr(0, i-1);
-	if(fieldName != expectedFieldName) throw Exception("Bad field name " + fieldName + ", expected " + expectedFieldName);
-
-	if(field.length() <= i+2) throw Exception("Missing field value for " + expectedFieldName);
-	field = field.substr(i+2);
-
-	return field;
-}
-
-std::vector<int> EntityManager::read_intarray_field(std::istream& is, const std::string& expectedFieldName)
-{
-	std::vector<int> arr;
-
-	std::string fieldString = read_field(is, expectedFieldName);
-
-	typedef boost::char_separator<char> sep;
-	typedef boost::tokenizer<sep> tokenizer;
-
-	tokenizer tok(fieldString.begin(), fieldString.end(), sep("[,]"));
-	std::vector<std::string> tokens(tok.begin(), tok.end());
-	for(size_t i=0, size=tokens.size(); i<size; ++i)
-	{
-		arr.push_back(lexical_cast<int,std::string>(tokens[i]));
-	}
-
-	return arr;
 }
 
 void EntityManager::read_line(std::istream& is, std::string& line, const std::string& description)
