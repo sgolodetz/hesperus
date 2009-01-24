@@ -9,7 +9,6 @@
 #include <string>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/filesystem/operations.hpp>
 using boost::shared_ptr;
 
 #include <source/images/Image.h>
@@ -32,6 +31,7 @@ class FileSectionUtil
 	friend struct BrushesFileUtil;
 	friend struct EntDefFileUtil;
 	friend struct EntitiesFileUtil;
+	friend class EntityManager;
 	friend struct GeometryFileUtil;
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;
@@ -46,7 +46,6 @@ class FileSectionUtil
 	//#################### LOADING METHODS ####################
 private:
 	static std::vector<AABB3d> load_aabbs_section(std::istream& is);
-	static EntityManager_Ptr load_entities_section(std::istream& is, const boost::filesystem::path& settingsDir);
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Image24_Ptr> load_lightmaps_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
@@ -58,7 +57,6 @@ private:
 
 	//#################### SAVING METHODS ####################
 private:
-	static void save_entities_section(std::ostream& os, const EntityManager_Ptr& entityManager);
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
 	static void save_lightmaps_section(std::ostream& os, const std::vector<Image24_Ptr>& lightmaps);
 	static void save_nav_section(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets);

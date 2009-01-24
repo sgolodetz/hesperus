@@ -14,14 +14,55 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/io/EntDefFileUtil.h>
+#include <source/io/FileSectionUtil.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-EntityManager::EntityManager(const std::vector<AABB3d>& aabbs)
-:	m_aabbs(aabbs)
-{}
+/**
+Constructs an entity manager containing a set of entities loaded from the specified std::istream.
+
+@param is			The std::istream
+@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
+@throws Exception	If EOF is encountered whilst trying to read the entities
+*/
+EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& settingsDir)
+{
+	FileSectionUtil::read_checked_line(is, "Entities");
+	FileSectionUtil::read_checked_line(is, "{");
+
+	// Read in the DefinitionFile section.
+	FileSectionUtil::read_checked_line(is, "DefinitionFile");
+	FileSectionUtil::read_checked_line(is, "{");
+
+		// Read in the AABBs.
+		std::string entDefFilename;
+		FileSectionUtil::read_line(is, entDefFilename, "entity definitions filename");
+		m_aabbs = EntDefFileUtil::load_aabbs_only((settingsDir / entDefFilename).file_string());
+
+	FileSectionUtil::read_checked_line(is, "}");
+
+	// Read in the Instances section.
+	FileSectionUtil::read_checked_line(is, "Instances");
+	FileSectionUtil::read_checked_line(is, "{");
+
+		std::string line;
+		FileSectionUtil::read_line(is, line, "entity count");
+		int entityCount;
+		try							{ entityCount = lexical_cast<int,std::string>(line); }
+		catch(bad_lexical_cast&)	{ throw Exception("The entity count was not a number"); }
+
+		for(int i=0; i<entityCount; ++i)
+		{
+			load_entity(is);
+		}
+
+	FileSectionUtil::read_checked_line(is, "}");
+
+	FileSectionUtil::read_checked_line(is, "}");
+}
 
 //#################### PUBLIC METHODS ####################
 void EntityManager::load_entity(std::istream& is)

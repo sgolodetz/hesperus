@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem/operations.hpp>
 using boost::shared_ptr;
 
 #include <source/level/entities/Player.h>
@@ -25,7 +26,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	EntityManager(const std::vector<AABB3d>& aabbs);
+	EntityManager(std::istream& is, const boost::filesystem::path& settingsDir);
 
 	//#################### PUBLIC METHODS ####################
 public:
