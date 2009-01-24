@@ -25,4 +25,11 @@ T FieldIO::read_typed_field(std::istream& is, const std::string& expectedFieldNa
 	}
 }
 
+//#################### WRITING METHODS ####################
+template <typename T>
+void FieldIO::write_typed_field(std::ostream& os, const std::string& fieldName, const T& value)
+{
+	os << fieldName << " = " << value << '\n';
+}
+
 }

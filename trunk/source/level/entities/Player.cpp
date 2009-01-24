@@ -17,7 +17,7 @@ Player::Player(const std::vector<int>& aabbIndices,
 			   const Vector3d& position)
 :	CollidableEntity(position, aabbIndices, pose),
 	MortalEntity(health),
-	VisibleEntity(/*modelFilename*/)
+	VisibleEntity(modelFilename)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -39,7 +39,11 @@ void Player::save(std::ostream& os) const
 	os << "Instance Player\n";
 	os << "{\n";
 
-	// TODO
+	FieldIO::write_intarray_field(os, "AABBs", m_aabbIndices);
+	FieldIO::write_typed_field(os, "GameModel", m_modelFilename);
+	FieldIO::write_typed_field(os, "Health", m_health);
+	FieldIO::write_typed_field(os, "Pose", m_pose);
+	FieldIO::write_typed_field(os, "Position", m_position);
 
 	os << "}\n";
 }

@@ -52,4 +52,17 @@ std::vector<int> FieldIO::read_intarray_field(std::istream& is, const std::strin
 	return arr;
 }
 
+//#################### WRITING METHODS ####################
+void FieldIO::write_intarray_field(std::ostream& os, const std::string& fieldName, const std::vector<int>& arr)
+{
+	os << fieldName << " = [";
+	int size = static_cast<int>(arr.size());
+	for(int i=0; i<size; ++i)
+	{
+		os << arr[i];
+		if(i < size-1) os << ',';
+	}
+	os << "]\n";
+}
+
 }

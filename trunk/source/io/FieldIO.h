@@ -22,7 +22,8 @@ struct FieldIO
 	template <typename T> static T read_typed_field(std::istream& is, const std::string& expectedFieldName);
 
 	//#################### WRITING METHODS ####################
-	// TODO
+	static void write_intarray_field(std::ostream& os, const std::string& fieldName, const std::vector<int>& arr);
+	template <typename T> static void write_typed_field(std::ostream& os, const std::string& fieldName, const T& value);
 };
 
 }
