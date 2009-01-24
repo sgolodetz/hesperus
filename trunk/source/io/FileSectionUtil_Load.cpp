@@ -419,7 +419,6 @@ NavMesh_Ptr FileSectionUtil::read_navmesh(std::istream& is)
 	read_checked_line(is, "Links");
 	read_checked_line(is, "{");
 
-	// Load the links.
 	NavLinkFactory navLinkFactory;
 
 	std::vector<NavLink_Ptr> navLinks;
@@ -436,25 +435,69 @@ NavMesh_Ptr FileSectionUtil::read_navmesh(std::istream& is)
 	read_checked_line(is, "Polygons");
 	read_checked_line(is, "{");
 
-#if 0
-	// FIXME: Load the polygons, rather than skipping over them.
+	std::vector<NavPolygon_Ptr> navPolygons;
 
-	read_checked_line(is, "}");
-#else
+	for(;;)
 	{
-		std::string line;
+		std::getline(is, line);
+		if(line == "}") break;
+
+		std::stringstream ss;
+		ss << line;
+
+		ss >> std::skipws;
+
+		int index, colIndex;
+		std::string dummy;
+		ss >> index >> colIndex >> dummy;
+
+		if(dummy != "[") throw Exception("Expected [ to start in links in nav polygon");
+
+		NavPolygon_Ptr poly(new NavPolygon(colIndex));
+
+		// Read the in links.
 		for(;;)
 		{
-			std::getline(is, line);
-			if(line == "}") break;
+			ss >> dummy;
+			if(dummy == "]") break;
+
+			try
+			{
+				int inLink = lexical_cast<int,std::string>(dummy);
+				poly->add_in_link(inLink);
+			}
+			catch(bad_lexical_cast&)
+			{
+				throw Exception("Bad in link for nav polygon " + lexical_cast<std::string,int>(index));
+			}
 		}
+
+		// Read the out links.
+		ss >> dummy;
+		if(dummy != "[") throw Exception("Expected [ to start out links in nav polygon");
+
+		for(;;)
+		{
+			ss >> dummy;
+			if(dummy == "]") break;
+
+			try
+			{
+				int outLink = lexical_cast<int,std::string>(dummy);
+				poly->add_out_link(outLink);
+			}
+			catch(bad_lexical_cast&)
+			{
+				throw Exception("Bad out link for nav polygon " + lexical_cast<std::string,int>(index));
+			}
+		}
+
+		navPolygons.push_back(poly);
 	}
-#endif
 
 	read_checked_line(is, "}");
 
-	// NYI
-	return NavMesh_Ptr();
+	return NavMesh_Ptr(new NavMesh(navPolygons, navLinks));
 }
 
 /**
