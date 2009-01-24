@@ -633,6 +633,11 @@ Instances
 1
 Instance Player
 {
+AABBs = [0,1]
+GameModel = player.x
+Health = 100
+Pose = 0
+Position = ( 6 24 6 )
 }
 }
 }
