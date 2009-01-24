@@ -87,7 +87,8 @@ try
 							leafVis,
 							lightmaps,
 							onionPolygons, onionTree,
-							onionPortals);
+							onionPortals,
+							navDatasets);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
@@ -130,7 +131,8 @@ try
 							  portals,
 							  leafVis,
 							  onionPolygons, onionTree,
-							  onionPortals);
+							  onionPortals,
+							  navDatasets);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
