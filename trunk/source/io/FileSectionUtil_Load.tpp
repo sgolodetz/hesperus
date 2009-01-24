@@ -16,10 +16,10 @@ Loads a polygon section from the specified std::istream.
 template <typename Poly>
 void FileSectionUtil::load_polygons_section(std::istream& is, const std::string& sectionName, std::vector<shared_ptr<Poly> >& polygons)
 {
-	read_checked_line(is, sectionName);
-	read_checked_line(is, "{");
+	LineIO::read_checked_line(is, sectionName);
+	LineIO::read_checked_line(is, "{");
 	load_counted_polygons(is, polygons);
-	read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");
 }
 
 //#################### LOADING SUPPORT METHODS ####################
@@ -35,7 +35,7 @@ void FileSectionUtil::load_counted_polygons(std::istream& is, std::vector<shared
 {
 	std::string line;
 
-	read_line(is, line, "polygon count");
+	LineIO::read_line(is, line, "polygon count");
 	try
 	{
 		int polyCount = boost::lexical_cast<int,std::string>(line);
@@ -144,7 +144,7 @@ shared_ptr<PolyhedralBrush<Poly> > FileSectionUtil::load_polyhedral_brush(std::i
 	if(line != "{") throw Exception("Expected {");
 
 	// Read bounds.
-	read_line(is, line, "bounds");
+	LineIO::read_line(is, line, "bounds");
 	AABB3d bounds = read_aabb<Vector3d>(line);
 
 	// Read faces.
@@ -152,7 +152,7 @@ shared_ptr<PolyhedralBrush<Poly> > FileSectionUtil::load_polyhedral_brush(std::i
 	std::vector<Poly_Ptr> faces;
 	FileSectionUtil::load_counted_polygons(is, faces);
 
-	read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");
 
 	return PolyBrush_Ptr(new PolyBrush(bounds, faces));
 }

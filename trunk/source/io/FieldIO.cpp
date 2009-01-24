@@ -19,7 +19,7 @@ std::string FieldIO::read_field(std::istream& is, const std::string& expectedFie
 {
 	std::string field;
 
-	read_line(is, field, expectedFieldName);
+	LineIO::read_line(is, field, expectedFieldName);
 
 	size_t i = field.find('=');
 	if(i == std::string::npos) throw Exception("Bad field " + expectedFieldName);
@@ -50,11 +50,6 @@ std::vector<int> FieldIO::read_intarray_field(std::istream& is, const std::strin
 	}
 
 	return arr;
-}
-
-void FieldIO::read_line(std::istream& is, std::string& line, const std::string& description)
-{
-	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + description);
 }
 
 }

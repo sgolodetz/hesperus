@@ -16,7 +16,6 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/io/EntDefFileUtil.h>
 #include <source/io/FieldIO.h>
-#include <source/io/FileSectionUtil.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -31,25 +30,25 @@ Constructs an entity manager containing a set of entities loaded from the specif
 */
 EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& settingsDir)
 {
-	FileSectionUtil::read_checked_line(is, "Entities");
-	FileSectionUtil::read_checked_line(is, "{");
+	LineIO::read_checked_line(is, "Entities");
+	LineIO::read_checked_line(is, "{");
 
 	// Read in the DefinitionFile section.
-	FileSectionUtil::read_checked_line(is, "DefinitionFile");
-	FileSectionUtil::read_checked_line(is, "{");
+	LineIO::read_checked_line(is, "DefinitionFile");
+	LineIO::read_checked_line(is, "{");
 
 		// Read in the AABBs.
-		FileSectionUtil::read_line(is, m_entDefFilename, "entity definitions filename");
+		LineIO::read_line(is, m_entDefFilename, "entity definitions filename");
 		m_aabbs = EntDefFileUtil::load_aabbs_only((settingsDir / m_entDefFilename).file_string());
 
-	FileSectionUtil::read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");
 
 	// Read in the Instances section.
-	FileSectionUtil::read_checked_line(is, "Instances");
-	FileSectionUtil::read_checked_line(is, "{");
+	LineIO::read_checked_line(is, "Instances");
+	LineIO::read_checked_line(is, "{");
 
 		std::string line;
-		FileSectionUtil::read_line(is, line, "entity count");
+		LineIO::read_line(is, line, "entity count");
 		int entityCount;
 		try							{ entityCount = lexical_cast<int,std::string>(line); }
 		catch(bad_lexical_cast&)	{ throw Exception("The entity count was not a number"); }
@@ -59,9 +58,9 @@ EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& se
 			load_entity(is);
 		}
 
-	FileSectionUtil::read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");
 
-	FileSectionUtil::read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");
 }
 
 //#################### PUBLIC METHODS ####################
@@ -103,13 +102,13 @@ Player_Ptr EntityManager::player() const
 void EntityManager::load_entity(std::istream& is)
 {
 	std::string line;
-	read_line(is, line, "entity class");
+	LineIO::read_line(is, line, "entity class");
 
 	size_t i = line.find(' ');
 	if(line.length() < i+2) throw Exception("Missing entity class after Instance");
 	std::string entityClass = line.substr(i+1);
 
-	read_checked_line(is, "{");
+	LineIO::read_checked_line(is, "{");
 
 	if(entityClass == "Player")
 	{
@@ -127,21 +126,9 @@ Player_Ptr EntityManager::load_player(std::istream& is)
 	int pose = FieldIO::read_typed_field<int>(is, "Pose");
 	Vector3d position = FieldIO::read_typed_field<Vector3d>(is, "Position");
 
-	read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");
 
 	return Player_Ptr(new Player(aabbIndices, modelFilename, health, pose, position));
-}
-
-void EntityManager::read_checked_line(std::istream& is, const std::string& expected)
-{
-	std::string line;
-	read_line(is, line, expected);
-	if(line != expected) throw Exception("Expected " + expected);
-}
-
-void EntityManager::read_line(std::istream& is, std::string& line, const std::string& description)
-{
-	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + description);
 }
 
 void EntityManager::skip_entity(std::istream& is, const std::string& entityClass)

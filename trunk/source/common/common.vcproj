@@ -978,14 +978,6 @@
 						>
 					</File>
 				</Filter>
-				<Filter
-					Name=".tpp"
-					>
-					<File
-						RelativePath="..\level\entities\EntityManager.tpp"
-						>
-					</File>
-				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1068,6 +1060,10 @@
 				</File>
 				<File
 					RelativePath="..\io\LightsFileUtil.h"
+					>
+				</File>
+				<File
+					RelativePath="..\io\LineIO.h"
 					>
 				</File>
 				<File
@@ -1172,6 +1168,10 @@
 				</File>
 				<File
 					RelativePath="..\io\LightsFileUtil.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\LineIO.cpp"
 					>
 				</File>
 				<File

@@ -39,8 +39,6 @@ public:
 private:
 	void load_entity(std::istream& is);
 	static Player_Ptr load_player(std::istream& is);
-	static void read_checked_line(std::istream& is, const std::string& expected);
-	static void read_line(std::istream& is, std::string& line, const std::string& description);
 	static void skip_entity(std::istream& is, const std::string& entityClass);
 };
 

@@ -65,11 +65,6 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-void read_line(std::istream& is, std::string& line, const std::string& attemptedAction)
-{
-	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to " + attemptedAction);
-}
-
 void skip_section(std::istream& is)
 {
 	std::string line;
@@ -89,10 +84,10 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 
 	std::string line;
 
-	read_line(is, line, "read PolyhedralBrush");
+	LineIO::read_line(is, line, "read PolyhedralBrush");
 	if(line != "{") throw Exception("PolyhedralBrush: Expected {");
 
-	read_line(is, line, "read bounds");
+	LineIO::read_line(is, line, "read bounds");
 	if(line.substr(0,6) != "Bounds" || line.length() < 8) throw Exception("PolyhedralBrush: Expected Bounds");
 
 	// Parse bounds.
@@ -100,7 +95,7 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	AABB3d bounds = read_aabb<Vector3d>(line, SCALE);
 
 	// Read polygon count.
-	read_line(is, line, "read polygon count");
+	LineIO::read_line(is, line, "read polygon count");
 	if(line.substr(0,9) != "PolyCount" || line.length() < 11) throw Exception("PolyhedralBrush: Expected PolyCount");
 
 	int polyCount;
@@ -111,7 +106,7 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	std::vector<TexturedPolygon_Ptr> faces;
 	for(int i=0; i<polyCount; ++i)
 	{
-		read_line(is, line, "read polygon");
+		LineIO::read_line(is, line, "read polygon");
 		if(line.substr(0,7) != "Polygon" || line.length() < 9) throw Exception("PolyhedralBrush: Expected Polygon");
 
 		// Parse polygon.
@@ -133,19 +128,19 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	}
 	brushes.push_back(TexPolyhedralBrush_Ptr(new TexPolyhedralBrush(bounds, faces)));
 
-	read_line(is, line, "read PolyhedralBrush");
+	LineIO::read_line(is, line, "read PolyhedralBrush");
 	if(line != "}") throw Exception("PolyhedralBrush: Expected }");
 }
 
 void read_architecture_brush_composite(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>& brushes)
 {
 	std::string line;
-	read_line(is, line, "read ArchitectureBrushComposite");
+	LineIO::read_line(is, line, "read ArchitectureBrushComposite");
 	if(line != "{") throw Exception("ArchitectureBrushComposite: Expected {");
 
 	for(;;)
 	{
-		read_line(is, line, "read ArchitectureBrushComposite");
+		LineIO::read_line(is, line, "read ArchitectureBrushComposite");
 		if(line == "}") break;
 
 		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is, brushes);
@@ -168,10 +163,10 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 
 	std::string line;
 
-	read_line(is, line, "read MEF ID");
+	LineIO::read_line(is, line, "read MEF ID");
 	if(line != "MEF 2") throw Exception("Bad MEF ID or unexpected file version");
 
-	read_line(is, line, "read Textures");
+	LineIO::read_line(is, line, "read Textures");
 	if(line != "Textures") throw Exception("Textures section is missing");
 	skip_section(is);
 

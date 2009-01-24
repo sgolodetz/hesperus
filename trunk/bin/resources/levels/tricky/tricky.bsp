@@ -622,3 +622,17 @@ PathTable
 }
 }
 }
+Entities
+{
+DefinitionFile
+{
+hesperus.edf
+}
+Instances
+{
+1
+Instance Player
+{
+}
+}
+}
