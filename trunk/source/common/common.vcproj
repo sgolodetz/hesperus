@@ -958,6 +958,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\OrientedEntity.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\Player.h"
 						>
 					</File>
