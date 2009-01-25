@@ -19,6 +19,10 @@ Trait Mortal
 {
 Health : int
 }
+Trait Oriented
+{
+Look : Vector3d
+}
 Trait Visible
 {
 GameModel : filename
@@ -26,14 +30,14 @@ GameModel : filename
 }
 Classes
 {
-Class Player : Collidable, Mortal, Visible
+Class Player : Collidable, Mortal, Oriented, Visible
 {
 AABBs = [crouch,stand]
 GameModel = player.x
 Health = 100
 Pose = stand
 }
-Class Guard : Collidable, Mortal, Visible
+Class Guard : Collidable, Mortal, Oriented, Visible
 {
 AABBs = [stand]
 GameModel = guard.x
