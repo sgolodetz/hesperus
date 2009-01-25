@@ -7,10 +7,14 @@
 
 #include <fstream>
 
+#include <boost/filesystem/operations.hpp>
+namespace bf = boost::filesystem;
+
 #include <source/images/BitmapLoader.h>
 #include <source/images/BitmapSaver.h>
 #include <source/level/LitGeometryRenderer.h>
 #include <source/level/UnlitGeometryRenderer.h>
+#include "DirectoryFinder.h"
 #include "FileSectionUtil.h"
 
 namespace hesp {
@@ -122,17 +126,29 @@ Loads a lit level from the specified std::istream.
 */
 Level_Ptr LevelFileUtil::load_lit(std::istream& is)
 {
-	// Load the data.
 	std::vector<TexturedLitPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;
 	std::vector<Portal_Ptr> portals;
 	LeafVisTable_Ptr leafVis;
+	std::vector<CollisionPolygon_Ptr> onionPolygons;
+	OnionTree_Ptr onionTree;
+	std::vector<OnionPortal_Ptr> onionPortals;
+	std::vector<NavDataset_Ptr> navDatasets;
+	EntityManager_Ptr entityManager;
 
+	// Load the data.
 	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	tree = FileSectionUtil::load_tree_section(is);
 	FileSectionUtil::load_polygons_section(is, "Portals", portals);
 	leafVis = FileSectionUtil::load_vis_section(is);
 	std::vector<Image24_Ptr> lightmaps = FileSectionUtil::load_lightmaps_section(is);
+	FileSectionUtil::load_polygons_section(is, "OnionPolygons", onionPolygons);
+	onionTree = FileSectionUtil::load_onion_tree_section(is);
+	FileSectionUtil::load_polygons_section(is, "OnionPortals", onionPortals);
+	navDatasets = FileSectionUtil::load_nav_section(is);
+
+	bf::path settingsDir = determine_settings_directory_from_game();
+	entityManager.reset(new EntityManager(is, settingsDir));
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
@@ -147,16 +163,28 @@ Loads an unlit level from the specified std::istream.
 */
 Level_Ptr LevelFileUtil::load_unlit(std::istream& is)
 {
-	// Load the data.
 	std::vector<TexturedPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;
 	std::vector<Portal_Ptr> portals;
 	LeafVisTable_Ptr leafVis;
+	std::vector<CollisionPolygon_Ptr> onionPolygons;
+	OnionTree_Ptr onionTree;
+	std::vector<OnionPortal_Ptr> onionPortals;
+	std::vector<NavDataset_Ptr> navDatasets;
+	EntityManager_Ptr entityManager;
 
+	// Load the data.
 	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
 	tree = FileSectionUtil::load_tree_section(is);
 	FileSectionUtil::load_polygons_section(is, "Portals", portals);
 	leafVis = FileSectionUtil::load_vis_section(is);
+	FileSectionUtil::load_polygons_section(is, "OnionPolygons", onionPolygons);
+	onionTree = FileSectionUtil::load_onion_tree_section(is);
+	FileSectionUtil::load_polygons_section(is, "OnionPortals", onionPortals);
+	navDatasets = FileSectionUtil::load_nav_section(is);
+
+	bf::path settingsDir = determine_settings_directory_from_game();
+	entityManager.reset(new EntityManager(is, settingsDir));
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));

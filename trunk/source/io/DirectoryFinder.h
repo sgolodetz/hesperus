@@ -10,6 +10,8 @@
 
 namespace hesp {
 
+boost::filesystem::path determine_executable_location();
+boost::filesystem::path determine_settings_directory_from_game();
 boost::filesystem::path determine_settings_directory_from_tool();
 
 }
