@@ -1200,6 +1200,26 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="game"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\game\Game.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\game\Game.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
