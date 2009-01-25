@@ -24,6 +24,8 @@ class Level
 {
 	//#################### TYPEDEFS ####################
 private:
+	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
+	typedef std::vector<OnionPortal_Ptr> OnionPortalVector;
 	typedef std::vector<Portal_Ptr> PortalVector;
 
 	//#################### PRIVATE VARIABLES ####################
@@ -32,11 +34,19 @@ private:
 	BSPTree_Ptr m_tree;
 	PortalVector m_portals;
 	LeafVisTable_Ptr m_leafVis;
+	ColPolyVector m_onionPolygons;
+	OnionTree_Ptr m_onionTree;
+	OnionPortalVector m_onionPortals;
+	// TODO: Navigation stuff
+	EntityManager_Ptr m_entityManager;
 
 	//#################### CONSTRUCTORS ####################
 public:
 	Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
-		  const PortalVector& portals, const LeafVisTable_Ptr& leafVis);
+		  const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
+		  const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
+		  const OnionPortalVector& onionPortals, const std::vector<NavDataset_Ptr>& navDatasets,
+		  const EntityManager_Ptr& entityManager);
 
 	//#################### PUBLIC METHODS ####################
 public:

@@ -152,7 +152,7 @@ Level_Ptr LevelFileUtil::load_lit(std::istream& is)
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager));
 }
 
 /**
@@ -188,7 +188,7 @@ Level_Ptr LevelFileUtil::load_unlit(std::istream& is)
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager));
 }
 
 }
