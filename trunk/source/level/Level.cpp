@@ -43,11 +43,9 @@ void Level::render() const
 
 	Player_Ptr player = m_entityManager->player();
 	const Vector3d& pos = player->position();
+	const Vector3d& look = player->look();
 
-	// TEMPORARY: The player look vector will eventually be obtained from elsewhere.
-	const Vector3d look(1,-0.5,0);
-
-	// Calculate the player's eye position and where they're looking.
+	// Calculate the player's eye position and where they're looking at.
 	const AABB3d& aabb = m_entityManager->aabb(player->pose());
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z);
 	Vector3d at = eye + look;
