@@ -21,13 +21,22 @@ private:
 public:
 	static Screen& instance();
 
+	//#################### PRIVATE VARIABLES ####################
+private:
+	Extents_Ptr m_dimensions;
+
 	//#################### PUBLIC METHODS ####################
 public:
-	void fit(const Extents& extents);
+	const Extents& dimensions() const;
+	void fit();
 	void render() const;
+	void set_dimensions(const Extents& dimensions);
 	void set_ortho_viewport(const Extents& extents);
 	void set_persp_viewport(const Extents& extents, double fovY, double zNear, double zFar);
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Screen> Screen_Ptr;
 
 }
 

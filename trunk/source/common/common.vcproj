@@ -1210,12 +1210,28 @@
 					RelativePath="..\game\Game.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\game\GameState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\GameState_Level.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
 				>
 				<File
 					RelativePath="..\game\Game.h"
+					>
+				</File>
+				<File
+					RelativePath="..\game\GameState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\game\GameState_Level.h"
 					>
 				</File>
 			</Filter>

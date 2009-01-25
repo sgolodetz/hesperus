@@ -93,7 +93,8 @@ try
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
 	cont->layout().add(new Picture("resources/title.bmp"), Extents(500, 0, 700, 50));
 	screen.layout().add(cont, Extents(100, 100, 200, 200));
-	screen.fit(Extents(0, 0, 1024, 768));
+	screen.set_dimensions(Extents(0, 0, width, height));
+	screen.fit();
 
 	for(;;)
 	{

@@ -26,6 +26,7 @@ private:
 public:
 	void add(Component *component, const Extents& extents);
 	void add(const Component_Ptr& component, const Extents& extents);
+	void clear();
 	std::vector<LaidOutComponent> fit(const Extents& extents) const;
 };
 

@@ -31,6 +31,14 @@ void ExplicitLayout::add(const Component_Ptr& component, const Extents& extents)
 }
 
 /**
+Removes all the components from the layout.
+*/
+void ExplicitLayout::clear()
+{
+	m_components.swap(std::vector<LaidOutComponent>());
+}
+
+/**
 Fits the components to the specified container extents and returns them.
 
 @param extents	The extents of the container for which this object is the layout

@@ -20,9 +20,14 @@ Screen& Screen::instance()
 }
 
 //#################### PUBLIC METHODS ####################
-void Screen::fit(const Extents& extents)
+const Extents& Screen::dimensions() const
 {
-	Container::fit(extents, NULL);
+	return *m_dimensions;
+}
+
+void Screen::fit()
+{
+	Container::fit(*m_dimensions, NULL);
 }
 
 void Screen::render() const
@@ -36,6 +41,11 @@ void Screen::render() const
 	Container::render();
 
 	SDL_GL_SwapBuffers();
+}
+
+void Screen::set_dimensions(const Extents& dimensions)
+{
+	m_dimensions.reset(new Extents(dimensions));
 }
 
 void Screen::set_ortho_viewport(const Extents& extents)

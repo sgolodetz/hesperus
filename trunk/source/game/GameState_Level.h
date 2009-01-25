@@ -1,40 +1,35 @@
 /***
- * hesperus: Game.h
+ * hesperus: GameState_Level.h
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_GAME
-#define H_HESP_GAME
+#ifndef H_HESP_GAMESTATE_LEVEL
+#define H_HESP_GAMESTATE_LEVEL
 
-#include <iostream>
 #include <string>
 
-#include <SDL.h>
-
+#include <source/level/Level.h>
 #include "GameState.h"
 
 namespace hesp {
 
-class Game
+class GameState_Level : public GameState
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	GameState_Ptr m_state;
+	Level_Ptr m_level;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Game();
+	GameState_Level(const std::string& levelFilename);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void run();
+	GameState_Ptr update(int milliseconds);
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void handle_key_down(SDL_keysym *keysym);
-	void process_events();
-	void quit(int code);
-	void quit_with_error(const std::string& error);
+	Component_Ptr construct_display();
 };
 
 }
