@@ -38,7 +38,7 @@ try
 	if(SDL_SetVideoMode(width, height, bpp, flags) == 0) quit(EXIT_FAILURE);
 
 	Screen& screen = Screen::instance();
-	screen.set_dimensions(Extents(0, 0, 1024, 768));
+	screen.set_dimensions(Extents(0, 0, width, height));
 	screen.fit();
 
 	if(glewInit() != GLEW_OK) quit_with_error("GLEW could not be initialised");
