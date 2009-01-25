@@ -32,6 +32,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const AABB3d& aabb(int n) const;
 	void output(std::ostream& os);
 	Player_Ptr player() const;
 
