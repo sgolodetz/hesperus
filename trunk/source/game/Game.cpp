@@ -5,14 +5,49 @@
 
 #include "Game.h"
 
+#include <gl/glew.h>
+#include <source/ogl/WrappedGL.h>
+#include <gl/glu.h>
+
+#include <source/exceptions/Exception.h>
 #include <source/gui/Screen.h>
+#include "GameState_Level.h"
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Game::Game()
+try
 {
+	// Set up the window.
+	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
+
+	SDL_WM_SetCaption("The Scarlet Pimpernel", NULL);
+
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+	int width = 1024;
+	int height = 768;
+	int bpp = 32;
+	int flags = SDL_OPENGL;// | SDL_FULLSCREEN;
+
+	if(SDL_SetVideoMode(width, height, bpp, flags) == 0) quit(EXIT_FAILURE);
+
+	Screen& screen = Screen::instance();
+	screen.set_dimensions(Extents(0, 0, 1024, 768));
+	screen.fit();
+
+	if(glewInit() != GLEW_OK) quit_with_error("GLEW could not be initialised");
+	if(!glewGetExtension("GL_ARB_multitexture")) quit_with_error("Multitexturing not supported");
+
+	// Set the initial game state.
+	m_state.reset(new GameState_Level("resources/levels/tricky/tricky.bsp"));
 }
+catch(Exception& e) { quit_with_error(e.cause()); }
 
 //#################### PUBLIC METHODS ####################
 void Game::run()

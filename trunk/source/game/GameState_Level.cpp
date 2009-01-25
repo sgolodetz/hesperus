@@ -17,7 +17,7 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 GameState_Level::GameState_Level(const std::string& levelFilename)
 {
-	m_level = LevelFileUtil::load("resources/levels/tricky/tricky.bsp");
+	m_level = LevelFileUtil::load(levelFilename);
 	set_display(construct_display());
 }
 
