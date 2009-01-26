@@ -70,6 +70,11 @@ const AABB3d& EntityManager::aabb(int n) const
 	else return m_aabbs[n];
 }
 
+const std::vector<BipedEntity_Ptr>& EntityManager::bipeds() const
+{
+	return m_bipeds;
+}
+
 void EntityManager::output(std::ostream& os)
 {
 	os << "Entities\n";
@@ -120,6 +125,7 @@ void EntityManager::load_entity(std::istream& is)
 	{
 		if(m_player) throw Exception("The level contains multiple Player entities");
 		m_player = Player::load(is);
+		m_bipeds.push_back(m_player);
 	}
 	else skip_entity(is, entityClass);
 }

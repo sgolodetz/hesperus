@@ -6,9 +6,6 @@
 #ifndef H_HESP_PLAYER
 #define H_HESP_PLAYER
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
-
 #include "BipedEntity.h"
 #include "MortalEntity.h"
 

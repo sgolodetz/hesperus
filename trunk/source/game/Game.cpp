@@ -66,8 +66,14 @@ void Game::run()
 #if 0
 		std::cout << "Update " << frameTime - lastUpdate << std::endl;
 #endif
-		m_state->update(frameTime - lastUpdate);
+		GameState_Ptr newState = m_state->update(frameTime - lastUpdate);
 		lastUpdate = frameTime;
+
+		if(newState)
+		{
+			m_state = newState;
+			continue;
+		}
 
 		if(frameTime - lastDraw >= 20)	// aim for 50 frames per second
 		{

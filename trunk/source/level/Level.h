@@ -50,6 +50,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const EntityManager_Ptr& entity_manager() const;
 	void render() const;
 };
 

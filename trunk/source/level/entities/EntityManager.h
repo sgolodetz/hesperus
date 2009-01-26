@@ -24,6 +24,7 @@ private:
 	std::string m_entDefFilename;
 
 	std::vector<AABB3d> m_aabbs;
+	std::vector<BipedEntity_Ptr> m_bipeds;
 	Player_Ptr m_player;
 
 	//#################### CONSTRUCTORS ####################
@@ -33,6 +34,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const AABB3d& aabb(int n) const;
+	const std::vector<BipedEntity_Ptr>& bipeds() const;
 	void output(std::ostream& os);
 	Player_Ptr player() const;
 

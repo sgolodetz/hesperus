@@ -28,6 +28,11 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 }
 
 //#################### PUBLIC METHODS ####################
+const EntityManager_Ptr& Level::entity_manager() const
+{
+	return m_entityManager;
+}
+
 void Level::render() const
 {
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);

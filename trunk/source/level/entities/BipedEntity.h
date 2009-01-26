@@ -6,6 +6,9 @@
 #ifndef H_HESP_BIPEDENTITY
 #define H_HESP_BIPEDENTITY
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include "CollidableEntity.h"
 #include "OrientedEntity.h"
 #include "VisibleEntity.h"
@@ -36,6 +39,9 @@ public:
 public:
 	// TODO: attach_yoke(BipedYoke)
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<BipedEntity> BipedEntity_Ptr;
 
 }
 
