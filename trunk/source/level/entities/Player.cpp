@@ -16,10 +16,8 @@ Player::Player(const std::vector<int>& aabbIndices,
 			   const Vector3d& look,
 			   int pose,
 			   const Vector3d& position)
-:	CollidableEntity(position, aabbIndices, pose),
-	MortalEntity(health),
-	OrientedEntity(look),
-	VisibleEntity(modelFilename)
+:	BipedEntity(aabbIndices, modelFilename, look, pose, position),
+	MortalEntity(health)
 {}
 
 //#################### PUBLIC METHODS ####################

@@ -9,10 +9,8 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include "CollidableEntity.h"
+#include "BipedEntity.h"
 #include "MortalEntity.h"
-#include "OrientedEntity.h"
-#include "VisibleEntity.h"
 
 namespace hesp {
 
@@ -24,10 +22,8 @@ typedef shared_ptr<const class Player> Player_CPtr;
 This class represents the player.
 */
 class Player
-:	public CollidableEntity,
-	public MortalEntity,
-	public OrientedEntity,
-	public VisibleEntity		// in third-person view
+:	public BipedEntity,
+	public MortalEntity
 {
 	//#################### CONSTRUCTORS ####################
 public:
