@@ -6,12 +6,14 @@
 #ifndef H_HESP_MORTALENTITY
 #define H_HESP_MORTALENTITY
 
+#include "Entity.h"
+
 namespace hesp {
 
 /**
 This class represents a mortal entity (i.e. this entity can die, so it maintains a health value).
 */
-class MortalEntity
+class MortalEntity : virtual public Entity
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:

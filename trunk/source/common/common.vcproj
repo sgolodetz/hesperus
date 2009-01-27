@@ -950,7 +950,15 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\Entity.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\EntityManager.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\Guard.h"
 						>
 					</File>
 					<File
@@ -987,6 +995,10 @@
 					>
 					<File
 						RelativePath="..\level\entities\EntityManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\Guard.cpp"
 						>
 					</File>
 					<File

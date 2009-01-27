@@ -7,13 +7,14 @@
 #define H_HESP_LOCATABLEENTITY
 
 #include <source/math/vectors/Vector3.h>
+#include "Entity.h"
 
 namespace hesp {
 
 /**
 This class represents a locatable entity (i.e. the entity has a position in space).
 */
-class LocatableEntity
+class LocatableEntity : virtual public Entity
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:

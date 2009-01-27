@@ -8,12 +8,14 @@
 
 #include <string>
 
+#include "Entity.h"
+
 namespace hesp {
 
 /**
 This class represents a potentially visible entity (i.e. this entity needs an animated model).
 */
-class VisibleEntity
+class VisibleEntity : virtual public Entity
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:

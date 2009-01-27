@@ -6,6 +6,7 @@
 #ifndef H_HESP_YOKEABLEENTITY
 #define H_HESP_YOKEABLEENTITY
 
+#include "Entity.h"
 #include "Yoke.h"
 
 namespace hesp {
@@ -13,7 +14,7 @@ namespace hesp {
 /**
 This class represents a yokeable entity (i.e. one which can be controlled by either player input or an AI).
 */
-class YokeableEntity
+class YokeableEntity : virtual public Entity
 {
 	//#################### PRIVATE VARIABLES ####################
 private:

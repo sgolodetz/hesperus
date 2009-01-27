@@ -7,13 +7,14 @@
 #define H_HESP_ORIENTEDENTITY
 
 #include <source/math/vectors/Vector3.h>
+#include "Entity.h"
 
 namespace hesp {
 
 /**
 This class represents an oriented entity (i.e. the entity has a look vector).
 */
-class OrientedEntity
+class OrientedEntity : virtual public Entity
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:

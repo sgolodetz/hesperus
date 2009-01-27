@@ -17,6 +17,7 @@ using boost::lexical_cast;
 #include <source/io/EntDefFileUtil.h>
 #include <source/io/FieldIO.h>
 #include <source/math/vectors/Vector3.h>
+#include "Guard.h"
 
 namespace hesp {
 
@@ -83,16 +84,12 @@ void EntityManager::output(std::ostream& os)
 	os << "Instances\n";
 	os << "{\n";
 
-	// Calculate and output the entity count.
-	int entityCount = 0;
-	if(m_player) ++entityCount;
-	// TODO
-
+	int entityCount = static_cast<int>(m_yokeables.size());
 	os << entityCount << '\n';
-
-	// Output the entities.
-	if(m_player) m_player->save(os);
-	// TODO
+	for(int i=0; i<entityCount; ++i)
+	{
+		m_yokeables[i]->save(os);
+	}
 
 	os << "}\n";
 
@@ -126,6 +123,10 @@ void EntityManager::load_entity(std::istream& is)
 		if(m_player) throw Exception("The level contains multiple Player entities");
 		m_player = Player::load(is);
 		m_yokeables.push_back(m_player);
+	}
+	else if(entityClass == "Guard")
+	{
+		m_yokeables.push_back(Guard::load(is));
 	}
 	else skip_entity(is, entityClass);
 }
