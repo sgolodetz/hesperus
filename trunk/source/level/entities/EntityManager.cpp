@@ -84,11 +84,11 @@ void EntityManager::output(std::ostream& os)
 	os << "Instances\n";
 	os << "{\n";
 
-	int entityCount = static_cast<int>(m_yokeables.size());
+	int entityCount = static_cast<int>(m_entities.size());
 	os << entityCount << '\n';
 	for(int i=0; i<entityCount; ++i)
 	{
-		m_yokeables[i]->save(os);
+		m_entities[i]->save(os);
 	}
 
 	os << "}\n";
@@ -118,15 +118,25 @@ void EntityManager::load_entity(std::istream& is)
 
 	LineIO::read_checked_line(is, "{");
 
+	int nextEntity = static_cast<int>(m_entities.size());
+
 	if(entityClass == "Player")
 	{
 		if(m_player) throw Exception("The level contains multiple Player entities");
+
 		m_player = Player::load(is);
 		m_yokeables.push_back(m_player);
+
+		m_player->set_id(nextEntity);
+		m_entities.push_back(m_player);
 	}
 	else if(entityClass == "Guard")
 	{
-		m_yokeables.push_back(Guard::load(is));
+		Guard_Ptr guard = Guard::load(is);
+		m_yokeables.push_back(guard);
+
+		guard->set_id(nextEntity);
+		m_entities.push_back(guard);
 	}
 	else skip_entity(is, entityClass);
 }

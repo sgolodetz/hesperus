@@ -24,6 +24,7 @@ private:
 	std::string m_entDefFilename;
 
 	std::vector<AABB3d> m_aabbs;
+	std::vector<Entity_Ptr> m_entities;
 	std::vector<YokeableEntity_Ptr> m_yokeables;
 	Player_Ptr m_player;
 

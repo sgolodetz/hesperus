@@ -6,7 +6,7 @@ hesperus.edf
 }
 Instances
 {
-1
+2
 Instance Player
 {
 AABBs = [0,1]
@@ -15,6 +15,15 @@ Health = 100
 Look = ( 1 -0.5 0 )
 Pose = 0
 Position = ( 6 24 6 )
+}
+Instance Guard
+{
+AABBs = [0]
+GameModel = guard.x
+Health = 75
+Look = ( -1 0 0 )
+Pose = 0
+Position = ( 20 20 6 )
 }
 }
 }
