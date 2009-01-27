@@ -17,6 +17,7 @@ using boost::lexical_cast;
 #include <source/io/EntDefFileUtil.h>
 #include <source/io/FieldIO.h>
 #include <source/math/vectors/Vector3.h>
+#include <source/yokes/user/UserBipedYoke.h>
 #include "Guard.h"
 
 namespace hesp {
@@ -129,12 +130,16 @@ void EntityManager::load_entity(std::istream& is)
 	{
 		if(m_player) throw Exception("The level contains multiple Player entities");
 
+		// Add the player to the relevant arrays.
 		m_player = Player::load(is);
 		m_visibles.push_back(m_player);
 		m_yokeables.push_back(m_player);
 
 		m_player->set_id(nextEntity);
 		m_entities.push_back(m_player);
+
+		// Attach the user yoke.
+		m_player->set_yoke(Yoke_Ptr(new UserBipedYoke(m_player.get())));
 	}
 	else if(entityClass == "Guard")
 	{

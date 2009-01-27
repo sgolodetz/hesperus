@@ -7,10 +7,15 @@
 
 namespace hesp {
 
+//#################### CONSTRUCTORS ####################
+BipedWalkCommand::BipedWalkCommand(BipedEntity *biped, const Vector3d& dir)
+:	m_biped(biped), m_dir(dir)
+{}
+
 //#################### PUBLIC METHODS ####################
 void BipedWalkCommand::execute(int milliseconds)
 {
-	// TODO
+	m_biped->walk(m_dir, milliseconds);
 }
 
 }

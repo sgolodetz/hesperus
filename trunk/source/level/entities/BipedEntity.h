@@ -33,6 +33,17 @@ public:
 		OrientedEntity(look),
 		VisibleEntity(modelFilename)
 	{}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	void walk(const Vector3d& dir, int milliseconds)
+	{
+		// TODO: Collision handling (this should probably go in CollidableEntity)
+		// TODO: Use a proper biped walking speed
+
+		const double BIPED_WALK_SPEED = 5.0;
+		m_position += dir * BIPED_WALK_SPEED * (milliseconds/1000.0);
+	}
 };
 
 }
