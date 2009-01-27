@@ -5,6 +5,9 @@
 
 #include "GameState_Level.h"
 
+#include <algorithm>
+#include <list>
+
 #include <source/gui/Container.h>
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
@@ -28,15 +31,27 @@ GameState_Ptr GameState_Level::update(int milliseconds)
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
 	const std::vector<YokeableEntity_Ptr>& yokeables = entityManager->yokeables();
 
+	std::list<EntityCommand_Ptr> cmdQueue;	// implement the queue as a list so that we can use back_inserter below
+
 	int yokeableCount = static_cast<int>(yokeables.size());
 	for(int i=0; i<yokeableCount; ++i)
 	{
-		// TODO: Use the entity's yoke to generate the entity commands
-		// TODO: Append the entity commands to the queue
+		const Yoke_Ptr& yoke = yokeables[i]->yoke();
+		if(yoke)
+		{
+			// Use the entity's yoke to generate entity commands.
+			std::vector<EntityCommand_Ptr> commands = yoke->generate_commands(/*input*/);
+
+			// Append the entity commands to the queue.
+			std::copy(commands.begin(), commands.end(), std::back_inserter(cmdQueue));
+		}
 	}
 
 	// Step 2:	Execute the entity commands.
-	// TODO
+	for(std::list<EntityCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
+	{
+		(*it)->execute(milliseconds);
+	}
 
 	return GameState_Ptr();
 }

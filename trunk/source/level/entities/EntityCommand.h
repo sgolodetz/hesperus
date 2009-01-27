@@ -1,30 +1,29 @@
 /***
- * hesperus: Yoke.h
+ * hesperus: EntityCommand.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_YOKE
-#define H_HESP_YOKE
+#ifndef H_HESP_ENTITYCOMMAND
+#define H_HESP_ENTITYCOMMAND
 
-#include <vector>
-
-#include "EntityCommand.h"
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
 
-class Yoke
+class EntityCommand
 {
 	//#################### DESTRUCTOR ####################
 public:
-	virtual ~Yoke() {}
+	virtual ~EntityCommand() {}
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual std::vector<EntityCommand_Ptr> generate_commands(/*const Input& input*/) = 0;
+	virtual void execute(int milliseconds) = 0;
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<Yoke> Yoke_Ptr;
+typedef shared_ptr<EntityCommand> EntityCommand_Ptr;
 
 }
 

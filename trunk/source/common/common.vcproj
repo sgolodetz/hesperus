@@ -946,11 +946,19 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\BipedWalkCommand.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\CollidableEntity.h"
 						>
 					</File>
 					<File
 						RelativePath="..\level\entities\Entity.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\EntityCommand.h"
 						>
 					</File>
 					<File
@@ -993,6 +1001,10 @@
 				<Filter
 					Name=".cpp"
 					>
+					<File
+						RelativePath="..\level\entities\BipedWalkCommand.cpp"
+						>
+					</File>
 					<File
 						RelativePath="..\level\entities\EntityManager.cpp"
 						>
