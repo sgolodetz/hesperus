@@ -24,8 +24,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void key_down(SDLKey key);
-	void key_up(SDLKey key);
+	bool key_down(SDLKey key) const;
+	void press_key(SDLKey key);
+	void release_key(SDLKey key);
 	void reset();
 };
 

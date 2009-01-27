@@ -14,12 +14,17 @@ UserInput::UserInput()
 }
 
 //#################### PUBLIC METHODS ####################
-void UserInput::key_down(SDLKey key)
+bool UserInput::key_down(SDLKey key) const
+{
+	return m_keyDown[key];
+}
+
+void UserInput::press_key(SDLKey key)
 {
 	m_keyDown[key] = true;
 }
 
-void UserInput::key_up(SDLKey key)
+void UserInput::release_key(SDLKey key)
 {
 	m_keyDown[key] = false;
 }

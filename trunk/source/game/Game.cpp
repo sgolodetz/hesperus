@@ -95,14 +95,14 @@ void Game::handle_key_down(const SDL_keysym& keysym)
 			quit(0);
 			break;
 		default:
-			m_input.key_down(keysym.sym);
+			m_input.press_key(keysym.sym);
 			break;
 	}
 }
 
 void Game::handle_key_up(const SDL_keysym& keysym)
 {
-	m_input.key_up(keysym.sym);
+	m_input.release_key(keysym.sym);
 }
 
 void Game::process_events()
