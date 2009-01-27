@@ -24,19 +24,18 @@ GameState_Level::GameState_Level(const std::string& levelFilename)
 //#################### PUBLIC METHODS ####################
 GameState_Ptr GameState_Level::update(int milliseconds)
 {
-	// Step 1:	Generate the desired entity commands and add them to the queue.
+	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<BipedEntity_Ptr>& bipeds = entityManager->bipeds();
+	const std::vector<YokeableEntity_Ptr>& yokeables = entityManager->yokeables();
 
-	int bipedCount = static_cast<int>(bipeds.size());
-	for(int i=0; i<bipedCount; ++i)
+	int yokeableCount = static_cast<int>(yokeables.size());
+	for(int i=0; i<yokeableCount; ++i)
 	{
-		// TODO: Use the biped's yoke to generate the entity commands
+		// TODO: Use the entity's yoke to generate the entity commands
 		// TODO: Append the entity commands to the queue
 	}
 
-	// Step 2:	Execute the entity commands, resolving collisions where necessary.
-
+	// Step 2:	Execute the entity commands.
 	// TODO
 
 	return GameState_Ptr();

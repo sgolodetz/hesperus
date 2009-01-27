@@ -973,6 +973,14 @@
 						RelativePath="..\level\entities\VisibleEntity.h"
 						>
 					</File>
+					<File
+						RelativePath="..\level\entities\Yoke.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\YokeableEntity.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".cpp"

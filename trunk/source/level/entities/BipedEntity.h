@@ -6,12 +6,10 @@
 #ifndef H_HESP_BIPEDENTITY
 #define H_HESP_BIPEDENTITY
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
-
 #include "CollidableEntity.h"
 #include "OrientedEntity.h"
 #include "VisibleEntity.h"
+#include "YokeableEntity.h"
 
 namespace hesp {
 
@@ -21,7 +19,8 @@ This class represents a biped (i.e. two-legged) entity.
 class BipedEntity
 :	public CollidableEntity,
 	public OrientedEntity,
-	public VisibleEntity
+	public VisibleEntity,
+	public YokeableEntity
 {
 	//#################### CONSTRUCTORS ####################
 public:
@@ -34,14 +33,7 @@ public:
 		OrientedEntity(look),
 		VisibleEntity(modelFilename)
 	{}
-
-	//#################### PUBLIC METHODS ####################
-public:
-	// TODO: attach_yoke(BipedYoke)
 };
-
-//#################### TYPEDEFS ####################
-typedef shared_ptr<BipedEntity> BipedEntity_Ptr;
 
 }
 
