@@ -28,18 +28,20 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput&
 	forward.z = 0;
 	forward.normalize();
 
-	if(input.key_down(SDLK_w))
-	{
-		dir += forward;
-	}
+	Vector3d right = forward.cross(Vector3d(0,0,1)).normalize();
 
-	// TODO
+	if(input.key_down(SDLK_w)) dir += forward;
+	if(input.key_down(SDLK_s)) dir -= forward;
+	if(input.key_down(SDLK_d)) dir += right;
+	if(input.key_down(SDLK_a)) dir -= right;
 
 	if(dir.length() >= SMALL_EPSILON)
 	{
 		dir.normalize();
 		commands.push_back(EntityCommand_Ptr(new BipedWalkCommand(m_biped, dir)));
 	}
+
+	// TODO: Mouse look, jump, crouch
 
 	return commands;
 }
