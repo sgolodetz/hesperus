@@ -1280,6 +1280,30 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="yokes"
+			>
+			<Filter
+				Name="user"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\yokes\user\UserBipedYoke.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\yokes\user\UserBipedYoke.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
