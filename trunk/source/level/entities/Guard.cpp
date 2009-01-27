@@ -21,6 +21,11 @@ Guard::Guard(const std::vector<int>& aabbIndices,
 {}
 
 //#################### PUBLIC METHODS ####################
+Guard *Guard::as_guard()
+{
+	return this;
+}
+
 Guard_Ptr Guard::load(std::istream& is)
 {
 	std::vector<int> aabbIndices = FieldIO::read_intarray_field(is, "AABBs");
