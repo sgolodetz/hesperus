@@ -52,7 +52,7 @@ void Level::render() const
 
 	// Calculate the player's eye position and where they're looking at.
 	const AABB3d& aabb = m_entityManager->aabb(player->pose());
-	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z);
+	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 
 	// Set the camera accordingly.
