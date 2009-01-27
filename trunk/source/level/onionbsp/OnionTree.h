@@ -18,11 +18,25 @@ typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 class OnionTree
 {
+	//#################### NESTED CLASSES ####################
+public:
+	struct Transition
+	{
+		Vector3d location;
+		Plane plane;
+
+		Transition(const Vector3d& location_, const Plane& plane_)
+		:	location(location_), plane(plane_)
+		{}
+	};
+
 	//#################### TYPEDEFS ####################
 public:
 	typedef OnionBranch Branch;
 	typedef OnionLeaf Leaf;
 	typedef OnionNode Node;
+
+	typedef shared_ptr<Transition> Transition_Ptr;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -36,9 +50,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	Transition_Ptr find_first_transition(int mapIndex, const Vector3d& source, const Vector3d& dest) const;
 	int find_leaf_index(const Vector3d& p) const;
 	const OnionLeaf *leaf(int n) const;
-	bool line_of_sight(int mapIndex, const Vector3d& p1, const Vector3d& p2) const;
 	static OnionTree_Ptr load_postorder_text(std::istream& is);
 	int map_count() const;
 	void output_postorder_text(std::ostream& os) const;
@@ -48,7 +62,6 @@ public:
 private:
 	void index_leaves();
 	void index_leaves_sub(const OnionNode_Ptr& node);
-	bool line_of_sight_sub(int mapIndex, const Vector3d& p1, const Vector3d& p2, const OnionNode_Ptr& node) const;
 };
 
 }
