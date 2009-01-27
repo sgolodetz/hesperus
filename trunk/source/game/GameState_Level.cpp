@@ -25,7 +25,7 @@ GameState_Level::GameState_Level(const std::string& levelFilename)
 }
 
 //#################### PUBLIC METHODS ####################
-GameState_Ptr GameState_Level::update(int milliseconds)
+GameState_Ptr GameState_Level::update(int milliseconds, const UserInput& input)
 {
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();

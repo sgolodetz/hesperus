@@ -66,7 +66,7 @@ void Game::run()
 #if 0
 		std::cout << "Update " << frameTime - lastUpdate << std::endl;
 #endif
-		GameState_Ptr newState = m_state->update(frameTime - lastUpdate);
+		GameState_Ptr newState = m_state->update(frameTime - lastUpdate, m_input);
 		lastUpdate = frameTime;
 
 		if(newState)

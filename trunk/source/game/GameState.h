@@ -7,6 +7,7 @@
 #define H_HESP_GAMESTATE
 
 #include <source/gui/Component.h>
+#include <source/util/UserInput.h>
 
 namespace hesp {
 
@@ -21,7 +22,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual GameState_Ptr update(int milliseconds) = 0;
+	virtual GameState_Ptr update(int milliseconds, const UserInput& input) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

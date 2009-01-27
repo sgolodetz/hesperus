@@ -25,7 +25,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	GameState_Ptr update(int milliseconds);
+	GameState_Ptr update(int milliseconds, const UserInput& input);
 
 	//#################### PRIVATE METHODS ####################
 private:
