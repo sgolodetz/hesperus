@@ -54,7 +54,6 @@ void Game::run()
 {
 	const Screen& screen = Screen::instance();
 
-	Uint32 lastUpdate = SDL_GetTicks();
 	Uint32 lastDraw = SDL_GetTicks();
 	for(;;)
 	{
@@ -62,24 +61,18 @@ void Game::run()
 
 		Uint32 frameTime = SDL_GetTicks();
 
-		// TODO: Pass in the user input as a parameter to the update method.
-#if 0
-		std::cout << "Update " << frameTime - lastUpdate << std::endl;
-#endif
-		GameState_Ptr newState = m_state->update(frameTime - lastUpdate, m_input);
-		lastUpdate = frameTime;
-
-		if(newState)
-		{
-			m_state = newState;
-			continue;
-		}
-
 		if(frameTime - lastDraw >= 20)	// aim for 50 frames per second
 		{
 #if 0
 			std::cout << "Render " << frameTime - lastDraw << std::endl;
 #endif
+			GameState_Ptr newState = m_state->update(frameTime - lastDraw, m_input);
+			if(newState)
+			{
+				m_state = newState;
+				continue;
+			}
+
 			screen.render();
 			lastDraw = frameTime;
 		}

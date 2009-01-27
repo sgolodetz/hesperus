@@ -6,6 +6,7 @@
 #include "Level.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
@@ -82,6 +83,9 @@ void Level::render() const
 		std::copy(leaf->polygon_indices().begin(), leaf->polygon_indices().end(), std::back_inserter(polyIndices));
 	}
 	m_geomRenderer->render(polyIndices);
+#if 0
+	std::cout << "Polygon Count " << polyIndices.size() << std::endl;
+#endif
 
 	// Render the visible entities.
 	render_entities();
