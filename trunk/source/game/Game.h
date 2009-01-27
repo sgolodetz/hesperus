@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 
+#include <source/util/UserInput.h>
 #include "GameState.h"
 
 namespace hesp {
@@ -20,6 +21,7 @@ class Game
 	//#################### PRIVATE VARIABLES ####################
 private:
 	GameState_Ptr m_state;
+	UserInput m_input;
 
 	//#################### CONSTRUCTORS ####################
 public:

@@ -1030,12 +1030,20 @@
 					RelativePath="..\util\PolygonTypes.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\util\UserInput.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
 				>
 				<File
 					RelativePath="..\util\PolygonTypes.h"
+					>
+				</File>
+				<File
+					RelativePath="..\util\UserInput.h"
 					>
 				</File>
 			</Filter>
