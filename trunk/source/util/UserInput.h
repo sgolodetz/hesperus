@@ -8,7 +8,7 @@
 
 #include <boost/dynamic_bitset.hpp>
 
-#include <SDL.h>
+#include <sdl_keysym.h>
 
 namespace hesp {
 

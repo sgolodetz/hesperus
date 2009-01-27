@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include <source/util/UserInput.h>
 #include "EntityCommand.h"
 
 namespace hesp {
@@ -20,7 +21,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual std::vector<EntityCommand_Ptr> generate_commands(/*const Input& input*/) = 0;
+	virtual std::vector<EntityCommand_Ptr> generate_commands(const UserInput& input) = 0;
 };
 
 //#################### TYPEDEFS ####################
