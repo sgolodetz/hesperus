@@ -83,19 +83,64 @@ void Level::render() const
 	}
 	m_geomRenderer->render(polyIndices);
 
+	// Render the visible entities.
+	render_entities();
+
 	glPopAttrib();
 }
 
 //#################### PRIVATE METHODS ####################
 void Level::render_entities() const
 {
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_CULL_FACE);
+	glColor3d(1,1,0);
+
 	const std::vector<VisibleEntity_Ptr>& visibles = m_entityManager->visibles();
 	int visiblesCount = static_cast<int>(visibles.size());
 	for(int i=0; i<visiblesCount; ++i)
 	{
 		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
 		CollidableEntity *c = dynamic_cast<CollidableEntity*>(visibles[i].get());
+		if(c && !dynamic_cast<Player*>(visibles[i].get()))
+		{
+			const AABB3d& aabb = m_entityManager->aabb(c->aabb_indices()[c->pose()]);
+			AABB3d tAABB = aabb.translate(c->position());
+			const Vector3d& mins = tAABB.minimum();
+			const Vector3d& maxs = tAABB.maximum();
+
+			// Render the translated AABB.
+			glBegin(GL_QUADS);
+				// Front
+				glVertex3d(mins.x, mins.y, mins.z);
+				glVertex3d(maxs.x, mins.y, mins.z);
+				glVertex3d(maxs.x, mins.y, maxs.z);
+				glVertex3d(mins.x, mins.y, maxs.z);
+
+				// Right
+				glVertex3d(maxs.x, mins.y, mins.z);
+				glVertex3d(maxs.x, maxs.y, mins.z);
+				glVertex3d(maxs.x, maxs.y, maxs.z);
+				glVertex3d(maxs.x, mins.y, maxs.z);
+
+				// Back
+				glVertex3d(maxs.x, maxs.y, mins.z);
+				glVertex3d(mins.x, maxs.y, mins.z);
+				glVertex3d(mins.x, maxs.y, maxs.z);
+				glVertex3d(maxs.x, maxs.y, maxs.z);
+
+				// Left
+				glVertex3d(mins.x, maxs.y, mins.z);
+				glVertex3d(mins.x, mins.y, mins.z);
+				glVertex3d(mins.x, mins.y, maxs.z);
+				glVertex3d(mins.x, maxs.y, maxs.z);
+			glEnd();
+		}
 	}
+
+	glPopAttrib();
 }
 
 }

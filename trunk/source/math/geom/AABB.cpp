@@ -50,6 +50,18 @@ const Vec& AABB<Vec>::minimum() const
 }
 
 /**
+Returns a copy of the AABB which is translated by the specified offset vector.
+
+@param offset	The vector by which to translate
+@return			The translated AABB
+*/
+template <typename Vec>
+AABB<Vec> AABB<Vec>::translate(const Vec& offset) const
+{
+	return AABB(m_minimum + offset, m_maximum + offset);
+}
+
+/**
 Checks whether the two AABBs are within range of each other
 (i.e. closer than the specified tolerance in at least one axis).
 
