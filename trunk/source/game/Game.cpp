@@ -87,16 +87,22 @@ void Game::run()
 }
 
 //#################### PRIVATE METHODS ####################
-void Game::handle_key_down(SDL_keysym *keysym)
+void Game::handle_key_down(const SDL_keysym& keysym)
 {
-	switch(keysym->sym)
+	switch(keysym.sym)
 	{
 		case SDLK_ESCAPE:
 			quit(0);
 			break;
 		default:
+			m_input.key_down(keysym.sym);
 			break;
 	}
+}
+
+void Game::handle_key_up(const SDL_keysym& keysym)
+{
+	m_input.key_up(keysym.sym);
 }
 
 void Game::process_events()
@@ -107,7 +113,10 @@ void Game::process_events()
 		switch(event.type)
 		{
 			case SDL_KEYDOWN:
-				handle_key_down(&event.key.keysym);
+				handle_key_down(event.key.keysym);
+				break;
+			case SDL_KEYUP:
+				handle_key_up(event.key.keysym);
 				break;
 			case SDL_QUIT:
 				quit(0);

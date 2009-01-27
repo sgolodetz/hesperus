@@ -33,7 +33,8 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void handle_key_down(SDL_keysym *keysym);
+	void handle_key_down(const SDL_keysym& keysym);
+	void handle_key_up(const SDL_keysym& keysym);
 	void process_events();
 	void quit(int code);
 	void quit_with_error(const std::string& error);
