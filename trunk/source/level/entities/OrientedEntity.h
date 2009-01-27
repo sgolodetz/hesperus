@@ -32,11 +32,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	OrientedEntity *as_oriented()
-	{
-		return this;
-	}
-
 	const Vector3d& look() const
 	{
 		return m_look;

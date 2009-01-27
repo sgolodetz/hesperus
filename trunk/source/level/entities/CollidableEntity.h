@@ -36,11 +36,6 @@ public:
 		return m_aabbIndices;
 	}
 
-	CollidableEntity *as_collidable()
-	{
-		return this;
-	}
-
 	int pose() const
 	{
 		return m_pose;

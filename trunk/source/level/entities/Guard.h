@@ -33,7 +33,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	Guard *as_guard();
 	static Guard_Ptr load(std::istream& is);
 	void save(std::ostream& os) const;
 };

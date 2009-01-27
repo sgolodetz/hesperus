@@ -33,7 +33,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	Player *as_player();
 	static Player_Ptr load(std::istream& is);
 	void save(std::ostream& os) const;
 };

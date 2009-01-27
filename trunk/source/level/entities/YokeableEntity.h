@@ -26,11 +26,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	YokeableEntity *as_yokeable()
-	{
-		return this;
-	}
-
 	void set_yoke(const Yoke_Ptr& yoke)
 	{
 		m_yoke = yoke;

@@ -21,11 +21,6 @@ Player::Player(const std::vector<int>& aabbIndices,
 {}
 
 //#################### PUBLIC METHODS ####################
-Player *Player::as_player()
-{
-	return this;
-}
-
 Player_Ptr Player::load(std::istream& is)
 {
 	std::vector<int> aabbIndices = FieldIO::read_intarray_field(is, "AABBs");

@@ -33,13 +33,6 @@ public:
 		OrientedEntity(look),
 		VisibleEntity(modelFilename)
 	{}
-
-	//#################### PUBLIC METHODS ####################
-public:
-	BipedEntity *as_biped()
-	{
-		return this;
-	}
 };
 
 }

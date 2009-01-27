@@ -30,13 +30,6 @@ public:
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~VisibleEntity() {}
-
-	//#################### PUBLIC METHODS ####################
-public:
-	VisibleEntity *as_visible()
-	{
-		return this;
-	}
 };
 
 //#################### TYPEDEFS ####################

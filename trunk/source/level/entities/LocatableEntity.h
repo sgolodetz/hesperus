@@ -32,11 +32,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	LocatableEntity *as_locatable()
-	{
-		return this;
-	}
-
 	const Vector3d& position() const
 	{
 		return m_position;

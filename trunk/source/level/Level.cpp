@@ -93,7 +93,8 @@ void Level::render_entities() const
 	int visiblesCount = static_cast<int>(visibles.size());
 	for(int i=0; i<visiblesCount; ++i)
 	{
-		// TODO
+		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
+		CollidableEntity *c = dynamic_cast<CollidableEntity*>(visibles[i].get());
 	}
 }
 

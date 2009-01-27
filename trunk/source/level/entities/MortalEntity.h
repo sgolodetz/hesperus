@@ -30,11 +30,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	MortalEntity *as_mortal()
-	{
-		return this;
-	}
-
 	int health() const
 	{
 		return m_health;
