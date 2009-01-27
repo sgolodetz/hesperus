@@ -86,4 +86,15 @@ void Level::render() const
 	glPopAttrib();
 }
 
+//#################### PRIVATE METHODS ####################
+void Level::render_entities() const
+{
+	const std::vector<VisibleEntity_Ptr>& visibles = m_entityManager->visibles();
+	int visiblesCount = static_cast<int>(visibles.size());
+	for(int i=0; i<visiblesCount; ++i)
+	{
+		// TODO
+	}
+}
+
 }

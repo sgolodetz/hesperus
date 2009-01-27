@@ -25,6 +25,7 @@ private:
 
 	std::vector<AABB3d> m_aabbs;
 	std::vector<Entity_Ptr> m_entities;
+	std::vector<VisibleEntity_Ptr> m_visibles;
 	std::vector<YokeableEntity_Ptr> m_yokeables;
 	Player_Ptr m_player;
 
@@ -37,6 +38,7 @@ public:
 	const AABB3d& aabb(int n) const;
 	void output(std::ostream& os);
 	Player_Ptr player() const;
+	const std::vector<VisibleEntity_Ptr>& visibles() const;
 	const std::vector<YokeableEntity_Ptr>& yokeables() const;
 
 	//#################### PRIVATE METHODS ####################

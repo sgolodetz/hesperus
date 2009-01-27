@@ -101,6 +101,11 @@ Player_Ptr EntityManager::player() const
 	return m_player;
 }
 
+const std::vector<VisibleEntity_Ptr>& EntityManager::visibles() const
+{
+	return m_visibles;
+}
+
 const std::vector<YokeableEntity_Ptr>& EntityManager::yokeables() const
 {
 	return m_yokeables;
@@ -125,6 +130,7 @@ void EntityManager::load_entity(std::istream& is)
 		if(m_player) throw Exception("The level contains multiple Player entities");
 
 		m_player = Player::load(is);
+		m_visibles.push_back(m_player);
 		m_yokeables.push_back(m_player);
 
 		m_player->set_id(nextEntity);
@@ -133,6 +139,7 @@ void EntityManager::load_entity(std::istream& is)
 	else if(entityClass == "Guard")
 	{
 		Guard_Ptr guard = Guard::load(is);
+		m_visibles.push_back(guard);
 		m_yokeables.push_back(guard);
 
 		guard->set_id(nextEntity);

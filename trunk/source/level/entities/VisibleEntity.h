@@ -32,6 +32,9 @@ public:
 	virtual ~VisibleEntity() {}
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<VisibleEntity> VisibleEntity_Ptr;
+
 }
 
 #endif
