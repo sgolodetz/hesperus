@@ -22,6 +22,8 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual void enter() = 0;
+	virtual void leave() = 0;
 	virtual GameState_Ptr update(int milliseconds, const UserInput& input) = 0;
 
 	//#################### PUBLIC METHODS ####################

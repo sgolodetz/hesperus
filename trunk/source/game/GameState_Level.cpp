@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <list>
 
+#include <SDL.h>
+
 #include <source/gui/Container.h>
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
@@ -21,10 +23,22 @@ namespace hesp {
 GameState_Level::GameState_Level(const std::string& levelFilename)
 {
 	m_level = LevelFileUtil::load(levelFilename);
-	set_display(construct_display());
 }
 
 //#################### PUBLIC METHODS ####################
+void GameState_Level::enter()
+{
+	set_display(construct_display());
+	SDL_ShowCursor(SDL_DISABLE);
+	SDL_WM_GrabInput(SDL_GRAB_ON);
+}
+
+void GameState_Level::leave()
+{
+	SDL_WM_GrabInput(SDL_GRAB_OFF);
+	SDL_ShowCursor(SDL_ENABLE);
+}
+
 GameState_Ptr GameState_Level::update(int milliseconds, const UserInput& input)
 {
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.

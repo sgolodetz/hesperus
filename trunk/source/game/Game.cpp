@@ -46,6 +46,7 @@ try
 
 	// Set the initial game state.
 	m_state.reset(new GameState_Level("resources/levels/tricky/tricky.bsp"));
+	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
@@ -69,7 +70,9 @@ void Game::run()
 			GameState_Ptr newState = m_state->update(frameTime - lastDraw, m_input);
 			if(newState)
 			{
+				m_state->leave();
 				m_state = newState;
+				m_state->enter();
 				continue;
 			}
 
