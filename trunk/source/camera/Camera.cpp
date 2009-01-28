@@ -13,12 +13,20 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Camera::Camera(const Vector3d& position, const Vector3d& look, const Vector3d& up)
-:	m_position(position), m_nVector(look), m_vVector(up)
+/**
+Constructs an upright (i.e. non-skewed) camera with the specified position and look vectors.
+
+Preconditions:
+
+- look must not point in the direction (0,0,1)
+*/
+Camera::Camera(const Vector3d& position, const Vector3d& look)
+:	m_position(position), m_nVector(look)
 {
+	Vector3d up(0,0,1);
 	m_nVector.normalize();
-	m_vVector.normalize();
-	m_uVector = m_vVector.cross(m_nVector).normalize();
+	m_uVector = up.cross(m_nVector).normalize();
+	m_vVector = m_nVector.cross(m_uVector).normalize();
 }
 
 //#################### PUBLIC METHODS ####################

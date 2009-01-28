@@ -6,6 +6,9 @@
 #ifndef H_HESP_CAMERA
 #define H_HESP_CAMERA
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -24,7 +27,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Camera(const Vector3d& position, const Vector3d& look, const Vector3d& up);
+	Camera(const Vector3d& position, const Vector3d& look);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -40,6 +43,9 @@ public:
 	const Vector3d& u() const;
 	const Vector3d& v() const;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Camera> Camera_Ptr;
 
 }
 

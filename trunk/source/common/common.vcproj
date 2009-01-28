@@ -946,6 +946,18 @@
 			<Filter
 				Name="entities"
 				>
+				<File
+					RelativePath="..\level\entities\FixedCameraComponent.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\entities\ICameraComponent.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\entities\VariableCameraComponent.h"
+					>
+				</File>
 				<Filter
 					Name=".h"
 					>
