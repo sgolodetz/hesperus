@@ -25,13 +25,9 @@ class BipedEntity
 	//#################### CONSTRUCTORS ####################
 public:
 	BipedEntity(const std::vector<int>& aabbIndices,
-				const std::string& modelFilename,
-				const Vector3d& look,
 				int pose,
 				const Vector3d& position)
-	:	CollidableEntity(position, aabbIndices, pose),
-		OrientedEntity(look),
-		VisibleEntity(modelFilename)
+	:	CollidableEntity(position, aabbIndices, pose)
 	{}
 
 	//#################### PUBLIC METHODS ####################

@@ -16,26 +16,13 @@ This class represents an oriented entity (i.e. the entity has a look vector).
 */
 class OrientedEntity : virtual public Entity
 {
-	//#################### PROTECTED VARIABLES ####################
-protected:
-	Vector3d m_look;
-
-	//#################### CONSTRUCTORS ####################
-public:
-	OrientedEntity(const Vector3d& look)
-	:	m_look(look)
-	{}
-
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~OrientedEntity() {}
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Vector3d& look() const
-	{
-		return m_look;
-	}
+	virtual const Vector3d& look() const = 0;
 };
 
 }

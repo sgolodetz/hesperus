@@ -15,25 +15,13 @@ This class represents a mortal entity (i.e. this entity can die, so it maintains
 */
 class MortalEntity : virtual public Entity
 {
-	//#################### PROTECTED VARIABLES ####################
-protected:
-	int m_health;
-
-	//#################### CONSTRUCTORS ####################
-public:
-	MortalEntity(int health)
-	:	m_health(health) {}
-
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~MortalEntity() {}
 
-	//#################### PUBLIC METHODS ####################
+	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	int health() const
-	{
-		return m_health;
-	}
+	virtual int health() const = 0;
 };
 
 }

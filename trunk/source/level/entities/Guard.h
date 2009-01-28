@@ -22,6 +22,12 @@ class Guard
 :	public BipedEntity,
 	public MortalEntity
 {
+	//#################### PRIVATE VARIABLES ####################
+private:
+	int m_health;
+	Vector3d m_look;
+	std::string m_modelFilename;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	Guard(const std::vector<int>& aabbIndices,
@@ -33,7 +39,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	int health() const;
 	static Guard_Ptr load(std::istream& is);
+	const Vector3d& look() const;
 	void save(std::ostream& os) const;
 };
 

@@ -16,11 +16,16 @@ Guard::Guard(const std::vector<int>& aabbIndices,
 			 const Vector3d& look,
 			 int pose,
 			 const Vector3d& position)
-:	BipedEntity(aabbIndices, modelFilename, look, pose, position),
-	MortalEntity(health)
+:	BipedEntity(aabbIndices, pose, position),
+	m_health(health), m_look(look), m_modelFilename(modelFilename)
 {}
 
 //#################### PUBLIC METHODS ####################
+int Guard::health() const
+{
+	return m_health;
+}
+
 Guard_Ptr Guard::load(std::istream& is)
 {
 	std::vector<int> aabbIndices = FieldIO::read_intarray_field(is, "AABBs");
@@ -33,6 +38,11 @@ Guard_Ptr Guard::load(std::istream& is)
 	LineIO::read_checked_line(is, "}");
 
 	return Guard_Ptr(new Guard(aabbIndices, modelFilename, health, look, pose, position));
+}
+
+const Vector3d& Guard::look() const
+{
+	return m_look;
 }
 
 void Guard::save(std::ostream& os) const

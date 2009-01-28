@@ -17,16 +17,6 @@ This class represents a potentially visible entity (i.e. this entity needs an an
 */
 class VisibleEntity : virtual public Entity
 {
-	//#################### PROTECTED VARIABLES ####################
-protected:
-	std::string m_modelFilename;
-
-	//#################### CONSTRUCTORS ####################
-public:
-	VisibleEntity(const std::string& modelFilename)
-	:	m_modelFilename(modelFilename)
-	{}
-
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~VisibleEntity() {}

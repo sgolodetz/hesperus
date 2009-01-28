@@ -16,11 +16,16 @@ Player::Player(const std::vector<int>& aabbIndices,
 			   const Vector3d& look,
 			   int pose,
 			   const Vector3d& position)
-:	BipedEntity(aabbIndices, modelFilename, look, pose, position),
-	MortalEntity(health)
+:	BipedEntity(aabbIndices, pose, position),
+	m_health(health), m_look(look), m_modelFilename(modelFilename)
 {}
 
 //#################### PUBLIC METHODS ####################
+int Player::health() const
+{
+	return m_health;
+}
+
 Player_Ptr Player::load(std::istream& is)
 {
 	std::vector<int> aabbIndices = FieldIO::read_intarray_field(is, "AABBs");
@@ -33,6 +38,11 @@ Player_Ptr Player::load(std::istream& is)
 	LineIO::read_checked_line(is, "}");
 
 	return Player_Ptr(new Player(aabbIndices, modelFilename, health, look, pose, position));
+}
+
+const Vector3d& Player::look() const
+{
+	return m_look;
 }
 
 void Player::save(std::ostream& os) const
