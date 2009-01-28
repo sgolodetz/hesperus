@@ -111,8 +111,9 @@ void Level::render_entities() const
 		ICollisionComponent_Ptr colComponent = visibles[i]->collision_component();
 		if(camComponent && colComponent && visibles[i]->entity_class() != "Player")
 		{
+			const Camera& camera = camComponent->camera();
 			const AABB3d& aabb = m_entityManager->aabb(colComponent->aabb_indices()[colComponent->pose()]);
-			AABB3d tAABB = aabb.translate(camComponent->camera().position());
+			AABB3d tAABB = aabb.translate(camera.position());
 			const Vector3d& mins = tAABB.minimum();
 			const Vector3d& maxs = tAABB.maximum();
 
@@ -141,6 +142,17 @@ void Level::render_entities() const
 				glVertex3d(mins.x, mins.y, mins.z);
 				glVertex3d(mins.x, mins.y, maxs.z);
 				glVertex3d(mins.x, maxs.y, maxs.z);
+			glEnd();
+
+			// Render the entity camera axes.
+			const Vector3d& p = camera.position();
+			Vector3d pn = p + camera.n();
+			Vector3d pu = p + camera.u();
+			Vector3d pv = p + camera.v();
+			glBegin(GL_LINES);
+				glColor3d(1,0,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pn.x, pn.y, pn.z);
+				glColor3d(0,1,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pu.x, pu.y, pu.z);
+				glColor3d(0,0,1);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pv.x, pv.y, pv.z);
 			glEnd();
 		}
 	}
