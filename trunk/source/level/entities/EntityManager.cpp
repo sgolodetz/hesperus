@@ -132,7 +132,6 @@ void EntityManager::load_entity(std::istream& is)
 	ILookComponent_Ptr lookComponent;
 	IPositionComponent_Ptr positionComponent;
 	IVisibilityComponent_Ptr visibilityComponent;
-	IYokeComponent_Ptr yokeComponent;
 
 	if(entityClass == "Player")
 	{
@@ -148,9 +147,6 @@ void EntityManager::load_entity(std::istream& is)
 		visibilityComponent.reset(new VisibilityComponent(is));
 
 		LineIO::read_checked_line(is, "}");
-
-		// Attach the user yoke.
-		yokeComponent.reset(new YokeComponent(Yoke_Ptr(new UserBipedYoke(entity))));
 	}
 	else if(entityClass == "Guard")
 	{
@@ -163,8 +159,6 @@ void EntityManager::load_entity(std::istream& is)
 		visibilityComponent.reset(new VisibilityComponent(is));
 
 		LineIO::read_checked_line(is, "}");
-
-		// TODO: Attach an AI yoke.
 	}
 	else
 	{
@@ -178,13 +172,25 @@ void EntityManager::load_entity(std::istream& is)
 	entity->set_look_component(lookComponent);
 	entity->set_position_component(positionComponent);
 	entity->set_visibility_component(visibilityComponent);
-	entity->set_yoke_component(yokeComponent);
 
 	// Add the newly-added entity to the relevant arrays.
 	int nextEntity = static_cast<int>(m_entities.size());
 	entity->set_id(nextEntity);
 	m_entities.push_back(entity);
 	if(entity->visibility_component()) m_visibles.push_back(entity);
+
+	// Yoke the entity if necessary.
+	IYokeComponent_Ptr yokeComponent;
+	if(entityClass == "Player")
+	{
+		yokeComponent.reset(new YokeComponent(Yoke_Ptr(new UserBipedYoke(entity))));
+	}
+	else if(entityClass == "Guard")
+	{
+		// TODO: Connect an AI yoke.
+	}
+
+	entity->set_yoke_component(yokeComponent);
 	if(entity->yoke_component()) m_yokeables.push_back(entity);
 }
 

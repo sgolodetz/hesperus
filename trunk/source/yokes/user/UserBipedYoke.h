@@ -11,6 +11,10 @@
 
 namespace hesp {
 
+/**
+This class represents a yoke that allows the user to control a biped.
+Bipeds can walk, run, jump, crouch, etc.
+*/
 class UserBipedYoke : public Yoke
 {
 	//#################### PRIVATE VARIABLES ####################

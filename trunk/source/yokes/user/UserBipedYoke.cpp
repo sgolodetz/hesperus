@@ -5,6 +5,7 @@
 
 #include "UserBipedYoke.h"
 
+#include <source/exceptions/Exception.h>
 #include <source/level/entities/BipedWalkCommand.h>
 #include <source/math/Constants.h>
 
@@ -13,7 +14,14 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 :	m_biped(biped)
-{}
+{
+	if(!m_biped->collision_component() ||
+	   !m_biped->look_component() ||
+	   !m_biped->position_component())
+	{
+		throw Exception("Couldn't attach a biped yoke to a non-biped");
+	}
+}
 
 //#################### PUBLIC METHODS ####################
 std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput& input)
