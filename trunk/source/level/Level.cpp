@@ -109,9 +109,6 @@ void Level::render_entities() const
 		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
 		ICameraComponent_Ptr camComponent = visibles[i]->camera_component();
 		ICollisionComponent_Ptr colComponent = visibles[i]->collision_component();
-#if 0
-		IPositionComponent_Ptr posComponent = visibles[i]->position_component();
-#endif
 		if(camComponent && colComponent && visibles[i]->entity_class() != "Player")
 		{
 			const AABB3d& aabb = m_entityManager->aabb(colComponent->aabb_indices()[colComponent->pose()]);

@@ -982,10 +982,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\FixedPositionComponent.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\HealthComponent.h"
 						>
 					</File>
@@ -998,27 +994,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\ILookComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\IPositionComponent.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\IVisibilityComponent.h"
 						>
 					</File>
 					<File
 						RelativePath="..\level\entities\IYokeComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\LookComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\VariablePositionComponent.h"
 						>
 					</File>
 					<File
