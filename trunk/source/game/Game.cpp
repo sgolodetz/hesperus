@@ -46,6 +46,10 @@ try
 
 	// Set the initial game state.
 	m_state.reset(new GameState_Level("resources/levels/tricky/tricky.bsp"));
+
+	// Clear all pending SDL events before we get started.
+	{ SDL_Event e; while(SDL_PollEvent(&e)) {} }
+
 	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
@@ -77,6 +81,7 @@ void Game::run()
 			}
 
 			screen.render();
+			m_input.set_mouse_motion(0, 0);
 			lastDraw = frameTime;
 		}
 	}
@@ -101,11 +106,6 @@ void Game::handle_key_up(const SDL_keysym& keysym)
 	m_input.release_key(keysym.sym);
 }
 
-void Game::handle_mouse_motion(const SDL_MouseMotionEvent& event)
-{
-	m_input.set_mouse_motion(event.xrel, event.yrel);
-}
-
 void Game::process_events()
 {
 	SDL_Event event;
@@ -120,10 +120,12 @@ void Game::process_events()
 				handle_key_up(event.key.keysym);
 				break;
 			case SDL_MOUSEMOTION:
-				handle_mouse_motion(event.motion);
+				m_input.set_mouse_motion(event.motion.xrel, event.motion.yrel);
 				break;
 			case SDL_QUIT:
 				quit(0);
+				break;
+			default:
 				break;
 		}
 	}
