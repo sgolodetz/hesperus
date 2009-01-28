@@ -1,9 +1,9 @@
 /***
- * hesperus: Camera.cpp
+ * hesperus: VariableCamera.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "Camera.h"
+#include "VariableCamera.h"
 
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
@@ -20,7 +20,7 @@ Preconditions:
 
 - look must not point in the direction (0,0,1)
 */
-Camera::Camera(const Vector3d& position, const Vector3d& look)
+VariableCamera::VariableCamera(const Vector3d& position, const Vector3d& look)
 :	m_position(position), m_nVector(look)
 {
 	Vector3d up(0,0,1);
@@ -30,37 +30,37 @@ Camera::Camera(const Vector3d& position, const Vector3d& look)
 }
 
 //#################### PUBLIC METHODS ####################
-void Camera::draw_axes() const
+void VariableCamera::draw_axes() const
 {
 	// TODO
 }
 
-void Camera::move_n(double delta)
+void VariableCamera::move_n(double delta)
 {
 	m_position += delta*m_nVector;
 }
 
-void Camera::move_u(double delta)
+void VariableCamera::move_u(double delta)
 {
 	m_position += delta*m_uVector;
 }
 
-void Camera::move_v(double delta)
+void VariableCamera::move_v(double delta)
 {
 	m_position += delta*m_vVector;
 }
 
-const Vector3d& Camera::n() const
+const Vector3d& VariableCamera::n() const
 {
 	return m_nVector;
 }
 
-const Vector3d& Camera::position() const
+const Vector3d& VariableCamera::position() const
 {
 	return m_position;
 }
 
-void Camera::rotate(const Vector3d& axis, double angle)
+void VariableCamera::rotate(const Vector3d& axis, double angle)
 {
 	// Note: We try and optimise things a little by observing that there's no point rotating
 	// an axis about itself and that generally when we rotate about an axis, we'll be passing
@@ -70,12 +70,12 @@ void Camera::rotate(const Vector3d& axis, double angle)
 	if(&axis != &m_vVector) m_vVector = rotate_about_axis(m_vVector, angle, axis);
 }
 
-void Camera::set_position(const Vector3d& position)
+void VariableCamera::set_position(const Vector3d& position)
 {
 	m_position = position;
 }
 
-void Camera::set_view() const
+void VariableCamera::set_view() const
 {
 	glLoadIdentity();
 	gluLookAt(	m_position.x, m_position.y, m_position.z,
@@ -83,12 +83,12 @@ void Camera::set_view() const
 				m_vVector.x, m_vVector.y, m_vVector.z);
 }
 
-const Vector3d& Camera::u() const
+const Vector3d& VariableCamera::u() const
 {
 	return m_uVector;
 }
 
-const Vector3d& Camera::v() const
+const Vector3d& VariableCamera::v() const
 {
 	return m_vVector;
 }

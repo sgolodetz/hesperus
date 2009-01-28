@@ -6,6 +6,7 @@
 #ifndef H_HESP_VARIABLECAMERACOMPONENT
 #define H_HESP_VARIABLECAMERACOMPONENT
 
+#include <source/camera/VariableCamera.h>
 #include <source/io/FieldIO.h>
 #include "ICameraComponent.h"
 
@@ -23,7 +24,7 @@ public:
 	{
 		Vector3d position = FieldIO::read_typed_field<Vector3d>(is, "Position");
 		Vector3d look = FieldIO::read_typed_field<Vector3d>(is, "Look");
-		m_camera.reset(new Camera(position, look));
+		m_camera.reset(new VariableCamera(position, look));
 	}
 
 	//#################### PUBLIC METHODS ####################

@@ -1343,7 +1343,7 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\camera\Camera.cpp"
+					RelativePath="..\camera\VariableCamera.cpp"
 					>
 				</File>
 			</Filter>
@@ -1352,6 +1352,10 @@
 				>
 				<File
 					RelativePath="..\camera\Camera.h"
+					>
+				</File>
+				<File
+					RelativePath="..\camera\VariableCamera.h"
 					>
 				</File>
 			</Filter>
