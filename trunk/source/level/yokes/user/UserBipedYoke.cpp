@@ -6,6 +6,7 @@
 #include "UserBipedYoke.h"
 
 #include <source/exceptions/Exception.h>
+#include <source/level/entities/BipedTurnCommand.h>
 #include <source/level/entities/BipedWalkCommand.h>
 #include <source/math/Constants.h>
 
@@ -26,11 +27,17 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput&
 {
 	std::vector<EntityCommand_Ptr> commands;
 
+	const Camera& camera = m_biped->camera_component()->camera();
+
+	//~~~~~~~~~~~~~~~~
+	// NORMAL MOVEMENT
+	//~~~~~~~~~~~~~~~~
+
 	Vector3d dir(0,0,0);
 
 	// Work out the forward direction of the biped. Note that we must ensure elsewhere that the
 	// look vector is never pointing directly upwards for this to work.
-	Vector3d forward = m_biped->camera_component()->camera().n();
+	Vector3d forward = camera.n();
 	forward.z = 0;
 	forward.normalize();
 
@@ -47,7 +54,16 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput&
 		commands.push_back(EntityCommand_Ptr(new BipedWalkCommand(m_biped, dir)));
 	}
 
-	// TODO: Mouse look, jump, crouch
+	//~~~~~~~~~~~
+	// MOUSE LOOK
+	//~~~~~~~~~~~
+
+	if(input.mouse_motion_x() || input.mouse_motion_y())
+	{
+		commands.push_back(EntityCommand_Ptr(new BipedTurnCommand(m_biped, input.mouse_motion_x(), input.mouse_motion_y())));
+	}
+
+	// TODO: Jump, Crouch
 
 	return commands;
 }

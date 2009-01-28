@@ -950,6 +950,10 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\level\entities\BipedTurnCommand.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\BipedWalkCommand.h"
 						>
 					</File>
@@ -1017,6 +1021,10 @@
 				<Filter
 					Name=".cpp"
 					>
+					<File
+						RelativePath="..\level\entities\BipedTurnCommand.cpp"
+						>
+					</File>
 					<File
 						RelativePath="..\level\entities\BipedWalkCommand.cpp"
 						>
