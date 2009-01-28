@@ -1033,6 +1033,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\entities\EntityExManager.h"
+							>
+						</File>
+						<File
 							RelativePath="..\level\entities\FixedPositionComponent.h"
 							>
 						</File>
@@ -1086,6 +1090,10 @@
 						>
 						<File
 							RelativePath="..\level\entities\EntityEx.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\entities\EntityExManager.cpp"
 							>
 						</File>
 					</Filter>

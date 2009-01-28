@@ -51,6 +51,9 @@ public:
 	void set_yoke_component(const IYokeComponent_Ptr& yokeComponent);
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<EntityEx> EntityEx_Ptr;
+
 }
 
 #endif
