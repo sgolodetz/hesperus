@@ -942,19 +942,7 @@
 					Name=".h"
 					>
 					<File
-						RelativePath="..\level\entities\BipedEntity.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\BipedWalkCommand.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\CollidableEntity.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Entity.h"
 						>
 					</File>
 					<File
@@ -962,39 +950,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\EntityManager.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Guard.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\LocatableEntity.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\MortalEntity.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\OrientedEntity.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Player.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\VisibleEntity.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\Yoke.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\YokeableEntity.h"
 						>
 					</File>
 				</Filter>
@@ -1003,18 +959,6 @@
 					>
 					<File
 						RelativePath="..\level\entities\BipedWalkCommand.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\EntityManager.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Guard.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Player.cpp"
 						>
 					</File>
 				</Filter>

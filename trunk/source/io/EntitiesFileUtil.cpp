@@ -10,7 +10,6 @@
 namespace bf = boost::filesystem;
 
 #include <source/exceptions/Exception.h>
-#include <source/level/entities/EntityManager.h>
 
 namespace hesp {
 

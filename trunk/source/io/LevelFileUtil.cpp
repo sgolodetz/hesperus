@@ -77,7 +77,7 @@ void LevelFileUtil::save_lit(const std::string& filename,
 	FileSectionUtil::save_onion_tree_section(os, onionTree);
 	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
 	FileSectionUtil::save_nav_section(os, navDatasets);
-	entityManager->output(os);
+	entityManager->save(os);
 }
 
 /**
@@ -114,7 +114,7 @@ void LevelFileUtil::save_unlit(const std::string& filename,
 	FileSectionUtil::save_onion_tree_section(os, onionTree);
 	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
 	FileSectionUtil::save_nav_section(os, navDatasets);
-	entityManager->output(os);
+	entityManager->save(os);
 }
 
 //#################### LOADING SUPPORT METHODS ####################

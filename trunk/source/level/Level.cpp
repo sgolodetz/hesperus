@@ -47,12 +47,12 @@ void Level::render() const
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	Player_Ptr player = m_entityManager->player();
-	const Vector3d& pos = player->position();
-	const Vector3d& look = player->look();
+	Entity_Ptr player = m_entityManager->player();
+	const Vector3d& pos = player->position_component()->position();
+	const Vector3d& look = player->look_component()->look();
 
 	// Calculate the player's eye position and where they're looking at.
-	const AABB3d& aabb = m_entityManager->aabb(player->pose());
+	const AABB3d& aabb = m_entityManager->aabb(player->collision_component()->pose());
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 
@@ -102,16 +102,19 @@ void Level::render_entities() const
 	glDisable(GL_CULL_FACE);
 	glColor3d(1,1,0);
 
-	const std::vector<VisibleEntity_Ptr>& visibles = m_entityManager->visibles();
+	const std::vector<Entity_Ptr>& visibles = m_entityManager->visibles();
 	int visiblesCount = static_cast<int>(visibles.size());
 	for(int i=0; i<visiblesCount; ++i)
 	{
 		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
+#if 0
 		CollidableEntity *c = dynamic_cast<CollidableEntity*>(visibles[i].get());
 		if(c && !dynamic_cast<Player*>(visibles[i].get()))
+#endif
+		if(visibles[i]->collision_component())
 		{
-			const AABB3d& aabb = m_entityManager->aabb(c->aabb_indices()[c->pose()]);
-			AABB3d tAABB = aabb.translate(c->position());
+			const AABB3d& aabb = m_entityManager->aabb(visibles[i]->collision_component()->aabb_indices()[visibles[i]->collision_component()->pose()]);
+			AABB3d tAABB = aabb.translate(visibles[i]->position_component()->position());
 			const Vector3d& mins = tAABB.minimum();
 			const Vector3d& maxs = tAABB.maximum();
 

@@ -7,7 +7,8 @@
 #define H_HESP_BIPEDWALKCOMMAND
 
 #include <source/math/vectors/Vector3.h>
-#include "BipedEntity.h"
+#include "EntityEx.h"
+#include "EntityCommand.h"
 
 namespace hesp {
 
@@ -15,12 +16,12 @@ class BipedWalkCommand : public EntityCommand
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	BipedEntity *m_biped;
+	Entity_Ptr m_biped;
 	Vector3d m_dir;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BipedWalkCommand(BipedEntity *biped, const Vector3d& dir);
+	BipedWalkCommand(const Entity_Ptr& biped, const Vector3d& dir);
 
 	//#################### PUBLIC METHODS ####################
 public:

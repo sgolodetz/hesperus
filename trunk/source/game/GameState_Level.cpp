@@ -29,14 +29,14 @@ GameState_Ptr GameState_Level::update(int milliseconds, const UserInput& input)
 {
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<YokeableEntity_Ptr>& yokeables = entityManager->yokeables();
+	const std::vector<Entity_Ptr>& yokeables = entityManager->yokeables();
 
 	std::list<EntityCommand_Ptr> cmdQueue;	// implement the queue as a list so that we can use back_inserter below
 
 	int yokeableCount = static_cast<int>(yokeables.size());
 	for(int i=0; i<yokeableCount; ++i)
 	{
-		const Yoke_Ptr& yoke = yokeables[i]->yoke();
+		const Yoke_Ptr& yoke = yokeables[i]->yoke_component()->yoke();
 		if(yoke)
 		{
 			// Use the entity's yoke to generate entity commands.

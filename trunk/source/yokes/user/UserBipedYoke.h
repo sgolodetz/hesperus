@@ -6,7 +6,8 @@
 #ifndef H_HESP_USERBIPEDYOKE
 #define H_HESP_USERBIPEDYOKE
 
-#include <source/level/entities/BipedEntity.h>
+#include <source/level/entities/EntityEx.h>
+#include <source/level/entities/Yoke.h>
 
 namespace hesp {
 
@@ -14,11 +15,11 @@ class UserBipedYoke : public Yoke
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	BipedEntity *m_biped;
+	Entity_Ptr m_biped;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	UserBipedYoke(BipedEntity *biped);
+	UserBipedYoke(const Entity_Ptr& biped);
 
 	//#################### PUBLIC METHODS ####################
 public:

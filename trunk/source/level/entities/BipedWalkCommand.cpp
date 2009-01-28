@@ -8,14 +8,15 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-BipedWalkCommand::BipedWalkCommand(BipedEntity *biped, const Vector3d& dir)
+BipedWalkCommand::BipedWalkCommand(const Entity_Ptr& biped, const Vector3d& dir)
 :	m_biped(biped), m_dir(dir)
 {}
 
 //#################### PUBLIC METHODS ####################
 void BipedWalkCommand::execute(int milliseconds)
 {
-	m_biped->walk(m_dir, milliseconds);
+	IPositionComponent_Ptr posComponent = m_biped->position_component();
+	posComponent->set_position(posComponent->position() + m_dir * 5.0 * (milliseconds / 1000.0));
 }
 
 }

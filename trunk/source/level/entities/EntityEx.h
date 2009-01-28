@@ -1,10 +1,10 @@
 /***
- * hesperus: EntityEx.h
+ * hesperus: Entity.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_ENTITYEX
-#define H_HESP_ENTITYEX
+#ifndef H_HESP_ENTITY
+#define H_HESP_ENTITY
 
 #include "ICollisionComponent.h"
 #include "IHealthComponent.h"
@@ -15,7 +15,7 @@
 
 namespace hesp {
 
-class EntityEx
+class Entity
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -30,7 +30,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	EntityEx(const std::string& entityClass);
+	Entity(const std::string& entityClass);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -52,7 +52,7 @@ public:
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<EntityEx> EntityEx_Ptr;
+typedef shared_ptr<Entity> Entity_Ptr;
 
 }
 

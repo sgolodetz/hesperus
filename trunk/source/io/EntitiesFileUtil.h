@@ -10,7 +10,7 @@
 
 #include <boost/filesystem/operations.hpp>
 
-#include <source/level/entities/EntityManager.h>
+#include <source/level/entities/EntityExManager.h>
 
 namespace hesp {
 

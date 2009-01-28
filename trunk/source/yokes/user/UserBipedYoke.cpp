@@ -11,7 +11,7 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-UserBipedYoke::UserBipedYoke(BipedEntity *biped)
+UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 :	m_biped(biped)
 {}
 
@@ -24,7 +24,7 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput&
 
 	// Work out the forward direction of the biped. Note that we must ensure elsewhere that the
 	// look vector is never pointing directly upwards for this to work.
-	Vector3d forward = m_biped->look();
+	Vector3d forward = m_biped->look_component()->look();
 	forward.z = 0;
 	forward.normalize();
 

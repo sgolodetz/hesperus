@@ -1,5 +1,5 @@
 /***
- * hesperus: EntityExManager.cpp
+ * hesperus: EntityManager.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -14,6 +14,7 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/io/EntDefFileUtil.h>
 #include <source/io/LineIO.h>
+#include <source/yokes/user/UserBipedYoke.h>
 #include "CollisionComponent.h"
 #include "HealthComponent.h"
 #include "LookComponent.h"
@@ -31,7 +32,7 @@ Constructs an entity manager containing a set of entities loaded from the specif
 @param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
 @throws Exception	If EOF is encountered whilst trying to read the entities
 */
-EntityExManager::EntityExManager(std::istream& is, const boost::filesystem::path& settingsDir)
+EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& settingsDir)
 {
 	LineIO::read_checked_line(is, "Entities");
 	LineIO::read_checked_line(is, "{");
@@ -67,13 +68,13 @@ EntityExManager::EntityExManager(std::istream& is, const boost::filesystem::path
 }
 
 //#################### PUBLIC METHODS ####################
-const AABB3d& EntityExManager::aabb(int n) const
+const AABB3d& EntityManager::aabb(int n) const
 {
 	if(n < 0 || n >= static_cast<int>(m_aabbs.size())) throw Exception("AABB index out of range");
 	else return m_aabbs[n];
 }
 
-void EntityExManager::save(std::ostream& os) const
+void EntityManager::save(std::ostream& os) const
 {
 	os << "Entities\n";
 	os << "{\n";
@@ -98,23 +99,23 @@ void EntityExManager::save(std::ostream& os) const
 	os << "}\n";
 }
 
-EntityEx_Ptr EntityExManager::player() const
+Entity_Ptr EntityManager::player() const
 {
 	return m_player;
 }
 
-const std::vector<EntityEx_Ptr>& EntityExManager::visibles() const
+const std::vector<Entity_Ptr>& EntityManager::visibles() const
 {
 	return m_visibles;
 }
 
-const std::vector<EntityEx_Ptr>& EntityExManager::yokeables() const
+const std::vector<Entity_Ptr>& EntityManager::yokeables() const
 {
 	return m_yokeables;
 }
 
 //#################### PRIVATE METHODS ####################
-void EntityExManager::load_entity(std::istream& is)
+void EntityManager::load_entity(std::istream& is)
 {
 	std::string line;
 	LineIO::read_line(is, line, "entity class");
@@ -125,7 +126,7 @@ void EntityExManager::load_entity(std::istream& is)
 
 	LineIO::read_checked_line(is, "{");
 
-	EntityEx_Ptr entity;
+	Entity_Ptr entity;
 	ICollisionComponent_Ptr collisionComponent;
 	IHealthComponent_Ptr healthComponent;
 	ILookComponent_Ptr lookComponent;
@@ -137,7 +138,7 @@ void EntityExManager::load_entity(std::istream& is)
 	{
 		if(m_player) throw Exception("The level contains multiple Player entities");
 
-		entity.reset(new EntityEx("Player"));
+		entity.reset(new Entity("Player"));
 		m_player = entity;
 
 		collisionComponent.reset(new CollisionComponent(is));
@@ -146,18 +147,22 @@ void EntityExManager::load_entity(std::istream& is)
 		positionComponent.reset(new VariablePositionComponent(is));
 		visibilityComponent.reset(new VisibilityComponent(is));
 
+		LineIO::read_checked_line(is, "}");
+
 		// Attach the user yoke.
-		//yokeComponent.reset(new YokeComponent(...));
+		yokeComponent.reset(new YokeComponent(Yoke_Ptr(new UserBipedYoke(entity))));
 	}
 	else if(entityClass == "Guard")
 	{
-		entity.reset(new EntityEx("Guard"));
+		entity.reset(new Entity("Guard"));
 
 		collisionComponent.reset(new CollisionComponent(is));
 		healthComponent.reset(new HealthComponent(is));
 		lookComponent.reset(new LookComponent(is));
 		positionComponent.reset(new VariablePositionComponent(is));
 		visibilityComponent.reset(new VisibilityComponent(is));
+
+		LineIO::read_checked_line(is, "}");
 
 		// TODO: Attach an AI yoke.
 	}
@@ -183,7 +188,7 @@ void EntityExManager::load_entity(std::istream& is)
 	if(entity->yoke_component()) m_yokeables.push_back(entity);
 }
 
-void EntityExManager::skip_entity(std::istream& is, const std::string& entityClass)
+void EntityManager::skip_entity(std::istream& is, const std::string& entityClass)
 {
 	std::cout << "Unknown entity class: " << entityClass << std::endl;
 
