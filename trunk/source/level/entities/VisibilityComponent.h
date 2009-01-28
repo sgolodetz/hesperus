@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include <source/io/FieldIO.h>
 #include "IVisibilityComponent.h"
 
 namespace hesp {
@@ -20,9 +21,17 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	VisibilityComponent(const std::string& modelFilename)
-	:	m_modelFilename(modelFilename)
-	{}
+	VisibilityComponent(std::istream& is)
+	{
+		m_modelFilename = FieldIO::read_field(is, "GameModel");
+	}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	void save(std::ostream& os) const
+	{
+		FieldIO::write_typed_field(os, "GameModel", m_modelFilename);
+	}
 };
 
 }

@@ -6,6 +6,7 @@
 #ifndef H_HESP_COLLISIONCOMPONENT
 #define H_HESP_COLLISIONCOMPONENT
 
+#include <source/io/FieldIO.h>
 #include "ICollisionComponent.h"
 
 namespace hesp {
@@ -17,6 +18,14 @@ private:
 	std::vector<int> m_aabbIndices;
 	int m_pose;
 
+	//#################### CONSTRUCTORS ####################
+public:
+	CollisionComponent(std::istream& is)
+	{
+		m_aabbIndices = FieldIO::read_intarray_field(is, "AABBs");
+		m_pose = FieldIO::read_typed_field<int>(is, "Pose");
+	}
+
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<int>& aabb_indices() const
@@ -27,6 +36,12 @@ public:
 	int pose() const
 	{
 		return m_pose;
+	}
+
+	void save(std::ostream& os) const
+	{
+		FieldIO::write_intarray_field(os, "AABBs", m_aabbIndices);
+		FieldIO::write_typed_field(os, "Pose", m_pose);
 	}
 };
 

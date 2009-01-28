@@ -16,6 +16,12 @@ class YokeComponent : public IYokeComponent
 private:
 	Yoke_Ptr m_yoke;
 
+	//#################### CONSTRUCTORS ####################
+public:
+	YokeComponent(const Yoke_Ptr& yoke)
+	:	m_yoke(yoke)
+	{}
+
 	//#################### PUBLIC METHODS ####################
 public:
 	void set_yoke(const Yoke_Ptr& yoke)
@@ -25,7 +31,7 @@ public:
 
 	const Yoke_Ptr& yoke() const
 	{
-		return yoke;
+		return m_yoke;
 	}
 };
 

@@ -14,6 +14,12 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/io/EntDefFileUtil.h>
 #include <source/io/LineIO.h>
+#include "CollisionComponent.h"
+#include "HealthComponent.h"
+#include "LookComponent.h"
+#include "VariablePositionComponent.h"
+#include "VisibilityComponent.h"
+#include "YokeComponent.h"
 
 namespace hesp {
 
@@ -120,26 +126,54 @@ void EntityExManager::load_entity(std::istream& is)
 	LineIO::read_checked_line(is, "{");
 
 	EntityEx_Ptr entity;
+	ICollisionComponent_Ptr collisionComponent;
+	IHealthComponent_Ptr healthComponent;
+	ILookComponent_Ptr lookComponent;
+	IPositionComponent_Ptr positionComponent;
+	IVisibilityComponent_Ptr visibilityComponent;
+	IYokeComponent_Ptr yokeComponent;
+
 	if(entityClass == "Player")
 	{
 		if(m_player) throw Exception("The level contains multiple Player entities");
 
 		entity.reset(new EntityEx("Player"));
-
-		// TODO
-
 		m_player = entity;
 
+		collisionComponent.reset(new CollisionComponent(is));
+		healthComponent.reset(new HealthComponent(is));
+		lookComponent.reset(new LookComponent(is));
+		positionComponent.reset(new VariablePositionComponent(is));
+		visibilityComponent.reset(new VisibilityComponent(is));
+
 		// Attach the user yoke.
-		// TODO
+		//yokeComponent.reset(new YokeComponent(...));
 	}
 	else if(entityClass == "Guard")
 	{
 		entity.reset(new EntityEx("Guard"));
 
-		// TODO
+		collisionComponent.reset(new CollisionComponent(is));
+		healthComponent.reset(new HealthComponent(is));
+		lookComponent.reset(new LookComponent(is));
+		positionComponent.reset(new VariablePositionComponent(is));
+		visibilityComponent.reset(new VisibilityComponent(is));
+
+		// TODO: Attach an AI yoke.
 	}
-	else skip_entity(is, entityClass);
+	else
+	{
+		skip_entity(is, entityClass);
+		return;
+	}
+
+	// Set the entity components.
+	entity->set_collision_component(collisionComponent);
+	entity->set_health_component(healthComponent);
+	entity->set_look_component(lookComponent);
+	entity->set_position_component(positionComponent);
+	entity->set_visibility_component(visibilityComponent);
+	entity->set_yoke_component(yokeComponent);
 
 	// Add the newly-added entity to the relevant arrays.
 	int nextEntity = static_cast<int>(m_entities.size());
@@ -147,9 +181,6 @@ void EntityExManager::load_entity(std::istream& is)
 	m_entities.push_back(entity);
 	if(entity->visibility_component()) m_visibles.push_back(entity);
 	if(entity->yoke_component()) m_yokeables.push_back(entity);
-
-	// NYI
-	throw 23;
 }
 
 void EntityExManager::skip_entity(std::istream& is, const std::string& entityClass)

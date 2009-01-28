@@ -24,8 +24,8 @@ public:
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual const Vector3d& position() const = 0;
-	virtual void set_position(const Vector3d& position) = 0;
 	virtual void save(std::ostream& os) const = 0;
+	virtual void set_position(const Vector3d& position) = 0;
 };
 
 //#################### TYPEDEFS ####################

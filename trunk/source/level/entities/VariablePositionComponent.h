@@ -6,11 +6,12 @@
 #ifndef H_HESP_VARIABLEPOSITIONCOMPONENT
 #define H_HESP_VARIABLEPOSITIONCOMPONENT
 
+#include <source/io/FieldIO.h>
 #include "IPositionComponent.h"
 
 namespace hesp {
 
-class VariablePositionComponent
+class VariablePositionComponent : public IPositionComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -18,15 +19,21 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	VariablePositionComponent(const Vector3d& position)
-	:	m_position(position)
-	{}
+	VariablePositionComponent(std::istream& is)
+	{
+		m_position = FieldIO::read_typed_field<Vector3d>(is, "Position");
+	}
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const Vector3d& position() const
 	{
 		return m_position;
+	}
+
+	void save(std::ostream& os) const
+	{
+		FieldIO::write_typed_field(os, "Position", m_position);
 	}
 
 	void set_position(const Vector3d& position)
