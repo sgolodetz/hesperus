@@ -66,7 +66,7 @@ void Game::run()
 
 		Uint32 frameTime = SDL_GetTicks();
 
-		if(frameTime - lastDraw >= 20)	// aim for 50 frames per second
+		if(frameTime - lastDraw >= 16)	// aim for 62.5 frames per second
 		{
 #if 0
 			std::cout << "Render " << frameTime - lastDraw << std::endl;

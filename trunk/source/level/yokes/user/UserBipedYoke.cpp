@@ -50,7 +50,10 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput&
 
 	if(dir.length() >= SMALL_EPSILON)
 	{
+#if 0
+		// Prevent faster movement when strafeing
 		dir.normalize();
+#endif
 		commands.push_back(EntityCommand_Ptr(new BipedWalkCommand(m_biped, dir)));
 	}
 
