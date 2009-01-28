@@ -100,7 +100,7 @@ void Game::handle_key_up(const SDL_keysym& keysym)
 
 void Game::handle_mouse_motion(const SDL_MouseMotionEvent& event)
 {
-	// TODO
+	m_input.set_mouse_motion(event.xrel, event.yrel);
 }
 
 void Game::process_events()
