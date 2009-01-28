@@ -345,6 +345,10 @@
 						RelativePath="..\math\vectors\Vector3.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\math\vectors\VectorUtil.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -367,6 +371,10 @@
 					</File>
 					<File
 						RelativePath="..\math\vectors\Vector3.h"
+						>
+					</File>
+					<File
+						RelativePath="..\math\vectors\VectorUtil.h"
 						>
 					</File>
 				</Filter>
@@ -1312,6 +1320,26 @@
 				</File>
 				<File
 					RelativePath="..\game\GameState_Level.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="camera"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\camera\Camera.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\camera\Camera.h"
 					>
 				</File>
 			</Filter>
