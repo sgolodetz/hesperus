@@ -98,6 +98,11 @@ void Game::handle_key_up(const SDL_keysym& keysym)
 	m_input.release_key(keysym.sym);
 }
 
+void Game::handle_mouse_motion(const SDL_MouseMotionEvent& event)
+{
+	// TODO
+}
+
 void Game::process_events()
 {
 	SDL_Event event;
@@ -110,6 +115,9 @@ void Game::process_events()
 				break;
 			case SDL_KEYUP:
 				handle_key_up(event.key.keysym);
+				break;
+			case SDL_MOUSEMOTION:
+				handle_mouse_motion(event.motion);
 				break;
 			case SDL_QUIT:
 				quit(0);
