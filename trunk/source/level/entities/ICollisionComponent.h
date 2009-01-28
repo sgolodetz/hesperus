@@ -8,9 +8,11 @@
 
 #include <vector>
 
+#include "IEntityComponent.h"
+
 namespace hesp {
 
-class ICollisionComponent
+class ICollisionComponent : public IEntityComponent
 {
 	//#################### DESTRUCTOR ####################
 public:
@@ -21,6 +23,9 @@ public:
 	virtual const std::vector<int>& aabb_indices() const = 0;
 	virtual int pose() const = 0;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<ICollisionComponent> ICollisionComponent_Ptr;
 
 }
 

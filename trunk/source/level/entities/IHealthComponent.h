@@ -6,9 +6,11 @@
 #ifndef H_HESP_IHEALTHCOMPONENT
 #define H_HESP_IHEALTHCOMPONENT
 
+#include "IEntityComponent.h"
+
 namespace hesp {
 
-class IHealthComponent
+class IHealthComponent : public IEntityComponent
 {
 	//#################### DESTRUCTOR ####################
 public:
@@ -18,6 +20,9 @@ public:
 public:
 	virtual int health() const = 0;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<IHealthComponent> IHealthComponent_Ptr;
 
 }
 

@@ -6,12 +6,12 @@
 #ifndef H_HESP_IYOKECOMPONENT
 #define H_HESP_IYOKECOMPONENT
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
+#include "IEntityComponent.h"
+#include "Yoke.h"
 
 namespace hesp {
 
-class IYokeComponent
+class IYokeComponent : public IEntityComponent
 {
 	//#################### DESTRUCTOR ####################
 public:

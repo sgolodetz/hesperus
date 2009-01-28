@@ -6,14 +6,12 @@
 #ifndef H_HESP_IPOSITIONCOMPONENT
 #define H_HESP_IPOSITIONCOMPONENT
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
-
 #include <source/math/vectors/Vector3.h>
+#include "IEntityComponent.h"
 
 namespace hesp {
 
-class IPositionComponent
+class IPositionComponent : public IEntityComponent
 {
 	//#################### DESTRUCTOR ####################
 public:

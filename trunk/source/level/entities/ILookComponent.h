@@ -7,10 +7,11 @@
 #define H_HESP_ILOOKCOMPONENT
 
 #include <source/math/vectors/Vector3.h>
+#include "IEntityComponent.h"
 
 namespace hesp {
 
-class ILookComponent
+class ILookComponent : public IEntityComponent
 {
 	//#################### DESTRUCTOR ####################
 public:
@@ -20,6 +21,9 @@ public:
 public:
 	virtual const Vector3d& look() const = 0;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<ILookComponent> ILookComponent_Ptr;
 
 }
 

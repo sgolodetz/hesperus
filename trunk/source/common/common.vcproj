@@ -943,6 +943,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\level\entities\EntityEx.h"
+					>
+				</File>
+				<File
 					RelativePath="..\level\entities\FixedPositionComponent.h"
 					>
 				</File>
@@ -952,6 +956,10 @@
 				</File>
 				<File
 					RelativePath="..\level\entities\ICollisionComponent.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\entities\IEntityComponent.h"
 					>
 				</File>
 				<File

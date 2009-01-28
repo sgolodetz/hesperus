@@ -7,7 +7,6 @@
 #define H_HESP_YOKECOMPONENT
 
 #include "IYokeComponent.h"
-#include "Yoke.h"
 
 namespace hesp {
 
