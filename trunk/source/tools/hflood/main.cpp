@@ -39,7 +39,7 @@ Vector3d load_player_pos(const std::string& entitiesFilename)
 {
 	bf::path settingsDir = determine_settings_directory_from_tool();
 	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
-	return entityManager->player()->position_component()->position();
+	return entityManager->player()->camera_component()->camera().position();
 }
 
 void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& validLeaves)

@@ -28,7 +28,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void draw_axes() const;
 	void move_n(double delta);
 	void move_u(double delta);
 	void move_v(double delta);
@@ -36,7 +35,6 @@ public:
 	const Vector3d& position() const;
 	void rotate(const Vector3d& axis, double angle);
 	void set_position(const Vector3d& position);
-	void set_view() const;
 	const Vector3d& u() const;
 	const Vector3d& v() const;
 };

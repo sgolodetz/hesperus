@@ -48,8 +48,8 @@ void Level::render() const
 	glEnable(GL_DEPTH_TEST);
 
 	Entity_Ptr player = m_entityManager->player();
-	const Vector3d& pos = player->position_component()->position();
-	const Vector3d& look = player->look_component()->look();
+	const Vector3d& pos = player->camera_component()->camera().position();
+	const Vector3d& look = player->camera_component()->camera().n();
 
 	// Calculate the player's eye position and where they're looking at.
 	const AABB3d& aabb = m_entityManager->aabb(player->collision_component()->pose());
@@ -107,12 +107,15 @@ void Level::render_entities() const
 	for(int i=0; i<visiblesCount; ++i)
 	{
 		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
+		ICameraComponent_Ptr camComponent = visibles[i]->camera_component();
 		ICollisionComponent_Ptr colComponent = visibles[i]->collision_component();
+#if 0
 		IPositionComponent_Ptr posComponent = visibles[i]->position_component();
-		if(colComponent && posComponent && visibles[i]->entity_class() != "Player")
+#endif
+		if(camComponent && colComponent && visibles[i]->entity_class() != "Player")
 		{
 			const AABB3d& aabb = m_entityManager->aabb(colComponent->aabb_indices()[colComponent->pose()]);
-			AABB3d tAABB = aabb.translate(posComponent->position());
+			AABB3d tAABB = aabb.translate(camComponent->camera().position());
 			const Vector3d& mins = tAABB.minimum();
 			const Vector3d& maxs = tAABB.maximum();
 

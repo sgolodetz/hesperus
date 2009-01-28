@@ -10,7 +10,7 @@ namespace hesp {
 
 class FixedCameraComponent
 {
-
+	// TODO
 };
 
 }

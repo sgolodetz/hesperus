@@ -30,11 +30,6 @@ VariableCamera::VariableCamera(const Vector3d& position, const Vector3d& look)
 }
 
 //#################### PUBLIC METHODS ####################
-void VariableCamera::draw_axes() const
-{
-	// TODO
-}
-
 void VariableCamera::move_n(double delta)
 {
 	m_position += delta*m_nVector;
@@ -73,14 +68,6 @@ void VariableCamera::rotate(const Vector3d& axis, double angle)
 void VariableCamera::set_position(const Vector3d& position)
 {
 	m_position = position;
-}
-
-void VariableCamera::set_view() const
-{
-	glLoadIdentity();
-	gluLookAt(	m_position.x, m_position.y, m_position.z,
-				m_position.x + m_nVector.x, m_position.y + m_nVector.y, m_position.z + m_nVector.z,
-				m_vVector.x, m_vVector.y, m_vVector.z);
 }
 
 const Vector3d& VariableCamera::u() const

@@ -17,8 +17,13 @@ using boost::lexical_cast;
 #include <source/level/yokes/user/UserBipedYoke.h>
 #include "CollisionComponent.h"
 #include "HealthComponent.h"
+#if 0
 #include "LookComponent.h"
+#endif
+#include "VariableCameraComponent.h"
+#if 0
 #include "VariablePositionComponent.h"
+#endif
 #include "VisibilityComponent.h"
 #include "YokeComponent.h"
 
@@ -127,10 +132,13 @@ void EntityManager::load_entity(std::istream& is)
 	LineIO::read_checked_line(is, "{");
 
 	Entity_Ptr entity;
+	ICameraComponent_Ptr cameraComponent;
 	ICollisionComponent_Ptr collisionComponent;
 	IHealthComponent_Ptr healthComponent;
+#if 0
 	ILookComponent_Ptr lookComponent;
 	IPositionComponent_Ptr positionComponent;
+#endif
 	IVisibilityComponent_Ptr visibilityComponent;
 
 	if(entityClass == "Player")
@@ -140,10 +148,13 @@ void EntityManager::load_entity(std::istream& is)
 		entity.reset(new Entity("Player"));
 		m_player = entity;
 
+		cameraComponent.reset(new VariableCameraComponent(is));
 		collisionComponent.reset(new CollisionComponent(is));
 		healthComponent.reset(new HealthComponent(is));
+#if 0
 		lookComponent.reset(new LookComponent(is));
 		positionComponent.reset(new VariablePositionComponent(is));
+#endif
 		visibilityComponent.reset(new VisibilityComponent(is));
 
 		LineIO::read_checked_line(is, "}");
@@ -152,10 +163,13 @@ void EntityManager::load_entity(std::istream& is)
 	{
 		entity.reset(new Entity("Guard"));
 
+		cameraComponent.reset(new VariableCameraComponent(is));
 		collisionComponent.reset(new CollisionComponent(is));
 		healthComponent.reset(new HealthComponent(is));
+#if 0
 		lookComponent.reset(new LookComponent(is));
 		positionComponent.reset(new VariablePositionComponent(is));
+#endif
 		visibilityComponent.reset(new VisibilityComponent(is));
 
 		LineIO::read_checked_line(is, "}");
@@ -167,10 +181,13 @@ void EntityManager::load_entity(std::istream& is)
 	}
 
 	// Set the entity components.
+	entity->set_camera_component(cameraComponent);
 	entity->set_collision_component(collisionComponent);
 	entity->set_health_component(healthComponent);
+#if 0
 	entity->set_look_component(lookComponent);
 	entity->set_position_component(positionComponent);
+#endif
 	entity->set_visibility_component(visibilityComponent);
 
 	// Add the newly-added entity to the relevant arrays.

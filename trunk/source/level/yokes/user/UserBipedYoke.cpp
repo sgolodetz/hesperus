@@ -15,9 +15,7 @@ namespace hesp {
 UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 :	m_biped(biped)
 {
-	if(!m_biped->collision_component() ||
-	   !m_biped->look_component() ||
-	   !m_biped->position_component())
+	if(!m_biped->camera_component() || !m_biped->collision_component())
 	{
 		throw Exception("Couldn't attach a biped yoke to a non-biped");
 	}
@@ -32,7 +30,7 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput&
 
 	// Work out the forward direction of the biped. Note that we must ensure elsewhere that the
 	// look vector is never pointing directly upwards for this to work.
-	Vector3d forward = m_biped->look_component()->look();
+	Vector3d forward = m_biped->camera_component()->camera().n();
 	forward.z = 0;
 	forward.normalize();
 

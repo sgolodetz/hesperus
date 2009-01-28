@@ -21,7 +21,6 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void draw_axes() const = 0;
 	virtual void move_n(double delta) = 0;
 	virtual void move_u(double delta) = 0;
 	virtual void move_v(double delta) = 0;
@@ -29,7 +28,6 @@ public:
 	virtual const Vector3d& position() const = 0;
 	virtual void rotate(const Vector3d& axis, double angle) = 0;
 	virtual void set_position(const Vector3d& position) = 0;
-	virtual void set_view() const = 0;
 	virtual const Vector3d& u() const = 0;
 	virtual const Vector3d& v() const = 0;
 };
