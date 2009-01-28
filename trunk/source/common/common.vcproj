@@ -946,11 +946,71 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\CollisionComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\Entity.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\EntityCommand.h"
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\EntityManager.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\FixedPositionComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\HealthComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\ICollisionComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\IHealthComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\ILookComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\IPositionComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\IVisibilityComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\IYokeComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\LookComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\VariablePositionComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\VisibilityComponent.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\Yoke.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\YokeComponent.h"
 						>
 					</File>
 				</Filter>
@@ -961,86 +1021,14 @@
 						RelativePath="..\level\entities\BipedWalkCommand.cpp"
 						>
 					</File>
-				</Filter>
-				<Filter
-					Name="new"
-					>
-					<Filter
-						Name=".h"
+					<File
+						RelativePath="..\level\entities\Entity.cpp"
 						>
-						<File
-							RelativePath="..\level\entities\CollisionComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\EntityEx.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\EntityExManager.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\FixedPositionComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\HealthComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\ICollisionComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\IHealthComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\ILookComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\IPositionComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\IVisibilityComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\IYokeComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\LookComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\VariablePositionComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\VisibilityComponent.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\YokeComponent.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name=".cpp"
+					</File>
+					<File
+						RelativePath="..\level\entities\EntityManager.cpp"
 						>
-						<File
-							RelativePath="..\level\entities\EntityEx.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\entities\EntityExManager.cpp"
-							>
-						</File>
-					</Filter>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

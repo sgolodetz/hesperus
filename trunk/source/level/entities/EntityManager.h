@@ -12,7 +12,7 @@
 #include <boost/filesystem/operations.hpp>
 
 #include <source/math/geom/AABB.h>
-#include "EntityEx.h"
+#include "Entity.h"
 
 namespace hesp {
 

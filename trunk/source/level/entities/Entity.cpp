@@ -3,7 +3,7 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "EntityEx.h"
+#include "Entity.h"
 
 namespace hesp {
 

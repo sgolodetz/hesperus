@@ -7,7 +7,7 @@
 #define H_HESP_BIPEDWALKCOMMAND
 
 #include <source/math/vectors/Vector3.h>
-#include "EntityEx.h"
+#include "Entity.h"
 #include "EntityCommand.h"
 
 namespace hesp {

@@ -6,7 +6,7 @@
 #ifndef H_HESP_USERBIPEDYOKE
 #define H_HESP_USERBIPEDYOKE
 
-#include <source/level/entities/EntityEx.h>
+#include <source/level/entities/Entity.h>
 #include <source/level/entities/Yoke.h>
 
 namespace hesp {
