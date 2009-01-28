@@ -43,8 +43,12 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void load_entity(std::istream& is);
-	static void skip_entity(std::istream& is, const std::string& archetype);
+	static void skip_entity(std::istream& is, const std::string& entityClass);
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<EntityExManager> EntityExManager_Ptr;
+typedef shared_ptr<const EntityExManager> EntityExManager_CPtr;
 
 }
 

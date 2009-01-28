@@ -5,8 +5,165 @@
 
 #include "EntityExManager.h"
 
+#include <iostream>
+
+#include <boost/lexical_cast.hpp>
+using boost::bad_lexical_cast;
+using boost::lexical_cast;
+
+#include <source/exceptions/Exception.h>
+#include <source/io/EntDefFileUtil.h>
+#include <source/io/LineIO.h>
+
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+/**
+Constructs an entity manager containing a set of entities loaded from the specified std::istream.
+
+@param is			The std::istream
+@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
+@throws Exception	If EOF is encountered whilst trying to read the entities
+*/
+EntityExManager::EntityExManager(std::istream& is, const boost::filesystem::path& settingsDir)
+{
+	LineIO::read_checked_line(is, "Entities");
+	LineIO::read_checked_line(is, "{");
+
+	// Read in the DefinitionFile section.
+	LineIO::read_checked_line(is, "DefinitionFile");
+	LineIO::read_checked_line(is, "{");
+
+		// Read in the AABBs.
+		LineIO::read_line(is, m_entDefFilename, "entity definitions filename");
+		m_aabbs = EntDefFileUtil::load_aabbs_only((settingsDir / m_entDefFilename).file_string());
+
+	LineIO::read_checked_line(is, "}");
+
+	// Read in the Instances section.
+	LineIO::read_checked_line(is, "Instances");
+	LineIO::read_checked_line(is, "{");
+
+		std::string line;
+		LineIO::read_line(is, line, "entity count");
+		int entityCount;
+		try							{ entityCount = lexical_cast<int,std::string>(line); }
+		catch(bad_lexical_cast&)	{ throw Exception("The entity count was not a number"); }
+
+		for(int i=0; i<entityCount; ++i)
+		{
+			load_entity(is);
+		}
+
+	LineIO::read_checked_line(is, "}");
+
+	LineIO::read_checked_line(is, "}");
+}
+
+//#################### PUBLIC METHODS ####################
+const AABB3d& EntityExManager::aabb(int n) const
+{
+	if(n < 0 || n >= static_cast<int>(m_aabbs.size())) throw Exception("AABB index out of range");
+	else return m_aabbs[n];
+}
+
+void EntityExManager::save(std::ostream& os) const
+{
+	os << "Entities\n";
+	os << "{\n";
+
+	os << "DefinitionFile\n";
+	os << "{\n";
+	os << m_entDefFilename << '\n';
+	os << "}\n";
+
+	os << "Instances\n";
+	os << "{\n";
+
+	int entityCount = static_cast<int>(m_entities.size());
+	os << entityCount << '\n';
+	for(int i=0; i<entityCount; ++i)
+	{
+		m_entities[i]->save(os);
+	}
+
+	os << "}\n";
+
+	os << "}\n";
+}
+
+EntityEx_Ptr EntityExManager::player() const
+{
+	return m_player;
+}
+
+const std::vector<EntityEx_Ptr>& EntityExManager::visibles() const
+{
+	return m_visibles;
+}
+
+const std::vector<EntityEx_Ptr>& EntityExManager::yokeables() const
+{
+	return m_yokeables;
+}
+
+//#################### PRIVATE METHODS ####################
+void EntityExManager::load_entity(std::istream& is)
+{
+	std::string line;
+	LineIO::read_line(is, line, "entity class");
+
+	size_t i = line.find(' ');
+	if(line.length() < i+2) throw Exception("Missing entity class after Instance");
+	std::string entityClass = line.substr(i+1);
+
+	LineIO::read_checked_line(is, "{");
+
+	EntityEx_Ptr entity;
+	if(entityClass == "Player")
+	{
+		if(m_player) throw Exception("The level contains multiple Player entities");
+
+		entity.reset(new EntityEx("Player"));
+
+		// TODO
+
+		m_player = entity;
+
+		// Attach the user yoke.
+		// TODO
+	}
+	else if(entityClass == "Guard")
+	{
+		entity.reset(new EntityEx("Guard"));
+
+		// TODO
+	}
+	else skip_entity(is, entityClass);
+
+	// Add the newly-added entity to the relevant arrays.
+	int nextEntity = static_cast<int>(m_entities.size());
+	entity->set_id(nextEntity);
+	m_entities.push_back(entity);
+	if(entity->visibility_component()) m_visibles.push_back(entity);
+	if(entity->yoke_component()) m_yokeables.push_back(entity);
+
+	// NYI
+	throw 23;
+}
+
+void EntityExManager::skip_entity(std::istream& is, const std::string& entityClass)
+{
+	std::cout << "Unknown entity class: " << entityClass << std::endl;
+
+	std::string line;
+	while(std::getline(is, line))
+	{
+		if(line == "}") return;
+	}
+
+	// If we get here, it's because we didn't encounter a } before reaching the end of the file.
+	throw Exception("Unexpected EOF whilst trying to skip entity " + entityClass);
+}
 
 }

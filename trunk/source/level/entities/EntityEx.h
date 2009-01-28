@@ -20,7 +20,7 @@ class EntityEx
 	//#################### PRIVATE VARIABLES ####################
 private:
 	int m_id;
-	std::string m_archetype;
+	std::string m_entityClass;
 	ICollisionComponent_Ptr m_collisionComponent;
 	IHealthComponent_Ptr m_healthComponent;
 	ILookComponent_Ptr m_lookComponent;
@@ -30,7 +30,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	EntityEx(const std::string& archetype);
+	EntityEx(const std::string& entityClass);
 
 	//#################### PUBLIC METHODS ####################
 public:

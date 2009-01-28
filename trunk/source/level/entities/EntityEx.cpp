@@ -8,8 +8,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-EntityEx::EntityEx(const std::string& archetype)
-:	m_id(-1), m_archetype(archetype)
+EntityEx::EntityEx(const std::string& entityClass)
+:	m_id(-1), m_entityClass(entityClass)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -23,7 +23,7 @@ IYokeComponent_Ptr EntityEx::yoke_component()				{ return m_yokeComponent; }
 
 void EntityEx::save(std::ostream& os) const
 {
-	os << "Instance " << m_archetype << '\n';
+	os << "Instance " << m_entityClass << '\n';
 	os << "{\n";
 
 	m_collisionComponent->save(os);
