@@ -14,7 +14,7 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/io/EntDefFileUtil.h>
 #include <source/io/LineIO.h>
-#include <source/level/yokes/user/UserBipedYoke.h>
+#include <source/level/entities/yokes/user/UserBipedYoke.h>
 #include "CollisionComponent.h"
 #include "HealthComponent.h"
 #include "VariableCameraComponent.h"

@@ -1038,28 +1038,28 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="yokes"
-				>
 				<Filter
-					Name="user"
+					Name="yokes"
 					>
 					<Filter
-						Name=".cpp"
+						Name="user"
 						>
-						<File
-							RelativePath="..\level\yokes\user\UserBipedYoke.cpp"
+						<Filter
+							Name=".cpp"
 							>
-						</File>
-					</Filter>
-					<Filter
-						Name=".h"
-						>
-						<File
-							RelativePath="..\level\yokes\user\UserBipedYoke.h"
+							<File
+								RelativePath="..\level\entities\yokes\user\UserBipedYoke.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
 							>
-						</File>
+							<File
+								RelativePath="..\level\entities\yokes\user\UserBipedYoke.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 			</Filter>
