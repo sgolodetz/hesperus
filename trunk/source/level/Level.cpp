@@ -107,14 +107,12 @@ void Level::render_entities() const
 	for(int i=0; i<visiblesCount; ++i)
 	{
 		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
-#if 0
-		CollidableEntity *c = dynamic_cast<CollidableEntity*>(visibles[i].get());
-		if(c && !dynamic_cast<Player*>(visibles[i].get()))
-#endif
-		if(visibles[i]->collision_component())
+		ICollisionComponent_Ptr colComponent = visibles[i]->collision_component();
+		IPositionComponent_Ptr posComponent = visibles[i]->position_component();
+		if(colComponent && posComponent && visibles[i]->entity_class() != "Player")
 		{
-			const AABB3d& aabb = m_entityManager->aabb(visibles[i]->collision_component()->aabb_indices()[visibles[i]->collision_component()->pose()]);
-			AABB3d tAABB = aabb.translate(visibles[i]->position_component()->position());
+			const AABB3d& aabb = m_entityManager->aabb(colComponent->aabb_indices()[colComponent->pose()]);
+			AABB3d tAABB = aabb.translate(posComponent->position());
 			const Vector3d& mins = tAABB.minimum();
 			const Vector3d& maxs = tAABB.maximum();
 

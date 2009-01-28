@@ -35,6 +35,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	ICollisionComponent_Ptr collision_component();
+	const std::string& entity_class() const;
 	IHealthComponent_Ptr health_component();
 	int id() const;
 	ILookComponent_Ptr look_component();

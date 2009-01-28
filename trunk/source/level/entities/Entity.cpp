@@ -14,6 +14,7 @@ Entity::Entity(const std::string& entityClass)
 
 //#################### PUBLIC METHODS ####################
 ICollisionComponent_Ptr Entity::collision_component()		{ return m_collisionComponent; }
+const std::string& Entity::entity_class() const				{ return m_entityClass; }
 IHealthComponent_Ptr Entity::health_component()				{ return m_healthComponent; }
 int Entity::id() const										{ return m_id; }
 ILookComponent_Ptr Entity::look_component()					{ return m_lookComponent; }
