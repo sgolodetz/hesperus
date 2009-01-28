@@ -6,12 +6,16 @@
 #ifndef H_HESP_IPOSITIONCOMPONENT
 #define H_HESP_IPOSITIONCOMPONENT
 
+#include <iosfwd>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include <source/math/vectors/Vector3.h>
-#include "IEntityComponent.h"
 
 namespace hesp {
 
-class IPositionComponent : public IEntityComponent
+class IPositionComponent
 {
 	//#################### DESTRUCTOR ####################
 public:
@@ -21,6 +25,7 @@ public:
 public:
 	virtual const Vector3d& position() const = 0;
 	virtual void set_position(const Vector3d& position) = 0;
+	virtual void save(std::ostream& os) const = 0;
 };
 
 //#################### TYPEDEFS ####################

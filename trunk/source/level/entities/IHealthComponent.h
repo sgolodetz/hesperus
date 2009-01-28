@@ -6,11 +6,14 @@
 #ifndef H_HESP_IHEALTHCOMPONENT
 #define H_HESP_IHEALTHCOMPONENT
 
-#include "IEntityComponent.h"
+#include <iosfwd>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
 
-class IHealthComponent : public IEntityComponent
+class IHealthComponent
 {
 	//#################### DESTRUCTOR ####################
 public:
@@ -19,6 +22,7 @@ public:
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual int health() const = 0;
+	virtual void save(std::ostream& os) const = 0;
 };
 
 //#################### TYPEDEFS ####################

@@ -6,12 +6,11 @@
 #ifndef H_HESP_IYOKECOMPONENT
 #define H_HESP_IYOKECOMPONENT
 
-#include "IEntityComponent.h"
 #include "Yoke.h"
 
 namespace hesp {
 
-class IYokeComponent : public IEntityComponent
+class IYokeComponent
 {
 	//#################### DESTRUCTOR ####################
 public:

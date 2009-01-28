@@ -6,13 +6,15 @@
 #ifndef H_HESP_ICOLLISIONCOMPONENT
 #define H_HESP_ICOLLISIONCOMPONENT
 
+#include <iosfwd>
 #include <vector>
 
-#include "IEntityComponent.h"
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
 
-class ICollisionComponent : public IEntityComponent
+class ICollisionComponent
 {
 	//#################### DESTRUCTOR ####################
 public:
@@ -22,6 +24,7 @@ public:
 public:
 	virtual const std::vector<int>& aabb_indices() const = 0;
 	virtual int pose() const = 0;
+	virtual void save(std::ostream& os) const = 0;
 };
 
 //#################### TYPEDEFS ####################
