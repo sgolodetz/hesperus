@@ -1002,6 +1002,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\MovementFunctions.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\VariableCameraComponent.h"
 						>
 					</File>
@@ -1035,6 +1039,10 @@
 					</File>
 					<File
 						RelativePath="..\level\entities\EntityManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\MovementFunctions.cpp"
 						>
 					</File>
 				</Filter>

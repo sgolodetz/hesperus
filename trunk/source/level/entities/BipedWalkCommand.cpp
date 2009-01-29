@@ -4,6 +4,7 @@
  ***/
 
 #include "BipedWalkCommand.h"
+#include "MovementFunctions.h"
 
 namespace hesp {
 
@@ -15,11 +16,7 @@ BipedWalkCommand::BipedWalkCommand(const Entity_Ptr& biped, const Vector3d& dir)
 //#################### PUBLIC METHODS ####################
 void BipedWalkCommand::execute(int milliseconds)
 {
-	// FIXME: Walking speed will eventually be a property of the entity.
-	// FIXME: This will eventually call an external function to move the object properly (i.e. taking the nav mesh and collisions into account).
-	const double WALK_SPEED = 5.0;
-	ICameraComponent_Ptr camComponent = m_biped->camera_component();
-	camComponent->camera().set_position(camComponent->camera().position() + m_dir * WALK_SPEED * (milliseconds / 1000.0));
+	MovementFunctions::move_with_navmesh(m_biped, m_dir, milliseconds);
 }
 
 }
