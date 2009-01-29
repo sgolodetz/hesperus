@@ -11,6 +11,7 @@
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
+#include <source/colours/Colour3d.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -19,13 +20,13 @@ namespace hesp {
 Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 			 const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 			 const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
-			 const OnionPortalVector& onionPortals, const std::vector<NavDataset_Ptr>& navDatasets,
+			 const OnionPortalVector& onionPortals, const NavDatasetVector& navDatasets,
 			 const EntityManager_Ptr& entityManager)
 :	m_geomRenderer(geomRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis),
 	m_onionPolygons(onionPolygons), m_onionTree(onionTree), m_onionPortals(onionPortals),
-	m_entityManager(entityManager)
+	m_navDatasets(navDatasets), m_entityManager(entityManager)
 {
-	// TODO: Navigation stuff
+	// TODO: Pathfinder stuff
 }
 
 //#################### PUBLIC METHODS ####################
@@ -90,6 +91,9 @@ void Level::render() const
 	// Render the visible entities.
 	render_entities();
 
+	// Render the navigation meshes.
+	render_navmeshes();
+
 	glPopAttrib();
 }
 
@@ -153,6 +157,43 @@ void Level::render_entities() const
 				glColor3d(1,0,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pn.x, pn.y, pn.z);
 				glColor3d(0,1,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pu.x, pu.y, pu.z);
 				glColor3d(0,0,1);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pv.x, pv.y, pv.z);
+			glEnd();
+		}
+	}
+
+	glPopAttrib();
+}
+
+void Level::render_navmeshes() const
+{
+	// Note: Navmeshes don't need to be rendered efficiently, since we only render them for testing purposes anyway.
+
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_CULL_FACE);
+
+	Colour3d colours[] = { Colour3d(1,0,0), Colour3d(0,1,0), Colour3d(0,0,1) };
+	int colourCount = sizeof(colours)/sizeof(Colour3d);
+
+	int datasetCount = static_cast<int>(m_navDatasets.size());
+	for(int i=0; i<datasetCount; ++i)
+	{
+		int c = i % colourCount;
+		glColor3d(colours[c].r, colours[c].g, colours[c].b);
+
+		const std::vector<NavPolygon_Ptr>& navPolys = m_navDatasets[i]->nav_mesh()->polygons();
+		int polyCount = static_cast<int>(navPolys.size());
+		for(int j=0; j<polyCount; ++j)
+		{
+			const CollisionPolygon_Ptr& onionPoly = m_onionPolygons[navPolys[j]->collision_poly_index()];
+			int vertCount = onionPoly->vertex_count();
+			glBegin(GL_POLYGON);
+				for(int k=0; k<vertCount; ++k)
+				{
+					const Vector3d& v = onionPoly->vertex(k);
+					glVertex3d(v.x, v.y, v.z);
+				}
 			glEnd();
 		}
 	}
