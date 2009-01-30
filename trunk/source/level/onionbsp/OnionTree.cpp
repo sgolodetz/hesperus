@@ -171,14 +171,50 @@ OnionTree::Transition OnionTree::find_first_transition_sub(int mapIndex, const V
 		}
 		case CP_COPLANAR:
 		{
-			// TODO
-			break;
+			Transition trLeft = find_first_transition_sub(mapIndex, source, dest, left);
+			Transition trRight = find_first_transition_sub(mapIndex, source, dest, right);
+			if(trLeft.classifier == trRight.classifier)
+			{
+				switch(trLeft.classifier)
+				{
+					case RAY_EMPTY:
+					case RAY_SOLID:
+					{
+						return trLeft;
+					}
+					default:
+					{
+						double dLeft = source.distance_squared(*trLeft.location);
+						double dRight = source.distance_squared(*trRight.location);
+						if(dLeft < dRight) return trLeft;
+						else return trRight;
+					}
+				}
+			}
+			else if(trLeft.classifier == RAY_TRANSITION_ES || trLeft.classifier == RAY_TRANSITION_SE)
+			{
+				return trLeft;
+			}
+			else if(trRight.classifier == RAY_TRANSITION_ES || trRight.classifier == RAY_TRANSITION_SE)
+			{
+				return trRight;
+			}
+			else
+			{
+				// The transition returned here is somewhat arbitrary: we get here if we have a
+				// line segment lying completely along a wall (not just the wall plane) and not
+				// transitioning between empty and solid on either side of the plane. In that
+				// case, the nearest transition is at the source point, but whether it's from
+				// empty -> solid or from solid -> empty is unspecified. Here we just pick the
+				// former arbitrarily.
+				return Transition(RAY_TRANSITION_ES, Vector3d_Ptr(new Vector3d(source)), splitter);
+			}
 		}
 		case CP_FRONT:
 		{
 			return find_first_transition_sub(mapIndex, source, dest, left);
 		}
-		case CP_STRADDLE:
+		default:	// case CP_STRADDLE
 		{
 			Vector3d mid = determine_linesegment_intersection_with_plane(source, dest, *splitter).first;
 			OnionNode_Ptr near, far;
@@ -223,25 +259,16 @@ OnionTree::Transition OnionTree::find_first_transition_sub(int mapIndex, const V
 					if(trNear.classifier == RAY_EMPTY) return trFar;
 					else return Transition(RAY_TRANSITION_SE, Vector3d_Ptr(new Vector3d(mid)), splitter);
 				}
-				case RAY_TRANSITION_SE:
+				default:	// case RAY_TRANSITION_SE
 				{
 					// If the near side is solid, the first transition is the solid -> empty one on the far side.
 					// Otherwise, there's a nearer empty -> solid transition on the current split plane.
 					if(trNear.classifier == RAY_SOLID) return trFar;
 					else return Transition(RAY_TRANSITION_ES, Vector3d_Ptr(new Vector3d(mid)), splitter);
 				}
-				default:
-				{
-					break;
-				}
 			}
-
-			break;
 		}
 	}
-
-	// We'll never actually get here: this is just for safety's sake.
-	throw Exception("Unexpectedly reached the end of OnionTree::find_first_transition_sub()");
 }
 
 void OnionTree::index_leaves()
