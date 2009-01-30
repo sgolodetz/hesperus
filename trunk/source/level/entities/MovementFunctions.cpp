@@ -42,7 +42,7 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
 
 	// Check the ray against the tree (adding in a bit of tolerance to make it detect "not quite" collisions early).
-	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest + move.dir * 0.001);
+	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest);
 	switch(transition.classifier)
 	{
 		case OnionTree::RAY_EMPTY:
@@ -59,7 +59,7 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 		case OnionTree::RAY_TRANSITION_ES:
 		{
 			// Stop the entity going into a wall (we don't put the entity right on the wall - no point in making life hard for our classification routines).
-			dest = *transition.location + transition.plane->normal() * 0.01;
+			dest = *transition.location + transition.plane->normal() * 0.02;
 
 			// Update the move direction to be along the wall (to allow sliding). To do this, we remove the
 			// component of the movement which is normal to the wall.
