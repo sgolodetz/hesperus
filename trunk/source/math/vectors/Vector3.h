@@ -10,6 +10,9 @@
 #include <string>
 #include <vector>
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 namespace hesp {
 
 template <typename T>
@@ -54,6 +57,8 @@ template <typename T> std::istream& operator>>(std::istream& is, Vector3<T>& v);
 //################## TYPEDEFS ##################//
 typedef Vector3<float> Vector3f;
 typedef Vector3<double> Vector3d;
+
+typedef shared_ptr<Vector3d> Vector3d_Ptr;
 
 }
 

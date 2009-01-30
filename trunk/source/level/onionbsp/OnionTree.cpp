@@ -11,6 +11,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
 
@@ -22,6 +23,11 @@ OnionTree::OnionTree(const std::vector<OnionNode_Ptr>& nodes, int mapCount)
 }
 
 //#################### PUBLIC METHODS ####################
+OnionTree::Transition OnionTree::find_first_transition(int mapIndex, const Vector3d& source, const Vector3d& dest) const
+{
+	return find_first_transition_sub(mapIndex, source, dest, root());
+}
+
 const OnionLeaf *OnionTree::leaf(int n) const
 {
 	return m_leaves[n];
@@ -142,6 +148,102 @@ OnionNode_Ptr OnionTree::root() const
 }
 
 //#################### PRIVATE METHODS ####################
+OnionTree::Transition OnionTree::find_first_transition_sub(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionNode_Ptr& node) const
+{
+	if(node->is_leaf())
+	{
+		const OnionLeaf *leaf = node->as_leaf();
+		if(leaf->is_solid(mapIndex)) return Transition(RAY_SOLID);
+		else return Transition(RAY_EMPTY);
+	}
+
+	const OnionBranch *branch = node->as_branch();
+	const OnionNode_Ptr& left = branch->left();
+	const OnionNode_Ptr& right = branch->right();
+
+	Plane_CPtr splitter = branch->splitter();
+	PlaneClassifier cpSource, cpDest;
+	switch(classify_linesegment_against_plane(source, dest, *splitter, cpSource, cpDest))
+	{
+		case CP_BACK:
+		{
+			return find_first_transition_sub(mapIndex, source, dest, right);
+		}
+		case CP_COPLANAR:
+		{
+			// TODO
+			break;
+		}
+		case CP_FRONT:
+		{
+			return find_first_transition_sub(mapIndex, source, dest, left);
+		}
+		case CP_STRADDLE:
+		{
+			Vector3d mid = determine_linesegment_intersection_with_plane(source, dest, *splitter).first;
+			OnionNode_Ptr near, far;
+			if(cpSource == CP_FRONT)
+			{
+				near = left;
+				far = right;
+			}
+			else
+			{
+				near = right;
+				far = left;
+			}
+
+			// Search for a transition on the near side of the plane: if we find one, that's the first transition.
+			Transition trNear = find_first_transition_sub(mapIndex, source, mid, near);
+			if(trNear.location) return trNear;
+
+			// Search for a transition on the far side of the plane.
+			Transition trFar = find_first_transition_sub(mapIndex, mid, dest, far);
+
+			switch(trFar.classifier)
+			{
+				case RAY_EMPTY:
+				{
+					// If both sides are empty, there's no transition, otherwise there's a solid -> empty transition
+					// at the point where the ray intersects the current split plane.
+					if(trNear.classifier == RAY_EMPTY) return Transition(RAY_EMPTY);
+					else return Transition(RAY_TRANSITION_SE, Vector3d_Ptr(new Vector3d(mid)), splitter);
+				}
+				case RAY_SOLID:
+				{
+					// If both sides are solid, there's no transition, otherwise there's an empty -> solid transition
+					// at the point where the ray intersects the current split plane.
+					if(trNear.classifier == RAY_EMPTY) return Transition(RAY_TRANSITION_ES, Vector3d_Ptr(new Vector3d(mid)), splitter);
+					else return Transition(RAY_SOLID);
+				}
+				case RAY_TRANSITION_ES:
+				{
+					// If the near side is empty, the first transition is the empty -> solid one on the far side.
+					// Otherwise, there's a nearer solid -> empty transition on the current split plane.
+					if(trNear.classifier == RAY_EMPTY) return trFar;
+					else return Transition(RAY_TRANSITION_SE, Vector3d_Ptr(new Vector3d(mid)), splitter);
+				}
+				case RAY_TRANSITION_SE:
+				{
+					// If the near side is solid, the first transition is the solid -> empty one on the far side.
+					// Otherwise, there's a nearer empty -> solid transition on the current split plane.
+					if(trNear.classifier == RAY_SOLID) return trFar;
+					else return Transition(RAY_TRANSITION_ES, Vector3d_Ptr(new Vector3d(mid)), splitter);
+				}
+				default:
+				{
+					break;
+				}
+			}
+
+			break;
+		}
+	}
+
+	// We'll never actually get here: this is just for safety's sake.
+	throw Exception("Unexpectedly reached the end of OnionTree::find_first_transition_sub()");
+}
+
 void OnionTree::index_leaves()
 {
 	index_leaves_sub(root());
