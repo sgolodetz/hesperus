@@ -5,6 +5,8 @@
 
 #include "MovementFunctions.h"
 
+#include <source/math/Constants.h>
+
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
@@ -55,14 +57,15 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 		}
 		case OnionTree::RAY_TRANSITION_ES:
 		{
-			// Stop the player going into a wall.
-			dest = *transition.location;
+			// Stop the entity going into a wall (we don't put the entity right on the wall - no point in making life hard for our classification routines).
+			dest = *transition.location + transition.plane->normal() * 0.01;
 
 			// Update the move direction to be along the wall (to allow sliding). To do this, we remove the
 			// component of the movement which is normal to the wall.
 			Vector3d normalComponent = move.dir.project_onto(transition.plane->normal());
 			move.dir -= normalComponent;
-			move.dir.normalize();
+			if(move.dir.length() > SMALL_EPSILON) move.dir.normalize();
+			else move.timeRemaining = 0;
 
 			break;
 		}
