@@ -39,7 +39,7 @@ void GameState_Level::leave()
 	SDL_ShowCursor(SDL_ENABLE);
 }
 
-GameState_Ptr GameState_Level::update(int milliseconds, const UserInput& input)
+GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 {
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();

@@ -6,6 +6,7 @@
 #include "UserBipedYoke.h"
 
 #include <source/exceptions/Exception.h>
+#include <source/level/entities/BipedChangePoseCommand.h>
 #include <source/level/entities/BipedTurnCommand.h>
 #include <source/level/entities/BipedWalkCommand.h>
 #include <source/math/Constants.h>
@@ -23,7 +24,7 @@ UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 }
 
 //#################### PUBLIC METHODS ####################
-std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput& input)
+std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input)
 {
 	std::vector<EntityCommand_Ptr> commands;
 
@@ -65,7 +66,17 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(const UserInput&
 		commands.push_back(EntityCommand_Ptr(new BipedTurnCommand(m_biped, input.mouse_motion_x(), input.mouse_motion_y())));
 	}
 
-	// TODO: Jump, Crouch
+	//~~~~~~~
+	// CROUCH
+	//~~~~~~~
+
+	if(input.key_down(SDLK_c))
+	{
+		commands.push_back(EntityCommand_Ptr(new BipedChangePoseCommand(m_biped)));
+		input.release_key(SDLK_c);
+	}
+
+	// TODO: Jump
 
 	return commands;
 }

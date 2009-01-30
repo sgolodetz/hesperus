@@ -25,6 +25,7 @@ public:
 	virtual const std::vector<int>& aabb_indices() const = 0;
 	virtual int pose() const = 0;
 	virtual void save(std::ostream& os) const = 0;
+	virtual void set_pose(int pose) = 0;
 };
 
 //#################### TYPEDEFS ####################

@@ -43,6 +43,11 @@ public:
 		FieldIO::write_intarray_field(os, "AABBs", m_aabbIndices);
 		FieldIO::write_typed_field(os, "Pose", m_pose);
 	}
+
+	void set_pose(int pose)
+	{
+		m_pose = pose;
+	}
 };
 
 }

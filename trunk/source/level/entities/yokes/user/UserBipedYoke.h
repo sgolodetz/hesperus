@@ -27,7 +27,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	std::vector<EntityCommand_Ptr> generate_commands(const UserInput& input);
+	std::vector<EntityCommand_Ptr> generate_commands(UserInput& input);
 };
 
 }
