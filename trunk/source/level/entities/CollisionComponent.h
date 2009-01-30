@@ -46,7 +46,10 @@ public:
 
 	void set_pose(int pose)
 	{
-		m_pose = pose;
+		if(std::find(m_aabbIndices.begin(), m_aabbIndices.end(), pose) != m_aabbIndices.end())
+		{
+			m_pose = pose;
+		}
 	}
 };
 
