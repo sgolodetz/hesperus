@@ -21,14 +21,19 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 	move.mapIndex = entity->collision_component()->pose();
 	move.timeRemaining = milliseconds / 1000.0;
 
-	do_direct_move(entity, move, tree);
+	double oldTimeRemaining;
+	do
+	{
+		oldTimeRemaining = move.timeRemaining;
+		do_direct_move(entity, move, tree);
+	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
 //#################### PRIVATE METHODS ####################
 void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree)
 {
 	// FIXME: Walking speed will eventually be a property of the entity.
-	const double WALK_SPEED = 5.0;
+	const double WALK_SPEED = 5.0;	// in units/s
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 
 	const Vector3d& source = camComponent->camera().position();
@@ -52,6 +57,13 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 		{
 			// Stop the player going into a wall.
 			dest = *transition.location;
+
+			// Update the move direction to be along the wall (to allow sliding). To do this, we remove the
+			// component of the movement which is normal to the wall.
+			Vector3d normalComponent = move.dir.project_onto(transition.plane->normal());
+			move.dir -= normalComponent;
+			move.dir.normalize();
+
 			break;
 		}
 		case OnionTree::RAY_TRANSITION_SE:
@@ -61,6 +73,11 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 			break;
 		}
 	}
+
+	// Update the time remaining.
+	double moveLength = source.distance(dest);
+	double timeTaken = moveLength / WALK_SPEED;
+	move.timeRemaining -= timeTaken;
 
 	camComponent->camera().set_position(dest);
 }
