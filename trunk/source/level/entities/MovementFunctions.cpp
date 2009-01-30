@@ -41,7 +41,8 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	const Vector3d& source = camComponent->camera().position();
 	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
 
-	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest);
+	// Check the ray against the tree (adding in a bit of tolerance to make it detect "not quite" collisions early).
+	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest + move.dir * 0.001);
 	switch(transition.classifier)
 	{
 		case OnionTree::RAY_EMPTY:
