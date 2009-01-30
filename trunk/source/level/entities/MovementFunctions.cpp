@@ -10,16 +10,31 @@ namespace hesp {
 //#################### PUBLIC METHODS ####################
 void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
 {
-	// FIXME: Walking speed will eventually be a property of the entity.
 	// FIXME: This will eventually take the navmesh etc. into account.
+	move_without_navmesh(entity, dir, tree, milliseconds);
+}
+
+void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
+{
+	Move move;
+	move.dir = dir;
+	move.mapIndex = entity->collision_component()->pose();
+	move.timeRemaining = milliseconds / 1000.0;
+
+	do_direct_move(entity, move, tree);
+}
+
+//#################### PRIVATE METHODS ####################
+void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree)
+{
+	// FIXME: Walking speed will eventually be a property of the entity.
 	const double WALK_SPEED = 5.0;
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 
-	int mapIndex = 0;	// TEMPORARY
 	const Vector3d& source = camComponent->camera().position();
-	Vector3d dest = source + dir * WALK_SPEED * (milliseconds / 1000.0);
+	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
 
-	OnionTree::Transition transition = tree->find_first_transition(mapIndex, source, dest);
+	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest);
 	switch(transition.classifier)
 	{
 		case OnionTree::RAY_EMPTY:
@@ -48,12 +63,6 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 	}
 
 	camComponent->camera().set_position(dest);
-}
-
-void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
-{
-	// NYI
-	throw 23;
 }
 
 }
