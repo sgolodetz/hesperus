@@ -9,6 +9,8 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/level/onionbsp/OnionTree.h>
+
 namespace hesp {
 
 class EntityCommand
@@ -19,7 +21,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void execute(int milliseconds) = 0;
+	virtual void execute(const OnionTree_Ptr& tree, int milliseconds) = 0;
 };
 
 //#################### TYPEDEFS ####################

@@ -6,6 +6,7 @@
 #ifndef H_HESP_BIPEDTURNCOMMAND
 #define H_HESP_BIPEDTURNCOMMAND
 
+#include <source/level/onionbsp/OnionTree.h>
 #include "Entity.h"
 #include "EntityCommand.h"
 
@@ -24,7 +25,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void execute(int milliseconds);
+	void execute(const OnionTree_Ptr& tree, int milliseconds);
 };
 
 }

@@ -35,6 +35,11 @@ const EntityManager_Ptr& Level::entity_manager() const
 	return m_entityManager;
 }
 
+const OnionTree_Ptr& Level::onion_tree() const
+{
+	return m_onionTree;
+}
+
 void Level::render() const
 {
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);

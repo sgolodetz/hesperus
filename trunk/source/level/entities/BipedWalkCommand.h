@@ -25,7 +25,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void execute(int milliseconds);
+	void execute(const OnionTree_Ptr& tree, int milliseconds);
 };
 
 }

@@ -201,13 +201,7 @@ OnionTree::Transition OnionTree::find_first_transition_sub(int mapIndex, const V
 			}
 			else
 			{
-				// The transition returned here is somewhat arbitrary: we get here if we have a
-				// line segment lying completely along a wall (not just the wall plane) and not
-				// transitioning between empty and solid on either side of the plane. In that
-				// case, the nearest transition is at the source point, but whether it's from
-				// empty -> solid or from solid -> empty is unspecified. Here we just pick the
-				// former arbitrarily.
-				return Transition(RAY_TRANSITION_ES, Vector3d_Ptr(new Vector3d(source)), splitter);
+				return Transition(RAY_EMPTY);
 			}
 		}
 		case CP_FRONT:
