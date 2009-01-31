@@ -10,11 +10,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/filesystem/operations.hpp>
-namespace bf = boost::filesystem;
-
-#include <source/io/DirectoryFinder.h>
-#include <source/io/EntitiesFileUtil.h>
 #include <source/io/GeometryFileUtil.h>
 #include <source/io/PortalsFileUtil.h>
 #include <source/io/TreeFileUtil.h>
@@ -31,15 +26,8 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hflood {-r|-c} <input tree> <input portals> <input entities> <output geometry>" << std::endl;
+	std::cout << "Usage: hflood {-r|-c} <input tree> <input portals> <output geometry>" << std::endl;
 	exit(EXIT_FAILURE);
-}
-
-Vector3d load_player_pos(const std::string& entitiesFilename)
-{
-	bf::path settingsDir = determine_settings_directory_from_tool();
-	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
-	return entityManager->player()->camera_component()->camera().position();
 }
 
 void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& reachableLeaves)
@@ -66,8 +54,7 @@ void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsF
 }
 
 template <typename Poly>
-void run_flood(const std::string& treeFilename, const std::string& portalsFilename, const std::string& entitiesFilename,
-			   const std::string& outputFilename)
+void run_flood(const std::string& treeFilename, const std::string& portalsFilename, const std::string& outputFilename)
 {
 	// Load the polygons and tree.
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -121,11 +108,11 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 int main(int argc, char *argv[])
 try
 {
-	if(argc != 6) quit_with_usage();
+	if(argc != 5) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
 
-	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4], args[5]);
-	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4], args[5]);
+	if(args[1] == "-r") run_flood<TexturedPolygon>(args[2], args[3], args[4]);
+	else if(args[1] == "-c") run_flood<CollisionPolygon>(args[2], args[3], args[4]);
 	else quit_with_usage();
 
 	return 0;
