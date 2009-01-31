@@ -42,9 +42,9 @@ Vector3d load_player_pos(const std::string& entitiesFilename)
 	return entityManager->player()->camera_component()->camera().position();
 }
 
-void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& validLeaves)
+void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsFromLeaf, std::set<int>& reachableLeaves)
 {
-	validLeaves.insert(leaf);
+	reachableLeaves.insert(leaf);
 
 	std::map<int,std::vector<Portal_Ptr> >::const_iterator it = portalsFromLeaf.find(leaf);
 	if(it != portalsFromLeaf.end())
@@ -56,11 +56,11 @@ void flood_from(int leaf, const std::map<int,std::vector<Portal_Ptr> >& portalsF
 			Portal_Ptr outPortal = outPortals[j];
 			int toLeaf = outPortal->auxiliary_data().toLeaf;
 
-			// If the destination of this portal is already marked as valid, don't recurse.
-			if(validLeaves.find(toLeaf) != validLeaves.end()) continue;
+			// If the destination of this portal is already marked as reachable, don't recurse.
+			if(reachableLeaves.find(toLeaf) != reachableLeaves.end()) continue;
 
 			// Otherwise, recursively flood from the leaf on the other side of this portal.
-			flood_from(toLeaf, portalsFromLeaf, validLeaves);
+			flood_from(toLeaf, portalsFromLeaf, reachableLeaves);
 		}
 	}
 }
@@ -81,9 +81,6 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	std::vector<Portal_Ptr> portals;
 	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
 
-	// Load the player position.
-	Vector3d playerPos = load_player_pos(entitiesFilename);
-
 	// Build the "portals from leaf" data structure.
 	std::map<int,std::vector<Portal_Ptr> > portalsFromLeaf;
 	for(std::vector<Portal_Ptr>::const_iterator it=portals.begin(), iend=portals.end(); it!=iend; ++it)
@@ -92,16 +89,17 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 		portalsFromLeaf[fromLeaf].push_back(*it);
 	}
 
-	// FIXME:	We should be flooding from the positions of all the animate entities, not just the player.
-	//			Note that this requires a bit of thought - don't dive straight in!
+	// Flood from an arbitrary point outside the level to figure out which leaves aren't valid.
+	int startLeaf = tree->find_leaf_index(Vector3d(100000, 0, 0));
 
-	// Flood out from the player leaf to figure out which leaves are valid.
-	int playerLeaf = tree->find_leaf_index(playerPos);
+	std::set<int> reachableLeaves;
+	flood_from(startLeaf, portalsFromLeaf, reachableLeaves);
 
-	if(tree->leaf(playerLeaf)->is_solid()) throw Exception("The player start position is in a wall!");
-
+	// Determine the set of valid leaves, i.e. the ones which aren't reachable from outside the level.
+	std::set<int> emptyLeaves;
+	for(int i=0; i<emptyLeafCount; ++i) emptyLeaves.insert(i);
 	std::set<int> validLeaves;
-	flood_from(playerLeaf, portalsFromLeaf, validLeaves);
+	std::set_difference(emptyLeaves.begin(), emptyLeaves.end(), reachableLeaves.begin(), reachableLeaves.end(), std::inserter(validLeaves, validLeaves.end()));
 
 	// Copy all the polygons from them to an array.
 	PolyVector validPolygons;
