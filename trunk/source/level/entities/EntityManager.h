@@ -34,7 +34,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const AABB3d& aabb(int n) const;
+	const std::vector<AABB3d>& aabbs() const;
 	void save(std::ostream& os) const;
 	Entity_Ptr player() const;
 	const std::vector<Entity_Ptr>& visibles() const;

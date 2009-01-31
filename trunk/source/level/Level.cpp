@@ -58,7 +58,7 @@ void Level::render() const
 	const Vector3d& look = player->camera_component()->camera().n();
 
 	// Calculate the player's eye position and where they're looking at.
-	const AABB3d& aabb = m_entityManager->aabb(player->collision_component()->pose());
+	const AABB3d& aabb = m_entityManager->aabbs()[player->collision_component()->pose()];
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 
@@ -121,7 +121,7 @@ void Level::render_entities() const
 		if(camComponent && colComponent && visibles[i]->entity_class() != "Player")
 		{
 			const Camera& camera = camComponent->camera();
-			const AABB3d& aabb = m_entityManager->aabb(colComponent->aabb_indices()[colComponent->pose()]);
+			const AABB3d& aabb = m_entityManager->aabbs()[colComponent->aabb_indices()[colComponent->pose()]];
 			AABB3d tAABB = aabb.translate(camera.position());
 			const Vector3d& mins = tAABB.minimum();
 			const Vector3d& maxs = tAABB.maximum();

@@ -13,21 +13,31 @@ BipedChangePoseCommand::BipedChangePoseCommand(const Entity_Ptr& biped)
 {}
 
 //#################### PUBLIC METHODS ####################
-void BipedChangePoseCommand::execute(const OnionTree_Ptr& tree, int milliseconds)
+void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, int milliseconds)
 {
 	ICameraComponent_Ptr camComponent = m_biped->camera_component();
+	ICollisionComponent_Ptr colComponent = m_biped->collision_component();
+
 	Vector3d source = camComponent->camera().position();
 
-	ICollisionComponent_Ptr colComponent = m_biped->collision_component();
-	int mapIndex = colComponent->pose();
-	colComponent->set_pose(1 - mapIndex);
-	Vector3d dest = camComponent->camera().position();
+	int curPose = colComponent->pose();
+	int newPose = 1 - curPose;
+	const AABB3d& curAABB = aabbs[colComponent->aabb_indices()[curPose]];
+	const AABB3d& newAABB = aabbs[colComponent->aabb_indices()[newPose]];
 
-	OnionTree::Transition transition = tree->find_first_transition(mapIndex, source, dest);
-	if(transition.classifier != OnionTree::RAY_EMPTY)
-	{
-		colComponent->set_pose(1 - mapIndex);
-	}
+	// Note: This can obviously be easily "optimized", but it's clearer to write it like this.
+	double deltaZ = (newAABB.maximum().z + newAABB.minimum().z) / 2 - (curAABB.maximum().z + curAABB.minimum().z) / 2;
+
+	Vector3d dest = source + Vector3d(0,0,deltaZ);
+
+	OnionTree::Transition transition = tree->find_first_transition(curPose, source, dest);
+	if(transition.classifier != OnionTree::RAY_EMPTY) return;
+
+	transition = tree->find_first_transition(newPose, source, dest);
+	if(transition.classifier != OnionTree::RAY_EMPTY) return;
+
+	colComponent->set_pose(newPose);
+	camComponent->camera().set_position(dest);
 }
 
 }

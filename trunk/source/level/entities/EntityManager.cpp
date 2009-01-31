@@ -67,10 +67,9 @@ EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& se
 }
 
 //#################### PUBLIC METHODS ####################
-const AABB3d& EntityManager::aabb(int n) const
+const std::vector<AABB3d>& EntityManager::aabbs() const
 {
-	if(n < 0 || n >= static_cast<int>(m_aabbs.size())) throw Exception("AABB index out of range");
-	else return m_aabbs[n];
+	return m_aabbs;
 }
 
 void EntityManager::save(std::ostream& os) const

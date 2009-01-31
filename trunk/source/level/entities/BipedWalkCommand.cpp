@@ -14,7 +14,7 @@ BipedWalkCommand::BipedWalkCommand(const Entity_Ptr& biped, const Vector3d& dir)
 {}
 
 //#################### PUBLIC METHODS ####################
-void BipedWalkCommand::execute(const OnionTree_Ptr& tree, int milliseconds)
+void BipedWalkCommand::execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, int milliseconds)
 {
 	MovementFunctions::move_with_navmesh(m_biped, m_dir, tree, milliseconds);
 }
