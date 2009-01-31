@@ -37,11 +37,12 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	// FIXME: Walking speed will eventually be a property of the entity.
 	const double WALK_SPEED = 5.0;	// in units/s
 	ICameraComponent_Ptr camComponent = entity->camera_component();
+	ICollisionComponent_Ptr colComponent = entity->collision_component();
 
 	const Vector3d& source = camComponent->camera().position();
 	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
 
-	// Check the ray against the tree (adding in a bit of tolerance to make it detect "not quite" collisions early).
+	// Check the ray against the tree.
 	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest);
 	switch(transition.classifier)
 	{
@@ -52,28 +53,29 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 		}
 		case OnionTree::RAY_SOLID:
 		{
-			// We were in a wall prior to the move (this can happen very slightly due to the tolerance value
-			// used when classifying a point against a plane) - prevent any further moves into the wall.
+			// We were on a wall (i.e. coplanar to it) prior to the move - prevent any further moves into the wall,
+			// and update the move direction to allow sliding along the wall instead.
+			update_move_direction_for_sliding(entity, move);
+			move.timeRemaining -= 0.001;	// make this cost 1ms of time (otherwise the calling function will think we got stuck)
 			return;
 		}
 		case OnionTree::RAY_TRANSITION_ES:
 		{
-			// Stop the entity going into a wall (we don't put the entity right on the wall - no point in making life hard for our classification routines).
-			dest = *transition.location + transition.plane->normal() * 0.02;
+			// Stop the entity going into a wall.
+			dest = *transition.location;
 
-			// Update the move direction to be along the wall (to allow sliding). To do this, we remove the
-			// component of the movement which is normal to the wall.
-			Vector3d normalComponent = move.dir.project_onto(transition.plane->normal());
-			move.dir -= normalComponent;
-			if(move.dir.length() > SMALL_EPSILON) move.dir.normalize();
-			else move.timeRemaining = 0;
+			// Record this as the latest transition.
+			colComponent->update_last_transition(OnionTree::Transition_Ptr(new OnionTree::Transition(transition)));
+
+			// Update the move direction to allow sliding.
+			update_move_direction_for_sliding(entity, move);
 
 			break;
 		}
 		case OnionTree::RAY_TRANSITION_SE:
 		{
-			// We were in a wall prior to the move (this can happen very slightly due to the tolerance value
-			// used when classifying a point against a plane) - better let the entity back into the world.
+			// This should never happen (since entities can't move into walls), but better let the entity back into
+			// the world if it does happen.
 			break;
 		}
 	}
@@ -84,6 +86,23 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	move.timeRemaining -= timeTaken;
 
 	camComponent->camera().set_position(dest);
+}
+
+void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
+{
+	// Update the move direction to be along the wall (to allow sliding). To do this, we remove the
+	// component of the movement which is normal to the wall.
+
+	ICollisionComponent_Ptr colComponent = entity->collision_component();
+	const OnionTree::Transition_Ptr& transition = colComponent->last_transition();
+
+	if(transition)
+	{
+		Vector3d normalComponent = move.dir.project_onto(transition->plane->normal());
+		move.dir -= normalComponent;
+		if(move.dir.length() > SMALL_EPSILON) move.dir.normalize();
+		else move.timeRemaining = 0;
+	}
 }
 
 }

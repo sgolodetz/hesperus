@@ -16,6 +16,7 @@ class CollisionComponent : public ICollisionComponent
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<int> m_aabbIndices;
+	OnionTree::Transition_Ptr m_lastTransition;		// records the details of last time the entity would have crossed a wall into solid space (had we not stopped it)
 	int m_pose;
 
 	//#################### CONSTRUCTORS ####################
@@ -31,6 +32,11 @@ public:
 	const std::vector<int>& aabb_indices() const
 	{
 		return m_aabbIndices;
+	}
+
+	const OnionTree::Transition_Ptr& last_transition() const
+	{
+		return m_lastTransition;
 	}
 
 	int pose() const
@@ -50,6 +56,11 @@ public:
 		{
 			m_pose = pose;
 		}
+	}
+
+	void update_last_transition(const OnionTree::Transition_Ptr& lastTransition)
+	{
+		m_lastTransition = lastTransition;
 	}
 };
 
