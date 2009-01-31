@@ -28,6 +28,31 @@ OnionTree::Transition OnionTree::find_first_transition(int mapIndex, const Vecto
 	return find_first_transition_sub(mapIndex, source, dest, root());
 }
 
+int OnionTree::find_leaf_index(const Vector3d& p) const
+{
+	OnionNode_Ptr cur = root();
+	while(!cur->is_leaf())
+	{
+		const OnionBranch *branch = cur->as_branch();
+		switch(classify_point_against_plane(p, *branch->splitter()))
+		{
+			case CP_BACK:
+			{
+				cur = branch->right();
+				break;
+			}
+			default:	// CP_COPLANAR or CP_FRONT
+			{
+				cur = branch->left();
+				break;
+			}
+		}
+	}
+
+	const OnionLeaf *leaf = cur->as_leaf();
+	return leaf->leaf_index();
+}
+
 const OnionLeaf *OnionTree::leaf(int n) const
 {
 	return m_leaves[n];

@@ -24,23 +24,24 @@ void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const Oni
 
 	int curPose = colComponent->pose();
 	int newPose = 1 - curPose;
-	const AABB3d& curAABB = aabbs[colComponent->aabb_indices()[curPose]];
-	const AABB3d& newAABB = aabbs[colComponent->aabb_indices()[newPose]];
+	int curMapIndex = colComponent->aabb_indices()[curPose];
+	int newMapIndex = colComponent->aabb_indices()[newPose];
+	const AABB3d& curAABB = aabbs[curMapIndex];
+	const AABB3d& newAABB = aabbs[newMapIndex];
 
-	// Note: This can obviously be easily "optimized", but it's clearer to write it like this.
-	double deltaZ = (newAABB.maximum().z + newAABB.minimum().z) / 2 - (curAABB.maximum().z + curAABB.minimum().z) / 2;
+	double deltaZ = newAABB.maximum().z - curAABB.maximum().z;
 
 	Vector3d dest = source + Vector3d(0,0,deltaZ);
 
 	// Check that changing pose won't put us in a wall.
-	OnionTree::Transition transition = tree->find_first_transition(curPose, source, dest);
-	if(transition.classifier != OnionTree::RAY_EMPTY) return;
-	transition = tree->find_first_transition(newPose, source, dest);
-	if(transition.classifier != OnionTree::RAY_EMPTY) return;
-
-	// If the pose change is ok, set the new pose and update the player position to reflect the centre of the new AABB.
-	colComponent->set_pose(newPose);
-	camComponent->camera().set_position(dest);
+	int destLeafIndex = tree->find_leaf_index(dest);
+	const OnionLeaf *destLeaf = tree->leaf(destLeafIndex);
+	if(!destLeaf->is_solid(newMapIndex))
+	{
+		// If the pose change is ok, set the new pose and update the entity position to reflect the centre of the new AABB.
+		colComponent->set_pose(newPose);
+		camComponent->camera().set_position(dest);
+	}
 }
 
 }
