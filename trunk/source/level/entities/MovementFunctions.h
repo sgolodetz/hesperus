@@ -33,7 +33,7 @@ public:
 private:
 	static bool attempt_navmesh_acquisition(const Entity_Ptr& entity, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh);
 	static void do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree);
-	static void do_navmesh_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh);
+	static void do_navmesh_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh);
 	static void update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move);
 };
 

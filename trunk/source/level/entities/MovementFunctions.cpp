@@ -29,7 +29,7 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 	do
 	{
 		oldTimeRemaining = move.timeRemaining;
-		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, tree, navMesh);
+		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, polygons, tree, navMesh);
 		else do_direct_move(entity, move, tree);
 	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
@@ -109,6 +109,7 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 {
 	// FIXME: Walking speed will eventually be a property of the entity.
 	const double WALK_SPEED = 5.0;	// in units/s
+
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
 
@@ -161,21 +162,38 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	camComponent->camera().set_position(dest);
 }
 
-void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
+void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+										const NavMesh_Ptr& navMesh)
 {
 #if 1
 	// NYI
 	do_direct_move(entity, move, tree);
-#endif
+#else
 
 	// Step 1:	Project the movement vector onto the plane of the current nav polygon.
 
-	// TODO
+	int curNavPolyIndex = entity->nav_component()->cur_nav_poly_index();
+	int curColPolyIndex = navMesh->polygons()[curNavPolyIndex]->collision_poly_index();
+	const CollisionPolygon& curPoly = *polygons[curColPolyIndex];
+	Plane plane = make_plane(curPoly);
+	Vector3d dir = project_vector_onto_plane(move.dir, plane);
 
-	// Step 2:	Check whether the other end of the movement vector is within the current polygon. If yes, move there
+	// Step 2:	Check whether the other end of the new movement vector is within the current polygon. If yes, move there
 	//			and set the time remaining to zero. If not, we have more work to do.
 
-	// TODO
+	// FIXME: Walking speed will eventually be a property of the entity.
+	const double WALK_SPEED = 5.0;	// in units/s
+
+	ICameraComponent_Ptr camComponent = entity->camera_component();
+
+	const Vector3d& source = camComponent->camera().position();
+	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
+	if(point_in_polygon(dest, curPoly))
+	{
+		camComponent->camera().set_position(dest);
+		move.timeRemaining = 0;
+		return;
+	}
 
 	// Step 3:	If our movement causes us to leave the current polygon, find the point on the boundary where we leave the polygon.
 	//			Move there, and decrease the time remaining appropriately.
@@ -192,6 +210,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	//			do a direct move.
 
 	// TODO
+#endif
 }
 
 void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
