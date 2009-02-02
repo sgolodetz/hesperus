@@ -14,7 +14,7 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
-void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
+void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	// FIXME: This will eventually take the navmesh etc. into account.
 
@@ -22,11 +22,21 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 #if 0
 	std::cout << navComponent->cur_nav_poly_index() << std::endl;
 #endif
+	Move move;
+	move.dir = dir;
+	move.mapIndex = entity->collision_component()->pose();
+	move.timeRemaining = milliseconds / 1000.0;
 
-	move_without_navmesh(entity, dir, tree, milliseconds);
+	double oldTimeRemaining;
+	do
+	{
+		oldTimeRemaining = move.timeRemaining;
+		if(attempt_navmesh_acquisition(entity, tree, navDatasets)) { /* NYI */ }
+		else do_direct_move(entity, move, tree);
+	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
-void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
+void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	Move move;
 	move.dir = dir;
@@ -42,6 +52,11 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 }
 
 //#################### PRIVATE METHODS ####################
+bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+{
+	return false;
+}
+
 void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree)
 {
 	// FIXME: Walking speed will eventually be a property of the entity.

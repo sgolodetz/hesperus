@@ -13,6 +13,7 @@ using boost::shared_ptr;
 
 #include <source/math/geom/AABB.h>
 #include <source/level/onionbsp/OnionTree.h>
+#include <source/level/nav/NavDataset.h>
 
 namespace hesp {
 
@@ -24,7 +25,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, int milliseconds) = 0;
+	virtual void execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds) = 0;
 };
 
 //#################### TYPEDEFS ####################

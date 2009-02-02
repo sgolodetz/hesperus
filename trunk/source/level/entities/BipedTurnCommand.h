@@ -25,7 +25,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, int milliseconds);
+	void execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds);
 };
 
 }

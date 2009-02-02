@@ -52,6 +52,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const EntityManager_Ptr& entity_manager() const;
+	const std::vector<NavDataset_Ptr>& nav_datasets() const;
 	const OnionTree_Ptr& onion_tree() const;
 	void render() const;
 

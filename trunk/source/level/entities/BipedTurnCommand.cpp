@@ -13,7 +13,7 @@ BipedTurnCommand::BipedTurnCommand(const Entity_Ptr& biped, int mouseMotionX, in
 {}
 
 //#################### PUBLIC METHODS ####################
-void BipedTurnCommand::execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, int milliseconds)
+void BipedTurnCommand::execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	Camera& camera = m_biped->camera_component()->camera();
 

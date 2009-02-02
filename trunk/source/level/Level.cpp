@@ -26,6 +26,13 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	m_onionPolygons(onionPolygons), m_onionTree(onionTree), m_onionPortals(onionPortals),
 	m_navDatasets(navDatasets), m_entityManager(entityManager)
 {
+	// Build the collision -> nav poly index lookups.
+	int datasetCount = static_cast<int>(m_navDatasets.size());
+	for(int i=0; i<datasetCount; ++i)
+	{
+		m_navDatasets[i]->nav_mesh()->build_collision_to_nav_lookup();
+	}
+
 	// TODO: Pathfinder stuff
 }
 
@@ -33,6 +40,11 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 const EntityManager_Ptr& Level::entity_manager() const
 {
 	return m_entityManager;
+}
+
+const std::vector<NavDataset_Ptr>& Level::nav_datasets() const
+{
+	return m_navDatasets;
 }
 
 const OnionTree_Ptr& Level::onion_tree() const
