@@ -5,9 +5,7 @@
 
 #include "MovementFunctions.h"
 
-#if 1
 #include <iostream>
-#endif
 
 #include <source/math/Constants.h>
 #include <source/math/geom/GeomUtil.h>
@@ -15,7 +13,8 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
-void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
+void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+										  const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	// FIXME: This will eventually take the navmesh etc. into account.
 
@@ -31,12 +30,12 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 	do
 	{
 		oldTimeRemaining = move.timeRemaining;
-		if(attempt_navmesh_acquisition(entity, tree, navDatasets[move.mapIndex]->nav_mesh())) { /* NYI */ }
-		else do_direct_move(entity, move, tree);
+		if(attempt_navmesh_acquisition(entity, polygons, tree, navDatasets[move.mapIndex]->nav_mesh())) { /* NYI */ }
+		/*else*/ do_direct_move(entity, move, tree);
 	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
-void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
+void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
 {
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
 
@@ -54,7 +53,8 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 }
 
 //#################### PRIVATE METHODS ####################
-bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
+bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+													const NavMesh_Ptr& navMesh)
 {
 	std::vector<int> potentialColPolyIndices;
 	int suggestedColPoly = -1;
@@ -84,7 +84,23 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 
 	// Step 3:	Test each of the polygons to see whether our current position's inside it, and acquire the navmesh if so.
 
-	// TODO
+	int potentialCount = static_cast<int>(potentialColPolyIndices.size());
+	for(int i=0; i<potentialCount; ++i)
+	{
+		int colPolyIndex = potentialColPolyIndices[i];
+		if(point_in_polygon(position, *polygons[colPolyIndex]))
+		{
+			if(colPolyIndex != suggestedColPoly)
+			{
+				int navPolyIndex = navMesh->lookup_nav_poly_index(colPolyIndex);
+				navComponent->set_cur_nav_poly_index(navPolyIndex);
+#if 0
+				std::cout << "Now in polygon (" << colPolyIndex << ',' << navPolyIndex << ')' << std::endl;
+#endif
+			}
+			return true;
+		}
+	}
 
 	// If we get here, we were unable to acquire the navmesh.
 	return false;

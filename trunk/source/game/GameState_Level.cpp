@@ -82,7 +82,7 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 	// Step 2:	Execute the entity commands.
 	for(std::list<EntityCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
 	{
-		(*it)->execute(m_level->entity_manager()->aabbs(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
+		(*it)->execute(m_level->entity_manager()->aabbs(), m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
 	}
 
 	return GameState_Ptr();

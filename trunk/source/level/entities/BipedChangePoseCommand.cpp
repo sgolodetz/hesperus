@@ -13,7 +13,8 @@ BipedChangePoseCommand::BipedChangePoseCommand(const Entity_Ptr& biped)
 {}
 
 //#################### PUBLIC METHODS ####################
-void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
+void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+									 const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	// FIXME: Crouching is currently a "jolt" from one pose to another. It should really be a smooth transition.
 

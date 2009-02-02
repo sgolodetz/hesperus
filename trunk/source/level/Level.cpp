@@ -47,6 +47,11 @@ const std::vector<NavDataset_Ptr>& Level::nav_datasets() const
 	return m_navDatasets;
 }
 
+const std::vector<CollisionPolygon_Ptr>& Level::onion_polygons() const
+{
+	return m_onionPolygons;
+}
+
 const OnionTree_Ptr& Level::onion_tree() const
 {
 	return m_onionTree;

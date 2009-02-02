@@ -244,14 +244,14 @@ shared_ptr<Polygon<Vector3d,AuxData> > make_universe_polygon(const Plane& plane,
 /**
 Determines whether or not p is inside poly (including its edges).
 
-@param p		A point in the plane of poly
+@param p		A point
 @param poly		A polygon
 @return			true, if p is inside poly, or false otherwise
 */
 template <typename Vert, typename AuxData>
 bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly)
 {
-	assert(classify_point_against_plane(p, make_plane(poly)) == CP_COPLANAR);
+	if(classify_point_against_plane(p, make_plane(poly)) != CP_COPLANAR) return false;
 
 	const Vector3d zero(0,0,0);
 

@@ -26,12 +26,12 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static void move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds);
-	static void move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds);
+	static void move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds);
+	static void move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds);
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static bool attempt_navmesh_acquisition(const Entity_Ptr& entity, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh);
+	static bool attempt_navmesh_acquisition(const Entity_Ptr& entity, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh);
 	static void do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree);
 	static void update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move);
 };
