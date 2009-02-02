@@ -41,6 +41,24 @@ void GameState_Level::leave()
 
 GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 {
+	// TEMPORARY: Allow quick toggling of the input grab using the 'g' key (for debugging purposes).
+	static bool inputGrabbed = true;
+	if(input.key_down(SDLK_g))
+	{
+		input.release_key(SDLK_g);
+		if(inputGrabbed)
+		{
+			SDL_WM_GrabInput(SDL_GRAB_OFF);
+			SDL_ShowCursor(SDL_ENABLE);
+		}
+		else
+		{
+				SDL_ShowCursor(SDL_DISABLE);
+				SDL_WM_GrabInput(SDL_GRAB_ON);
+		}
+		inputGrabbed = !inputGrabbed;
+	}
+
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
 	const std::vector<Entity_Ptr>& yokeables = entityManager->yokeables();

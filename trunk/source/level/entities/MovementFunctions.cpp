@@ -5,6 +5,10 @@
 
 #include "MovementFunctions.h"
 
+#if 1
+#include <iostream>
+#endif
+
 #include <source/math/Constants.h>
 
 namespace hesp {
@@ -13,6 +17,12 @@ namespace hesp {
 void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
 {
 	// FIXME: This will eventually take the navmesh etc. into account.
+
+	INavComponent_Ptr navComponent = entity->nav_component();
+#if 0
+	std::cout << navComponent->cur_nav_poly_index() << std::endl;
+#endif
+
 	move_without_navmesh(entity, dir, tree, milliseconds);
 }
 

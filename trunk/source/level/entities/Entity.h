@@ -9,6 +9,7 @@
 #include "ICameraComponent.h"
 #include "ICollisionComponent.h"
 #include "IHealthComponent.h"
+#include "INavComponent.h"
 #include "IVisibilityComponent.h"
 #include "IYokeComponent.h"
 
@@ -23,6 +24,7 @@ private:
 	ICameraComponent_Ptr m_cameraComponent;
 	ICollisionComponent_Ptr m_collisionComponent;
 	IHealthComponent_Ptr m_healthComponent;
+	INavComponent_Ptr m_navComponent;
 	IVisibilityComponent_Ptr m_visibilityComponent;
 	IYokeComponent_Ptr m_yokeComponent;
 
@@ -37,6 +39,7 @@ public:
 	const std::string& entity_class() const;
 	IHealthComponent_Ptr health_component();
 	int id() const;
+	INavComponent_Ptr nav_component();
 	IVisibilityComponent_Ptr visibility_component();
 	IYokeComponent_Ptr yoke_component();
 	void save(std::ostream& os) const;
@@ -44,6 +47,7 @@ public:
 	void set_collision_component(const ICollisionComponent_Ptr& collisionComponent);
 	void set_health_component(const IHealthComponent_Ptr& healthComponent);
 	void set_id(int id);
+	void set_nav_component(const INavComponent_Ptr& navComponent);
 	void set_visibility_component(const IVisibilityComponent_Ptr& visibilityComponent);
 	void set_yoke_component(const IYokeComponent_Ptr& yokeComponent);
 };

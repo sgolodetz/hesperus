@@ -17,6 +17,7 @@ using boost::lexical_cast;
 #include <source/level/entities/yokes/user/UserBipedYoke.h>
 #include "CollisionComponent.h"
 #include "HealthComponent.h"
+#include "NavComponent.h"
 #include "VariableCameraComponent.h"
 #include "VisibilityComponent.h"
 #include "YokeComponent.h"
@@ -165,6 +166,7 @@ void EntityManager::load_entity(std::istream& is)
 	entity->set_camera_component(cameraComponent);
 	entity->set_collision_component(collisionComponent);
 	entity->set_health_component(healthComponent);
+	entity->set_nav_component(INavComponent_Ptr(new NavComponent));
 	entity->set_visibility_component(visibilityComponent);
 
 	// Add the newly-added entity to the relevant arrays.
