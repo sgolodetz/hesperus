@@ -169,8 +169,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	// NYI
 	do_direct_move(entity, move, tree);
 #else
-
-	// Step 1:	Project the movement vector onto the plane of the current nav polygon.
+	// Step 1:		Project the movement vector onto the plane of the current nav polygon.
 
 	int curNavPolyIndex = entity->nav_component()->cur_nav_poly_index();
 	int curColPolyIndex = navMesh->polygons()[curNavPolyIndex]->collision_poly_index();
@@ -178,36 +177,45 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	Plane plane = make_plane(curPoly);
 	Vector3d dir = project_vector_onto_plane(move.dir, plane);
 
-	// Step 2:	Check whether the other end of the new movement vector is within the current polygon. If yes, move there
-	//			and set the time remaining to zero. If not, we have more work to do.
+	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the navlinks.
 
-	// FIXME: Walking speed will eventually be a property of the entity.
-	const double WALK_SPEED = 5.0;	// in units/s
+	// TODO
+	int hitNavlink = -1;
 
-	ICameraComponent_Ptr camComponent = entity->camera_component();
+	// Step 3.a:	If the new movement vector doesn't hit a navlink, check whether the other end of the movement vector is within the current polygon.
+	//
+	//				-	If yes, move there, set the time remaining to zero and return.
+	//
+	//				-	If no, find the point on the boundary where we leave the polygon. Move there, and decrease
+	//					the time remaining appropriately. If there's any time remaining, we are either leaving the
+	//					navmesh or hitting a wall, so do a direct move in case it's the latter and return.
 
-	const Vector3d& source = camComponent->camera().position();
-	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
-	if(point_in_polygon(dest, curPoly))
+	if(hitNavlink == -1)
 	{
-		camComponent->camera().set_position(dest);
-		move.timeRemaining = 0;
+		// FIXME: Walking speed will eventually be a property of the entity.
+		const double WALK_SPEED = 5.0;	// in units/s
+
+		ICameraComponent_Ptr camComponent = entity->camera_component();
+
+		const Vector3d& source = camComponent->camera().position();
+		Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
+		if(point_in_polygon(dest, curPoly))
+		{
+			camComponent->camera().set_position(dest);
+			move.timeRemaining = 0;
+		}
+		else
+		{
+			// TODO
+		}
+
 		return;
 	}
 
-	// Step 3:	If our movement causes us to leave the current polygon, find the point on the boundary where we leave the polygon.
-	//			Move there, and decrease the time remaining appropriately.
-
-	// TODO
-
-	// Step 4:	Check the boundary point we found against each of the navlinks. If we hit one, calculate the time (for this entity)
-	//			to traverse it completely and then traverse it as much as we are able in the time remaining. Decrease the time
-	//			remaining appropriately, and update the current nav polygon.
-
-	// TODO
-
-	// Step 5:	If we didn't hit any of the navlinks, we must be leaving the navmesh or hitting a wall. In either case, we should
-	//			do a direct move.
+	// Step 3.b:	If the new movement vector hits a navlink, move to the point at which it first enters the influence zone,
+	//				and reduce the time remaining appropriately. Next, calculate the time (for this entity) to traverse the
+	//				navlink completely. Traverse it as much as we are able in the time remaining and decrease the time
+	//				remaining appropriately. If we traversed it completely, update the current nav polygon.
 
 	// TODO
 #endif
