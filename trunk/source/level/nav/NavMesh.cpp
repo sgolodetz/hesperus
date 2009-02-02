@@ -31,7 +31,7 @@ int NavMesh::lookup_nav_poly_index(int collisionPolyIndex) const
 {
 	std::map<int,int>::const_iterator it = m_colToNavLookup.find(collisionPolyIndex);
 	if(it != m_colToNavLookup.end()) return it->second;
-	else throw Exception("NavMesh::lookup_nav_poly_index(): Collision polygon index not found in map");
+	else return -1;
 }
 
 const NavMesh::NavPolyVector& NavMesh::polygons() const

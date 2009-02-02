@@ -10,6 +10,7 @@
 #endif
 
 #include <source/math/Constants.h>
+#include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
 
@@ -18,29 +19,30 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 {
 	// FIXME: This will eventually take the navmesh etc. into account.
 
-	INavComponent_Ptr navComponent = entity->nav_component();
-#if 0
-	std::cout << navComponent->cur_nav_poly_index() << std::endl;
-#endif
+	ICollisionComponent_Ptr colComponent = entity->collision_component();
+
+
 	Move move;
 	move.dir = dir;
-	move.mapIndex = entity->collision_component()->pose();
+	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
 	move.timeRemaining = milliseconds / 1000.0;
 
 	double oldTimeRemaining;
 	do
 	{
 		oldTimeRemaining = move.timeRemaining;
-		if(attempt_navmesh_acquisition(entity, tree, navDatasets)) { /* NYI */ }
+		if(attempt_navmesh_acquisition(entity, tree, navDatasets[move.mapIndex]->nav_mesh())) { /* NYI */ }
 		else do_direct_move(entity, move, tree);
 	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
 void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
+	ICollisionComponent_Ptr colComponent = entity->collision_component();
+
 	Move move;
 	move.dir = dir;
-	move.mapIndex = entity->collision_component()->pose();
+	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
 	move.timeRemaining = milliseconds / 1000.0;
 
 	double oldTimeRemaining;
@@ -52,8 +54,39 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 }
 
 //#################### PRIVATE METHODS ####################
-bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
 {
+	std::vector<int> potentialColPolyIndices;
+	int suggestedColPoly = -1;
+
+	// Step 1:	If this entity's nav component contains a 'current' nav poly for the entity (which amounts to a suggestion as to where it
+	//			might still be), queue it up for the first test.
+
+	INavComponent_Ptr navComponent = entity->nav_component();
+	int suggestedNavPoly = navComponent->cur_nav_poly_index();
+	if(suggestedNavPoly != -1)
+	{
+		suggestedColPoly = navMesh->polygons()[suggestedNavPoly]->collision_poly_index();
+		potentialColPolyIndices.push_back(suggestedColPoly);
+	}
+
+	// Step 2:	Find the other potential collision polygons this entity could be in.
+
+	ICameraComponent_Ptr camComponent = entity->camera_component();
+	const Vector3d& position = camComponent->camera().position();
+	int leafIndex = tree->find_leaf_index(position);
+	const std::vector<int>& polyIndices = tree->leaf(leafIndex)->polygon_indices();
+	for(std::vector<int>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
+	{
+		// Note: We only add collision polygons which are also nav polygons to the list of potentials.
+		if(*it != suggestedColPoly && navMesh->lookup_nav_poly_index(*it) != -1) potentialColPolyIndices.push_back(*it);
+	}
+
+	// Step 3:	Test each of the polygons to see whether our current position's inside it, and acquire the navmesh if so.
+
+	// TODO
+
+	// If we get here, we were unable to acquire the navmesh.
 	return false;
 }
 
