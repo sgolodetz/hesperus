@@ -202,7 +202,7 @@ NavMeshGenerator::calculate_link_segments(const Vector2d& s1, const Vector2d& s2
 	{
 		// If the gradients of the source and destination edges are the same (i.e. the edges are parallel),
 		// then we either get a step up/step down combination, or a walk link in either direction.
-		if(deltaC <= m_maxHeightDifference)
+		if(fabs(deltaC) <= m_maxHeightDifference)
 		{
 			Vector2d s1(xOverlap.low(), mS*xOverlap.low()+cS);
 			Vector2d s2(xOverlap.high(), mS*xOverlap.high()+cS);
