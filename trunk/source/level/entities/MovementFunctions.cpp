@@ -16,22 +16,21 @@ namespace hesp {
 void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 										  const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	// FIXME: This will eventually take the navmesh etc. into account.
-
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
-
 
 	Move move;
 	move.dir = dir;
 	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
 	move.timeRemaining = milliseconds / 1000.0;
 
+	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
+
 	double oldTimeRemaining;
 	do
 	{
 		oldTimeRemaining = move.timeRemaining;
-		if(attempt_navmesh_acquisition(entity, polygons, tree, navDatasets[move.mapIndex]->nav_mesh())) { /* NYI */ }
-		/*else*/ do_direct_move(entity, move, tree);
+		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, tree, navMesh);
+		else do_direct_move(entity, move, tree);
 	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
@@ -160,6 +159,12 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	move.timeRemaining -= timeTaken;
 
 	camComponent->camera().set_position(dest);
+}
+
+void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
+{
+	// NYI
+	do_direct_move(entity, move, tree);
 }
 
 void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
