@@ -27,6 +27,7 @@ public:
 	Vector3d dest_position() const;
 	static NavLink_Ptr load(const std::string& data);
 	void output(std::ostream& os) const;
+	void render() const;
 	Vector3d source_position() const;
 };
 

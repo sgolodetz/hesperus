@@ -35,6 +35,7 @@ public:
 public:
 	virtual Vector3d dest_position() const = 0;
 	virtual void output(std::ostream& os) const = 0;
+	virtual void render() const = 0;
 	virtual Vector3d source_position() const = 0;
 
 	//#################### PUBLIC METHODS ####################

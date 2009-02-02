@@ -58,6 +58,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void render_entities() const;
+	void render_navlinks() const;
 	void render_navmeshes() const;
 };
 

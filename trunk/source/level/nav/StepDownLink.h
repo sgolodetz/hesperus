@@ -21,6 +21,7 @@ public:
 public:
 	std::string link_name() const;
 	static NavLink_Ptr load(const std::string& data);
+	void render() const;
 };
 
 }

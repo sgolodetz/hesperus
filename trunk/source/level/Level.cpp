@@ -98,6 +98,7 @@ void Level::render() const
 
 	// Render the navigation meshes.
 	render_navmeshes();
+	render_navlinks();
 
 	glPopAttrib();
 }
@@ -167,6 +168,20 @@ void Level::render_entities() const
 	}
 
 	glPopAttrib();
+}
+
+void Level::render_navlinks() const
+{
+	int datasetCount = static_cast<int>(m_navDatasets.size());
+	for(int i=0; i<datasetCount; ++i)
+	{
+		const std::vector<NavLink_Ptr>& navLinks = m_navDatasets[i]->nav_mesh()->links();
+		int linkCount = static_cast<int>(navLinks.size());
+		for(int j=0; j<linkCount; ++j)
+		{
+			navLinks[j]->render();
+		}
+	}
 }
 
 void Level::render_navmeshes() const

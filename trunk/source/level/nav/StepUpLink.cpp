@@ -7,6 +7,8 @@
 
 #include <sstream>
 
+#include <source/ogl/WrappedGL.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -40,6 +42,17 @@ NavLink_Ptr StepUpLink::load(const std::string& data)
 	ss.flags(oldFlags);
 
 	return NavLink_Ptr(new StepUpLink(sourcePoly, destPoly, sourceEdge, destEdge));
+}
+
+void StepUpLink::render() const
+{
+	Vector3d s = (m_sourceEdge.e1 + m_sourceEdge.e2) / 2;
+	Vector3d d = (m_sourceEdge.e1 + m_sourceEdge.e2 + m_destEdge.e1 + m_destEdge.e2) / 4;
+	glBegin(GL_LINES);
+		glColor3d(1,0,1);
+		glVertex3d(s.x, s.y, s.z);
+		glVertex3d(d.x, d.y, d.z);
+	glEnd();
 }
 
 }
