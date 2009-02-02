@@ -67,6 +67,8 @@ Vector3d nearest_point_in_plane(const Vector3d& p, const Plane& plane);
 template <typename Vert, typename AuxData>
 bool point_in_polygon(const Vector3d& p, const Polygon<Vert,AuxData>& poly);
 
+Vector3d project_vector_onto_plane(const Vector3d& v, const Plane& plane);
+
 template <typename Vert, typename AuxData>
 SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, const Plane& plane);
 

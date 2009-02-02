@@ -146,7 +146,7 @@ Vector3<T>& Vector3<T>::normalize()
 }
 
 template <typename T>
-Vector3<T> Vector3<T>::project_onto(const Vector3& rhs)
+Vector3<T> Vector3<T>::project_onto(const Vector3& rhs) const
 {
 	// (lhs . rhs / |rhs|) * (rhs / |rhs|) = rhs * (lhs . rhs / |rhs|^2)
 	return rhs * (dot(rhs) / rhs.length_squared());

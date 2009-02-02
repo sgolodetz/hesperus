@@ -144,6 +144,19 @@ Vector3d nearest_point_in_plane(const Vector3d& p, const Plane& plane)
 	return p - displacement * plane.normal();
 }
 
+/**
+Projects a vector onto a plane.
+
+@param v		The vector to be projected
+@param plane	The plane onto which to project it
+@return			A planar vector representing the result of the projection
+*/
+Vector3d project_vector_onto_plane(const Vector3d& v, const Plane& plane)
+{
+	Vector3d normalComponent = v.project_onto(plane.normal());
+	return v - normalComponent;
+}
+
 //################## HELPER METHODS FOR THE split_polygon FUNCTION ##################
 /**
 Returns the index of the next vertex (in winding order) after the one specified.

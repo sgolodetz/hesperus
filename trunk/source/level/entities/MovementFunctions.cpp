@@ -204,8 +204,7 @@ void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& enti
 
 	if(transition)
 	{
-		Vector3d normalComponent = move.dir.project_onto(transition->plane->normal());
-		move.dir -= normalComponent;
+		move.dir = project_vector_onto_plane(move.dir, *transition->plane);
 		if(move.dir.length() > SMALL_EPSILON) move.dir.normalize();
 		else move.timeRemaining = 0;
 	}

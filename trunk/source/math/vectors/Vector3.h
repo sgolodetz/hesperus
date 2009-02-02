@@ -42,7 +42,7 @@ struct Vector3
 	double length_squared() const;
 	Vector3& negate();
 	Vector3& normalize();
-	Vector3 project_onto(const Vector3& rhs);
+	Vector3 project_onto(const Vector3& rhs) const;
 };
 
 //################## GLOBAL OPERATORS ##################//
