@@ -163,8 +163,35 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 
 void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
 {
+#if 1
 	// NYI
 	do_direct_move(entity, move, tree);
+#endif
+
+	// Step 1:	Project the movement vector onto the plane of the current nav polygon.
+
+	// TODO
+
+	// Step 2:	Check whether the other end of the movement vector is within the current polygon. If yes, move there
+	//			and set the time remaining to zero. If not, we have more work to do.
+
+	// TODO
+
+	// Step 3:	If our movement causes us to leave the current polygon, find the point on the boundary where we leave the polygon.
+	//			Move there, and decrease the time remaining appropriately.
+
+	// TODO
+
+	// Step 4:	Check the boundary point we found against each of the navlinks. If we hit one, calculate the time (for this entity)
+	//			to traverse it completely and then traverse it as much as we are able in the time remaining. Decrease the time
+	//			remaining appropriately, and update the current nav polygon.
+
+	// TODO
+
+	// Step 5:	If we didn't hit any of the navlinks, we must be leaving the navmesh or hitting a wall. In either case, we should
+	//			do a direct move.
+
+	// TODO
 }
 
 void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
