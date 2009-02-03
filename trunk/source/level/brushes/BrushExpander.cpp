@@ -181,9 +181,9 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 
 			Plane_Ptr possiblePlanes[] =
 			{
-				make_bevel_plane(p1, p2, Vector3d(1,0,0)),
-				make_bevel_plane(p1, p2, Vector3d(0,1,0)),
-				make_bevel_plane(p1, p2, Vector3d(0,0,1))
+				make_axial_plane(p1, p2, Vector3d(1,0,0)),
+				make_axial_plane(p1, p2, Vector3d(0,1,0)),
+				make_axial_plane(p1, p2, Vector3d(0,0,1))
 			};
 
 			for(int m=0; m<3; ++m)
@@ -279,6 +279,7 @@ BrushExpander::expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const A
 	return expandedBrushPlanes;
 }
 
+#if 0
 /**
 Attempts to construct the plane in which v1, v2 and v1+axis all lie.
 
@@ -295,5 +296,6 @@ Plane_Ptr BrushExpander::make_bevel_plane(const Vector3d& p1, const Vector3d& p2
 	if(n.length_squared() < EPSILON*EPSILON) return Plane_Ptr();
 	else return Plane_Ptr(new Plane(n, p1));
 }
+#endif
 
 }

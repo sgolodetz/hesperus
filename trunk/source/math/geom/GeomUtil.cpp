@@ -123,6 +123,23 @@ Vector3d generate_specific_coplanar_unit_vector(const Plane& plane)
 }
 
 /**
+Attempts to construct the plane in which v1, v2 and v1+axis all lie.
+
+@param p1		A point
+@param p2		Another point
+@param axis		A vector (for our purposes, this will always be an axis vector like (0,0,1))
+@return			The constructed plane, if p2-p1 and axis aren't parallel vectors, or NULL otherwise
+*/
+Plane_Ptr make_axial_plane(const Vector3d& p1, const Vector3d& p2, const Vector3d& axis)
+{
+	Vector3d v = p2 - p1;
+	Vector3d n = v.cross(axis);
+
+	if(n.length_squared() < EPSILON*EPSILON) return Plane_Ptr();
+	else return Plane_Ptr(new Plane(n, p1));
+}
+
+/**
 Returns the point in the specified plane which is nearest to the specified point.
 
 @param p		The point whose nearest point in the plane we want to find

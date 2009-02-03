@@ -98,6 +98,8 @@ side of the undirected plane.
 */
 void NavMeshGenerator::build_edge_plane_table()
 {
+	const Vector3d up(0,0,1);
+
 	int walkablePolyCount = static_cast<int>(m_walkablePolygons.size());
 
 	for(int i=0; i<walkablePolyCount; ++i)
@@ -109,9 +111,10 @@ void NavMeshGenerator::build_edge_plane_table()
 			int k = (j+1)%vertCount;
 			const Vector3d& p1 = curPoly.vertex(j);
 			const Vector3d& p2 = curPoly.vertex(k);
-			Plane edgePlane = make_edge_plane(p1,p2);
-			Plane undirectedEdgePlane = edgePlane.to_undirected_form();
-			bool sameFacing = edgePlane.normal().dot(undirectedEdgePlane.normal()) > 0;
+			Plane_Ptr edgePlane = make_axial_plane(p1,p2,up);
+			if(!edgePlane) throw Exception("Bad input to the navigation mesh generator: one of the polygons was vertical");
+			Plane undirectedEdgePlane = edgePlane->to_undirected_form();
+			bool sameFacing = edgePlane->normal().dot(undirectedEdgePlane.normal()) > 0;
 			if(sameFacing)
 				m_edgePlaneTable[undirectedEdgePlane].sameFacing.push_back(EdgeReference(i,j));
 			else
@@ -331,6 +334,7 @@ void NavMeshGenerator::determine_links()
 	}
 }
 
+#if 0
 Plane NavMeshGenerator::make_edge_plane(const Vector3d& p1, const Vector3d& p2)
 {
 	// FIXME:	This is very similar to BrushExpander::make_bevel_plane(). It's a good idea to
@@ -344,5 +348,6 @@ Plane NavMeshGenerator::make_edge_plane(const Vector3d& p1, const Vector3d& p2)
 
 	return Plane(n, p1);
 }
+#endif
 
 }

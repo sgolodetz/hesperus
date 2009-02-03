@@ -56,6 +56,8 @@ Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane);
 
 Vector3d generate_specific_coplanar_unit_vector(const Plane& plane);
 
+Plane_Ptr make_axial_plane(const Vector3d& p1, const Vector3d& p2, const Vector3d& axis);
+
 template <typename Vert, typename AuxData>
 Plane make_plane(const Polygon<Vert,AuxData>& poly);
 
