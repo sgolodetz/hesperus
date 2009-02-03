@@ -55,26 +55,27 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 													const NavMesh_Ptr& navMesh)
 {
-	std::vector<int> potentialColPolyIndices;
-	int suggestedColPoly = -1;
+	ICameraComponent_Ptr camComponent = entity->camera_component();
+	const Vector3d& position = camComponent->camera().position();
 
 	// Step 1:	If this entity's nav component contains a 'current' nav poly for the entity (which amounts to a suggestion as to where it
-	//			might still be), queue it up for the first test.
+	//			might still be), check it first.
 
+	int suggestedColPoly = -1;
 	INavComponent_Ptr navComponent = entity->nav_component();
 	int suggestedNavPoly = navComponent->cur_nav_poly_index();
 	if(suggestedNavPoly != -1)
 	{
 		suggestedColPoly = navMesh->polygons()[suggestedNavPoly]->collision_poly_index();
-		potentialColPolyIndices.push_back(suggestedColPoly);
+		if(point_in_polygon(position, *polygons[suggestedColPoly])) return true;
 	}
 
 	// Step 2:	Find the other potential collision polygons this entity could be in.
 
-	ICameraComponent_Ptr camComponent = entity->camera_component();
-	const Vector3d& position = camComponent->camera().position();
 	int leafIndex = tree->find_leaf_index(position);
 	const std::vector<int>& polyIndices = tree->leaf(leafIndex)->polygon_indices();
+
+	std::vector<int> potentialColPolyIndices;
 	for(std::vector<int>::const_iterator it=polyIndices.begin(), iend=polyIndices.end(); it!=iend; ++it)
 	{
 		// Note: We only add collision polygons which are also nav polygons to the list of potentials.
@@ -89,14 +90,11 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 		int colPolyIndex = potentialColPolyIndices[i];
 		if(point_in_polygon(position, *polygons[colPolyIndex]))
 		{
-			if(colPolyIndex != suggestedColPoly)
-			{
-				int navPolyIndex = navMesh->lookup_nav_poly_index(colPolyIndex);
-				navComponent->set_cur_nav_poly_index(navPolyIndex);
+			int navPolyIndex = navMesh->lookup_nav_poly_index(colPolyIndex);
+			navComponent->set_cur_nav_poly_index(navPolyIndex);
 #if 0
-				std::cout << "Now in polygon (" << colPolyIndex << ',' << navPolyIndex << ')' << std::endl;
+			std::cout << "Now in polygon (" << colPolyIndex << ',' << navPolyIndex << ')' << std::endl;
 #endif
-			}
 			return true;
 		}
 	}
@@ -177,7 +175,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	Plane plane = make_plane(curPoly);
 	Vector3d dir = project_vector_onto_plane(move.dir, plane);
 
-	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the navlinks.
+	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the out navlinks.
 
 	// TODO
 	int hitNavlink = -1;
