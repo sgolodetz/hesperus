@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "AABB.h"
+#include "LineSegment.h"
 #include "Plane.h"
 #include "Polygon.h"
 
@@ -38,6 +39,8 @@ PlaneClassifier classify_polygon_against_plane(const Polygon<Vert,AuxData>& poly
 
 template <typename Vert, typename AuxData>
 AABB3d construct_bounding_box(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polys);
+
+Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment);
 
 template <typename Vec>
 std::pair<Vec,double> determine_line_intersection_with_plane(const Vec& s, const Vec& v, const Plane& plane);

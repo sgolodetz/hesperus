@@ -54,6 +54,33 @@ PlaneClassifier classify_point_against_plane(const Vector3d& p, const Plane& pla
 }
 
 /**
+TODO
+*/
+Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment)
+{
+	Plane plane = *make_axial_plane(nvSegment.e1, nvSegment.e2, Vector3d(0,0,1));
+
+	// Make sure we don't try and determine the intersection if the segment's parallel to the plane.
+	Vector3d v = segment.e2 - segment.e1;
+	if(fabs(v.dot(plane.normal())) < EPSILON) return Vector3d_Ptr();
+
+	std::pair<Vector3d,bool> hit = determine_linesegment_intersection_with_plane(segment.e1, segment.e2, plane);
+	if(!hit.second) return Vector3d_Ptr();
+
+	// We need to check that the point's within the non-vertical edge.
+	const Vector3d& p = hit.first;
+	Vector3d d = p - nvSegment.e1;
+	Vector3d w = nvSegment.e2 - nvSegment.e1;
+	double dotProd = d.dot(w);	// == |d||w| cos angle
+	double dLength = d.length(), wLength = w.length();
+	double cosAngle = dotProd / (dLength * wLength);
+	if(fabs(cosAngle - 1) > SMALL_EPSILON) return Vector3d_Ptr();	// d and w aren't pointing in the same direction
+	if(dLength > wLength) return Vector3d_Ptr();					// the intersection point's beyond nvSegment.e2
+
+	return Vector3d_Ptr(new Vector3d(p));
+}
+
+/**
 Calculates the perpendicular displacement of the point p from the plane.
 
 @param p		The point whose perpendicular displacement from the plane we wish to determine

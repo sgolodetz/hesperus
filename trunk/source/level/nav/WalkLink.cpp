@@ -30,17 +30,7 @@ Vector3d WalkLink::dest_position() const
 
 Vector3d_Ptr WalkLink::hit_test(const Vector3d& s, const Vector3d& d) const
 {
-	Plane plane = *make_axial_plane(m_edge.e1, m_edge.e2, Vector3d(0,0,1));
-
-	// Make sure we don't try and determine the intersection if the entity's walking parallel to the plane.
-	Vector3d v = d - s;
-	if(fabs(v.dot(plane.normal())) < EPSILON) return Vector3d_Ptr();
-
-	std::pair<Vector3d,bool> hit = determine_linesegment_intersection_with_plane(s, d, plane);
-
-	// FIXME: We need to check that the point's within the link edge.
-	if(hit.second) return Vector3d_Ptr(new Vector3d(hit.first));
-	else return Vector3d_Ptr();
+	return determine_linesegment_intersection_with_nonvertical_linesegment(LineSegment3d(s,d), m_edge);
 }
 
 NavLink_Ptr WalkLink::load(const std::string& data)

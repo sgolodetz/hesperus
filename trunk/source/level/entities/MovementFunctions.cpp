@@ -163,7 +163,7 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 										const NavMesh_Ptr& navMesh)
 {
-#if 1
+#if 0
 	// NYI
 	do_direct_move(entity, move, tree);
 #else
@@ -251,6 +251,10 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	if(fabs(t - 1) < SMALL_EPSILON)
 	{
 		navComponent->set_cur_nav_poly_index(link->dest_poly());
+	}
+	else
+	{
+		// TODO: For things like ladders, we'll need to make a note that we're in the middle of a traversal for future frames.
 	}
 #endif
 }
