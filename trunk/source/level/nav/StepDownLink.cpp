@@ -55,15 +55,4 @@ void StepDownLink::render() const
 	glEnd();
 }
 
-double StepDownLink::traversal_time(double traversalSpeed) const
-{
-	return 0;
-}
-
-Vector3d StepDownLink::traverse(const Vector3d& source, double t) const
-{
-	// NYI
-	throw 23;
-}
-
 }

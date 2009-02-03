@@ -22,8 +22,6 @@ public:
 	std::string link_name() const;
 	static NavLink_Ptr load(const std::string& data);
 	void render() const;
-	double traversal_time(double traversalSpeed) const;
-	Vector3d traverse(const Vector3d& source, double t) const;
 };
 
 }

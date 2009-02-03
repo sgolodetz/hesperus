@@ -5,6 +5,8 @@
 
 #include "StepLink.h"
 
+#include <source/math/geom/GeomUtil.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -24,8 +26,7 @@ Vector3d StepLink::dest_position() const
 
 Vector3d_Ptr StepLink::hit_test(const Vector3d& s, const Vector3d& d) const
 {
-	// NYI
-	return Vector3d_Ptr();
+	return determine_linesegment_intersection_with_nonvertical_linesegment(LineSegment3d(s,d), m_sourceEdge);
 }
 
 void StepLink::output(std::ostream& os) const
@@ -36,6 +37,17 @@ void StepLink::output(std::ostream& os) const
 Vector3d StepLink::source_position() const
 {
 	return (m_sourceEdge.e1 + m_sourceEdge.e2) / 2;
+}
+
+double StepLink::traversal_time(double traversalSpeed) const
+{
+	return 0;
+}
+
+Vector3d StepLink::traverse(const Vector3d& source, double t) const
+{
+	double u = (source - m_sourceEdge.e1).length() / (m_sourceEdge.e2 - m_sourceEdge.e1).length();
+	return (1-u) * m_destEdge.e1 + u * m_destEdge.e2;
 }
 
 }
