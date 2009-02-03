@@ -54,7 +54,11 @@ PlaneClassifier classify_point_against_plane(const Vector3d& p, const Plane& pla
 }
 
 /**
-TODO
+Determines the point of intersection of a line segment with another (non-vertical) line segment, if any.
+
+@param segment		The first line segment (can be arbitrary)
+@param nvSegment	The second line segment (must be non-vertical)
+@return				The point of intersection, if any, or NULL otherwise
 */
 Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment)
 {

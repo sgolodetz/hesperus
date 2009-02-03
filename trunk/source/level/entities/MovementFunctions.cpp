@@ -163,10 +163,6 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 										const NavMesh_Ptr& navMesh)
 {
-#if 0
-	// NYI
-	do_direct_move(entity, move, tree);
-#else
 	// Step 1:		Project the movement vector onto the plane of the current nav polygon.
 
 	INavComponent_Ptr navComponent = entity->nav_component();
@@ -256,7 +252,6 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	{
 		// TODO: For things like ladders, we'll need to make a note that we're in the middle of a traversal for future frames.
 	}
-#endif
 }
 
 void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
