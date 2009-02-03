@@ -279,23 +279,4 @@ BrushExpander::expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const A
 	return expandedBrushPlanes;
 }
 
-#if 0
-/**
-Attempts to construct the plane in which v1, v2 and v1+axis all lie.
-
-@param p1		A point
-@param p2		Another point
-@param axis		A vector (for our purposes, this will always be an axis vector like (0,0,1))
-*/
-Plane_Ptr BrushExpander::make_bevel_plane(const Vector3d& p1, const Vector3d& p2, const Vector3d& axis)
-{
-	Vector3d a = p2 - p1;
-	Vector3d b = axis;
-	Vector3d n = a.cross(b);
-
-	if(n.length_squared() < EPSILON*EPSILON) return Plane_Ptr();
-	else return Plane_Ptr(new Plane(n, p1));
-}
-#endif
-
 }

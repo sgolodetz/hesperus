@@ -334,20 +334,4 @@ void NavMeshGenerator::determine_links()
 	}
 }
 
-#if 0
-Plane NavMeshGenerator::make_edge_plane(const Vector3d& p1, const Vector3d& p2)
-{
-	// FIXME:	This is very similar to BrushExpander::make_bevel_plane(). It's a good idea to
-	//			factor out the commonality at some point.
-	Vector3d u = (p2 - p1).normalize();
-	Vector3d v(0,0,1);
-	Vector3d n = u.cross(v);
-
-	if(n.length_squared() < EPSILON*EPSILON)
-		throw Exception("Bad input to the navigation mesh generator: one of the polygons was vertical");
-
-	return Plane(n, p1);
-}
-#endif
-
 }
