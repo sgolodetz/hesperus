@@ -25,10 +25,13 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	Vector3d dest_position() const;
+	Vector3d_Ptr hit_test(const Vector3d& s, const Vector3d& d) const;
 	static NavLink_Ptr load(const std::string& data);
 	void output(std::ostream& os) const;
 	void render() const;
 	Vector3d source_position() const;
+	double traversal_time(double traversalSpeed) const;
+	Vector3d traverse(const Vector3d& source, double t) const;
 };
 
 }

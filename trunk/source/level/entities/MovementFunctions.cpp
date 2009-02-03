@@ -111,7 +111,7 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
 
-	const Vector3d& source = camComponent->camera().position();
+	Vector3d source = camComponent->camera().position();
 	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
 
 	// Check the ray against the tree.
@@ -152,12 +152,12 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 		}
 	}
 
+	camComponent->camera().set_position(dest);
+
 	// Update the time remaining.
 	double moveLength = source.distance(dest);
 	double timeTaken = moveLength / WALK_SPEED;
 	move.timeRemaining -= timeTaken;
-
-	camComponent->camera().set_position(dest);
 }
 
 void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
@@ -169,34 +169,51 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 #else
 	// Step 1:		Project the movement vector onto the plane of the current nav polygon.
 
-	int curNavPolyIndex = entity->nav_component()->cur_nav_poly_index();
-	int curColPolyIndex = navMesh->polygons()[curNavPolyIndex]->collision_poly_index();
+	INavComponent_Ptr navComponent = entity->nav_component();
+	int curNavPolyIndex = navComponent->cur_nav_poly_index();
+	const NavPolygon& navPoly = *navMesh->polygons()[curNavPolyIndex];
+	int curColPolyIndex = navPoly.collision_poly_index();
 	const CollisionPolygon& curPoly = *polygons[curColPolyIndex];
 	Plane plane = make_plane(curPoly);
 	Vector3d dir = project_vector_onto_plane(move.dir, plane);
 
 	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the out navlinks.
 
-	// TODO
+	// FIXME: Walking speed will eventually be a property of the entity.
+	const double WALK_SPEED = 5.0;	// in units/s
+
+	ICameraComponent_Ptr camComponent = entity->camera_component();
+
+	Vector3d source = camComponent->camera().position();
+	Vector3d dest = source + dir * WALK_SPEED * move.timeRemaining;
+
+	Vector3d_Ptr hit;
 	int hitNavlink = -1;
+	const std::vector<int>& links = navPoly.out_links();
+	for(std::vector<int>::const_iterator it=links.begin(), iend=links.end(); it!=iend; ++it)
+	{
+		const NavLink_Ptr& link = navMesh->links()[*it];
+		hit = link->hit_test(source, dest);
+		if(hit)
+		{
+			hitNavlink = *it;
+#if 0
+			std::cout << "Hit navlink at " << *hit << ": ";
+			link->output(std::cout);
+			std::cout << '\n';
+#endif
+			break;
+		}
+	}
 
 	// Step 3.a:	If the new movement vector doesn't hit a navlink, check whether the other end of the movement vector is within the current polygon.
 	//
 	//				-	If yes, move there, set the time remaining to zero and return.
 	//
-	//				-	If no, find the point on the boundary where we leave the polygon. Move there, and decrease
-	//					the time remaining appropriately. If there's any time remaining, we are either leaving the
-	//					navmesh or hitting a wall, so do a direct move in case it's the latter and return.
+	//				-	If no, do a direct move in the original direction, since we are either leaving the navmesh or hitting a wall.
 
 	if(hitNavlink == -1)
 	{
-		// FIXME: Walking speed will eventually be a property of the entity.
-		const double WALK_SPEED = 5.0;	// in units/s
-
-		ICameraComponent_Ptr camComponent = entity->camera_component();
-
-		const Vector3d& source = camComponent->camera().position();
-		Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
 		if(point_in_polygon(dest, curPoly))
 		{
 			camComponent->camera().set_position(dest);
@@ -204,7 +221,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 		}
 		else
 		{
-			// TODO
+			do_direct_move(entity, move, tree);
 		}
 
 		return;
@@ -215,7 +232,26 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	//				navlink completely. Traverse it as much as we are able in the time remaining and decrease the time
 	//				remaining appropriately. If we traversed it completely, update the current nav polygon.
 
-	// TODO
+	camComponent->camera().set_position(*hit);
+
+	// Update the time remaining.
+	double moveLength = source.distance(*hit);
+	double timeTaken = moveLength / WALK_SPEED;
+	move.timeRemaining -= timeTaken;
+
+	NavLink_Ptr link = navMesh->links()[hitNavlink];
+	double traversalTime = link->traversal_time(WALK_SPEED);
+	double availableTraversalTime = std::max(traversalTime, move.timeRemaining);
+	double t = traversalTime > 0 ? availableTraversalTime / traversalTime : 1;
+	dest = link->traverse(*hit, t);
+
+	camComponent->camera().set_position(dest);
+	move.timeRemaining -= std::min(traversalTime, availableTraversalTime);
+
+	if(fabs(t - 1) < SMALL_EPSILON)
+	{
+		navComponent->set_cur_nav_poly_index(link->dest_poly());
+	}
 #endif
 }
 

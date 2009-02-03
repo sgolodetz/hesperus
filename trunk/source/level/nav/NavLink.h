@@ -34,16 +34,17 @@ public:
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual Vector3d dest_position() const = 0;
+	virtual Vector3d_Ptr hit_test(const Vector3d& s, const Vector3d& d) const = 0;
 	virtual void output(std::ostream& os) const = 0;
 	virtual void render() const = 0;
 	virtual Vector3d source_position() const = 0;
+	virtual double traversal_time(double traversalSpeed) const = 0;
+	virtual Vector3d traverse(const Vector3d& source, double t) const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
 	int dest_poly() const		{ return m_destPoly; }
 	int source_poly() const		{ return m_sourcePoly; }
-
-	// TODO: <TraversalFunctor> traverse(Vector3d sourcePosition)
 };
 
 //#################### TYPEDEFS ####################

@@ -22,6 +22,12 @@ Vector3d StepLink::dest_position() const
 	return (m_destEdge.e1 + m_destEdge.e2) / 2;
 }
 
+Vector3d_Ptr StepLink::hit_test(const Vector3d& s, const Vector3d& d) const
+{
+	// NYI
+	return Vector3d_Ptr();
+}
+
 void StepLink::output(std::ostream& os) const
 {
 	os << link_name() << ' ' << m_sourcePoly << ' ' << m_destPoly << ' ' << m_sourceEdge << ' ' << m_destEdge;

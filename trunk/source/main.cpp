@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <source/exceptions/Exception.h>
 #include <source/game/Game.h>
 using namespace hesp;
 
@@ -16,6 +17,11 @@ try
 	game.run();
 
 	return 0;
+}
+catch(Exception& e)
+{
+	std::cerr << e.cause() << std::endl;
+	return EXIT_FAILURE;
 }
 catch(...)
 {
