@@ -31,7 +31,7 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 		oldTimeRemaining = move.timeRemaining;
 		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, polygons, tree, navMesh);
 		else do_direct_move(entity, move, tree);
-	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
+	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
 void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
@@ -48,7 +48,7 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 	{
 		oldTimeRemaining = move.timeRemaining;
 		do_direct_move(entity, move, tree);
-	} while(move.timeRemaining > 0.0005 && oldTimeRemaining - move.timeRemaining > 0.0001);
+	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
 //#################### PRIVATE METHODS ####################
@@ -64,6 +64,14 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 	int suggestedColPoly = -1;
 	INavComponent_Ptr navComponent = entity->nav_component();
 	int suggestedNavPoly = navComponent->cur_nav_poly_index();
+
+	// It's good to be paranoid and do a range check: we might no longer be on the same navigation mesh, for instance.
+	if(suggestedNavPoly >= static_cast<int>(navMesh->polygons().size()))
+	{
+		navComponent->set_cur_nav_poly_index(-1);
+		suggestedNavPoly = -1;
+	}
+
 	if(suggestedNavPoly != -1)
 	{
 		suggestedColPoly = navMesh->polygons()[suggestedNavPoly]->collision_poly_index();
@@ -100,6 +108,13 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 	}
 
 	// If we get here, we were unable to acquire the navmesh.
+	if(suggestedNavPoly != -1)
+	{
+		navComponent->set_cur_nav_poly_index(-1);
+#if 0
+		std::cout << "Lost navmesh at " << position << std::endl;
+#endif
+	}
 	return false;
 }
 
@@ -190,7 +205,10 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	{
 		const NavLink_Ptr& link = navMesh->links()[*it];
 		hit = link->hit_test(source, dest);
-		if(hit)
+
+		// Note:	We test that the hit's not precisely where we're standing because otherwise we can
+		//			get loops of links traversals (e.g. repeated step up/down links at the same point).
+		if(hit && source.distance_squared(*hit) > SMALL_EPSILON*SMALL_EPSILON)
 		{
 			hitNavlink = *it;
 #if 0
@@ -247,6 +265,10 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	if(fabs(t - 1) < SMALL_EPSILON)
 	{
 		navComponent->set_cur_nav_poly_index(link->dest_poly());
+#if 0
+		int colPolyIndex = navMesh->polygons()[link->dest_poly()]->collision_poly_index();
+		std::cout << "Linked to polygon (" << colPolyIndex << ',' << link->dest_poly() << ')' << std::endl;
+#endif
 	}
 	else
 	{

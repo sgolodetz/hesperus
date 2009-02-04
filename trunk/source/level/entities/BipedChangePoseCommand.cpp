@@ -20,6 +20,7 @@ void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const std
 
 	ICameraComponent_Ptr camComponent = m_biped->camera_component();
 	ICollisionComponent_Ptr colComponent = m_biped->collision_component();
+	INavComponent_Ptr navComponent = m_biped->nav_component();
 
 	Vector3d source = camComponent->camera().position();
 
@@ -42,6 +43,7 @@ void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const std
 		// If the pose change is ok, set the new pose and update the entity position to reflect the centre of the new AABB.
 		colComponent->set_pose(newPose);
 		camComponent->camera().set_position(dest);
+		navComponent->set_cur_nav_poly_index(-1);
 	}
 }
 
