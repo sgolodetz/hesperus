@@ -34,6 +34,7 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
+#if 0
 void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const OnionTree_Ptr& tree, int milliseconds)
 {
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
@@ -50,6 +51,7 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 		do_direct_move(entity, move, tree);
 	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
+#endif
 
 /**
 @return	true, if a collision occurred, or false otherwise
