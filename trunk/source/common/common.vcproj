@@ -1002,6 +1002,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\IPhysicsComponent.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\IVisibilityComponent.h"
 						>
 					</File>
@@ -1015,6 +1019,10 @@
 					</File>
 					<File
 						RelativePath="..\level\entities\NavComponent.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\PhysicsComponent.h"
 						>
 					</File>
 					<File
