@@ -75,7 +75,14 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 	if(suggestedNavPoly != -1)
 	{
 		suggestedColPoly = navMesh->polygons()[suggestedNavPoly]->collision_poly_index();
+#if 1
+		// TODO:	We should be able to remove this in release mode, provided that we can
+		//			show that the current nav poly index is never wrong (it's ok if it's
+		//			-1 to indicate that we don't know where the entity is: that may not be
+		//			up-to-date, but it's not actually wrong).
 		if(point_in_polygon(position, *polygons[suggestedColPoly])) return true;
+		else std::cout << "The entity wasn't where we thought it was" << std::endl;
+#endif
 	}
 
 	// Step 2:	Find the other potential collision polygons this entity could be in.
@@ -236,6 +243,9 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 		else
 		{
 			do_direct_move(entity, move, tree);
+
+			// We're no longer sure where the entity is relative to the navmesh.
+			navComponent->set_cur_nav_poly_index(-1);
 		}
 
 		return;
