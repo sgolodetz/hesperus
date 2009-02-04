@@ -299,23 +299,22 @@ SplitResults<Vert,AuxData> split_polygon(const Polygon<Vert,AuxData>& poly, cons
 
 	std::vector<Vert> backHalf, frontHalf;
 
-	int startVert = 0;
-	PlaneClassifier cp = classify_point_against_plane(poly.vertex(0), plane);
-	if(cp == CP_COPLANAR)	// special case: we've started at the beginning of one half of the polygon
+	// Find a start vertex which isn't on the plane. If there isn't one, the polygon doesn't
+	// straddle the plane, so we've violated a precondition (but we just checked this above,
+	// so it shouldn't happen).
+	int startVert = -1;
+	PlaneClassifier cp;
+	int vertCount = poly.vertex_count();
+	for(int i=0; i<vertCount; ++i)
 	{
-		cp = classify_point_against_plane(poly.vertex(1), plane);
-
-		if(cp == CP_COPLANAR)
+		cp = classify_point_against_plane(poly.vertex(i), plane);
+		if(cp != CP_COPLANAR)
 		{
-			// If the polygon doesn't straddle the plane, we've violated a precondition, so throw an exception.
-			throw InvalidParameterException("Polygon doesn't straddle plane");
-		}
-		else
-		{
-			// Otherwise, start from the next vertex along to avoid writing extra special case code.
-			startVert = 1;
+			startVert = i;
+			break;
 		}
 	}
+	if(startVert == -1) throw InvalidParameterException("Polygon lies in plane: unable to find a non-coplanar start vertex for polygon splitting");
 
 	// At this point, cp contains the classification of poly.vertex(startVert) against the plane
 	// Note that cp != CP_COPLANAR
@@ -415,9 +414,17 @@ std::pair<int,PlaneClassifier> construct_half_polygon(std::vector<Vert>& current
 		i = next_vert(i, vertCount);
 		cp = classify_point_against_plane(poly.vertex(i), plane);
 
-		// Having two coplanar points in sequence would imply that the polygon doesn't
-		// straddle the plane, which violates our precondition.
-		if(cp == CP_COPLANAR) throw InvalidParameterException("Polygon doesn't straddle plane");
+		// Having two or more coplanar points in sequence would imply that the polygon
+		// doesn't straddle the plane, which violates our precondition. However, in
+		// practice, this can occur if we have two or more points that are very close
+		// together and almost on the plane: due to the reasonably large tolerance value,
+		// they all get treated as being actually on the plane. We therefore choose to
+		// handle this situation by simply skipping additional coplanar vertices in this case.
+		while(cp == CP_COPLANAR)
+		{
+			i = next_vert(i, vertCount);
+			cp = classify_point_against_plane(poly.vertex(i), plane);
+		}
 	}
 	else
 	{
