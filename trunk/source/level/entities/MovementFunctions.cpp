@@ -144,7 +144,7 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	bool collisionOccurred = false;
 
 	// FIXME: Walking speed will eventually be a property of the entity.
-	const double WALK_SPEED = 5.0;	// in units/s
+	const double WALK_SPEED = 7.0;	// in units/s
 
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
@@ -217,7 +217,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the out navlinks.
 
 	// FIXME: Walking speed will eventually be a property of the entity.
-	const double WALK_SPEED = 5.0;	// in units/s
+	const double WALK_SPEED = 7.0;	// in units/s
 
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 

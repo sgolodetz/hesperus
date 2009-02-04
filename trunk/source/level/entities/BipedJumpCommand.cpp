@@ -27,8 +27,8 @@ void BipedJumpCommand::execute(const std::vector<AABB3d>& aabbs, const std::vect
 		IPhysicsComponent_Ptr physComponent = m_biped->physics_component();
 
 		// FIXME: The jump strength should eventually be a property of the entity.
-		const double JUMP_STRENGTH = 3;	// force of jump in Newtons
-		Vector3d velocity = m_dir + Vector3d(0,0,1) * JUMP_STRENGTH;
+		const double JUMP_STRENGTH = 3;		// force of jump in Newtons
+		Vector3d velocity = m_dir / JUMP_STRENGTH + Vector3d(0,0,1) * JUMP_STRENGTH;
 		physComponent->set_velocity(velocity);
 	}
 }
