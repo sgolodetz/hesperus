@@ -9,6 +9,8 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/math/vectors/Vector3.h>
+
 namespace hesp {
 
 class IPhysicsComponent
@@ -20,6 +22,8 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	virtual double mass() const = 0;
+	virtual void set_velocity(const Vector3d& velocity) = 0;
+	virtual const Vector3d& velocity() const = 0;
 };
 
 //#################### TYPEDEFS ####################

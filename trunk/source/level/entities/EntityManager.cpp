@@ -18,6 +18,7 @@ using boost::lexical_cast;
 #include "CollisionComponent.h"
 #include "HealthComponent.h"
 #include "NavComponent.h"
+#include "PhysicsComponent.h"
 #include "VariableCameraComponent.h"
 #include "VisibilityComponent.h"
 #include "YokeComponent.h"
@@ -103,6 +104,11 @@ Entity_Ptr EntityManager::player() const
 	return m_player;
 }
 
+const std::vector<Entity_Ptr>& EntityManager::simulables() const
+{
+	return m_simulables;
+}
+
 const std::vector<Entity_Ptr>& EntityManager::visibles() const
 {
 	return m_visibles;
@@ -129,6 +135,7 @@ void EntityManager::load_entity(std::istream& is)
 	ICameraComponent_Ptr cameraComponent;
 	ICollisionComponent_Ptr collisionComponent;
 	IHealthComponent_Ptr healthComponent;
+	IPhysicsComponent_Ptr physicsComponent;
 	IVisibilityComponent_Ptr visibilityComponent;
 
 	if(entityClass == "Player")
@@ -141,6 +148,7 @@ void EntityManager::load_entity(std::istream& is)
 		cameraComponent.reset(new VariableCameraComponent(is));
 		collisionComponent.reset(new CollisionComponent(is));
 		healthComponent.reset(new HealthComponent(is));
+		physicsComponent.reset(new PhysicsComponent(is));
 		visibilityComponent.reset(new VisibilityComponent(is));
 
 		LineIO::read_checked_line(is, "}");
@@ -152,6 +160,7 @@ void EntityManager::load_entity(std::istream& is)
 		cameraComponent.reset(new VariableCameraComponent(is));
 		collisionComponent.reset(new CollisionComponent(is));
 		healthComponent.reset(new HealthComponent(is));
+		physicsComponent.reset(new PhysicsComponent(is));
 		visibilityComponent.reset(new VisibilityComponent(is));
 
 		LineIO::read_checked_line(is, "}");
@@ -167,12 +176,14 @@ void EntityManager::load_entity(std::istream& is)
 	entity->set_collision_component(collisionComponent);
 	entity->set_health_component(healthComponent);
 	entity->set_nav_component(INavComponent_Ptr(new NavComponent));
+	entity->set_physics_component(physicsComponent);
 	entity->set_visibility_component(visibilityComponent);
 
 	// Add the newly-added entity to the relevant arrays.
 	int nextEntity = static_cast<int>(m_entities.size());
 	entity->set_id(nextEntity);
 	m_entities.push_back(entity);
+	if(entity->physics_component()) m_simulables.push_back(entity);
 	if(entity->visibility_component()) m_visibles.push_back(entity);
 
 	// Yoke the entity if necessary.

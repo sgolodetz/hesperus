@@ -6,6 +6,7 @@
 #include "GameState_Level.h"
 
 #include <algorithm>
+#include <iostream>
 #include <list>
 
 #include <SDL.h>
@@ -15,6 +16,7 @@
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
 #include <source/io/LevelFileUtil.h>
+#include <source/level/entities/MovementFunctions.h>
 #include <source/level/LevelViewer.h>
 
 namespace hesp {
@@ -83,6 +85,24 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 	for(std::list<EntityCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
 	{
 		(*it)->execute(m_level->entity_manager()->aabbs(), m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
+	}
+
+	// Step 3:	Apply gravity to simulable entities (i.e. those which have a physics component).
+	// FIXME: Gravity strength should eventually be a level property.
+	const double GRAVITY_STRENGTH = 9.81;	// strength of gravity in Newtons
+
+	const std::vector<Entity_Ptr> simulables = entityManager->simulables();
+	int simulableCount = static_cast<int>(simulables.size());
+	for(int i=0; i<simulableCount; ++i)
+	{
+		IPhysicsComponent_Ptr physComponent = simulables[i]->physics_component();
+		Vector3d velocity = physComponent->velocity();
+		physComponent->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
+		if(MovementFunctions::single_move_without_navmesh(simulables[i], physComponent->velocity(), m_level->onion_tree(), milliseconds))
+		{
+			// A collision occurred, so set the velocity back to zero.
+			physComponent->set_velocity(Vector3d(0,0,0));
+		}
 	}
 
 	return GameState_Ptr();

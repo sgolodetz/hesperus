@@ -51,6 +51,22 @@ void MovementFunctions::move_without_navmesh(const Entity_Ptr& entity, const Vec
 	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
+/**
+@return	true, if a collision occurred, or false otherwise
+*/
+bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir,
+													const OnionTree_Ptr& tree, int milliseconds)
+{
+	ICollisionComponent_Ptr colComponent = entity->collision_component();
+
+	Move move;
+	move.dir = dir;
+	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
+	move.timeRemaining = milliseconds / 1000.0;
+
+	return do_direct_move(entity, move, tree);
+}
+
 //#################### PRIVATE METHODS ####################
 bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 													const NavMesh_Ptr& navMesh)
@@ -118,8 +134,13 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 	return false;
 }
 
-void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree)
+/**
+@return	true, if a collision occurred, or false otherwise
+*/
+bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree)
 {
+	bool collisionOccurred = false;
+
 	// FIXME: Walking speed will eventually be a property of the entity.
 	const double WALK_SPEED = 5.0;	// in units/s
 
@@ -144,12 +165,13 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 			// and update the move direction to allow sliding along the wall instead.
 			update_move_direction_for_sliding(entity, move);
 			move.timeRemaining -= 0.001;	// make this cost 1ms of time (otherwise the calling function will think we got stuck)
-			return;
+			return true;
 		}
 		case OnionTree::RAY_TRANSITION_ES:
 		{
 			// Stop the entity going into a wall.
 			dest = *transition.location;
+			collisionOccurred = true;
 
 			// Record this as the latest transition.
 			colComponent->update_last_transition(OnionTree::Transition_Ptr(new OnionTree::Transition(transition)));
@@ -173,6 +195,8 @@ void MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 	double moveLength = source.distance(dest);
 	double timeTaken = moveLength / WALK_SPEED;
 	move.timeRemaining -= timeTaken;
+
+	return collisionOccurred;
 }
 
 void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
