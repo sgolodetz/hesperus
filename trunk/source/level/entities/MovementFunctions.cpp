@@ -75,14 +75,7 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 	if(suggestedNavPoly != -1)
 	{
 		suggestedColPoly = navMesh->polygons()[suggestedNavPoly]->collision_poly_index();
-#if 1
-		// TODO:	We should be able to remove this in release mode, provided that we can
-		//			show that the current nav poly index is never wrong (it's ok if it's
-		//			-1 to indicate that we don't know where the entity is: that may not be
-		//			up-to-date, but it's not actually wrong).
 		if(point_in_polygon(position, *polygons[suggestedColPoly])) return true;
-		else std::cout << "The entity wasn't where we thought it was" << std::endl;
-#endif
 	}
 
 	// Step 2:	Find the other potential collision polygons this entity could be in.
@@ -213,9 +206,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 		const NavLink_Ptr& link = navMesh->links()[*it];
 		hit = link->hit_test(source, dest);
 
-		// Note:	We test that the hit's not precisely where we're standing because otherwise we can
-		//			get loops of links traversals (e.g. repeated step up/down links at the same point).
-		if(hit && source.distance_squared(*hit) > SMALL_EPSILON*SMALL_EPSILON)
+		if(hit)
 		{
 			hitNavlink = *it;
 #if 0
@@ -243,9 +234,6 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 		else
 		{
 			do_direct_move(entity, move, tree);
-
-			// We're no longer sure where the entity is relative to the navmesh.
-			navComponent->set_cur_nav_poly_index(-1);
 		}
 
 		return;
@@ -275,10 +263,19 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	if(fabs(t - 1) < SMALL_EPSILON)
 	{
 		navComponent->set_cur_nav_poly_index(link->dest_poly());
+		
 #if 0
 		int colPolyIndex = navMesh->polygons()[link->dest_poly()]->collision_poly_index();
 		std::cout << "Linked to polygon (" << colPolyIndex << ',' << link->dest_poly() << ')' << std::endl;
 #endif
+
+		// Move the entity very slightly away from the navlink exit: this is a hack to prevent link loops.
+		int destColPolyIndex = navMesh->polygons()[link->dest_poly()]->collision_poly_index();
+		const CollisionPolygon& destPoly = *polygons[destColPolyIndex];
+		Plane destPlane = make_plane(destPoly);
+		Vector3d destDir = project_vector_onto_plane(move.dir, destPlane);
+		dest += destDir * 0.001;
+		if(point_in_polygon(dest, destPoly)) camComponent->camera().set_position(dest);
 	}
 	else
 	{
