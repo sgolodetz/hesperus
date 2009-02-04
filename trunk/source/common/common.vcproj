@@ -954,6 +954,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\BipedJumpCommand.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\BipedTurnCommand.h"
 						>
 					</File>
@@ -1047,6 +1051,10 @@
 					>
 					<File
 						RelativePath="..\level\entities\BipedChangePoseCommand.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\BipedJumpCommand.cpp"
 						>
 					</File>
 					<File

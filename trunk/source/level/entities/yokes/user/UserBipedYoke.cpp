@@ -7,6 +7,7 @@
 
 #include <source/exceptions/Exception.h>
 #include <source/level/entities/BipedChangePoseCommand.h>
+#include <source/level/entities/BipedJumpCommand.h>
 #include <source/level/entities/BipedTurnCommand.h>
 #include <source/level/entities/BipedWalkCommand.h>
 #include <source/math/Constants.h>
@@ -17,7 +18,10 @@ namespace hesp {
 UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 :	m_biped(biped)
 {
-	if(!m_biped->camera_component() || !m_biped->collision_component())
+	if(!m_biped->camera_component() ||
+	   !m_biped->collision_component() ||
+	   !m_biped->nav_component() ||
+	   !m_biped->physics_component())
 	{
 		throw Exception("Couldn't attach a biped yoke to a non-biped");
 	}
@@ -26,6 +30,8 @@ UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 //#################### PUBLIC METHODS ####################
 std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input)
 {
+	// FIXME: The key mappings should be defined externally, not hard-coded like this.
+
 	std::vector<EntityCommand_Ptr> commands;
 
 	const Camera& camera = m_biped->camera_component()->camera();
@@ -76,7 +82,15 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 		input.release_key(SDLK_c);
 	}
 
-	// TODO: Jump
+	//~~~~~
+	// JUMP
+	//~~~~~
+
+	if(input.key_down(SDLK_SPACE))
+	{
+		commands.push_back(EntityCommand_Ptr(new BipedJumpCommand(m_biped, dir)));
+		input.release_key(SDLK_SPACE);
+	}
 
 	return commands;
 }
