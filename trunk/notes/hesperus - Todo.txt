@@ -8,6 +8,7 @@ Last Updated: 05-02-09
 Easy
 ----
 
+* !!! Check out MapEditor from the hesperus repository on my laptop. !!!
 * Move the entity loading code out of EntityManager to sort out a dependency issue.
 * Walk/run etc. - sort out where the various different entity speeds are coming from (I'd suggest the entity definition file, possibly - the format for that also needs to be sorted out though).
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
@@ -16,7 +17,6 @@ Easy
 Medium
 ------
 
-* Move MapEditor into the main hesperus repository - it shouldn't be separate.
 * Implement some AI yokes (it probably makes sense to have composite yokes so that we can switch between different yokes for different behaviours - could we have yoke trees corresponding to goal trees?).
 
 ----
