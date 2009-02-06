@@ -214,48 +214,30 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	}
 
 	/**
-	Renders the projection of the brush's bounding box using the specified renderer. Since we only
-	render a brush's bounds when it's selected, this entails rendering the handles for manipulating
-	the brush as well.
-
-	<p><b>Preconditions:</b>
-	<dl>
-	<dd>The stroke is assumed to be set to the default stroke
-	</dl>
-
-	<p><b>Notes:</b>
-	<ul>
-	<li>Although render_bounds(renderer) is functionally equivalent to the call render_bounds(renderer, new BasicStroke()),
-	the former is slightly more efficient in that the current stroke never gets modified.
-	</ul>
+	Renders the projection of the brush's bounding box using the specified renderer. In the case of brushes
+	which have handles (i.e. anything other than a purely translatable brush), this entails rendering the
+	handles as well, since we only render a brush's bounds when it's selected.
 
 	@param renderer	The renderer with which we want to render the brush's bounds
 	*/
 	protected void render_bounds(IRenderer renderer)
 	{
-		AxisAlignedBox.Projection proj = m_boundingBox.project_to_2D_using(renderer.get_axis_pair());
-		renderer.draw_rectangle(proj.m_corners[0], proj.m_corners[1]);
-
+		super.render_bounds(renderer);
 		render_handles(renderer);
 	}
 
 	/**
-	Renders the projection of the brush's bounding box using the specified renderer and stroke. Since we only
-	render a brush's bounds when it's selected, this entails rendering the handles for manipulating the brush
-	as well. (Note that the handles always get rendered using the default stroke, and that the stroke is always
-	set to the default when the method returns.)
+	Renders the projection of the brush's bounding box using the specified renderer and stroke. In the case of
+	brushes which have handles (i.e. anything other than a purely translatable brush), this entails rendering the
+	handles as well, since we only render a brush's bounds when it's selected. (Note that the handles always get
+	rendered using the default stroke, and that the stroke is always set to the default when the method returns.)
 
 	@param renderer	The renderer with which we want to render the brush's bounds
 	@param stroke	The stroke with which we want to render the brush's bounds
 	*/
 	protected void render_bounds(IRenderer renderer, Stroke stroke)
 	{
-		AxisAlignedBox.Projection proj = m_boundingBox.project_to_2D_using(renderer.get_axis_pair());
-
-		renderer.set_stroke(stroke);
-		renderer.draw_rectangle(proj.m_corners[0], proj.m_corners[1]);
-		renderer.set_stroke(new BasicStroke());
-
+		super.render_bounds(renderer, stroke);
 		render_handles(renderer);
 	}
 

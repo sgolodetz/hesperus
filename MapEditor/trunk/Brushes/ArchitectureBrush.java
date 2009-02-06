@@ -14,9 +14,6 @@ This is the base class for the polygonal brushes which represent the level archi
 */
 public abstract class ArchitectureBrush extends TransformableBrush
 {
-	//################## CONSTANTS ##################//
-	final private static int	CROSS_SIZE = 3;						// the size of the centre cross
-
 	//################## CONSTRUCTORS ##################//
 	/**
 	Constructs an ArchitectureBrush whose initial state depends on whether or not it's a
@@ -130,31 +127,5 @@ public abstract class ArchitectureBrush extends TransformableBrush
 	final public boolean is_flippable()
 	{
 		return true;
-	}
-
-	//################## PROTECTED METHODS ##################//
-	/**
-	Renders the cross marking the brush's centre.
-
-	@param renderer	The renderer associated with the canvas onto which the centre cross is to be rendered
-	*/
-	final protected void render_centre_cross(IRenderer renderer)
-	{
-		// Cache the current stroke and restore it after rendering the centre cross.
-		Stroke currentStroke = renderer.get_stroke();
-		renderer.set_stroke(new BasicStroke());
-
-		Vector2d centre = renderer.get_axis_pair().select_components(m_boundingBox.centre());
-
-		// "x"-shaped centre cross
-		Vector2d[] p = new Vector2d[] {	renderer.add_pixel_offset(centre, -CROSS_SIZE, -CROSS_SIZE),
-										renderer.add_pixel_offset(centre, CROSS_SIZE, CROSS_SIZE),
-										renderer.add_pixel_offset(centre, CROSS_SIZE, -CROSS_SIZE),
-										renderer.add_pixel_offset(centre, -CROSS_SIZE, CROSS_SIZE)	};
-
-		renderer.draw_line(p[0], p[1]);
-		renderer.draw_line(p[2], p[3]);
-
-		renderer.set_stroke(currentStroke);
 	}
 }

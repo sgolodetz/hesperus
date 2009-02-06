@@ -1,17 +1,23 @@
 package MapEditor.Brushes;
 
 import MapEditor.Commands.*;
+import MapEditor.Geom.AxisAlignedBox;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.MathUtil;
 import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Stroke;
 
 /**
 This is the base class for brushes which can be translated.
 */
 public abstract class TranslatableBrush extends BrushAdapter implements BrushConstants, Constants
 {
+	//################## CONSTANTS ##################//
+	final private static int CROSS_SIZE = 3;	// the size of the centre cross
+
 	//################## PROTECTED ENUMERATIONS ##################//
 	protected enum State
 	{
@@ -80,25 +86,22 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 	public void mouse_dragged(IRenderer renderer, Vector2d p)
 	{
 		// NYI
-		throw new UnsupportedOperationException();
 	}
 
 	public void mouse_moved(IRenderer renderer, Vector2d p)
 	{
 		// NYI
-		throw new UnsupportedOperationException();
 	}
 
 	public boolean mouse_pressed(IRenderer renderer, Vector2d p, int button, boolean immediate)
 	{
 		// NYI
-		throw new UnsupportedOperationException();
+		return false;
 	}
 
 	public void mouse_released()
 	{
 		// NYI
-		throw new UnsupportedOperationException();
 	}
 
 	//################## PROTECTED METHODS ##################//
@@ -116,6 +119,68 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 	bounding boxes.
 	*/
 	protected void end_transform() { }
+
+	/**
+	Renders the projection of the brush's bounding box using the specified renderer.
+
+	<p><b>Preconditions:</b>
+	<dl>
+	<dd>The stroke is assumed to be set to the default stroke
+	</dl>
+
+	<p><b>Notes:</b>
+	<ul>
+	<li>Although render_bounds(renderer) is functionally equivalent to the call render_bounds(renderer, new BasicStroke()),
+	the former is slightly more efficient in that the current stroke never gets modified.
+	</ul>
+
+	@param renderer	The renderer with which we want to render the brush's bounds
+	*/
+	protected void render_bounds(IRenderer renderer)
+	{
+		AxisAlignedBox.Projection proj = m_boundingBox.project_to_2D_using(renderer.get_axis_pair());
+		renderer.draw_rectangle(proj.m_corners[0], proj.m_corners[1]);
+	}
+
+	/**
+	Renders the projection of the brush's bounding box using the specified renderer and stroke.
+
+	@param renderer	The renderer with which we want to render the brush's bounds
+	@param stroke	The stroke with which we want to render the brush's bounds
+	*/
+	protected void render_bounds(IRenderer renderer, Stroke stroke)
+	{
+		AxisAlignedBox.Projection proj = m_boundingBox.project_to_2D_using(renderer.get_axis_pair());
+
+		renderer.set_stroke(stroke);
+		renderer.draw_rectangle(proj.m_corners[0], proj.m_corners[1]);
+		renderer.set_stroke(new BasicStroke());
+	}
+
+	/**
+	Renders the cross marking the brush's centre.
+
+	@param renderer	The renderer associated with the canvas onto which the centre cross is to be rendered
+	*/
+	final protected void render_centre_cross(IRenderer renderer)
+	{
+		// Cache the current stroke and restore it after rendering the centre cross.
+		Stroke currentStroke = renderer.get_stroke();
+		renderer.set_stroke(new BasicStroke());
+
+		Vector2d centre = renderer.get_axis_pair().select_components(m_boundingBox.centre());
+
+		// "x"-shaped centre cross
+		Vector2d[] p = new Vector2d[] {	renderer.add_pixel_offset(centre, -CROSS_SIZE, -CROSS_SIZE),
+										renderer.add_pixel_offset(centre, CROSS_SIZE, CROSS_SIZE),
+										renderer.add_pixel_offset(centre, CROSS_SIZE, -CROSS_SIZE),
+										renderer.add_pixel_offset(centre, -CROSS_SIZE, CROSS_SIZE)	};
+
+		renderer.draw_line(p[0], p[1]);
+		renderer.draw_line(p[2], p[3]);
+
+		renderer.set_stroke(currentStroke);
+	}
 
 	//################## NESTED CLASSES ##################//
 	protected abstract class Transformation
