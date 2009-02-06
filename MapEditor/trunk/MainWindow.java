@@ -22,7 +22,6 @@ import javax.vecmath.*;
 public final class MainWindow extends Frame implements ActionListener
 {
 	private IBrush m_copiedBrush = null;
-	//private IMapLoader m_loader = MapFileMEF.instance();	// by default, we load .mef map files
 	private IMapSaver m_saver = MapFileMEF.instance();		// by default, we save maps as .mef files
 	private Map m_map = new Map();
 	private MenuManager m_menuManager = MenuManager.instance();
@@ -89,7 +88,7 @@ public final class MainWindow extends Frame implements ActionListener
 			public void actionPerformed(ActionEvent e)
 			{
 				m_map.set_state(Map.STATE_CREATE);
-				m_map.set_brush_creation_type(Map.BRUSHCREATIONTYPE_BLOCK);
+				m_map.set_brush_creation_type(Map.BrushType.BLOCK);
 			}
 		});
 		toolbar.add(blockButton);
@@ -100,7 +99,7 @@ public final class MainWindow extends Frame implements ActionListener
 			public void actionPerformed(ActionEvent e)
 			{
 				m_map.set_state(Map.STATE_CREATE);
-				m_map.set_brush_creation_type(Map.BRUSHCREATIONTYPE_CYLINDER);
+				m_map.set_brush_creation_type(Map.BrushType.CYLINDER);
 			}
 		});
 		toolbar.add(cylinderButton);
@@ -111,7 +110,7 @@ public final class MainWindow extends Frame implements ActionListener
 			public void actionPerformed(ActionEvent e)
 			{
 				m_map.set_state(Map.STATE_CREATE);
-				m_map.set_brush_creation_type(Map.BRUSHCREATIONTYPE_CONE);
+				m_map.set_brush_creation_type(Map.BrushType.CONE);
 			}
 		});
 		toolbar.add(coneButton);
@@ -122,7 +121,7 @@ public final class MainWindow extends Frame implements ActionListener
 			public void actionPerformed(ActionEvent e)
 			{
 				m_map.set_state(Map.STATE_CREATE);
-				m_map.set_brush_creation_type(Map.BRUSHCREATIONTYPE_UV_SPHERE);
+				m_map.set_brush_creation_type(Map.BrushType.UV_SPHERE);
 			}
 		});
 		toolbar.add(uvSphereButton);
@@ -133,10 +132,20 @@ public final class MainWindow extends Frame implements ActionListener
 			public void actionPerformed(ActionEvent e)
 			{
 				m_map.set_state(Map.STATE_CREATE);
-				m_map.set_brush_creation_type(Map.BRUSHCREATIONTYPE_LANDSCAPE);
+				m_map.set_brush_creation_type(Map.BrushType.LANDSCAPE);
 			}
 		});
 		toolbar.add(landscapeButton);
+
+		Button lightButton = new Button("Light");
+		lightButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				// TODO
+			}
+		});
+		toolbar.add(lightButton);
 
 		Panel mainArea = new Panel();
 		mainArea.setLayout(new GridLayout(2,2));

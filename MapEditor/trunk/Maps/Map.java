@@ -17,19 +17,25 @@ public class Map implements IBrush.IBrushContainer, IRepaintListener
 	m_state == STATE_EDITING -> m_selectedBrush != null
 	*/
 
+	//################## ENUMERATIONS ##################//
+	public enum BrushType
+	{
+		BLOCK,
+		CYLINDER,
+		CONE,
+		UV_SPHERE,
+		LANDSCAPE,
+		LIGHT
+	};
+
 	//################## CONSTANTS ##################//
-	final public static int BRUSHCREATIONTYPE_BLOCK = 0;
-	final public static int BRUSHCREATIONTYPE_CYLINDER = 1;
-	final public static int BRUSHCREATIONTYPE_CONE = 2;
-	final public static int BRUSHCREATIONTYPE_UV_SPHERE = 3;
-	final public static int BRUSHCREATIONTYPE_LANDSCAPE = 4;
 	final public static int STATE_NORMAL = 0;
 	final public static int STATE_CREATE = 1;
 	final public static int STATE_EDITING = 2;
 
 	//################## PRIVATE VARIABLES ##################//
 	private IBrush m_selectedBrush = null;	// the currently selected brush
-	private int m_brushCreationType;
+	private BrushType m_brushCreationType;
 	private int m_state = STATE_NORMAL;
 	private ISelectionListener m_selectionListener = ISelectionListener.NULL;
 	private LinkedList<IBrush> m_brushes = new LinkedList<IBrush>();
@@ -209,7 +215,7 @@ public class Map implements IBrush.IBrushContainer, IRepaintListener
 		return m_brushCreationAnchor;
 	}
 
-	public int get_brush_creation_type()
+	public BrushType get_brush_creation_type()
 	{
 		return m_brushCreationType;
 	}
@@ -330,9 +336,8 @@ public class Map implements IBrush.IBrushContainer, IRepaintListener
 		m_brushCreationAnchor = p;
 	}
 
-	public void set_brush_creation_type(int brushCreationType)
+	public void set_brush_creation_type(BrushType brushCreationType)
 	{
-		if(brushCreationType < 0 || brushCreationType > 4) throw new java.lang.Error();
 		m_brushCreationType = brushCreationType;
 	}
 

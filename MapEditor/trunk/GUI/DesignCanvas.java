@@ -809,28 +809,28 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 						IBrush b = null;
 						switch(m_map.get_brush_creation_type())
 						{
-							case Map.BRUSHCREATIONTYPE_BLOCK:
+							case BLOCK:
 							{
 								b = PolyhedralBrushFactory.create_axis_aligned_block(generate_brush_creation_bounds());
 								break;
 							}
-							case Map.BRUSHCREATIONTYPE_CYLINDER:
+							case CYLINDER:
 							{
 								b = PolyhedralBrushFactory.create_cylinder(generate_brush_creation_bounds(), 32, m_axisPair);
 								break;
 							}
-							case Map.BRUSHCREATIONTYPE_CONE:
+							case CONE:
 							{
 								b = PolyhedralBrushFactory.create_cone(generate_brush_creation_bounds(), 32, m_axisPair);
 								break;
 							}
-							case Map.BRUSHCREATIONTYPE_UV_SPHERE:
+							case UV_SPHERE:
 							{
 								int precision = 16;
 								b = PolyhedralBrushFactory.create_uv_sphere(generate_brush_creation_bounds(), precision/2 - 1, precision, m_axisPair);
 								break;
 							}
-							case Map.BRUSHCREATIONTYPE_LANDSCAPE:
+							case LANDSCAPE:
 							{
 								b = new LandscapeBrush(generate_brush_creation_bounds());
 								break;
