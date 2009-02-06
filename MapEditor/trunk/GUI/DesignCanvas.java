@@ -835,6 +835,11 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 								b = new LandscapeBrush(generate_brush_creation_bounds());
 								break;
 							}
+							case LIGHT:
+							{
+								b = new LightBrush(m_map.get_brush_creation_anchor());
+								break;
+							}
 						}
 						CommandManager.instance().execute_command(BrushCommands.select("Initial Brush Creation", b, m_map.get_selected_brush(), m_map));
 						if(Options.is_set("Automatic Brush Deghosting")) m_map.deghost_selection();

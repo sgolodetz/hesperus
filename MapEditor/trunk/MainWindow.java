@@ -142,7 +142,8 @@ public final class MainWindow extends Frame implements ActionListener
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				// TODO
+				/*m_map.set_state(Map.STATE_CREATE);
+				m_map.set_brush_creation_type(Map.BrushType.LIGHT);*/
 			}
 		});
 		toolbar.add(lightButton);

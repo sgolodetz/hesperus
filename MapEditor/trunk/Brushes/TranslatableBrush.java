@@ -64,6 +64,30 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 		};
 	}
 
+	public void mouse_dragged(IRenderer renderer, Point2d p)
+	{
+		// NYI
+		throw new UnsupportedOperationException();
+	}
+
+	public void mouse_moved(IRenderer renderer, Point2d p)
+	{
+		// NYI
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean mouse_pressed(IRenderer renderer, Point2d p, int button, boolean immediate)
+	{
+		// NYI
+		throw new UnsupportedOperationException();
+	}
+
+	public void mouse_released()
+	{
+		// NYI
+		throw new UnsupportedOperationException();
+	}
+
 	//################## PROTECTED METHODS ##################//
 	/**
 	This method is called at the start of a transformation to cache the current brush so that

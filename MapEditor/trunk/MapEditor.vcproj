@@ -251,6 +251,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\Brushes\LightBrush.java"
+						>
+					</File>
+					<File
 						RelativePath="Brushes\PolyhedralBrush.java"
 						>
 					</File>
