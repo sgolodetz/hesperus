@@ -175,18 +175,8 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 			dest = *transition.location;
 			collisionOccurred = true;
 
-#if 0
-			// HACK:	If we're still on the previous transition plane (if any), move us very slightly away from it.
-			//			This forces us to hit it again if we want to slide along it.
-			OnionTree::Transition_Ptr previousTransition = colComponent->last_transition();
-			if(previousTransition && classify_point_against_plane(source, *previousTransition->plane) == CP_COPLANAR)
-			{
-				dest += previousTransition->plane->normal() * EPSILON * 5;
-			}
-#endif
-
 			// Record this as the latest transition.
-			colComponent->update_last_transition(OnionTree::Transition_Ptr(new OnionTree::Transition(transition)));
+			colComponent->update_recent_transitions(OnionTree::Transition_Ptr(new OnionTree::Transition(transition)));
 
 			// Update the move direction to allow sliding.
 			update_move_direction_for_sliding(entity, move);
@@ -322,16 +312,22 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
 {
 	// Update the move direction to be along the wall (to allow sliding). To do this, we remove the
-	// component of the movement which is normal to the wall.
+	// component of the movement which is normal to the wall. To find the wall we're on, we look at
+	// all the 'recent' transitions and choose one which we're trying to walk behind.
 
-	ICollisionComponent_Ptr colComponent = entity->collision_component();
-	const OnionTree::Transition_Ptr& transition = colComponent->last_transition();
-
-	if(transition)
+	const Vector3d& source = entity->camera_component()->camera().position();
+	Vector3d dummyDest = source + move.dir;
+	const std::list<OnionTree::Transition_Ptr>& recentTransitions = entity->collision_component()->recent_transitions();
+	for(std::list<OnionTree::Transition_Ptr>::const_iterator it=recentTransitions.begin(), iend=recentTransitions.end(); it!=iend; ++it)
 	{
-		move.dir = project_vector_onto_plane(move.dir, *transition->plane);
-		if(move.dir.length() > SMALL_EPSILON) move.dir.normalize();
-		else move.timeRemaining = 0;
+		if(classify_point_against_plane(dummyDest, *(*it)->plane) == CP_BACK)
+		{
+			move.dir = project_vector_onto_plane(move.dir, *(*it)->plane);
+			if(move.dir.length() > SMALL_EPSILON) move.dir.normalize();
+			else move.timeRemaining = 0;
+
+			break;
+		}
 	}
 }
 

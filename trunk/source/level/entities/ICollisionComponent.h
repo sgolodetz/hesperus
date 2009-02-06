@@ -7,6 +7,7 @@
 #define H_HESP_ICOLLISIONCOMPONENT
 
 #include <iosfwd>
+#include <list>
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
@@ -25,11 +26,11 @@ public:
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual const std::vector<int>& aabb_indices() const = 0;
-	virtual const OnionTree::Transition_Ptr& last_transition() const = 0;
 	virtual int pose() const = 0;
+	virtual const std::list<OnionTree::Transition_Ptr>& recent_transitions() const = 0;
 	virtual void save(std::ostream& os) const = 0;
 	virtual void set_pose(int pose) = 0;
-	virtual void update_last_transition(const OnionTree::Transition_Ptr& lastTransition) = 0;
+	virtual void update_recent_transitions(const OnionTree::Transition_Ptr& transition) = 0;
 };
 
 //#################### TYPEDEFS ####################

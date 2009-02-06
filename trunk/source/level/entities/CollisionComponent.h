@@ -7,6 +7,7 @@
 #define H_HESP_COLLISIONCOMPONENT
 
 #include <source/io/FieldIO.h>
+#include <source/math/geom/GeomUtil.h>
 #include "ICollisionComponent.h"
 
 namespace hesp {
@@ -16,8 +17,8 @@ class CollisionComponent : public ICollisionComponent
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<int> m_aabbIndices;
-	OnionTree::Transition_Ptr m_lastTransition;		// records the details of last time the entity would have crossed a wall into solid space (had we not stopped it)
 	int m_pose;
+	std::list<OnionTree::Transition_Ptr> m_recentTransitions;	// records the details of recent times the entity would have crossed a wall into solid space (had we not stopped it)
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -34,14 +35,14 @@ public:
 		return m_aabbIndices;
 	}
 
-	const OnionTree::Transition_Ptr& last_transition() const
-	{
-		return m_lastTransition;
-	}
-
 	int pose() const
 	{
 		return m_pose;
+	}
+
+	const std::list<OnionTree::Transition_Ptr>& recent_transitions() const
+	{
+		return m_recentTransitions;
 	}
 
 	void save(std::ostream& os) const
@@ -58,9 +59,20 @@ public:
 		}
 	}
 
-	void update_last_transition(const OnionTree::Transition_Ptr& lastTransition)
+	void update_recent_transitions(const OnionTree::Transition_Ptr& transition)
 	{
-		m_lastTransition = lastTransition;
+		assert(transition->location != NULL);
+
+		// Remove any recent transition planes which the entity's no longer on.
+		const Vector3d& location = *transition->location;
+		for(std::list<OnionTree::Transition_Ptr>::iterator it=m_recentTransitions.begin(), iend=m_recentTransitions.end(); it!=iend;)
+		{
+			if(classify_point_against_plane(location, *(*it)->plane) == CP_COPLANAR) ++it;
+			else it = m_recentTransitions.erase(it);
+		}
+
+		// Add the latest transition.
+		m_recentTransitions.push_front(transition);
 	}
 };
 
