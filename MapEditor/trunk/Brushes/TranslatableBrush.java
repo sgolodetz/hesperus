@@ -27,10 +27,11 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 	}
 
 	//################## PROTECTED VARIABLES ##################//
-	protected BoundingBox m_boundingBox = null;		// the brush's bounding box (/cuboid)
-	protected BoundingBox m_cachedBoundingBox;		// used to cache the bounding box at the start of a transformation
-	protected IRenderer m_renderer = null;			// the renderer associated with the current canvas on which this brush is being manipulated
-	protected State m_state;						// the current state of the brush
+	protected BoundingBox m_boundingBox = null;			// the brush's bounding box (/cuboid)
+	protected BoundingBox m_cachedBoundingBox;			// used to cache the bounding box at the start of a transformation
+	protected IRenderer m_renderer = null;				// the renderer associated with the current canvas on which this brush is being manipulated
+	protected State m_state;							// the current state of the brush
+	protected Transformation m_transformation = null;	// the current transformation being performed
 
 	//################## CONSTRUCTORS ##################//
 	/**
@@ -83,25 +84,94 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 		};
 	}
 
+	/**
+	This is the event handler which deals with mouse drags. In particular, it deals with a drag
+	to level coordinates specified by p on a canvas with the specified associated renderer.
+
+	@param renderer		The renderer associated with the canvas on which the mouse is being dragged
+	@param p			The location of the mouse in level coordinates
+	*/
 	public void mouse_dragged(IRenderer renderer, Vector2d p)
 	{
-		// NYI
+		switch(m_state)
+		{
+			case TRANSFORMING:
+			{
+				m_transformation.transform(p);
+				break;
+			}
+			case IDLE:
+			{
+				// If we somehow generated a mouse_dragged without calling mouse_pressed first
+				// (perhaps by dragging onto this canvas from another component...users really
+				// can be that annoying...), then we need to call mouse_pressed to set things up
+				// and then recurse.
+				if(mouse_pressed(renderer, p, LEFT_BUTTON, false))
+				{
+					mouse_dragged(renderer, p);
+				}
+				break;
+			}
+			default:
+			{
+				System.err.println("Brush dragged whilst in invalid state: " + m_state);
+				break;
+			}
+		}
 	}
 
-	public void mouse_moved(IRenderer renderer, Vector2d p)
+	public boolean mouse_pressed(IRenderer renderer, Vector2d p, int mouseButton, boolean immediate)
 	{
-		// NYI
-	}
+		switch(mouseButton)
+		{
+			case LEFT_BUTTON:
+			{
+				m_renderer = renderer;
 
-	public boolean mouse_pressed(IRenderer renderer, Vector2d p, int button, boolean immediate)
-	{
-		// NYI
-		return false;
+				switch(m_state)
+				{
+					case INITIAL:
+					{
+						// Initially, users drag the light to the location they want.
+						m_transformation = new TranslationTransformation(p);
+						return true;
+					}
+					case IDLE:
+					{
+						if(m_boundingBox.within_2D_bounds(p, m_renderer.get_axis_pair()))
+						{
+							m_transformation = new TranslationTransformation(p);
+							return true;
+						}
+						else return false;
+					}
+					default:
+					{
+						System.err.println("Brush pressed whilst in invalid state: " + m_state);
+						return true;
+					}
+				}
+			}
+			case RIGHT_BUTTON:
+			{
+				right_mouse_pressed();
+				return true;
+			}
+			default:
+			{
+				m_transformation = new NullTransformation();	// transformations can only be performed with the left mouse button
+				return true;
+			}
+		}
 	}
 
 	public void mouse_released()
 	{
-		// NYI
+		if(m_state == State.TRANSFORMING) m_transformation.execute_command();
+
+		m_renderer = null;
+		m_state = State.IDLE;
+		m_transformation = null;
 	}
 
 	//################## PROTECTED METHODS ##################//
@@ -180,6 +250,14 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 		renderer.draw_line(p[2], p[3]);
 
 		renderer.set_stroke(currentStroke);
+	}
+
+	/**
+	This is the event handler dealing with the right mouse button being pressed.
+	*/
+	protected void right_mouse_pressed()
+	{
+		m_transformation = new NullTransformation();	// transformations can only be performed with the left mouse button
 	}
 
 	//################## NESTED CLASSES ##################//

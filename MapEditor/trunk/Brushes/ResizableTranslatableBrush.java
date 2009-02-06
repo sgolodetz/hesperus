@@ -31,9 +31,6 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	//################## PROTECTED VARIABLES ##################//
 	protected HandleState m_handleState = HandleState.RESIZE;	// the current handle type (we start off with resize handles)
 
-	//################## PRIVATE VARIABLES ##################//
-	private Transformation m_transformation = null;				// the current transformation being performed
-
 	//################## CONSTRUCTORS ##################//
 	/**
 	Constructs a ResizableTranslatableBrush whose initial state depends on whether or not it's
@@ -62,42 +59,6 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	protected abstract void resize(Vector2d corner0, Vector2d corner1, AxisPair ap);
 
 	//################## PUBLIC METHODS ##################//
-	/**
-	This is the event handler which deals with mouse drags. In particular, it deals with a drag
-	to level coordinates specified by p on a canvas with the specified associated renderer.
-
-	@param renderer		The renderer associated with the canvas on which the mouse is being dragged
-	@param p			The location of the mouse in level coordinates
-	*/
-	public void mouse_dragged(IRenderer renderer, Vector2d p)
-	{
-		switch(m_state)
-		{
-			case TRANSFORMING:
-			{
-				m_transformation.transform(p);
-				break;
-			}
-			case IDLE:
-			{
-				// If we somehow generated a mouse_dragged without calling mouse_pressed first
-				// (perhaps by dragging onto this canvas from another component...users really
-				// can be that annoying...), then we need to call mouse_pressed to set things up
-				// and then recurse.
-				if(mouse_pressed(renderer, p, LEFT_BUTTON, false))
-				{
-					mouse_dragged(renderer, p);
-				}
-				break;
-			}
-			default:
-			{
-				System.err.println("Brush dragged whilst in invalid state: " + m_state);
-				break;
-			}
-		}
-	}
-
 	public void mouse_moved(IRenderer renderer, Vector2d p)
 	{
 		set_correct_cursor(renderer, p);
@@ -181,15 +142,6 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 		}
 	}
 
-	public void mouse_released()
-	{
-		if(m_state == State.TRANSFORMING) m_transformation.execute_command();
-
-		m_renderer = null;
-		m_state = State.IDLE;
-		m_transformation = null;
-	}
-
 	//################## PROTECTED METHODS ##################//
 	/**
 	Clears the brush's state.
@@ -249,14 +201,6 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	final protected void render_transformation_effects(IRenderer renderer)
 	{
 		if(m_transformation != null) m_transformation.render_effects(renderer);
-	}
-
-	/**
-	This is the event handler dealing with the right mouse button being pressed.
-	*/
-	protected void right_mouse_pressed()
-	{
-		m_transformation = new NullTransformation();	// transformations can only be performed with the left mouse button
 	}
 
 	//################## PRIVATE METHODS ##################//

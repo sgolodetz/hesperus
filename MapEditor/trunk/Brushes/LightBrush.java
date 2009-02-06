@@ -29,7 +29,7 @@ public class LightBrush extends TranslatableBrush
 		m_colour = colour;
 		m_ghost = ghost;
 
-		final double HALF_BOX_SIZE = 8;
+		final double HALF_BOX_SIZE = 16;
 		Vector3d mins = VectorUtil.subtract(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
 		Vector3d maxs = VectorUtil.add(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
 		m_boundingBox = new BoundingBox(new AxisAlignedBox(mins, maxs));
@@ -43,8 +43,10 @@ public class LightBrush extends TranslatableBrush
 	//################## PROTECTED METHODS ##################//
 	protected void translate(Vector3d trans)
 	{
-		// NYI
-		throw new UnsupportedOperationException();
+		// It's easy to recalculate bounding boxes while we're translating, so we might as well
+		// in order to make things easier for users.
+		m_boundingBox = m_cachedBoundingBox.clone();
+		m_boundingBox.translate(trans);
 	}
 
 	//################## PUBLIC METHODS ##################//
@@ -142,8 +144,7 @@ public class LightBrush extends TranslatableBrush
 
 	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
-		// The metric is simple: return the square of the nearest distance to
-		// the centre or to a bounding box edge.
+		// The metric is simple: return the square of the nearest distance to the centre.
 		AxisPair ap = renderer.get_axis_pair();
 		Vector2d centre = ap.select_components(m_boundingBox.centre());
 
