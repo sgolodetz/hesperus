@@ -185,6 +185,16 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 	}
 
 	/**
+	Clears the brush's state.
+	*/
+	protected void clear_state()
+	{
+		m_renderer = null;
+		m_state = State.IDLE;
+		m_transformation = null;
+	}
+
+	/**
 	This method is called at the end of a transformation to allow recalculation of things like
 	bounding boxes.
 	*/

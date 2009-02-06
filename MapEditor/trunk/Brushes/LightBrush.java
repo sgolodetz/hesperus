@@ -3,7 +3,7 @@ package MapEditor.Brushes;
 import MapEditor.Commands.*;
 import MapEditor.Geom.AxisAlignedBox;
 import MapEditor.Geom.AxisPair;
-import MapEditor.Graphics.IRenderer;
+import MapEditor.Graphics.*;
 import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Pair;
 import java.awt.BasicStroke;
@@ -38,15 +38,6 @@ public class LightBrush extends TranslatableBrush
 	public LightBrush(Vector3d position)
 	{
 		this(position, Color.white, true, true);
-	}
-
-	//################## PROTECTED METHODS ##################//
-	protected void translate(Vector3d trans)
-	{
-		// It's easy to recalculate bounding boxes while we're translating, so we might as well
-		// in order to make things easier for users.
-		m_boundingBox = m_cachedBoundingBox.clone();
-		m_boundingBox.translate(trans);
 	}
 
 	//################## PUBLIC METHODS ##################//
@@ -86,6 +77,12 @@ public class LightBrush extends TranslatableBrush
 		}
 	}
 
+	public IBrush deselect(IBrushContainer container)
+	{
+		clear_state();
+		return null;
+	}
+
 	public boolean is_copyable()
 	{
 		return !is_ghost();
@@ -116,7 +113,8 @@ public class LightBrush extends TranslatableBrush
 
 	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		// NYI
+		gl.glColor3d(1,1,0);
+		render3D_light(gl, glu);
 	}
 
 	public void render_selected(IRenderer renderer, Color overrideColour)
@@ -134,7 +132,8 @@ public class LightBrush extends TranslatableBrush
 
 	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		// NYI
+		gl.glColor3d(0,1,1);
+		render3D_light(gl, glu);
 	}
 
 	public void save_MEF2(PrintWriter pw)
@@ -151,5 +150,26 @@ public class LightBrush extends TranslatableBrush
 		double bestMetric = renderer.distance_squared(p, centre);
 
 		return bestMetric;
+	}
+
+	//################## PROTECTED METHODS ##################//
+	protected void translate(Vector3d trans)
+	{
+		// It's easy to recalculate bounding boxes while we're translating, so we might as well
+		// in order to make things easier for users.
+		m_boundingBox = m_cachedBoundingBox.clone();
+		m_boundingBox.translate(trans);
+	}
+
+	//################## PRIVATE METHODS ##################//
+	private void render3D_light(GL gl, GLU glu)
+	{
+		Vector3d centre = m_boundingBox.centre();
+		GLUquadric quadric = glu.gluNewQuadric();
+		gl.glPushMatrix();
+			gl.glTranslated(centre.x, centre.y, centre.z);
+			glu.gluSphere(quadric, 16.0f, 8, 8);
+		gl.glPopMatrix();
+		glu.gluDeleteQuadric(quadric);
 	}
 }

@@ -146,12 +146,10 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	/**
 	Clears the brush's state.
 	*/
-	final protected void clear_state()
+	protected void clear_state()
 	{
 		m_handleState = HandleState.RESIZE;
-		m_renderer = null;
-		m_state = State.IDLE;
-		m_transformation = null;
+		super.clear_state();
 	}
 
 	/**
