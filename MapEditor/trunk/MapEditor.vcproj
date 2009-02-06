@@ -234,6 +234,10 @@
 						RelativePath="Brushes\TransformableBrush.java"
 						>
 					</File>
+					<File
+						RelativePath=".\Brushes\TranslatableBrush.java"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="&lt;Concrete Brushes&gt;"
