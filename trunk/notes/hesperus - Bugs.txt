@@ -4,6 +4,10 @@ hesperus - Bugs
 
 Newest Bug Index: 1
 
+~~~~~~~~~~~
+OUTSTANDING
+~~~~~~~~~~~
+
 -------------
 High Priority
 -------------
@@ -14,6 +18,18 @@ None at present
 Medium Priority
 ---------------
 
+None at present
+
+------------
+Low Priority
+------------
+
+None at present
+
+~~~~~~~~
+RESOLVED
+~~~~~~~~
+
 ***
 Index:		1
 Description:	Entity wall sliding can fail if the last transition plane is not the one against which we're trying
@@ -21,9 +37,3 @@ Description:	Entity wall sliding can fail if the last transition plane is not th
 Reproduction:	Walk against a side wall in a corner, back into the wall behind, then try and walk into the side wall.
 Expected:	The entity should slide along the wall.
 Observed:	The entity doesn't move.
-
-------------
-Low Priority
-------------
-
-None at present

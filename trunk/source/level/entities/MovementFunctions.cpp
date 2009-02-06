@@ -175,6 +175,14 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 			dest = *transition.location;
 			collisionOccurred = true;
 
+			// HACK:	If we're still on the previous transition plane (if any), move us very slightly away from it.
+			//			This forces us to hit it again if we want to slide along it.
+			OnionTree::Transition_Ptr previousTransition = colComponent->last_transition();
+			if(previousTransition && classify_point_against_plane(source, *previousTransition->plane) == CP_COPLANAR)
+			{
+				dest += previousTransition->plane->normal() * EPSILON * 5;
+			}
+
 			// Record this as the latest transition.
 			colComponent->update_last_transition(OnionTree::Transition_Ptr(new OnionTree::Transition(transition)));
 
