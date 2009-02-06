@@ -7,11 +7,11 @@ import MapEditor.Commands.*;
 import MapEditor.Geom.Planar.*;
 import MapEditor.Graphics.GraphicsUtil;
 import MapEditor.Misc.*;
+import MapEditor.Math.Vectors.Vector3d;
 import MapEditor.Test.*;
 import java.awt.Frame;
 import java.util.Iterator;
 import java.util.LinkedList;
-import javax.vecmath.*;
 
 public class CSGUtil implements Constants, GeomConstants
 {
@@ -108,7 +108,7 @@ public class CSGUtil implements Constants, GeomConstants
 
 		// We need to check that it's alright to hollow. The method chosen merely involves observing that we can hollow
 		// if the convex volume surrounded by the carve brush (strictly) contains the centre of the original brush.
-		Point3d centre = brush.centre();
+		Vector3d centre = brush.centre();
 		for(Plane plane: planes)
 		{
 			if(GeomUtil.classify_point_against_plane(centre, plane) != CP_BACK)

@@ -4,10 +4,10 @@ import MapEditor.Brushes.PolyhedralBrush;
 import MapEditor.BSP.TreeUtil;
 import MapEditor.Geom.Planar.*;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.Vector3d;
 import MapEditor.Textures.*;
 import java.io.*;
 import java.util.*;
-import javax.vecmath.*;
 
 public class MapFileMAP implements IMapLoader	// .map files are output by editors like Worldcraft
 {
@@ -56,17 +56,17 @@ public class MapFileMAP implements IMapLoader	// .map files are output by editor
 			{
 				String[] tokens = line.split(" ", 0);
 
-				Point3d[] verts = new Point3d[3];
+				Vector3d[] verts = new Vector3d[3];
 				for(int i=0; i<3; ++i)
 				{
 					int offset = i*5 + 1;
-					verts[i] = new Point3d(	Double.parseDouble(tokens[offset]),
+					verts[i] = new Vector3d(	Double.parseDouble(tokens[offset]),
 											Double.parseDouble(tokens[offset+1]),
 											Double.parseDouble(tokens[offset+2])	);
 				}
 
 				// The vertices are specified in clockwise winding order, we need to swap them round.
-				Point3d temp = verts[1]; verts[1] = verts[2]; verts[2] = temp;
+				Vector3d temp = verts[1]; verts[1] = verts[2]; verts[2] = temp;
 
 				//String texture = tokens[15];
 				String texture = "NULL";	// TODO: Eventually I need to find a way of reading the relevant .wad file.

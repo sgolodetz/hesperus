@@ -3,9 +3,9 @@ package MapEditor.Brushes;
 import MapEditor.Commands.*;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import java.awt.Color;
-import javax.vecmath.*;
 
 /**
 This is the base class for brushes which can be translated.
@@ -45,7 +45,7 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 
 	@param trans	The vector by which to translate
 	*/
-	protected abstract void translate(Point3d trans);
+	protected abstract void translate(Vector3d trans);
 
 	//################## PUBLIC METHODS ##################//
 	/**
@@ -54,10 +54,10 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 	@param offset	The offset by which to translate this brush
 	@return			As specified above
 	*/
-	public Command generate_translation_command(Point3d offset)
+	public Command generate_translation_command(Vector3d offset)
 	{
-		final Point3d offsetCopy = (Point3d)offset.clone();
-		final Point3d negOffset = (Point3d)offset.clone();
+		final Vector3d offsetCopy = offset.clone();
+		final Vector3d negOffset = offset.clone();
 		negOffset.negate();
 		return new Command("Translation")
 		{
@@ -77,19 +77,19 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 		};
 	}
 
-	public void mouse_dragged(IRenderer renderer, Point2d p)
+	public void mouse_dragged(IRenderer renderer, Vector2d p)
 	{
 		// NYI
 		throw new UnsupportedOperationException();
 	}
 
-	public void mouse_moved(IRenderer renderer, Point2d p)
+	public void mouse_moved(IRenderer renderer, Vector2d p)
 	{
 		// NYI
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean mouse_pressed(IRenderer renderer, Point2d p, int button, boolean immediate)
+	public boolean mouse_pressed(IRenderer renderer, Vector2d p, int button, boolean immediate)
 	{
 		// NYI
 		throw new UnsupportedOperationException();
@@ -145,30 +145,30 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 
 		@param p	The mouse location in level coordinates
 		*/
-		public abstract void transform(Point2d p);
+		public abstract void transform(Vector2d p);
 	}
 
 	final protected class NullTransformation extends Transformation
 	{
 		public void execute_command() { }
-		public void transform(Point2d p) { }
+		public void transform(Vector2d p) { }
 	}
 
 	final protected class TranslationTransformation extends Transformation
 	{
 		final private static int TRANSLATION_ANCHOR_SIZE = 8;	// the size of the translation anchor
 
-		private Point2d m_anchor;				// the location of the translation anchor (used for rendering, not in the actual transformation!)
-		private Point2d m_dragOffset;			// the offset of the point we clicked from the top-left corner (on our current canvas)
-		private Point2d m_fixedCorner;			// the location of the top-left corner (top-left on our current canvas, of course)
-		private Point3d m_offset;				// the offset by which we've translated at present
+		private Vector2d m_anchor;				// the location of the translation anchor (used for rendering, not in the actual transformation!)
+		private Vector2d m_dragOffset;			// the offset of the point we clicked from the top-left corner (on our current canvas)
+		private Vector2d m_fixedCorner;			// the location of the top-left corner (top-left on our current canvas, of course)
+		private Vector3d m_offset;				// the offset by which we've translated at present
 
 		/**
 		Constructs a translation transformation for the brush.
 
 		@param p	The point clicked by the user (in level coordinates)
 		*/
-		public TranslationTransformation(Point2d p)
+		public TranslationTransformation(Vector2d p)
 		{
 			begin_transform();
 
@@ -178,16 +178,16 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 			// computations.
 			m_fixedCorner = m_boundingBox.find_manhattan_nearest_corner_handle(m_renderer.get_axis_pair(), p);
 
-			m_dragOffset = MathUtil.subtract(p, m_fixedCorner);
+			m_dragOffset = VectorUtil.subtract(p, m_fixedCorner);
 			m_anchor = m_fixedCorner;
-			m_offset = new Point3d(0, 0, 0);
+			m_offset = new Vector3d(0, 0, 0);
 		}
 
 		public void execute_command()
 		{
-			if (m_offset.equals(new Point3d(0, 0, 0))) return;	// don't bother with no-op translations
+			if (m_offset.equals(new Vector3d(0, 0, 0))) return;	// don't bother with no-op translations
 
-			translate(new Point3d(0, 0, 0));	// reset the brush to its pre-translation state
+			translate(new Vector3d(0, 0, 0));	// reset the brush to its pre-translation state
 
 			CommandManager.instance().execute_command(generate_translation_command(m_offset));
 		}
@@ -205,7 +205,7 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 			{
 				renderer.set_colour(Color.white);
 
-				Point2d[] p = new Point2d[] {	renderer.add_pixel_offset(m_anchor, -TRANSLATION_ANCHOR_SIZE, -TRANSLATION_ANCHOR_SIZE),
+				Vector2d[] p = new Vector2d[] {	renderer.add_pixel_offset(m_anchor, -TRANSLATION_ANCHOR_SIZE, -TRANSLATION_ANCHOR_SIZE),
 												renderer.add_pixel_offset(m_anchor, TRANSLATION_ANCHOR_SIZE, TRANSLATION_ANCHOR_SIZE),
 												renderer.add_pixel_offset(m_anchor, TRANSLATION_ANCHOR_SIZE, -TRANSLATION_ANCHOR_SIZE),
 												renderer.add_pixel_offset(m_anchor, -TRANSLATION_ANCHOR_SIZE, TRANSLATION_ANCHOR_SIZE)	};
@@ -214,7 +214,7 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 			}
 		}
 
-		public void transform(Point2d p)
+		public void transform(Vector2d p)
 		{
 			/*
 			Method:
@@ -225,7 +225,7 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 			Translate
 			*/
 
-			Point2d newFixedCorner = MathUtil.subtract(p, m_dragOffset);
+			Vector2d newFixedCorner = VectorUtil.subtract(p, m_dragOffset);
 
 			if (Options.is_set("Snap To Grid"))
 			{
@@ -233,7 +233,7 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 				newFixedCorner = m_renderer.find_nearest_grid_intersect_in_coords(newFixedCorner);
 			}
 
-			Point2d trans = MathUtil.subtract(newFixedCorner, m_fixedCorner);
+			Vector2d trans = VectorUtil.subtract(newFixedCorner, m_fixedCorner);
 
 			m_anchor = newFixedCorner;
 

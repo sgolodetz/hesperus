@@ -7,6 +7,7 @@ import MapEditor.Geom.Planar.*;
 import MapEditor.Graphics.ColourCycle;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import MapEditor.Textures.*;
 import java.awt.Color;
@@ -15,7 +16,6 @@ import java.awt.Point;
 import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 /**
@@ -54,7 +54,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			++i;
 		}
 
-		m_boundingBox = new BoundingBox(new Point3d(0,0,0), new Point3d(1,1,1));
+		m_boundingBox = new BoundingBox(new Vector3d(0,0,0), new Vector3d(1,1,1));
 		recalculate_bounding_box();
 	}
 
@@ -191,10 +191,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		};
 	}
 
-	public PickResults pick(final Point3d start, final Vector3d direction)
+	public PickResults pick(final Vector3d start, final Vector3d direction)
 	{
 		Polygon nearestFace = null;
-		Point3d nearestPoint = null;
+		Vector3d nearestPoint = null;
 		double nearestDistanceSquared = Double.MAX_VALUE;
 		for(Polygon p: m_polys)
 		{
@@ -202,11 +202,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			if(plane.get_normal().dot(direction) == 0) continue;							// ignore a polygon if its plane is parallel to the direction vector
 			if(GeomUtil.classify_point_against_plane(start, plane) != CP_FRONT) continue;	// ignore polygons if we're behind them - the user clearly didn't
 																							// intend to click a polygon they couldn't see due to back-face culling!
-			Pair<Point3d,Double> intersection = GeomUtil.determine_line_intersection_with_plane(start, direction, plane);
+			Pair<Vector3d,Double> intersection = GeomUtil.determine_line_intersection_with_plane(start, direction, plane);
 			if(intersection.second > 1)		// the GeomUtil function deals with a whole ray, we're only interested in the forward half-ray
 											// note that this means the half-ray starting at the image plane, i.e. t > 1
 			{
-				double distanceSquared = start.distanceSquared(intersection.first);
+				double distanceSquared = start.distance_squared(intersection.first);
 				if(distanceSquared < nearestDistanceSquared && GeomUtil.point_in_convex_polygon(intersection.first, p) != PMC_OUTSIDE)
 				{
 					nearestFace = p;
@@ -222,7 +222,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	{
 		for(Polygon p: m_polys)
 		{
-			for(Point3d v: p.get_vertices())
+			for(Vector3d v: p.get_vertices())
 			{
 				plane.reflect_point(v);
 			}
@@ -233,11 +233,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		
 		// We know the bounding box was reflected across the reflection plane and can hence determine
 		// where it was mapped to by the reflection.
-		Point3d[] oldBounds = m_boundingBox.get_bounds();
-		Point3d[] newBounds = new Point3d[2];
+		Vector3d[] oldBounds = m_boundingBox.get_bounds();
+		Vector3d[] newBounds = new Vector3d[2];
 		for(int i=0; i<2; ++i)
 		{
-			newBounds[i] = (Point3d)oldBounds[i].clone();
+			newBounds[i] = oldBounds[i].clone();
 			plane.reflect_point(newBounds[i]);
 		}
 		m_boundingBox.resize(newBounds[0], newBounds[1]);
@@ -265,23 +265,23 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			// Draw the polygon normals.
 			for(Polygon p: m_polys)
 			{
-				Point3d centre = new Point3d();
-				for(Point3d v: p.get_vertices())
+				Vector3d centre = new Vector3d();
+				for(Vector3d v: p.get_vertices())
 				{
 					centre.add(v);
 				}
 				centre.scale(1.0/p.get_vertices().length);
 
-				Vector3d scaledNormal = (Vector3d)p.get_normal().clone();
+				Vector3d scaledNormal = p.get_normal().clone();
 				scaledNormal.scale(15);
-				Point3d centrePLUSnormal = (Point3d)centre.clone();
+				Vector3d centrePLUSnormal = centre.clone();
 				centrePLUSnormal.add(scaledNormal);
 
 				renderer.set_colour(Color.magenta);
 				renderer.draw_line(centre, centrePLUSnormal);
 
 				scaledNormal.scale(0.5);
-				Point3d centrePLUShalfNormal = (Point3d)centre.clone();
+				Vector3d centrePLUShalfNormal = centre.clone();
 				centrePLUShalfNormal.add(scaledNormal);
 				renderer.set_colour(Color.cyan);
 				renderer.draw_line(centrePLUShalfNormal, centrePLUSnormal);
@@ -304,7 +304,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 					gl.glBegin(GL.GL_POLYGON);
 						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Point3d v: p.get_vertices())
+						for(Vector3d v: p.get_vertices())
 						{
 							TextureCoord texCoords = textureDetails.second.calculate_coordinates(v);
 							gl.glTexCoord2d(texCoords.u, texCoords.v);
@@ -318,7 +318,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				{
 					gl.glBegin(GL.GL_POLYGON);
 						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Point3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
+						for(Vector3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
 					gl.glEnd();
 				}
 			}
@@ -379,7 +379,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 					// Render the textured polygon.
 					gl.glBegin(GL.GL_POLYGON);
 						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Point3d v: p.get_vertices())
+						for(Vector3d v: p.get_vertices())
 						{
 							TextureCoord texCoords = textureDetails.second.calculate_coordinates(v);
 							gl.glTexCoord2d(texCoords.u, texCoords.v);
@@ -399,7 +399,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 					gl.glEnable(GL.GL_BLEND);
 					gl.glBegin(GL.GL_POLYGON);
 						gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-						for(Point3d v: p.get_vertices())
+						for(Vector3d v: p.get_vertices())
 						{
 							gl.glVertex3d(v.x, v.y, v.z);
 						}
@@ -413,7 +413,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				{
 					gl.glBegin(GL.GL_POLYGON);
 						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Point3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
+						for(Vector3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
 					gl.glEnd();
 				}
 			}
@@ -440,22 +440,22 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		if(bRenderNormals) render_normals(gl);
 	}
 
-	public double selection_metric(Point2d p, IRenderer renderer)
+	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
 		// The metric is simple: return the square of the nearest distance to
 		// the centre or to an edge.
 
 		AxisPair ap = renderer.get_axis_pair();
-		Point2d centre = ap.select_components(m_boundingBox.centre());
+		Vector2d centre = ap.select_components(m_boundingBox.centre());
 
 		double bestMetric = renderer.distance_squared(p, centre);
 		for(Polygon poly: m_polys)
 		{
-			Point3d[] verts = poly.get_vertices();
+			Vector3d[] verts = poly.get_vertices();
 			for(int i=0, len=verts.length; i<len; ++i)
 			{
 				int j = (i+1)%len;
-				Point2d e1 = ap.select_components(verts[i]), e2 = ap.select_components(verts[j]);
+				Vector2d e1 = ap.select_components(verts[i]), e2 = ap.select_components(verts[j]);
 				if(!e1.equals(e2))	// if the points are distinct on this canvas, i.e. there's an edge to check against
 				{
 					double metric = renderer.distance_squared_from_linesegment(p, e1, e2);
@@ -545,10 +545,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		line = br.readLine();
 		tokens = line.split(" ", 0);
 		if(tokens.length < 1 || !tokens[0].equals("Bounds")) throw new IOException("Bounds not found");
-		Point3d[] corners = new Point3d[] {	new Point3d(	Double.parseDouble(tokens[2]),
+		Vector3d[] corners = new Vector3d[] {	new Vector3d(	Double.parseDouble(tokens[2]),
 															Double.parseDouble(tokens[3]),
 															Double.parseDouble(tokens[4])	),
-											new Point3d(	Double.parseDouble(tokens[7]),
+											new Vector3d(	Double.parseDouble(tokens[7]),
 															Double.parseDouble(tokens[8]),
 															Double.parseDouble(tokens[9])	) };
 		AxisAlignedBox bounds = new AxisAlignedBox(corners[0], corners[1]);
@@ -557,10 +557,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		line = br.readLine();
 		tokens = line.split(" ", 0);
 		if(tokens.length < 1 || !tokens[0].equals("ValidBounds")) throw new IOException("ValidBounds not found");
-		corners = new Point3d[] {	new Point3d(Double.parseDouble(tokens[2]),
+		corners = new Vector3d[] {	new Vector3d(Double.parseDouble(tokens[2]),
 												Double.parseDouble(tokens[3]),
 												Double.parseDouble(tokens[4])	),
-									new Point3d(Double.parseDouble(tokens[7]),
+									new Vector3d(Double.parseDouble(tokens[7]),
 												Double.parseDouble(tokens[8]),
 												Double.parseDouble(tokens[9])	) };
 		AxisAlignedBox templateBounds = new AxisAlignedBox(corners[0], corners[1]);
@@ -580,11 +580,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			}
 			int vertCount = Integer.parseInt(tokens[1]);
 			if(vertCount <= 0) throw new IOException("Invalid vertex count");
-			Point3d[] vertices = new Point3d[vertCount];
+			Vector3d[] vertices = new Vector3d[vertCount];
 			for(int j=0; j<vertCount; ++j)
 			{
 				int offset = 3+5*j;
-				vertices[j] = new Point3d(	Double.parseDouble(tokens[offset]),
+				vertices[j] = new Vector3d(	Double.parseDouble(tokens[offset]),
 											Double.parseDouble(tokens[offset+1]),
 											Double.parseDouble(tokens[offset+2])	);
 			}
@@ -611,10 +611,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		line = br.readLine();
 		tokens = line.split(" ", 0);
 		if(tokens.length < 1 || !tokens[0].equals("Bounds")) throw new IOException("Bounds not found");
-		Point3d[] corners = new Point3d[] {	new Point3d(	Double.parseDouble(tokens[2]),
+		Vector3d[] corners = new Vector3d[] {	new Vector3d(	Double.parseDouble(tokens[2]),
 															Double.parseDouble(tokens[3]),
 															Double.parseDouble(tokens[4])	),
-											new Point3d(	Double.parseDouble(tokens[7]),
+											new Vector3d(	Double.parseDouble(tokens[7]),
 															Double.parseDouble(tokens[8]),
 															Double.parseDouble(tokens[9])	) };
 		AxisAlignedBox bounds = new AxisAlignedBox(corners[0], corners[1]);
@@ -623,10 +623,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		line = br.readLine();
 		tokens = line.split(" ", 0);
 		if(tokens.length < 1 || !tokens[0].equals("ValidBounds")) throw new IOException("ValidBounds not found");
-		corners = new Point3d[] {	new Point3d(Double.parseDouble(tokens[2]),
+		corners = new Vector3d[] {	new Vector3d(Double.parseDouble(tokens[2]),
 												Double.parseDouble(tokens[3]),
 												Double.parseDouble(tokens[4])	),
-									new Point3d(Double.parseDouble(tokens[7]),
+									new Vector3d(Double.parseDouble(tokens[7]),
 												Double.parseDouble(tokens[8]),
 												Double.parseDouble(tokens[9])	) };
 		AxisAlignedBox templateBounds = new AxisAlignedBox(corners[0], corners[1]);
@@ -646,11 +646,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			}
 			int vertCount = Integer.parseInt(tokens[1]);
 			if(vertCount <= 0) throw new IOException("Invalid vertex count");
-			Point3d[] vertices = new Point3d[vertCount];
+			Vector3d[] vertices = new Vector3d[vertCount];
 			for(int j=0; j<vertCount; ++j)
 			{
 				int offset = 3+5*j;
-				vertices[j] = new Point3d(	Double.parseDouble(tokens[offset]),
+				vertices[j] = new Vector3d(	Double.parseDouble(tokens[offset]),
 											Double.parseDouble(tokens[offset+1]),
 											Double.parseDouble(tokens[offset+2])	);
 			}
@@ -691,10 +691,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		line = br.readLine();
 		tokens = line.split(" ", 0);
 		if(tokens.length < 1 || !tokens[0].equals("Bounds")) throw new IOException("Bounds not found");
-		Point3d[] corners = new Point3d[] {	new Point3d(	Double.parseDouble(tokens[2]),
+		Vector3d[] corners = new Vector3d[] {	new Vector3d(	Double.parseDouble(tokens[2]),
 															Double.parseDouble(tokens[3]),
 															Double.parseDouble(tokens[4])	),
-											new Point3d(	Double.parseDouble(tokens[7]),
+											new Vector3d(	Double.parseDouble(tokens[7]),
 															Double.parseDouble(tokens[8]),
 															Double.parseDouble(tokens[9])	) };
 		b.m_boundingBox = new BoundingBox(corners[0], corners[1]);
@@ -714,11 +714,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			}
 			int vertCount = Integer.parseInt(tokens[1]);
 			if(vertCount <= 0) throw new IOException("Invalid vertex count");
-			Point3d[] vertices = new Point3d[vertCount];
+			Vector3d[] vertices = new Vector3d[vertCount];
 			for(int j=0; j<vertCount; ++j)
 			{
 				int offset = 3+5*j;
-				vertices[j] = new Point3d(	Double.parseDouble(tokens[offset]),
+				vertices[j] = new Vector3d(	Double.parseDouble(tokens[offset]),
 											Double.parseDouble(tokens[offset+1]),
 											Double.parseDouble(tokens[offset+2])	);
 			}
@@ -749,7 +749,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		pw.println("PolyhedralBrush");
 		pw.println("{");
 
-		Point3d[] bounds = m_boundingBox.get_bounds();
+		Vector3d[] bounds = m_boundingBox.get_bounds();
 		pw.print("Bounds");
 		for(int i=0; i<2; ++i) pw.print(" ( " + bounds[i].x + " " + bounds[i].y + " " + bounds[i].z + " )");
 		pw.println();
@@ -761,7 +761,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		{
 			Polygon p = m_polys[i];
 			pw.print("Polygon " + p.get_vertices().length);
-			for(Point3d v: p.get_vertices())
+			for(Vector3d v: p.get_vertices())
 			{
 				pw.print(" ( " + v.x + " " + v.y + " " + v.z + " )");
 			}
@@ -787,7 +787,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	static PolyhedralBrush create_from_unit_template(Polygon[] templatePolys, AxisAlignedBox bounds)
 	{
 		PolyhedralBrush b = new PolyhedralBrush(true, true);
-		b.initialise_from_template(templatePolys, new BoundingBox(new Point3d(0,0,0), new Point3d(1,1,1)), bounds);
+		b.initialise_from_template(templatePolys, new BoundingBox(new Vector3d(0,0,0), new Vector3d(1,1,1)), bounds);
 		return b;
 	}
 
@@ -808,15 +808,15 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		recalculate_bounding_box();
 	}
 
-	protected void resize(Point2d corner0, Point2d corner1, AxisPair ap)
+	protected void resize(Vector2d corner0, Vector2d corner1, AxisPair ap)
 	{
 		// Generate our resized brush from the brush we had at the start of the transformation
 		// (we cached it in begin_transform).
 
 		// Ensure that corner0 and corner1 contain the 0th and 2nd corners
 		// of our bounding box, respectively.
-		corner0 = (Point2d)corner0.clone();
-		corner1 = (Point2d)corner1.clone();
+		corner0 = corner0.clone();
+		corner1 = corner1.clone();
 		if(corner0.x > corner1.x)
 		{
 			double t = corner0.x;
@@ -830,14 +830,14 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			corner1.y = t;
 		}
 
-		Point2d[] cachedCorners = m_cachedBoundingBox.project_to_2D_using(ap).m_corners;
-		Point2d scale = new Point2d((corner1.x-corner0.x)/(cachedCorners[1].x-cachedCorners[0].x),
+		Vector2d[] cachedCorners = m_cachedBoundingBox.project_to_2D_using(ap).m_corners;
+		Vector2d scale = new Vector2d((corner1.x-corner0.x)/(cachedCorners[1].x-cachedCorners[0].x),
 									(corner1.y-corner0.y)/(cachedCorners[1].y-cachedCorners[0].y));
 
 		for(int i=0, polyCount=m_cachedPolys.length; i<polyCount; ++i)
 		{
-			Point3d[] cachedVerts = m_cachedPolys[i].get_vertices();
-			Point3d[] verts = m_polys[i].get_vertices();
+			Vector3d[] cachedVerts = m_cachedPolys[i].get_vertices();
+			Vector3d[] verts = m_polys[i].get_vertices();
 			for(int j=0, vertCount=cachedVerts.length; j<vertCount; ++j)
 			{
 				ap.set_relevant_components(verts[j], ap.select_components(cachedVerts[j]));
@@ -854,15 +854,15 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		m_boundingBox.resize(corner0, corner1, ap);
 	}
 
-	protected void rotate(final Point2d centre, final double angle, AxisPair ap)
+	protected void rotate(final Vector2d centre, final double angle, AxisPair ap)
 	{
 		// Rotating affects polygon normals, so we have to recalculate them.
 		generic_transform(ap, true, new TransformFunctor()
 		{
-			public Point2d transform2D(Point2d v)
+			public Vector2d transform2D(Vector2d v)
 			{
-				v.sub(centre);
-				Point2d newV = new Point2d(v.x*Math.cos(angle) - v.y*Math.sin(angle),
+				v.subtract(centre);
+				Vector2d newV = new Vector2d(v.x*Math.cos(angle) - v.y*Math.sin(angle),
 										   v.x*Math.sin(angle) + v.y*Math.cos(angle));
 				newV.add(centre);
 				return newV;
@@ -870,31 +870,31 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		});
 	}
 
-	protected void shear_horizontal(final Point2d anchor, final double factor, AxisPair ap)
+	protected void shear_horizontal(final Vector2d anchor, final double factor, AxisPair ap)
 	{
 		// Shearing affects polygon normals, so we have to recalculate them. We have to do
 		// something special with texture planes, since just blindly shearing them would
 		// leave us with non-orthogonal texture axes (a.k.a. not a good thing).
 		generic_transform(ap, true, new TransformFunctor()
 		{
-			public Point2d transform2D(Point2d v)
+			public Vector2d transform2D(Vector2d v)
 			{
-				v.sub(anchor);
-				Point2d newV = new Point2d(v.x + factor*v.y, v.y);
+				v.subtract(anchor);
+				Vector2d newV = new Vector2d(v.x + factor*v.y, v.y);
 				newV.add(anchor);
 				return newV;
 			}
 		});
 	}
 
-	protected void translate(final Point3d trans)
+	protected void translate(final Vector3d trans)
 	{
 		// Translating doesn't affect polygon normals, so there's no need to recalculate them.
 		generic_transform(null, false, new TransformFunctor()
 		{
-			public Point3d transform3D(Point3d v, AxisPair ap)
+			public Vector3d transform3D(Vector3d v, AxisPair ap)
 			{
-				Point3d ret = (Point3d)v.clone();
+				Vector3d ret = v.clone();
 				ret.add(trans);
 				return ret;
 			}
@@ -918,8 +918,8 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	@param newNormal			The new normal
 	@return						The new texture plane
 	*/
-	private static TexturePlane generate_reasonable_texture_plane(final TexturePlane oldTexturePlane, final Point3d[] oldVerts,
-																  final Point3d[] newVerts, final Vector3d newNormal)
+	private static TexturePlane generate_reasonable_texture_plane(final TexturePlane oldTexturePlane, final Vector3d[] oldVerts,
+																  final Vector3d[] newVerts, final Vector3d newNormal)
 	{
 		if(Options.is_set("Preserve Texture Coordinates"))
 		{
@@ -943,8 +943,8 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		// Generate our transformed brush from the brush we cached in begin_transform.
 		for(int i=0, polyCount=m_cachedPolys.length; i<polyCount; ++i)
 		{
-			Point3d[] cachedVerts = m_cachedPolys[i].get_vertices();
-			Point3d[] verts = m_polys[i].get_vertices();
+			Vector3d[] cachedVerts = m_cachedPolys[i].get_vertices();
+			Vector3d[] verts = m_polys[i].get_vertices();
 			for(int j=0, vertCount=cachedVerts.length; j<vertCount; ++j) verts[j] = transformFunctor.transform3D(cachedVerts[j], ap);
 
 			if(bRecalculateNormals) m_polys[i].calculate_normal();
@@ -966,23 +966,23 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	{
 		m_boundingBox = new BoundingBox(bounds);
 
-		Point3d[] corners = bounds.get_bounds(), templateCorners = templateBounds.get_bounds();
+		Vector3d[] corners = bounds.get_bounds(), templateCorners = templateBounds.get_bounds();
 
-		Point3d size = MathUtil.subtract(corners[1], corners[0]);
-		Point3d templateSize = MathUtil.subtract(templateCorners[1], templateCorners[0]);
+		Vector3d size = VectorUtil.subtract(corners[1], corners[0]);
+		Vector3d templateSize = VectorUtil.subtract(templateCorners[1], templateCorners[0]);
 
-		Point3d scale = new Point3d(size.x/templateSize.x, size.y/templateSize.y, size.z/templateSize.z);
+		Vector3d scale = new Vector3d(size.x/templateSize.x, size.y/templateSize.y, size.z/templateSize.z);
 
 		int polyCount = templatePolys.length;
 		m_polys = new Polygon[polyCount];
 		for(int i=0; i<polyCount; ++i)
 		{
 			m_polys[i] = templatePolys[i].clone();
-			Point3d[] verts = m_polys[i].get_vertices();
+			Vector3d[] verts = m_polys[i].get_vertices();
 			int vertCount = verts.length;
 			for(int j=0; j<vertCount; ++j)
 			{
-				verts[j].sub(templateCorners[0]);
+				verts[j].subtract(templateCorners[0]);
 				verts[j].x*=scale.x; verts[j].y*=scale.y; verts[j].z*=scale.z;
 				verts[j].add(corners[0]);
 			}
@@ -1003,10 +1003,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	private void recalculate_bounding_box()
 	{
 		double max = Double.MAX_VALUE, min = Double.MIN_VALUE;
-		Point3d[] corners = new Point3d[] { new Point3d(max,max,max), new Point3d(min,min,min) };
+		Vector3d[] corners = new Vector3d[] { new Vector3d(max,max,max), new Vector3d(min,min,min) };
 		for(Polygon p: m_polys)
 		{
-			for(Point3d v: p.get_vertices())
+			for(Vector3d v: p.get_vertices())
 			{
 				if(v.x < corners[0].x) corners[0].x = v.x;
 				if(v.y < corners[0].y) corners[0].y = v.y;
@@ -1030,7 +1030,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		gl.glColor3fv(colour);
 		for(Polygon p: m_polys)
 		{
-			Point3d[] verts = p.get_vertices();
+			Vector3d[] verts = p.get_vertices();
 			gl.glBegin(GL.GL_POLYGON);
 				for(int i=0, len=verts.length; i<len; ++i)
 				{
@@ -1053,7 +1053,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	{
 		for(Polygon p: m_polys)
 		{
-			Point3d[] verts = p.get_vertices();
+			Vector3d[] verts = p.get_vertices();
 			gl.glBegin(GL.GL_POLYGON);
 				for(int i=0, len=verts.length; i<len; ++i)
 				{
@@ -1075,11 +1075,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		gl.glBegin(GL.GL_LINES);
 			for(Polygon p: m_polys)
 			{
-				Point3d centre = p.centre();
+				Vector3d centre = p.centre();
 
-				Vector3d scaledNormal = (Vector3d)p.get_normal().clone();
+				Vector3d scaledNormal = p.get_normal().clone();
 				scaledNormal.scale(7.5);
-				Point3d centrePLUSnormal = (Point3d)centre.clone();
+				Vector3d centrePLUSnormal = centre.clone();
 				centrePLUSnormal.add(scaledNormal);
 
 				gl.glColor3f(1.0f, 0.0f, 1.0f);		// magenta
@@ -1087,7 +1087,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				gl.glVertex3d(centrePLUSnormal.x, centrePLUSnormal.y, centrePLUSnormal.z);
 
 				scaledNormal.scale(0.5);
-				Point3d centrePLUShalfNormal = (Point3d)centre.clone();
+				Vector3d centrePLUShalfNormal = centre.clone();
 				centrePLUShalfNormal.add(scaledNormal);
 
 				gl.glColor3f(0.0f, 1.0f, 1.0f);		// cyan
@@ -1109,7 +1109,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		@param v	A 2D vertex
 		@return		The result of doing some transformation on that vertex
 		*/
-		public Point2d transform2D(final Point2d v)
+		public Vector2d transform2D(final Vector2d v)
 		{
 			throw new UnsupportedOperationException();
 		}
@@ -1128,10 +1128,10 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		@param v	A 3D vertex
 		@param ap	The AxisPair defining the projection of our 3D vertex into 2D
 		*/
-		public Point3d transform3D(final Point3d v, final AxisPair ap)
+		public Vector3d transform3D(final Vector3d v, final AxisPair ap)
 		{
-			Point3d ret = (Point3d)v.clone();
-			Point2d newV = transform2D(ap.select_components(ret));
+			Vector3d ret = v.clone();
+			Vector2d newV = transform2D(ap.select_components(ret));
 			ap.set_relevant_components(ret, newV);
 			return ret;
 		}

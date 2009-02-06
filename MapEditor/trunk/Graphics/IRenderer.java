@@ -1,8 +1,8 @@
 package MapEditor.Graphics;
 
 import MapEditor.Geom.AxisPair;
+import MapEditor.Math.Vectors.*;
 import java.awt.*;
-import javax.vecmath.*;
 
 /**
 This class insulates the outside world from the details of how things are rendered in
@@ -20,7 +20,7 @@ public interface IRenderer
 
 	<p><b>Notes:</b>
 	<ul>
-	<li>The returned Point2d, call it q, is guaranteed to satisfy q != p, in other words
+	<li>The returned Vector2d, call it q, is guaranteed to satisfy q != p, in other words
 	it is distinct in memory from the point passed in as a parameter.
 	</ul>
 
@@ -29,7 +29,7 @@ public interface IRenderer
 	@param dy	The y offset in Pixels
 	@return		A 2D point in Coords representing the result of adding the offset to p
 	*/
-	Point2d add_pixel_offset(final Point2d p, double dx, double dy);
+	Vector2d add_pixel_offset(final Vector2d p, double dx, double dy);
 
 	/**
 	Returns an integer constant specifying the horizontal axis. (For use with
@@ -72,7 +72,7 @@ public interface IRenderer
 	@param p2	The second point
 	@return		The square of the distance between their conversions into Pixels as a double
 	*/
-	double distance_squared(final Point2d p1, final Point2d p2);
+	double distance_squared(final Vector2d p1, final Vector2d p2);
 
 	/**
 	Returns the square of the minimum distance (in Pixels) between the mappings of p and
@@ -86,7 +86,7 @@ public interface IRenderer
 	@param e2	The other endpoint of the line segment
 	@return		The distance squared in Pixels^2 as specified
 	*/
-	double distance_squared_from_linesegment(final Point2d p, final Point2d e1, final Point2d e2);
+	double distance_squared_from_linesegment(final Vector2d p, final Vector2d e1, final Vector2d e2);
 
 	/**
 	Draws a line segment on the rendering surface (e.g. a DesignCanvas) for which
@@ -95,7 +95,7 @@ public interface IRenderer
 	@param p1	One endpoint of the line segment
 	@param p2	The other endpoint of the line segment
 	*/
-	void draw_line(final Point2d p1, final Point2d p2);
+	void draw_line(final Vector2d p1, final Vector2d p2);
 
 	/**
 	Draws a line segment on the rendering surface (e.g. a DesignCanvas) for which
@@ -104,7 +104,7 @@ public interface IRenderer
 	@param p1	One endpoint of the line segment
 	@param p2	The other endpoint of the line segment
 	*/
-	void draw_line(final Point3d p1, final Point3d p2);
+	void draw_line(final Vector3d p1, final Vector3d p2);
 
 	/**
 	Draws the outline of the oval bounded by the specified points in 2D Coords.
@@ -112,7 +112,7 @@ public interface IRenderer
 	@param p1	One corner of the oval bounds
 	@param p2	The other corner of the oval bounds
 	*/
-	void draw_oval(final Point2d p1, final Point2d p2);
+	void draw_oval(final Vector2d p1, final Vector2d p2);
 
 	/**
 	Draws a sequence of connected lines defined by an array of points in 2D Coords.
@@ -121,7 +121,7 @@ public interface IRenderer
 
 	@param ps	An array of 2D points which together specify the lines to draw
 	*/
-	void draw_polyline(final Point2d[] ps);
+	void draw_polyline(final Vector2d[] ps);
 
 	/**
 	Draws the outline of the rectangle bounded by the specified points in 2D Coords.
@@ -129,7 +129,7 @@ public interface IRenderer
 	@param p1	One corner of the rectangle bounds
 	@param p2	The other corner of the rectangle bounds
 	*/
-	void draw_rectangle(final Point2d p1, final Point2d p2);
+	void draw_rectangle(final Vector2d p1, final Vector2d p2);
 
 	/**
 	Fills the oval bounded by the specified points in 2D Coords.
@@ -137,7 +137,7 @@ public interface IRenderer
 	@param p1	One corner of the oval bounds
 	@param p2	The other corner of the oval bounds
 	*/
-	void fill_oval(final Point2d p1, final Point2d p2);
+	void fill_oval(final Vector2d p1, final Vector2d p2);
 
 	/**
 	Finds the nearest grid intersection to the specified point. This depends on the
@@ -147,7 +147,7 @@ public interface IRenderer
 	@param p	The point whose nearest grid intersection we want to find
 	@return		The 2D point in Coords containing the nearest grid intersection
 	*/
-	Point2d find_nearest_grid_intersect_in_coords(final Point2d p);
+	Vector2d find_nearest_grid_intersect_in_coords(final Vector2d p);
 
 	/**
 	Returns the axis pair associated with the rendering surface (e.g. a DesignCanvas)

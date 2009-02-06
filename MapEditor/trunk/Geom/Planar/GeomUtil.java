@@ -1,10 +1,10 @@
 package MapEditor.Geom.Planar;
 
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import MapEditor.Test.*;
 import MapEditor.Textures.TexturePlane;
 import java.util.LinkedList;
-import javax.vecmath.*;
 
 /**
 This class contains all the geometric utility functions.
@@ -41,7 +41,7 @@ final public class GeomUtil implements Constants, GeomConstants
 	@return			An integer (unfortunately) giving the point's classification; this will be
 					one of CP_BACK, CP_COPLANAR or CP_FRONT
 	*/
-	public static int classify_point_against_plane(final Point3d p, final Plane plane)
+	public static int classify_point_against_plane(final Vector3d p, final Plane plane)
 	{
 		double displacement = plane.displacement_to_point(p);
 		if(Math.abs(displacement) < EPSILON) return CP_COPLANAR;
@@ -61,7 +61,7 @@ final public class GeomUtil implements Constants, GeomConstants
 	{
 		boolean backFlag = false, frontFlag = false;
 
-		for(Point3d v: poly.get_vertices())
+		for(Vector3d v: poly.get_vertices())
 		{
 			switch(classify_point_against_plane(v, plane))
 			{
@@ -112,23 +112,23 @@ final public class GeomUtil implements Constants, GeomConstants
 	public static LinkedList<Polygon> construct_cuboid(double left, double right, double front, double back, double bottom, double top)
 	{
 		LinkedList<Polygon> polys = new LinkedList<Polygon>();
-		polys.add(new Polygon(new Point3d[] {	new Point3d(left,front,bottom),		new Point3d(left,front,top),		// left
-												new Point3d(left,back,top),			new Point3d(left,back,bottom)		}));
+		polys.add(new Polygon(new Vector3d[] {	new Vector3d(left,front,bottom),		new Vector3d(left,front,top),		// left
+												new Vector3d(left,back,top),			new Vector3d(left,back,bottom)		}));
 
-		polys.add(new Polygon(new Point3d[] {	new Point3d(right,front,bottom),	new Point3d(right,back,bottom),		// right
-												new Point3d(right,back,top),		new Point3d(right,front,top)		}));
+		polys.add(new Polygon(new Vector3d[] {	new Vector3d(right,front,bottom),	new Vector3d(right,back,bottom),		// right
+												new Vector3d(right,back,top),		new Vector3d(right,front,top)		}));
 
-		polys.add(new Polygon(new Point3d[] {	new Point3d(left,front,bottom),		new Point3d(right,front,bottom),	// front
-												new Point3d(right,front,top),		new Point3d(left,front,top)			}));
+		polys.add(new Polygon(new Vector3d[] {	new Vector3d(left,front,bottom),		new Vector3d(right,front,bottom),	// front
+												new Vector3d(right,front,top),		new Vector3d(left,front,top)			}));
 
-		polys.add(new Polygon(new Point3d[] {	new Point3d(right,back,bottom),		new Point3d(left,back,bottom),		// back
-												new Point3d(left,back,top),			new Point3d(right,back,top)			}));
+		polys.add(new Polygon(new Vector3d[] {	new Vector3d(right,back,bottom),		new Vector3d(left,back,bottom),		// back
+												new Vector3d(left,back,top),			new Vector3d(right,back,top)			}));
 
-		polys.add(new Polygon(new Point3d[] {	new Point3d(left,front,top),		new Point3d(right,front,top),		// top
-												new Point3d(right,back,top),		new Point3d(left,back,top)			}));
+		polys.add(new Polygon(new Vector3d[] {	new Vector3d(left,front,top),		new Vector3d(right,front,top),		// top
+												new Vector3d(right,back,top),		new Vector3d(left,back,top)			}));
 
-		polys.add(new Polygon(new Point3d[] {	new Point3d(left,back,bottom),		new Point3d(right,back,bottom),		// bottom
-												new Point3d(right,front,bottom),	new Point3d(left,front,bottom)		}));
+		polys.add(new Polygon(new Vector3d[] {	new Vector3d(left,back,bottom),		new Vector3d(right,back,bottom),		// bottom
+												new Vector3d(right,front,bottom),	new Vector3d(left,front,bottom)		}));
 
 		return polys;
 	}
@@ -149,7 +149,7 @@ final public class GeomUtil implements Constants, GeomConstants
 							value of the parameter t at that intersection point
 	@throws java.lang.Error	If the line is parallel to the plane or |v| = 0
 	*/
-	public static Pair<Point3d,Double> determine_line_intersection_with_plane(final Point3d s, final Vector3d v,
+	public static Pair<Vector3d,Double> determine_line_intersection_with_plane(final Vector3d s, final Vector3d v,
 																			  final Plane plane)
 	{
 		/*
@@ -180,11 +180,11 @@ final public class GeomUtil implements Constants, GeomConstants
 		// If the line is parallel to the plane or |v| = 0, we've violated our precondition.
 		if(nDOTv == 0) throw new java.lang.Error();
 
-		double t = (d - n.dot(new Vector3d(s))) / nDOTv;
-		Vector3d tv = (Vector3d)v.clone();
+		double t = (d - n.dot(s)) / nDOTv;
+		Vector3d tv = v.clone();
 		tv.scale(t);
 
-		Point3d r = (Point3d)s.clone();
+		Vector3d r = s.clone();
 		r.add(tv);
 		return Pair.make_pair(r, t);
 	}
@@ -207,8 +207,8 @@ final public class GeomUtil implements Constants, GeomConstants
 							endpoints
 	@throws java.lang.Error	If the line segment is parallel to the other line or the points are identical
 	*/
-	public static Pair<Point2d,Boolean> determine_linesegment_intersection_with_line(final Point2d p1, final Point2d p2,
-																					 final Point2d a, final Vector2d v)
+	public static Pair<Vector2d,Boolean> determine_linesegment_intersection_with_line(final Vector2d p1, final Vector2d p2,
+																					 final Vector2d a, final Vector2d v)
 	{
 		/*
 		Derivation of the algorithm:
@@ -260,8 +260,7 @@ final public class GeomUtil implements Constants, GeomConstants
 		r = p1 + su = (1,0) + 0.5(0,2) = (1,1)
 		*/
 
-		Point2d u = (Point2d)p2.clone();
-		u.sub(p1);
+		Vector2d u = VectorUtil.subtract(p2, p1);
 
 		double s;
 		if(v.x == 0)
@@ -276,8 +275,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			s = (a.y - p1.y + (p1.x - a.x)*v.y/v.x) / denom;
 		}
 
-		Point2d r = new Point2d();
-		r.scaleAdd(s, u, p1);	// r = p1 + su
+		Vector2d r = Vector2d.scale_add(s, u, p1);	// r = p1 + su
 		return Pair.make_pair(r, 0 < s && s < 1);
 	}
 
@@ -297,7 +295,7 @@ final public class GeomUtil implements Constants, GeomConstants
 							the plane and a boolean indicating whether or not it was (strictly) between the endpoints
 	@throws java.lang.Error	If the line segment is parallel to the plane or the points are identical
 	*/
-	public static Pair<Point3d,Boolean> determine_linesegment_intersection_with_plane(final Point3d p1, final Point3d p2,
+	public static Pair<Vector3d,Boolean> determine_linesegment_intersection_with_plane(final Vector3d p1, final Vector3d p2,
 																					  final Plane plane)
 	{
 		/*
@@ -310,10 +308,9 @@ final public class GeomUtil implements Constants, GeomConstants
 		*/
 
 		// v = p2 - p1
-		Vector3d v = new Vector3d(p2);
-		v.sub(p1);
+		Vector3d v = VectorUtil.subtract(p2, p1);
 
-		Pair<Point3d,Double> intersection = determine_line_intersection_with_plane(p1, v, plane);
+		Pair<Vector3d,Double> intersection = determine_line_intersection_with_plane(p1, v, plane);
 		return Pair.make_pair(intersection.first, 0 < intersection.second && intersection.second < 1);
 	}
 
@@ -332,7 +329,7 @@ final public class GeomUtil implements Constants, GeomConstants
 	@return		The square of the (nearest) distance of the point from the line segment
 	@throws java.lang.Error	If e1 and e2 are equal
 	*/
-	public static double distance_squared_from_linesegment(final Point2d p, final Point2d e1, final Point2d e2)
+	public static double distance_squared_from_linesegment(final Vector2d p, final Vector2d e1, final Vector2d e2)
 	{
 		/*
 		Derivation of the algorithm:
@@ -350,15 +347,15 @@ final public class GeomUtil implements Constants, GeomConstants
 		*/
 
 		Vector2d n = new Vector2d(e2.y-e1.y, e1.x-e2.x);
-		Pair<Point2d,Boolean> intersect = determine_linesegment_intersection_with_line(e1, e2, p, n);
+		Pair<Vector2d,Boolean> intersect = determine_linesegment_intersection_with_line(e1, e2, p, n);
 
 		if(intersect.second == true)
 		{
-			return p.distanceSquared(intersect.first);
+			return p.distance_squared(intersect.first);
 		}
 		else
 		{
-			double d1 = p.distanceSquared(e1), d2 = p.distanceSquared(e2);
+			double d1 = p.distance_squared(e1), d2 = p.distance_squared(e2);
 			return d1 < d2 ? d1 : d2;
 		}
 	}
@@ -379,10 +376,7 @@ final public class GeomUtil implements Constants, GeomConstants
 
 			// Use a different vector instead of up (any different vector will do) and apply the same
 			// method as in the else clause using the new vector.
-			Vector3d v = new Vector3d();
-			v.cross(n, new Vector3d(1,0,0));
-			v.normalize();
-			return v;
+			return n.cross(new Vector3d(1,0,0)).normalize();
 		}
 		else
 		{
@@ -390,10 +384,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// unit length and perpendicular to n (since we dealt with the special case where
 			// n x up is zero, in all other cases it must be non-zero and we can normalize it
 			// to give us a unit vector).
-			Vector3d v = new Vector3d();
-			v.cross(n, up);
-			v.normalize();
-			return v;
+			return n.cross(up).normalize();
 		}
 	}
 
@@ -411,8 +402,7 @@ final public class GeomUtil implements Constants, GeomConstants
 	public static Plane make_plane(final Polygon poly)
 	{
 		Vector3d normal = poly.get_normal();
-		Point3d v = poly.get_vertices()[0];
-		double d = normal.dot(new Vector3d(v));
+		double d = normal.dot(poly.get_vertices()[0]);
 		return new Plane(normal, d);
 	}
 
@@ -427,24 +417,22 @@ final public class GeomUtil implements Constants, GeomConstants
 	*/
 	public static Polygon make_universe_polygon(final Plane plane)
 	{
-		final Point3d origin = new Point3d(0,0,0);
-		Point3d centre = nearest_point_in_plane(origin, plane);
+		final Vector3d origin = new Vector3d(0,0,0);
+		Vector3d centre = nearest_point_in_plane(origin, plane);
 
 		Vector3d[] planarVecs = new Vector3d[2];
 		planarVecs[0] = generate_arbitrary_coplanar_unit_vector(plane);
-		planarVecs[1] = new Vector3d();
-		planarVecs[1].cross(planarVecs[0], plane.get_normal());		// obtain a perpendicular coplanar vector
-		planarVecs[1].normalize();
+		planarVecs[1] = planarVecs[0].cross(plane.get_normal()).normalize();		// obtain a perpendicular coplanar vector
 
 		final double HALFSIDELENGTH = 1000000;	// something arbitrarily huge (but not too big, to avoid floating-point issues)
 		for(int i=0; i<2; ++i) planarVecs[i].scale(HALFSIDELENGTH);
 
-		Point3d[] vertices = new Point3d[4];
-		for(int i=0; i<4; ++i) vertices[i] = (Point3d)centre.clone();
-		vertices[0].sub(planarVecs[0]); vertices[0].sub(planarVecs[1]);
-		vertices[1].sub(planarVecs[0]); vertices[1].add(planarVecs[1]);
-		vertices[2].add(planarVecs[0]); vertices[2].add(planarVecs[1]);
-		vertices[3].add(planarVecs[0]); vertices[3].sub(planarVecs[1]);
+		Vector3d[] vertices = new Vector3d[4];
+		for(int i=0; i<4; ++i) vertices[i] = centre.clone();
+		vertices[0].subtract(planarVecs[0]);	vertices[0].subtract(planarVecs[1]);
+		vertices[1].subtract(planarVecs[0]);	vertices[1].add(planarVecs[1]);
+		vertices[2].add(planarVecs[0]);			vertices[2].add(planarVecs[1]);
+		vertices[3].add(planarVecs[0]);			vertices[3].subtract(planarVecs[1]);
 
 		return new Polygon(vertices);
 	}
@@ -458,7 +446,7 @@ final public class GeomUtil implements Constants, GeomConstants
 					is no point r' s.t. classify_point_against_plane(r', plane) == CP_COPLANAR &&
 					p.distance(r') < p.distance(r)
 	*/
-	public static Point3d nearest_point_in_plane(final Point3d p, final Plane plane)
+	public static Vector3d nearest_point_in_plane(final Vector3d p, final Plane plane)
 	{
 		/*
 		Derivation of the algorithm:
@@ -468,10 +456,9 @@ final public class GeomUtil implements Constants, GeomConstants
 		*/
 
 		double displacement = plane.displacement_to_point(p);
-		Vector3d delta = (Vector3d)plane.get_normal().clone();
+		Vector3d delta = plane.get_normal().clone();
 		delta.scale(-displacement);
-		Point3d r = new Point3d();
-		r.add(p, delta);
+		Vector3d r = VectorUtil.add(p, delta);
 		return r;
 	}
 
@@ -492,7 +479,7 @@ final public class GeomUtil implements Constants, GeomConstants
 				of the polygon or at a vertex, or PMC_OUTSIDE, otherwise
 	@throws java.lang.Error	If any of the preconditions are not met
 	*/
-	public static int point_in_convex_polygon(final Point3d p, final Polygon poly)
+	public static int point_in_convex_polygon(final Vector3d p, final Polygon poly)
 	{
 		// Check the preconditions.
 		if(p == null || poly == null) throw new java.lang.Error();
@@ -500,7 +487,7 @@ final public class GeomUtil implements Constants, GeomConstants
 		// Note: Can't easily check convexity.
 
 		// Main algorithm
-		final Point3d[] verts = poly.get_vertices();
+		final Vector3d[] verts = poly.get_vertices();
 		final int len = verts.length;
 
 		// Check whether we're at a vertex.
@@ -514,8 +501,7 @@ final public class GeomUtil implements Constants, GeomConstants
 		final Vector3d[] vecs = new Vector3d[len];
 		for(int i=0; i<len; ++i)
 		{
-			vecs[i] = new Vector3d();
-			vecs[i].sub(verts[i], p);
+			vecs[i] = VectorUtil.subtract(verts[i], p);
 		}
 
 		// Sum the angles between consecutive offset vectors: if they sum to 2*PI, we're inside
@@ -526,7 +512,7 @@ final public class GeomUtil implements Constants, GeomConstants
 		for(int i=0; i<len; ++i)
 		{
 			int j = (i+1)%len;		// the next vertex in the (conceptually circular) vertex array
-			double angle = vecs[i].angle(vecs[j]);
+			double angle = VectorUtil.angle_between(vecs[i], vecs[j]);
 			if(Math.abs(angle - Math.PI) < EPSILON) edgeFlag = true;
 			angleSum += angle;
 		}
@@ -545,13 +531,13 @@ final public class GeomUtil implements Constants, GeomConstants
 	@param i			The index of the vertex we're currently processing
 	@param startVert	The first vertex we processed
 	*/
-	private static void complete_original_half(LinkedList<Point3d> originalHalf, final Polygon poly, int i, final int startVert)
+	private static void complete_original_half(LinkedList<Vector3d> originalHalf, final Polygon poly, int i, final int startVert)
 	{
 		final int vertCount = poly.get_vertices().length;
 
 		while(i != startVert)
 		{
-			originalHalf.add((Point3d)poly.get_vertices()[i].clone());
+			originalHalf.add(poly.get_vertices()[i].clone());
 			i = next_vert(i, vertCount);
 		}
 	}
@@ -575,8 +561,8 @@ final public class GeomUtil implements Constants, GeomConstants
 	@return				A pair of integers, the first of which is the new value of i and
 						the second which is the new value of cp
 	*/
-	private static Pair<Integer,Integer> construct_half_polygon(LinkedList<Point3d> currentHalf,
-																LinkedList<Point3d> otherHalf,
+	private static Pair<Integer,Integer> construct_half_polygon(LinkedList<Vector3d> currentHalf,
+																LinkedList<Vector3d> otherHalf,
 																final Polygon poly, final Plane plane,
 																int i, int cp)
 	{
@@ -585,7 +571,7 @@ final public class GeomUtil implements Constants, GeomConstants
 		int oldcp;	// stores the classification of the previous vertex against the plane (initially indeterminate)
 		do
 		{
-			currentHalf.add((Point3d)poly.get_vertices()[i].clone());
+			currentHalf.add(poly.get_vertices()[i].clone());
 			i = next_vert(i, vertCount);
 			oldcp = cp;
 			cp = classify_point_against_plane(poly.get_vertices()[i], plane);
@@ -596,8 +582,8 @@ final public class GeomUtil implements Constants, GeomConstants
 		// the plane from the first.
 		if(cp == CP_COPLANAR)
 		{
-			currentHalf.add((Point3d)poly.get_vertices()[i].clone());
-			otherHalf.add((Point3d)poly.get_vertices()[i].clone());
+			currentHalf.add(poly.get_vertices()[i].clone());
+			otherHalf.add(poly.get_vertices()[i].clone());
 			i = next_vert(i, vertCount);
 			cp = classify_point_against_plane(poly.get_vertices()[i], plane);
 
@@ -607,11 +593,11 @@ final public class GeomUtil implements Constants, GeomConstants
 		}
 		else
 		{
-			Point3d intersectionPoint = determine_linesegment_intersection_with_plane(poly.get_vertices()[prev_vert(i, vertCount)],
+			Vector3d intersectionPoint = determine_linesegment_intersection_with_plane(poly.get_vertices()[prev_vert(i, vertCount)],
 																					  poly.get_vertices()[i],
 																					  plane).first;
-			currentHalf.add((Point3d)intersectionPoint.clone());
-			otherHalf.add((Point3d)intersectionPoint.clone());
+			currentHalf.add(intersectionPoint.clone());
+			otherHalf.add(intersectionPoint.clone());
 
 			// Note: We could have used intersectionPoint for the first of these instead of its clone,
 			// but it's safer to do it this way. The thinking behind that is that if the implementation
@@ -674,8 +660,8 @@ final public class GeomUtil implements Constants, GeomConstants
 		// Enforce the precondition about the polygon straddling the plane.
 		if(classify_polygon_against_plane(poly, plane) != CP_STRADDLE) throw new java.lang.Error();
 
-		LinkedList<Point3d> frontHalf = new LinkedList<Point3d>();
-		LinkedList<Point3d> backHalf = new LinkedList<Point3d>();
+		LinkedList<Vector3d> frontHalf = new LinkedList<Vector3d>();
+		LinkedList<Vector3d> backHalf = new LinkedList<Vector3d>();
 
 		int startVert = 0;
 		int cp = classify_point_against_plane(poly.get_vertices()[0], plane);
@@ -735,15 +721,15 @@ final public class GeomUtil implements Constants, GeomConstants
 		{
 			Plane plane_a = new Plane(new Vector3d(1,0,0), 0);	// x = 0
 
-			Point3d vec_a = new Point3d(1,23,9);
+			Vector3d vec_a = new Vector3d(1,23,9);
 			int cp = classify_point_against_plane(vec_a, plane_a);
 			output(cp == CP_FRONT, "true");
 
-			Point3d vec_b = new Point3d(-1,7,8);
+			Vector3d vec_b = new Vector3d(-1,7,8);
 			cp = classify_point_against_plane(vec_b, plane_a);
 			output(cp == CP_BACK, "true");
 
-			Point3d vec_c = new Point3d(0,17,10);
+			Vector3d vec_c = new Vector3d(0,17,10);
 			cp = classify_point_against_plane(vec_c, plane_a);
 			output(cp == CP_COPLANAR, "true");
 
@@ -755,32 +741,32 @@ final public class GeomUtil implements Constants, GeomConstants
 			Plane plane_a = new Plane(new Vector3d(1,0,0), 0);	// x = 0
 
 			// Test a polygon which is strictly in front of the plane.
-			Polygon poly_a = new Polygon(new Point3d[] {new Point3d(2,0,2), new Point3d(2,0,0), new Point3d(4,0,2)});
+			Polygon poly_a = new Polygon(new Vector3d[] {new Vector3d(2,0,2), new Vector3d(2,0,0), new Vector3d(4,0,2)});
 			int cp = classify_polygon_against_plane(poly_a, plane_a);
 			output(cp == CP_FRONT, "true");
 
 			// Test a polygon which is strictly behind the plane.
-			Polygon poly_b = new Polygon(new Point3d[] {new Point3d(-4,0,2), new Point3d(-4,0,0), new Point3d(-2,0,2)});
+			Polygon poly_b = new Polygon(new Vector3d[] {new Vector3d(-4,0,2), new Vector3d(-4,0,0), new Vector3d(-2,0,2)});
 			cp = classify_polygon_against_plane(poly_b, plane_a);
 			output(cp == CP_BACK, "true");
 
 			// Test a polygon which straddles the plane.
-			Polygon poly_c = new Polygon(new Point3d[] {new Point3d(-2,0,2), new Point3d(-2,0,0), new Point3d(2,0,2)});
+			Polygon poly_c = new Polygon(new Vector3d[] {new Vector3d(-2,0,2), new Vector3d(-2,0,0), new Vector3d(2,0,2)});
 			cp = classify_polygon_against_plane(poly_c, plane_a);
 			output(cp == CP_STRADDLE, "true");
 
 			// Test a polygon which lies in the plane.
-			Polygon poly_d = new Polygon(new Point3d[] {new Point3d(0,0,2), new Point3d(0,0,0), new Point3d(0,2,2)});
+			Polygon poly_d = new Polygon(new Vector3d[] {new Vector3d(0,0,2), new Vector3d(0,0,0), new Vector3d(0,2,2)});
 			cp = classify_polygon_against_plane(poly_d, plane_a);
 			output(cp == CP_COPLANAR, "true");
 
 			// Test a polygon which is in front of the plane, but touching it.
-			Polygon poly_e = new Polygon(new Point3d[] {new Point3d(0,0,2), new Point3d(0,0,0), new Point3d(2,0,2)});
+			Polygon poly_e = new Polygon(new Vector3d[] {new Vector3d(0,0,2), new Vector3d(0,0,0), new Vector3d(2,0,2)});
 			cp = classify_polygon_against_plane(poly_e, plane_a);
 			output(cp == CP_FRONT, "true");
 
 			// Test a polygon which is behind the plane, but touching it.
-			Polygon poly_f = new Polygon(new Point3d[] {new Point3d(-2,0,2), new Point3d(-2,0,0), new Point3d(0,0,2)});
+			Polygon poly_f = new Polygon(new Vector3d[] {new Vector3d(-2,0,2), new Vector3d(-2,0,0), new Vector3d(0,0,2)});
 			cp = classify_polygon_against_plane(poly_f, plane_a);
 			output(cp == CP_BACK, "true");
 
@@ -800,18 +786,18 @@ final public class GeomUtil implements Constants, GeomConstants
 			// Let's test using a simple plane first.
 			Plane plane_a = new Plane(new Vector3d(1,1,0), 5);		// x + y = 5
 
-			output(determine_line_intersection_with_plane(new Point3d(0,0,0), new Vector3d(1,1,0), plane_a), "((2.5, 2.5, 0.0), 2.5)");
+			output(determine_line_intersection_with_plane(new Vector3d(0,0,0), new Vector3d(1,1,0), plane_a), "((2.5, 2.5, 0.0), 2.5)");
 
-			output(determine_line_intersection_with_plane(new Point3d(0,0,0), new Vector3d(2,2,0), plane_a), "((2.5, 2.5, 0.0), 1.25)");
+			output(determine_line_intersection_with_plane(new Vector3d(0,0,0), new Vector3d(2,2,0), plane_a), "((2.5, 2.5, 0.0), 1.25)");
 
-			output(determine_line_intersection_with_plane(new Point3d(3,1,0), new Vector3d(0,5,0), plane_a), "((3.0, 2.0, 0.0), 0.2)");
+			output(determine_line_intersection_with_plane(new Vector3d(3,1,0), new Vector3d(0,5,0), plane_a), "((3.0, 2.0, 0.0), 0.2)");
 
-			output(determine_line_intersection_with_plane(new Point3d(3,3,0), new Vector3d(0,10,0), plane_a), "((3.0, 2.0, 0.0), -0.1)");
+			output(determine_line_intersection_with_plane(new Vector3d(3,3,0), new Vector3d(0,10,0), plane_a), "((3.0, 2.0, 0.0), -0.1)");
 
 			// Line parallel to plane
 			try
 			{
-				output(determine_line_intersection_with_plane(new Point3d(0,0,0), new Vector3d(1,-1,0), plane_a), "Error");
+				output(determine_line_intersection_with_plane(new Vector3d(0,0,0), new Vector3d(1,-1,0), plane_a), "Error");
 			}
 			catch(Error e)
 			{
@@ -821,7 +807,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// Invalid line - direction vector is zero
 			try
 			{
-				output(determine_line_intersection_with_plane(new Point3d(0,0,0), new Vector3d(0,0,0), plane_a), "Error");
+				output(determine_line_intersection_with_plane(new Vector3d(0,0,0), new Vector3d(0,0,0), plane_a), "Error");
 			}
 			catch(Error e)
 			{
@@ -833,13 +819,13 @@ final public class GeomUtil implements Constants, GeomConstants
 
 			// The numbers in this depend on each other in that (for example) 8 - 7.75 = 0.25, etc. This made it easier
 			// to figure out the expected results of the test.
-			output(determine_line_intersection_with_plane(new Point3d(8,10,51), new Vector3d(-7.75,-8.75,-51), plane_b), "((0.25, 1.25, 0.0), 1.0)");
+			output(determine_line_intersection_with_plane(new Vector3d(8,10,51), new Vector3d(-7.75,-8.75,-51), plane_b), "((0.25, 1.25, 0.0), 1.0)");
 
 			// Line parallel to plane
 			Vector3d vec_a = generate_arbitrary_coplanar_unit_vector(plane_b);
 			try
 			{
-				output(determine_line_intersection_with_plane(new Point3d(0,0,0), vec_a, plane_b), "Error");
+				output(determine_line_intersection_with_plane(new Vector3d(0,0,0), vec_a, plane_b), "Error");
 			}
 			catch(Error e)
 			{
@@ -849,7 +835,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// Invalid line - direction vector is zero
 			try
 			{
-				output(determine_line_intersection_with_plane(new Point3d(23,9,84), new Vector3d(0,0,0), plane_a), "Error");
+				output(determine_line_intersection_with_plane(new Vector3d(23,9,84), new Vector3d(0,0,0), plane_a), "Error");
 			}
 			catch(Error e)
 			{
@@ -861,8 +847,8 @@ final public class GeomUtil implements Constants, GeomConstants
 			Plane plane_c = new Plane(new Vector3d(1,0,0), 23);		// x = 23
 			Vector3d vec_b = new Vector3d(1,0,0);
 
-			output(determine_line_intersection_with_plane(new Point3d(0,0,0), vec_b, plane_c), "((23.0, 0.0, 0.0), 23.0)");
-			output(determine_line_intersection_with_plane(new Point3d(0,1,0), vec_b, plane_c), "((23.0, 1.0, 0.0), 23.0)");
+			output(determine_line_intersection_with_plane(new Vector3d(0,0,0), vec_b, plane_c), "((23.0, 0.0, 0.0), 23.0)");
+			output(determine_line_intersection_with_plane(new Vector3d(0,1,0), vec_b, plane_c), "((23.0, 1.0, 0.0), 23.0)");
 
 			// TESTME: I suppose more tests could be done here. I'm fairly sure it works though.
 		}
@@ -870,30 +856,30 @@ final public class GeomUtil implements Constants, GeomConstants
 		public void test_determine_linesegment_intersection_with_line()
 		{
 			// Test example 1 from the method documentation.
-			Point2d p1 = new Point2d(0,0), p2 = new Point2d(2,2), a = new Point2d(1,-1);
+			Vector2d p1 = new Vector2d(0,0), p2 = new Vector2d(2,2), a = new Vector2d(1,-1);
 			Vector2d v = new Vector2d(0,1);
-			Pair<Point2d,Boolean> intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
+			Pair<Vector2d,Boolean> intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
 			output(intersect, "((1.0, 1.0), true)");
 
 			// Test a limit case variation on it by shortening the line segment.
-			p2 = new Point2d(1,1);
+			p2 = new Vector2d(1,1);
 			intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
 			output(intersect, "((1.0, 1.0), false)");
 
 			// Test example 2 from the method documentation.
-			p1 = new Point2d(1,0); p2 = new Point2d(1,2); a = new Point2d(0,0); v = new Vector2d(1,1);
+			p1 = new Vector2d(1,0); p2 = new Vector2d(1,2); a = new Vector2d(0,0); v = new Vector2d(1,1);
 			intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
 			output(intersect, "((1.0, 1.0), true)");
 
 			// Turn that one into a limit case variation as well.
-			a = new Point2d(0,1);
+			a = new Vector2d(0,1);
 			intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
 			output(intersect, "((1.0, 2.0), false)");
 
 			// Let's test some cases which shouldn't work.
 
 			// Test a case where the endpoints of the line segment are identical.
-			p1 = new Point2d(23,9); p2 = new Point2d(23,9); a = new Point2d(3,4); v = new Vector2d(5,6);
+			p1 = new Vector2d(23,9); p2 = new Vector2d(23,9); a = new Vector2d(3,4); v = new Vector2d(5,6);
 			try
 			{
 				intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
@@ -905,7 +891,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			}
 
 			// Test a case where the line segment and the other line are parallel.
-			p1 = new Point2d(0,0); p2 = new Point2d(3,5); a = new Point2d(-1,0); v = new Vector2d(6,10);
+			p1 = new Vector2d(0,0); p2 = new Vector2d(3,5); a = new Vector2d(-1,0); v = new Vector2d(6,10);
 			try
 			{
 				intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
@@ -919,7 +905,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// Test another parallel case, which happens to follow a different execution path before
 			// throwing an error (this is an example of testing based on what we know about how the
 			// code works - it's not black-box testing).
-			p1 = new Point2d(0,0); p2 = new Point2d(0,17); a = new Point2d(10,7); v = new Vector2d(0,8);
+			p1 = new Vector2d(0,0); p2 = new Vector2d(0,17); a = new Vector2d(10,7); v = new Vector2d(0,8);
 			try
 			{
 				intersect = determine_linesegment_intersection_with_line(p1, p2, a, v);
@@ -935,10 +921,10 @@ final public class GeomUtil implements Constants, GeomConstants
 
 		public void test_determine_linesegment_intersection_with_plane()
 		{
-			Polygon poly_a = new Polygon(new Point3d[] { new Point3d(0,2,0), new Point3d(2,2,0), new Point3d(0,0,0) });
+			Polygon poly_a = new Polygon(new Vector3d[] { new Vector3d(0,2,0), new Vector3d(2,2,0), new Vector3d(0,0,0) });
 			Plane plane_a = make_plane(poly_a);
-			Point3d vec_a = new Point3d(-1, -1, -1), vec_b = new Point3d(1, 1, 1);
-			Pair<Point3d,Boolean> intersect_a = determine_linesegment_intersection_with_plane(vec_a, vec_b, plane_a);
+			Vector3d vec_a = new Vector3d(-1, -1, -1), vec_b = new Vector3d(1, 1, 1);
+			Pair<Vector3d,Boolean> intersect_a = determine_linesegment_intersection_with_plane(vec_a, vec_b, plane_a);
 			output(intersect_a, "((0.0, 0.0, 0.0), true)");
 
 			vec_b.x = 0;
@@ -947,19 +933,19 @@ final public class GeomUtil implements Constants, GeomConstants
 			output(intersect_a, "((-0.5, -0.25, 0.0), true)");
 
 			Plane plane_b = new Plane(new Vector3d(1, 0, 1), 1);	// x + z - 1 = 0
-			Point3d vec_c = new Point3d(0, 0, 0), vec_d = new Point3d(1, 0, 1);
+			Vector3d vec_c = new Vector3d(0, 0, 0), vec_d = new Vector3d(1, 0, 1);
 			intersect_a = determine_linesegment_intersection_with_plane(vec_c, vec_d, plane_b);
 			output(intersect_a, "((0.5, 0.0, 0.5), true)");
 
 			// Test a couple of limit cases, where one of the points is on the plane.
-			Point3d vec_e = new Point3d(0.5, 0, 0.5);
+			Vector3d vec_e = new Vector3d(0.5, 0, 0.5);
 			intersect_a = determine_linesegment_intersection_with_plane(vec_c, vec_e, plane_b);
 			output(intersect_a, "((0.5, 0.0, 0.5), false)");
 			intersect_a = determine_linesegment_intersection_with_plane(vec_d, vec_e, plane_b);
 			output(intersect_a, "((0.5, 0.0, 0.5), false)");
 
 			// Test the limit case where both points are on the plane.
-			Point3d vec_f = new Point3d(1, 0, 0);
+			Vector3d vec_f = new Vector3d(1, 0, 0);
 			try
 			{
 				intersect_a = determine_linesegment_intersection_with_plane(vec_e, vec_f, plane_b);
@@ -993,17 +979,17 @@ final public class GeomUtil implements Constants, GeomConstants
 			}
 
 			// Test another normal test case.
-			Point3d vec_g = new Point3d(4, 0, -2);
+			Vector3d vec_g = new Vector3d(4, 0, -2);
 			intersect_a = determine_linesegment_intersection_with_plane(vec_c, vec_g, plane_b);
 			output(intersect_a, "((2.0, 0.0, -1.0), true)");
 
 			// Test the limit case.
-			Point3d vec_h = new Point3d(2, 0, -1);
+			Vector3d vec_h = new Vector3d(2, 0, -1);
 			intersect_a = determine_linesegment_intersection_with_plane(vec_c, vec_h, plane_b);
 			output(intersect_a, "((2.0, 0.0, -1.0), false)");
 
 			// Test a case which is slightly beyond the limit case, just to make sure.
-			Point3d vec_m = new Point3d(2.2, 0, -1.1);
+			Vector3d vec_m = new Vector3d(2.2, 0, -1.1);
 			intersect_a = determine_linesegment_intersection_with_plane(vec_c, vec_m, plane_b);
 			output(intersect_a, "((1.9999999999999998, 0.0, -0.9999999999999999), true)");	// it's close enough to (2,0,-1)!
 		}
@@ -1011,54 +997,54 @@ final public class GeomUtil implements Constants, GeomConstants
 		public void test_distance_squared_from_linesegment()
 		{
 			// Test a few simple cases with a horizontal line segment.
-			Point2d p = new Point2d(7,8), e1 = new Point2d(0,0), e2 = new Point2d(10,0);
+			Vector2d p = new Vector2d(7,8), e1 = new Vector2d(0,0), e2 = new Vector2d(10,0);
 			double distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "64.0");
 
-			p = new Point2d(10,17);
+			p = new Vector2d(10,17);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "289.0");
 
-			p = new Point2d(0,23);
+			p = new Vector2d(0,23);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "529.0");
 
-			p = new Point2d(-9,-84);
+			p = new Vector2d(-9,-84);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "7137.0");
 
-			p = new Point2d(84,-9);
+			p = new Vector2d(84,-9);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "5557.0");
 
 			// Now test a few cases with a vertical line segment.
-			e1 = new Point2d(3,5); e2 = new Point2d(3,7);
+			e1 = new Vector2d(3,5); e2 = new Vector2d(3,7);
 
-			p = new Point2d(1,6);
+			p = new Vector2d(1,6);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "4.0");
 
-			p = new Point2d(3,6);
+			p = new Vector2d(3,6);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "0.0");
 
-			p = new Point2d(4,8);
+			p = new Vector2d(4,8);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "2.0");
 
-			p = new Point2d(2,3);
+			p = new Vector2d(2,3);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "5.0");
 
 			// Finally, test a couple of cases with an "arbitrary" line segment.
-			e1 = new Point2d(7,8); e2 = new Point2d(17,10);		// has direction vector (5k,k) for any non-zero k
+			e1 = new Vector2d(7,8); e2 = new Vector2d(17,10);		// has direction vector (5k,k) for any non-zero k
 
-			p = new Point2d(12.2,8);	// not arbitrary, consider moving (0.2,-1) from midpoint of line segment
+			p = new Vector2d(12.2,8);	// not arbitrary, consider moving (0.2,-1) from midpoint of line segment
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			// This is close enough to 1.04!
 			output(distanceSquared, "1.0399999999999998");
 
-			p = new Point2d(6,8);
+			p = new Vector2d(6,8);
 			distanceSquared = distance_squared_from_linesegment(p, e1, e2);
 			output(distanceSquared, "1.0");
 
@@ -1096,21 +1082,21 @@ final public class GeomUtil implements Constants, GeomConstants
 
 		public void test_make_plane()
 		{
-			Polygon poly_a = new Polygon(new Point3d[] { new Point3d(1,1,0), new Point3d(0,1,1), new Point3d(1,0,0) });
+			Polygon poly_a = new Polygon(new Vector3d[] { new Vector3d(1,1,0), new Vector3d(0,1,1), new Vector3d(1,0,0) });
 			Plane plane_a = make_plane(poly_a);
 			output(plane_a, "(0.7071067811865476, 0.0, 0.7071067811865476, 0.7071067811865476)");
 
-			Polygon poly_b = new Polygon(new Point3d[] { new Point3d(5.0/3.0,1,0), new Point3d(0,1,5.0/4.0), new Point3d(5.0/3.0,0,0) });
+			Polygon poly_b = new Polygon(new Vector3d[] { new Vector3d(5.0/3.0,1,0), new Vector3d(0,1,5.0/4.0), new Vector3d(5.0/3.0,0,0) });
 			Plane plane_b = make_plane(poly_b);
 			output(plane_b, "(0.6, 0.0, 0.8, 1.0)");
 
 			// Test a simple axis-aligned polygon
-			Polygon poly_c = new Polygon(new Point3d[] { new Point3d(3,23,9), new Point3d(3,7,8), new Point3d(3,17,10) });
+			Polygon poly_c = new Polygon(new Vector3d[] { new Vector3d(3,23,9), new Vector3d(3,7,8), new Vector3d(3,17,10) });
 			Plane plane_c = make_plane(poly_c);
 			output(plane_c, "(-1.0, -0.0, 0.0, -3.0)");
 
 			// Test the same polygon, facing the other way
-			Polygon poly_d = new Polygon(new Point3d[] { new Point3d(3,23,9), new Point3d(3,17,10), new Point3d(3,7,8) });
+			Polygon poly_d = new Polygon(new Vector3d[] { new Vector3d(3,23,9), new Vector3d(3,17,10), new Vector3d(3,7,8) });
 			Plane plane_d = make_plane(poly_d);
 			output(plane_d, "(1.0, 0.0, 0.0, 3.0)");
 
@@ -1123,21 +1109,21 @@ final public class GeomUtil implements Constants, GeomConstants
 			Plane plane_a = new Plane(new Vector3d(1,0,0), 0);
 			Polygon poly_a = make_universe_polygon(plane_a);
 			boolean ok = classify_polygon_against_plane(poly_a, plane_a) == CP_COPLANAR &&
-						 poly_a.get_normal().angle(plane_a.get_normal()) < EPSILON;
+						 VectorUtil.angle_between(poly_a.get_normal(), plane_a.get_normal()) < EPSILON;
 			output(ok, "true");
 
 			// Test a case with the negation of the above plane.
 			Plane plane_b = plane_a.negate();
 			Polygon poly_b = make_universe_polygon(plane_b);
 			ok = classify_polygon_against_plane(poly_b, plane_b) == CP_COPLANAR &&
-				 poly_b.get_normal().angle(plane_b.get_normal()) < EPSILON;
+				 VectorUtil.angle_between(poly_b.get_normal(), plane_b.get_normal()) < EPSILON;
 			output(ok, "true");
 
 			// Test a case with an arbitrary plane.
 			Plane plane_c = new Plane(new Vector3d(0.6,0,0.8), 1);
 			Polygon poly_c = make_universe_polygon(plane_c);
 			ok = classify_polygon_against_plane(poly_c, plane_c) == CP_COPLANAR &&
-				 poly_c.get_normal().angle(plane_c.get_normal()) < EPSILON;
+				 VectorUtil.angle_between(poly_c.get_normal(), plane_c.get_normal()) < EPSILON;
 			output(ok, "true");
 
 			// TESTME: More tests would be helpful here. It would also be nice to test that
@@ -1149,25 +1135,25 @@ final public class GeomUtil implements Constants, GeomConstants
 		{
 			// Test a case with an axis-aligned plane and a point in front of it.
 			Plane plane_a = new Plane(new Vector3d(1,0,0), 0);
-			Point3d point_a = new Point3d(23, 9, 84);
-			Point3d nearest_a = nearest_point_in_plane(point_a, plane_a);
+			Vector3d point_a = new Vector3d(23, 9, 84);
+			Vector3d nearest_a = nearest_point_in_plane(point_a, plane_a);
 			output(nearest_a, "(0.0, 9.0, 84.0)");
 
 			// Test a case with a different axis-aligned plane and a point behind it.
 			Plane plane_b = new Plane(new Vector3d(0,0,1), 17);
-			Point3d point_b = new Point3d(-7,-8,-51);
-			Point3d nearest_b = nearest_point_in_plane(point_b, plane_b);
+			Vector3d point_b = new Vector3d(-7,-8,-51);
+			Vector3d nearest_b = nearest_point_in_plane(point_b, plane_b);
 			output(nearest_b, "(-7.0, -8.0, 17.0)");
 
 			// Test a case with the same plane and a coplanar point.
-			Point3d point_c = new Point3d(51,10,17);
-			Point3d nearest_c = nearest_point_in_plane(point_c, plane_b);
+			Vector3d point_c = new Vector3d(51,10,17);
+			Vector3d nearest_c = nearest_point_in_plane(point_c, plane_b);
 			output(nearest_c, "(51.0, 10.0, 17.0)");
 
 			// Test a case with a general plane that isn't axis-aligned (but is easy to verify).
 			Plane plane_c = new Plane(new Vector3d(1,1,1), 0);
-			Point3d point_d = new Point3d(-2,-2,-2);
-			Point3d nearest_d = nearest_point_in_plane(point_d, plane_c);
+			Vector3d point_d = new Vector3d(-2,-2,-2);
+			Vector3d nearest_d = nearest_point_in_plane(point_d, plane_c);
 			// This is close enough to (0,0,0)!
 			output(nearest_d, "(4.440892098500626E-16, 4.440892098500626E-16, 4.440892098500626E-16)");
 
@@ -1177,36 +1163,36 @@ final public class GeomUtil implements Constants, GeomConstants
 		public void test_point_in_convex_polygon()
 		{
 			// Test a simple case first, that of a point strictly inside a polygon.
-			Polygon poly_a = new Polygon(new Point3d[] { new Point3d(0,0,0), new Point3d(10,0,0), new Point3d(10,10,0), new Point3d(0,10,0) });
-			Point3d point_a = new Point3d(5, 5, 0);
+			Polygon poly_a = new Polygon(new Vector3d[] { new Vector3d(0,0,0), new Vector3d(10,0,0), new Vector3d(10,10,0), new Vector3d(0,10,0) });
+			Vector3d point_a = new Vector3d(5, 5, 0);
 			output(PMC_String(point_in_convex_polygon(point_a, poly_a)), PMC_String(PMC_INSIDE));
 
 			// Test another simple case, that of a point strictly outside the same polygon.
-			Point3d point_b = new Point3d(15, 5, 0);
+			Vector3d point_b = new Vector3d(15, 5, 0);
 			output(PMC_String(point_in_convex_polygon(point_b, poly_a)), PMC_String(PMC_OUTSIDE));
 
 			// Now it gets more interesting, let's test a point on the edge of the polygon (but not at a vertex).
-			Point3d point_c = new Point3d(10, 5, 0);
+			Vector3d point_c = new Vector3d(10, 5, 0);
 			output(PMC_String(point_in_convex_polygon(point_c, poly_a)), PMC_String(PMC_SURFACE));
 
 			// What about a point at a vertex?
-			Point3d point_d = new Point3d(10, 10, 0);
+			Vector3d point_d = new Vector3d(10, 10, 0);
 			output(PMC_String(point_in_convex_polygon(point_d, poly_a)), PMC_String(PMC_SURFACE));
 
 			// Let's try another polygon, "just in case".
 			// A triangle on the plane x - y - 10 = 0
-			Polygon poly_b = new Polygon(new Point3d[] { new Point3d(10,0,0), new Point3d(20,10,10), new Point3d(10,0,10) });
+			Polygon poly_b = new Polygon(new Vector3d[] { new Vector3d(10,0,0), new Vector3d(20,10,10), new Vector3d(10,0,10) });
 
-			Point3d point_e = new Point3d(11, 1, 5);
+			Vector3d point_e = new Vector3d(11, 1, 5);
 			output(PMC_String(point_in_convex_polygon(point_e, poly_b)), PMC_String(PMC_INSIDE));
 
-			Point3d point_f = new Point3d(17, 7, 23);
+			Vector3d point_f = new Vector3d(17, 7, 23);
 			output(PMC_String(point_in_convex_polygon(point_f, poly_b)), PMC_String(PMC_OUTSIDE));
 
-			Point3d point_g = new Point3d(11, 1, 1);
+			Vector3d point_g = new Vector3d(11, 1, 1);
 			output(PMC_String(point_in_convex_polygon(point_g, poly_b)), PMC_String(PMC_SURFACE));
 
-			Point3d point_h = new Point3d(20, 10, 10);
+			Vector3d point_h = new Vector3d(20, 10, 10);
 			output(PMC_String(point_in_convex_polygon(point_h, poly_b)), PMC_String(PMC_SURFACE));
 
 			// Let's try some error cases.
@@ -1234,7 +1220,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// The point isn't in the plane of the polygon
 			try
 			{
-				output(PMC_String(point_in_convex_polygon(new Point3d(5, 5, 5), poly_a)), "Error");
+				output(PMC_String(point_in_convex_polygon(new Vector3d(5, 5, 5), poly_a)), "Error");
 			}
 			catch(Error e)
 			{
@@ -1247,7 +1233,7 @@ final public class GeomUtil implements Constants, GeomConstants
 		public void test_split_polygon()
 		{
 			// Split a simple axis-aligned triangle across the y-z plane.
-			Polygon poly_a = new Polygon(new Point3d[] { new Point3d(-1,0,0), new Point3d(1,2,0), new Point3d(-1,2,0) });
+			Polygon poly_a = new Polygon(new Vector3d[] { new Vector3d(-1,0,0), new Vector3d(1,2,0), new Vector3d(-1,2,0) });
 			Plane plane_a = new Plane(new Vector3d(1,0,0), 0);	// x = 0
 			Pair<Polygon,Polygon> splitPair = split_polygon(poly_a, plane_a);
 			output(splitPair, "([(0.0, 1.0, 0.0) (1.0, 2.0, 0.0) (0.0, 2.0, 0.0)], " +
@@ -1264,37 +1250,37 @@ final public class GeomUtil implements Constants, GeomConstants
 			// this time to complicate matters.
 
 			// Pick a random place to start
-			Polygon poly_b = new Polygon(new Point3d[] {	new Point3d(-1,0,0), new Point3d(1,0,0), new Point3d(1,1,0),
-															new Point3d(0,2,0), new Point3d(-1,1,0) });
+			Polygon poly_b = new Polygon(new Vector3d[] {	new Vector3d(-1,0,0), new Vector3d(1,0,0), new Vector3d(1,1,0),
+															new Vector3d(0,2,0), new Vector3d(-1,1,0) });
 			splitPair = split_polygon(poly_b, plane_a);
 			output(splitPair, "([(0.0, 0.0, 0.0) (1.0, 0.0, 0.0) (1.0, 1.0, 0.0) (0.0, 2.0, 0.0)], " +
 							   "[(-1.0, 0.0, 0.0) (0.0, 0.0, 0.0) (0.0, 2.0, 0.0) (-1.0, 1.0, 0.0)])");
 
 			// Start with a different vertex
-			Polygon poly_c = new Polygon(new Point3d[] {	new Point3d(-1,1,0), new Point3d(-1,0,0), new Point3d(1,0,0),
-															new Point3d(1,1,0), new Point3d(0,2,0) });
+			Polygon poly_c = new Polygon(new Vector3d[] {	new Vector3d(-1,1,0), new Vector3d(-1,0,0), new Vector3d(1,0,0),
+															new Vector3d(1,1,0), new Vector3d(0,2,0) });
 			splitPair = split_polygon(poly_c, plane_a);
 			output(splitPair, "([(0.0, 0.0, 0.0) (1.0, 0.0, 0.0) (1.0, 1.0, 0.0) (0.0, 2.0, 0.0)], " +
 							   "[(-1.0, 1.0, 0.0) (-1.0, 0.0, 0.0) (0.0, 0.0, 0.0) (0.0, 2.0, 0.0)])");
 
 			// Start with the coplanar vertex
-			Polygon poly_d = new Polygon(new Point3d[] {	new Point3d(0,2,0), new Point3d(-1,1,0), new Point3d(-1,0,0),
-															new Point3d(1,0,0), new Point3d(1,1,0) });
+			Polygon poly_d = new Polygon(new Vector3d[] {	new Vector3d(0,2,0), new Vector3d(-1,1,0), new Vector3d(-1,0,0),
+															new Vector3d(1,0,0), new Vector3d(1,1,0) });
 			splitPair = split_polygon(poly_d, plane_a);
 			output(splitPair, "([(0.0, 0.0, 0.0) (1.0, 0.0, 0.0) (1.0, 1.0, 0.0) (0.0, 2.0, 0.0)], " +
 							   "[(-1.0, 1.0, 0.0) (-1.0, 0.0, 0.0) (0.0, 0.0, 0.0) (0.0, 2.0, 0.0)])");
 
 			// Start with a vertex on the other side of the plane
-			Polygon poly_e = new Polygon(new Point3d[] {	new Point3d(1,0,0), new Point3d(1,1,0), new Point3d(0,2,0),
-															new Point3d(-1,1,0), new Point3d(-1,0,0) });
+			Polygon poly_e = new Polygon(new Vector3d[] {	new Vector3d(1,0,0), new Vector3d(1,1,0), new Vector3d(0,2,0),
+															new Vector3d(-1,1,0), new Vector3d(-1,0,0) });
 			splitPair = split_polygon(poly_e, plane_a);
 			output(splitPair, "([(1.0, 0.0, 0.0) (1.0, 1.0, 0.0) (0.0, 2.0, 0.0) (0.0, 0.0, 0.0)], " +
 							   "[(0.0, 2.0, 0.0) (-1.0, 1.0, 0.0) (-1.0, 0.0, 0.0) (0.0, 0.0, 0.0)])");
 
 			// Now let's test what happens if we have two coplanar vertices (note that we can't have more than that
 			// if the polygon is convex and straddles the plane)
-			Polygon poly_f = new Polygon(new Point3d[] {	new Point3d(0,0,0), new Point3d(1,1,0), new Point3d(1,2,0),
-															new Point3d(0,3,0), new Point3d(-1,2,0), new Point3d(-1,1,0) });
+			Polygon poly_f = new Polygon(new Vector3d[] {	new Vector3d(0,0,0), new Vector3d(1,1,0), new Vector3d(1,2,0),
+															new Vector3d(0,3,0), new Vector3d(-1,2,0), new Vector3d(-1,1,0) });
 			splitPair = split_polygon(poly_f, plane_a);
 			output(splitPair, "([(1.0, 1.0, 0.0) (1.0, 2.0, 0.0) (0.0, 3.0, 0.0) (0.0, 0.0, 0.0)], " +
 							   "[(0.0, 3.0, 0.0) (-1.0, 2.0, 0.0) (-1.0, 1.0, 0.0) (0.0, 0.0, 0.0)])");
@@ -1304,7 +1290,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// The polygon's on the plane
 			try
 			{
-				Polygon poly_g = new Polygon(new Point3d[] {	new Point3d(0,0,0), new Point3d(0,1,1), new Point3d(0,0,1) });
+				Polygon poly_g = new Polygon(new Vector3d[] {	new Vector3d(0,0,0), new Vector3d(0,1,1), new Vector3d(0,0,1) });
 				splitPair = split_polygon(poly_g, plane_a);
 				output(splitPair, "Error");
 			}
@@ -1316,7 +1302,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// The polygon's in front of the plane
 			try
 			{
-				Polygon poly_h = new Polygon(new Point3d[] {	new Point3d(1,0,0), new Point3d(1,1,1), new Point3d(1,0,1) });
+				Polygon poly_h = new Polygon(new Vector3d[] {	new Vector3d(1,0,0), new Vector3d(1,1,1), new Vector3d(1,0,1) });
 				splitPair = split_polygon(poly_h, plane_a);
 				output(splitPair, "Error");
 			}
@@ -1328,7 +1314,7 @@ final public class GeomUtil implements Constants, GeomConstants
 			// The polygon's behind the plane
 			try
 			{
-				Polygon poly_h = new Polygon(new Point3d[] {	new Point3d(-1,0,0), new Point3d(-1,1,1), new Point3d(-1,0,1) });
+				Polygon poly_h = new Polygon(new Vector3d[] {	new Vector3d(-1,0,0), new Vector3d(-1,1,1), new Vector3d(-1,0,1) });
 				splitPair = split_polygon(poly_h, plane_a);
 				output(splitPair, "Error");
 			}

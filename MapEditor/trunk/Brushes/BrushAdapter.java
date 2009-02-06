@@ -1,9 +1,9 @@
 package MapEditor.Brushes;
 
 import MapEditor.Graphics.IRenderer;
+import MapEditor.Math.Vectors.*;
 import java.awt.Color;
 import java.io.PrintWriter;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 /**
@@ -20,9 +20,9 @@ abstract class BrushAdapter implements IBrush
 	public void flip_y()																	{}
 	public void flip_z()																	{}
 	public boolean is_flippable()															{ return false; }
-	public void mouse_moved(IRenderer renderer, Point2d p)									{}
+	public void mouse_moved(IRenderer renderer, Vector2d p)									{}
 	public void mouse_released()															{}
-	public PickResults pick(final Point3d start, final Vector3d direction)					{ return null; }
+	public PickResults pick(final Vector3d start, final Vector3d direction)					{ return null; }
 
 	public void render(IRenderer renderer, Color overrideColour)							{ throw new UnsupportedOperationException(); }
 	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)	{ throw new UnsupportedOperationException(); }

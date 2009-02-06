@@ -4,6 +4,7 @@ import MapEditor.Commands.*;
 import MapEditor.Geom.*;
 import MapEditor.Geom.Planar.*;
 import MapEditor.Graphics.IRenderer;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -11,7 +12,6 @@ import java.awt.Stroke;
 import java.awt.event.*;
 import java.io.PrintWriter;
 import java.util.LinkedList;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 /**
@@ -23,8 +23,8 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 	private ArchitectureBrush m_brush;
 	private IRenderer m_renderer;
 	private Plane m_plane = null;	// the splitting plane
-	private Point2d m_mouseAnchor_Coords = null;
-	private Point2d m_mouseLast_Coords = null;
+	private Vector2d m_mouseAnchor_Coords = null;
+	private Vector2d m_mouseLast_Coords = null;
 
 	//################## CONSTRUCTORS ##################//
 	public SplitterBrush(final ArchitectureBrush brush)
@@ -100,7 +100,7 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 		return false;
 	}
 
-	public void mouse_dragged(IRenderer renderer, Point2d p)
+	public void mouse_dragged(IRenderer renderer, Vector2d p)
 	{
 		if(m_renderer == null)
 		{
@@ -119,7 +119,7 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 		calculate_splitting_plane(renderer);
 	}
 
-	public boolean mouse_pressed(IRenderer renderer, Point2d p, int button, boolean immediate)
+	public boolean mouse_pressed(IRenderer renderer, Vector2d p, int button, boolean immediate)
 	{
 		m_renderer = renderer;
 
@@ -150,7 +150,7 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 		return true;
 	}
 
-	public PickResults pick(final Point3d start, final Vector3d direction)
+	public PickResults pick(final Vector3d start, final Vector3d direction)
 	{
 		return m_brush.pick(start, direction);
 	}
@@ -194,7 +194,7 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 		/*if(m_plane != null)
 		{
 			Polygon p = GeomUtil.make_universe_polygon(m_plane);
-			Point3d[] verts = p.get_vertices();
+			Vector3d[] verts = p.get_vertices();
 
 			gl.glDisable(GL.GL_CULL_FACE);
 
@@ -225,7 +225,7 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 		container.delete_brush(m_brush);
 	}
 
-	public double selection_metric(Point2d p, IRenderer renderer)
+	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
 		// There's no chance of selecting a SplitterBrush, since they only exist when they're
 		// the selected brush. They're only created to facilitate splitting an ArchitectureBrush.
@@ -241,20 +241,19 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 	//################## PRIVATE METHODS ##################//
 	private void calculate_splitting_plane(final IRenderer renderer)
 	{
-		Point2d delta = new Point2d();
-		delta.sub(m_mouseLast_Coords, m_mouseAnchor_Coords);
+		Vector2d delta = VectorUtil.subtract(m_mouseLast_Coords, m_mouseAnchor_Coords);
 		if(delta.x != 0 || delta.y != 0)
 		{
 			AxisPair ap = renderer.get_axis_pair();
 
 			// Note: It doesn't matter which way the plane normal points as far as splitting is concerned.
-			Point2d n2D = new Point2d(delta.y, -delta.x);
-			Point3d n = ap.generate_3D_point(n2D, 0);
+			Vector2d n2D = new Vector2d(delta.y, -delta.x);
+			Vector3d n = ap.generate_3D_point(n2D, 0);
 
 			// n . x - d = 0 -> d = n . x, for any x on the plane
-			double d = new Vector2d(n2D).dot(new Vector2d(m_mouseAnchor_Coords));
+			double d = n2D.dot(m_mouseAnchor_Coords);
 
-			m_plane = new Plane(new Vector3d(n), d);
+			m_plane = new Plane(n, d);
 		}
 		else
 		{

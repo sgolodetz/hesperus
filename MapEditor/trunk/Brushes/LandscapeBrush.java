@@ -6,6 +6,7 @@ import MapEditor.Geom.AxisPair;
 import MapEditor.Geom.Splines.*;
 import MapEditor.Graphics.GraphicsUtil;
 import MapEditor.Graphics.IRenderer;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import MapEditor.Textures.*;
 import java.awt.Color;
@@ -13,7 +14,6 @@ import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 /**
@@ -39,7 +39,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 															// (between 0 and 1, where 0 means the bottom of the brush on the z axis and 1 means the top)
 	private double m_oldManipulatorHeight;					// the height of the current manipulator before the user changes it
 	private Pair<Integer,Integer> m_manipulator = null;		// the manipulator we're currently using to change the landscape heights, if any
-	private Point3d[][] m_mesh;								// the 3D mesh to render (generated using spline interpolation)
+	private Vector3d[][] m_mesh;								// the 3D mesh to render (generated using spline interpolation)
 	private LandscapeState m_landscapeState = LandscapeState.NORMAL;
 
 // TODO: Do landscape texturing properly.
@@ -264,23 +264,23 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		// Set up the constraints we're going to use.
 		CubicBSpline.IConstraint xConstraint1 = new CubicBSpline.GradientConstraint(0)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(1,0,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(1,0,0); }
 		};
 		CubicBSpline.IConstraint xConstraint2 = new CubicBSpline.GradientConstraint(cols-1)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(1,0,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(1,0,0); }
 		};
 		CubicBSpline.IConstraint yConstraint1 = new CubicBSpline.GradientConstraint(0)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(0,1,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(0,1,0); }
 		};
 		CubicBSpline.IConstraint yConstraint2 = new CubicBSpline.GradientConstraint(rows-1)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(0,1,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(0,1,0); }
 		};
 
 		int newRows = 2*rows-1, newCols = 2*cols-1;
-		Point3d[][] interpolatedGrid = SplineUtil.construct_interpolating_mesh_ex(calculate_grid(), newRows, newCols,
+		Vector3d[][] interpolatedGrid = SplineUtil.construct_interpolating_mesh_ex(calculate_grid(), newRows, newCols,
 																				  xConstraint1, xConstraint2,
 																				  yConstraint1, yConstraint2);
 
@@ -342,7 +342,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		return m_ghost;
 	}
 
-	public void mouse_dragged(IRenderer renderer, Point2d p)
+	public void mouse_dragged(IRenderer renderer, Vector2d p)
 	{
 		switch(m_landscapeState)
 		{
@@ -378,7 +378,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		}
 	}
 
-	public void mouse_moved(IRenderer renderer, Point2d p)
+	public void mouse_moved(IRenderer renderer, Vector2d p)
 	{
 		switch(m_landscapeState)
 		{
@@ -387,7 +387,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 				renderer.set_cursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 				// Display a "+" cursor when we're over a manipulator.
-				Point2d[][] manipulators = calculate2D_grid(renderer.get_axis_pair());
+				Vector2d[][] manipulators = calculate2D_grid(renderer.get_axis_pair());
 				for(int i=0, rows=rows(); i<rows; ++i)
 				{
 					for(int j=0, cols=columns(); j<cols; ++j)
@@ -408,7 +408,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		}
 	}
 
-	public boolean mouse_pressed(IRenderer renderer, Point2d p, int mouseButton, boolean immediate)
+	public boolean mouse_pressed(IRenderer renderer, Vector2d p, int mouseButton, boolean immediate)
 	{
 		switch(m_landscapeState)
 		{
@@ -425,7 +425,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 							// Consider that if we want to select a given manipulator, we can do it easily in the top-down view, and we don't
 							// want it to change when we try and manipulate it in another view (as we must, since we can't modify landscape
 							// heights in the top-down view).
-							Point2d curManipulator = calculate2D_grid_coordinates(m_manipulator.first, m_manipulator.second, renderer.get_axis_pair());
+							Vector2d curManipulator = calculate2D_grid_coordinates(m_manipulator.first, m_manipulator.second, renderer.get_axis_pair());
 
 							if(renderer.distance_squared(p, curManipulator) >= MANIPULATOR_THRESHOLD)
 							{
@@ -550,7 +550,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		else if(m_ghost) renderer.set_colour(Color.white);
 		else renderer.set_colour(Color.green);
 
-		Point3d[][] grid = calculate_grid();
+		Vector3d[][] grid = calculate_grid();
 		render_grid(renderer, grid);
 
 		switch(m_landscapeState)
@@ -593,11 +593,11 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		}
 	}
 
-	public double selection_metric(Point2d p, IRenderer renderer)
+	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
 		// The metric is simple: return the square of the nearest distance to a grid point or edge.
 
-		Point2d[][] grid2D = calculate2D_grid(renderer.get_axis_pair());
+		Vector2d[][] grid2D = calculate2D_grid(renderer.get_axis_pair());
 
 		double bestMetric = Double.MAX_VALUE;
 		for(int i=0, rows=rows(); i<rows; ++i)
@@ -644,10 +644,10 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		line = br.readLine();
 		tokens = line.split(" ", 0);
 		if(tokens.length < 1 || !tokens[0].equals("Bounds")) throw new IOException("Bounds not found");
-		Point3d[] corners = new Point3d[] {	new Point3d(	Double.parseDouble(tokens[2]),
+		Vector3d[] corners = new Vector3d[] {	new Vector3d(	Double.parseDouble(tokens[2]),
 															Double.parseDouble(tokens[3]),
 															Double.parseDouble(tokens[4])	),
-											new Point3d(	Double.parseDouble(tokens[7]),
+											new Vector3d(	Double.parseDouble(tokens[7]),
 															Double.parseDouble(tokens[8]),
 															Double.parseDouble(tokens[9])	) };
 		b.m_boundingBox = new BoundingBox(corners[0], corners[1]);
@@ -687,7 +687,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		pw.println("LandscapeBrush");
 		pw.println("{");
 
-		Point3d[] bounds = m_boundingBox.get_bounds();
+		Vector3d[] bounds = m_boundingBox.get_bounds();
 		pw.print("Bounds");
 		for(int i=0; i<2; ++i) pw.print(" ( " + bounds[i].x + " " + bounds[i].y + " " + bounds[i].z + " )");
 		pw.println();
@@ -709,14 +709,14 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 	}
 
 	//################## PROTECTED METHODS ##################//
-	protected void resize(Point2d corner0, Point2d corner1, AxisPair ap)
+	protected void resize(Vector2d corner0, Vector2d corner1, AxisPair ap)
 	{
 		m_boundingBox.resize(corner0, corner1, ap);
 
 		m_meshNeedsUpdating = true;
 	}
 
-	protected void translate(Point3d trans)
+	protected void translate(Vector3d trans)
 	{
 		m_boundingBox = m_cachedBoundingBox.clone();
 		m_boundingBox.translate(trans);
@@ -730,12 +730,12 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 
 	@return	...think about it...
 	*/
-	private Point3d[][] calculate_grid()
+	private Vector3d[][] calculate_grid()
 	{
 		int rows = rows();
 		int columns = columns();
 
-		Point3d[][] grid = new Point3d[rows][columns];
+		Vector3d[][] grid = new Vector3d[rows][columns];
 		for(int i=0; i<rows; ++i)
 			for(int j=0; j<columns; ++j)
 				grid[i][j] = calculate_grid_coordinates(i,j);
@@ -748,14 +748,14 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 
 	@param i	The row of the grid point
 	@param j	The column of the grid point
-	@return		The 3D coordinates of the (i,j) grid point as a Point3d
+	@return		The 3D coordinates of the (i,j) grid point as a Vector3d
 	*/
-	private Point3d calculate_grid_coordinates(int i, int j)
+	private Vector3d calculate_grid_coordinates(int i, int j)
 	{
 		double x = j*size_x()/(columns()-1) + m_boundingBox.get_bounds()[0].x;
 		double y = i*size_y()/(rows()-1) + m_boundingBox.get_bounds()[0].y;
 		double z = m_heights[i][j]*size_z() + m_boundingBox.get_bounds()[0].z;
-		return new Point3d(x, y, z);
+		return new Vector3d(x, y, z);
 	}
 
 	/**
@@ -763,13 +763,13 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 
 	@return	...think about it...
 	*/
-	private Point2d[][] calculate2D_grid(AxisPair ap)
+	private Vector2d[][] calculate2D_grid(AxisPair ap)
 	{
 		final int cols = columns(), rows = rows();
 
-		Point3d[][] grid = calculate_grid();
+		Vector3d[][] grid = calculate_grid();
 
-		Point2d[][] grid2D = new Point2d[rows][cols];
+		Vector2d[][] grid2D = new Vector2d[rows][cols];
 		for(int i=0; i<rows; ++i)
 		{
 			for(int j=0; j<cols; ++j)
@@ -786,9 +786,9 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 
 	@param i	The row of the grid point
 	@param j	The column of the grid point
-	@return		The 2D coordinates of the (i,j) grid point as a Point2d
+	@return		The 2D coordinates of the (i,j) grid point as a Vector2d
 	*/
-	private Point2d calculate2D_grid_coordinates(int i, int j, AxisPair ap)
+	private Vector2d calculate2D_grid_coordinates(int i, int j, AxisPair ap)
 	{
 		return ap.select_components(calculate_grid_coordinates(i, j));
 	}
@@ -808,9 +808,9 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 	@param p			A point in level coordinates
 	@return				The (row, column) index pair of the nearby manipulator, if any, or null otherwise
 	*/
-	private Pair<Integer,Integer> find_nearby_manipulator(IRenderer renderer, Point2d p)
+	private Pair<Integer,Integer> find_nearby_manipulator(IRenderer renderer, Vector2d p)
 	{
-		Point2d[][] grid2D = calculate2D_grid(renderer.get_axis_pair());
+		Vector2d[][] grid2D = calculate2D_grid(renderer.get_axis_pair());
 
 		for(int i=0, rows=rows(); i<rows; ++i)
 		{
@@ -833,19 +833,19 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		// Set up the constraints we're going to use.
 		CubicBSpline.IConstraint xConstraint1 = new CubicBSpline.GradientConstraint(0)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(1,0,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(1,0,0); }
 		};
 		CubicBSpline.IConstraint xConstraint2 = new CubicBSpline.GradientConstraint(cols-1)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(1,0,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(1,0,0); }
 		};
 		CubicBSpline.IConstraint yConstraint1 = new CubicBSpline.GradientConstraint(0)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(0,1,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(0,1,0); }
 		};
 		CubicBSpline.IConstraint yConstraint2 = new CubicBSpline.GradientConstraint(rows-1)
 		{
-			public Point3d determine_value(Point3d[] data) { return new Point3d(0,1,0); }
+			public Vector3d determine_value(Vector3d[] data) { return new Vector3d(0,1,0); }
 		};
 
 		int meshHeight = (rows-1)*SUBDIVISIONS+1;
@@ -866,7 +866,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 	@param renderer	The renderer with which to render the grid
 	@param grid		The grid to render
 	*/
-	private void render_grid(IRenderer renderer, Point3d[][] grid)
+	private void render_grid(IRenderer renderer, Vector3d[][] grid)
 	{
 		for(int i=0, height=grid.length; i<height; ++i)
 		{
@@ -890,7 +890,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 	@param renderer	The renderer with which to render the grid
 	@param grid		The grid in which the manipulators lie
 	*/
-	private void render_manipulators(IRenderer renderer, Point3d[][] grid)
+	private void render_manipulators(IRenderer renderer, Vector3d[][] grid)
 	{
 		AxisPair ap = renderer.get_axis_pair();
 
@@ -903,7 +903,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 				// Don't render the currently selected manipulator, if any, we'll render it afterwards in another style to differentiate it.
 				if(m_manipulator != null && m_manipulator.first == i && m_manipulator.second == j) continue;
 
-				Point2d p = ap.select_components(grid[i][j]);
+				Vector2d p = ap.select_components(grid[i][j]);
 				BrushUtil.draw_dot(renderer, p);
 			}
 		}
@@ -911,7 +911,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		if(m_manipulator != null)
 		{
 			renderer.set_colour(Color.red);
-			Point2d p = ap.select_components(grid[m_manipulator.first][m_manipulator.second]);
+			Vector2d p = ap.select_components(grid[m_manipulator.first][m_manipulator.second]);
 			BrushUtil.draw_dot(renderer, p);
 		}
 	}
@@ -937,10 +937,10 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 	@param gl	The OpenGL context with which to render the manipulators
 	@param grid	The grid in which the manipulators lie
 	*/
-	private void render3D_manipulators(GL gl, Point3d[][] grid)
+	private void render3D_manipulators(GL gl, Vector3d[][] grid)
 	{
 		final double SIZE = 4;
-		Point3d delta = new Point3d(SIZE/2, SIZE/2, SIZE/2), p1 = new Point3d(), p2 = new Point3d();
+		Vector3d delta = new Vector3d(SIZE/2, SIZE/2, SIZE/2), p1 = new Vector3d(), p2 = new Vector3d();
 
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
 
@@ -951,8 +951,8 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 				// Don't render the currently selected manipulator, if any, we'll render it afterwards in another style to differentiate it.
 				if(m_manipulator != null && m_manipulator.first == i && m_manipulator.second == j) continue;
 
-				p1.sub(grid[i][j], delta);
-				p2.add(grid[i][j], delta);
+				p1 = VectorUtil.subtract(grid[i][j], delta);
+				p2 = VectorUtil.add(grid[i][j], delta);
 				GraphicsUtil.draw_cuboid(gl, p1, p2);
 			}
 		}
@@ -960,8 +960,8 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		if(m_manipulator != null)
 		{
 			gl.glColor3f(1.0f, 0.0f, 0.0f);
-			p1.sub(grid[m_manipulator.first][m_manipulator.second], delta);
-			p2.add(grid[m_manipulator.first][m_manipulator.second], delta);
+			p1 = VectorUtil.subtract(grid[m_manipulator.first][m_manipulator.second], delta);
+			p2 = VectorUtil.add(grid[m_manipulator.first][m_manipulator.second], delta);
 			GraphicsUtil.draw_cuboid(gl, p1, p2);
 		}
 	}
@@ -991,7 +991,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 	@param gl	The OpenGL context with which to render the mesh
 	@param mesh	The mesh points
 	*/
-	private void render3D_mesh(GL gl, Point3d[][] mesh)
+	private void render3D_mesh(GL gl, Vector3d[][] mesh)
 	{
 		gl.glDisable(GL.GL_CULL_FACE);
 
@@ -1018,7 +1018,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
-	private void render3D_textured_mesh(GL gl, GLU glu, Point3d[][] mesh)
+	private void render3D_textured_mesh(GL gl, GLU glu, Vector3d[][] mesh)
 	{
 		gl.glDisable(GL.GL_CULL_FACE);
 

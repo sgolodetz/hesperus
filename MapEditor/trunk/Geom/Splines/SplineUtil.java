@@ -3,9 +3,9 @@ package MapEditor.Geom.Splines;
 import MapEditor.Geom.Planar.Plane;
 import MapEditor.Geom.Splines.CubicBSpline.*;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.Vector3d;
 import MapEditor.Misc.*;
 import MapEditor.Test.*;
-import javax.vecmath.*;
 
 /**
 This class contains spline utility functions.
@@ -32,7 +32,7 @@ public class SplineUtil implements Constants
 	@param yConstraint2	Likewise
 	@return				The specified mesh, as a two-dimensional grid of points
 	*/
-	public static Point3d[][] construct_interpolating_mesh(final Point3d[][] grid, int meshHeight, int meshWidth,
+	public static Vector3d[][] construct_interpolating_mesh(final Vector3d[][] grid, int meshHeight, int meshWidth,
 														   IConstraint xConstraint1, IConstraint xConstraint2,
 														   IConstraint yConstraint1, IConstraint yConstraint2)
 	{
@@ -51,7 +51,7 @@ public class SplineUtil implements Constants
 
 		for(int j=0; j<meshWidth; ++j)
 		{
-			Point3d[] data = new Point3d[rows];
+			Vector3d[] data = new Vector3d[rows];
 
 			double t = (double)j/(meshWidth-1);
 
@@ -63,7 +63,7 @@ public class SplineUtil implements Constants
 		}
 
 		// Finally, calculate the mesh points by calculating points on the y splines.
-		Point3d[][] mesh = new Point3d[meshHeight][meshWidth];
+		Vector3d[][] mesh = new Vector3d[meshHeight][meshWidth];
 		for(int i=0; i<meshHeight; ++i)
 		{
 			double t = (double)i/(meshHeight-1);
@@ -80,7 +80,7 @@ public class SplineUtil implements Constants
 	/**
 	TODO: Comment here.
 	*/
-	public static Point3d[][] construct_interpolating_mesh_ex(final Point3d[][] grid, int meshHeight, int meshWidth,
+	public static Vector3d[][] construct_interpolating_mesh_ex(final Vector3d[][] grid, int meshHeight, int meshWidth,
 															  IConstraint xConstraint1, IConstraint xConstraint2,
 															  IConstraint yConstraint1, IConstraint yConstraint2)
 	{
@@ -102,7 +102,7 @@ public class SplineUtil implements Constants
 		// Calculate points on the y splines by intersecting the x splines with the planes in which the y splines are to lie,
 		// and thus calculate the splines in the y direction by interpolating intermediate mesh points.
 		CubicBSpline[] ySplines = new CubicBSpline[meshWidth];
-		Point3d[][] intermediateMesh = new Point3d[meshWidth][rows];	// note the reverse order of the dimensions! it makes things easier
+		Vector3d[][] intermediateMesh = new Vector3d[meshWidth][rows];	// note the reverse order of the dimensions! it makes things easier
 		for(int j=0; j<meshWidth; ++j)
 		{
 			double x = j*(maxX-minX)/(meshWidth-1) + minX;
@@ -111,7 +111,7 @@ public class SplineUtil implements Constants
 
 			for(int r=0; r<rows; ++r)
 			{
-				Point3d result = intersect_spline_segment_with_plane(xSplines[r], knot, plane);
+				Vector3d result = intersect_spline_segment_with_plane(xSplines[r], knot, plane);
 
 				// If we couldn't find an intersection point, something went wrong, but we'll try and stagger on.
 				if(result == null)
@@ -135,7 +135,7 @@ public class SplineUtil implements Constants
 		}
 
 		// Finally, calculate the true mesh points by intersecting the y splines with the relevant planes.
-		Point3d[][] mesh = new Point3d[meshHeight][meshWidth];
+		Vector3d[][] mesh = new Vector3d[meshHeight][meshWidth];
 		for(int i=0; i<meshHeight; ++i)
 		{
 			double y = i*(maxY-minY)/(meshHeight-1) + minY;
@@ -144,7 +144,7 @@ public class SplineUtil implements Constants
 
 			for(int j=0; j<meshWidth; ++j)
 			{
-				Point3d result = intersect_spline_segment_with_plane(ySplines[j], knot, plane);
+				Vector3d result = intersect_spline_segment_with_plane(ySplines[j], knot, plane);
 
 				// If we couldn't find an intersection point, something went wrong, but we'll try and stagger on.
 				if(result == null)
@@ -171,7 +171,7 @@ public class SplineUtil implements Constants
 	@param plane	The plane with which to intersect the spline
 	@return			An intersection point, if possible, or null otherwise
 	*/
-	public static Point3d intersect_spline_segment_with_plane(final CubicBSpline spline, int knot, final Plane plane)
+	public static Vector3d intersect_spline_segment_with_plane(final CubicBSpline spline, int knot, final Plane plane)
 	{
 // TODO: Check this thoroughly!
 		/*
@@ -224,12 +224,12 @@ public class SplineUtil implements Constants
 		*/
 
 		Vector3d n = plane.get_normal();
-		Point3d[] d = spline.get_control_points();
+		Vector3d[] d = spline.get_control_points();
 
 		// Calculate the values of a[i] as in the above description. Note that a[j] here corresponds to a[j-3] above, because of
 		// the requirement that arrays start from 0 (rather than -3, which would be more intuitive here!).
 		double[] a = new double[4];
-		for(int i=0; i<4 && knot+i < d.length; ++i) a[i] = n.dot(new Vector3d(d[knot+i]));
+		for(int i=0; i<4 && knot+i < d.length; ++i) a[i] = n.dot(d[knot+i]);
 
 		// Solve the cubic derived above.
 		double cubicCoefficient = -a[0] + 3*a[1] - 3*a[2] + a[3];
@@ -302,25 +302,25 @@ public class SplineUtil implements Constants
 		{
 			// Test a simple case first.
 
-			Point3d[] data = new Point3d[]
+			Vector3d[] data = new Vector3d[]
 			{
-				new Point3d(0,0,0),
-				new Point3d(1,0,2),
-				new Point3d(2,0,0),
-				new Point3d(3,0,2)
+				new Vector3d(0,0,0),
+				new Vector3d(1,0,2),
+				new Vector3d(2,0,0),
+				new Vector3d(3,0,2)
 			};
 			IConstraint constraint1 = new GradientConstraint(0)
 			{
-				public Point3d determine_value(Point3d[] data)
+				public Vector3d determine_value(Vector3d[] data)
 				{
-					return new Point3d(1,0,0);
+					return new Vector3d(1,0,0);
 				}
 			};
 			IConstraint constraint2 = new GradientConstraint(3)
 			{
-				public Point3d determine_value(Point3d[] data)
+				public Vector3d determine_value(Vector3d[] data)
 				{
-					return new Point3d(1,0,0);
+					return new Vector3d(1,0,0);
 				}
 			};
 			CubicBSpline spline = CubicBSpline.construct_interpolating_spline(data, constraint1, constraint2);
@@ -328,12 +328,12 @@ public class SplineUtil implements Constants
 			output(intersect_spline_segment_with_plane(spline, 0, new Plane(new Vector3d(1,0,0), 0.5)), "");
 			output(intersect_spline_segment_with_plane(spline, 0, new Plane(new Vector3d(1,0,0), 0.75)), "");
 
-			data = new Point3d[]
+			data = new Vector3d[]
 			{
-				new Point3d(0,0,0),
-				new Point3d(1,0,2),
-				new Point3d(2,0,1),
-				new Point3d(3,0,5)
+				new Vector3d(0,0,0),
+				new Vector3d(1,0,2),
+				new Vector3d(2,0,1),
+				new Vector3d(3,0,5)
 			};
 			spline = CubicBSpline.construct_interpolating_spline(data, constraint1, constraint2);
 			output(intersect_spline_segment_with_plane(spline, 0, new Plane(new Vector3d(1,0,0), 0.5)), "");

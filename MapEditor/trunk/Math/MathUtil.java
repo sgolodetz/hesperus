@@ -1,8 +1,8 @@
 package MapEditor.Math;
 
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import MapEditor.Test.*;
-import javax.vecmath.*;
 
 public class MathUtil implements Constants
 {
@@ -21,16 +21,15 @@ public class MathUtil implements Constants
 	@return		The normal of the polygon as a Vector3d
 	@throws java.lang.Error	If the preconditions are violated
 	*/
-	public static Vector3d calculate_normal(final Point3d v1, final Point3d v2, final Point3d v3)
+	public static Vector3d calculate_normal(final Vector3d v1, final Vector3d v2, final Vector3d v3)
 	{
 		if(v1 == null || v2 == null || v3 == null) throw new java.lang.Error();
 
-		Vector3d l = new Vector3d(v2), r = new Vector3d(v3);
-		l.sub(v1);	// l = v2-v1
-		r.sub(v1);	// r = v3-v1
+		Vector3d l = v2.clone(), r = v3.clone();
+		l.subtract(v1);		// l = v2-v1
+		r.subtract(v1);		// r = v3-v1
 
-		Vector3d normal = new Vector3d();
-		normal.cross(l, r);
+		Vector3d normal = l.cross(r);
 
 		if(normal.length() == 0) throw new java.lang.Error();	// the vertices weren't mutually distinct
 
@@ -64,15 +63,14 @@ public class MathUtil implements Constants
 		// Main algorithm
 		double radianAngle = degreeAngle*Math.PI/180.0;
 		double cosAngle = Math.cos(radianAngle), sinAngle = Math.sin(radianAngle);
-		Vector3d aCROSSv = new Vector3d();
-		aCROSSv.cross(axis, v);
+		Vector3d aCROSSv = axis.cross(v);
 
 		// ret = v cos radianAngle + (axis x v) sin radianAngle + axis(axis . v)(1 - cos radianAngle)
 		// (See Mathematics for 3D Game Programming and Computer Graphics, P.62, for details of why this is (it's not very hard)).
-		Vector3d ret = new Vector3d();
-		ret.scale(cosAngle, v);
-		ret.scaleAdd(sinAngle, aCROSSv, ret);
-		ret.scaleAdd(axis.dot(v) * (1 - cosAngle), axis, ret);
+		Vector3d ret = v.clone();
+		ret.scale(cosAngle);
+		ret = Vector3d.scale_add(sinAngle, aCROSSv, ret);
+		ret = Vector3d.scale_add(axis.dot(v) * (1 - cosAngle), axis, ret);
 		return ret;
 	}
 
@@ -89,10 +87,9 @@ public class MathUtil implements Constants
 	{
 		Vector3d u3D = new Vector3d(u.x, u.y, 0), v3D = new Vector3d(v.x, v.y, 0);
 
-		double angle = u3D.angle(v3D);
+		double angle = VectorUtil.angle_between(u3D, v3D);
 
-		Vector3d uCROSSv = new Vector3d();
-		uCROSSv.cross(u3D,v3D);
+		Vector3d uCROSSv = u3D.cross(v3D);
 		Vector3d n = new Vector3d(0,0,1);
 		angle *= uCROSSv.dot(n) >= 0 ? 1 : -1;
 
@@ -261,34 +258,6 @@ public class MathUtil implements Constants
 			return Pair.make_pair(inverseDenom * (b2*c1 - b1*c2), inverseDenom * (a1*c2 - a2*c1));
 		}
 		else return null;
-	}
-
-	/**
-	Returns a Point2d containing the result of doing p1 - p2.
-
-	@param p1	The left-hand operand of the subtraction
-	@param p2	The right-hand operand of the subtraction
-	@return		...think about it...
-	*/
-	public static Point2d subtract(Point2d p1, Point2d p2)
-	{
-		Point2d ret = new Point2d();
-		ret.sub(p1, p2);
-		return ret;
-	}
-
-	/**
-	Returns a Point3d containing the result of doing p1 - p2.
-
-	@param p1	The left-hand operand of the subtraction
-	@param p2	The right-hand operand of the subtraction
-	@return		...think about it...
-	*/
-	public static Point3d subtract(Point3d p1, Point3d p2)
-	{
-		Point3d ret = new Point3d();
-		ret.sub(p1, p2);
-		return ret;
 	}
 
 	//################## TEST HARNESS ##################//

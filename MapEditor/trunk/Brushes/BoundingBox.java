@@ -3,7 +3,7 @@ package MapEditor.Brushes;
 import MapEditor.Geom.AxisAlignedBox;
 import MapEditor.Geom.AxisPair;
 import MapEditor.Graphics.IRenderer;
-import javax.vecmath.*;
+import MapEditor.Math.Vectors.*;
 
 class BoundingBox extends AxisAlignedBox implements BrushConstants
 {
@@ -14,7 +14,7 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	@param corner0	One extreme corner
 	@param corner1	The other extreme corner
 	*/
-	public BoundingBox(Point3d corner0, Point3d corner1)
+	public BoundingBox(Vector3d corner0, Vector3d corner1)
 	{
 		super(corner0, corner1);
 	}
@@ -26,13 +26,13 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	*/
 	public BoundingBox(AxisAlignedBox rhs)
 	{
-		this((Point3d)rhs.get_bounds()[0].clone(), (Point3d)rhs.get_bounds()[1].clone());
+		this(rhs.get_bounds()[0].clone(), rhs.get_bounds()[1].clone());
 	}
 
 	//################## PUBLIC METHODS ##################//
 	public BoundingBox clone()
 	{
-		return new BoundingBox((Point3d)get_bounds()[0].clone(), (Point3d)get_bounds()[1].clone());
+		return new BoundingBox(get_bounds()[0].clone(), get_bounds()[1].clone());
 	}
 
 	/**
@@ -43,13 +43,13 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	@param p	The point for which to find the nearest corner handle
 	@return		The nearest corner handle
 	*/
-	public Point2d find_manhattan_nearest_corner_handle(AxisPair ap, Point2d p)
+	public Vector2d find_manhattan_nearest_corner_handle(AxisPair ap, Vector2d p)
 	{
-		Point2d ret = null;
+		Vector2d ret = null;
 		double smallestDistance = Double.MAX_VALUE;
 		for(int i=0; i<4; ++i)
 		{
-			Point2d cornerHandle = get_corner_handle(ap, i);
+			Vector2d cornerHandle = get_corner_handle(ap, i);
 			double distance = Math.abs(p.x - cornerHandle.x) + Math.abs(p.y - cornerHandle.y);
 			if(distance < smallestDistance)
 			{
@@ -69,16 +69,16 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	@return		...think about it...
 	@throws java.lang.Error	If the corner handle index is out-of-range
 	*/
-	final public Point2d get_corner_handle(AxisPair ap, int i)
+	final public Vector2d get_corner_handle(AxisPair ap, int i)
 	{
 		AxisAlignedBox.Projection proj = project_to_2D_using(ap);
 
 		switch(i)
 		{
 			case 0:		return proj.m_corners[0];
-			case 1:		return new Point2d(proj.m_corners[1].x, proj.m_corners[0].y);
+			case 1:		return new Vector2d(proj.m_corners[1].x, proj.m_corners[0].y);
 			case 2:		return proj.m_corners[1];
-			case 3:		return new Point2d(proj.m_corners[0].x, proj.m_corners[1].y);
+			case 3:		return new Vector2d(proj.m_corners[0].x, proj.m_corners[1].y);
 			default:	throw new java.lang.Error();
 		}
 	}
@@ -92,7 +92,7 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	@return		...think about it...
 	@throws java.lang.Error	If the edge handle index is out-of-range
 	*/
-	final public Point2d get_edge_handle(AxisPair ap, int i)
+	final public Vector2d get_edge_handle(AxisPair ap, int i)
 	{
 		AxisAlignedBox.Projection proj = project_to_2D_using(ap);
 
@@ -101,10 +101,10 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 
 		switch(i)
 		{
-			case 0:		return new Point2d(midX, proj.m_corners[0].y);
-			case 1:		return new Point2d(proj.m_corners[1].x, midY);
-			case 2:		return new Point2d(midX, proj.m_corners[1].y);
-			case 3:		return new Point2d(proj.m_corners[0].x, midY);
+			case 0:		return new Vector2d(midX, proj.m_corners[0].y);
+			case 1:		return new Vector2d(proj.m_corners[1].x, midY);
+			case 2:		return new Vector2d(midX, proj.m_corners[1].y);
+			case 3:		return new Vector2d(proj.m_corners[0].x, midY);
 			default:	throw new java.lang.Error();
 		}
 	}
@@ -113,7 +113,7 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	Gets the location of the corner handle opposite the i'th when the bounding box is projected onto
 	the specified pair of axes. (See get_corner_handle for parameter details.)
 	*/
-	final public Point2d get_opposite_corner_handle(AxisPair ap, int i)
+	final public Vector2d get_opposite_corner_handle(AxisPair ap, int i)
 	{
 		return get_corner_handle(ap, (i+2)%4);
 	}
@@ -122,7 +122,7 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	Gets the location of the edge handle opposite the i'th when the bounding box is projected onto
 	the specified pair of axes. (See get_edge_handle for parameter details.)
 	*/
-	final public Point2d get_opposite_edge_handle(AxisPair ap, int i)
+	final public Vector2d get_opposite_edge_handle(AxisPair ap, int i)
 	{
 		return get_edge_handle(ap, (i+2)%4);
 	}
@@ -136,7 +136,7 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	@param ap		The axes onto which to project the brush's bounding box
 	@return			true, if the point is within the projection, or false otherwise
 	*/
-	public boolean within_2D_bounds(Point2d p, AxisPair ap)
+	public boolean within_2D_bounds(Vector2d p, AxisPair ap)
 	{
 		return within_2D_bounds(p, ap, HANDLE_SIZE/4);
 	}
@@ -151,7 +151,7 @@ class BoundingBox extends AxisAlignedBox implements BrushConstants
 	@param tolerance	The maximum distance outside the box we can be clicking without deselecting the brush
 	@return				true, if the point is within the projection, or false otherwise
 	*/
-	private boolean within_2D_bounds(Point2d p, AxisPair ap, double tolerance)
+	private boolean within_2D_bounds(Vector2d p, AxisPair ap, double tolerance)
 	{
 		AxisAlignedBox.Projection proj = project_to_2D_using(ap);
 

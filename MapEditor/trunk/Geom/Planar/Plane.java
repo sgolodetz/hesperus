@@ -1,7 +1,7 @@
 package MapEditor.Geom.Planar;
 
+import MapEditor.Math.Vectors.Vector3d;
 import MapEditor.Misc.Constants;
-import javax.vecmath.*;
 
 /**
 This class represents planes in three-dimensional space.
@@ -42,10 +42,10 @@ public class Plane implements Constants
 	@param p	The point whose displacement from the plane we want to determine
 	@return		The (perpendicular) displacement from the plane to the point
 	*/
-	public double displacement_to_point(final Point3d p)
+	public double displacement_to_point(final Vector3d p)
 	{
 		// Note: We have a unit normal, so we don't need to normalise this.
-		return m_normal.dot(new Vector3d(p)) - m_d;
+		return m_normal.dot(p) - m_d;
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class Plane implements Constants
 	*/
 	public Plane negate()
 	{
-		Vector3d negatedNormal = (Vector3d)m_normal.clone();
+		Vector3d negatedNormal = m_normal.clone();
 		negatedNormal.negate();
 		return new Plane(negatedNormal, -m_d);
 	}
@@ -85,11 +85,11 @@ public class Plane implements Constants
 
 	@param p	The point to reflect
 	*/
-	public void reflect_point(Point3d p)
+	public void reflect_point(Vector3d p)
 	{
 		double disp = displacement_to_point(p);
 
-		Vector3d scaledNormal = (Vector3d)m_normal.clone();
+		Vector3d scaledNormal = m_normal.clone();
 		scaledNormal.scale(-2*disp);
 
 		// Now |scaledNormal| = 2*disp, since |m_normal| = 1. It points towards the plane, so

@@ -1,7 +1,7 @@
 package MapEditor.Geom;
 
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Constants;
-import javax.vecmath.*;
 
 public class AxisAlignedBox implements Cloneable, Constants
 {
@@ -9,15 +9,15 @@ public class AxisAlignedBox implements Cloneable, Constants
 	public class Projection
 	{
 		// Datatype Invariant: m_corners[0].c <= m_corners[1].c for all c <- {x,y}
-		public Point2d[] m_corners = new Point2d[2];
+		public Vector2d[] m_corners = new Vector2d[2];
 	}
 
 	//################## PRIVATE VARIABLES ##################//
 	// Datatype Invariant: m_corners[0].c <= m_corners[1].c for all c <- {x,y,z}
-	private Point3d[] m_corners = new Point3d[2];
+	private Vector3d[] m_corners = new Vector3d[2];
 
 	//################## CONSTRUCTORS ##################//
-	public AxisAlignedBox(Point3d corner0, Point3d corner1)
+	public AxisAlignedBox(Vector3d corner0, Vector3d corner1)
 	{
 		m_corners[0] = corner0;
 		m_corners[1] = corner1;
@@ -30,9 +30,9 @@ public class AxisAlignedBox implements Cloneable, Constants
 
 	@return	The centre of the box, as a Point3d
 	*/
-	public Point3d centre()
+	public Vector3d centre()
 	{
-		Point3d c = (Point3d)m_corners[0].clone();
+		Vector3d c = m_corners[0].clone();
 		c.add(m_corners[1]);
 		c.scale(0.5);
 		return c;
@@ -45,7 +45,7 @@ public class AxisAlignedBox implements Cloneable, Constants
 	*/
 	public AxisAlignedBox clone()
 	{
-		return new AxisAlignedBox((Point3d)m_corners[0].clone(), (Point3d)m_corners[1].clone());
+		return new AxisAlignedBox(m_corners[0].clone(), m_corners[1].clone());
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class AxisAlignedBox implements Cloneable, Constants
 		}
 	}
 
-	public Point3d[] get_bounds()
+	public Vector3d[] get_bounds()
 	{
 		return m_corners;
 	}
@@ -81,14 +81,14 @@ public class AxisAlignedBox implements Cloneable, Constants
 		return p;
 	}
 
-	public void resize(Point2d corner0, Point2d corner1, AxisPair ap)
+	public void resize(Vector2d corner0, Vector2d corner1, AxisPair ap)
 	{
 		ap.set_relevant_components(m_corners[0], corner0);
 		ap.set_relevant_components(m_corners[1], corner1);
 		reestablish_invariant();
 	}
 
-	public void resize(Point3d corner0, Point3d corner1)
+	public void resize(Vector3d corner0, Vector3d corner1)
 	{
 		m_corners[0] = corner0;
 		m_corners[1] = corner1;
@@ -100,9 +100,9 @@ public class AxisAlignedBox implements Cloneable, Constants
 
 	@param trans	The 3D vector by which to translate
 	*/
-	public void translate(Point3d trans)
+	public void translate(Vector3d trans)
 	{
-		for(Point3d c: m_corners) c.add(trans);
+		for(Vector3d c: m_corners) c.add(trans);
 	}
 
 	//################## PRIVATE METHODS ##################//

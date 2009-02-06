@@ -3,8 +3,8 @@ package MapEditor.Maps;
 import MapEditor.Brushes.*;
 import MapEditor.Commands.Command;
 import MapEditor.Misc.MiscUtil;
+import MapEditor.Math.Vectors.Vector3d;
 import java.util.*;
-import javax.vecmath.*;
 
 public class MapCommands
 {
@@ -45,7 +45,7 @@ public class MapCommands
 	@param offset	The offset by which they are to be translated
 	@return			As specified above
 	*/
-	public static Command translate_map(final Map map, final Point3d offset)
+	public static Command translate_map(final Map map, final Vector3d offset)
 	{
 		return for_all_brushes(map, "Map Translation", new BrushCommandFunctor()
 		{

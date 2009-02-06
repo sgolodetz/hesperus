@@ -1,36 +1,38 @@
 package MapEditor.Brushes;
 
 import MapEditor.Graphics.IRenderer;
-import javax.vecmath.*;
+import MapEditor.Math.Vectors.*;
+import MapEditor.Misc.Constants;
 
 /**
 This class contains brush utility methods.
 */
 class BrushUtil implements BrushConstants
 {
-	public static void draw_dot(final IRenderer renderer, final Point2d centre)
+	public static void draw_dot(final IRenderer renderer, final Vector2d centre)
 	{
 		final double DOT_SIZE = 12;
-		Point2d p1 = renderer.add_pixel_offset(centre, (int)-DOT_SIZE/2, (int)-DOT_SIZE/2);
-		Point2d p2 = renderer.add_pixel_offset(centre, (int)DOT_SIZE/2, (int)DOT_SIZE/2);
+		Vector2d p1 = renderer.add_pixel_offset(centre, (int)-DOT_SIZE/2, (int)-DOT_SIZE/2);
+		Vector2d p2 = renderer.add_pixel_offset(centre, (int)DOT_SIZE/2, (int)DOT_SIZE/2);
 		renderer.fill_oval(p1, p2);
 	}
 
-	public static void draw_infinite_line(final IRenderer renderer, final Point2d p1, final Point2d p2)
+	public static void draw_infinite_line(final IRenderer renderer, final Vector2d p1, final Vector2d p2)
 	{
-		Vector2d delta = new Vector2d();
-		delta.sub(p2, p1);
-		delta.normalize();
+		Vector2d delta = VectorUtil.subtract(p2, p1);
+		if(delta.length() > Constants.EPSILON)
+		{
+			delta.normalize();
 
-		final double LARGE_NUMBER = 100000;		// a reasonably arbitrary large number
-		Point2d q1 = new Point2d(), q2 = new Point2d();
-		q1.scaleAdd(-LARGE_NUMBER, delta, p1);
-		q2.scaleAdd(LARGE_NUMBER, delta, p2);
+			final double LARGE_NUMBER = 100000;		// a reasonably arbitrary large number
+			Vector2d q1 = Vector2d.scale_add(-LARGE_NUMBER, delta, p1);
+			Vector2d q2 = Vector2d.scale_add(LARGE_NUMBER, delta, p2);
 
-		renderer.draw_line(q1, q2);
+			renderer.draw_line(q1, q2);
+		}
 	}
 
-	public static boolean near_edge_x(IRenderer renderer, Point2d p, double k, double minY, double maxY)
+	public static boolean near_edge_x(IRenderer renderer, Vector2d p, double k, double minY, double maxY)
 	{
 		// The edge lies on the line x=k, and is restricted to the range [minY,maxY].
 		// Hence the point p is near the edge if p.y satisfies minY <= p.y <= maxY and p.x is within
@@ -40,7 +42,7 @@ class BrushUtil implements BrushConstants
 		else return false;
 	}
 
-	public static boolean near_edge_y(IRenderer renderer, Point2d p, double k, double minX, double maxX)
+	public static boolean near_edge_y(IRenderer renderer, Vector2d p, double k, double minX, double maxX)
 	{
 		// The edge lies on the line y=k, and is restricted to the range [minX,maxX].
 		// Hence the point p is near the edge if p.x satisfies minX <= p.x <= maxX and p.y is within
@@ -50,7 +52,7 @@ class BrushUtil implements BrushConstants
 		else return false;
 	}
 
-	public static boolean near_handle(IRenderer renderer, Point2d p, double x, double y)
+	public static boolean near_handle(IRenderer renderer, Vector2d p, double x, double y)
 	{
 		// (x,y) is the location of the handle, p is the point we want to check for proximity
 		// Our test checks whether the mouse is inside the handle bounds.
@@ -64,10 +66,10 @@ class BrushUtil implements BrushConstants
 	@param renderer	The renderer with which to draw the handle
 	@param centre	The position on which the handle is centred
 	*/
-	public static void render_circular_handle(IRenderer renderer, Point2d centre)
+	public static void render_circular_handle(IRenderer renderer, Vector2d centre)
 	{
-		Point2d p1 = renderer.add_pixel_offset(centre, -HANDLE_SIZE/2-1, -HANDLE_SIZE/2-1);
-		Point2d p2 = renderer.add_pixel_offset(centre, HANDLE_SIZE/2+1, HANDLE_SIZE/2+1);
+		Vector2d p1 = renderer.add_pixel_offset(centre, -HANDLE_SIZE/2-1, -HANDLE_SIZE/2-1);
+		Vector2d p2 = renderer.add_pixel_offset(centre, HANDLE_SIZE/2+1, HANDLE_SIZE/2+1);
 		renderer.draw_oval(p1, p2);
 	}
 
@@ -79,9 +81,9 @@ class BrushUtil implements BrushConstants
 	@param renderer	The renderer with which to draw the handle
 	@param centre	The position on which the handle is centred
 	*/
-	public static void render_diamond_handle(IRenderer renderer, Point2d centre)
+	public static void render_diamond_handle(IRenderer renderer, Vector2d centre)
 	{
-		Point2d[] ps = new Point2d[5];
+		Vector2d[] ps = new Vector2d[5];
 		ps[0] = renderer.add_pixel_offset(centre, -HANDLE_SIZE/2-1, 0);
 		ps[1] = renderer.add_pixel_offset(centre, 0, -HANDLE_SIZE/2-1);
 		ps[2] = renderer.add_pixel_offset(centre, HANDLE_SIZE/2+1, 0);
@@ -96,10 +98,10 @@ class BrushUtil implements BrushConstants
 	@param renderer	The renderer with which to draw the handle
 	@param centre	The position on which the handle is centred
 	*/
-	public static void render_square_handle(IRenderer renderer, Point2d centre)
+	public static void render_square_handle(IRenderer renderer, Vector2d centre)
 	{
-		Point2d p1 = renderer.add_pixel_offset(centre, -HANDLE_SIZE/2, -HANDLE_SIZE/2);
-		Point2d p2 = renderer.add_pixel_offset(centre, HANDLE_SIZE/2, HANDLE_SIZE/2);
+		Vector2d p1 = renderer.add_pixel_offset(centre, -HANDLE_SIZE/2, -HANDLE_SIZE/2);
+		Vector2d p2 = renderer.add_pixel_offset(centre, HANDLE_SIZE/2, HANDLE_SIZE/2);
 		renderer.draw_rectangle(p1, p2);
 	}
 }

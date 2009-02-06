@@ -2,10 +2,10 @@ package MapEditor.Brushes;
 
 import MapEditor.Geom.Planar.Polygon;
 import MapEditor.Graphics.IRenderer;
+import MapEditor.Math.Vectors.*;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
-import javax.vecmath.*;
 import net.java.games.jogl.GL;
 import net.java.games.jogl.GLU;
 
@@ -109,9 +109,9 @@ public interface IBrush
 	*/
 	boolean is_ghost();
 
-	void mouse_dragged(IRenderer renderer, Point2d p);
-	void mouse_moved(IRenderer renderer, Point2d p);
-	boolean mouse_pressed(IRenderer renderer, Point2d p, int button, boolean immediate);
+	void mouse_dragged(IRenderer renderer, Vector2d p);
+	void mouse_moved(IRenderer renderer, Vector2d p);
+	boolean mouse_pressed(IRenderer renderer, Vector2d p, int button, boolean immediate);
 	void mouse_released();
 
 	/**
@@ -124,7 +124,7 @@ public interface IBrush
 	@return				The results of the picking operation as a PickResults object, or null if either the
 						brush wasn't pickable or the half-ray didn't intersect it
 	*/
-	PickResults pick(final Point3d start, final Vector3d direction);
+	PickResults pick(final Vector3d start, final Vector3d direction);
 
 	/**
 	Renders the brush onto the rendering surface associated with the specified renderer
@@ -202,7 +202,7 @@ public interface IBrush
 	@param renderer	The renderer for the canvas in question
 	@return			The metric as a positive double (>= 0)
 	*/
-	double selection_metric(Point2d p, IRenderer renderer);
+	double selection_metric(Vector2d p, IRenderer renderer);
 
 	/**
 	This interface is used to break a cyclic dependency between the Brushes package
@@ -227,12 +227,12 @@ public interface IBrush
 	*/
 	public class PickResults
 	{
-		public PickResults(final Polygon pickedFace, final Point3d pickedPoint)
+		public PickResults(final Polygon pickedFace, final Vector3d pickedPoint)
 		{
 			this(pickedFace, pickedPoint, null);
 		}
 
-		public PickResults(final Polygon pickedFace, final Point3d pickedPoint, final IBrush pickedNestedBrush)
+		public PickResults(final Polygon pickedFace, final Vector3d pickedPoint, final IBrush pickedNestedBrush)
 		{
 			m_pickedFace = pickedFace;
 			m_pickedPoint = pickedPoint;
@@ -241,6 +241,6 @@ public interface IBrush
 
 		final public IBrush m_pickedNestedBrush;	// the brush picked inside a composite - used for multideselection
 		final public Polygon m_pickedFace;
-		final public Point3d m_pickedPoint;
+		final public Vector3d m_pickedPoint;
 	}
 }

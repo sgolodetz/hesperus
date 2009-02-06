@@ -3,7 +3,6 @@ package MapEditor.Brushes;
 import MapEditor.Commands.Command;
 import MapEditor.Geom.*;
 import MapEditor.Maps.Map;
-import javax.vecmath.*;
 
 public class BrushCommands
 {

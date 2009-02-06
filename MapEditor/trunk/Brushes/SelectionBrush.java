@@ -5,12 +5,12 @@ import MapEditor.Commands.*;
 import MapEditor.Geom.*;
 import MapEditor.Graphics.*;
 import MapEditor.Maps.Map;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Pair;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 import java.util.LinkedList;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 /**
@@ -90,7 +90,7 @@ public class SelectionBrush extends ResizableTranslatableBrush
 
 	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		Point3d[] bounds = m_boundingBox.get_bounds();
+		Vector3d[] bounds = m_boundingBox.get_bounds();
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
 
 		gl.glLineStipple(1, (short)0x00ff);
@@ -101,7 +101,7 @@ public class SelectionBrush extends ResizableTranslatableBrush
 		gl.glDisable(GL.GL_LINE_STIPPLE);
 	}
 
-	public double selection_metric(Point2d p, IRenderer renderer)
+	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
 		// There's no chance of selecting a SelectionBrush, since they only exist when they're
 		// the selected brush.
@@ -109,12 +109,12 @@ public class SelectionBrush extends ResizableTranslatableBrush
 	}
 
 	//################## PROTECTED METHODS ##################//
-	protected void resize(Point2d corner0, Point2d corner1, AxisPair ap)
+	protected void resize(Vector2d corner0, Vector2d corner1, AxisPair ap)
 	{
 		m_boundingBox.resize(corner0, corner1, ap);
 	}
 
-	protected void translate(Point3d trans)
+	protected void translate(Vector3d trans)
 	{
 		m_boundingBox = m_cachedBoundingBox.clone();
 		m_boundingBox.translate(trans);

@@ -5,12 +5,12 @@ import MapEditor.Geom.AxisAlignedBox;
 import MapEditor.Geom.AxisPair;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Stroke;
-import javax.vecmath.*;
 
 /**
 This is the base class for brushes which can be resized and translated.
@@ -59,7 +59,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	@param corner1	The opposite corner to corner0
 	@param ap	The axis-pair of the canvas on which we're resizing
 	*/
-	protected abstract void resize(Point2d corner0, Point2d corner1, AxisPair ap);
+	protected abstract void resize(Vector2d corner0, Vector2d corner1, AxisPair ap);
 
 	//################## PUBLIC METHODS ##################//
 	/**
@@ -69,7 +69,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	@param renderer		The renderer associated with the canvas on which the mouse is being dragged
 	@param p			The location of the mouse in level coordinates
 	*/
-	public void mouse_dragged(IRenderer renderer, Point2d p)
+	public void mouse_dragged(IRenderer renderer, Vector2d p)
 	{
 		switch(m_state)
 		{
@@ -98,7 +98,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 		}
 	}
 
-	public void mouse_moved(IRenderer renderer, Point2d p)
+	public void mouse_moved(IRenderer renderer, Vector2d p)
 	{
 		set_correct_cursor(renderer, p);
 	}
@@ -115,7 +115,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	@param immediate	Is this the start of an immediate transformation? (see above description)
 	@return				A boolean indicating whether or not the brush thinks it should still be selected after returning
 	*/
-	public boolean mouse_pressed(IRenderer renderer, Point2d p, int mouseButton, boolean immediate)
+	public boolean mouse_pressed(IRenderer renderer, Vector2d p, int mouseButton, boolean immediate)
 	{
 		switch(mouseButton)
 		{
@@ -285,9 +285,9 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	@param p		A point in level coordinates
 	@return			The index of the nearby edge, if any, or -1 otherwise
 	*/
-	private int find_nearby_edge(IRenderer renderer, Point2d p)
+	private int find_nearby_edge(IRenderer renderer, Vector2d p)
 	{
-		Point2d[] cornerHandles = new Point2d[4];
+		Vector2d[] cornerHandles = new Vector2d[4];
 		for(int i=0; i<4; ++i) cornerHandles[i] = m_boundingBox.get_corner_handle(renderer.get_axis_pair(), i);
 
 		for(int i=0; i<4; ++i)
@@ -318,7 +318,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	@param p			A point in level coordinates
 	@return				The index of the nearby handle, if any, or -1 otherwise
 	*/
-	private int find_nearby_handle(IRenderer renderer, Point2d p)
+	private int find_nearby_handle(IRenderer renderer, Vector2d p)
 	{
 		AxisPair ap = renderer.get_axis_pair();
 
@@ -329,7 +329,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 			{
 				for(int i=0; i<4; ++i)
 				{
-					Point2d cornerHandle = m_boundingBox.get_corner_handle(ap, i);
+					Vector2d cornerHandle = m_boundingBox.get_corner_handle(ap, i);
 					if(BrushUtil.near_handle(renderer, p, cornerHandle.x, cornerHandle.y)) return i;
 				}
 				break;
@@ -338,7 +338,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 			{
 				for(int i=0; i<4; ++i)
 				{
-					Point2d edgeHandle = m_boundingBox.get_edge_handle(ap, i);
+					Vector2d edgeHandle = m_boundingBox.get_edge_handle(ap, i);
 					if(BrushUtil.near_handle(renderer, p, edgeHandle.x, edgeHandle.y)) return i;
 				}
 				break;
@@ -365,7 +365,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 			{
 				for(int i=0; i<4; ++i)
 				{
-					Point2d p = m_boundingBox.get_corner_handle(ap, i);
+					Vector2d p = m_boundingBox.get_corner_handle(ap, i);
 					renderer.set_colour(handleColours[i]);
 					BrushUtil.render_square_handle(renderer, p);
 				}
@@ -375,7 +375,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 			{
 				for(int i=0; i<4; ++i)
 				{
-					Point2d p = m_boundingBox.get_corner_handle(ap, i);
+					Vector2d p = m_boundingBox.get_corner_handle(ap, i);
 					renderer.set_colour(handleColours[i]);
 					BrushUtil.render_circular_handle(renderer, p);
 				}
@@ -385,7 +385,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 			{
 				for(int i=0; i<4; ++i)
 				{
-					Point2d p = m_boundingBox.get_edge_handle(ap, i);
+					Vector2d p = m_boundingBox.get_edge_handle(ap, i);
 					renderer.set_colour(handleColours[i]);
 					BrushUtil.render_diamond_handle(renderer, p);
 				}
@@ -403,7 +403,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	@param renderer	The renderer associated with the canvas on which we want to set the cursor
 	@param p_Coords	The location of the mouse in level coordinates on the canvas
 	*/
-	private void set_correct_cursor(IRenderer renderer, Point2d p_Coords)
+	private void set_correct_cursor(IRenderer renderer, Vector2d p_Coords)
 	{
 		// FIXME: This function is a mess.
 
@@ -472,9 +472,9 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 		protected int m_handleIndex;			// the index of the handle we're using to resize (note that if we're doing edge-resizing,
 												// there will still be such a handle, it's just that we only allow changes on one of the
 												// axes)
-		protected Point2d m_fixedCorner;		// the location of the fixed corner (the one opposite to the one we're dragging around)
-		protected Point2d m_variableCorner;		// the current location of the variable corner (the one we're dragging around)
-		protected Point2d m_variableCornerOld;	// the original location of the variable corner at the start of the resize
+		protected Vector2d m_fixedCorner;		// the location of the fixed corner (the one opposite to the one we're dragging around)
+		protected Vector2d m_variableCorner;		// the current location of the variable corner (the one we're dragging around)
+		protected Vector2d m_variableCornerOld;	// the original location of the variable corner at the start of the resize
 
 		public ResizeTransformation()
 		{
@@ -484,9 +484,9 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 		public void execute_command()
 		{
 			final AxisPair ap = m_renderer.get_axis_pair();
-			final Point2d fixedCorner = (Point2d)m_fixedCorner.clone();
-			final Point2d variableCorner = (Point2d)m_variableCorner.clone();
-			final Point2d variableCornerOld = (Point2d)m_variableCornerOld.clone();
+			final Vector2d fixedCorner = m_fixedCorner.clone();
+			final Vector2d variableCorner = m_variableCorner.clone();
+			final Vector2d variableCornerOld = m_variableCornerOld.clone();
 			CommandManager.instance().execute_compressible_command(new Command("Resize")
 				{
 					public void execute()
@@ -507,14 +507,14 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 				Pair.make_pair("Initial New Selection", "New Selection"));
 		}
 
-		public void transform(Point2d p)
+		public void transform(Vector2d p)
 		{
 			if(Options.is_set("Snap To Grid"))
 			{
 				p = m_renderer.find_nearest_grid_intersect_in_coords(p);
 			}
 
-			m_variableCorner = (Point2d)p.clone();
+			m_variableCorner = p.clone();
 
 			// Handle edge-resizing.
 			switch(m_fixedAxis)
@@ -536,7 +536,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 			}
 
 			// Prevent the dimensions from ever becoming smaller than a given amount.
-			Point2d dimensions = MathUtil.subtract(m_variableCorner, m_fixedCorner);
+			Vector2d dimensions = VectorUtil.subtract(m_variableCorner, m_fixedCorner);
 			if(0 <= dimensions.x && dimensions.x < MINIMUM_BRUSH_DIMENSION) m_variableCorner.x = m_fixedCorner.x + MINIMUM_BRUSH_DIMENSION;
 			else if(-MINIMUM_BRUSH_DIMENSION < dimensions.x && dimensions.x < 0) m_variableCorner.x = m_fixedCorner.x - MINIMUM_BRUSH_DIMENSION;
 			if(0 <= dimensions.y && dimensions.y < MINIMUM_BRUSH_DIMENSION) m_variableCorner.y = m_fixedCorner.y + MINIMUM_BRUSH_DIMENSION;

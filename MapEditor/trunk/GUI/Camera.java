@@ -1,7 +1,7 @@
 package MapEditor.GUI;
 
 import MapEditor.Math.MathUtil;
-import javax.vecmath.*;
+import MapEditor.Math.Vectors.*;
 import net.java.games.jogl.*;
 
 /**
@@ -16,7 +16,7 @@ public class Camera
 	private static double s_angularSpeed = 1000/20.0;	// speed of angular camera movement in degrees/s
 	private static double s_linearSpeed = 1000/7.5;		// speed of linear camera movement in units/s
 
-	private Point3d m_position;
+	private Vector3d m_position;
 	private Vector3d m_nVector;
 	private Vector3d m_uVector;
 	private Vector3d m_vVector;
@@ -29,7 +29,7 @@ public class Camera
 	@param look		The direction the camera is looking
 	@param up		The "up" direction for the camera
 	*/
-	public Camera(Point3d position, Vector3d look, Vector3d up)
+	public Camera(Vector3d position, Vector3d look, Vector3d up)
 	{
 		m_position = position;
 
@@ -39,9 +39,7 @@ public class Camera
 		m_vVector = up;
 		m_vVector.normalize();
 
-		m_uVector = new Vector3d();
-		m_uVector.cross(m_vVector, m_nVector);
-		m_uVector.normalize();
+		m_uVector = m_vVector.cross(m_nVector).normalize();
 	}
 
 	//################## PUBLIC METHODS ##################//
@@ -80,7 +78,7 @@ public class Camera
 
 	@return	...think about it...
 	*/
-	public Point3d get_position()
+	public Vector3d get_position()
 	{
 		return m_position;
 	}
@@ -112,7 +110,7 @@ public class Camera
 	*/
 	public void move_n(double delta)
 	{
-		m_position.scaleAdd(delta, m_nVector, m_position);
+		m_position = Vector3d.scale_add(delta, m_nVector, m_position);
 	}
 
 	/**
@@ -122,7 +120,7 @@ public class Camera
 	*/
 	public void move_u(double delta)
 	{
-		m_position.scaleAdd(delta, m_uVector, m_position);
+		m_position = Vector3d.scale_add(delta, m_uVector, m_position);
 	}
 
 	/**
@@ -132,7 +130,7 @@ public class Camera
 	*/
 	public void move_v(double delta)
 	{
-		m_position.scaleAdd(delta, m_vVector, m_position);
+		m_position = Vector3d.scale_add(delta, m_vVector, m_position);
 	}
 
 	/**

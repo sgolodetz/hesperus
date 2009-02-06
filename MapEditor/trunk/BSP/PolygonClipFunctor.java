@@ -1,6 +1,7 @@
 package MapEditor.BSP;
 
 import MapEditor.Geom.Planar.*;
+import MapEditor.Math.Vectors.VectorUtil;
 import MapEditor.Misc.Pair;
 
 public abstract class PolygonClipFunctor implements IClipFunctor<Polygon>
@@ -70,6 +71,6 @@ public abstract class PolygonClipFunctor implements IClipFunctor<Polygon>
 	//################## PROTECTED METHODS ##################//
 	protected boolean opposite_facing(final Polygon poly, final Plane plane)
 	{
-		return poly.get_normal().angle(plane.get_normal()) > Math.PI/2;
+		return VectorUtil.angle_between(poly.get_normal(), plane.get_normal()) > Math.PI/2;
 	}
 }

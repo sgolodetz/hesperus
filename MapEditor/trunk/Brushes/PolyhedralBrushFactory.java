@@ -2,7 +2,7 @@ package MapEditor.Brushes;
 
 import MapEditor.Geom.*;
 import MapEditor.Geom.Planar.Polygon;
-import javax.vecmath.*;
+import MapEditor.Math.Vectors.*;
 
 /**
 This class contains factory methods for creating polyhedral brushes (as its name suggests).
@@ -19,14 +19,14 @@ public class PolyhedralBrushFactory
 	*/
 	public static PolyhedralBrush create_axis_aligned_block(AxisAlignedBox bounds)
 	{
-		Point3d[] v = new Point3d[] {	new Point3d(0,0,0),	// v[0]
-										new Point3d(0,0,1),	// v[1]
-										new Point3d(0,1,0),	// v[2]
-										new Point3d(0,1,1),	// v[3]
-										new Point3d(1,0,0),	// v[4]
-										new Point3d(1,0,1),	// v[5]
-										new Point3d(1,1,0),	// v[6]
-										new Point3d(1,1,1),	// v[7]
+		Vector3d[] v = new Vector3d[] {	new Vector3d(0,0,0),	// v[0]
+										new Vector3d(0,0,1),	// v[1]
+										new Vector3d(0,1,0),	// v[2]
+										new Vector3d(0,1,1),	// v[3]
+										new Vector3d(1,0,0),	// v[4]
+										new Vector3d(1,0,1),	// v[5]
+										new Vector3d(1,1,0),	// v[6]
+										new Vector3d(1,1,1),	// v[7]
 									};
 
 		Polygon[] polys = new Polygon[6];
@@ -35,12 +35,12 @@ public class PolyhedralBrushFactory
 		// with z pointing upwards (well, we think of it in those terms, anyway; in theory, "upwards" is
 		// just a name we give it).
 		// (Imagine x pointing right, y pointing into the screen and z pointing up).
-		polys[0] = make_polygon(new Point3d[] {v[5],v[1],v[0],v[4]});	// front
-		polys[1] = make_polygon(new Point3d[] {v[7],v[5],v[4],v[6]});	// right
-		polys[2] = make_polygon(new Point3d[] {v[3],v[7],v[6],v[2]});	// back
-		polys[3] = make_polygon(new Point3d[] {v[1],v[3],v[2],v[0]});	// left
-		polys[4] = make_polygon(new Point3d[] {v[1],v[5],v[7],v[3]});	// top
-		polys[5] = make_polygon(new Point3d[] {v[4],v[0],v[2],v[6]});	// bottom
+		polys[0] = make_polygon(new Vector3d[] {v[5],v[1],v[0],v[4]});	// front
+		polys[1] = make_polygon(new Vector3d[] {v[7],v[5],v[4],v[6]});	// right
+		polys[2] = make_polygon(new Vector3d[] {v[3],v[7],v[6],v[2]});	// back
+		polys[3] = make_polygon(new Vector3d[] {v[1],v[3],v[2],v[0]});	// left
+		polys[4] = make_polygon(new Vector3d[] {v[1],v[5],v[7],v[3]});	// top
+		polys[5] = make_polygon(new Vector3d[] {v[4],v[0],v[2],v[6]});	// bottom
 
 		return PolyhedralBrush.create_from_unit_template(polys, bounds);
 	}
@@ -58,18 +58,18 @@ public class PolyhedralBrushFactory
 	*/
 	public static PolyhedralBrush create_cone(AxisAlignedBox bounds, int sideCount, AxisPair ap)
 	{
-		Point2d[] v2D = new Point2d[sideCount];
-		Point3d[] v = new Point3d[sideCount];
+		Vector2d[] v2D = new Vector2d[sideCount];
+		Vector3d[] v = new Vector3d[sideCount];
 		for(int i=0; i<sideCount; ++i)
 		{
 			double angle = (2*Math.PI*i)/sideCount;
 			// -1 <= cos x or sin x <= 1 -> 0 <= (cos x or sin x)/2 + 0.5 <= 1
-			v2D[i] = new Point2d(Math.cos(angle)/2 + 0.5, Math.sin(angle)/2 + 0.5);
+			v2D[i] = new Vector2d(Math.cos(angle)/2 + 0.5, Math.sin(angle)/2 + 0.5);
 
 			v[i] = ap.generate_3D_point(v2D[i], 0);
 		}
 
-		Point3d top = ap.generate_3D_point(new Point2d(0.5, 0.5), 1);
+		Vector3d top = ap.generate_3D_point(new Vector2d(0.5, 0.5), 1);
 
 		Polygon[] polys = new Polygon[sideCount+1];	// the side faces, plus the bottom
 
@@ -77,12 +77,12 @@ public class PolyhedralBrushFactory
 		for(int i=0; i<sideCount; ++i)
 		{
 			int j = (i+1)%sideCount;
-			polys[i] = make_polygon(new Point3d[] {v[j],top,v[i]});
+			polys[i] = make_polygon(new Vector3d[] {v[j],top,v[i]});
 		}
 
 		// Bottom
-		Point3d[] bottom = new Point3d[sideCount];
-		for(int i=0; i<sideCount; ++i) bottom[i] = (Point3d)v[sideCount-1-i].clone();
+		Vector3d[] bottom = new Vector3d[sideCount];
+		for(int i=0; i<sideCount; ++i) bottom[i] = v[sideCount-1-i].clone();
 		polys[sideCount] = make_polygon(bottom);
 
 		// Flip the polygon winding orders if our AxisPair was not a natural one.
@@ -108,14 +108,14 @@ public class PolyhedralBrushFactory
 	*/
 	public static PolyhedralBrush create_cylinder(AxisAlignedBox bounds, int sideCount, AxisPair ap)
 	{
-		Point2d[] v2D = new Point2d[sideCount];
-		Point3d[] v = new Point3d[sideCount*2];
+		Vector2d[] v2D = new Vector2d[sideCount];
+		Vector3d[] v = new Vector3d[sideCount*2];
 
 		for(int i=0; i<sideCount; ++i)
 		{
 			double angle = (2*Math.PI*i)/sideCount;
 			// -1 <= cos x or sin x <= 1 -> 0 <= (cos x or sin x)/2 + 0.5 <= 1
-			v2D[i] = new Point2d(Math.cos(angle)/2 + 0.5, Math.sin(angle)/2 + 0.5);
+			v2D[i] = new Vector2d(Math.cos(angle)/2 + 0.5, Math.sin(angle)/2 + 0.5);
 
 			v[i] = ap.generate_3D_point(v2D[i], 0);
 			v[i+sideCount] = ap.generate_3D_point(v2D[i], 1);
@@ -127,13 +127,13 @@ public class PolyhedralBrushFactory
 		for(int i=0; i<sideCount; ++i)
 		{
 			int j = (i+1)%sideCount;
-			polys[i] = make_polygon(new Point3d[] {v[j+sideCount],v[i+sideCount],v[i],v[j]});
+			polys[i] = make_polygon(new Vector3d[] {v[j+sideCount],v[i+sideCount],v[i],v[j]});
 		}
 
 		// Top and bottom
 		polys[sideCount] = make_polygon(v, sideCount, sideCount);	// top
-		Point3d[] bottom = new Point3d[sideCount];
-		for(int i=0; i<sideCount; ++i) bottom[i] = (Point3d)v[sideCount-1-i].clone();
+		Vector3d[] bottom = new Vector3d[sideCount];
+		for(int i=0; i<sideCount; ++i) bottom[i] = v[sideCount-1-i].clone();
 		polys[sideCount+1] = make_polygon(bottom);			// bottom
 
 		// Flip the polygon winding orders if our AxisPair was not a natural one.
@@ -172,7 +172,7 @@ public class PolyhedralBrushFactory
 		// Then the upper hemisphere has (3+1)/2 = 2 latitudes : the one above the equator and the
 		// equator itself.
 		int hemiLatitudes = (latitudes+1)/2;
-		Point3d[][] v = new Point3d[hemiLatitudes][longitudes];
+		Vector3d[][] v = new Vector3d[hemiLatitudes][longitudes];
 
 		for(int i=0; i<hemiLatitudes; ++i)
 		{
@@ -189,9 +189,9 @@ public class PolyhedralBrushFactory
 			{
 				double angle = (2*Math.PI*j)/longitudes;
 
-				Point2d[] v2D = new Point2d[longitudes];
+				Vector2d[] v2D = new Vector2d[longitudes];
 
-				v2D[j] = new Point2d(radius*Math.cos(angle)/2 + 0.5,
+				v2D[j] = new Vector2d(radius*Math.cos(angle)/2 + 0.5,
 						     radius*Math.sin(angle)/2 + 0.5);
 
 				v[i][j] = ap.generate_3D_point(v2D[j], height);
@@ -207,19 +207,19 @@ public class PolyhedralBrushFactory
 			{
 				int k = (j+1)%longitudes;
 				polys[i*longitudes+j] =
-					make_polygon(new Point3d[] {v[i+1][k], v[i+1][j], v[i][j], v[i][k]});
+					make_polygon(new Vector3d[] {v[i+1][k], v[i+1][j], v[i][j], v[i][k]});
 			}
 		}
 
 		// The top layer of the upper hemisphere
 		// Note: The north pole will get translated into the right place later on, when
 		// everything else does.
-		Point3d northPole = ap.generate_3D_point(new Point2d(0.5, 0.5), 0.5);
+		Vector3d northPole = ap.generate_3D_point(new Vector2d(0.5, 0.5), 0.5);
 		for(int j=0; j<longitudes; ++j)
 		{
 			int i = hemiLatitudes-1;
 			int k = (j+1)%longitudes;
-			polys[i*longitudes+j] = make_polygon(new Point3d[] {northPole, v[i][j], v[i][k]});
+			polys[i*longitudes+j] = make_polygon(new Vector3d[] {northPole, v[i][j], v[i][k]});
 		}
 
 		// Lower hemisphere (all except the bottom layer, we have to do that separately)
@@ -228,12 +228,12 @@ public class PolyhedralBrushFactory
 			for(int j=0; j<longitudes; ++j)
 			{
 				int k = (j+1)%longitudes;
-				Point3d[] verts = new Point3d[4];
-				verts[0] = (Point3d)v[i+1][j].clone();
-				verts[1] = (Point3d)v[i+1][k].clone();
-				verts[2] = (Point3d)v[i][k].clone();
-				verts[3] = (Point3d)v[i][j].clone();
-				for(Point3d vert: verts)
+				Vector3d[] verts = new Vector3d[4];
+				verts[0] = v[i+1][j].clone();
+				verts[1] = v[i+1][k].clone();
+				verts[2] = v[i][k].clone();
+				verts[3] = v[i][j].clone();
+				for(Vector3d vert: verts)
 					ap.set_missing_component(vert, ap.get_missing_component(vert) * -1);
 				polys[(i+hemiLatitudes)*longitudes+j] = new Polygon(verts);
 			}
@@ -244,11 +244,11 @@ public class PolyhedralBrushFactory
 		{
 			int i = hemiLatitudes-1;
 			int k = (j+1)%longitudes;
-			Point3d[] verts = new Point3d[3];
-			verts[0] = (Point3d)northPole.clone();
-			verts[1] = (Point3d)v[i][k].clone();
-			verts[2] = (Point3d)v[i][j].clone();
-			for(Point3d vert: verts)
+			Vector3d[] verts = new Vector3d[3];
+			verts[0] = northPole.clone();
+			verts[1] = v[i][k].clone();
+			verts[2] = v[i][j].clone();
+			for(Vector3d vert: verts)
 				ap.set_missing_component(vert, ap.get_missing_component(vert) * -1);
 			polys[(i+hemiLatitudes)*longitudes+j] = new Polygon(verts);
 		}
@@ -256,7 +256,7 @@ public class PolyhedralBrushFactory
 		// Translate the sphere up by 0.5, so that it's in the correct position.
 		for(int i=0; i<(latitudes+1)*longitudes; ++i)
 		{
-			for(Point3d vert: polys[i].get_vertices())
+			for(Vector3d vert: polys[i].get_vertices())
 				ap.set_missing_component(vert, ap.get_missing_component(vert) + 0.5);
 		}
 
@@ -276,7 +276,7 @@ public class PolyhedralBrushFactory
 	@param vertices	The vertices from which to make the polygon
 	@return			A polygon whose vertices are as specified
 	*/
-	private static Polygon make_polygon(Point3d[] vertices)
+	private static Polygon make_polygon(Vector3d[] vertices)
 	{
 		return make_polygon(vertices, 0, vertices.length);
 	}
@@ -291,12 +291,12 @@ public class PolyhedralBrushFactory
 	@param len			The number of vertices in the array which will be part of the polygon
 	@return				A polygon whose vertices are as specified above
 	*/
-	private static Polygon make_polygon(Point3d[] vertices, int offset, int len)
+	private static Polygon make_polygon(Vector3d[] vertices, int offset, int len)
 	{
 		// We need to ensure that the vertices aren't shared, so we make copies of all of them.
 
-		Point3d[] newVertices = new Point3d[len];
-		for(int i=0; i<len; ++i) newVertices[i] = (Point3d)vertices[i+offset].clone();
+		Vector3d[] newVertices = new Vector3d[len];
+		for(int i=0; i<len; ++i) newVertices[i] = vertices[i+offset].clone();
 		return new Polygon(newVertices);
 	}
 }

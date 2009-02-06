@@ -1,6 +1,6 @@
 package MapEditor.Geom;
 
-import javax.vecmath.*;
+import MapEditor.Math.Vectors.*;
 
 /**
 This immutable class represents a pair of axes. Its intended use is in the implementation of {@link MapEditor.GUI.DesignCanvas}.
@@ -59,7 +59,7 @@ public class AxisPair
 	@param p		The 3D point to which to add the offset
 	@param offset	The 2D offset to add to it
 	*/
-	public void add_offset(Point3d p, final Point2d offset)
+	public void add_offset(Vector3d p, final Vector2d offset)
 	{
 		switch(m_hAxis)
 		{
@@ -113,9 +113,9 @@ public class AxisPair
 	@param missingComponent	The value to set for the extra component resulting from our move from 2D to 3D
 	@return					The 3D point generated
 	*/
-	public Point3d generate_3D_point(final Point2d p, double missingComponent)
+	public Vector3d generate_3D_point(final Vector2d p, double missingComponent)
 	{
-		Point3d ret = new Point3d();
+		Vector3d ret = new Vector3d();
 
 		switch(m_hAxis)
 		{
@@ -168,7 +168,7 @@ public class AxisPair
 	@param p	The 3D point
 	@return		...think about it...
 	*/
-	public double get_missing_component(final Point3d p)
+	public double get_missing_component(final Vector3d p)
 	{
 		switch(m_mAxis)
 		{
@@ -222,7 +222,7 @@ public class AxisPair
 	@param dest	The 3D point whose components we wish to scale
 	@param src	The 2D point containing the scaling factors
 	*/
-	public void scale_relevant_components(Point3d dest, final Point2d src)
+	public void scale_relevant_components(Vector3d dest, final Vector2d src)
 	{
 		switch(m_hAxis)
 		{
@@ -264,9 +264,9 @@ public class AxisPair
 	@param p	The 3D point to convert to 2D
 	@return		The 2D point obtained by projecting the 3D point onto the 2D axes
 	*/
-	public Point2d select_components(final Point3d p)
+	public Vector2d select_components(final Vector3d p)
 	{
-		Point2d ret = new Point2d();
+		Vector2d ret = new Vector2d();
 
 		switch(m_hAxis)
 		{
@@ -308,7 +308,7 @@ public class AxisPair
 	@param p				The 3D point
 	@param missingComponent	The value to which to set the component on the missing axis
 	*/
-	public void set_missing_component(Point3d p, double missingComponent)
+	public void set_missing_component(Vector3d p, double missingComponent)
 	{
 		switch(m_mAxis)
 		{
@@ -335,7 +335,7 @@ public class AxisPair
 	@param dest	The 3D point whose components we wish to set
 	@param src	The 2D point
 	*/
-	public void set_relevant_components(Point3d dest, final Point2d src)
+	public void set_relevant_components(Vector3d dest, final Vector2d src)
 	{
 		switch(m_hAxis)
 		{
@@ -375,8 +375,8 @@ public class AxisPair
 	@param p		The 3D point from which to subtract the offset
 	@param offset	The 2D offset to subtract from it
 	*/
-	public void subtract_offset(Point3d p, final Point2d offset)
+	public void subtract_offset(Vector3d p, final Vector2d offset)
 	{
-		add_offset(p, new Point2d(-offset.x, -offset.y));
+		add_offset(p, new Vector2d(-offset.x, -offset.y));
 	}
 }

@@ -2,9 +2,9 @@ package MapEditor.GUI;
 
 import MapEditor.Commands.*;
 import MapEditor.Maps.*;
+import MapEditor.Math.Vectors.Vector3d;
 import java.awt.*;
 import java.awt.event.*;
-import javax.vecmath.*;
 
 public class MapTranslationDialog extends Dialog
 {
@@ -87,7 +87,7 @@ public class MapTranslationDialog extends Dialog
 	{
 		try
 		{
-			Point3d offset = new Point3d();
+			Vector3d offset = new Vector3d();
 			offset.x = Double.parseDouble(m_offsetXField.getText());
 			offset.y = Double.parseDouble(m_offsetYField.getText());
 			offset.z = Double.parseDouble(m_offsetZField.getText());

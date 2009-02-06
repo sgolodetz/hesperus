@@ -1,14 +1,12 @@
 package MapEditor.Brushes;
 
 import MapEditor.Graphics.IRenderer;
+import MapEditor.Math.Vectors.*;
 import java.awt.Color;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 /**
 This class represents a point light brush.
-
-FIXME: This isn't really an abstract class, it's just marked as abstract temporarily to make it compile.
 */
 public class LightBrush extends TranslatableBrush
 {
@@ -17,7 +15,7 @@ public class LightBrush extends TranslatableBrush
 	private boolean m_ghost;	// are we in the process of creating this brush in the design canvas?
 	
 	//################## CONSTRUCTORS ##################//
-	private LightBrush(Point3d position, Color colour, boolean isNew)
+	private LightBrush(Vector3d position, Color colour, boolean isNew)
 	{
 		super(isNew);
 
@@ -26,13 +24,13 @@ public class LightBrush extends TranslatableBrush
 		// TODO: Construct a suitably-sized bounding box.
 	}
 
-	public LightBrush(Point3d position)
+	public LightBrush(Vector3d position)
 	{
 		this(position, Color.white, true);
 	}
 
 	//################## PROTECTED METHODS ##################//
-	protected void translate(Point3d trans)
+	protected void translate(Vector3d trans)
 	{
 		// NYI
 		throw new UnsupportedOperationException();
@@ -75,7 +73,7 @@ public class LightBrush extends TranslatableBrush
 		throw new UnsupportedOperationException();
 	}
 
-	public double selection_metric(Point2d p, IRenderer renderer)
+	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
 		// NYI
 		throw new UnsupportedOperationException();

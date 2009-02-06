@@ -7,6 +7,7 @@ import MapEditor.Graphics.ColourCycle;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Maps.*;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Pair;
 import java.awt.Color;
 import java.awt.event.*;
@@ -15,7 +16,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 public class ArchitectureBrushComposite extends ArchitectureBrush implements GeomConstants
@@ -23,17 +23,17 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 	//################## PRIVATE NESTED CLASSES ##################//
 	private class BrushData
 	{
-		public Point3d[] offsets = new Point3d[2];	// the offsets of the top-left and bottom-right
-													// corners of a brush's bounding box from the
-													// top-left of our cached bounding box
+		public Vector3d[] offsets = new Vector3d[2];	// the offsets of the top-left and bottom-right
+														// corners of a brush's bounding box from the
+														// top-left of our cached bounding box
 	}
 
 	//################## PRIVATE VARIABLES ##################//
 	private static ColourCycle COLOUR_CYCLE = new ColourCycle();
 
-	private boolean m_transient = true;				// is the composite a temporary/transient one which will
-													// revert back to its component brushes when deselected?
-	private Color m_colour;							// the colour with which we will render the brush on a design canvas
+	private boolean m_transient = true;					// is the composite a temporary/transient one which will
+														// revert back to its component brushes when deselected?
+	private Color m_colour;								// the colour with which we will render the brush on a design canvas
 	private LinkedList<Pair<ArchitectureBrush,BrushData>> m_brushes = new LinkedList<Pair<ArchitectureBrush,BrushData>>();
 	private static int s_colourIndex = 0;
 
@@ -219,10 +219,10 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		else return null;
 	}
 
-	public PickResults pick(final Point3d start, final Vector3d direction)
+	public PickResults pick(final Vector3d start, final Vector3d direction)
 	{
 		Polygon nearestFace = null;
-		Point3d nearestPoint = null;
+		Vector3d nearestPoint = null;
 		IBrush nearestNestedBrush = null;
 		double nearestDistanceSquared = Double.MAX_VALUE;
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes)
@@ -230,7 +230,7 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 			PickResults result = p.first.pick(start, direction);
 			if(result != null)
 			{
-				double distanceSquared = start.distanceSquared(result.m_pickedPoint);
+				double distanceSquared = start.distance_squared(result.m_pickedPoint);
 				if(distanceSquared < nearestDistanceSquared)
 				{
 					nearestFace = result.m_pickedFace;
@@ -309,7 +309,7 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		}
 	}
 
-	public double selection_metric(Point2d p, IRenderer renderer)
+	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
 		if(m_transient)
 		{
@@ -468,12 +468,12 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		m_cachedBoundingBox = m_boundingBox.clone();
 
 		// Store the offsets of each brush's bounding box corners from the top-left of our cached bounding box.
-		final Point3d topLeft = m_cachedBoundingBox.get_bounds()[0];
+		final Vector3d topLeft = m_cachedBoundingBox.get_bounds()[0];
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes)
 		{
 			for(int i=0; i<2; ++i)
 			{
-				p.second.offsets[i] = MathUtil.subtract(p.first.m_boundingBox.get_bounds()[i], topLeft);
+				p.second.offsets[i] = VectorUtil.subtract(p.first.m_boundingBox.get_bounds()[i], topLeft);
 			}
 		}
 	}
@@ -495,14 +495,14 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		}
 	}
 
-	protected void resize(Point2d corner0, Point2d corner1, AxisPair ap)
+	protected void resize(Vector2d corner0, Vector2d corner1, AxisPair ap)
 	{
 		// Generate our resized brush from the brush we cached in begin_transform.
 
 		// Ensure that corner0 and corner1 contain the 0th and 2nd corners
 		// of our bounding box, respectively.
-		corner0 = (Point2d)corner0.clone();
-		corner1 = (Point2d)corner1.clone();
+		corner0 = corner0.clone();
+		corner1 = corner1.clone();
 		if(corner0.x > corner1.x)
 		{
 			double t = corner0.x;
@@ -517,17 +517,17 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		}
 
 		// Determine where the corners of the cached brush would be on this canvas.
-		Point2d cachedCorners[] = new Point2d[2];
+		Vector2d cachedCorners[] = new Vector2d[2];
 		for(int i=0; i<2; ++i) cachedCorners[i] = ap.select_components(m_cachedBoundingBox.get_bounds()[i]);
 
 		// Calculate the scaling factors for the corner offsets.
-		Point2d scale = new Point2d((corner1.x-corner0.x)/(cachedCorners[1].x-cachedCorners[0].x),
+		Vector2d scale = new Vector2d((corner1.x-corner0.x)/(cachedCorners[1].x-cachedCorners[0].x),
 									(corner1.y-corner0.y)/(cachedCorners[1].y-cachedCorners[0].y));
 
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes)
 		{
 			// Calculate the new corners for this brush.
-			Point2d[] newCorners = new Point2d[2];
+			Vector2d[] newCorners = new Vector2d[2];
 			for(int i=0; i<2; ++i)
 			{
 				// We scale the cached offsets to get the offsets from the top-left of our new
@@ -543,17 +543,17 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		m_boundingBox.resize(corner0, corner1, ap);
 	}
 
-	protected void rotate(Point2d centre, double angle, AxisPair ap)
+	protected void rotate(Vector2d centre, double angle, AxisPair ap)
 	{
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes) p.first.rotate(centre, angle, ap);
 	}
 
-	protected void shear_horizontal(Point2d anchor, double factor, AxisPair ap)
+	protected void shear_horizontal(Vector2d anchor, double factor, AxisPair ap)
 	{
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes) p.first.shear_horizontal(anchor, factor, ap);
 	}
 
-	protected void translate(Point3d trans)
+	protected void translate(Vector3d trans)
 	{
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes) p.first.translate(trans);
 		m_boundingBox = m_cachedBoundingBox.clone();
@@ -569,10 +569,10 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		}
 		else
 		{
-			Point3d[] extraCorners = b.m_boundingBox.get_bounds();
-			Point3d[] existingCorners = m_boundingBox.get_bounds();
+			Vector3d[] extraCorners = b.m_boundingBox.get_bounds();
+			Vector3d[] existingCorners = m_boundingBox.get_bounds();
 
-			Point3d[] newCorners = new Point3d[2];
+			Vector3d[] newCorners = new Vector3d[2];
 			newCorners[0] = min_corner(extraCorners[0],existingCorners[0]);
 			newCorners[1] = max_corner(extraCorners[1],existingCorners[1]);
 
@@ -614,9 +614,9 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		};
 	}
 
-	private static Point3d max_corner(Point3d c1, Point3d c2)
+	private static Vector3d max_corner(Vector3d c1, Vector3d c2)
 	{
-		Point3d max = new Point3d();
+		Vector3d max = new Vector3d();
 		if(c1.x > c2.x) max.x = c1.x;
 		else max.x = c2.x;
 		if(c1.y > c2.y) max.y = c1.y;
@@ -626,9 +626,9 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		return max;
 	}
 
-	private static Point3d min_corner(Point3d c1, Point3d c2)
+	private static Vector3d min_corner(Vector3d c1, Vector3d c2)
 	{
-		Point3d min = new Point3d();
+		Vector3d min = new Vector3d();
 		if(c1.x < c2.x) min.x = c1.x;
 		else min.x = c2.x;
 		if(c1.y < c2.y) min.y = c1.y;

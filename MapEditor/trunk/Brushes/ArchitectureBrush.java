@@ -3,11 +3,11 @@ package MapEditor.Brushes;
 import MapEditor.Geom.AxisPair;
 import MapEditor.Geom.Planar.*;
 import MapEditor.Graphics.IRenderer;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Pair;
 import java.awt.BasicStroke;
 import java.awt.Stroke;
 import java.util.LinkedList;
-import javax.vecmath.*;
 
 /**
 This is the base class for the polygonal brushes which represent the level architecture.
@@ -93,9 +93,9 @@ public abstract class ArchitectureBrush extends TransformableBrush
 	/**
 	Returns the centre of the brush.
 
-	@return	The centre of the brush as a Point3d
+	@return	The centre of the brush as a Vector3d
 	*/
-	final public Point3d centre()
+	final public Vector3d centre()
 	{
 		return m_boundingBox.centre();
 	}
@@ -144,10 +144,10 @@ public abstract class ArchitectureBrush extends TransformableBrush
 		Stroke currentStroke = renderer.get_stroke();
 		renderer.set_stroke(new BasicStroke());
 
-		Point2d centre = renderer.get_axis_pair().select_components(m_boundingBox.centre());
+		Vector2d centre = renderer.get_axis_pair().select_components(m_boundingBox.centre());
 
 		// "x"-shaped centre cross
-		Point2d[] p = new Point2d[] {	renderer.add_pixel_offset(centre, -CROSS_SIZE, -CROSS_SIZE),
+		Vector2d[] p = new Vector2d[] {	renderer.add_pixel_offset(centre, -CROSS_SIZE, -CROSS_SIZE),
 										renderer.add_pixel_offset(centre, CROSS_SIZE, CROSS_SIZE),
 										renderer.add_pixel_offset(centre, CROSS_SIZE, -CROSS_SIZE),
 										renderer.add_pixel_offset(centre, -CROSS_SIZE, CROSS_SIZE)	};

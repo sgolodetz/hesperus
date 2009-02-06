@@ -1,13 +1,13 @@
 package MapEditor.BSP;
 
 import MapEditor.Geom.Planar.*;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.MiscUtil;
 import MapEditor.Misc.Pair;
 import MapEditor.Test.*;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import javax.vecmath.*;							// imported for testing only at the moment
 
 public class TreeUtil implements GeomConstants
 {
@@ -319,20 +319,20 @@ public class TreeUtil implements GeomConstants
 			// Take a simple cube with the right-hand face missing, and clip a universe polygon on the plane
 			// of the missing face to the cube's tree in order to fill the gap.
 			LinkedList<Polygon> polys = new LinkedList<Polygon>();
-			polys.add(new Polygon(new Point3d[] {	new Point3d(20,0,0), new Point3d(20,0,3),	// left
-													new Point3d(20,3,3), new Point3d(20,3,0)	}));
+			polys.add(new Polygon(new Vector3d[] {	new Vector3d(20,0,0), new Vector3d(20,0,3),	// left
+													new Vector3d(20,3,3), new Vector3d(20,3,0)	}));
 
-			polys.add(new Polygon(new Point3d[] {	new Point3d(20,0,0), new Point3d(23,0,0),	// front
-													new Point3d(23,0,3), new Point3d(20,0,3)	}));
+			polys.add(new Polygon(new Vector3d[] {	new Vector3d(20,0,0), new Vector3d(23,0,0),	// front
+													new Vector3d(23,0,3), new Vector3d(20,0,3)	}));
 
-			polys.add(new Polygon(new Point3d[] {	new Point3d(23,3,0), new Point3d(20,3,0),	// back
-													new Point3d(20,3,3), new Point3d(23,3,3)	}));
+			polys.add(new Polygon(new Vector3d[] {	new Vector3d(23,3,0), new Vector3d(20,3,0),	// back
+													new Vector3d(20,3,3), new Vector3d(23,3,3)	}));
 
-			polys.add(new Polygon(new Point3d[] {	new Point3d(20,0,3), new Point3d(23,0,3),	// top
-													new Point3d(23,3,3), new Point3d(20,3,3)	}));
+			polys.add(new Polygon(new Vector3d[] {	new Vector3d(20,0,3), new Vector3d(23,0,3),	// top
+													new Vector3d(23,3,3), new Vector3d(20,3,3)	}));
 
-			polys.add(new Polygon(new Point3d[] {	new Point3d(20,3,0), new Point3d(23,3,0),	// bottom
-													new Point3d(23,0,0), new Point3d(20,0,0)	}));
+			polys.add(new Polygon(new Vector3d[] {	new Vector3d(20,3,0), new Vector3d(23,3,0),	// bottom
+													new Vector3d(23,0,0), new Vector3d(20,0,0)	}));
 			Tree tree = new Tree(polys);
 			Plane plane = new Plane(new Vector3d(1,0,0), 23);
 			Polygon universePoly = GeomUtil.make_universe_polygon(plane);
@@ -347,7 +347,7 @@ public class TreeUtil implements GeomConstants
 			// (iii) a polygon facing the opposite way to the plane with a clip functor with its pass back flag not set
 // TODO: Rewrite these to reflect the new version of PolygonClipFunctor.
 			/*tree = new Tree(GeomUtil.construct_cuboid(0, 1, 0, 1, 0, 1));
-			Polygon poly = new Polygon(new Point3d[] {	new Point3d(0, 0.5, 0), new Point3d(0, 0.5, 1), new Point3d(0, 1.5, 1), new Point3d(0, 1.5, 0)	});
+			Polygon poly = new Polygon(new Vector3d[] {	new Vector3d(0, 0.5, 0), new Vector3d(0, 0.5, 1), new Vector3d(0, 1.5, 1), new Vector3d(0, 1.5, 0)	});
 
 			// (i)
 			result = clip_to_tree(poly, new PolygonClipFunctor(true), tree, CPTT_EMPTY_FRAGMENTS);

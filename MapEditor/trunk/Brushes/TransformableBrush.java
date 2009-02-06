@@ -5,11 +5,11 @@ import MapEditor.Geom.AxisAlignedBox;
 import MapEditor.Geom.AxisPair;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
-import javax.vecmath.*;
 
 /**
 This is the base class for brushes which can be generally transformed (in addition
@@ -39,7 +39,7 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 	@param angle	The angle through which to rotate, in the range (-PI,PI]
 	@param ap		The axis-pair of the above canvas
 	*/
-	protected abstract void rotate(Point2d centre, double angle, AxisPair ap);
+	protected abstract void rotate(Vector2d centre, double angle, AxisPair ap);
 
 	/**
 	Shears the brush by the specified factor in the horizontal direction on the axes given by the
@@ -49,7 +49,7 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 	@param factor	The shear factor
 	@param ap		The axis-pair of the canvas on which we're shearing
 	*/
-	protected abstract void shear_horizontal(Point2d anchor, double factor, AxisPair ap);
+	protected abstract void shear_horizontal(Vector2d anchor, double factor, AxisPair ap);
 
 	//################## PROTECTED METHODS ##################//
 	protected Transformation generate_handle_transformation(int handleIndex)
@@ -93,11 +93,11 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 	@param factor	The shear factor
 	@param ap		The axis-pair of the canvas on which we're shearing
 	*/
-	final protected void shear_vertical(Point2d anchor, double factor, AxisPair ap)
+	final protected void shear_vertical(Vector2d anchor, double factor, AxisPair ap)
 	{
 		// We flip the axes round and just do a horizontal shear in the new coordinate system.
 		// Note that this entails converting the anchor into the new coordinate system as well!
-		Point2d flippedAnchor = new Point2d(anchor.y, anchor.x);
+		Vector2d flippedAnchor = new Vector2d(anchor.y, anchor.x);
 		shear_horizontal(flippedAnchor, factor, ap.flip());
 	}
 
@@ -105,7 +105,7 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 	private class RotationTransformation extends Transformation
 	{
 		private double m_angle;					// the angle by which we've rotated at present
-		private Point2d m_handle;				// the initial location of the handle we're using to rotate
+		private Vector2d m_handle;				// the initial location of the handle we're using to rotate
 
 		/**
 		Constructs a rotation transformation for the brush.
@@ -125,7 +125,7 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 			if(m_angle == 0) return;		// don't bother with no-op rotations
 
 			final AxisPair ap = m_renderer.get_axis_pair();
-			final Point2d centre = ap.select_components(m_boundingBox.centre());
+			final Vector2d centre = ap.select_components(m_boundingBox.centre());
 			final double angle = m_angle;
 
 			rotate(centre, 0, ap);		// reset the brush to its pre-rotation state
@@ -148,15 +148,14 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 			});
 		}
 
-		public void transform(Point2d p)
+		public void transform(Vector2d p)
 		{
 			AxisPair ap = m_renderer.get_axis_pair();
 
-			Point2d c = ap.select_components(m_boundingBox.centre());
+			Vector2d c = ap.select_components(m_boundingBox.centre());
 
-			Vector2d u = new Vector2d(), v = new Vector2d();
-			u.sub(m_handle, c);
-			v.sub(p, c);
+			Vector2d u = VectorUtil.subtract(m_handle, c);
+			Vector2d v = VectorUtil.subtract(p, c);
 
 			m_angle = MathUtil.signed_angle_between(u,v);
 
@@ -165,7 +164,7 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 			// TODO: Snap the angle to 45 degree marks if it's close enough.
 			double angleDegrees = Math.toDegrees(m_angle);
 
-			Point2d rotationCentre = ap.select_components(m_boundingBox.centre());
+			Vector2d rotationCentre = ap.select_components(m_boundingBox.centre());
 			rotate(rotationCentre, m_angle, ap);
 		}
 	}
@@ -174,13 +173,13 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 	{
 		// For the actual transformation
 		final private Axis m_axis;				// which axis we're shearing along (horizontal or vertical)
-		final private Point2d m_anchor;			// the location of the anchor for our shear transformation
-		final private Point2d m_handle;			// the initial location of the handle we're using to shear
+		final private Vector2d m_anchor;			// the location of the anchor for our shear transformation
+		final private Vector2d m_handle;			// the initial location of the handle we're using to shear
 		private double m_factor;				// the shear factor (obviously)
 
 		// For the rendering effects
-		final private Point2d m_anchorCorner;	// the corner with the same index as the anchor
-		final private Point2d m_handleCorner;	// the corner with the same index as the handle
+		final private Vector2d m_anchorCorner;	// the corner with the same index as the anchor
+		final private Vector2d m_handleCorner;	// the corner with the same index as the handle
 		private double m_displacement;			// the shear displacement (used to calculate the shear factor, but needed itself for rendering)
 
 		/**
@@ -209,7 +208,7 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 			if(m_factor == 0) return;	// don't bother with no-op shears
 
 			final AxisPair ap = m_renderer.get_axis_pair();
-			final Point2d anchor = (Point2d)m_anchor.clone();
+			final Vector2d anchor = m_anchor.clone();
 			final double factor = m_factor;
 
 			switch(m_axis)
@@ -280,22 +279,22 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 				{
 					case X:
 					{
-						Point2d[] ps = new Point2d[5];
+						Vector2d[] ps = new Vector2d[5];
 						ps[0] = m_anchorCorner;
-						ps[1] = new Point2d(m_handleCorner.x, m_anchorCorner.y);
-						ps[2] = new Point2d(m_handleCorner.x + m_displacement, m_handleCorner.y);
-						ps[3] = new Point2d(m_anchorCorner.x + m_displacement, m_handleCorner.y);
+						ps[1] = new Vector2d(m_handleCorner.x, m_anchorCorner.y);
+						ps[2] = new Vector2d(m_handleCorner.x + m_displacement, m_handleCorner.y);
+						ps[3] = new Vector2d(m_anchorCorner.x + m_displacement, m_handleCorner.y);
 						ps[4] = ps[0];
 						renderer.draw_polyline(ps);
 						break;
 					}
 					case Y:
 					{
-						Point2d[] ps = new Point2d[5];
+						Vector2d[] ps = new Vector2d[5];
 						ps[0] = m_anchorCorner;
-						ps[1] = new Point2d(m_anchorCorner.x, m_handleCorner.y);
-						ps[2] = new Point2d(m_handleCorner.x, m_handleCorner.y + m_displacement);
-						ps[3] = new Point2d(m_handleCorner.x, m_anchorCorner.y + m_displacement);
+						ps[1] = new Vector2d(m_anchorCorner.x, m_handleCorner.y);
+						ps[2] = new Vector2d(m_handleCorner.x, m_handleCorner.y + m_displacement);
+						ps[3] = new Vector2d(m_handleCorner.x, m_anchorCorner.y + m_displacement);
 						ps[4] = ps[0];
 						renderer.draw_polyline(ps);
 						break;
@@ -306,7 +305,7 @@ abstract class TransformableBrush extends ResizableTranslatableBrush implements 
 			}
 		}
 
-		public void transform(Point2d p)
+		public void transform(Vector2d p)
 		{
 			switch(m_axis)
 			{

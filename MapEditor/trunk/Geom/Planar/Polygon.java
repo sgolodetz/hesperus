@@ -1,10 +1,10 @@
 package MapEditor.Geom.Planar;
 
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Pair;
 import MapEditor.Textures.*;
 import java.util.AbstractCollection;
-import javax.vecmath.*;
 
 /**
 This class represents <i>planar, convex</i> polygons.
@@ -14,7 +14,7 @@ public class Polygon implements Cloneable
 {
 	//################## PRIVATE VARIABLES ##################//
 	/** The vertices of the polygon */
-	private Point3d[] m_vertices = new Point3d[] {};
+	private Vector3d[] m_vertices = new Vector3d[] {};
 	/** The texture (name) of the polygon */
 	private String m_texture;
 	/** The texture plane of the polygon */
@@ -29,7 +29,7 @@ public class Polygon implements Cloneable
 	private Polygon() {}
 
 // FIXME: We can comment this out to find the bits of code which may need changing.
-	public Polygon(Point3d[] vertices)
+	public Polygon(Vector3d[] vertices)
 	{
 		this(vertices, "NULL", null);
 	}
@@ -54,7 +54,7 @@ public class Polygon implements Cloneable
 	@param texturePlane	The texture plane
 	@throws java.lang.Error	If the preconditions are violated
 	*/
-	public Polygon(Point3d[] vertices, String texture, TexturePlane texturePlane)
+	public Polygon(Vector3d[] vertices, String texture, TexturePlane texturePlane)
 	{
 		if(vertices == null || texture == null) throw new java.lang.Error();
 
@@ -84,13 +84,13 @@ public class Polygon implements Cloneable
 	@param texturePlane	The texture plane
 	@throws java.lang.Error	If the preconditions are violated
 	*/
-	public Polygon(AbstractCollection<Point3d> vertices, String texture, TexturePlane texturePlane)
+	public Polygon(AbstractCollection<Vector3d> vertices, String texture, TexturePlane texturePlane)
 	{
 		if(vertices == null || texture == null) throw new java.lang.Error();
 
-		m_vertices = new Point3d[vertices.size()];
+		m_vertices = new Vector3d[vertices.size()];
 		int i = 0;
-		for(Point3d v: vertices)
+		for(Vector3d v: vertices)
 		{
 			m_vertices[i++] = v;
 		}
@@ -119,10 +119,10 @@ public class Polygon implements Cloneable
 
 	@return	The centre of the polygon as a Point3d
 	*/
-	public Point3d centre()
+	public Vector3d centre()
 	{
-		Point3d ret = new Point3d();
-		for(Point3d v: m_vertices) ret.add(v);
+		Vector3d ret = new Vector3d();
+		for(Vector3d v: m_vertices) ret.add(v);
 		ret.scale(1.0/m_vertices.length);
 		return ret;
 	}
@@ -137,9 +137,9 @@ public class Polygon implements Cloneable
 		Polygon ret = new Polygon();
 
 		int len = m_vertices.length;
-		ret.m_vertices = new Point3d[len];
-		for(int i=0; i<len; ++i) ret.m_vertices[i] = (Point3d)m_vertices[i].clone();
-		ret.m_normal = (Vector3d)m_normal.clone();
+		ret.m_vertices = new Vector3d[len];
+		for(int i=0; i<len; ++i) ret.m_vertices[i] = m_vertices[i].clone();
+		ret.m_normal = m_normal.clone();
 		ret.m_texture = m_texture;
 		ret.m_texturePlane = m_texturePlane;
 
@@ -155,7 +155,7 @@ public class Polygon implements Cloneable
 		int l = 0, r = m_vertices.length-1;
 		while(l < r)
 		{
-			Point3d temp = m_vertices[l];
+			Vector3d temp = m_vertices[l];
 			m_vertices[l] = m_vertices[r];
 			m_vertices[r] = temp;
 			++l; --r;
@@ -190,7 +190,7 @@ public class Polygon implements Cloneable
 
 	@return	...think about it...
 	*/
-	public Point3d[] get_vertices()
+	public Vector3d[] get_vertices()
 	{
 		return m_vertices;
 	}

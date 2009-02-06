@@ -7,13 +7,13 @@ import MapEditor.Event.IRepaintListener;
 import MapEditor.Geom.Planar.Polygon;
 import MapEditor.Maps.Map;
 import MapEditor.Math.MathUtil;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import java.awt.Point;
 import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
-import javax.vecmath.*;
 import net.java.games.jogl.*;
 
 /**
@@ -81,17 +81,17 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 	Calculates the real location in world space of the point clicked.
 
 	@param p	The point clicked (in pixel coordinates)
-	@return		The real location of the clicked point in world space as a Point3d
+	@return		The real location of the clicked point in world space as a Vector3d
 	*/
-	private Point3d calculate_image_plane_point(final Point p)
+	private Vector3d calculate_image_plane_point(final Point p)
 	{
 		double n = NEAR;
 		double u = -((m_maxX - m_minX)*p.x/m_width + m_minX);
 		double v = m_maxY - (m_maxY - m_minY)*p.y/m_height;
-		Point3d ret = (Point3d)m_camera.get_position().clone();
-		ret.scaleAdd(n, m_camera.get_n(), ret);
-		ret.scaleAdd(u, m_camera.get_u(), ret);
-		ret.scaleAdd(v, m_camera.get_v(), ret);
+		Vector3d ret = m_camera.get_position().clone();
+		ret = Vector3d.scale_add(n, m_camera.get_n(), ret);
+		ret = Vector3d.scale_add(u, m_camera.get_u(), ret);
+		ret = Vector3d.scale_add(v, m_camera.get_v(), ret);
 		return ret;
 	}
 
@@ -106,13 +106,12 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 							the second component of which is its associated picking results.
 							If not, the return value is null.
 	*/
-	private Pair<IBrush,PickResults> pick_operation(final Point3d imagePlanePoint)
+	private Pair<IBrush,PickResults> pick_operation(final Vector3d imagePlanePoint)
 	{
-		Point3d cameraPosition = m_camera.get_position();
+		Vector3d cameraPosition = m_camera.get_position();
 
 		// v = imagePlanePoint - cameraPosition
-		Vector3d v = new Vector3d(imagePlanePoint);
-		v.sub(cameraPosition);
+		Vector3d v = VectorUtil.subtract(imagePlanePoint, cameraPosition);
 
 		IBrush nearestBrush = null;
 		PickResults nearestResults = null;
@@ -122,7 +121,7 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 			PickResults result = b.pick(cameraPosition, v);
 			if(result != null)
 			{
-				double distanceSquared = cameraPosition.distanceSquared(result.m_pickedPoint);
+				double distanceSquared = cameraPosition.distance_squared(result.m_pickedPoint);
 				if(distanceSquared < nearestDistanceSquared)
 				{
 					nearestBrush = b;
@@ -157,7 +156,7 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 				gl.glColor4f(0.0f, 1.0f, 0.0f, 0.25f);
 				for(Polygon p: m_map.get_selected_faces())
 				{
-					Point3d[] verts = p.get_vertices();
+					Vector3d[] verts = p.get_vertices();
 					gl.glBegin(GL.GL_POLYGON);
 						for(int i=0, len=verts.length; i<len; ++i)
 						{
@@ -173,14 +172,11 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 			for(Polygon p: m_map.get_selected_faces())
 			{
 				Pair<Vector3d,Vector3d> axes = p.get_texture_details().second.axes();
-				Point3d centre = p.centre();
-				centre.add(p.get_normal(), centre);
 
-				Point3d centrePLUSu = new Point3d();
-				centrePLUSu.scaleAdd(7.5, axes.first, centre);
+				Vector3d centre = VectorUtil.add(p.centre(), p.get_normal());
 
-				Point3d centrePLUSv = new Point3d();
-				centrePLUSv.scaleAdd(7.5, axes.second, centre);
+				Vector3d centrePLUSu = Vector3d.scale_add(7.5, axes.first, centre);
+				Vector3d centrePLUSv = Vector3d.scale_add(7.5, axes.second, centre);
 
 				gl.glBegin(GL.GL_LINES);
 					gl.glColor3f(1.0f, 1.0f, 0.0f);	
@@ -226,7 +222,7 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 		{
 			public void mousePressed(MouseEvent e)
 			{
-				Point3d imagePlanePoint = calculate_image_plane_point(new Point(e.getX(), e.getY()));
+				Vector3d imagePlanePoint = calculate_image_plane_point(new Point(e.getX(), e.getY()));
 				Pair<IBrush,PickResults> p = pick_operation(imagePlanePoint);
 				if(Options.is_set("Texture-Editing Mode"))
 				{
@@ -565,7 +561,7 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 	*/
 	public void reset_camera()
 	{
-		m_camera = new Camera(new Point3d(-20, -20, 10), new Vector3d(1, 1, 0), new Vector3d(0, 0, 1));
+		m_camera = new Camera(new Vector3d(-20, -20, 10), new Vector3d(1, 1, 0), new Vector3d(0, 0, 1));
 	}
 
 	public void reshape(GLDrawable drawable, int x, int y, int width, int height)

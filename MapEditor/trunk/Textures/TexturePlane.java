@@ -3,9 +3,9 @@ package MapEditor.Textures;
 import MapEditor.Geom.AxisPair;
 import MapEditor.Math.MathUtil;
 import MapEditor.Math.Matrices.*;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import MapEditor.Test.*;
-import javax.vecmath.*;
 
 /**
 This class represents Worldcraft-style texture planes. A texture is tiled over one of the axis-aligned planes
@@ -22,7 +22,7 @@ public class TexturePlane implements Constants
 			super(faceNormal, 1, 1, 0, 0, 0);
 		}
 
-		public TexturePlane generate_equivalent_plane(Point3d[] oldVerts, Point3d[] newVerts)
+		public TexturePlane generate_equivalent_plane(Vector3d[] oldVerts, Vector3d[] newVerts)
 		{
 			return new Uninitialised(MathUtil.calculate_normal(newVerts[0], newVerts[1], newVerts[2]));
 		}
@@ -105,12 +105,12 @@ public class TexturePlane implements Constants
 	public Pair<Vector3d,Vector3d> axes()
 	{
 		Vector3d u = new Vector3d();
-		u.scaleAdd(m_uAxis.x, m_horizAxis, u);
-		u.scaleAdd(m_uAxis.y, m_vertAxis, u);
+		u = Vector3d.scale_add(m_uAxis.x, m_horizAxis, u);
+		u = Vector3d.scale_add(m_uAxis.y, m_vertAxis, u);
 
 		Vector3d v = new Vector3d();
-		v.scaleAdd(m_vAxis.x, m_horizAxis, v);
-		v.scaleAdd(m_vAxis.y, m_vertAxis, v);
+		v = Vector3d.scale_add(m_vAxis.x, m_horizAxis, v);
+		v = Vector3d.scale_add(m_vAxis.y, m_vertAxis, v);
 
 		return Pair.make_pair(u, v);
 	}
@@ -121,7 +121,7 @@ public class TexturePlane implements Constants
 	@param p3D				The 3D point whose texture coordinates we wish to calculate
 	@return					The calculated texture coordinates as a TextureCoord object
 	*/
-	public TextureCoord calculate_coordinates(final Point3d p3D)
+	public TextureCoord calculate_coordinates(final Vector3d p3D)
 	{
 		Vector2d p = project_to_texture_plane(p3D);
 		return new TextureCoord((p.dot(m_uAxis)/m_scaleU + m_offset.u)/TEXTURE_WIDTH, (p.dot(m_vAxis)/m_scaleV + m_offset.v)/TEXTURE_HEIGHT);
@@ -146,7 +146,7 @@ public class TexturePlane implements Constants
 	@param newVerts			The new vertices
 	@return					An equivalent texture plane, if possible, or null
 	*/
-	public TexturePlane generate_equivalent_plane(Point3d[] oldVerts, Point3d[] newVerts)
+	public TexturePlane generate_equivalent_plane(Vector3d[] oldVerts, Vector3d[] newVerts)
 	{
 		return fit_plane(newVerts[0], newVerts[1], newVerts[2],
 						 calculate_coordinates(oldVerts[0]),
@@ -245,7 +245,7 @@ public class TexturePlane implements Constants
 	@param c3				The texture coordinates of v3
 	@return					A texture plane for the specified data, as described above, or null if a plane couldn't be fit to the specified data
 	*/
-	private static TexturePlane fit_plane(final Point3d v1, final Point3d v2, final Point3d v3, TextureCoord c1, TextureCoord c2, TextureCoord c3)
+	private static TexturePlane fit_plane(final Vector3d v1, final Vector3d v2, final Vector3d v3, TextureCoord c1, TextureCoord c2, TextureCoord c3)
 	{
 		/*
 		Derivation of the algorithm:
@@ -341,12 +341,12 @@ public class TexturePlane implements Constants
 		//System.err.println("vAxis: " + vAxis);
 
 		// Check that the u and v axes are unit vectors (just to be safe).
-		if(Math.abs(uAxis.lengthSquared() - 1) >= EPSILON)
+		if(Math.abs(uAxis.length_squared() - 1) >= EPSILON)
 		{
 			System.err.println("Warning: Unexpected renormalization of u axis needed whilst constructing TexturePlane");
 			uAxis.normalize();
 		}
-		if(Math.abs(vAxis.lengthSquared() - 1) >= EPSILON)
+		if(Math.abs(vAxis.length_squared() - 1) >= EPSILON)
 		{
 			System.err.println("Warning: Unexpected renormalization of v axis needed whilst constructing TexturePlane");
 			vAxis.normalize();
@@ -395,7 +395,7 @@ public class TexturePlane implements Constants
 	@param p3D	The 3D point to project
 	@return		The projection of the point
 	*/
-	private Vector2d project_to_texture_plane(final Point3d p3D)
+	private Vector2d project_to_texture_plane(final Vector3d p3D)
 	{
 		return project_to_texture_plane(p3D, m_horizAxis, m_vertAxis);
 	}
@@ -408,10 +408,9 @@ public class TexturePlane implements Constants
 	@param vertAxis		The texture plane's vertical base axis
 	@return				The projection of the point
 	*/
-	private static Vector2d project_to_texture_plane(final Point3d p3D, final Vector3d horizAxis, final Vector3d vertAxis)
+	private static Vector2d project_to_texture_plane(final Vector3d p3D, final Vector3d horizAxis, final Vector3d vertAxis)
 	{
-		final Vector3d v3D = new Vector3d(p3D);
-		return new Vector2d(horizAxis.dot(v3D), vertAxis.dot(v3D));
+		return new Vector2d(horizAxis.dot(p3D), vertAxis.dot(p3D));
 	}
 
 	//################## TEST HARNESS ##################//
@@ -429,80 +428,80 @@ public class TexturePlane implements Constants
 		{
 			// I) Test one of the simplest possible cases first.
 			TexturePlane texturePlane = new TexturePlane(new Vector3d(0,1,0), 1, 1, 0, 0, 0);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(0.0, 0.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(23,9,84)), "(23.0, -84.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(7,8,-51)), "(7.0, 51.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(-17,-10,51)), "(-17.0, -51.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(0.0, 0.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(23,9,84)), "(23.0, -84.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(7,8,-51)), "(7.0, 51.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(-17,-10,51)), "(-17.0, -51.0)");
 
 			// II) Ones with offset only.
 			texturePlane = new TexturePlane(new Vector3d(23,9,0), 1, 1, 7, 8, 0);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(7.0, 8.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(-17,10,51)), "(17.0, -43.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(24,-12,-18)), "(-5.0, 26.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(7.0, 8.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(-17,10,51)), "(17.0, -43.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(24,-12,-18)), "(-5.0, 26.0)");
 
 			// III) Ones with scale only.
 
 			// Simple scale case.
 			texturePlane = new TexturePlane(new Vector3d(7,8,51), 2, 3, 0, 0, 0);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(0.0, 0.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(23,9,84)), "(11.5, -3.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(17,-10,51)), "(8.5, 3.3333333333333335)");
-			output(texturePlane.calculate_coordinates(new Point3d(-24,-12,-18)), "(-12.0, 4.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(0.0, 0.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(23,9,84)), "(11.5, -3.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(17,-10,51)), "(8.5, 3.3333333333333335)");
+			output(texturePlane.calculate_coordinates(new Vector3d(-24,-12,-18)), "(-12.0, 4.0)");
 
 			// Negative scale case.
 			texturePlane = new TexturePlane(new Vector3d(1,0,0), -1, 1, 0, 0, 0);
-			output(texturePlane.calculate_coordinates(new Point3d(23,1,9)), "(-1.0, -9.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(23,1,9)), "(-1.0, -9.0)");
 
 			// IV) Ones with rotation only.
 			texturePlane = new TexturePlane(new Vector3d(2,10,0), 1, 1, 0, 0, 45);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(0.0, 0.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(1,23,-1)), "(1.414213562373095, 1.1102230246251565E-16)");
-			output(texturePlane.calculate_coordinates(new Point3d(0,9,1)), "(-0.7071067811865475, -0.7071067811865476)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(0.0, 0.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(1,23,-1)), "(1.414213562373095, 1.1102230246251565E-16)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,9,1)), "(-0.7071067811865475, -0.7071067811865476)");
 
 			// V) Ones with offset and scale only.
 			texturePlane = new TexturePlane(new Vector3d(24,12,18), 2, 4, 5, 10, 0);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(5.0, 10.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(51,10,17)), "(10.0, 5.75)");
-			output(texturePlane.calculate_coordinates(new Point3d(84,-23,-9)), "(-6.5, 12.25)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(5.0, 10.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(51,10,17)), "(10.0, 5.75)");
+			output(texturePlane.calculate_coordinates(new Vector3d(84,-23,-9)), "(-6.5, 12.25)");
 
 			// VI) Ones with scale and rotation only.
 			texturePlane = new TexturePlane(new Vector3d(10,-17,0), 4, 2, 0, 0, -30);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(0.0, 0.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(Math.sqrt(3)/2,0,0.5)), "(0.25, -5.551115123125783E-17)");
-			output(texturePlane.calculate_coordinates(new Point3d(1,0,-Math.sqrt(3))), "(5.551115123125783E-17, 1.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(0.0, 0.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(Math.sqrt(3)/2,0,0.5)), "(0.25, -5.551115123125783E-17)");
+			output(texturePlane.calculate_coordinates(new Vector3d(1,0,-Math.sqrt(3))), "(5.551115123125783E-17, 1.0)");
 
 			// VII) Ones with offset and rotation only.
 
 			// Test the same case as one of those for rotation only, but now with an offset as well.
 			texturePlane = new TexturePlane(new Vector3d(2,10,0), 1, 1, 3, 4, 45);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(3.0, 4.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(1,23,-1)), "(4.414213562373095, 4.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(0,9,1)), "(2.2928932188134525, 3.2928932188134525)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(3.0, 4.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(1,23,-1)), "(4.414213562373095, 4.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,9,1)), "(2.2928932188134525, 3.2928932188134525)");
 
 			// VIII) General ones.
 			texturePlane = new TexturePlane(new Vector3d(0,0,-1), 5, 10, -2, -4, 90);
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(-2.0, -4.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(51,10,17)), "(-3.999999999999999, -9.1)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(-2.0, -4.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(51,10,17)), "(-3.999999999999999, -9.1)");
 		}
 
 		public void test_fit_plane()
 		{
 			// Test a nice simple case first.
-			TexturePlane texturePlane = fit_plane(new Point3d(0,0,0),		new Point3d(1,0,0),		new Point3d(0,0,-1),
+			TexturePlane texturePlane = fit_plane(new Vector3d(0,0,0),		new Vector3d(1,0,0),		new Vector3d(0,0,-1),
 												  new TextureCoord(0,0),	new TextureCoord(1,0),	new TextureCoord(0,1));
 			output(texturePlane.internal_string(), "[1.0 1.0 (0.0, 0.0) (1.0, 0.0) (0.0, 1.0) (1.0, 0.0, 0.0) (0.0, 0.0, -1.0)]");
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(0.0, 0.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(1,0,0)), "(1.0, 0.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,-1)), "(0.0, 1.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(0.0, 0.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(1,0,0)), "(1.0, 0.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,-1)), "(0.0, 1.0)");
 
 			// Now test a more complicated case.
-			texturePlane = fit_plane(new Point3d(0,0,0),		new Point3d(1,1,0),			new Point3d(0,1,0),
+			texturePlane = fit_plane(new Vector3d(0,0,0),		new Vector3d(1,1,0),			new Vector3d(0,1,0),
 									 new TextureCoord(23,9),	new TextureCoord(24,9),		new TextureCoord(23.5,10));
 			output(texturePlane.internal_string(), "[1.4142135623730951 -0.7071067811865476 (23.0, 9.0) (0.7071067811865476, -0.7071067811865476) (0.7071067811865476, 0.7071067811865476) (1.0, 0.0, 0.0) (0.0, -1.0, 0.0)]");
-			output(texturePlane.calculate_coordinates(new Point3d(0,0,0)), "(23.0, 9.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(1,1,0)), "(24.0, 9.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(0,1,0)), "(23.5, 10.0)");
-			output(texturePlane.calculate_coordinates(new Point3d(0,4,0)), "(25.0, 13.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,0,0)), "(23.0, 9.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(1,1,0)), "(24.0, 9.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,1,0)), "(23.5, 10.0)");
+			output(texturePlane.calculate_coordinates(new Vector3d(0,4,0)), "(25.0, 13.0)");
 
 			// TESTME: We need lots of test cases here, fit_plane is quite tricky mathematically and I might have
 			// missed something.

@@ -1,9 +1,9 @@
 package MapEditor.Geom.Splines;
 
 import MapEditor.Math.Matrices.*;
+import MapEditor.Math.Vectors.Vector3d;
 import MapEditor.Misc.Constants;
 import MapEditor.Test.*;
-import javax.vecmath.Point3d;
 
 /**
 This class represents uniform cubic B-splines.
@@ -13,7 +13,7 @@ public class CubicBSpline implements Constants
 	//################## PRIVATE VARIABLES ##################//
 	// Datatype Invariant: m_controlPoints[i] = d[i-3], where d[j] is a control point,
 	// as in d[-3]*N{-3,3}(0) + d[-2]*N[-2,3}(0) + ...
-	private Point3d[] m_controlPoints;
+	private Vector3d[] m_controlPoints;
 
 	//################## CONSTRUCTORS ##################//
 	private CubicBSpline() {}	// for internal use
@@ -32,7 +32,7 @@ public class CubicBSpline implements Constants
 	@return					The corresponding point on the spline
 	@throws java.lang.Error	If the preconditions are violated
 	*/
-	public Point3d calculate_curve_point(double t)
+	public Vector3d calculate_curve_point(double t)
 	{
 		// Check the preconditions. If t is negligibly close to 0 or 1, but not
 		// technically in the range [0,1], clamp it to the range. This helps us
@@ -58,10 +58,10 @@ public class CubicBSpline implements Constants
 		int loKnot = (int)t, hiKnot = loKnot+3;
 		if(hiKnot >= m_controlPoints.length) hiKnot = m_controlPoints.length-1;
 
-		Point3d ret = new Point3d();
+		Vector3d ret = new Vector3d();
 		for(int i=loKnot; i<=hiKnot; ++i)
 		{
-			ret.scaleAdd(N(i-3,t), m_controlPoints[i], ret);
+			ret = Vector3d.scale_add(N(i-3,t), m_controlPoints[i], ret);
 		}
 		return ret;
 	}
@@ -76,7 +76,7 @@ public class CubicBSpline implements Constants
 	@return				The spline, or null if it couldn't be constructed because the constraints were invalid (which would
 						result in us not being able to invert the matrix)
 	*/
-	public static CubicBSpline construct_interpolating_spline(final Point3d[] data, IConstraint constraint1, IConstraint constraint2)
+	public static CubicBSpline construct_interpolating_spline(final Vector3d[] data, IConstraint constraint1, IConstraint constraint2)
 	{
 		int n = data.length+2;
 
@@ -91,19 +91,19 @@ public class CubicBSpline implements Constants
 			double[][] elements = m.inverse().get_elements();
 
 			CubicBSpline spline = new CubicBSpline();
-			spline.m_controlPoints = new Point3d[n];
+			spline.m_controlPoints = new Vector3d[n];
 			for(int r=0; r<n; ++r)
 			{
 				//System.out.println("---");
-				spline.m_controlPoints[r] = new Point3d();
+				spline.m_controlPoints[r] = new Vector3d();
 				for(int c=0; c<n-2; ++c)
 				{
-					spline.m_controlPoints[r].scaleAdd(elements[r][c], data[c], spline.m_controlPoints[r]);
+					spline.m_controlPoints[r] = Vector3d.scale_add(elements[r][c], data[c], spline.m_controlPoints[r]);
 					//System.out.println(spline.m_controlPoints[r]);
 				}
-				spline.m_controlPoints[r].scaleAdd(elements[r][n-2], constraint1.determine_value(data), spline.m_controlPoints[r]);
+				spline.m_controlPoints[r] = Vector3d.scale_add(elements[r][n-2], constraint1.determine_value(data), spline.m_controlPoints[r]);
 				//System.out.println(spline.m_controlPoints[r]);
-				spline.m_controlPoints[r].scaleAdd(elements[r][n-1], constraint2.determine_value(data), spline.m_controlPoints[r]);
+				spline.m_controlPoints[r] = Vector3d.scale_add(elements[r][n-1], constraint2.determine_value(data), spline.m_controlPoints[r]);
 				//System.out.println(spline.m_controlPoints[r]);
 			}
 
@@ -123,7 +123,7 @@ public class CubicBSpline implements Constants
 
 	@return	...think about it...
 	*/
-	public Point3d[] get_control_points()
+	public Vector3d[] get_control_points()
 	{
 		return m_controlPoints;
 	}
@@ -160,7 +160,7 @@ public class CubicBSpline implements Constants
 	@param controlPoints	The control points for the spline
 	@return					The spline, as specified
 	*/
-	private static CubicBSpline construct_spline_from_control_points(Point3d[] controlPoints)	// for internal use (at least at present)
+	private static CubicBSpline construct_spline_from_control_points(Vector3d[] controlPoints)	// for internal use (at least at present)
 	{
 		CubicBSpline spline = new CubicBSpline();
 		spline.m_controlPoints = controlPoints;
@@ -197,7 +197,7 @@ public class CubicBSpline implements Constants
 		/**
 		Determines the result of multiplying the above row by the spline control points.
 		*/
-		Point3d determine_value(Point3d[] data);
+		Vector3d determine_value(Vector3d[] data);
 	}
 
 	/**
@@ -227,14 +227,14 @@ public class CubicBSpline implements Constants
 			// We isolate these tests from how the spline is constructed in practice by explicitly giving
 			// a list of control points.
 
-			CubicBSpline spline = construct_spline_from_control_points(new Point3d[]
+			CubicBSpline spline = construct_spline_from_control_points(new Vector3d[]
 			{
-				new Point3d(-23,0,9),
-				new Point3d(-7,0,8),
-				new Point3d(17,0,-10),
-				new Point3d(24,0,-12),
-				new Point3d(32,0,-8),
-				new Point3d(42,0,0)
+				new Vector3d(-23,0,9),
+				new Vector3d(-7,0,8),
+				new Vector3d(17,0,-10),
+				new Vector3d(24,0,-12),
+				new Vector3d(32,0,-8),
+				new Vector3d(42,0,0)
 			});
 
 			// Test the obvious points first.
@@ -262,25 +262,25 @@ public class CubicBSpline implements Constants
 		{
 			// Test a simple case first.
 
-			Point3d[] data = new Point3d[]
+			Vector3d[] data = new Vector3d[]
 			{
-				new Point3d(0,0,0),
-				new Point3d(1,0,2),
-				new Point3d(2,0,1),
-				new Point3d(3,0,5)
+				new Vector3d(0,0,0),
+				new Vector3d(1,0,2),
+				new Vector3d(2,0,1),
+				new Vector3d(3,0,5)
 			};
 			IConstraint constraint1 = new GradientConstraint(0)
 			{
-				public Point3d determine_value(Point3d[] data)
+				public Vector3d determine_value(Vector3d[] data)
 				{
-					return new Point3d(1,0,0);
+					return new Vector3d(1,0,0);
 				}
 			};
 			IConstraint constraint2 = new GradientConstraint(data.length-1)
 			{
-				public Point3d determine_value(Point3d[] data)
+				public Vector3d determine_value(Vector3d[] data)
 				{
-					return new Point3d(1,0,0);
+					return new Vector3d(1,0,0);
 				}
 			};
 			CubicBSpline spline = construct_interpolating_spline(data, constraint1, constraint2);
@@ -291,23 +291,23 @@ public class CubicBSpline implements Constants
 
 			// Test a more realistic case.
 
-			data = new Point3d[]
+			data = new Vector3d[]
 			{
-				new Point3d(80.0, 80.0, 80.0),
-				new Point3d(146.66666666666669, 80.0, 80.0),
-				new Point3d(213.33333333333334, 80.0, 80.0),
-				new Point3d(280.0, 80.0, 80.0),
-				new Point3d(346.6666666666667, 80.0, 80.0),
-				new Point3d(413.3333333333333, 80.0, 80.0),
-				new Point3d(480.0, 80.0, 80.0)
+				new Vector3d(80.0, 80.0, 80.0),
+				new Vector3d(146.66666666666669, 80.0, 80.0),
+				new Vector3d(213.33333333333334, 80.0, 80.0),
+				new Vector3d(280.0, 80.0, 80.0),
+				new Vector3d(346.6666666666667, 80.0, 80.0),
+				new Vector3d(413.3333333333333, 80.0, 80.0),
+				new Vector3d(480.0, 80.0, 80.0)
 			};
 			constraint1 = new CubicBSpline.GradientConstraint(0)
 			{
-				public Point3d determine_value(Point3d[] data) { return new Point3d(1,0,0); }
+				public Vector3d determine_value(Vector3d[] data) { return new Vector3d(1,0,0); }
 			};
 			constraint2 = new CubicBSpline.GradientConstraint(data.length-1)
 			{
-				public Point3d determine_value(Point3d[] data) { return new Point3d(1,0,0); }
+				public Vector3d determine_value(Vector3d[] data) { return new Vector3d(1,0,0); }
 			};
 			spline = construct_interpolating_spline(data, constraint1, constraint2);
 			output(spline.calculate_curve_point(0), "(80.00000000000003, 80.00000000000001, 80.00000000000001)");
@@ -326,11 +326,11 @@ public class CubicBSpline implements Constants
 		{
 			IConstraint constraint1 = new GradientConstraint(0)
 			{
-				public Point3d determine_value(Point3d[] data) { return null; }		// irrelevant since not used here
+				public Vector3d determine_value(Vector3d[] data) { return null; }		// irrelevant since not used here
 			};
 			IConstraint constraint2 = new GradientConstraint(3)
 			{
-				public Point3d determine_value(Point3d[] data) { return null; }		// irrelevant since not used here
+				public Vector3d determine_value(Vector3d[] data) { return null; }		// irrelevant since not used here
 			};
 			Matrix expected = new Matrix(new double[][]
 			{

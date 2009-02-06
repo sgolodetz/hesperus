@@ -7,11 +7,11 @@ import MapEditor.Geom.*;
 import MapEditor.Geom.Planar.*;
 import MapEditor.Graphics.*;
 import MapEditor.Maps.*;
+import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedList;
-import javax.vecmath.*;
 
 public class DesignCanvas extends Canvas implements BrushConstants, IRepaintListener, IScrollable, IStatusSource<String>
 {
@@ -40,7 +40,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	private int m_visibleHeight;							// the height of the viewable area (in Coords)
 	private int m_visibleWidth;								// the width of the viewable area (in Coords)
 	private Map m_map;										// the map we're editing using this canvas
-	private Point2d m_topLeft_Coords = new Point2d();		// the top left of the canvas (in Coords)
+	private Vector2d m_topLeft_Coords = new Vector2d();		// the top left of the canvas (in Coords)
 
 	// AxisPair stuff
 	private AxisPair m_axisPair;							// the (r,d) axis pair for this canvas
@@ -59,10 +59,10 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	private boolean m_bInitialised = false;
 
 	// Mouse stuff
-	private Point2d m_mouseAnchor_Pixels;
-	private Point2d m_snappedMouseAnchor_Pixels;
-	private Point2d m_mouseAnchor_Coords;
-	private Point2d m_snappedMouseAnchor_Coords;
+	private Vector2d m_mouseAnchor_Pixels;
+	private Vector2d m_snappedMouseAnchor_Pixels;
+	private Vector2d m_mouseAnchor_Coords;
+	private Vector2d m_snappedMouseAnchor_Coords;
 
 	// Scrollbar stuff
 	private Scrollbar m_horiz = null;
@@ -75,9 +75,9 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	// Renderer stuff
 	private IRenderer m_renderer = new IRenderer()
 	{
-		public Point2d add_pixel_offset(final Point2d p_Coords, double dx_Pixels, double dy_Pixels)
+		public Vector2d add_pixel_offset(final Vector2d p_Coords, double dx_Pixels, double dy_Pixels)
 		{
-			Point2d p_Pixels = coords_to_pixels(p_Coords);
+			Vector2d p_Pixels = coords_to_pixels(p_Coords);
 			p_Pixels.x += dx_Pixels;
 			p_Pixels.y += dy_Pixels;
 			return pixels_to_coords(p_Pixels);
@@ -109,76 +109,76 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 		@param p2_Coords	The second point
 		@return				The square of the distance between their conversions into Pixels as a double
 		*/
-		public double distance_squared(final Point2d p1_Coords, final Point2d p2_Coords)
+		public double distance_squared(final Vector2d p1_Coords, final Vector2d p2_Coords)
 		{
-			Point2d p1_Pixels = coords_to_pixels(p1_Coords);
-			Point2d p2_Pixels = coords_to_pixels(p2_Coords);
+			Vector2d p1_Pixels = coords_to_pixels(p1_Coords);
+			Vector2d p2_Pixels = coords_to_pixels(p2_Coords);
 			double x = p1_Pixels.x - p2_Pixels.x;
 			double y = p1_Pixels.y - p2_Pixels.y;
 			return x*x + y*y;
 		}
 
-		public double distance_squared_from_linesegment(final Point2d p_Coords, final Point2d e1_Coords, final Point2d e2_Coords)
+		public double distance_squared_from_linesegment(final Vector2d p_Coords, final Vector2d e1_Coords, final Vector2d e2_Coords)
 		{
 			double distanceSquared_Coords = GeomUtil.distance_squared_from_linesegment(p_Coords, e1_Coords, e2_Coords);
 			return distanceSquared_Coords*m_zoomLevel*m_zoomLevel;
 		}
 
-		public void draw_line(final Point2d p1_Coords, final Point2d p2_Coords)
+		public void draw_line(final Vector2d p1_Coords, final Vector2d p2_Coords)
 		{
-			Point2d p1_Pixels = coords_to_pixels(p1_Coords);
-			Point2d p2_Pixels = coords_to_pixels(p2_Coords);
+			Vector2d p1_Pixels = coords_to_pixels(p1_Coords);
+			Vector2d p2_Pixels = coords_to_pixels(p2_Coords);
 
 			GraphicsUtil.draw_line(m_backGraphics, p1_Pixels.x, p1_Pixels.y, p2_Pixels.x, p2_Pixels.y);
 		}
 
-		public void draw_line(final Point3d p1_3D, final Point3d p2_3D)
+		public void draw_line(final Vector3d p1_3D, final Vector3d p2_3D)
 		{
-			Point2d p1_Pixels = determine_canvas_location_in_pixels(p1_3D);
-			Point2d p2_Pixels = determine_canvas_location_in_pixels(p2_3D);
+			Vector2d p1_Pixels = determine_canvas_location_in_pixels(p1_3D);
+			Vector2d p2_Pixels = determine_canvas_location_in_pixels(p2_3D);
 
 			GraphicsUtil.draw_line(m_backGraphics, p1_Pixels.x, p1_Pixels.y, p2_Pixels.x, p2_Pixels.y);
 		}
 
-		public void draw_oval(final Point2d p1_Coords, final Point2d p2_Coords)
+		public void draw_oval(final Vector2d p1_Coords, final Vector2d p2_Coords)
 		{
-			Point2d p1_Pixels = coords_to_pixels(p1_Coords);
-			Point2d p2_Pixels = coords_to_pixels(p2_Coords);
+			Vector2d p1_Pixels = coords_to_pixels(p1_Coords);
+			Vector2d p2_Pixels = coords_to_pixels(p2_Coords);
 
 			GraphicsUtil.draw_oval(m_backGraphics, p1_Pixels.x, p1_Pixels.y, p2_Pixels.x, p2_Pixels.y);
 		}
 
-		public void draw_polyline(final Point2d[] ps_Coords)
+		public void draw_polyline(final Vector2d[] ps_Coords)
 		{
 			int len = ps_Coords.length;
 			int[] xPoints = new int[len];
 			int[] yPoints = new int[len];
 			for(int i=0; i<len; ++i)
 			{
-				Point2d p_Pixels = coords_to_pixels(ps_Coords[i]);
+				Vector2d p_Pixels = coords_to_pixels(ps_Coords[i]);
 				xPoints[i] = (int)Math.round(p_Pixels.x);
 				yPoints[i] = (int)Math.round(p_Pixels.y);
 			}
 			m_backGraphics.drawPolyline(xPoints, yPoints, len);
 		}
 
-		public void draw_rectangle(final Point2d p1_Coords, final Point2d p2_Coords)
+		public void draw_rectangle(final Vector2d p1_Coords, final Vector2d p2_Coords)
 		{
-			Point2d p1_Pixels = coords_to_pixels(p1_Coords);
-			Point2d p2_Pixels = coords_to_pixels(p2_Coords);
+			Vector2d p1_Pixels = coords_to_pixels(p1_Coords);
+			Vector2d p2_Pixels = coords_to_pixels(p2_Coords);
 
 			GraphicsUtil.draw_rectangle(m_backGraphics, p1_Pixels.x, p1_Pixels.y, p2_Pixels.x, p2_Pixels.y);
 		}
 
-		public void fill_oval(final Point2d p1_Coords, final Point2d p2_Coords)
+		public void fill_oval(final Vector2d p1_Coords, final Vector2d p2_Coords)
 		{
-			Point2d p1_Pixels = coords_to_pixels(p1_Coords);
-			Point2d p2_Pixels = coords_to_pixels(p2_Coords);
+			Vector2d p1_Pixels = coords_to_pixels(p1_Coords);
+			Vector2d p2_Pixels = coords_to_pixels(p2_Coords);
 
 			GraphicsUtil.fill_oval(m_backGraphics, p1_Pixels.x, p1_Pixels.y, p2_Pixels.x, p2_Pixels.y);
 		}
 
-		public Point2d find_nearest_grid_intersect_in_coords(final Point2d p_Coords)
+		public Vector2d find_nearest_grid_intersect_in_coords(final Vector2d p_Coords)
 		{
 			return DesignCanvas.this.find_nearest_grid_intersect_in_coords(p_Coords);
 		}
@@ -241,23 +241,23 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	@param p_Coords	The point in Coords
 	@return	A Point containing the conversion of the specified point in Coords into Pixels
 	*/
-	private Point2d coords_to_pixels(final Point2d p_Coords)
+	private Vector2d coords_to_pixels(final Vector2d p_Coords)
 	{
 		double xOffset_Coords = m_hAxisSign*(p_Coords.x-m_topLeft_Coords.x);
 		double yOffset_Coords = m_vAxisSign*(p_Coords.y-m_topLeft_Coords.y);
-		return new Point2d(coord_size_to_pixel_size(xOffset_Coords), coord_size_to_pixel_size(yOffset_Coords));
+		return new Vector2d(coord_size_to_pixel_size(xOffset_Coords), coord_size_to_pixel_size(yOffset_Coords));
 	}
 
 	/**
 	Converts a point in Coords to a point in Scrolls.
 
 	@param p_Coords	The point in Coords
-	@return	A Point2d containing the conversion of the specified point in Coords into Scrolls
+	@return	A Vector2d containing the conversion of the specified point in Coords into Scrolls
 	*/
-	private Point2d coords_to_scrolls(final Point2d p_Coords)
+	private Vector2d coords_to_scrolls(final Vector2d p_Coords)
 	{
-		Point2d dimensions_Coords = m_axisPair.select_components(m_map.dimensions());
-		return new Point2d(	m_hAxisSign == 1 ? p_Coords.x : dimensions_Coords.x - p_Coords.x,
+		Vector2d dimensions_Coords = m_axisPair.select_components(m_map.dimensions());
+		return new Vector2d(	m_hAxisSign == 1 ? p_Coords.x : dimensions_Coords.x - p_Coords.x,
 							m_vAxisSign == 1 ? p_Coords.y : dimensions_Coords.y - p_Coords.y	);
 	}
 
@@ -269,9 +269,9 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	@return			A Point containing the conversion of the specified 3D point in Coords into
 					a 2D one in Pixels
 	*/
-	private Point2d determine_canvas_location_in_pixels(final Point3d p_3D)
+	private Vector2d determine_canvas_location_in_pixels(final Vector3d p_3D)
 	{
-		Point2d p_Coords = m_axisPair.select_components(p_3D);
+		Vector2d p_Coords = m_axisPair.select_components(p_3D);
 		return coords_to_pixels(p_Coords);
 	}
 
@@ -285,7 +285,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	{
 		Graphics g = m_backGraphics;	// g is shorter to type!
 
-		Point2d gridOffset = find_nearest_grid_intersect_in_pixels(new Point2d(gridSize_Pixels,gridSize_Pixels), gridSize_Pixels);
+		Vector2d gridOffset = find_nearest_grid_intersect_in_pixels(new Vector2d(gridSize_Pixels,gridSize_Pixels), gridSize_Pixels);
 
 		gridOffset.x -= gridSize_Pixels;
 		gridOffset.y -= gridSize_Pixels;
@@ -322,12 +322,12 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 		draw_grid(new Color(128,128,128), gridSize_Pixels*4);
 	}
 
-	private Point2d find_nearest_grid_intersect_in_coords(final Point2d p_Coords)
+	private Vector2d find_nearest_grid_intersect_in_coords(final Vector2d p_Coords)
 	{
 		return find_nearest_grid_intersect_in_coords(p_Coords, m_gridSize_Coords);
 	}
 
-	private static Point2d find_nearest_grid_intersect_in_coords(final Point2d p_Coords, double gridSize_Coords)
+	private static Vector2d find_nearest_grid_intersect_in_coords(final Vector2d p_Coords, double gridSize_Coords)
 	{
 		// Note: Coords space is imagined to be such that x always increases to the right and y always
 		// increases downwards. This explains the variable naming-scheme.
@@ -337,18 +337,18 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 		double gridLineAbove = ((int)(p_Coords.y/gridSize_Coords))*gridSize_Coords;
 		double vertGridLine = p_Coords.x-gridLineToLeft < gridSize_Coords/2 ? gridLineToLeft : gridLineToLeft+gridSize_Coords;
 		double horizGridLine = p_Coords.y-gridLineAbove < gridSize_Coords/2 ? gridLineAbove : gridLineAbove+gridSize_Coords;
-		return new Point2d(vertGridLine, horizGridLine);
+		return new Vector2d(vertGridLine, horizGridLine);
 	}
 
-	private Point2d find_nearest_grid_intersect_in_pixels(final Point2d p_Pixels)
+	private Vector2d find_nearest_grid_intersect_in_pixels(final Vector2d p_Pixels)
 	{
-		Point2d gi_Coords = find_nearest_grid_intersect_in_coords(pixels_to_coords(p_Pixels), m_gridSize_Coords);
+		Vector2d gi_Coords = find_nearest_grid_intersect_in_coords(pixels_to_coords(p_Pixels), m_gridSize_Coords);
 		return coords_to_pixels(gi_Coords);
 	}
 
-	private Point2d find_nearest_grid_intersect_in_pixels(final Point2d p_Pixels, double gridSize_Pixels)
+	private Vector2d find_nearest_grid_intersect_in_pixels(final Vector2d p_Pixels, double gridSize_Pixels)
 	{
-		Point2d gi_Coords = find_nearest_grid_intersect_in_coords(pixels_to_coords(p_Pixels), pixel_size_to_coord_size(gridSize_Pixels));
+		Vector2d gi_Coords = find_nearest_grid_intersect_in_coords(pixels_to_coords(p_Pixels), pixel_size_to_coord_size(gridSize_Pixels));
 		return coords_to_pixels(gi_Coords);
 	}
 
@@ -361,7 +361,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	@return					The nearest brush, if there was one, otherwise null
 	@throws java.lang.Error	If p_Coords is null
 	*/
-	private IBrush find_nearest_nearby_brush_in_coords(final Point2d p_Coords)
+	private IBrush find_nearest_nearby_brush_in_coords(final Vector2d p_Coords)
 	{
 		if(p_Coords == null) throw new java.lang.Error();
 
@@ -401,13 +401,13 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	*/
 	private AxisAlignedBox generate_brush_creation_bounds()
 	{
-		Point3d tl_3D = (Point3d)m_map.get_brush_creation_anchor().clone();
-		Point3d br_3D = (Point3d)m_map.get_brush_creation_anchor().clone();
+		Vector3d tl_3D = m_map.get_brush_creation_anchor().clone();
+		Vector3d br_3D = m_map.get_brush_creation_anchor().clone();
 
 		// Add a small offset to the bottom-right corner of the bounding box, so that the box's dimensions
 		// are all non-zero. Note that the offset being added is actually 2D, something which isn't necessarily
 		// obvious at a first glance.
-		m_axisPair.add_offset(br_3D, m_axisPair.select_components(new Point3d(MINIMUM_BRUSH_DIMENSION, MINIMUM_BRUSH_DIMENSION, MINIMUM_BRUSH_DIMENSION)));
+		m_axisPair.add_offset(br_3D, m_axisPair.select_components(new Vector3d(MINIMUM_BRUSH_DIMENSION, MINIMUM_BRUSH_DIMENSION, MINIMUM_BRUSH_DIMENSION)));
 
 		m_axisPair.set_missing_component(br_3D, m_axisPair.get_missing_component(tl_3D)+m_gridSize_Coords);
 		return new AxisAlignedBox(tl_3D, br_3D);
@@ -470,13 +470,13 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	Converts a point in Pixels to a point in Coords.
 
 	@param p_Pixels		The point in Pixels
-	@return				A Point2d containing the conversion of the specified point in Pixels into Coords
+	@return				A Vector2d containing the conversion of the specified point in Pixels into Coords
 	*/
-	private Point2d pixels_to_coords(final Point2d p_Pixels)
+	private Vector2d pixels_to_coords(final Vector2d p_Pixels)
 	{
 		double xOffset_Coords = pixel_size_to_coord_size(p_Pixels.x);
 		double yOffset_Coords = pixel_size_to_coord_size(p_Pixels.y);
-		return new Point2d(	xOffset_Coords/m_hAxisSign+m_topLeft_Coords.x,
+		return new Vector2d(	xOffset_Coords/m_hAxisSign+m_topLeft_Coords.x,
 							yOffset_Coords/m_vAxisSign+m_topLeft_Coords.y	);
 	}
 
@@ -487,8 +487,8 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	{
 		Graphics g = m_backGraphics;	// g is shorter to type!
 
-		Point2d p_Coords = m_axisPair.select_components(m_map.get_brush_creation_anchor());
-		Point2d p_Pixels = coords_to_pixels(p_Coords);
+		Vector2d p_Coords = m_axisPair.select_components(m_map.get_brush_creation_anchor());
+		Vector2d p_Pixels = coords_to_pixels(p_Coords);
 
 		g.setColor(Color.yellow);
 		GraphicsUtil.draw_rectangle(g, p_Pixels.x-5, p_Pixels.y-5, p_Pixels.x+5, p_Pixels.y+5);
@@ -523,7 +523,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	*/
 	private void update_brush_creation_anchor()
 	{
-		Point2d p_Coords = new Point2d(m_topLeft_Coords.x + m_hAxisSign * m_visibleWidth/2,
+		Vector2d p_Coords = new Vector2d(m_topLeft_Coords.x + m_hAxisSign * m_visibleWidth/2,
 									   m_topLeft_Coords.y + m_vAxisSign * m_visibleHeight/2);
 		if(Options.is_set("Snap To Grid")) p_Coords = find_nearest_grid_intersect_in_coords(p_Coords);
 		update_brush_creation_anchor(p_Coords);
@@ -537,9 +537,9 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 
 	@param p_Coords	The 2D point with which to update the 3D position of the anchor
 	*/
-	private void update_brush_creation_anchor(Point2d p_Coords)
+	private void update_brush_creation_anchor(Vector2d p_Coords)
 	{
-		Point3d brushCreationAnchor = m_map.get_brush_creation_anchor();
+		Vector3d brushCreationAnchor = m_map.get_brush_creation_anchor();
 		m_axisPair.set_relevant_components(brushCreationAnchor, p_Coords);
 		m_map.set_brush_creation_anchor(brushCreationAnchor);
 	}
@@ -560,7 +560,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 		if(m_visibleHeight == 0) throw new java.lang.Error();
 		if(m_visibleWidth == 0) throw new java.lang.Error();
 
-		Point2d dimensions_Coords = m_axisPair.select_components(m_map.dimensions());
+		Vector2d dimensions_Coords = m_axisPair.select_components(m_map.dimensions());
 		int maxHeight = (int)Math.round(dimensions_Coords.y);
 		int maxWidth = (int)Math.round(dimensions_Coords.x);
 		m_vert.setValues(m_vert.getValue(),m_visibleHeight,0,maxHeight);
@@ -588,7 +588,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 	@param factor			The zoom factor, as described above
 	@throws java.lang.Error	If factor <= 0
 	*/
-	private void zoom(Point2d p_Scrolls, double factor)
+	private void zoom(Vector2d p_Scrolls, double factor)
 	{
 		/*
 		Notes on the algorithm:
@@ -622,9 +622,8 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 		if(potentialGridSize_Pixels > coord_size_to_pixel_size(m_visibleWidth/2) || potentialGridSize_Pixels > coord_size_to_pixel_size(m_visibleHeight/2)) return;
 
 		// Main Algorithm
-		Point2d delta_Scrolls = new Point2d(0.5 * m_visibleWidth / factor, 0.5 * m_visibleHeight / factor);
-		Point2d newValues_Scrolls = (Point2d)p_Scrolls.clone();
-		newValues_Scrolls.sub(delta_Scrolls);
+		Vector2d delta_Scrolls = new Vector2d(0.5 * m_visibleWidth / factor, 0.5 * m_visibleHeight / factor);
+		Vector2d newValues_Scrolls = VectorUtil.subtract(p_Scrolls, delta_Scrolls);
 
 		m_zoomLevel *= factor;
 		update_scrollbars();
@@ -756,7 +755,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 						// centralised all the zooming code, all this involves is working
 						// out where the centre of the canvas is in Scrolls and passing
 						// it to the zoom method.
-						Point2d centre_Scrolls = new Point2d(m_horiz.getValue() + m_visibleWidth/2.0, m_vert.getValue() + m_visibleHeight/2.0);
+						Vector2d centre_Scrolls = new Vector2d(m_horiz.getValue() + m_visibleWidth/2.0, m_vert.getValue() + m_visibleHeight/2.0);
 						zoom(centre_Scrolls, 1/ZOOM_FACTOR);
 
 						repaint();
@@ -768,7 +767,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 						// centralised all the zooming code, all this involves is working
 						// out where the centre of the canvas is in Scrolls and passing
 						// it to the zoom method.
-						Point2d centre_Scrolls = new Point2d(m_horiz.getValue() + 0.5*m_visibleWidth, m_vert.getValue() + 0.5*m_visibleHeight);
+						Vector2d centre_Scrolls = new Vector2d(m_horiz.getValue() + 0.5*m_visibleWidth, m_vert.getValue() + 0.5*m_visibleHeight);
 						zoom(centre_Scrolls, ZOOM_FACTOR);
 
 						repaint();
@@ -782,7 +781,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 		{
 			public void mousePressed(MouseEvent e)
 			{
-				m_mouseAnchor_Pixels = new Point2d(e.getX(), e.getY());
+				m_mouseAnchor_Pixels = new Vector2d(e.getX(), e.getY());
 				m_mouseAnchor_Coords = pixels_to_coords(m_mouseAnchor_Pixels);
 
 				if(Options.is_set("Snap To Grid"))
@@ -911,7 +910,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 					case Map.STATE_EDITING:
 					{
 						// Forward it on to the currently selected brush to deal with.
-						Point2d p_Coords = pixels_to_coords(new Point2d(e.getX(), e.getY()));
+						Vector2d p_Coords = pixels_to_coords(new Vector2d(e.getX(), e.getY()));
 						m_map.get_selected_brush().mouse_dragged(m_renderer, p_Coords);
 						break;
 					}
@@ -927,7 +926,7 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 				if(m_map.get_state() == Map.STATE_EDITING)
 				{
 					// Forward it on to the currently selected brush to deal with.
-					Point2d p_Coords = pixels_to_coords(new Point2d(e.getX(), e.getY()));
+					Vector2d p_Coords = pixels_to_coords(new Vector2d(e.getX(), e.getY()));
 					m_map.get_selected_brush().mouse_moved(m_renderer, p_Coords);
 				}
 			}
@@ -967,12 +966,12 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 
 				final double factor = e.getWheelRotation() < 0 ? ZOOM_FACTOR : 1/ZOOM_FACTOR;
 
-				Point2d p_Scrolls = coords_to_scrolls(pixels_to_coords(new Point2d(e.getX(), e.getY())));
-				Point2d topLeft_Scrolls = coords_to_scrolls(m_topLeft_Coords);
-				Point2d delta_Scrolls = new Point2d((p_Scrolls.x - topLeft_Scrolls.x)/factor, (p_Scrolls.y - topLeft_Scrolls.y)/factor);
-				Point2d centre_Scrolls = (Point2d)p_Scrolls.clone();
-				centre_Scrolls.sub(delta_Scrolls);		// determines the top left of the zoomed canvas
-				centre_Scrolls.add(new Point2d(0.5*m_visibleWidth/factor, 0.5*m_visibleHeight/factor));
+				Vector2d p_Scrolls = coords_to_scrolls(pixels_to_coords(new Vector2d(e.getX(), e.getY())));
+				Vector2d topLeft_Scrolls = coords_to_scrolls(m_topLeft_Coords);
+				Vector2d delta_Scrolls = new Vector2d((p_Scrolls.x - topLeft_Scrolls.x)/factor, (p_Scrolls.y - topLeft_Scrolls.y)/factor);
+				Vector2d centre_Scrolls = p_Scrolls.clone();
+				centre_Scrolls.subtract(delta_Scrolls);		// determines the top left of the zoomed canvas
+				centre_Scrolls.add(new Vector2d(0.5*m_visibleWidth/factor, 0.5*m_visibleHeight/factor));
 
 				for(int i=0, count=Math.abs(e.getWheelRotation()); i<count; ++i) zoom(centre_Scrolls, factor);
 

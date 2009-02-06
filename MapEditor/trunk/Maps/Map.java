@@ -6,8 +6,8 @@ import MapEditor.Brushes.LandscapeBrush;
 import MapEditor.Commands.*;
 import MapEditor.Event.*;
 import MapEditor.Geom.Planar.Polygon;
+import MapEditor.Math.Vectors.Vector3d;
 import java.util.*;
-import javax.vecmath.*;
 
 public class Map implements IBrush.IBrushContainer, IRepaintListener
 {
@@ -40,7 +40,7 @@ public class Map implements IBrush.IBrushContainer, IRepaintListener
 	private ISelectionListener m_selectionListener = ISelectionListener.NULL;
 	private LinkedList<IBrush> m_brushes = new LinkedList<IBrush>();
 	private LinkedList<Polygon> m_selectedFaces = new LinkedList<Polygon>();		// the faces currently selected for texturing
-	private Point3d m_brushCreationAnchor = new Point3d();	// helps determine where to create a new brush
+	private Vector3d m_brushCreationAnchor = new Vector3d();	// helps determine where to create a new brush
 															// two of the components come from where we're
 															// clicking in a design canvas, the missing one
 															// comes from this variable
@@ -195,9 +195,9 @@ public class Map implements IBrush.IBrushContainer, IRepaintListener
 		return new MapDetails(m_brushes.size(), faceCount);
 	}
 
-	public Point3d dimensions()
+	public Vector3d dimensions()
 	{
-		return new Point3d(32768,32768,32768);
+		return new Vector3d(32768,32768,32768);
 	}
 
 	public Iterable<IBrush> get_brushes()
@@ -210,7 +210,7 @@ public class Map implements IBrush.IBrushContainer, IRepaintListener
 
 	@return	...think about it...
 	*/
-	public Point3d get_brush_creation_anchor()
+	public Vector3d get_brush_creation_anchor()
 	{
 		return m_brushCreationAnchor;
 	}
@@ -331,7 +331,7 @@ public class Map implements IBrush.IBrushContainer, IRepaintListener
 
 	@param p	The new position of the anchor
 	*/
-	public void set_brush_creation_anchor(Point3d p)
+	public void set_brush_creation_anchor(Vector3d p)
 	{
 		m_brushCreationAnchor = p;
 	}
