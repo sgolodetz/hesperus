@@ -26,6 +26,19 @@ public abstract class TranslatableBrush extends BrushAdapter implements BrushCon
 	protected IRenderer m_renderer = null;			// the renderer associated with the current canvas on which this brush is being manipulated
 	protected State m_state;						// the current state of the brush
 
+	//################## CONSTRUCTORS ##################//
+	/**
+	Constructs a TranslatableBrush whose initial state depends on whether or not it's a
+	new brush. By "new", I mean one the user is creating, as opposed to one which we're
+	loading in, one which is being constructed as a result of a split operation, etc.
+
+	@param isNew	Is the brush a new one that the user is creating?
+	*/
+	public TranslatableBrush(boolean isNew)
+	{
+		m_state = isNew ? State.INITIAL : State.IDLE;
+	}
+
 	//################## PROTECTED ABSTRACT METHODS ##################//
 	/**
 	Translate the brush by the specified vector. Exactly how we do this depends on the brush type.

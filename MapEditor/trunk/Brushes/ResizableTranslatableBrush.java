@@ -44,7 +44,7 @@ public abstract class ResizableTranslatableBrush extends TranslatableBrush imple
 	*/
 	public ResizableTranslatableBrush(boolean isNew)
 	{
-		m_state = isNew ? State.INITIAL : State.IDLE;
+		super(isNew);
 	}
 
 	//################## PROTECTED ABSTRACT METHODS ##################//

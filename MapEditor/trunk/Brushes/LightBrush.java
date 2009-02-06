@@ -12,11 +12,23 @@ FIXME: This isn't really an abstract class, it's just marked as abstract tempora
 */
 public class LightBrush extends TranslatableBrush
 {
+	//################## PRIVATE VARIABLES ##################//
+	private Color m_colour;		// the RGB colour of the light
+	private boolean m_ghost;	// are we in the process of creating this brush in the design canvas?
+	
 	//################## CONSTRUCTORS ##################//
+	private LightBrush(Point3d position, Color colour, boolean isNew)
+	{
+		super(isNew);
+
+		m_colour = colour;
+
+		// TODO: Construct a suitably-sized bounding box.
+	}
+
 	public LightBrush(Point3d position)
 	{
-		// NYI
-		throw new UnsupportedOperationException();
+		this(position, Color.white, true);
 	}
 
 	//################## PROTECTED METHODS ##################//
@@ -28,6 +40,12 @@ public class LightBrush extends TranslatableBrush
 
 	//################## PUBLIC METHODS ##################//
 	public LightBrush copy()
+	{
+		// NYI
+		throw new UnsupportedOperationException();
+	}
+
+	public void deghost(final IBrushContainer container)
 	{
 		// NYI
 		throw new UnsupportedOperationException();
