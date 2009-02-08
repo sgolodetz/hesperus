@@ -148,6 +148,14 @@ public class DesignCanvas extends Canvas implements BrushConstants, IRepaintList
 			GraphicsUtil.draw_oval(m_backGraphics, p1_Pixels.x, p1_Pixels.y, p2_Pixels.x, p2_Pixels.y);
 		}
 
+		public void draw_oval(final Vector3d p1_3D, final Vector3d p2_3D)
+		{
+			Vector2d p1_Pixels = determine_canvas_location_in_pixels(p1_3D);
+			Vector2d p2_Pixels = determine_canvas_location_in_pixels(p2_3D);
+
+			GraphicsUtil.draw_oval(m_backGraphics, p1_Pixels.x, p1_Pixels.y, p2_Pixels.x, p2_Pixels.y);
+		}
+
 		public void draw_polyline(final Vector2d[] ps_Coords)
 		{
 			int len = ps_Coords.length;

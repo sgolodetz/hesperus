@@ -115,6 +115,14 @@ public interface IRenderer
 	void draw_oval(final Vector2d p1, final Vector2d p2);
 
 	/**
+	Draws the outline of the oval bounded by the specified points in 3D Coords.
+
+	@param p1	One corner of the oval bounds
+	@param p2	The other corner of the oval bounds
+	*/
+	void draw_oval(final Vector3d p1, final Vector3d p2);
+
+	/**
 	Draws a sequence of connected lines defined by an array of points in 2D Coords.
 	If ps.length == n, it draws lines from ps[0] to ps[1], from ps[1] to ps[2], ...,
 	from ps[n-2] to ps[n-1].

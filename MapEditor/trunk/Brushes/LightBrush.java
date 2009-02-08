@@ -102,18 +102,14 @@ public class LightBrush extends TranslatableBrush
 	public void render(IRenderer renderer, Color overrideColour)
 	{
 		if(overrideColour != null) renderer.set_colour(overrideColour);
-		else renderer.set_colour(Color.yellow);
+		else renderer.set_colour(Color.orange);
 
-		float[] dash = {2.0f, 4.0f};
-		Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
-
-		render_bounds(renderer, stroke);
-		render_centre_cross(renderer);
+		render2D_light(renderer);
 	}
 
 	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		gl.glColor3d(1,1,0);
+		gl.glColor3d(1,0.75,0);
 		render3D_light(gl, glu);
 	}
 
@@ -123,16 +119,12 @@ public class LightBrush extends TranslatableBrush
 		else if(m_ghost) renderer.set_colour(Color.white);
 		else renderer.set_colour(Color.red);
 
-		float[] dash = {2.0f, 4.0f};
-		Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
-
-		render_bounds(renderer, stroke);
-		render_centre_cross(renderer);
+		render2D_light(renderer);
 	}
 
 	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		gl.glColor3d(0,1,1);
+		gl.glColor3d(1,1,0);
 		render3D_light(gl, glu);
 	}
 
@@ -143,13 +135,19 @@ public class LightBrush extends TranslatableBrush
 
 	public double selection_metric(Vector2d p, IRenderer renderer)
 	{
-		// The metric is simple: return the square of the nearest distance to the centre.
+		// The metric is simple: return the square of the nearest distance to the centre or the surrounding circle.
 		AxisPair ap = renderer.get_axis_pair();
 		Vector2d centre = ap.select_components(m_boundingBox.centre());
 
-		double bestMetric = renderer.distance_squared(p, centre);
+		Vector3d mins = m_boundingBox.get_bounds()[0], maxs = m_boundingBox.get_bounds()[1];
+		double radius = renderer.pixel_distance(0, (maxs.x - mins.x) / 2);
 
-		return bestMetric;
+		double squareDistToCentre = renderer.distance_squared(p, centre);
+		double distToCentre = Math.sqrt(squareDistToCentre);
+		double distToCircle = distToCentre - radius;
+		double squareDistToCircle = distToCircle*distToCircle;
+
+		return Math.min(squareDistToCentre, squareDistToCircle);
 	}
 
 	//################## PROTECTED METHODS ##################//
@@ -162,6 +160,19 @@ public class LightBrush extends TranslatableBrush
 	}
 
 	//################## PRIVATE METHODS ##################//
+	private void render2D_light(IRenderer renderer)
+	{
+		float[] dash = {2.0f, 4.0f};
+		Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
+
+		renderer.set_stroke(stroke);
+		Vector3d mins = m_boundingBox.get_bounds()[0], maxs = m_boundingBox.get_bounds()[1];
+		renderer.draw_oval(mins, maxs);
+		renderer.set_stroke(new BasicStroke());
+
+		render_centre_cross(renderer);
+	}
+
 	private void render3D_light(GL gl, GLU glu)
 	{
 		Vector3d centre = m_boundingBox.centre();
