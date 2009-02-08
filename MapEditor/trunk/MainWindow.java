@@ -37,7 +37,7 @@ public final class MainWindow extends Frame implements ActionListener
 
 	private void set_window_title()
 	{
-		setTitle("GX Studios - Map Editor : " + m_mapFilename);
+		setTitle("GX Studios - Shipwreck Map Editor : " + m_mapFilename);
 	}
 
 	public MainWindow()
@@ -505,11 +505,11 @@ public final class MainWindow extends Frame implements ActionListener
 		}
 		else if(ac.equals("Help_About..."))
 		{
-			GraphicsUtil.message_box(this, "About MapEditor",	"MapEditor was designed and written by Stuart Golodetz.",
+			GraphicsUtil.message_box(this, "About Shipwreck",	"Shipwreck was designed and written by Stuart Golodetz.",
 																"As many rights as possible reserved!",
 																"",
-																"MapEditor is, among other things, my third year",
-																"Computer Science project at Oxford University,",
+																"The original version of Shipwreck (known only as MapEditor)",
+																"was my third year Computer Science project at Oxford University,",
 																"kindly supervised by Dr. Stephen Cameron.",
 																"",
 																"Version " + m_editorVersion);
