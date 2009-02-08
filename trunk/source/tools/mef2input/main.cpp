@@ -164,7 +164,7 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 	std::string line;
 
 	LineIO::read_line(is, line, "read MEF ID");
-	if(line != "MEF 2") throw Exception("Bad MEF ID or unexpected file version");
+	if(line != "MEF 3") throw Exception("Bad MEF ID or unexpected file version");
 
 	LineIO::read_line(is, line, "read Textures");
 	if(line != "Textures") throw Exception("Textures section is missing");
