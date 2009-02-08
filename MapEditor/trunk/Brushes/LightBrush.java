@@ -22,6 +22,11 @@ public class LightBrush extends TranslatableBrush
 	private boolean m_ghost;	// are we in the process of creating this brush in the design canvas?
 	
 	//################## CONSTRUCTORS ##################//
+	private LightBrush()		// for internal use
+	{
+		super(false);
+	}
+
 	private LightBrush(Vector3d position, Color colour, boolean ghost, boolean isNew)
 	{
 		super(isNew);
@@ -43,8 +48,13 @@ public class LightBrush extends TranslatableBrush
 	//################## PUBLIC METHODS ##################//
 	public LightBrush copy()
 	{
-		// NYI
-		throw new UnsupportedOperationException();
+		LightBrush ret = new LightBrush();
+
+		ret.m_boundingBox = m_boundingBox.clone();
+		ret.m_colour = new Color(m_colour.getRGB());
+		ret.m_ghost = false;
+
+		return ret;
 	}
 
 	public void deghost(final IBrushContainer container)
@@ -102,14 +112,17 @@ public class LightBrush extends TranslatableBrush
 	public void render(IRenderer renderer, Color overrideColour)
 	{
 		if(overrideColour != null) renderer.set_colour(overrideColour);
-		else renderer.set_colour(Color.orange);
+		else renderer.set_colour(m_colour);
 
 		render2D_light(renderer);
 	}
 
 	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		gl.glColor3d(1,0.75,0);
+		float[] colour = null;
+		colour = m_colour.getRGBComponents(colour);
+		gl.glColor3fv(colour);
+
 		render3D_light(gl, glu);
 	}
 
@@ -124,7 +137,7 @@ public class LightBrush extends TranslatableBrush
 
 	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		gl.glColor3d(1,1,0);
+		gl.glColor3d(1,0,1);
 		render3D_light(gl, glu);
 	}
 
