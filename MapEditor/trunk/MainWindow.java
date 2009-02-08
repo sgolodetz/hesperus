@@ -335,7 +335,6 @@ public final class MainWindow extends Frame implements ActionListener
 		else if(ac.equals("View_Reset Camera Position"))
 		{
 			m_view.reset_camera();
-			m_view.repaint_full();
 		}
 		else if(ac.equals("View_Set Linear Camera Speed..."))
 		{
@@ -516,6 +515,9 @@ public final class MainWindow extends Frame implements ActionListener
 		}
 		else System.out.println("Warning: Unbound menu command " + ac);
 		// TODO: All the other menu commands.
+
+		// Repaint the 3D view.
+		m_view.repaint_full();
 	}
 
 	/**
