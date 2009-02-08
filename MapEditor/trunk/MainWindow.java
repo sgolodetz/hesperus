@@ -363,17 +363,17 @@ public final class MainWindow extends Frame implements ActionListener
 		else if(ac.equals("Brush_Flip X"))
 		{
 			IBrush b = m_map.get_selected_brush();
-			if(b.is_flippable()) CommandManager.instance().execute_command(BrushCommands.flip_x(b));
+			if(b != null && b.is_flippable()) CommandManager.instance().execute_command(BrushCommands.flip_x(b));
 		}
 		else if(ac.equals("Brush_Flip Y"))
 		{
 			IBrush b = m_map.get_selected_brush();
-			if(b.is_flippable()) CommandManager.instance().execute_command(BrushCommands.flip_y(b));
+			if(b != null && b.is_flippable()) CommandManager.instance().execute_command(BrushCommands.flip_y(b));
 		}
 		else if(ac.equals("Brush_Flip Z"))
 		{
 			IBrush b = m_map.get_selected_brush();
-			if(b.is_flippable()) CommandManager.instance().execute_command(BrushCommands.flip_z(b));
+			if(b != null && b.is_flippable()) CommandManager.instance().execute_command(BrushCommands.flip_z(b));
 		}
 		else if(ac.equals("Brush_Flatten Composite"))
 		{
