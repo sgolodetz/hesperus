@@ -30,6 +30,7 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 			if(line.equals("MEF 0")) return load_MEF0(br);
 			else if(line.equals("MEF 1")) return load_MEF1(br);
 			else if(line.equals("MEF 2")) return load_MEF2(br);
+			else if(line.equals("MEF 3")) return load_MEF3(br);
 			else throw new IOException("Invalid file type");
 		}
 		catch(IOException e)
@@ -41,7 +42,32 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 
 	public void save(Map map, String filename)
 	{
-		save_MEF2(map, filename);
+		save_MEF3(map, filename);
+	}
+
+	public static void save_MEF2(Map map, String filename)
+	{
+		try
+		{
+			PrintWriter pw = new PrintWriter(new FileOutputStream(filename));
+			pw.println("MEF 2");
+			pw.println("Textures");
+			pw.println("{");
+			for(String s: TextureManager.instance().get_names())
+			{
+				pw.println(s + " " + TextureManager.instance().get_texture(s).get_filename());
+			}
+			pw.print("}");
+			for(IBrush b: map.get_brushes())
+			{
+				b.save_MEF2(pw);
+			}
+			pw.close();
+		}
+		catch(FileNotFoundException e)
+		{
+			System.err.println(e.toString());
+		}
 	}
 
 	//################## PRIVATE METHODS ##################//
@@ -164,6 +190,48 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 		return map;
 	}
 
+	private Map load_MEF3(BufferedReader br) throws IOException
+	{
+		Map map = new Map();
+
+		String line;
+		try
+		{
+			while((line = br.readLine()) != null)
+			{
+				if(line.equals("Textures"))
+				{
+					load_texture_segment(br);
+				}
+				else
+				{
+					Class<?> brushClass = Class.forName("MapEditor.Brushes." + line);
+					java.lang.reflect.Method loadMethod = brushClass.getMethod("load_MEF3", new Class[] {BufferedReader.class});
+					map.add_brush((IBrush)loadMethod.invoke(null, new Object[] {br}));
+				}
+			}
+			br.close();
+		}
+		catch(java.lang.reflect.InvocationTargetException e)
+		{
+			// If we get here, it means that one of the load methods threw an IOException.
+			//e.printStackTrace(System.out);
+			throw new IOException(e.getMessage());
+		}
+		catch(IOException e)
+		{
+			//e.printStackTrace(System.out);
+			throw e;
+		}
+		catch(Exception e)
+		{
+			//System.err.println(e.getMessage());
+			throw new java.lang.Error(e.getMessage());
+		}
+
+		return map;
+	}
+
 	private void load_texture_segment(BufferedReader br) throws IOException
 	{
 		TextureManager.instance().unload_all();
@@ -185,12 +253,14 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 		}
 	}
 
-	private static void save_MEF2(Map map, String filename)
+	private static void save_MEF3(Map map, String filename)
 	{
+		// Note:	This is almost identical to the save_MEF2 method above, but I've kept them separate
+		//			in case I want to make the two file formats diverge later.
 		try
 		{
 			PrintWriter pw = new PrintWriter(new FileOutputStream(filename));
-			pw.println("MEF 2");
+			pw.println("MEF 3");
 			pw.println("Textures");
 			pw.println("{");
 			for(String s: TextureManager.instance().get_names())
@@ -200,7 +270,7 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 			pw.print("}");
 			for(IBrush b: map.get_brushes())
 			{
-				b.save_MEF2(pw);
+				b.save_MEF3(pw);
 			}
 			pw.close();
 		}

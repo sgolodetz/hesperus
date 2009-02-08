@@ -185,6 +185,14 @@ public interface IBrush
 	void save_MEF2(PrintWriter pw);
 
 	/**
+	Saves the brush in MEF 3 format. In practice, this involves writing the MEF representation of the brush to the current
+	position in a file using the specified PrintWriter. Note that MEF 3 format is essentially the same as MEF 2, except that
+	some new brush types (lights, entities, etc.) have been added in MEF 3. Versions of the editor which only load MEF 2
+	files will be unable to load files saved as MEF 3.
+	*/
+	void save_MEF3(PrintWriter pw);
+
+	/**
 	The selection handler for the brush: code to execute when the brush is informed that it has
 	been selected in the specified brush container (which in practice means "in the specified map").
 

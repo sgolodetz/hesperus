@@ -681,6 +681,11 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		return load_MEF1(br);
 	}
 
+	public static IBrush load_MEF3(BufferedReader br) throws IOException
+	{
+		return load_MEF1(br);
+	}
+
 	public void save_MEF2(PrintWriter pw)
 	{
 		pw.println();

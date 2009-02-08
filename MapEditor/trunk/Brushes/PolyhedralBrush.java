@@ -743,6 +743,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		return b;
 	}
 
+	public static IBrush load_MEF3(BufferedReader br) throws IOException
+	{
+		return load_MEF2(br);
+	}
+
 	public void save_MEF2(PrintWriter pw)
 	{
 		pw.println();

@@ -31,4 +31,5 @@ abstract class BrushAdapter implements IBrush
 
 	// Saving
 	public void save_MEF2(PrintWriter pw)	{ throw new UnsupportedOperationException(); }
+	public void save_MEF3(PrintWriter pw)	{ save_MEF2(pw); }
 }

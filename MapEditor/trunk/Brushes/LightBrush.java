@@ -9,7 +9,7 @@ import MapEditor.Misc.Pair;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
-import java.io.PrintWriter;
+import java.io.*;
 import net.java.games.jogl.*;
 
 /**
@@ -31,13 +31,9 @@ public class LightBrush extends TranslatableBrush
 	{
 		super(isNew);
 
+		m_boundingBox = construct_bounding_box(position);
 		m_colour = colour;
 		m_ghost = ghost;
-
-		final double HALF_BOX_SIZE = 16;
-		Vector3d mins = VectorUtil.subtract(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
-		Vector3d maxs = VectorUtil.add(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
-		m_boundingBox = new BoundingBox(new AxisAlignedBox(mins, maxs));
 	}
 
 	public LightBrush(Vector3d position)
@@ -103,6 +99,42 @@ public class LightBrush extends TranslatableBrush
 		return m_ghost;
 	}
 
+	public static IBrush load_MEF3(BufferedReader br) throws IOException
+	{
+		String line;
+		String[] tokens;
+
+		// Read the opening brace.
+		br.readLine();
+
+		// Read the position.
+		line = br.readLine();
+		tokens = line.split(" ");
+		if(tokens.length != 6 || !tokens[0].equals("Position"))
+		{
+			throw new IOException("Light position not found");
+		}
+		Vector3d position = new Vector3d(	Double.parseDouble(tokens[2]),
+											Double.parseDouble(tokens[3]),
+											Double.parseDouble(tokens[4])	);
+
+		// Read the colour.
+		line = br.readLine();
+		tokens = line.split(" ");
+		if(tokens.length != 6 || !tokens[0].equals("Colour"))
+		{
+			throw new IOException("Light colour not found");
+		}
+		Color colour = new Color(	Float.parseFloat(tokens[2]),
+									Float.parseFloat(tokens[3]),
+									Float.parseFloat(tokens[4])		);
+
+		// Read the closing brace.
+		br.readLine();
+
+		return new LightBrush(position, colour, false, false);
+	}
+
 	public PickResults pick(final Vector3d start, final Vector3d direction)
 	{
 		// NYI
@@ -143,7 +175,23 @@ public class LightBrush extends TranslatableBrush
 
 	public void save_MEF2(PrintWriter pw)
 	{
-		// NYI
+		// Light brushes can't be saved in MEF 2 files: they're only supported from MEF 3 onwards.
+	}
+
+	public void save_MEF3(PrintWriter pw)
+	{
+		pw.println();
+		pw.println("LightBrush");
+		pw.println("{");
+
+		Vector3d pos = m_boundingBox.centre();
+		float[] col = null;
+		col = m_colour.getRGBComponents(col);
+
+		pw.println("Position ( " + pos.x + " " + pos.y + " " + pos.z + " )");
+		pw.println("Colour ( " + col[0] + " " + col[1] + " " + col[2] + " )");
+
+		pw.println("}");
 	}
 
 	public double selection_metric(Vector2d p, IRenderer renderer)
@@ -173,6 +221,14 @@ public class LightBrush extends TranslatableBrush
 	}
 
 	//################## PRIVATE METHODS ##################//
+	private static BoundingBox construct_bounding_box(Vector3d position)
+	{
+		final double HALF_BOX_SIZE = 16;
+		Vector3d mins = VectorUtil.subtract(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
+		Vector3d maxs = VectorUtil.add(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
+		return new BoundingBox(new AxisAlignedBox(mins, maxs));
+	}
+
 	private void render2D_light(IRenderer renderer)
 	{
 		float[] dash = {2.0f, 4.0f};

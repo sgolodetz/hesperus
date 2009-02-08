@@ -252,6 +252,26 @@ public final class MainWindow extends Frame implements ActionListener
 				}
 			}
 		}
+		else if(ac.equals("File_Export MEF 2..."))
+		{
+			FileDialog dialog = new FileDialog(this, "Export MEF 2...", FileDialog.SAVE);
+			dialog.setVisible(true);
+
+			if(dialog.getFile() != null)
+			{
+				// Prevent project-threatening accidents.
+				if(dialog.getFile().endsWith(".java"))
+				{
+					GraphicsUtil.message_box(this, "Error",	"Your less-than-cunning attempt to overwrite project source files",
+															"has been thwarted by programmer foresight. Have a nice day!");
+				}
+				else
+				{
+					change_map_name(dialog.getDirectory() + dialog.getFile());
+					MapFileMEF.instance().save_MEF2(m_map, m_mapFilename);
+				}
+			}
+		}
 		else if(ac.equals("File_Exit"))
 		{
 			System.exit(0);

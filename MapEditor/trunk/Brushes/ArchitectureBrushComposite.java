@@ -439,6 +439,11 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		return load_MEF(br, "load_MEF2");
 	}
 
+	public static IBrush load_MEF3(BufferedReader br) throws Exception
+	{
+		return load_MEF(br, "load_MEF3");
+	}
+
 	public void save_MEF2(PrintWriter pw)
 	{
 		if(m_transient)
