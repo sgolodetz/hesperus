@@ -16,6 +16,10 @@ This class represents a point light brush.
 */
 public class LightBrush extends TranslatableBrush
 {
+	//################## CONSTANTS ##################//
+	final private static double HALF_BOX_SIZE = 16;
+	final private static double ARM_LENGTH = 1.5*HALF_BOX_SIZE;		// the length of the arms drawn when the light brush is selected
+
 	//################## PRIVATE VARIABLES ##################//
 	private Color m_colour;		// the RGB colour of the light
 	private boolean m_ghost;	// are we in the process of creating this brush in the design canvas?
@@ -164,17 +168,29 @@ public class LightBrush extends TranslatableBrush
 
 	public void render_selected(IRenderer renderer, Color overrideColour)
 	{
-		if(overrideColour != null) renderer.set_colour(overrideColour);
-		else if(m_ghost) renderer.set_colour(Color.white);
-		else renderer.set_colour(Color.pink);
+		render(renderer, overrideColour);
 
-		render2D_light(renderer);
+		if(m_ghost) renderer.set_colour(Color.pink);
+
+		Vector3d centre = m_boundingBox.centre();
+		double x = centre.x, y = centre.y, z = centre.z;
+		renderer.draw_line(new Vector3d(x + ARM_LENGTH, y, z), new Vector3d(x - ARM_LENGTH, y, z));
+		renderer.draw_line(new Vector3d(x, y + ARM_LENGTH, z), new Vector3d(x, y - ARM_LENGTH, z));
+		renderer.draw_line(new Vector3d(x, y, z + ARM_LENGTH), new Vector3d(x, y, z - ARM_LENGTH));
 	}
 
 	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		gl.glColor3d(1,0,1);
-		render3D_light(gl, glu);
+		render3D(gl, glu, bRenderNormals, bRenderTextures);
+
+		Vector3d centre = m_boundingBox.centre();
+		double x = centre.x, y = centre.y, z = centre.z;
+
+		gl.glBegin(GL.GL_LINES);
+			gl.glVertex3d(x + ARM_LENGTH, y, z);	gl.glVertex3d(x - ARM_LENGTH, y, z);
+			gl.glVertex3d(x, y + ARM_LENGTH, z);	gl.glVertex3d(x, y - ARM_LENGTH, z);
+			gl.glVertex3d(x, y, z + ARM_LENGTH);	gl.glVertex3d(x, y, z - ARM_LENGTH);
+		gl.glEnd();
 	}
 
 	public void save_MEF2(PrintWriter pw)
@@ -204,8 +220,7 @@ public class LightBrush extends TranslatableBrush
 		AxisPair ap = renderer.get_axis_pair();
 		Vector2d centre = ap.select_components(m_boundingBox.centre());
 
-		Vector3d mins = m_boundingBox.get_bounds()[0], maxs = m_boundingBox.get_bounds()[1];
-		double radius = renderer.pixel_distance(0, (maxs.x - mins.x) / 2);
+		double radius = renderer.pixel_distance(0, HALF_BOX_SIZE);
 
 		double squareDistToCentre = renderer.distance_squared(p, centre);
 		double distToCentre = Math.sqrt(squareDistToCentre);
@@ -227,7 +242,6 @@ public class LightBrush extends TranslatableBrush
 	//################## PRIVATE METHODS ##################//
 	private static BoundingBox construct_bounding_box(Vector3d position)
 	{
-		final double HALF_BOX_SIZE = 16;
 		Vector3d mins = VectorUtil.subtract(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
 		Vector3d maxs = VectorUtil.add(position, new Vector3d(HALF_BOX_SIZE,HALF_BOX_SIZE,HALF_BOX_SIZE));
 		return new BoundingBox(new AxisAlignedBox(mins, maxs));
