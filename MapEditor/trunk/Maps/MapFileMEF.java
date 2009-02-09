@@ -90,7 +90,7 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 		{
 			// If we get here, it means that one of the load methods threw an IOException.
 			//e.printStackTrace(System.out);
-			throw new IOException();
+			throw new IOException(e.getMessage());
 		}
 		catch(IOException e)
 		{
@@ -132,7 +132,7 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 		{
 			// If we get here, it means that one of the load methods threw an IOException.
 			//e.printStackTrace(System.out);
-			throw new IOException();
+			throw new IOException(e.getMessage());
 		}
 		catch(IOException e)
 		{
@@ -216,7 +216,8 @@ public class MapFileMEF implements IMapLoader, IMapSaver	// .mef stands for "Map
 		{
 			// If we get here, it means that one of the load methods threw an IOException.
 			//e.printStackTrace(System.out);
-			throw new IOException(e.getMessage());
+			String message = e.getCause() != null ? e.getCause().getMessage() : "No message";
+			throw new IOException(message);
 		}
 		catch(IOException e)
 		{

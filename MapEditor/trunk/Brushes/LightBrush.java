@@ -113,24 +113,24 @@ public class LightBrush extends TranslatableBrush
 		// Read the position.
 		line = br.readLine();
 		tokens = line.split(" ");
-		if(tokens.length != 6 || !tokens[0].equals("Position"))
+		if(tokens.length != 7 || !tokens[0].equals("Position"))
 		{
 			throw new IOException("Light position not found");
 		}
-		Vector3d position = new Vector3d(	Double.parseDouble(tokens[2]),
-											Double.parseDouble(tokens[3]),
-											Double.parseDouble(tokens[4])	);
+		Vector3d position = new Vector3d(	Double.parseDouble(tokens[3]),
+											Double.parseDouble(tokens[4]),
+											Double.parseDouble(tokens[5])	);
 
 		// Read the colour.
 		line = br.readLine();
 		tokens = line.split(" ");
-		if(tokens.length != 6 || !tokens[0].equals("Colour"))
+		if(tokens.length != 7 || !tokens[0].equals("Colour"))
 		{
 			throw new IOException("Light colour not found");
 		}
-		Color colour = new Color(	Float.parseFloat(tokens[2]),
-									Float.parseFloat(tokens[3]),
-									Float.parseFloat(tokens[4])		);
+		Color colour = new Color(	Float.parseFloat(tokens[3]),
+									Float.parseFloat(tokens[4]),
+									Float.parseFloat(tokens[5])		);
 
 		// Read the closing brace.
 		br.readLine();
@@ -208,8 +208,8 @@ public class LightBrush extends TranslatableBrush
 		float[] col = null;
 		col = m_colour.getRGBComponents(col);
 
-		pw.println("Position ( " + pos.x + " " + pos.y + " " + pos.z + " )");
-		pw.println("Colour ( " + col[0] + " " + col[1] + " " + col[2] + " )");
+		pw.println("Position = ( " + pos.x + " " + pos.y + " " + pos.z + " )");
+		pw.println("Colour = ( " + col[0] + " " + col[1] + " " + col[2] + " )");
 
 		pw.print("}");
 	}
