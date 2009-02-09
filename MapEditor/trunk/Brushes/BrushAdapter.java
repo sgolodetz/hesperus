@@ -3,6 +3,7 @@ package MapEditor.Brushes;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.Vectors.*;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.io.PrintWriter;
 import net.java.games.jogl.*;
 
@@ -23,6 +24,7 @@ abstract class BrushAdapter implements IBrush
 	public void mouse_moved(IRenderer renderer, Vector2d p)									{}
 	public void mouse_released()															{}
 	public PickResults pick(final Vector3d start, final Vector3d direction)					{ return null; }
+	public Dialog properties_dialog()														{ return null; }
 
 	public void render(IRenderer renderer, Color overrideColour)							{ throw new UnsupportedOperationException(); }
 	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)	{ throw new UnsupportedOperationException(); }

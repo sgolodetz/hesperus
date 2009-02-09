@@ -485,6 +485,14 @@ public final class MainWindow extends Frame implements ActionListener
 				lb.increase_resolution();
 			}
 		}
+		else if(ac.equals("Brush_Properties..."))
+		{
+			IBrush b = m_map.get_selected_brush();
+			if(b != null)
+			{
+				Dialog dialog = b.properties_dialog();
+			}
+		}
 		else if(ac.equals("Texture_Load Texture..."))
 		{
 // TODO: Rewrite this to load texture package files eventually.

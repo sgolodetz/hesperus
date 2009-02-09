@@ -1126,6 +1126,12 @@ final public class GeomUtil implements Constants, GeomConstants
 				 VectorUtil.angle_between(poly_c.get_normal(), plane_c.get_normal()) < EPSILON;
 			output(ok, "true");
 
+			System.err.println(plane_c);
+			System.err.println(poly_c);
+			System.err.println(plane_c.get_normal());
+			System.err.println(poly_c.get_normal());
+			System.err.println(VectorUtil.angle_between(poly_c.get_normal(), plane_c.get_normal()));
+
 			// TESTME: More tests would be helpful here. It would also be nice to test that
 			// the universe polygons being returned are large enough, though exactly how we
 			// do that remains to be seen.

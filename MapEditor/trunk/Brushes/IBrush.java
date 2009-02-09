@@ -4,6 +4,7 @@ import MapEditor.Geom.Planar.Polygon;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.Vectors.*;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
 import net.java.games.jogl.GL;
@@ -125,6 +126,13 @@ public interface IBrush
 						brush wasn't pickable or the half-ray didn't intersect it
 	*/
 	PickResults pick(final Vector3d start, final Vector3d direction);
+
+	/**
+	Returns a dialog which allows the user to edit the associated properties of the specified brush.
+
+	@return		A dialog as described, if the brush has associated properties, or null otherwise
+	*/
+	Dialog properties_dialog();
 
 	/**
 	Renders the brush onto the rendering surface associated with the specified renderer

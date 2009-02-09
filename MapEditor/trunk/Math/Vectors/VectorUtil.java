@@ -31,7 +31,9 @@ final public class VectorUtil
 		lhs . rhs = |lhs|*|rhs|*cos theta
 		theta = acos((lhs . rhs) / (|lhs|*|rhs|))
 		*/
-		return Math.acos(lhs.dot(rhs) / (lhs.length() * rhs.length()));
+		double arg = lhs.dot(rhs) / (lhs.length() * rhs.length());
+		if(arg > 1) arg = 1;
+		return Math.acos(arg);
 	}
 
 	/**
