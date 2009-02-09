@@ -209,7 +209,7 @@ public class LightBrush extends TranslatableBrush
 		col = m_colour.getRGBComponents(col);
 
 		pw.println("Position = ( " + pos.x + " " + pos.y + " " + pos.z + " )");
-		pw.println("Colour = ( " + col[0] + " " + col[1] + " " + col[2] + " )");
+		pw.println("Colour = [ " + col[0] + " " + col[1] + " " + col[2] + " ]");
 
 		pw.print("}");
 	}
