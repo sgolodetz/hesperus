@@ -47,6 +47,28 @@ void FileSectionUtil::save_lightmaps_section(std::ostream& os, const std::vector
 }
 
 /**
+Saves an array of lights to the specified std::ostream.
+
+@param os		The std::ostream
+@param lights	The lights
+*/
+void FileSectionUtil::save_lights_section(std::ostream& os, const std::vector<Light>& lights)
+{
+	os << "Lights\n";
+	os << "{\n";
+
+	int lightCount = static_cast<int>(lights.size());
+	os << lightCount << '\n';
+
+	for(int i=0; i<lightCount; ++i)
+	{
+		os << lights[i].position << ' ' << lights[i].colour << '\n';
+	}
+
+	os << "}\n";
+}
+
+/**
 Saves an array of navigation datasets to the specified std::ostream.
 
 @param os			The std::ostream

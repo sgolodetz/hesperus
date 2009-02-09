@@ -69,6 +69,12 @@ Colour3d operator*(const Colour3d& c, double factor)
 	return Colour3d(factor*c.r, factor*c.g, factor*c.b);
 }
 
+std::ostream& operator<<(std::ostream& os, const Colour3d& c)
+{
+	os << "[ " << c.r << ' ' << c.g << ' ' << c.b << " ]";
+	return os;
+}
+
 std::istream& operator>>(std::istream& is, Colour3d& c)
 {
 	std::ios_base::fmtflags oldFlags = is.flags();

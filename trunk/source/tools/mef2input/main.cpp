@@ -15,6 +15,7 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/io/BrushesFileUtil.h>
 #include <source/io/FieldIO.h>
+#include <source/io/LightsFileUtil.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/AABB.h>
 #include <source/math/geom/GeomUtil.h>
@@ -166,6 +167,8 @@ void read_light_brush(std::istream& is, std::vector<Light>& lights)
 
 	Colour3d colour = FieldIO::read_typed_field<Colour3d>(is, "Colour");
 
+	lights.push_back(Light(position, colour));
+
 	LineIO::read_line(is, line, "read LightBrush");
 	if(line != "}") throw Exception("LightBrush: Expected }");
 }
@@ -207,7 +210,7 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 	// TODO
 
 	// Write the lights to disk.
-	// TODO
+	LightsFileUtil::save(lightsFilename, lights);
 }
 
 int main(int argc, char *argv[])

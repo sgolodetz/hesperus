@@ -59,6 +59,7 @@ private:
 private:
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
 	static void save_lightmaps_section(std::ostream& os, const std::vector<Image24_Ptr>& lightmaps);
+	static void save_lights_section(std::ostream& os, const std::vector<Light>& lights);
 	static void save_nav_section(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets);
 	static void save_onion_tree_section(std::ostream& os, const OnionTree_Ptr& tree);
 	template <typename Poly> static void save_polygons_section(std::ostream& os, const std::string& sectionName, const std::vector<shared_ptr<Poly> >& polygons);

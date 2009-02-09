@@ -16,6 +16,9 @@ struct LightsFileUtil
 {
 	//#################### LOADING METHODS ####################
 	static std::vector<Light> load(const std::string& filename);
+
+	//#################### SAVING METHODS ####################
+	static void save(const std::string& filename, const std::vector<Light>& lights);
 };
 
 }
