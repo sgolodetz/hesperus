@@ -211,7 +211,7 @@ public class LightBrush extends TranslatableBrush
 		pw.println("Position ( " + pos.x + " " + pos.y + " " + pos.z + " )");
 		pw.println("Colour ( " + col[0] + " " + col[1] + " " + col[2] + " )");
 
-		pw.println("}");
+		pw.print("}");
 	}
 
 	public double selection_metric(Vector2d p, IRenderer renderer)
