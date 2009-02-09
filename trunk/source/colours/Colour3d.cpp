@@ -69,4 +69,17 @@ Colour3d operator*(const Colour3d& c, double factor)
 	return Colour3d(factor*c.r, factor*c.g, factor*c.b);
 }
 
+std::istream& operator>>(std::istream& is, Colour3d& c)
+{
+	std::ios_base::fmtflags oldFlags = is.flags();
+	is.setf(std::ios_base::skipws);
+
+	std::string dummy;
+	is >> dummy >> c.r >> c.g >> c.b >> dummy;
+
+	is.flags(oldFlags);
+
+	return is;
+}
+
 }

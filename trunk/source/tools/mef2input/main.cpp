@@ -14,12 +14,16 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/io/BrushesFileUtil.h>
+#include <source/io/FieldIO.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/AABB.h>
 #include <source/math/geom/GeomUtil.h>
 #include <source/util/PolygonTypes.h>
 #include "TexturePlane.h"
 using namespace hesp;
+
+//#################### GLOBAL CONSTANTS ####################
+const double SCALE = 1.0/32;	// we want a 32-unit grid square to correspond to 1 metre in the world
 
 //#################### CLASSES ####################
 struct MEFAuxData
@@ -80,8 +84,6 @@ void skip_section(std::istream& is)
 
 void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>& brushes)
 {
-	const double SCALE = 1.0/32;	// we want a 32-unit grid square to correspond to 1 metre in the world
-
 	std::string line;
 
 	LineIO::read_line(is, line, "read PolyhedralBrush");
@@ -153,9 +155,25 @@ void read_architecture_brush_composite(std::istream& is, std::vector<TexPolyhedr
 	}
 }
 
+void read_light_brush(std::istream& is, std::vector<Light>& lights)
+{
+	std::string line;
+	LineIO::read_line(is, line, "read LightBrush");
+	if(line != "{") throw Exception("LightBrush: Expected {");
+
+	Vector3d position = FieldIO::read_typed_field<Vector3d>(is, "Position");
+	position *= SCALE;
+
+	Colour3d colour = FieldIO::read_typed_field<Colour3d>(is, "Colour");
+
+	LineIO::read_line(is, line, "read LightBrush");
+	if(line != "}") throw Exception("LightBrush: Expected }");
+}
+
 void run_converter(const std::string& inputFilename, const std::string& brushesFilename, const std::string& entitiesFilename, const std::string& lightsFilename)
 {
 	std::vector<TexPolyhedralBrush_Ptr> brushes;
+	std::vector<Light> lights;
 
 	// Read in the MEF file.
 	std::ifstream is(inputFilename.c_str());
@@ -173,6 +191,7 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 	while(std::getline(is, line))
 	{
 		if(line == "ArchitectureBrushComposite") read_architecture_brush_composite(is, brushes);
+		else if(line == "LightBrush") read_light_brush(is, lights);
 		else if(line == "PolyhedralBrush") read_polyhedral_brush(is, brushes);
 		else
 		{

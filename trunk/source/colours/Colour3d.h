@@ -6,6 +6,7 @@
 #ifndef H_HESP_COLOUR3D
 #define H_HESP_COLOUR3D
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -30,6 +31,7 @@ struct Colour3d
 //#################### GLOBAL OPERATORS ####################
 Colour3d operator*(double factor, const Colour3d& c);
 Colour3d operator*(const Colour3d& c, double factor);
+std::istream& operator>>(std::istream& is, Colour3d& c);
 
 }
 
