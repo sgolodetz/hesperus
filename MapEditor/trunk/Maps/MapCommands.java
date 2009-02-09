@@ -52,10 +52,10 @@ public class MapCommands
 			public Command command(IBrush b)
 			{
 				// FIXME: If we can find a way to get rid of the instanceof test at some point, we should.
-				if(b instanceof ResizableTranslatableBrush)
+				if(b instanceof TranslatableBrush)
 				{
-					ResizableTranslatableBrush rtb = (ResizableTranslatableBrush)b;
-					return rtb.generate_translation_command(offset);
+					TranslatableBrush tb = (TranslatableBrush)b;
+					return tb.generate_translation_command(offset);
 				}
 				else return null;	// translation isn't valid on this brush
 			}
