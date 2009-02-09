@@ -472,6 +472,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GUI\LightBrushPropertiesDialog.java"
+					>
+				</File>
+				<File
 					RelativePath="GUI\MapInformationDialog.java"
 					>
 				</File>

@@ -490,7 +490,7 @@ public final class MainWindow extends Frame implements ActionListener
 			IBrush b = m_map.get_selected_brush();
 			if(b != null)
 			{
-				Dialog dialog = b.properties_dialog();
+				Dialog dialog = b.properties_dialog(this);
 			}
 		}
 		else if(ac.equals("Texture_Load Texture..."))

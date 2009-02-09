@@ -6,9 +6,8 @@ import MapEditor.Geom.AxisPair;
 import MapEditor.Graphics.*;
 import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Pair;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Stroke;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import net.java.games.jogl.*;
 
@@ -141,6 +140,11 @@ public class LightBrush extends TranslatableBrush
 		return null;
 	}
 
+	public Dialog properties_dialog(Frame owner)
+	{
+		return new PropertiesDialog(owner);
+	}
+
 	public void render(IRenderer renderer, Color overrideColour)
 	{
 		if(overrideColour != null) renderer.set_colour(overrideColour);
@@ -162,7 +166,7 @@ public class LightBrush extends TranslatableBrush
 	{
 		if(overrideColour != null) renderer.set_colour(overrideColour);
 		else if(m_ghost) renderer.set_colour(Color.white);
-		else renderer.set_colour(Color.red);
+		else renderer.set_colour(Color.pink);
 
 		render2D_light(renderer);
 	}
@@ -251,5 +255,100 @@ public class LightBrush extends TranslatableBrush
 			glu.gluSphere(quadric, 16.0f, 8, 8);
 		gl.glPopMatrix();
 		glu.gluDeleteQuadric(quadric);
+	}
+
+	//################## NESTED CLASSES ##################//
+	private class PropertiesDialog extends Dialog
+	{
+		//################## CONSTRUCTORS ##################//
+		public PropertiesDialog(Frame owner)
+		{
+			super(owner, "Light Brush Properties", true);
+
+			addWindowListener(new WindowAdapter()
+			{
+				public void windowClosing(WindowEvent e)
+				{
+					dispose();
+				}
+			});
+
+			setLayout(new BorderLayout(0, 5));
+
+			float[] colour = null;
+			colour = m_colour.getRGBComponents(colour);
+
+			final TextField redField = new TextField(String.valueOf(colour[0]));
+			final TextField greenField = new TextField(String.valueOf(colour[1]));
+			final TextField blueField = new TextField(String.valueOf(colour[2]));
+			set_caret(redField);
+			set_caret(greenField);
+			set_caret(blueField);
+
+			Panel top = new Panel();
+			top.setLayout(new GridLayout(0, 2, 5, 5));
+			top.add(new Label("Red:"));		top.add(redField);
+			top.add(new Label("Green:"));	top.add(greenField);
+			top.add(new Label("Blue:"));	top.add(blueField);
+			add("Center", top);
+
+			Panel bottom = new Panel();
+			bottom.setLayout(new GridLayout(0, 2, 5, 0));
+			Button okButton = new Button("OK");
+			okButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					try
+					{
+						final float r = Float.parseFloat(redField.getText());
+						final float g = Float.parseFloat(greenField.getText());
+						final float b = Float.parseFloat(blueField.getText());
+						final Color oldColour = LightBrush.this.m_colour;
+
+						CommandManager.instance().execute_command(new Command("Change Light Colour")
+						{
+							public void execute()
+							{
+								LightBrush.this.m_colour = new Color(r,g,b);
+							}
+
+							public void undo()
+							{
+								LightBrush.this.m_colour = oldColour;
+							}
+						});
+						
+						dispose();
+					}
+					catch(Exception ex)
+					{
+						System.err.println("Warning: Invalid colour components");
+					}
+				}
+			});
+			bottom.add(okButton);
+			Button cancelButton = new Button("Cancel");
+			cancelButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					dispose();
+				}
+			});
+			bottom.add(cancelButton);
+			add("South", bottom);
+
+			pack();
+			setLocationRelativeTo(owner);		// centre the dialog relative to its owner
+			setResizable(false);
+			setVisible(true);
+		}
+
+		//################## PRIVATE METHODS ##################//
+		private void set_caret(TextField tf)
+		{
+			tf.setCaretPosition(tf.getText().length());
+		}
 	}
 }

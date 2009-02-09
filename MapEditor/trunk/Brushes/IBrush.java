@@ -3,8 +3,7 @@ package MapEditor.Brushes;
 import MapEditor.Geom.Planar.Polygon;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.Vectors.*;
-import java.awt.Color;
-import java.awt.Dialog;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
 import net.java.games.jogl.GL;
@@ -132,7 +131,7 @@ public interface IBrush
 
 	@return		A dialog as described, if the brush has associated properties, or null otherwise
 	*/
-	Dialog properties_dialog();
+	Dialog properties_dialog(Frame owner);
 
 	/**
 	Renders the brush onto the rendering surface associated with the specified renderer
