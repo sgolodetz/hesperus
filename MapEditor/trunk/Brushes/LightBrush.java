@@ -5,7 +5,7 @@ import MapEditor.Geom.AxisAlignedBox;
 import MapEditor.Geom.AxisPair;
 import MapEditor.Graphics.*;
 import MapEditor.Math.Vectors.*;
-import MapEditor.Misc.Pair;
+import MapEditor.Misc.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -21,8 +21,9 @@ public class LightBrush extends TranslatableBrush
 	final private static double ARM_LENGTH = 1.5*HALF_BOX_SIZE;		// the length of the arms drawn when the light brush is selected
 
 	//################## PRIVATE VARIABLES ##################//
-	private Color m_colour;		// the RGB colour of the light
-	private boolean m_ghost;	// are we in the process of creating this brush in the design canvas?
+	private Color m_colour;					// the RGB colour of the light
+	private double m_falloffRadius = 640;	// the distance at which the light intensity falls off to half its original value
+	private boolean m_ghost;				// are we in the process of creating this brush in the design canvas?
 	
 	//################## CONSTRUCTORS ##################//
 	private LightBrush()		// for internal use
@@ -253,8 +254,18 @@ public class LightBrush extends TranslatableBrush
 		Stroke stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
 
 		renderer.set_stroke(stroke);
+
 		Vector3d mins = m_boundingBox.get_bounds()[0], maxs = m_boundingBox.get_bounds()[1];
 		renderer.draw_oval(mins, maxs);
+
+		if(Options.is_set("Render Light Falloff Radii"))
+		{
+			Vector3d centre = m_boundingBox.centre();
+			Vector3d falloffMins = new Vector3d(centre.x - m_falloffRadius, centre.y - m_falloffRadius, centre.z - m_falloffRadius);
+			Vector3d falloffMaxs = new Vector3d(centre.x + m_falloffRadius, centre.y + m_falloffRadius, centre.z + m_falloffRadius);
+			renderer.draw_oval(falloffMins, falloffMaxs);
+		}
+
 		renderer.set_stroke(new BasicStroke());
 
 		render_centre_cross(renderer);

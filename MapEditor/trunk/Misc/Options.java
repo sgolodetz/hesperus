@@ -45,6 +45,9 @@ public final class Options
 		// Do we want to render brushes in the 3D view in wireframe?
 		s_optionsMap.put("Render In Wireframe", false);
 
+		// Do we want to render the falloff radii for the lights?
+		s_optionsMap.put("Render Light Falloff Radii", false);
+
 		// Do we want to render polygon normals?
 		s_optionsMap.put("Render Polygon Normals", false);
 
