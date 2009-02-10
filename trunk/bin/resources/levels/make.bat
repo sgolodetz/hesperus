@@ -59,6 +59,7 @@ REM #########################
 REM Cleanup Rendering Section
 REM #########################
 
+del *.lum
 del *.rbr
 del *.rg*
 del *.rt*
