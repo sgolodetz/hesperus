@@ -95,4 +95,5 @@ LightBrush
 {
 Position = ( 704.0 320.0 384.0 )
 Colour = [ 0.0 0.0 1.0 ]
+FalloffRadius = 640.0
 }

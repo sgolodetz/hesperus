@@ -168,14 +168,17 @@ LightBrush
 {
 Position = ( 448.0 192.0 224.0 )
 Colour = [ 1.0 0.75 0.0 ]
+FalloffRadius = 640.0
 }
 LightBrush
 {
 Position = ( 192.0 512.0 192.0 )
 Colour = [ 0.0 1.0 0.0 ]
+FalloffRadius = 640.0
 }
 LightBrush
 {
 Position = ( 1088.0 512.0 240.0 )
 Colour = [ 0.0 0.0 1.0 ]
+FalloffRadius = 640.0
 }
