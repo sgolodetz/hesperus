@@ -29,6 +29,16 @@ PlaneClassifier classify_polygon_against_plane(const Polygon<Vert,AuxData>& poly
 {
 	bool backFlag = false, frontFlag = false;
 
+	// Checking the undirected plane of the polygon against the undirected form of the plane
+	// first makes the test more robust in the case of very nearly coplanar polygons. This
+	// can really matter in cases where the classification of the polygon as coplanar is
+	// crucial, e.g. during portal generation.
+	Plane polyPlane = make_plane(poly).to_undirected_form();
+	Plane undirectedPlane = plane.to_undirected_form();
+	double dotProd = polyPlane.normal().dot(undirectedPlane.normal());
+	double distDelta = polyPlane.distance_value() - undirectedPlane.distance_value();
+	if(fabs(dotProd-1) < EPSILON && fabs(distDelta) < EPSILON) return CP_COPLANAR;
+
 	int vertCount = poly.vertex_count();
 	for(int i=0; i<vertCount; ++i)
 	{
