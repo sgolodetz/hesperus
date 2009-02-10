@@ -72,11 +72,13 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 		for(int x=0; x<lumelsX; ++x)
 		{
 			Colour3d& c = (*actualLightmap)(y,x);
-			c += (*gridLightmap)(y,x);
-			c += (*gridLightmap)(y,x+1);
-			c += (*gridLightmap)(y+1,x);
-			c += (*gridLightmap)(y+1,x+1);
-			c /= 4;
+
+			int count = 0;
+			if(m_grid[y][x].withinPolygon)		{ c += (*gridLightmap)(y,x); ++count; }
+			if(m_grid[y][x+1].withinPolygon)	{ c += (*gridLightmap)(y,x+1); ++count; }
+			if(m_grid[y+1][x].withinPolygon)	{ c += (*gridLightmap)(y+1,x); ++count; }
+			if(m_grid[y+1][x+1].withinPolygon)	{ c += (*gridLightmap)(y+1,x+1); ++count; }
+			if(count != 0) c /= count;
 		}
 
 	return actualLightmap;
