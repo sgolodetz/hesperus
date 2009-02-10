@@ -31,18 +31,19 @@ public class LightBrush extends TranslatableBrush
 		super(false);
 	}
 
-	private LightBrush(Vector3d position, Color colour, boolean ghost, boolean isNew)
+	private LightBrush(Vector3d position, Color colour, double falloffRadius, boolean ghost, boolean isNew)
 	{
 		super(isNew);
 
 		m_boundingBox = construct_bounding_box(position);
 		m_colour = colour;
+		m_falloffRadius = falloffRadius;
 		m_ghost = ghost;
 	}
 
 	public LightBrush(Vector3d position)
 	{
-		this(position, Color.white, true, true);
+		this(position, Color.white, 20*32, true, true);
 	}
 
 	//################## PUBLIC METHODS ##################//
@@ -52,6 +53,7 @@ public class LightBrush extends TranslatableBrush
 
 		ret.m_boundingBox = m_boundingBox.clone();
 		ret.m_colour = new Color(m_colour.getRGB());
+		ret.m_falloffRadius = m_falloffRadius;
 		ret.m_ghost = false;
 
 		return ret;
@@ -133,10 +135,19 @@ public class LightBrush extends TranslatableBrush
 									Float.parseFloat(tokens[4]),
 									Float.parseFloat(tokens[5])		);
 
+		// Read the falloff radius.
+		line = br.readLine();
+		tokens = line.split(" ");
+		if(tokens.length != 3 || !tokens[0].equals("FalloffRadius"))
+		{
+			throw new IOException("Light falloff radius not found");
+		}
+		double falloffRadius = Double.parseDouble(tokens[2]);
+
 		// Read the closing brace.
 		br.readLine();
 
-		return new LightBrush(position, colour, false, false);
+		return new LightBrush(position, colour, falloffRadius, false, false);
 	}
 
 	public PickResults pick(final Vector3d start, final Vector3d direction)
@@ -211,6 +222,7 @@ public class LightBrush extends TranslatableBrush
 
 		pw.println("Position = ( " + pos.x + " " + pos.y + " " + pos.z + " )");
 		pw.println("Colour = [ " + col[0] + " " + col[1] + " " + col[2] + " ]");
+		pw.println("FalloffRadius = " + m_falloffRadius);
 
 		pw.print("}");
 	}
