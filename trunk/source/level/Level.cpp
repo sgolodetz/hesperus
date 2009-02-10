@@ -114,8 +114,15 @@ void Level::render() const
 	render_entities();
 
 	// Render the navigation meshes.
+#if 1
 	render_navmeshes();
 	render_navlinks();
+#endif
+
+	// Render the portals.
+#if 0
+	render_portals();
+#endif
 
 	glPopAttrib();
 }
@@ -233,6 +240,33 @@ void Level::render_navmeshes() const
 				}
 			glEnd();
 		}
+	}
+
+	glPopAttrib();
+}
+
+void Level::render_portals() const
+{
+	// Note: Portals don't need to be rendered efficiently, since we only render them for testing purposes anyway.
+
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDisable(GL_CULL_FACE);
+
+	glColor3d(1,1,1);
+
+	for(PortalVector::const_iterator it=m_portals.begin(), iend=m_portals.end(); it!=iend; ++it)
+	{
+		const Portal& portal = **it;
+		int vertCount = portal.vertex_count();
+		glBegin(GL_POLYGON);
+			for(int j=0; j<vertCount; ++j)
+			{
+				const Vector3d& v = portal.vertex(j);
+				glVertex3d(v.x, v.y, v.z);
+			}
+		glEnd();
 	}
 
 	glPopAttrib();

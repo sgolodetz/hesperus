@@ -62,6 +62,7 @@ private:
 	void render_entities() const;
 	void render_navlinks() const;
 	void render_navmeshes() const;
+	void render_portals() const;
 };
 
 //#################### TYPEDEFS ####################
