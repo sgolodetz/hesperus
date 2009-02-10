@@ -1241,7 +1241,7 @@ FalloffRadius = 320.0
 }
 LightBrush
 {
-Position = ( 1280.0 704.0 896.0 )
+Position = ( 1280.0 192.0 1024.0 )
 Colour = [ 1.0 1.0 1.0 ]
 FalloffRadius = 1280.0
 }
