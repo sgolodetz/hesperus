@@ -65,7 +65,11 @@ void LightmapGenerator::construct_ambient_lightmaps()
 	m_lightmaps.reset(new LightmapVector(polyCount));
 
 	// Use the light equation I = I_a . k_a (see OUCL Computer Graphics notes - Set 8).
+#if 0
 	const double Ia = 0.5;
+#else
+	const double Ia = 0.0;	// don't use ambient light: we can achieve better-looking shadows if it's turned off
+#endif
 	for(int i=0; i<polyCount; ++i)
 	{
 		const double ka = 1.0;	// TODO: k_a (ambient reflection coefficient) is actually a surface property, which we may or may not want to use.

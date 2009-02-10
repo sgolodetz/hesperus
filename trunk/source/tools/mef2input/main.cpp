@@ -168,6 +168,7 @@ void read_light_brush(std::istream& is, std::vector<Light>& lights)
 	Colour3d colour = FieldIO::read_typed_field<Colour3d>(is, "Colour");
 
 	double falloffRadius = FieldIO::read_typed_field<double>(is, "FalloffRadius");
+	falloffRadius *= SCALE;
 
 	lights.push_back(Light(position, colour, falloffRadius));
 

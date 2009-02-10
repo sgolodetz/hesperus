@@ -45,8 +45,8 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 					//const double c1 = 1.0, c2 = 0.0, c3 = 0.0;
 
 					// Quadratic atmospheric attenuation
-					const double tenthDist = 20;	// the distance at which fAtt = 0.1
-					const double c1 = 1.0, c2 = 0.0, c3 = 9/(tenthDist*tenthDist);
+					// Note: The light falloff radius is the distance at which fAtt = 0.5.
+					const double c1 = 1.0, c2 = 0.0, c3 = 1/(light.falloffRadius * light.falloffRadius);
 
 					const Vector3d& N = m_plane.normal();
 					Vector3d L = (light.position - p).normalize();
