@@ -18,11 +18,13 @@ struct Light
 {
 	//#################### PUBLIC VARIABLES ####################
 	Colour3d colour;
+	double falloffRadius;
 	Vector3d position;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Light(const Vector3d& position_, const Colour3d& colour_) : position(position_), colour(colour_) {}
+	Light(const Vector3d& position_, const Colour3d& colour_, double falloffRadius_)
+	:	position(position_), colour(colour_), falloffRadius(falloffRadius_) {}
 };
 
 }

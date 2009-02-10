@@ -139,14 +139,17 @@ std::vector<Light> FileSectionUtil::load_lights_section(std::istream& is)
 		tokenizer tok(line.begin(), line.end(), sep(" "));
 		std::vector<std::string> tokens(tok.begin(), tok.end());
 
-		if(tokens.size() != 10) throw Exception("Bad light data at line " + lexical_cast<std::string,int>(i));
+		if(tokens.size() != 11) throw Exception("Bad light data at line " + lexical_cast<std::string,int>(i));
 
 		std::vector<std::string> positionComponents(&tokens[1], &tokens[4]);
 		std::vector<std::string> colourComponents(&tokens[6], &tokens[9]);
 
 		Vector3d position(positionComponents);
 		Colour3d colour(colourComponents);
-		lights.push_back(Light(position, colour));
+		double falloffRadius;
+		try							{ falloffRadius = lexical_cast<double,std::string>(tokens[10]); }
+		catch(bad_lexical_cast&)	{ throw Exception("The falloff radius was not a number at line " + lexical_cast<std::string,int>(i)); }
+		lights.push_back(Light(position, colour, falloffRadius));
 	}
 
 	LineIO::read_checked_line(is, "}");

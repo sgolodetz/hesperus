@@ -169,7 +169,7 @@ void read_light_brush(std::istream& is, std::vector<Light>& lights)
 
 	double falloffRadius = FieldIO::read_typed_field<double>(is, "FalloffRadius");
 
-	lights.push_back(Light(position, colour));
+	lights.push_back(Light(position, colour, falloffRadius));
 
 	LineIO::read_line(is, line, "read LightBrush");
 	if(line != "}") throw Exception("LightBrush: Expected }");

@@ -62,7 +62,7 @@ void FileSectionUtil::save_lights_section(std::ostream& os, const std::vector<Li
 
 	for(int i=0; i<lightCount; ++i)
 	{
-		os << lights[i].position << ' ' << lights[i].colour << '\n';
+		os << lights[i].position << ' ' << lights[i].colour << ' ' << lights[i].falloffRadius << '\n';
 	}
 
 	os << "}\n";
