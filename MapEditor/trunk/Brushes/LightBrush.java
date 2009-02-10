@@ -300,25 +300,37 @@ public class LightBrush extends TranslatableBrush
 
 			setLayout(new BorderLayout(0, 5));
 
+			Panel top = new Panel();
+			top.setLayout(new GridLayout(0, 1, 0, 5));
+			add("Center", top);
+
+			Panel coloursPanel = new Panel();
+			coloursPanel.setLayout(new GridLayout(1, 0, 5, 0));
 			float[] colour = null;
 			colour = m_colour.getRGBComponents(colour);
-
 			final TextField redField = new TextField(String.valueOf(colour[0]));
 			final TextField greenField = new TextField(String.valueOf(colour[1]));
 			final TextField blueField = new TextField(String.valueOf(colour[2]));
 			set_caret(redField);
 			set_caret(greenField);
 			set_caret(blueField);
+			coloursPanel.add(new Label("Red:"));	coloursPanel.add(redField);
+			coloursPanel.add(new Label("Green:"));	coloursPanel.add(greenField);
+			coloursPanel.add(new Label("Blue:"));	coloursPanel.add(blueField);
+			top.add(coloursPanel);
 
-			Panel top = new Panel();
-			top.setLayout(new GridLayout(0, 2, 5, 5));
-			top.add(new Label("Red:"));		top.add(redField);
-			top.add(new Label("Green:"));	top.add(greenField);
-			top.add(new Label("Blue:"));	top.add(blueField);
-			add("Center", top);
+			Panel falloffPanel = new Panel();
+			falloffPanel.setLayout(new GridLayout(1, 0, 5, 0));
+			final TextField falloffField = new TextField(String.valueOf(m_falloffRadius));
+			set_caret(falloffField);
+			falloffPanel.add(new Label("Falloff Radius (map units):"));
+			falloffPanel.add(falloffField);
+			top.add(falloffPanel);
 
 			Panel bottom = new Panel();
 			bottom.setLayout(new GridLayout(0, 2, 5, 0));
+			add("South", bottom);
+
 			Button okButton = new Button("OK");
 			okButton.addActionListener(new ActionListener()
 			{
@@ -329,18 +341,22 @@ public class LightBrush extends TranslatableBrush
 						final float r = Float.parseFloat(redField.getText());
 						final float g = Float.parseFloat(greenField.getText());
 						final float b = Float.parseFloat(blueField.getText());
+						final double falloffRadius = Double.parseDouble(falloffField.getText());
 						final Color oldColour = LightBrush.this.m_colour;
+						final double oldFalloffRadius = LightBrush.this.m_falloffRadius;
 
-						CommandManager.instance().execute_command(new Command("Change Light Colour")
+						CommandManager.instance().execute_command(new Command("Change Light Properties")
 						{
 							public void execute()
 							{
 								LightBrush.this.m_colour = new Color(r,g,b);
+								LightBrush.this.m_falloffRadius = falloffRadius;
 							}
 
 							public void undo()
 							{
 								LightBrush.this.m_colour = oldColour;
+								LightBrush.this.m_falloffRadius = oldFalloffRadius;
 							}
 						});
 						
@@ -348,7 +364,7 @@ public class LightBrush extends TranslatableBrush
 					}
 					catch(Exception ex)
 					{
-						System.err.println("Warning: Invalid colour components");
+						System.err.println("Warning: Invalid colour components or falloff radius");
 					}
 				}
 			});
@@ -362,7 +378,6 @@ public class LightBrush extends TranslatableBrush
 				}
 			});
 			bottom.add(cancelButton);
-			add("South", bottom);
 
 			pack();
 			setLocationRelativeTo(owner);		// centre the dialog relative to its owner
