@@ -47,6 +47,50 @@ std::vector<AABB3d> FileSectionUtil::load_aabbs_section(std::istream& is)
 }
 
 /**
+Constructs an entity manager containing a set of entities loaded from the specified std::istream.
+
+@param is			The std::istream
+@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
+@throws Exception	If EOF is encountered whilst trying to read the entities
+*/
+EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is, const boost::filesystem::path& settingsDir)
+{
+	LineIO::read_checked_line(is, "Entities");
+	LineIO::read_checked_line(is, "{");
+
+	// Read in the DefinitionFile section.
+	LineIO::read_checked_line(is, "DefinitionFile");
+	LineIO::read_checked_line(is, "{");
+
+		// Read in the entity definition file and extract the AABBs and entity classes.
+		// TODO
+
+	LineIO::read_checked_line(is, "}");
+
+	// Read in the Instances section.
+	LineIO::read_checked_line(is, "Instances");
+	LineIO::read_checked_line(is, "{");
+
+		std::string line;
+		LineIO::read_line(is, line, "entity count");
+		int entityCount;
+		try							{ entityCount = lexical_cast<int,std::string>(line); }
+		catch(bad_lexical_cast&)	{ throw Exception("The entity count was not a number"); }
+
+		for(int i=0; i<entityCount; ++i)
+		{
+			// TODO
+		}
+
+	LineIO::read_checked_line(is, "}");
+
+	LineIO::read_checked_line(is, "}");
+
+	// NYI
+	throw 23;
+}
+
+/**
 Loads a lightmap prefix from the specified std::istream.
 
 @param is			The std::istream

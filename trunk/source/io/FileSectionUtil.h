@@ -9,11 +9,13 @@
 #include <string>
 
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem/operations.hpp>
 using boost::shared_ptr;
 
 #include <source/images/Image.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPTree.h>
+#include <source/level/entities/EntityManager.h>
 #include <source/level/lighting/Light.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/onionbsp/OnionTree.h>
@@ -46,6 +48,7 @@ class FileSectionUtil
 	//#################### LOADING METHODS ####################
 private:
 	static std::vector<AABB3d> load_aabbs_section(std::istream& is);
+	static EntityManager_Ptr load_entities_section(std::istream& is, const boost::filesystem::path& settingsDir);
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Image24_Ptr> load_lightmaps_section(std::istream& is);
 	static std::vector<Light> load_lights_section(std::istream& is);
