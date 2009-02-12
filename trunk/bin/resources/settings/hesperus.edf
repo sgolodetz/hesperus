@@ -4,44 +4,55 @@ AABBs
 stand = ( -0.5 -0.5 -1 ) ( 0.5 0.5 1 )
 crouch = ( -0.5 -0.5 -0.5 ) ( 0.5 0.5 0.5 )
 }
-Traits
+Components
 {
-Trait Collidable : Locatable
+Camera		// this is treated as a special case, since its fields are modified by dragging the entity in the editor
+Collision
 {
-AABBs : [int]
-Pose : int
+AABBs : [AABBid]
+Pose : AABBid
 }
-Trait Locatable
-{
-Position : Vector3d
-}
-Trait Mortal
+Health
 {
 Health : int
 }
-Trait Oriented
+Nav		// this has no editable components
 {
-Look : Vector3d
 }
-Trait Visible
+Physics
 {
+Mass : double
+}
+Visibility
+{
+EditModel : filename
 GameModel : filename
+}
+Yoke
+{
+Yoke : {None|User|Bot}
 }
 }
 Classes
 {
-Class Player : Collidable, Mortal, Oriented, Visible
+Player : Camera, Collision, Health, Nav, Physics, Visibility, Yoke
 {
-AABBs = [crouch,stand]
-GameModel = player.x
-Health = 100
+AABBs = [stand,crouch]
 Pose = stand
+Health = 100
+Mass = 75
+EditModel = player_edit.x
+GameModel = player.x
+Yoke = User
 }
-Class Guard : Collidable, Mortal, Oriented, Visible
+Guard : Camera, Collision, Health, Nav, Physics, Visibility, Yoke
 {
 AABBs = [stand]
-GameModel = guard.x
-Health = 50
 Pose = stand
+Health = 50
+Mass = 75
+EditModel = guard_edit.x
+GameModel = guard.x
+Yoke = Bot
 }
 }
