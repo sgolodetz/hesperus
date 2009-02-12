@@ -6,7 +6,11 @@ crouch = ( -0.5 -0.5 -0.5 ) ( 0.5 0.5 0.5 )
 }
 Components
 {
-Camera		// this is treated as a special case, since its fields are modified by dragging the entity in the editor
+Camera
+{
+Position : Vector3d	// this is treated as a special case in the editor to allow the entity to be dragged around
+Look : Vector3d
+}
 Collision
 {
 AABBs : [AABBid]
@@ -16,7 +20,7 @@ Health
 {
 Health : int
 }
-Nav		// this has no editable components
+Nav			// this has no editable components
 {
 }
 Physics
@@ -25,7 +29,6 @@ Mass : double
 }
 Visibility
 {
-EditModel : filename
 GameModel : filename
 }
 Yoke
@@ -37,21 +40,21 @@ Classes
 {
 Player : Camera, Collision, Health, Nav, Physics, Visibility, Yoke
 {
+Look = ( 1 0 0 )
 AABBs = [stand,crouch]
 Pose = stand
 Health = 100
 Mass = 75
-EditModel = player_edit.x
 GameModel = player.x
 Yoke = User
 }
 Guard : Camera, Collision, Health, Nav, Physics, Visibility, Yoke
 {
+Look = ( 1 0 0 )
 AABBs = [stand]
 Pose = stand
 Health = 50
 Mass = 75
-EditModel = guard_edit.x
 GameModel = guard.x
 Yoke = Bot
 }
