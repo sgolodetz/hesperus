@@ -4,7 +4,7 @@ AABBs
 stand = ( -0.5 -0.5 -1 ) ( 0.5 0.5 1 )
 crouch = ( -0.5 -0.5 -0.5 ) ( 0.5 0.5 0.5 )
 }
-Components
+EntityComponents
 {
 Camera
 {
@@ -36,7 +36,7 @@ Yoke
 Yoke : {None|User|Bot}
 }
 }
-Classes
+EntityTypes
 {
 Player : Camera, Collision, Health, Nav, Physics, Visibility, Yoke
 {

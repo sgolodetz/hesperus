@@ -6,6 +6,7 @@
 #include "FileSectionUtil.h"
 
 #include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
@@ -47,6 +48,72 @@ std::vector<AABB3d> FileSectionUtil::load_aabbs_section(std::istream& is)
 }
 
 /**
+TODO
+*/
+void FileSectionUtil::load_entity_components_section(std::istream& is)
+{
+	// Note: This function skips over an EntityComponents section because it's only relevant to the map editor.
+
+	LineIO::read_checked_line(is, "EntityComponents");
+	LineIO::read_checked_line(is, "{");
+
+	std::string line;
+	int bracketCount = 1;
+	while(bracketCount > 0)
+	{
+		LineIO::read_line(is, line, "entity components section");
+		if(line == "{") ++bracketCount;
+		if(line == "}") --bracketCount;
+	}
+}
+
+/**
+TODO
+*/
+std::map<std::string,EntityComponents> FileSectionUtil::load_entity_types_section(std::istream& is)
+{
+	// Note:	This function only loads in which components are contained in each entity type.
+	//			The rest of the information is only relevant to the map editor.
+
+	std::map<std::string,EntityComponents> entityComponentsMap;
+
+	LineIO::read_checked_line(is, "EntityTypes");
+	LineIO::read_checked_line(is, "{");
+
+	std::string line;
+	for(;;)
+	{
+		LineIO::read_line(is, line, "entity type");
+		if(line == "}") break;
+
+		typedef boost::char_separator<char> sep;
+		typedef boost::tokenizer<sep> tokenizer;
+		tokenizer tok(line.begin(), line.end(), sep(":, "));
+		std::vector<std::string> tokens(tok.begin(), tok.end());
+
+		std::string type = tokens[0];
+		EntityComponents components;
+
+		int tokenCount = static_cast<int>(tokens.size());
+		for(int i=1; i<tokenCount; ++i)
+		{
+			components.set(tokens[i], true);
+		}
+
+		entityComponentsMap.insert(std::make_pair(type, components));
+
+		// Skip the rest of the entity type information.
+		LineIO::read_checked_line(is, "{");
+		do
+		{
+			LineIO::read_line(is, line, "entity type");
+		} while(line != "}");
+	}
+
+	return entityComponentsMap;
+}
+
+/**
 Constructs an entity manager containing a set of entities loaded from the specified std::istream.
 
 @param is			The std::istream
@@ -62,8 +129,12 @@ EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is, const
 	LineIO::read_checked_line(is, "DefinitionFile");
 	LineIO::read_checked_line(is, "{");
 
-		// Read in the entity definition file and extract the AABBs and entity classes.
-		// TODO
+		// Read in the entity definition file and extract the AABBs and entity types.
+		std::string entDefFilename;
+		LineIO::read_line(is, entDefFilename, "entity definitions filename");
+		std::vector<AABB3d> aabbs;
+		std::map<std::string,EntityComponents> entityComponentsMap;
+		EntDefFileUtil::load((settingsDir / entDefFilename).file_string(), aabbs, entityComponentsMap);
 
 	LineIO::read_checked_line(is, "}");
 

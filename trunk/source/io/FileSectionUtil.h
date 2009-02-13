@@ -21,6 +21,7 @@ using boost::shared_ptr;
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/vis/VisTable.h>
+#include "EntityComponents.h"
 #include "LineIO.h"
 
 namespace hesp {
@@ -48,6 +49,8 @@ class FileSectionUtil
 	//#################### LOADING METHODS ####################
 private:
 	static std::vector<AABB3d> load_aabbs_section(std::istream& is);
+	static void load_entity_components_section(std::istream& is);
+	static std::map<std::string,EntityComponents> load_entity_types_section(std::istream& is);
 	static EntityManager_Ptr load_entities_section(std::istream& is, const boost::filesystem::path& settingsDir);
 	static std::string load_lightmap_prefix_section(std::istream& is);
 	static std::vector<Image24_Ptr> load_lightmaps_section(std::istream& is);

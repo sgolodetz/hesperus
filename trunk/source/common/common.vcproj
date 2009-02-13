@@ -1175,6 +1175,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\EntityComponents.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FieldIO.h"
 					>
 				</File>
