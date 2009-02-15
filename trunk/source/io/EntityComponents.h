@@ -9,8 +9,6 @@
 #include <map>
 #include <string>
 
-#include <source/exceptions/Exception.h>
-
 namespace hesp {
 
 /**
@@ -24,39 +22,16 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	EntityComponents()
-	{
-		add_entry("VariableCamera");
-		add_entry("Collision");
-		add_entry("Health");
-		add_entry("Nav");
-		add_entry("Physics");
-		add_entry("Visibility");
-		add_entry("Yoke");
-	}
+	EntityComponents();
 
 	//#################### PUBLIC METHODS ####################
 public:
-	bool has(const std::string& name) const
-	{
-		std::map<std::string,bool>::const_iterator it = m_components.find(name);
-		if(it != m_components.end()) return it->second;
-		else throw Exception(name + " is not a valid entity component name");
-	}
-
-	void set(const std::string& name, bool value)
-	{
-		std::map<std::string,bool>::iterator it = m_components.find(name);
-		if(it != m_components.end()) it->second = value;
-		else throw Exception(name + " is not a valid entity component name");
-	}
+	bool has(const std::string& name) const;
+	void set(const std::string& name, bool value);
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void add_entry(const std::string& name)
-	{
-		m_components.insert(std::make_pair(name, false));
-	}
+	void add_entry(const std::string& name);
 };
 
 }

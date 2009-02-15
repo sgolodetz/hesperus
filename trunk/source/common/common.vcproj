@@ -1299,6 +1299,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\EntityComponents.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\io\FieldIO.cpp"
 					>
 				</File>
