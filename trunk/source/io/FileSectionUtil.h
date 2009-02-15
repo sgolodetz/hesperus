@@ -34,7 +34,6 @@ class FileSectionUtil
 	friend struct BrushesFileUtil;
 	friend struct EntDefFileUtil;
 	friend struct EntitiesFileUtil;
-	friend class EntityManager;
 	friend struct GeometryFileUtil;
 	friend class LevelFileUtil;
 	friend struct LightsFileUtil;

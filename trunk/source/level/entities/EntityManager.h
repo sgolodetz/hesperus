@@ -31,7 +31,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	EntityManager(std::istream& is, const boost::filesystem::path& settingsDir);
+	EntityManager(const std::vector<Entity_Ptr>& entities, const std::vector<AABB3d>& aabbs, const std::string& entDefFilename);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -41,11 +41,6 @@ public:
 	const std::vector<Entity_Ptr>& simulables() const;
 	const std::vector<Entity_Ptr>& visibles() const;
 	const std::vector<Entity_Ptr>& yokeables() const;
-
-	//#################### PRIVATE METHODS ####################
-private:
-	void load_entity(std::istream& is);
-	static void skip_entity(std::istream& is, const std::string& entityClass);
 };
 
 //#################### TYPEDEFS ####################

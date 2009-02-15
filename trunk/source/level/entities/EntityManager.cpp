@@ -7,65 +7,34 @@
 
 #include <iostream>
 
-#include <boost/lexical_cast.hpp>
-using boost::bad_lexical_cast;
-using boost::lexical_cast;
-
 #include <source/exceptions/Exception.h>
-#include <source/io/EntDefFileUtil.h>
-#include <source/io/LineIO.h>
-#include <source/level/entities/yokes/user/UserBipedYoke.h>
-#include "CollisionComponent.h"
-#include "HealthComponent.h"
-#include "NavComponent.h"
-#include "PhysicsComponent.h"
-#include "VariableCameraComponent.h"
-#include "VisibilityComponent.h"
-#include "YokeComponent.h"
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-/**
-Constructs an entity manager containing a set of entities loaded from the specified std::istream.
-
-@param is			The std::istream
-@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
-@throws Exception	If EOF is encountered whilst trying to read the entities
-*/
-EntityManager::EntityManager(std::istream& is, const boost::filesystem::path& settingsDir)
+EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities,
+							 const std::vector<AABB3d>& aabbs,
+							 const std::string& entDefFilename)
+:	m_entities(entities), m_aabbs(aabbs), m_entDefFilename(entDefFilename)
 {
-	LineIO::read_checked_line(is, "Entities");
-	LineIO::read_checked_line(is, "{");
+	// Set the entity IDs and add the entities to the relevant arrays.
+	int entityCount = static_cast<int>(m_entities.size());
+	for(int i=0; i<entityCount; ++i)
+	{
+		entities[i]->set_id(i);
+		if(entities[i]->physics_component()) m_simulables.push_back(entities[i]);
+		if(entities[i]->visibility_component()) m_visibles.push_back(entities[i]);
 
-	// Read in the DefinitionFile section.
-	LineIO::read_checked_line(is, "DefinitionFile");
-	LineIO::read_checked_line(is, "{");
+		// TODO: An entity is only yokeable if it has a yoke component whose yoke type is not "None".
+		if(entities[i]->yoke_component()) m_yokeables.push_back(entities[i]);
 
-		// Read in the AABBs.
-		LineIO::read_line(is, m_entDefFilename, "entity definitions filename");
-		m_aabbs = EntDefFileUtil::load_aabbs_only((settingsDir / m_entDefFilename).file_string());
-
-	LineIO::read_checked_line(is, "}");
-
-	// Read in the Instances section.
-	LineIO::read_checked_line(is, "Instances");
-	LineIO::read_checked_line(is, "{");
-
-		std::string line;
-		LineIO::read_line(is, line, "entity count");
-		int entityCount;
-		try							{ entityCount = lexical_cast<int,std::string>(line); }
-		catch(bad_lexical_cast&)	{ throw Exception("The entity count was not a number"); }
-
-		for(int i=0; i<entityCount; ++i)
+		// FIXME: The player should be defined as the entity which has the user yoke.
+		if(entities[i]->entity_class() == "Player")
 		{
-			load_entity(is);
+			if(!m_player) m_player = entities[i];
+			else throw Exception("The level contains multiple Player entities");
 		}
-
-	LineIO::read_checked_line(is, "}");
-
-	LineIO::read_checked_line(is, "}");
+	}
 }
 
 //#################### PUBLIC METHODS ####################
@@ -117,102 +86,6 @@ const std::vector<Entity_Ptr>& EntityManager::visibles() const
 const std::vector<Entity_Ptr>& EntityManager::yokeables() const
 {
 	return m_yokeables;
-}
-
-//#################### PRIVATE METHODS ####################
-void EntityManager::load_entity(std::istream& is)
-{
-	std::string line;
-	LineIO::read_line(is, line, "entity class");
-
-	size_t i = line.find(' ');
-	if(line.length() < i+2) throw Exception("Missing entity class after Instance");
-	std::string entityClass = line.substr(i+1);
-
-	LineIO::read_checked_line(is, "{");
-
-	Entity_Ptr entity;
-	ICameraComponent_Ptr cameraComponent;
-	ICollisionComponent_Ptr collisionComponent;
-	IHealthComponent_Ptr healthComponent;
-	IPhysicsComponent_Ptr physicsComponent;
-	IVisibilityComponent_Ptr visibilityComponent;
-
-	if(entityClass == "Player")
-	{
-		if(m_player) throw Exception("The level contains multiple Player entities");
-
-		entity.reset(new Entity("Player"));
-		m_player = entity;
-
-		cameraComponent.reset(new VariableCameraComponent(is));
-		collisionComponent.reset(new CollisionComponent(is));
-		healthComponent.reset(new HealthComponent(is));
-		physicsComponent.reset(new PhysicsComponent(is));
-		visibilityComponent.reset(new VisibilityComponent(is));
-
-		LineIO::read_checked_line(is, "}");
-	}
-	else if(entityClass == "Guard")
-	{
-		entity.reset(new Entity("Guard"));
-
-		cameraComponent.reset(new VariableCameraComponent(is));
-		collisionComponent.reset(new CollisionComponent(is));
-		healthComponent.reset(new HealthComponent(is));
-		physicsComponent.reset(new PhysicsComponent(is));
-		visibilityComponent.reset(new VisibilityComponent(is));
-
-		LineIO::read_checked_line(is, "}");
-	}
-	else
-	{
-		skip_entity(is, entityClass);
-		return;
-	}
-
-	// Set the entity components.
-	entity->set_camera_component(cameraComponent);
-	entity->set_collision_component(collisionComponent);
-	entity->set_health_component(healthComponent);
-	entity->set_nav_component(INavComponent_Ptr(new NavComponent));
-	entity->set_physics_component(physicsComponent);
-	entity->set_visibility_component(visibilityComponent);
-
-	// Add the newly-added entity to the relevant arrays.
-	int nextEntity = static_cast<int>(m_entities.size());
-	entity->set_id(nextEntity);
-	m_entities.push_back(entity);
-	if(entity->physics_component()) m_simulables.push_back(entity);
-	if(entity->visibility_component()) m_visibles.push_back(entity);
-
-	// Yoke the entity if necessary.
-	IYokeComponent_Ptr yokeComponent;
-	if(entityClass == "Player")
-	{
-		yokeComponent.reset(new YokeComponent(Yoke_Ptr(new UserBipedYoke(entity))));
-	}
-	else if(entityClass == "Guard")
-	{
-		// TODO: Connect an AI yoke.
-	}
-
-	entity->set_yoke_component(yokeComponent);
-	if(entity->yoke_component()) m_yokeables.push_back(entity);
-}
-
-void EntityManager::skip_entity(std::istream& is, const std::string& entityClass)
-{
-	std::cout << "Unknown entity class: " << entityClass << std::endl;
-
-	std::string line;
-	while(std::getline(is, line))
-	{
-		if(line == "}") return;
-	}
-
-	// If we get here, it's because we didn't encounter a } before reaching the end of the file.
-	throw Exception("Unexpected EOF whilst trying to skip entity " + entityClass);
 }
 
 }

@@ -26,7 +26,7 @@ private:
 public:
 	EntityComponents()
 	{
-		add_entry("Camera");
+		add_entry("VariableCamera");
 		add_entry("Collision");
 		add_entry("Health");
 		add_entry("Nav");

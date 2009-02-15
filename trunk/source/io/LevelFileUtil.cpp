@@ -148,11 +148,7 @@ Level_Ptr LevelFileUtil::load_lit(std::istream& is)
 	navDatasets = FileSectionUtil::load_nav_section(is);
 
 	bf::path settingsDir = determine_settings_directory_from_game();
-#if 1
-	entityManager.reset(new EntityManager(is, settingsDir));
-#else
 	entityManager = FileSectionUtil::load_entities_section(is, settingsDir);
-#endif
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
@@ -188,7 +184,7 @@ Level_Ptr LevelFileUtil::load_unlit(std::istream& is)
 	navDatasets = FileSectionUtil::load_nav_section(is);
 
 	bf::path settingsDir = determine_settings_directory_from_game();
-	entityManager.reset(new EntityManager(is, settingsDir));
+	entityManager = FileSectionUtil::load_entities_section(is, settingsDir);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));

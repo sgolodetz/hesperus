@@ -22,13 +22,7 @@ private:
 public:
 	PhysicsComponent(std::istream& is)
 	{
-		// TODO:	Read the entity's mass from the file (the commented-out code is correct,
-		//			but we're not ready to call it).
-#if 0
 		m_mass = FieldIO::read_typed_field<double>(is, "Mass");
-#else
-		m_mass = 75;	// there's nothing special about the 75 - I just thought it seemed a reasonable test mass in kg
-#endif
 	}
 
 	//#################### PUBLIC METHODS ####################
@@ -36,6 +30,11 @@ public:
 	double mass() const
 	{
 		return m_mass;
+	}
+
+	void save(std::ostream& os) const
+	{
+		FieldIO::write_typed_field(os, "Mass", m_mass);
 	}
 
 	void set_velocity(const Vector3d& velocity)

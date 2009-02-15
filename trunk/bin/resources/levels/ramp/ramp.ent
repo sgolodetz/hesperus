@@ -14,7 +14,9 @@ Look = ( 1 -0.5 0 )
 AABBs = [0,1]
 Pose = 0
 Health = 100
+Mass = 75
 GameModel = player.x
+Yoke = User
 }
 Instance Guard
 {
@@ -23,6 +25,7 @@ Look = ( -1 0 0 )
 AABBs = [0]
 Pose = 0
 Health = 75
+Mass = 75
 GameModel = guard.x
 }
 }

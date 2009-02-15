@@ -18,7 +18,8 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void set_yoke(const Yoke_Ptr& yoke) = 0;
+	virtual void save(std::ostream& os) const = 0;
+	virtual void set_yoke(const Yoke_Ptr& yoke, const std::string& yokeType) = 0;
 	virtual const Yoke_Ptr& yoke() const = 0;
 };
 

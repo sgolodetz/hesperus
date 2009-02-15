@@ -18,10 +18,8 @@ namespace hesp {
 struct EntDefFileUtil
 {
 	//#################### LOADING METHODS ####################
-#if 1
-	static std::vector<AABB3d> load_aabbs_only(const std::string& filename);
-#endif
 	static void load(const std::string& filename, std::vector<AABB3d>& aabbs, std::map<std::string,EntityComponents>& entityComponentsMap);
+	static std::vector<AABB3d> load_aabbs_only(const std::string& filename);
 };
 
 }

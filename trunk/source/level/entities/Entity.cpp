@@ -28,10 +28,12 @@ void Entity::save(std::ostream& os) const
 	os << "Instance " << m_entityClass << '\n';
 	os << "{\n";
 
-	m_cameraComponent->save(os);
-	m_collisionComponent->save(os);
-	m_healthComponent->save(os);
-	m_visibilityComponent->save(os);
+	if(m_cameraComponent) m_cameraComponent->save(os);
+	if(m_collisionComponent) m_collisionComponent->save(os);
+	if(m_healthComponent) m_healthComponent->save(os);
+	if(m_physicsComponent) m_physicsComponent->save(os);
+	if(m_visibilityComponent) m_visibilityComponent->save(os);
+	if(m_yokeComponent) m_yokeComponent->save(os);
 
 	os << "}\n";
 }

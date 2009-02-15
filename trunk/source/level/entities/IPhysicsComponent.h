@@ -6,6 +6,8 @@
 #ifndef H_HESP_IPHYSICSCOMPONENT
 #define H_HESP_IPHYSICSCOMPONENT
 
+#include <iosfwd>
+
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
@@ -22,6 +24,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	virtual double mass() const = 0;
+	virtual void save(std::ostream& os) const = 0;
 	virtual void set_velocity(const Vector3d& velocity) = 0;
 	virtual const Vector3d& velocity() const = 0;
 };

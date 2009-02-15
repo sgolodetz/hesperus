@@ -6,39 +6,39 @@ crouch = ( -0.5 -0.5 -0.5 ) ( 0.5 0.5 0.5 )
 }
 EntityComponents
 {
-Camera
+VariableCamera	// this is treated as a special case in the editor to allow the entity to be dragged around
 {
-Position : Vector3d	// this is treated as a special case in the editor to allow the entity to be dragged around
-Look : Vector3d
+	Position : Vector3d
+	Look : Vector3d
 }
 Collision
 {
-AABBs : [AABBid]
-Pose : AABBid
+	AABBs : [AABBid]
+	Pose : AABBid
 }
 Health
 {
-Health : int
+	Health : int
 }
-Nav			// this has no editable components
+Nav		// this has no editable components
 {
 }
 Physics
 {
-Mass : double
+	Mass : double
 }
 Visibility
 {
-GameModel : filename
+	GameModel : filename
 }
 Yoke
 {
-Yoke : {None|User|Bot}
+	Yoke : {None|User|Bot}
 }
 }
 EntityTypes
 {
-Player : Camera, Collision, Health, Nav, Physics, Visibility, Yoke
+Player : VariableCamera, Collision, Health, Nav, Physics, Visibility, Yoke
 {
 Look = ( 1 0 0 )
 AABBs = [stand,crouch]
@@ -48,7 +48,7 @@ Mass = 75
 GameModel = player.x
 Yoke = User
 }
-Guard : Camera, Collision, Health, Nav, Physics, Visibility, Yoke
+Guard : VariableCamera, Collision, Health, Nav, Physics, Visibility
 {
 Look = ( 1 0 0 )
 AABBs = [stand]
@@ -56,6 +56,5 @@ Pose = stand
 Health = 50
 Mass = 75
 GameModel = guard.x
-Yoke = Bot
 }
 }
