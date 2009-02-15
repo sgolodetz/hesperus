@@ -18,8 +18,8 @@ using boost::lexical_cast;
 #include <source/level/entities/VariableCameraComponent.h>
 #include <source/level/entities/VisibilityComponent.h>
 #include <source/level/entities/YokeComponent.h>
-#include <source/level/entities/yokes/null/NullYoke.h>
-#include <source/level/entities/yokes/user/UserBipedYoke.h>
+#include <source/level/yokes/null/NullYoke.h>
+#include <source/level/yokes/user/UserBipedYoke.h>
 #include "EntDefFileUtil.h"
 #include "NavLinkFactory.h"
 

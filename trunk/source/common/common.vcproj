@@ -1078,40 +1078,40 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="yokes"
+				>
 				<Filter
-					Name="yokes"
+					Name="user"
 					>
 					<Filter
-						Name="user"
+						Name=".cpp"
 						>
-						<Filter
-							Name=".cpp"
+						<File
+							RelativePath="..\level\yokes\user\UserBipedYoke.cpp"
 							>
-							<File
-								RelativePath="..\level\entities\yokes\user\UserBipedYoke.cpp"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name=".h"
-							>
-							<File
-								RelativePath="..\level\entities\yokes\user\UserBipedYoke.h"
-								>
-							</File>
-						</Filter>
+						</File>
 					</Filter>
 					<Filter
-						Name="null"
+						Name=".h"
 						>
-						<Filter
-							Name=".h"
+						<File
+							RelativePath="..\level\yokes\user\UserBipedYoke.h"
 							>
-							<File
-								RelativePath="..\level\entities\yokes\null\NullYoke.h"
-								>
-							</File>
-						</Filter>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="null"
+					>
+					<Filter
+						Name=".h"
+						>
+						<File
+							RelativePath="..\level\yokes\null\NullYoke.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>
