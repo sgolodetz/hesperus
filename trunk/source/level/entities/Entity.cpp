@@ -8,14 +8,14 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Entity::Entity(const std::string& entityClass)
-:	m_id(-1), m_entityClass(entityClass)
+Entity::Entity(const std::string& entityType)
+:	m_id(-1), m_entityType(entityType)
 {}
 
 //#################### PUBLIC METHODS ####################
 ICameraComponent_Ptr Entity::camera_component()				{ return m_cameraComponent; }
 ICollisionComponent_Ptr Entity::collision_component()		{ return m_collisionComponent; }
-const std::string& Entity::entity_class() const				{ return m_entityClass; }
+const std::string& Entity::entity_type() const				{ return m_entityType; }
 IHealthComponent_Ptr Entity::health_component()				{ return m_healthComponent; }
 int Entity::id() const										{ return m_id; }
 INavComponent_Ptr Entity::nav_component()					{ return m_navComponent; }
@@ -25,7 +25,7 @@ IYokeComponent_Ptr Entity::yoke_component()					{ return m_yokeComponent; }
 
 void Entity::save(std::ostream& os) const
 {
-	os << "Instance " << m_entityClass << '\n';
+	os << "Instance " << m_entityType << '\n';
 	os << "{\n";
 
 	if(m_cameraComponent) m_cameraComponent->save(os);

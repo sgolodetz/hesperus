@@ -31,7 +31,7 @@ EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities,
 			if(yokeType != "None") m_yokeables.push_back(entities[i]);
 		}
 
-		if(entities[i]->entity_class() == "Player")
+		if(entities[i]->entity_type() == "Player")
 		{
 			if(!m_player) m_player = entities[i];
 			else throw Exception("There can only be one player in a level");

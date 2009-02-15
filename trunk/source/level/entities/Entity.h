@@ -21,7 +21,7 @@ class Entity
 	//#################### PRIVATE VARIABLES ####################
 private:
 	int m_id;
-	std::string m_entityClass;
+	std::string m_entityType;
 	ICameraComponent_Ptr m_cameraComponent;
 	ICollisionComponent_Ptr m_collisionComponent;
 	IHealthComponent_Ptr m_healthComponent;
@@ -32,13 +32,13 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Entity(const std::string& entityClass);
+	Entity(const std::string& entityType);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	ICameraComponent_Ptr camera_component();
 	ICollisionComponent_Ptr collision_component();
-	const std::string& entity_class() const;
+	const std::string& entity_type() const;
 	IHealthComponent_Ptr health_component();
 	int id() const;
 	INavComponent_Ptr nav_component();
