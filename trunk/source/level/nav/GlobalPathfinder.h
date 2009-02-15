@@ -56,6 +56,10 @@ private:
 	bool is_blocked(const Vector3d& sourcePos, const std::list<int>& potentialPath, const Vector3d& destPos) const;
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<GlobalPathfinder> GlobalPathfinder_Ptr;
+typedef shared_ptr<const GlobalPathfinder> GlobalPathfinder_CPtr;
+
 }
 
 #endif
