@@ -1114,6 +1114,26 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="minimus"
+					>
+					<Filter
+						Name=".cpp"
+						>
+						<File
+							RelativePath="..\level\yokes\minimus\MinimusPathFollowYoke.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name=".h"
+						>
+						<File
+							RelativePath="..\level\yokes\minimus\MinimusPathFollowYoke.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
