@@ -70,19 +70,19 @@ void Level::render() const
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	Entity_Ptr player = m_entityManager->player();
-	const Vector3d& pos = player->camera_component()->camera().position();
-	const Vector3d& look = player->camera_component()->camera().n();
+	Entity_Ptr viewer = m_entityManager->viewer();
+	const Vector3d& pos = viewer->camera_component()->camera().position();
+	const Vector3d& look = viewer->camera_component()->camera().n();
 
-	// Calculate the player's eye position and where they're looking at.
-	const AABB3d& aabb = m_entityManager->aabbs()[player->collision_component()->pose()];
+	// Calculate the viewer's eye position and where they're looking at.
+	const AABB3d& aabb = m_entityManager->aabbs()[viewer->collision_component()->pose()];
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 
 	// Set the camera accordingly.
 	gluLookAt(eye.x, eye.y, eye.z, at.x, at.y, at.z, 0, 0, 1);
 
-	// Determine which leaves are potentially visible from the current player position.
+	// Determine which leaves are potentially visible from the current viewer position.
 	bool renderAllLeaves = false;
 	int curLeaf = m_tree->find_leaf_index(pos);
 	if(curLeaf >= m_tree->empty_leaf_count())
@@ -143,7 +143,7 @@ void Level::render_entities() const
 		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
 		ICameraComponent_Ptr camComponent = visibles[i]->camera_component();
 		ICollisionComponent_Ptr colComponent = visibles[i]->collision_component();
-		if(camComponent && colComponent && visibles[i]->entity_type() != "Player")
+		if(camComponent && colComponent && visibles[i] != m_entityManager->viewer())
 		{
 			const Camera& camera = camComponent->camera();
 			const AABB3d& aabb = m_entityManager->aabbs()[colComponent->aabb_indices()[colComponent->pose()]];

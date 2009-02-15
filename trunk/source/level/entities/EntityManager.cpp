@@ -33,12 +33,12 @@ EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities,
 
 		if(entities[i]->entity_type() == "Player")
 		{
-			if(!m_player) m_player = entities[i];
-			else throw Exception("There can only be one player in a level");
+			if(!m_viewer) m_viewer = entities[i];
+			else throw Exception("There can only be one viewer in a level");
 		}
 	}
 
-	if(!m_player) throw Exception("The player must exist");
+	if(!m_viewer) throw Exception("The viewer must exist");
 }
 
 //#################### PUBLIC METHODS ####################
@@ -72,14 +72,14 @@ void EntityManager::save(std::ostream& os) const
 	os << "}\n";
 }
 
-Entity_Ptr EntityManager::player() const
-{
-	return m_player;
-}
-
 const std::vector<Entity_Ptr>& EntityManager::simulables() const
 {
 	return m_simulables;
+}
+
+Entity_Ptr EntityManager::viewer() const
+{
+	return m_viewer;
 }
 
 const std::vector<Entity_Ptr>& EntityManager::visibles() const

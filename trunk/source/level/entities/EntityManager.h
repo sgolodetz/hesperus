@@ -27,7 +27,7 @@ private:
 	std::vector<Entity_Ptr> m_simulables;	// entities which should undergo physical simulation
 	std::vector<Entity_Ptr> m_visibles;
 	std::vector<Entity_Ptr> m_yokeables;
-	Entity_Ptr m_player;
+	Entity_Ptr m_viewer;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -37,8 +37,8 @@ public:
 public:
 	const std::vector<AABB3d>& aabbs() const;
 	void save(std::ostream& os) const;
-	Entity_Ptr player() const;
 	const std::vector<Entity_Ptr>& simulables() const;
+	Entity_Ptr viewer() const;
 	const std::vector<Entity_Ptr>& visibles() const;
 	const std::vector<Entity_Ptr>& yokeables() const;
 };
