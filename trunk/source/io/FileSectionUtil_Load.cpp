@@ -57,11 +57,13 @@ std::vector<AABB3d> FileSectionUtil::load_aabbs_section(std::istream& is)
 }
 
 /**
-TODO
+Loads an EntityComponents section from a std::istream. These are present in entity definition files.
+
+@param is	The std::istream
 */
 void FileSectionUtil::load_entity_components_section(std::istream& is)
 {
-	// Note: This function skips over an EntityComponents section because it's only relevant to the map editor.
+	// Note: This function skips over the EntityComponents section because it's only relevant to the map editor.
 
 	LineIO::read_checked_line(is, "EntityComponents");
 	LineIO::read_checked_line(is, "{");
@@ -77,7 +79,7 @@ void FileSectionUtil::load_entity_components_section(std::istream& is)
 }
 
 /**
-TODO
+Loads an EntityTypes section from a std::istream. These are present in entity definition files.
 */
 std::map<std::string,EntityComponents> FileSectionUtil::load_entity_types_section(std::istream& is)
 {
