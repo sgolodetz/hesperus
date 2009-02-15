@@ -6,7 +6,6 @@
 #ifndef H_HESP_YOKECOMPONENT
 #define H_HESP_YOKECOMPONENT
 
-#include <source/io/FieldIO.h>
 #include "IYokeComponent.h"
 
 namespace hesp {
@@ -20,32 +19,14 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	YokeComponent(const Yoke_Ptr& yoke, const std::string& yokeType)
-	:	m_yoke(yoke), m_yokeType(yokeType)
-	{}
+	YokeComponent(const Yoke_Ptr& yoke, const std::string& yokeType);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void save(std::ostream& os) const
-	{
-		FieldIO::write_typed_field(os, "Yoke", m_yokeType);
-	}
-
-	void set_yoke(const Yoke_Ptr& yoke, const std::string& yokeType)
-	{
-		m_yoke = yoke;
-		m_yokeType = yokeType;
-	}
-
-	const Yoke_Ptr& yoke() const
-	{
-		return m_yoke;
-	}
-
-	const std::string& yoke_type() const
-	{
-		return m_yokeType;
-	}
+	void save(std::ostream& os) const;
+	void set_yoke(const Yoke_Ptr& yoke, const std::string& yokeType);
+	const Yoke_Ptr& yoke() const;
+	const std::string& yoke_type() const;
 };
 
 }

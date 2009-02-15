@@ -11,6 +11,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/images/BitmapLoader.h>
+#include <source/io/FieldIO.h>
 #include <source/level/entities/CollisionComponent.h>
 #include <source/level/entities/HealthComponent.h>
 #include <source/level/entities/NavComponent.h>

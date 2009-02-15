@@ -6,7 +6,6 @@
 #ifndef H_HESP_PHYSICSCOMPONENT
 #define H_HESP_PHYSICSCOMPONENT
 
-#include <source/io/FieldIO.h>
 #include "IPhysicsComponent.h"
 
 namespace hesp {
@@ -20,32 +19,14 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	PhysicsComponent(std::istream& is)
-	{
-		m_mass = FieldIO::read_typed_field<double>(is, "Mass");
-	}
+	PhysicsComponent(std::istream& is);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	double mass() const
-	{
-		return m_mass;
-	}
-
-	void save(std::ostream& os) const
-	{
-		FieldIO::write_typed_field(os, "Mass", m_mass);
-	}
-
-	void set_velocity(const Vector3d& velocity)
-	{
-		m_velocity = velocity;
-	}
-
-	const Vector3d& velocity() const
-	{
-		return m_velocity;
-	}
+	double mass() const;
+	void save(std::ostream& os) const;
+	void set_velocity(const Vector3d& velocity);
+	const Vector3d& velocity() const;
 };
 
 }

@@ -18,19 +18,12 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NavComponent() : m_curNavPolyIndex(-1) {}
+	NavComponent();
 
 	//#################### PUBLIC METHODS ####################
 public:
-	int cur_nav_poly_index() const
-	{
-		return m_curNavPolyIndex;
-	}
-
-	void set_cur_nav_poly_index(int curNavPolyIndex)
-	{
-		m_curNavPolyIndex = curNavPolyIndex;
-	}
+	int cur_nav_poly_index() const;
+	void set_cur_nav_poly_index(int curNavPolyIndex);
 };
 
 }

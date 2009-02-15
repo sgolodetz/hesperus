@@ -1066,6 +1066,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\CollisionComponent.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\Entity.cpp"
 						>
 					</File>
@@ -1074,7 +1078,31 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\HealthComponent.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\MovementFunctions.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\NavComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\PhysicsComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\VariableCameraComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\VisibilityComponent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\entities\YokeComponent.cpp"
 						>
 					</File>
 				</Filter>
