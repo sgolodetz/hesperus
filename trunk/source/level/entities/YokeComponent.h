@@ -41,6 +41,11 @@ public:
 	{
 		return m_yoke;
 	}
+
+	const std::string& yoke_type() const
+	{
+		return m_yokeType;
+	}
 };
 
 }

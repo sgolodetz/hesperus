@@ -6,6 +6,8 @@
 #ifndef H_HESP_IYOKECOMPONENT
 #define H_HESP_IYOKECOMPONENT
 
+#include <string>
+
 #include "Yoke.h"
 
 namespace hesp {
@@ -21,6 +23,7 @@ public:
 	virtual void save(std::ostream& os) const = 0;
 	virtual void set_yoke(const Yoke_Ptr& yoke, const std::string& yokeType) = 0;
 	virtual const Yoke_Ptr& yoke() const = 0;
+	virtual const std::string& yoke_type() const = 0;
 };
 
 //#################### TYPEDEFS ####################

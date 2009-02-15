@@ -1101,6 +1101,18 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="null"
+						>
+						<Filter
+							Name=".h"
+							>
+							<File
+								RelativePath="..\level\entities\yokes\null\NullYoke.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>

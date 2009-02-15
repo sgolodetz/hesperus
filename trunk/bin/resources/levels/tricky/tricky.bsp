@@ -684,11 +684,12 @@ Instance Guard
 {
 Position = ( 20 20 6 )
 Look = ( -1 0 0 )
-AABBs = [0]
+AABBs = [0,1]
 Pose = 0
 Health = 75
 Mass = 75
 GameModel = guard.x
+Yoke = Bot
 }
 }
 }

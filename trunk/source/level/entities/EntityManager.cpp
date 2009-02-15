@@ -25,16 +25,20 @@ EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities,
 		if(entities[i]->physics_component()) m_simulables.push_back(entities[i]);
 		if(entities[i]->visibility_component()) m_visibles.push_back(entities[i]);
 
-		// TODO: An entity is only yokeable if it has a yoke component whose yoke type is not "None".
-		if(entities[i]->yoke_component()) m_yokeables.push_back(entities[i]);
+		if(entities[i]->yoke_component())
+		{
+			const std::string& yokeType = entities[i]->yoke_component()->yoke_type();
+			if(yokeType != "None") m_yokeables.push_back(entities[i]);
+		}
 
-		// FIXME: The player should be defined as the entity which has the user yoke.
 		if(entities[i]->entity_class() == "Player")
 		{
 			if(!m_player) m_player = entities[i];
-			else throw Exception("The level contains multiple Player entities");
+			else throw Exception("There can only be one player in a level");
 		}
 	}
+
+	if(!m_player) throw Exception("The player must exist");
 }
 
 //#################### PUBLIC METHODS ####################

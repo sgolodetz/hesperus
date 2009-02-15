@@ -48,13 +48,14 @@ Mass = 75
 GameModel = player.x
 Yoke = User
 }
-Guard : VariableCamera, Collision, Health, Nav, Physics, Visibility
+Guard : VariableCamera, Collision, Health, Nav, Physics, Visibility, Yoke
 {
 Look = ( 1 0 0 )
-AABBs = [stand]
+AABBs = [stand,crouch]
 Pose = stand
 Health = 50
 Mass = 75
 GameModel = guard.x
+Yoke = Bot
 }
 }
