@@ -169,7 +169,8 @@ std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1,
 	The intersection of a line segment with a plane can be calculated by intersecting the line in which it
 	lies with the plane and checking whether the intersection point is between the specified endpoints of
 	the segment. The intersection point returned is (strictly) between the endpoints iff the value of the
-	parameter t returned by determine_line_intersection_with_plane satisfies 0 < t < 1.
+	parameter t returned by determine_line_intersection_with_plane satisfies 0 < t < 1. The corresponding
+	non-strict test is 0 <= t <= 1.
 	*/
 
 	std::pair<Vec,double> intersection = determine_line_intersection_with_plane(p1, p2 - p1, plane);
