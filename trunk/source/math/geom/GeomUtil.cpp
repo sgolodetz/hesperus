@@ -68,7 +68,7 @@ Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(con
 	Vector3d v = segment.e2 - segment.e1;
 	if(fabs(v.dot(plane.normal())) < EPSILON) return Vector3d_Ptr();
 
-	std::pair<Vector3d,bool> hit = determine_linesegment_intersection_with_plane(segment.e1, segment.e2, plane);
+	std::pair<Vector3d,bool> hit = determine_linesegment_intersection_with_plane(segment.e1, segment.e2, plane, false);
 	if(!hit.second) return Vector3d_Ptr();
 
 	// We need to check that the point's within the non-vertical edge.

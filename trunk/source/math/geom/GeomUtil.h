@@ -46,7 +46,7 @@ template <typename Vec>
 std::pair<Vec,double> determine_line_intersection_with_plane(const Vec& s, const Vec& v, const Plane& plane);
 
 template <typename Vec>
-std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1, const Vec& p2, const Plane& plane);
+std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1, const Vec& p2, const Plane& plane, bool strict = true);
 
 double displacement_from_plane(const Vector3d& p, const Plane& plane);
 

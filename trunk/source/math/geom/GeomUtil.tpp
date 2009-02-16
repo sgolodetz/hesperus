@@ -155,12 +155,13 @@ Determines the point at which the line segment p1-p2 intersects the specified pl
 @param p1			One endpoint of the line segment
 @param p2			The other endpoint of the line segment
 @param plane		The plane with which to intersect
+@param strict		A boolean specifying whether the intersection point must be *strictly* between the endpoints or not
 @return				A pair containing the intersection point of the line in which the line segment lies with
-					the plane and a boolean indicating whether or not it was (strictly) between the endpoints
+					the plane and a boolean indicating whether or not it was between the endpoints
 @throws Exception	If the line segment is parallel to the plane or the points are identical
 */
 template <typename Vec>
-std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1, const Vec& p2, const Plane& plane)
+std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1, const Vec& p2, const Plane& plane, bool strict)
 {
 	/*
 	Derivation of the algorithm:
@@ -172,7 +173,7 @@ std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1,
 	*/
 
 	std::pair<Vec,double> intersection = determine_line_intersection_with_plane(p1, p2 - p1, plane);
-	return std::make_pair(intersection.first, 0 < intersection.second && intersection.second < 1);
+	return std::make_pair(intersection.first, strict ? 0 < intersection.second && intersection.second < 1 : 0 <= intersection.second && intersection.second <= 1);
 }
 
 /**
