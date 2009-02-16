@@ -1149,7 +1149,7 @@
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\yokes\minimus\MinimusPathFollowYoke.cpp"
+							RelativePath="..\level\yokes\minimus\MinimusGotoPositionYoke.cpp"
 							>
 						</File>
 					</Filter>
@@ -1157,7 +1157,7 @@
 						Name=".h"
 						>
 						<File
-							RelativePath="..\level\yokes\minimus\MinimusPathFollowYoke.h"
+							RelativePath="..\level\yokes\minimus\MinimusGotoPositionYoke.h"
 							>
 						</File>
 					</Filter>

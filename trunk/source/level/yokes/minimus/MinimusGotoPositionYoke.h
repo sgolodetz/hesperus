@@ -1,10 +1,12 @@
 /***
- * hesperus: UserBipedYoke.h
+ * hesperus: MinimusGotoPositionYoke.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_USERBIPEDYOKE
-#define H_HESP_USERBIPEDYOKE
+#ifndef H_HESP_MINIMUSGOTOPOSITIONYOKE
+#define H_HESP_MINIMUSGOTOPOSITIONYOKE
+
+#include <list>
 
 #include <source/level/entities/Entity.h>
 #include <source/level/entities/Yoke.h>
@@ -12,18 +14,19 @@
 namespace hesp {
 
 /**
-This class represents a yoke that allows the user to control a biped.
-Bipeds can walk, run, jump, crouch, etc.
+This class represents a goto position yoke for the Minimus bot.
 */
-class UserBipedYoke : public Yoke
+class MinimusGotoPositionYoke : public Yoke
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Entity_Ptr m_biped;
+	std::vector<NavLink_Ptr> m_links;
+	shared_ptr<std::list<int> > m_path;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	UserBipedYoke(const Entity_Ptr& biped);
+	MinimusGotoPositionYoke(const Entity_Ptr& biped);
 
 	//#################### PUBLIC METHODS ####################
 public:

@@ -32,8 +32,6 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	{
 		m_navDatasets[i]->nav_mesh()->build_collision_to_nav_lookup();
 	}
-
-	// TODO: Pathfinder stuff
 }
 
 //#################### PUBLIC METHODS ####################

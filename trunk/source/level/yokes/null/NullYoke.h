@@ -18,7 +18,7 @@ class NullYoke : public Yoke
 {
 	//#################### PUBLIC METHODS ####################
 public:
-	std::vector<EntityCommand_Ptr> generate_commands(UserInput& input)
+	std::vector<EntityCommand_Ptr> generate_commands(UserInput& input, const std::vector<NavDataset_Ptr>& navDatasets)
 	{
 		return std::vector<EntityCommand_Ptr>();
 	}

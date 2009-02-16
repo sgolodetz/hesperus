@@ -74,7 +74,7 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 		if(yoke)
 		{
 			// Use the entity's yoke to generate entity commands.
-			std::vector<EntityCommand_Ptr> commands = yoke->generate_commands(input);
+			std::vector<EntityCommand_Ptr> commands = yoke->generate_commands(input, m_level->nav_datasets());
 
 			// Append the entity commands to the queue.
 			std::copy(commands.begin(), commands.end(), std::back_inserter(cmdQueue));

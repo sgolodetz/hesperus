@@ -19,6 +19,7 @@ using boost::lexical_cast;
 #include <source/level/entities/VariableCameraComponent.h>
 #include <source/level/entities/VisibilityComponent.h>
 #include <source/level/entities/YokeComponent.h>
+#include <source/level/yokes/minimus/MinimusGotoPositionYoke.h>
 #include <source/level/yokes/null/NullYoke.h>
 #include <source/level/yokes/user/UserBipedYoke.h>
 #include "EntDefFileUtil.h"
@@ -213,7 +214,7 @@ EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is, const
 				// Note:	We should replace this with a yoke factory if the number of yokes increases.
 				//			It's probably not worth the extra code for the moment.
 				if(yokeType == "User")		{ yoke.reset(new UserBipedYoke(entity)); }
-				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); /* TEMPORARY */ }
+				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); /*MinimusGotoPositionYoke(entity));*/ /* TEMPORARY */ }
 				else if(yokeType == "None")	{ yoke.reset(new NullYoke); }
 				else						{ throw Exception("Unknown yoke type: " + yokeType); }
 

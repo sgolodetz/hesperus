@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include <source/level/nav/NavDataset.h>
 #include <source/util/UserInput.h>
 #include "EntityCommand.h"
 
@@ -21,7 +22,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual std::vector<EntityCommand_Ptr> generate_commands(UserInput& input) = 0;
+	virtual std::vector<EntityCommand_Ptr> generate_commands(UserInput& input, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
 };
 
 //#################### TYPEDEFS ####################
