@@ -213,6 +213,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	const CollisionPolygon& curPoly = *polygons[curColPolyIndex];
 	Plane plane = make_plane(curPoly);
 	Vector3d dir = project_vector_onto_plane(move.dir, plane);
+	if(dir.length_squared() > SMALL_EPSILON*SMALL_EPSILON) dir.normalize();
 
 	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the out navlinks.
 
