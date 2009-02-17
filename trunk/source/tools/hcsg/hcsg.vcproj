@@ -65,6 +65,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -140,6 +141,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
