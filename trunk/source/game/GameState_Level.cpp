@@ -116,10 +116,10 @@ Component_Ptr GameState_Level::construct_display()
 	const Screen& screen = Screen::instance();
 	int width = screen.dimensions().width();
 	int height = screen.dimensions().height();
-	display->layout().add(new Picture("resources/title.bmp"), Extents(width/4, 0, width*3/4, width/8));
+	display->layout().add(new Picture("resources/images/title.bmp"), Extents(width/4, 0, width*3/4, width/8));
 	display->layout().add(new LevelViewer(m_level), Extents(50, 200, width - 50, height - 50));
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
-	cont->layout().add(new Picture("resources/title.bmp"), Extents(500, 0, 700, 50));
+	cont->layout().add(new Picture("resources/images/title.bmp"), Extents(500, 0, 700, 50));
 	display->layout().add(cont, Extents(100, 100, 200, 200));
 
 	return Component_Ptr(display);
