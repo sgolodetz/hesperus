@@ -30,6 +30,9 @@ GameState_Level::GameState_Level(const std::string& levelFilename)
 //#################### PUBLIC METHODS ####################
 void GameState_Level::enter()
 {
+	// Clear all pending SDL events before we get started.
+	{ SDL_Event e; while(SDL_PollEvent(&e)) {} }
+
 	set_display(construct_display());
 	SDL_ShowCursor(SDL_DISABLE);
 	SDL_WM_GrabInput(SDL_GRAB_ON);

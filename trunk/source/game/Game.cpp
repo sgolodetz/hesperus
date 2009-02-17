@@ -46,10 +46,6 @@ try
 
 	// Set the initial game state.
 	m_state.reset(new GameState_Load("resources/levels/blakeney_hall/blakeney_hall.bsp"));
-
-	// Clear all pending SDL events before we get started.
-	{ SDL_Event e; while(SDL_PollEvent(&e)) {} }
-
 	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
