@@ -11,7 +11,7 @@
 
 #include <source/exceptions/Exception.h>
 #include <source/gui/Screen.h>
-#include "GameState_Level.h"
+#include "GameState_Load.h"
 
 namespace hesp {
 
@@ -45,7 +45,7 @@ try
 	if(!glewGetExtension("GL_ARB_multitexture")) quit_with_error("Multitexturing not supported");
 
 	// Set the initial game state.
-	m_state.reset(new GameState_Level("resources/levels/tricky/tricky.bsp"));
+	m_state.reset(new GameState_Load("resources/levels/blakeney_hall/blakeney_hall.bsp"));
 
 	// Clear all pending SDL events before we get started.
 	{ SDL_Event e; while(SDL_PollEvent(&e)) {} }

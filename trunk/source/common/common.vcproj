@@ -1414,6 +1414,10 @@
 					RelativePath="..\game\GameState_Level.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\game\GameState_Load.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
@@ -1428,6 +1432,10 @@
 				</File>
 				<File
 					RelativePath="..\game\GameState_Level.h"
+					>
+				</File>
+				<File
+					RelativePath="..\game\GameState_Load.h"
 					>
 				</File>
 			</Filter>

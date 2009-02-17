@@ -12,7 +12,7 @@ namespace hesp {
 //#################### DESTRUCTOR ####################
 GameState::~GameState() {}
 
-//#################### PUBLIC METHODS ####################
+//#################### PROTECTED METHODS ####################
 void GameState::set_display(const Component_Ptr& display)
 {
 	Screen& screen = Screen::instance();

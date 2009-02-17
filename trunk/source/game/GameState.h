@@ -26,8 +26,8 @@ public:
 	virtual void leave() = 0;
 	virtual GameState_Ptr update(int milliseconds, UserInput& input) = 0;
 
-	//#################### PUBLIC METHODS ####################
-public:
+	//#################### PROTECTED METHODS ####################
+protected:
 	void set_display(const Component_Ptr& display);
 };
 
