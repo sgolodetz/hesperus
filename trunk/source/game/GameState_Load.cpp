@@ -15,10 +15,8 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 GameState_Load::GameState_Load(const std::string& levelFilename)
-:	m_done(false)
-{
-	m_loadThread.reset(new boost::thread(&GameState_Load::load, this, levelFilename));
-}
+:	m_levelFilename(levelFilename)
+{}
 
 //#################### PUBLIC METHODS ####################
 void GameState_Load::enter()
@@ -33,13 +31,15 @@ void GameState_Load::leave()
 
 GameState_Ptr GameState_Load::update(int milliseconds, UserInput& input)
 {
-	boost::mutex::scoped_lock(m_doneMutex);
-	if(m_done)
+	// Ensure that the loading screen's been rendered before we try and load the level (render happens after updating).
+	static bool firstTime = true;
+	if(firstTime)
 	{
-		m_loadThread->join();
-		return m_levelState;
+		firstTime = false;
+		return GameState_Ptr();
 	}
-	else return GameState_Ptr();
+
+	return GameState_Ptr(new GameState_Level(m_levelFilename));
 }
 
 //#################### PRIVATE METHODS ####################
@@ -56,14 +56,6 @@ Component_Ptr GameState_Load::construct_display()
 	display->layout().add(new Picture("resources/images/load-blakeney_hall.bmp"), Extents(50, width/8, width - 50, height - 50));
 
 	return Component_Ptr(display);
-}
-
-void GameState_Load::load(const std::string& levelFilename)
-{
-	m_levelState.reset(new GameState_Level(levelFilename));
-
-	boost::mutex::scoped_lock(m_doneMutex);
-	m_done = true;
 }
 
 }

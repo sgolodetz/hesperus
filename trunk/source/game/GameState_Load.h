@@ -8,11 +8,6 @@
 
 #include <string>
 
-#include <boost/shared_ptr.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/thread.hpp>
-using boost::shared_ptr;
-
 #include "GameState.h"
 
 namespace hesp {
@@ -21,10 +16,7 @@ class GameState_Load : public GameState
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	boost::mutex m_doneMutex;
-	bool m_done;
-	shared_ptr<boost::thread> m_loadThread;
-	GameState_Ptr m_levelState;
+	std::string m_levelFilename;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -39,7 +31,6 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	Component_Ptr construct_display();
-	void load(const std::string& levelFilename);
 };
 
 }
