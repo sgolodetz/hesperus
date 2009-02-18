@@ -17,6 +17,7 @@ class GameState_Load : public GameState
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::string m_levelFilename;
+	bool m_firstTime;
 
 	//#################### CONSTRUCTORS ####################
 public:

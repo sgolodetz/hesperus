@@ -15,7 +15,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 GameState_Load::GameState_Load(const std::string& levelFilename)
-:	m_levelFilename(levelFilename)
+:	m_levelFilename(levelFilename), m_firstTime(true)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -32,10 +32,9 @@ void GameState_Load::leave()
 GameState_Ptr GameState_Load::update(int milliseconds, UserInput& input)
 {
 	// Ensure that the loading screen's been rendered before we try and load the level (render happens after updating).
-	static bool firstTime = true;
-	if(firstTime)
+	if(m_firstTime)
 	{
-		firstTime = false;
+		m_firstTime = false;
 		return GameState_Ptr();
 	}
 
