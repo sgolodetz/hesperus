@@ -23,6 +23,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 GameState_Level::GameState_Level(const std::string& levelFilename)
+:	m_inputGrabbed(false)
 {
 	m_level = LevelFileUtil::load(levelFilename);
 }
@@ -34,34 +35,22 @@ void GameState_Level::enter()
 	{ SDL_Event e; while(SDL_PollEvent(&e)) {} }
 
 	set_display(construct_display());
-	SDL_ShowCursor(SDL_DISABLE);
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+	grab_input();
 }
 
 void GameState_Level::leave()
 {
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
-	SDL_ShowCursor(SDL_ENABLE);
+	ungrab_input();
 }
 
 GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 {
 	// TEMPORARY: Allow quick toggling of the input grab using the 'g' key (for debugging purposes).
-	static bool inputGrabbed = true;
 	if(input.key_down(SDLK_g))
 	{
 		input.release_key(SDLK_g);
-		if(inputGrabbed)
-		{
-			SDL_WM_GrabInput(SDL_GRAB_OFF);
-			SDL_ShowCursor(SDL_ENABLE);
-		}
-		else
-		{
-				SDL_ShowCursor(SDL_DISABLE);
-				SDL_WM_GrabInput(SDL_GRAB_ON);
-		}
-		inputGrabbed = !inputGrabbed;
+		if(m_inputGrabbed) ungrab_input();
+		else grab_input();
 	}
 
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
@@ -126,6 +115,20 @@ Component_Ptr GameState_Level::construct_display()
 	display->layout().add(cont, Extents(100, 100, 200, 200));
 
 	return Component_Ptr(display);
+}
+
+void GameState_Level::grab_input()
+{
+	SDL_ShowCursor(SDL_DISABLE);
+	SDL_WM_GrabInput(SDL_GRAB_ON);
+	m_inputGrabbed = true;
+}
+
+void GameState_Level::ungrab_input()
+{
+	SDL_WM_GrabInput(SDL_GRAB_OFF);
+	SDL_ShowCursor(SDL_ENABLE);
+	m_inputGrabbed = false;
 }
 
 }

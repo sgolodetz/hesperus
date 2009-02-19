@@ -18,6 +18,7 @@ class GameState_Level : public GameState
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Level_Ptr m_level;
+	bool m_inputGrabbed;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -32,6 +33,8 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	Component_Ptr construct_display();
+	void grab_input();
+	void ungrab_input();
 };
 
 }
