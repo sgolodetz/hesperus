@@ -19,7 +19,9 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual int cur_link_index() const = 0;
 	virtual int cur_nav_poly_index() const = 0;
+	virtual void set_cur_link_index(int curLinkIndex) = 0;
 	virtual void set_cur_nav_poly_index(int curNavPolyIndex) = 0;
 };
 
