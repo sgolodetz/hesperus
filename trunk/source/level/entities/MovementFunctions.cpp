@@ -13,44 +13,6 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
-void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
-										  const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
-{
-	ICollisionComponent_Ptr colComponent = entity->collision_component();
-
-	Move move;
-	move.dir = dir;
-	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
-	move.timeRemaining = milliseconds / 1000.0;
-
-	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
-
-	double oldTimeRemaining;
-	do
-	{
-		oldTimeRemaining = move.timeRemaining;
-		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, polygons, tree, navMesh);
-		else do_direct_move(entity, move, tree);
-	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
-}
-
-/**
-@return	true, if a collision occurred, or false otherwise
-*/
-bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir,
-													const OnionTree_Ptr& tree, int milliseconds)
-{
-	ICollisionComponent_Ptr colComponent = entity->collision_component();
-
-	Move move;
-	move.dir = dir;
-	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
-	move.timeRemaining = milliseconds / 1000.0;
-
-	return do_direct_move(entity, move, tree);
-}
-
-//#################### PRIVATE METHODS ####################
 bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 													const NavMesh_Ptr& navMesh)
 {
@@ -117,6 +79,44 @@ bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, co
 	return false;
 }
 
+void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+										  const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
+{
+	ICollisionComponent_Ptr colComponent = entity->collision_component();
+
+	Move move;
+	move.dir = dir;
+	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
+	move.timeRemaining = milliseconds / 1000.0;
+
+	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
+
+	double oldTimeRemaining;
+	do
+	{
+		oldTimeRemaining = move.timeRemaining;
+		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, polygons, tree, navMesh);
+		else do_direct_move(entity, move, tree);
+	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
+}
+
+/**
+@return	true, if a collision occurred, or false otherwise
+*/
+bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir,
+													const OnionTree_Ptr& tree, int milliseconds)
+{
+	ICollisionComponent_Ptr colComponent = entity->collision_component();
+
+	Move move;
+	move.dir = dir;
+	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
+	move.timeRemaining = milliseconds / 1000.0;
+
+	return do_direct_move(entity, move, tree);
+}
+
+//#################### PRIVATE METHODS ####################
 /**
 @return	true, if a collision occurred, or false otherwise
 */
