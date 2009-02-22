@@ -106,6 +106,8 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir,
 													const OnionTree_Ptr& tree, int milliseconds)
 {
+	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
+
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
 
 	Move move;
