@@ -293,13 +293,60 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	}
 }
 
-void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, const NavMesh_Ptr& navMesh)
+void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_Ptr& navMesh)
 {
-	INavComponent::Traversal_Ptr traversal = entity->nav_component()->cur_traversal();
+	ICameraComponent_Ptr camComponent = entity->camera_component();
+	INavComponent_Ptr navComponent = entity->nav_component();
+
+	INavComponent::Traversal_Ptr traversal = navComponent->cur_traversal();
 	if(!traversal) return;
 
+	// FIXME: Walking speed will eventually be a property of the entity.
+	const double WALK_SPEED = 7.0;	// in units/s
+
 	NavLink_Ptr link = navMesh->links()[traversal->linkIndex];
-	// TODO
+	double remaining = 1 - traversal->t;													// % of link remaining
+	double remainingTraversalTime = remaining * link->traversal_time(WALK_SPEED);			// time to traverse remainder
+	double availableTraversalTime = std::max(remainingTraversalTime, move.timeRemaining);	// time to spend traversing
+
+	if(availableTraversalTime >= remainingTraversalTime)
+	{
+		// Finish traversing the link:
+
+		// Update the current nav polygon and clear the current traversal.
+		navComponent->set_cur_nav_poly_index(link->dest_poly());
+		navComponent->set_cur_traversal(INavComponent::Traversal_Ptr());
+
+		// Move to an exit point on the link.
+		Vector3d dest = link->traverse(traversal->source, 1);
+		camComponent->camera().set_position(dest);
+		move.timeRemaining -= remainingTraversalTime;
+		
+#if 0
+		int colPolyIndex = navMesh->polygons()[link->dest_poly()]->collision_poly_index();
+		std::cout << "Linked to polygon (" << colPolyIndex << ',' << link->dest_poly() << ')' << std::endl;
+#endif
+
+		// Move the entity very slightly away from the navlink exit: this is a hack to prevent link loops.
+		int destColPolyIndex = navMesh->polygons()[link->dest_poly()]->collision_poly_index();
+		const CollisionPolygon& destPoly = *polygons[destColPolyIndex];
+		Plane destPlane = make_plane(destPoly);
+		Vector3d destDir = project_vector_onto_plane(move.dir, destPlane);
+		dest += destDir * 0.001;
+		if(point_in_polygon(dest, destPoly)) camComponent->camera().set_position(dest);
+	}
+	else
+	{
+		// Work out how much further we've progressed and update the traversal field accordingly.
+		double deltaT = (availableTraversalTime / remainingTraversalTime) * remaining;
+		INavComponent::Traversal_Ptr newTraversal(new INavComponent::Traversal(traversal->linkIndex, traversal->source, traversal->t + deltaT));
+		navComponent->set_cur_traversal(newTraversal);
+
+		// Move further along the link.
+		Vector3d dest = link->traverse(newTraversal->source, newTraversal->t);
+		camComponent->camera().set_position(dest);
+		move.timeRemaining = 0;
+	}
 }
 
 void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
