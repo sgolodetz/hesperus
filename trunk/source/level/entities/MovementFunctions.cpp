@@ -293,6 +293,15 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	}
 }
 
+void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, const NavMesh_Ptr& navMesh)
+{
+	INavComponent::Traversal_Ptr traversal = entity->nav_component()->cur_traversal();
+	if(!traversal) return;
+
+	NavLink_Ptr link = navMesh->links()[traversal->linkIndex];
+	// TODO
+}
+
 void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& entity, Move& move)
 {
 	// Update the move direction to be along the wall (to allow sliding). To do this, we remove the

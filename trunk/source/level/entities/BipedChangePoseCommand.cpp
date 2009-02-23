@@ -23,7 +23,7 @@ void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const std
 	INavComponent_Ptr navComponent = m_biped->nav_component();
 
 	// Check that we're not currently traversing a nav link.
-	if(navComponent->cur_link_index() != -1) return;
+	if(navComponent->cur_traversal()) return;
 
 	Vector3d source = camComponent->camera().position();
 

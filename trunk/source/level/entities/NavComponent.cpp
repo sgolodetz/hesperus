@@ -9,28 +9,28 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 NavComponent::NavComponent()
-:	m_curLinkIndex(-1), m_curNavPolyIndex(-1)
+:	m_curNavPolyIndex(-1)
 {}
 
 //#################### PUBLIC METHODS ####################
-int NavComponent::cur_link_index() const
-{
-	return m_curLinkIndex;
-}
-
 int NavComponent::cur_nav_poly_index() const
 {
 	return m_curNavPolyIndex;
 }
 
-void NavComponent::set_cur_link_index(int curLinkIndex)
+INavComponent::Traversal_Ptr NavComponent::cur_traversal() const
 {
-	m_curLinkIndex = curLinkIndex;
+	return m_curTraversal;
 }
 
 void NavComponent::set_cur_nav_poly_index(int curNavPolyIndex)
 {
 	m_curNavPolyIndex = curNavPolyIndex;
+}
+
+void NavComponent::set_cur_traversal(const Traversal_Ptr& traversal)
+{
+	m_curTraversal = traversal;
 }
 
 }
