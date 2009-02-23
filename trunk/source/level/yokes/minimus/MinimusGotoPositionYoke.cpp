@@ -27,6 +27,12 @@ MinimusGotoPositionYoke::MinimusGotoPositionYoke(const Entity_Ptr& biped)
 //#################### PUBLIC METHODS ####################
 std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserInput& input, const std::vector<NavDataset_Ptr>& navDatasets)
 {
+	// Check to make sure the yoke's still active.
+	if(m_state != YOKE_ACTIVE)
+	{
+		return std::vector<EntityCommand_Ptr>();
+	}
+
 	// FIXME: These should be passed into the constructor somehow.
 	static Vector3d source(20,20,6);
 	static int sourcePoly = 5;
@@ -42,9 +48,9 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		// FIXME: It's wasteful to copy the array of links each time (even though it's an array of pointers).
 		m_links = navDatasets[mapIndex]->nav_mesh()->links();
 
-		// FIXME: Do something useful if a path can't be found here.
 		m_path.reset(new std::list<int>);
-		pathfinder.find_path(source, sourcePoly, dest, destPoly, *m_path);
+		bool pathFound = pathfinder.find_path(source, sourcePoly, dest, destPoly, *m_path);
+		if(!pathFound) m_state = YOKE_FAILED;
 	}
 
 	const Vector3d& position = m_biped->camera_component()->camera().position();
@@ -86,7 +92,8 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 	}
 	else
 	{
-		// FIXME: Do something useful when we reach the destination.
+		// We've reached the destination.
+		m_state = YOKE_SUCCEEDED;
 		return std::vector<EntityCommand_Ptr>();
 	}
 }
