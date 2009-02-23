@@ -27,7 +27,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	std::vector<EntityCommand_Ptr> generate_commands(UserInput& input, const std::vector<NavDataset_Ptr>& navDatasets);
+	std::vector<EntityCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 };
 
 }

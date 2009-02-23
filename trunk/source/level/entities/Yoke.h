@@ -39,7 +39,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual std::vector<EntityCommand_Ptr> generate_commands(UserInput& input, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
+	virtual std::vector<EntityCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

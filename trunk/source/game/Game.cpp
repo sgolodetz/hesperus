@@ -45,7 +45,7 @@ try
 	if(!glewGetExtension("GL_ARB_multitexture")) quit_with_error("Multitexturing not supported");
 
 	// Set the initial game state.
-	m_state.reset(new GameState_Load("resources/levels/blakeney_hall/blakeney_hall.bsp"));
+	m_state.reset(new GameState_Load("resources/levels/tricky/tricky.bsp"));
 	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
@@ -73,6 +73,7 @@ void Game::run()
 				m_state->leave();
 				m_state = newState;
 				m_state->enter();
+				lastDraw = SDL_GetTicks();
 				continue;
 			}
 

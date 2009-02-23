@@ -6,14 +6,15 @@
 #include "MinimusGotoPositionYoke.h"
 
 #include <source/level/entities/BipedWalkCommand.h>
+#include <source/level/entities/MovementFunctions.h>
 #include <source/level/nav/GlobalPathfinder.h>
 #include <source/math/Constants.h>
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-MinimusGotoPositionYoke::MinimusGotoPositionYoke(const Entity_Ptr& biped)
-:	m_biped(biped)
+MinimusGotoPositionYoke::MinimusGotoPositionYoke(const Entity_Ptr& biped, const Vector3d& dest)
+:	m_biped(biped), m_dest(dest)
 {
 	if(!m_biped->camera_component() ||
 	   !m_biped->collision_component() ||
@@ -25,7 +26,8 @@ MinimusGotoPositionYoke::MinimusGotoPositionYoke(const Entity_Ptr& biped)
 }
 
 //#################### PUBLIC METHODS ####################
-std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserInput& input, const std::vector<NavDataset_Ptr>& navDatasets)
+std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+																		  const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	// Check to make sure the yoke's still active.
 	if(m_state != YOKE_ACTIVE)
@@ -33,27 +35,28 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		return std::vector<EntityCommand_Ptr>();
 	}
 
-	// FIXME: These should be passed into the constructor somehow.
-	static Vector3d source(20,20,6);
-	static int sourcePoly = 5;
-	static Vector3d dest(14,6,6);
-	static int destPoly = 0;
+	const Vector3d& source = m_biped->camera_component()->camera().position();
 
 	if(!m_path)
 	{
 		ICollisionComponent_Ptr colComponent = m_biped->collision_component();
 		int mapIndex = colComponent->aabb_indices()[colComponent->pose()];
-		GlobalPathfinder pathfinder(navDatasets[mapIndex]->nav_mesh(), navDatasets[mapIndex]->adjacency_list(), navDatasets[mapIndex]->path_table());
+		NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
+		GlobalPathfinder pathfinder(navMesh, navDatasets[mapIndex]->adjacency_list(), navDatasets[mapIndex]->path_table());
+
+		int suggestedSourcePoly = m_biped->nav_component()->cur_nav_poly_index();
+		int sourcePoly = MovementFunctions::find_nav_polygon(source, suggestedSourcePoly, polygons, tree, navMesh);
+		if(sourcePoly == -1)	{ m_state = YOKE_FAILED; return std::vector<EntityCommand_Ptr>(); }
+		int destPoly = MovementFunctions::find_nav_polygon(m_dest, -1, polygons, tree, navMesh);
+		if(destPoly == -1)		{ m_state = YOKE_FAILED; return std::vector<EntityCommand_Ptr>(); }
 
 		// FIXME: It's wasteful to copy the array of links each time (even though it's an array of pointers).
-		m_links = navDatasets[mapIndex]->nav_mesh()->links();
+		m_links = navMesh->links();
 
 		m_path.reset(new std::list<int>);
-		bool pathFound = pathfinder.find_path(source, sourcePoly, dest, destPoly, *m_path);
-		if(!pathFound) m_state = YOKE_FAILED;
+		bool pathFound = pathfinder.find_path(source, sourcePoly, m_dest, destPoly, *m_path);
+		if(!pathFound)			{ m_state = YOKE_FAILED; return std::vector<EntityCommand_Ptr>(); }
 	}
-
-	const Vector3d& position = m_biped->camera_component()->camera().position();
 
 	// Step 1:	If the path is non-empty, go to the next link that we haven't already passed.
 	Vector3d dir;
@@ -61,8 +64,8 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 	{
 		const Vector3d& linkIn = m_links[m_path->front()]->source_position();
 		const Vector3d& linkOut = m_links[m_path->front()]->dest_position();
-		dir = linkIn - position;
-		if(dir.length() >= 0.1 && position.distance(linkOut) >= 0.1)
+		dir = linkIn - source;
+		if(dir.length() >= 0.1 && source.distance(linkOut) >= 0.1)
 		{
 			dir.normalize();
 			break;
@@ -81,7 +84,7 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 	}
 
 	// Step 2:	If the path is empty, go straight to the actual destination.
-	dir = dest - position;
+	dir = m_dest - source;
 	if(dir.length() >= 0.1)
 	{
 		dir.normalize();

@@ -214,7 +214,7 @@ EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is, const
 				// Note:	We should replace this with a yoke factory if the number of yokes increases.
 				//			It's probably not worth the extra code for the moment.
 				if(yokeType == "User")		{ yoke.reset(new UserBipedYoke(entity)); }
-				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); /*MinimusGotoPositionYoke(entity));*/ /* TEMPORARY */ }
+				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); /*MinimusGotoPositionYoke(entity, Vector3d(14,6,6)));*/ /* TEMPORARY */ }
 				else if(yokeType == "None")	{ yoke.reset(new NullYoke); }
 				else						{ throw Exception("Unknown yoke type: " + yokeType); }
 
