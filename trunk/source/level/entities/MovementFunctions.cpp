@@ -83,6 +83,7 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 										  const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
+	INavComponent_Ptr navComponent = entity->nav_component();
 
 	Move move;
 	move.dir = dir;
@@ -95,6 +96,10 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 	do
 	{
 		oldTimeRemaining = move.timeRemaining;
+
+		if(navComponent->cur_traversal()) do_traverse_move(entity, move, polygons, navMesh);
+		if(move.timeRemaining == 0) break;
+
 		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, polygons, tree, navMesh);
 		else do_direct_move(entity, move, tree);
 	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
@@ -109,6 +114,10 @@ bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, co
 	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
 
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
+	INavComponent_Ptr navComponent = entity->nav_component();
+
+	// Check to make sure we're not currently traversing a link: don't let the entity be moved if we are.
+	if(navComponent->cur_traversal()) return true;
 
 	Move move;
 	move.dir = dir;
@@ -249,11 +258,10 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 		return;
 	}
 
-	// Step 3.b:	If the new movement vector hits a navlink, move to the point at which it first enters the influence zone,
-	//				and reduce the time remaining appropriately. Next, calculate the time (for this entity) to traverse the
-	//				navlink completely. Traverse it as much as we are able in the time remaining and decrease the time
-	//				remaining appropriately. If we traversed it completely, update the current nav polygon.
+	// Step 3.b:	If the new movement vector hits a navlink, move the point at which it first enters the influence zone,
+	//				and reduce the time remaining appropriately. Then, initiate the link traversal.
 
+	// Move the entity to the link entrance point.
 	camComponent->camera().set_position(*hit);
 
 	// Update the time remaining.
@@ -261,36 +269,9 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	double timeTaken = moveLength / WALK_SPEED;
 	move.timeRemaining -= timeTaken;
 
-	NavLink_Ptr link = navMesh->links()[hitNavlink];
-	double traversalTime = link->traversal_time(WALK_SPEED);
-	double availableTraversalTime = std::max(traversalTime, move.timeRemaining);
-	double t = traversalTime > 0 ? availableTraversalTime / traversalTime : 1;
-	dest = link->traverse(*hit, t);
-
-	camComponent->camera().set_position(dest);
-	move.timeRemaining -= std::min(traversalTime, availableTraversalTime);
-
-	if(fabs(t - 1) < SMALL_EPSILON)
-	{
-		navComponent->set_cur_nav_poly_index(link->dest_poly());
-		
-#if 0
-		int colPolyIndex = navMesh->polygons()[link->dest_poly()]->collision_poly_index();
-		std::cout << "Linked to polygon (" << colPolyIndex << ',' << link->dest_poly() << ')' << std::endl;
-#endif
-
-		// Move the entity very slightly away from the navlink exit: this is a hack to prevent link loops.
-		int destColPolyIndex = navMesh->polygons()[link->dest_poly()]->collision_poly_index();
-		const CollisionPolygon& destPoly = *polygons[destColPolyIndex];
-		Plane destPlane = make_plane(destPoly);
-		Vector3d destDir = project_vector_onto_plane(move.dir, destPlane);
-		dest += destDir * 0.001;
-		if(point_in_polygon(dest, destPoly)) camComponent->camera().set_position(dest);
-	}
-	else
-	{
-		// TODO: For things like ladders, we'll need to make a note that we're in the middle of a traversal for future frames.
-	}
+	// Initiate the link traversal.
+	INavComponent::Traversal_Ptr traversal(new INavComponent::Traversal(hitNavlink, *hit, 0));
+	navComponent->set_cur_traversal(traversal);
 }
 
 void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_Ptr& navMesh)
@@ -307,7 +288,7 @@ void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, c
 	NavLink_Ptr link = navMesh->links()[traversal->linkIndex];
 	double remaining = 1 - traversal->t;													// % of link remaining
 	double remainingTraversalTime = remaining * link->traversal_time(WALK_SPEED);			// time to traverse remainder
-	double availableTraversalTime = std::max(remainingTraversalTime, move.timeRemaining);	// time to spend traversing
+	double availableTraversalTime = std::min(remainingTraversalTime, move.timeRemaining);	// time to spend traversing
 
 	if(availableTraversalTime >= remainingTraversalTime)
 	{
