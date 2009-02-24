@@ -44,7 +44,9 @@ int MovementFunctions::find_nav_polygon(const Vector3d& p, int suggestedNavPoly,
 	// It's good to be paranoid and do a range check: we might no longer be on the same navigation mesh, for instance.
 	if(suggestedNavPoly >= static_cast<int>(navMesh->polygons().size())) suggestedNavPoly = -1;
 
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Step 1:	If there's a suggested nav polygon, check it first.
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	int suggestedColPoly = -1;
 	if(suggestedNavPoly != -1)
@@ -53,7 +55,9 @@ int MovementFunctions::find_nav_polygon(const Vector3d& p, int suggestedNavPoly,
 		if(point_in_polygon(p, *polygons[suggestedColPoly])) return suggestedNavPoly;
 	}
 
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Step 2:	Find the other potential collision polygons in which the point could lie.
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	int leafIndex = tree->find_leaf_index(p);
 	const std::vector<int>& polyIndices = tree->leaf(leafIndex)->polygon_indices();
@@ -65,7 +69,9 @@ int MovementFunctions::find_nav_polygon(const Vector3d& p, int suggestedNavPoly,
 		if(*it != suggestedColPoly && navMesh->lookup_nav_poly_index(*it) != -1) potentialColPolyIndices.push_back(*it);
 	}
 
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Step 3:	Test each of the polygons to see whether the point's inside it, and return the index of the found nav polygon if so.
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	int potentialCount = static_cast<int>(potentialColPolyIndices.size());
 	for(int i=0; i<potentialCount; ++i)
@@ -91,8 +97,8 @@ int MovementFunctions::find_nav_polygon(const Vector3d& p, int suggestedNavPoly,
 	return -1;
 }
 
-void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
-										  const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
+void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, double speed, const std::vector<CollisionPolygon_Ptr>& polygons,
+										  const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
 	INavComponent_Ptr navComponent = entity->nav_component();
@@ -109,19 +115,18 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 	{
 		oldTimeRemaining = move.timeRemaining;
 
-		if(navComponent->cur_traversal()) do_traverse_move(entity, move, polygons, navMesh);
+		if(navComponent->cur_traversal()) do_traverse_move(entity, move, speed /* FIXME: Select the appropriate speed here */, polygons, navMesh);
 		if(move.timeRemaining == 0) break;
 
-		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, polygons, tree, navMesh);
-		else do_direct_move(entity, move, tree);
+		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, speed, polygons, tree, navMesh);
+		else do_direct_move(entity, move, speed, tree);
 	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
 /**
 @return	true, if a collision occurred, or false otherwise
 */
-bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir,
-													const OnionTree_Ptr& tree, int milliseconds)
+bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, const Vector3d& dir, double speed, const OnionTree_Ptr& tree, int milliseconds)
 {
 	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
 
@@ -136,25 +141,22 @@ bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, co
 	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
 	move.timeRemaining = milliseconds / 1000.0;
 
-	return do_direct_move(entity, move, tree);
+	return do_direct_move(entity, move, speed, tree);
 }
 
 //#################### PRIVATE METHODS ####################
 /**
 @return	true, if a collision occurred, or false otherwise
 */
-bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, const OnionTree_Ptr& tree)
+bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, double speed, const OnionTree_Ptr& tree)
 {
 	bool collisionOccurred = false;
-
-	// FIXME: Walking speed will eventually be a property of the entity.
-	const double WALK_SPEED = 7.0;	// in units/s
 
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 	ICollisionComponent_Ptr colComponent = entity->collision_component();
 
 	Vector3d source = camComponent->camera().position();
-	Vector3d dest = source + move.dir * WALK_SPEED * move.timeRemaining;
+	Vector3d dest = source + move.dir * speed * move.timeRemaining;
 
 	// Check the ray against the tree.
 	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest);
@@ -199,13 +201,13 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, con
 
 	// Update the time remaining.
 	double moveLength = source.distance(dest);
-	double timeTaken = moveLength / WALK_SPEED;
+	double timeTaken = moveLength / speed;
 	move.timeRemaining -= timeTaken;
 
 	return collisionOccurred;
 }
 
-void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, double speed, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 										const NavMesh_Ptr& navMesh)
 {
 	// Step 1:		Project the movement vector onto the plane of the current nav polygon.
@@ -221,13 +223,10 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 
 	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the out navlinks.
 
-	// FIXME: Walking speed will eventually be a property of the entity.
-	const double WALK_SPEED = 7.0;	// in units/s
-
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 
 	Vector3d source = camComponent->camera().position();
-	Vector3d dest = source + dir * WALK_SPEED * move.timeRemaining;
+	Vector3d dest = source + dir * speed * move.timeRemaining;
 
 	Vector3d_Ptr hit;
 	int hitNavlink = -1;
@@ -264,7 +263,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 		}
 		else
 		{
-			do_direct_move(entity, move, tree);
+			do_direct_move(entity, move, speed, tree);
 		}
 
 		return;
@@ -278,7 +277,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 
 	// Update the time remaining.
 	double moveLength = source.distance(*hit);
-	double timeTaken = moveLength / WALK_SPEED;
+	double timeTaken = moveLength / speed;
 	move.timeRemaining -= timeTaken;
 
 	// Initiate the link traversal.
@@ -286,7 +285,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, co
 	navComponent->set_cur_traversal(traversal);
 }
 
-void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_Ptr& navMesh)
+void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, double speed, const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_Ptr& navMesh)
 {
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 	INavComponent_Ptr navComponent = entity->nav_component();
@@ -294,12 +293,9 @@ void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, c
 	INavComponent::Traversal_Ptr traversal = navComponent->cur_traversal();
 	if(!traversal) return;
 
-	// FIXME: Walking speed will eventually be a property of the entity.
-	const double WALK_SPEED = 7.0;	// in units/s
-
 	NavLink_Ptr link = navMesh->links()[traversal->linkIndex];
 	double remaining = 1 - traversal->t;													// % of link remaining
-	double remainingTraversalTime = remaining * link->traversal_time(WALK_SPEED);			// time to traverse remainder
+	double remainingTraversalTime = remaining * link->traversal_time(speed);				// time to traverse remainder
 	double availableTraversalTime = std::min(remainingTraversalTime, move.timeRemaining);	// time to spend traversing
 
 	if(availableTraversalTime >= remainingTraversalTime)

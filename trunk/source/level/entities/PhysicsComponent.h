@@ -27,6 +27,7 @@ public:
 	void save(std::ostream& os) const;
 	void set_velocity(const Vector3d& velocity);
 	const Vector3d& velocity() const;
+	double walk_speed() const;
 };
 
 }

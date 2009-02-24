@@ -17,7 +17,7 @@ BipedWalkCommand::BipedWalkCommand(const Entity_Ptr& biped, const Vector3d& dir)
 void BipedWalkCommand::execute(const std::vector<AABB3d>& aabbs, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 							   const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	MovementFunctions::move_with_navmesh(m_biped, m_dir, polygons, tree, navDatasets, milliseconds);
+	MovementFunctions::move_with_navmesh(m_biped, m_dir, m_biped->physics_component()->walk_speed(), polygons, tree, navDatasets, milliseconds);
 }
 
 }

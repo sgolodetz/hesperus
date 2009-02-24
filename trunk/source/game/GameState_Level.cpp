@@ -90,7 +90,7 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 		IPhysicsComponent_Ptr physComponent = simulables[i]->physics_component();
 		Vector3d velocity = physComponent->velocity();
 		physComponent->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
-		if(MovementFunctions::single_move_without_navmesh(simulables[i], physComponent->velocity(), m_level->onion_tree(), milliseconds))
+		if(MovementFunctions::single_move_without_navmesh(simulables[i], physComponent->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
 		{
 			// A collision occurred, so set the velocity back to zero.
 			physComponent->set_velocity(Vector3d(0,0,0));

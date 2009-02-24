@@ -21,12 +21,13 @@ class IPhysicsComponent
 public:
 	virtual ~IPhysicsComponent() {}
 
-	//#################### PUBLIC METHODS ####################
+	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual double mass() const = 0;
 	virtual void save(std::ostream& os) const = 0;
 	virtual void set_velocity(const Vector3d& velocity) = 0;
 	virtual const Vector3d& velocity() const = 0;
+	virtual double walk_speed() const = 0;
 };
 
 //#################### TYPEDEFS ####################

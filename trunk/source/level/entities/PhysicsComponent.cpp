@@ -36,4 +36,10 @@ const Vector3d& PhysicsComponent::velocity() const
 	return m_velocity;
 }
 
+double PhysicsComponent::walk_speed() const
+{
+	// FIXME: This should be loaded in the constructor.
+	return 7.0;		// in units/s
+}
+
 }
