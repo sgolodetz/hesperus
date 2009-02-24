@@ -958,11 +958,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\BipedTurnCommand.h"
+						RelativePath="..\level\entities\BipedMoveCommand.h"
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\BipedWalkCommand.h"
+						RelativePath="..\level\entities\BipedTurnCommand.h"
 						>
 					</File>
 					<File
@@ -1058,11 +1058,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\BipedTurnCommand.cpp"
+						RelativePath="..\level\entities\BipedMoveCommand.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\BipedWalkCommand.cpp"
+						RelativePath="..\level\entities\BipedTurnCommand.cpp"
 						>
 					</File>
 					<File

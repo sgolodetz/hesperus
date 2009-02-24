@@ -1,10 +1,10 @@
 /***
- * hesperus: BipedWalkCommand.h
+ * hesperus: BipedMoveCommand.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_BIPEDWALKCOMMAND
-#define H_HESP_BIPEDWALKCOMMAND
+#ifndef H_HESP_BIPEDMOVECOMMAND
+#define H_HESP_BIPEDMOVECOMMAND
 
 #include <source/math/vectors/Vector3.h>
 #include "Entity.h"
@@ -12,16 +12,17 @@
 
 namespace hesp {
 
-class BipedWalkCommand : public EntityCommand
+class BipedMoveCommand : public EntityCommand
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Entity_Ptr m_biped;
 	Vector3d m_dir;
+	double m_speed;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BipedWalkCommand(const Entity_Ptr& biped, const Vector3d& dir);
+	BipedMoveCommand(const Entity_Ptr& biped, const Vector3d& dir, double speed);
 
 	//#################### PUBLIC METHODS ####################
 public:

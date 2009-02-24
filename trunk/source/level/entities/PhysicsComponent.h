@@ -24,6 +24,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	double mass() const;
+	double run_speed() const;
 	void save(std::ostream& os) const;
 	void set_velocity(const Vector3d& velocity);
 	const Vector3d& velocity() const;

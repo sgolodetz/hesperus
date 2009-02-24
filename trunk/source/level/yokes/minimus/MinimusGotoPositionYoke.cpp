@@ -5,7 +5,7 @@
 
 #include "MinimusGotoPositionYoke.h"
 
-#include <source/level/entities/BipedWalkCommand.h>
+#include <source/level/entities/BipedMoveCommand.h>
 #include <source/level/entities/MovementFunctions.h>
 #include <source/level/nav/GlobalPathfinder.h>
 #include <source/math/Constants.h>
@@ -79,7 +79,7 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 	if(!m_path->empty())
 	{
 		std::vector<EntityCommand_Ptr> commands;
-		commands.push_back(EntityCommand_Ptr(new BipedWalkCommand(m_biped, dir)));
+		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, m_biped->physics_component()->walk_speed())));
 		return commands;
 	}
 
@@ -90,7 +90,7 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		dir.normalize();
 
 		std::vector<EntityCommand_Ptr> commands;
-		commands.push_back(EntityCommand_Ptr(new BipedWalkCommand(m_biped, dir)));
+		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, m_biped->physics_component()->walk_speed())));
 		return commands;
 	}
 	else

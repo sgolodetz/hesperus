@@ -21,6 +21,12 @@ double PhysicsComponent::mass() const
 	return m_mass;
 }
 
+double PhysicsComponent::run_speed() const
+{
+	// FIXME: This should be loaded in the constructor.
+	return 10.0;	// in units/s
+}
+
 void PhysicsComponent::save(std::ostream& os) const
 {
 	FieldIO::write_typed_field(os, "Mass", m_mass);
@@ -39,7 +45,7 @@ const Vector3d& PhysicsComponent::velocity() const
 double PhysicsComponent::walk_speed() const
 {
 	// FIXME: This should be loaded in the constructor.
-	return 7.0;		// in units/s
+	return 5.0;		// in units/s
 }
 
 }

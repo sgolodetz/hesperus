@@ -8,8 +8,8 @@
 #include <source/exceptions/Exception.h>
 #include <source/level/entities/BipedChangePoseCommand.h>
 #include <source/level/entities/BipedJumpCommand.h>
+#include <source/level/entities/BipedMoveCommand.h>
 #include <source/level/entities/BipedTurnCommand.h>
-#include <source/level/entities/BipedWalkCommand.h>
 #include <source/math/Constants.h>
 
 namespace hesp {
@@ -57,10 +57,13 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 
 	if(dir.length() >= SMALL_EPSILON)
 	{
-		// Prevent faster movement when strafing
+		// Prevent faster movement when strafing.
 		dir.normalize();
 
-		commands.push_back(EntityCommand_Ptr(new BipedWalkCommand(m_biped, dir)));
+		// Decide whether to run or walk.
+		double speed = input.key_down(SDLK_LSHIFT) ? m_biped->physics_component()->walk_speed() : m_biped->physics_component()->run_speed();
+
+		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, speed)));
 	}
 
 	//~~~~~~~~~~~
