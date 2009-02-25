@@ -5,6 +5,7 @@
 
 #include "GameState_Load.h"
 
+#include <source/exceptions/FileNotFoundException.h>
 #include <source/gui/Container.h>
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
@@ -51,8 +52,17 @@ Component_Ptr GameState_Load::construct_display()
 	int height = screen.dimensions().height();
 	display->layout().add(new Picture("resources/images/loading.bmp"), Extents(width/4, 0, width*3/4, width/8));
 
-	// TODO: Load the appropriate image for the level here.
-	display->layout().add(new Picture("resources/images/load-blakeney_hall.bmp"), Extents(50, width/8, width - 50, height - 50));
+	// Determine the level name.
+	size_t i = m_levelFilename.find_last_of('/');
+	std::string levelName = i == std::string::npos ? m_levelFilename.substr(0) : m_levelFilename.substr(i+1);
+	levelName = levelName.substr(0, levelName.length()-4);
+
+	// Load the appropriate loading image for the level.
+	Picture *loadingPicture;
+	try { loadingPicture = new Picture("resources/images/load-" + levelName + ".bmp"); }
+	catch(FileNotFoundException&) { loadingPicture = new Picture("resources/images/load-missing.bmp"); }
+
+	display->layout().add(loadingPicture, Extents(50, width/8, width - 50, height - 50));
 
 	return Component_Ptr(display);
 }
