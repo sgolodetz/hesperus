@@ -11,6 +11,38 @@ namespace hesp {
 
 //#################### SAVING METHODS ####################
 /**
+Saves a set of entities to the specified std::ostream.
+
+@param os				The std::ostream
+@param entityManager	An EntityManager containing the entities to save
+*/
+void FileSectionUtil::save_entities_section(std::ostream& os, const EntityManager_Ptr& entityManager)
+{
+	os << "Entities\n";
+	os << "{\n";
+
+	os << "DefinitionFile\n";
+	os << "{\n";
+	os << entityManager->definition_filename() << '\n';
+	os << "}\n";
+
+	os << "Instances\n";
+	os << "{\n";
+
+	const std::vector<Entity_Ptr>& entities = entityManager->entities();
+	int entityCount = static_cast<int>(entities.size());
+	os << entityCount << '\n';
+	for(int i=0; i<entityCount; ++i)
+	{
+		entities[i]->save(os);
+	}
+
+	os << "}\n";
+
+	os << "}\n";
+}
+
+/**
 Saves a lightmap prefix to the specified std::ostream.
 
 @param os	The std::ostream

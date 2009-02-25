@@ -36,7 +36,8 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<AABB3d>& aabbs() const;
-	void save(std::ostream& os) const;
+	const std::string& definition_filename() const;
+	const std::vector<Entity_Ptr>& entities() const;
 	const std::vector<Entity_Ptr>& simulables() const;
 	Entity_Ptr viewer() const;
 	const std::vector<Entity_Ptr>& visibles() const;

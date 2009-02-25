@@ -18,6 +18,9 @@ struct EntitiesFileUtil
 {
 	//#################### LOADING METHODS ####################
 	static EntityManager_Ptr load(const std::string& filename, const boost::filesystem::path& settingsDir);
+
+	//#################### SAVING METHODS ####################
+	static void save(const std::string& filename, const EntityManager_Ptr& entityManager);
 };
 
 }

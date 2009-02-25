@@ -62,6 +62,7 @@ private:
 
 	//#################### SAVING METHODS ####################
 private:
+	static void save_entities_section(std::ostream& os, const EntityManager_Ptr& entityManager);
 	static void save_lightmap_prefix_section(std::ostream& os, const std::string& lightmapPrefix);
 	static void save_lightmaps_section(std::ostream& os, const std::vector<Image24_Ptr>& lightmaps);
 	static void save_lights_section(std::ostream& os, const std::vector<Light>& lights);

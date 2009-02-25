@@ -29,4 +29,18 @@ EntityManager_Ptr EntitiesFileUtil::load(const std::string& filename, const bf::
 	return FileSectionUtil::load_entities_section(is, settingsDir);
 }
 
+//#################### SAVING METHODS ####################
+/**
+Saves a set of entities to the specified entities file.
+
+@param filename			The name of the file to which to save the entities
+@param entityManager	An EntityManager containing the entities to save
+*/
+void EntitiesFileUtil::save(const std::string& filename, const EntityManager_Ptr& entityManager)
+{
+	std::ofstream os(filename.c_str());
+	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
+	FileSectionUtil::save_entities_section(os, entityManager);
+}
+
 }
