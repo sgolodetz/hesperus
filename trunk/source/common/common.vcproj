@@ -1163,6 +1163,26 @@
 					</Filter>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="models"
+				>
+				<Filter
+					Name=".cpp"
+					>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\models\Bone.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Model.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"
