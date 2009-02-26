@@ -1484,6 +1484,46 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="xml"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\xml\XMLLexer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xml\XMLParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xml\XMLTree.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\xml\XMLLexer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\xml\XMLParser.h"
+					>
+				</File>
+				<File
+					RelativePath="..\xml\XMLToken.h"
+					>
+				</File>
+				<File
+					RelativePath="..\xml\XMLTree.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
