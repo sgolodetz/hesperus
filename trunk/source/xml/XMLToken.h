@@ -10,7 +10,7 @@
 
 namespace hesp {
 
-enum TokenType
+enum XMLTokenType
 {
 	XMLT_EQUALS,		// =
 	XMLT_IDENT,			// identifier
@@ -25,18 +25,18 @@ class XMLToken
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	TokenType m_type;
+	XMLTokenType m_type;
 	std::string m_value;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	XMLToken(TokenType type, const std::string& value)
+	XMLToken(XMLTokenType type, const std::string& value)
 	:	m_type(type), m_value(value)
 	{}
 
 	//#################### PUBLIC METHODS ####################
 public:
-	TokenType type() const				{ return m_type; }
+	XMLTokenType type() const			{ return m_type; }
 	const std::string& value() const	{ return m_value; }
 };
 

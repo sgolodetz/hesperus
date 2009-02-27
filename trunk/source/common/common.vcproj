@@ -1491,6 +1491,10 @@
 				Name=".cpp"
 				>
 				<File
+					RelativePath="..\xml\XMLElement.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\xml\XMLLexer.cpp"
 					>
 				</File>
@@ -1498,14 +1502,14 @@
 					RelativePath="..\xml\XMLParser.cpp"
 					>
 				</File>
-				<File
-					RelativePath="..\xml\XMLTree.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name=".h"
 				>
+				<File
+					RelativePath="..\xml\XMLElement.h"
+					>
+				</File>
 				<File
 					RelativePath="..\xml\XMLLexer.h"
 					>
@@ -1516,10 +1520,6 @@
 				</File>
 				<File
 					RelativePath="..\xml\XMLToken.h"
-					>
-				</File>
-				<File
-					RelativePath="..\xml\XMLTree.h"
 					>
 				</File>
 			</Filter>

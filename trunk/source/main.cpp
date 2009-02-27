@@ -9,7 +9,7 @@
 #include <source/exceptions/Exception.h>
 #include <source/game/Game.h>
 #if 0
-#include <source/xml/XMLLexer.h>
+#include <source/xml/XMLParser.h>
 #endif
 using namespace hesp;
 
@@ -34,6 +34,12 @@ try
 		}
 		std::cout << ' ' << token->value() << std::endl;
 	}
+#endif
+#if 0
+	XMLLexer_Ptr lexer(new XMLLexer("Cube.mesh.xml"));
+	XMLParser parser(lexer);
+	XMLElement_CPtr root = parser.parse();
+	// TODO
 #endif
 
 	Game game;
