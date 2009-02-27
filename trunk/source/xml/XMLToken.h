@@ -12,14 +12,13 @@ namespace hesp {
 
 enum TokenType
 {
-	XML_EQUALS,				// =
-	XML_IDENT,				// identifier
-	XML_LBRACKET,			// <
-	XML_LSLASHBRACKET,		// </
-	XML_QUOTE,				// "
-	XML_RBRACKET,			// >
-	XML_RSLASHBRACKET,		// />
-	XML_VALUE,				// attribute value
+	XMLT_EQUALS,		// =
+	XMLT_IDENT,			// identifier
+	XMLT_LBRACKET,		// <
+	XMLT_LSLASH,		// </
+	XMLT_RBRACKET,		// >
+	XMLT_RSLASH,		// />
+	XMLT_VALUE,			// "attribute value"
 };
 
 class XMLToken
@@ -40,6 +39,9 @@ public:
 	TokenType type() const				{ return m_type; }
 	const std::string& value() const	{ return m_value; }
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<XMLToken> XMLToken_Ptr;
 
 }
 
