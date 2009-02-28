@@ -1169,6 +1169,14 @@
 				<Filter
 					Name=".cpp"
 					>
+					<File
+						RelativePath="..\level\models\BoneWeight.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Material.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -1178,7 +1186,19 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\BoneWeight.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Material.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\Model.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\ModelVertex.h"
 						>
 					</File>
 				</Filter>

@@ -45,6 +45,7 @@ Bone
 BoneConfiguration
 {
 	std::vector<Bone> bones
+	std::map<std::string,int> boneLookup
 }
 
 Keyframe
@@ -60,7 +61,8 @@ Animation
 
 Skeleton
 {
-	BoneConfiguration baseBoneConfiguration
+	BoneConfiguration boneConfiguration
+	std::vector<Matrix44> baseBoneMatrices
 	std::map<std::string,Animation> animations
 }
 
@@ -75,7 +77,7 @@ Model
 
 ***
 
-1) Depending on the current animation and timing, we use the base bone configuration and the relevant animation keyframe(s) to construct the current bone configuration.
+1) Depending on the current animation and timing, we use the base bone matrices and the relevant animation keyframe(s) to construct the current bone configuration.
 
 2) For each submesh, we construct vertex and normal buffers from the base vertex and normal data and the current bone configuration.
 
