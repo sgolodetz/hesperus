@@ -44,7 +44,7 @@ Bone
 
 BoneConfiguration
 {
-	std::vector<Bone> bones
+	std::vector<Bone_Ptr> bones
 	std::map<std::string,int> boneLookup
 }
 

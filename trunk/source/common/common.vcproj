@@ -1190,6 +1190,10 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\level\models\BoneConfiguration.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\BoneWeight.cpp"
 						>
 					</File>
@@ -1203,6 +1207,10 @@
 					>
 					<File
 						RelativePath="..\level\models\Bone.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\BoneConfiguration.h"
 						>
 					</File>
 					<File
