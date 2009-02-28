@@ -1190,6 +1190,10 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\level\models\Animation.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\BoneConfiguration.cpp"
 						>
 					</File>
@@ -1205,6 +1209,10 @@
 				<Filter
 					Name=".h"
 					>
+					<File
+						RelativePath="..\level\models\Animation.h"
+						>
+					</File>
 					<File
 						RelativePath="..\level\models\Bone.h"
 						>
