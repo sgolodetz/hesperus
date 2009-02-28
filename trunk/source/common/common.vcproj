@@ -463,6 +463,26 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="matrices"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\math\matrices\Matrix44.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\math\matrices\Matrix44.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="level"
