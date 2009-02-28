@@ -8,7 +8,6 @@
 
 #include <map>
 #include <string>
-#include <vector>
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
@@ -25,7 +24,7 @@ class XMLElement
 private:
 	std::string m_name;
 	std::map<std::string,std::string> m_attributes;
-	std::vector<XMLElement_Ptr> m_children;
+	std::map<std::string,XMLElement_Ptr> m_children;
 
 	//#################### CONSTRUCTORS ####################
 public:

@@ -39,7 +39,7 @@ Bone
 	std::string name
 	Matrix44 absoluteMatrix
 	Matrix44 relativeMatrix
-	int parentID (-1 = none)
+	Bone_Ptr parent (we use a Bone_Ptr so that we can link to bones in other models)
 }
 
 BoneConfiguration

@@ -15,7 +15,7 @@ XMLElement::XMLElement(const std::string& name)
 //#################### PUBLIC METHODS ####################
 void XMLElement::add_child(const XMLElement_Ptr& child)
 {
-	m_children.push_back(child);
+	m_children.insert(std::make_pair(child->name(), child));
 }
 
 const std::string& XMLElement::name() const
