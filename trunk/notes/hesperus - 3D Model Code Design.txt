@@ -57,6 +57,7 @@ Keyframe
 Animation
 {
 	std::vector<Keyframe> keyframes
+	double length
 }
 
 Skeleton

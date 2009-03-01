@@ -16,9 +16,17 @@ class Animation
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<Keyframe> m_keyframes;
+	double m_length;
+	std::vector<Keyframe_Ptr> m_keyframes;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	Animation(double length, const std::vector<Keyframe_Ptr>& keyframes);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	const Keyframe& keyframes(int i) const;
+	double length() const;
 };
 
 }

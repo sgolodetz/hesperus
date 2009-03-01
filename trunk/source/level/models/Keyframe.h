@@ -8,6 +8,9 @@
 
 #include <vector>
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include <source/math/matrices/Matrix44.h>
 
 namespace hesp {
@@ -21,6 +24,10 @@ private:
 
 	// TODO
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Keyframe> Keyframe_Ptr;
+typedef shared_ptr<const Keyframe> Keyframe_CPtr;
 
 }
 
