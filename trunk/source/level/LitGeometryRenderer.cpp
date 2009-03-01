@@ -32,7 +32,7 @@ LitGeometryRenderer::LitGeometryRenderer(const TexLitPolyVector& polygons, const
 	m_lightmaps.resize(lightmapCount);
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		m_lightmaps[i] = TextureFactory::create_texture24(lightmaps[i]/*, GL_MODULATE*/);
+		m_lightmaps[i] = TextureFactory::create_texture24(lightmaps[i], true);
 	}
 }
 

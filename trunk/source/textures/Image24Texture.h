@@ -26,10 +26,11 @@ class Image24Texture : public Texture
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Image24_CPtr m_image;
+	bool m_clamp;
 
 	//#################### CONSTRUCTORS ####################
 protected:
-	Image24Texture(const Image24_CPtr& image);
+	Image24Texture(const Image24_CPtr& image, bool clamp);
 
 	//#################### PROTECTED METHODS ####################
 protected:

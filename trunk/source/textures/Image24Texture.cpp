@@ -8,11 +8,13 @@
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
+#define GL_CLAMP_TO_EDGE 0x812F		// this wrapping mode is only defined in OpenGL 1.2, so it's not in the normal header (unfortunately)
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Image24Texture::Image24Texture(const Image24_CPtr& image)
-:	m_image(image)
+Image24Texture::Image24Texture(const Image24_CPtr& image, bool clamp)
+:	m_image(image), m_clamp(clamp)
 {
 	reload();
 }
@@ -29,6 +31,13 @@ void Image24Texture::reload() const
 	// Enable trilinear filtering for this texture when minifying.
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+	// Clamp the texture if necessary (useful for things like lightmaps, for example).
+	if(m_clamp)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
 
 	int width = m_image->width();
 	int height = m_image->height();

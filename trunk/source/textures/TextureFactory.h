@@ -15,7 +15,7 @@ class TextureFactory
 {
 	//#################### PUBLIC METHODS ####################
 public:
-	static Texture_Ptr create_texture24(const Image24_CPtr& image);
+	static Texture_Ptr create_texture24(const Image24_CPtr& image, bool clamp = false);
 
 	//#################### PRIVATE METHODS ####################
 private:
