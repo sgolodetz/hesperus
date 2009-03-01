@@ -970,6 +970,10 @@
 					Name=".h"
 					>
 					<File
+						RelativePath="..\level\entities\AnimationComponent.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\BipedChangePoseCommand.h"
 						>
 					</File>
@@ -1010,6 +1014,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\entities\IAnimationComponent.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\entities\ICameraComponent.h"
 						>
 					</File>
@@ -1027,10 +1035,6 @@
 					</File>
 					<File
 						RelativePath="..\level\entities\IPhysicsComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\IVisibilityComponent.h"
 						>
 					</File>
 					<File
@@ -1054,10 +1058,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\VisibilityComponent.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\Yoke.h"
 						>
 					</File>
@@ -1069,6 +1069,10 @@
 				<Filter
 					Name=".cpp"
 					>
+					<File
+						RelativePath="..\level\entities\AnimationComponent.cpp"
+						>
+					</File>
 					<File
 						RelativePath="..\level\entities\BipedChangePoseCommand.cpp"
 						>
@@ -1115,10 +1119,6 @@
 					</File>
 					<File
 						RelativePath="..\level\entities\VariableCameraComponent.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\VisibilityComponent.cpp"
 						>
 					</File>
 					<File

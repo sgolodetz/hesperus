@@ -134,14 +134,14 @@ void Level::render_entities() const
 	glDisable(GL_CULL_FACE);
 	glColor3d(1,1,0);
 
-	const std::vector<Entity_Ptr>& visibles = m_entityManager->visibles();
-	int visiblesCount = static_cast<int>(visibles.size());
-	for(int i=0; i<visiblesCount; ++i)
+	const std::vector<Entity_Ptr>& animatables = m_entityManager->animatables();
+	int animatablesCount = static_cast<int>(animatables.size());
+	for(int i=0; i<animatablesCount; ++i)
 	{
 		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
-		ICameraComponent_Ptr camComponent = visibles[i]->camera_component();
-		ICollisionComponent_Ptr colComponent = visibles[i]->collision_component();
-		if(camComponent && colComponent && visibles[i] != m_entityManager->viewer())
+		ICameraComponent_Ptr camComponent = animatables[i]->camera_component();
+		ICollisionComponent_Ptr colComponent = animatables[i]->collision_component();
+		if(camComponent && colComponent && animatables[i] != m_entityManager->viewer())
 		{
 			const Camera& camera = camComponent->camera();
 			const AABB3d& aabb = m_entityManager->aabbs()[colComponent->aabb_indices()[colComponent->pose()]];

@@ -1,10 +1,10 @@
 /***
- * hesperus: IVisibilityComponent.h
+ * hesperus: IAnimationComponent.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_IVISIBILITYCOMPONENT
-#define H_HESP_IVISIBILITYCOMPONENT
+#ifndef H_HESP_IANIMATIONCOMPONENT
+#define H_HESP_IANIMATIONCOMPONENT
 
 #include <iosfwd>
 
@@ -13,11 +13,11 @@ using boost::shared_ptr;
 
 namespace hesp {
 
-class IVisibilityComponent
+class IAnimationComponent
 {
 	//#################### DESTRUCTOR ####################
 public:
-	virtual ~IVisibilityComponent() {}
+	virtual ~IAnimationComponent() {}
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
@@ -25,7 +25,7 @@ public:
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<IVisibilityComponent> IVisibilityComponent_Ptr;
+typedef shared_ptr<IAnimationComponent> IAnimationComponent_Ptr;
 
 }
 

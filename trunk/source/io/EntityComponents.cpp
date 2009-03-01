@@ -12,12 +12,12 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 EntityComponents::EntityComponents()
 {
+	add_entry("Animation");
 	add_entry("VariableCamera");
 	add_entry("Collision");
 	add_entry("Health");
 	add_entry("Nav");
 	add_entry("Physics");
-	add_entry("Visibility");
 	add_entry("Yoke");
 }
 

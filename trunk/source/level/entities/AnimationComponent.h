@@ -1,18 +1,18 @@
 /***
- * hesperus: VisibilityComponent.h
+ * hesperus: AnimationComponent.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_VISIBILITYCOMPONENT
-#define H_HESP_VISIBILITYCOMPONENT
+#ifndef H_HESP_ANIMATIONCOMPONENT
+#define H_HESP_ANIMATIONCOMPONENT
 
 #include <string>
 
-#include "IVisibilityComponent.h"
+#include "IAnimationComponent.h"
 
 namespace hesp {
 
-class VisibilityComponent : public IVisibilityComponent
+class AnimationComponent : public IAnimationComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -20,7 +20,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	VisibilityComponent(std::istream& is);
+	AnimationComponent(std::istream& is);
 
 	//#################### PUBLIC METHODS ####################
 public:

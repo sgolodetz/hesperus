@@ -9,13 +9,13 @@ Instances
 1
 Instance Player
 {
+GameModel = Player
 Position = ( 6 24 6 )
 Look = ( 1 -0.5 0 )
 AABBs = [0,1]
 Pose = 0
 Health = 100
 Mass = 75
-GameModel = player.x
 Yoke = User
 }
 }

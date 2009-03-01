@@ -12,12 +12,12 @@ using boost::lexical_cast;
 
 #include <source/images/BitmapLoader.h>
 #include <source/io/FieldIO.h>
+#include <source/level/entities/AnimationComponent.h>
 #include <source/level/entities/CollisionComponent.h>
 #include <source/level/entities/HealthComponent.h>
 #include <source/level/entities/NavComponent.h>
 #include <source/level/entities/PhysicsComponent.h>
 #include <source/level/entities/VariableCameraComponent.h>
-#include <source/level/entities/VisibilityComponent.h>
 #include <source/level/entities/YokeComponent.h>
 #include <source/level/yokes/minimus/MinimusGotoPositionYoke.h>
 #include <source/level/yokes/null/NullYoke.h>
@@ -177,6 +177,11 @@ EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is, const
 
 			Entity_Ptr entity(new Entity(entityType));
 
+			if(entityComponents.has("Animation"))
+			{
+				IAnimationComponent_Ptr animationComponent(new AnimationComponent(is));
+				entity->set_animation_component(animationComponent);
+			}
 			if(entityComponents.has("VariableCamera"))
 			{
 				ICameraComponent_Ptr cameraComponent(new VariableCameraComponent(is));
@@ -200,11 +205,6 @@ EntityManager_Ptr FileSectionUtil::load_entities_section(std::istream& is, const
 			{
 				IPhysicsComponent_Ptr physicsComponent(new PhysicsComponent(is));
 				entity->set_physics_component(physicsComponent);
-			}
-			if(entityComponents.has("Visibility"))
-			{
-				IVisibilityComponent_Ptr visibilityComponent(new VisibilityComponent(is));
-				entity->set_visibility_component(visibilityComponent);
 			}
 			if(entityComponents.has("Yoke"))
 			{

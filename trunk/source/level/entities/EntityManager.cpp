@@ -20,8 +20,8 @@ EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities, const std:
 	for(int i=0; i<entityCount; ++i)
 	{
 		entities[i]->set_id(i);
+		if(entities[i]->animation_component()) m_animatables.push_back(entities[i]);
 		if(entities[i]->physics_component()) m_simulables.push_back(entities[i]);
-		if(entities[i]->visibility_component()) m_visibles.push_back(entities[i]);
 
 		if(entities[i]->yoke_component())
 		{
@@ -45,6 +45,11 @@ const std::vector<AABB3d>& EntityManager::aabbs() const
 	return m_aabbs;
 }
 
+const std::vector<Entity_Ptr>& EntityManager::animatables() const
+{
+	return m_animatables;
+}
+
 const std::string& EntityManager::definition_filename() const
 {
 	return m_entDefFilename;
@@ -63,11 +68,6 @@ const std::vector<Entity_Ptr>& EntityManager::simulables() const
 Entity_Ptr EntityManager::viewer() const
 {
 	return m_viewer;
-}
-
-const std::vector<Entity_Ptr>& EntityManager::visibles() const
-{
-	return m_visibles;
 }
 
 const std::vector<Entity_Ptr>& EntityManager::yokeables() const

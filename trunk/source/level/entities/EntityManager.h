@@ -24,8 +24,8 @@ private:
 
 	std::vector<AABB3d> m_aabbs;
 	std::vector<Entity_Ptr> m_entities;
+	std::vector<Entity_Ptr> m_animatables;
 	std::vector<Entity_Ptr> m_simulables;	// entities which should undergo physical simulation
-	std::vector<Entity_Ptr> m_visibles;
 	std::vector<Entity_Ptr> m_yokeables;
 	Entity_Ptr m_viewer;
 
@@ -36,11 +36,11 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<AABB3d>& aabbs() const;
+	const std::vector<Entity_Ptr>& animatables() const;
 	const std::string& definition_filename() const;
 	const std::vector<Entity_Ptr>& entities() const;
 	const std::vector<Entity_Ptr>& simulables() const;
 	Entity_Ptr viewer() const;
-	const std::vector<Entity_Ptr>& visibles() const;
 	const std::vector<Entity_Ptr>& yokeables() const;
 };
 
