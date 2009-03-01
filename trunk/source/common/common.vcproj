@@ -1205,6 +1205,10 @@
 						RelativePath="..\level\models\Material.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\models\Skeleton.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -1239,6 +1243,10 @@
 					</File>
 					<File
 						RelativePath="..\level\models\ModelVertex.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Skeleton.h"
 						>
 					</File>
 				</Filter>
