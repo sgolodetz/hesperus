@@ -1,22 +1,20 @@
 /***
- * hesperus: Model.h
+ * hesperus: Mesh.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_MODEL
-#define H_HESP_MODEL
+#ifndef H_HESP_MESH
+#define H_HESP_MESH
 
-#include "Mesh.h"
-#include "Skeleton.h"
+#include "Submesh.h"
 
 namespace hesp {
 
-class Model
+class Mesh
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	Mesh m_mesh;
-	Skeleton m_skeleton;
+	std::vector<Submesh> m_submeshes;
 
 	// TODO
 };

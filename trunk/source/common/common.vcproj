@@ -1238,6 +1238,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\Mesh.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\Model.h"
 						>
 					</File>
@@ -1247,6 +1251,10 @@
 					</File>
 					<File
 						RelativePath="..\level\models\Skeleton.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Submesh.h"
 						>
 					</File>
 				</Filter>
