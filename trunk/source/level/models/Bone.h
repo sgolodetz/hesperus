@@ -12,6 +12,7 @@
 using boost::shared_ptr;
 
 #include <source/math/matrices/Matrix44.h>
+#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 
@@ -29,7 +30,9 @@ private:
 	Matrix44 m_relativeMatrix;
 	Bone_Ptr m_parent;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	Bone(int id, const std::string& name, const Vector3d& position, double rotationAngle, const Vector3d& rotationAxis);
 };
 
 }
