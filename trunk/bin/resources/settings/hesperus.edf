@@ -8,7 +8,7 @@ EntityComponents
 {
 Animation
 {
-	GameModel : filename
+	GameModel : string
 }
 VariableCamera	// this is treated as a special case in the editor to allow the entity to be dragged around
 {

@@ -24,7 +24,7 @@ class XMLElement
 private:
 	std::string m_name;
 	std::map<std::string,std::string> m_attributes;
-	std::map<std::string,XMLElement_Ptr> m_children;
+	std::multimap<std::string,XMLElement_Ptr> m_children;
 
 	//#################### CONSTRUCTORS ####################
 public:

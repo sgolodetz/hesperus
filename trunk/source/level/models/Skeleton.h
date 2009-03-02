@@ -22,6 +22,10 @@ private:
 	// TODO
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Skeleton> Skeleton_Ptr;
+typedef shared_ptr<const Skeleton> Skeleton_CPtr;
+
 }
 
 #endif

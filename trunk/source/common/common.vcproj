@@ -1363,6 +1363,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\io\ModelFilesUtil.h"
+					>
+				</File>
+				<File
 					RelativePath="..\io\NavFileUtil.h"
 					>
 				</File>
@@ -1468,6 +1472,10 @@
 				</File>
 				<File
 					RelativePath="..\io\LineIO.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\io\ModelFilesUtil.cpp"
 					>
 				</File>
 				<File
