@@ -41,16 +41,22 @@ try
 	{
 		// Extract all the necessary bits of information from the XML tree below each bone, then construct the bone itself.
 		const XMLElement_CPtr& boneElt = boneElts[i];
+
 		int id = lexical_cast<int,std::string>(boneElt->attribute("id"));
+
 		std::string name = boneElt->attribute("name");
+
 		XMLElement_CPtr positionElt = boneElt->find_unique_child("position");
 		Vector3d position = extract_vector3d(positionElt);
+
 		XMLElement_CPtr rotationElt = boneElt->find_unique_child("rotation");
+
 		double rotationAngle = lexical_cast<double,std::string>(rotationElt->attribute("angle"));
+
 		XMLElement_CPtr axisElt = rotationElt->find_unique_child("axis");
 		Vector3d rotationAxis = extract_vector3d(axisElt);
 
-		bones[i].reset(new Bone(id, name, position, rotationAngle, rotationAxis));
+		bones[i].reset(new Bone(id, name, position, rotationAxis, rotationAngle));
 	}
 
 	// Construct the bone configuration.
