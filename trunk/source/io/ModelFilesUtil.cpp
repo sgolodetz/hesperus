@@ -56,7 +56,7 @@ try
 		XMLElement_CPtr axisElt = rotationElt->find_unique_child("axis");
 		Vector3d rotationAxis = extract_vector3d(axisElt);
 
-		bones[i].reset(new Bone(id, name, position, rotationAxis, rotationAngle));
+		bones[id].reset(new Bone(name, position, rotationAxis, rotationAngle));
 	}
 
 	// Construct the bone configuration.
@@ -64,6 +64,10 @@ try
 
 	// Load in the bone hierarchy.
 	XMLElement_CPtr bonehierarchyElt = skeletonElt->find_unique_child("bonehierarchy");
+	// TODO
+
+	// Load in the animations.
+	// TODO
 
 	// NYI
 	throw 23;

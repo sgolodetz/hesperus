@@ -24,7 +24,6 @@ class Bone
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	int m_id;
 	std::string m_name;
 	Matrix44_Ptr m_absoluteMatrix;
 	Matrix44_Ptr m_relativeMatrix;
@@ -32,7 +31,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Bone(int id, const std::string& name, const Vector3d& position, const Vector3d& rotationAxis, double rotationAngle);
+	Bone(const std::string& name, const Vector3d& position, const Vector3d& rotationAxis, double rotationAngle);
 };
 
 }
