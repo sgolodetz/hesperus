@@ -11,7 +11,7 @@ namespace hesp {
 Bone::Bone(const std::string& name, const Vector3d& position, const Vector3d& rotationAxis, double rotationAngle)
 :	m_name(name)
 {
-	m_relativeMatrix = Matrix44::from_axis_angle(rotationAxis, rotationAngle);
+	m_relativeMatrix = Matrix44::from_axis_angle_translation(rotationAxis, rotationAngle, position);
 
 	// NYI
 	throw 23;
