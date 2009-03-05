@@ -29,6 +29,10 @@ public:
 	double length() const;
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Animation> Animation_Ptr;
+typedef shared_ptr<const Animation> Animation_CPtr;
+
 }
 
 #endif

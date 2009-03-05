@@ -19,7 +19,6 @@ class Keyframe
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	double m_time;
 	std::vector<Matrix44> m_boneMatrices;
 
 	// TODO
