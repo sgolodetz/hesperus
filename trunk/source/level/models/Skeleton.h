@@ -16,7 +16,7 @@ class Skeleton
 	//#################### PRIVATE VARIABLES ####################
 private:
 	BoneConfiguration_Ptr m_boneConfiguration;
-	std::vector<Matrix44_Ptr> m_baseBoneMatrices;
+	std::vector<Matrix44_CPtr> m_baseBoneMatrices;
 	std::map<std::string,Animation_Ptr> m_animations;
 
 	//#################### CONSTRUCTORS ####################

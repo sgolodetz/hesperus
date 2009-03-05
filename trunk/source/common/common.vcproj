@@ -1214,6 +1214,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\Model.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\Skeleton.cpp"
 						>
 					</File>

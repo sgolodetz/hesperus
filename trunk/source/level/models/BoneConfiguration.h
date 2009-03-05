@@ -26,6 +26,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	int bone_count() const;
 	Bone_Ptr bones(int i);
 	Bone_CPtr bones(int i) const;
 	Bone_Ptr bones(const std::string& name);

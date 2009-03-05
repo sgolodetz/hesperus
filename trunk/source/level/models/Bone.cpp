@@ -20,7 +20,7 @@ const std::string& Bone::name() const
 	return m_name;
 }
 
-const Matrix44_Ptr& Bone::relative_matrix() const
+Matrix44_CPtr Bone::relative_matrix() const
 {
 	return m_relativeMatrix;
 }

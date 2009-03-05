@@ -15,10 +15,12 @@ class Model
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	Mesh m_mesh;
-	Skeleton m_skeleton;
+	Mesh_Ptr m_mesh;
+	Skeleton_Ptr m_skeleton;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton);
 };
 
 }

@@ -19,6 +19,10 @@ private:
 	// TODO
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Mesh> Mesh_Ptr;
+typedef shared_ptr<const Mesh> Mesh_CPtr;
+
 }
 
 #endif
