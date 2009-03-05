@@ -12,9 +12,17 @@ Bone::Bone(const std::string& name, const Vector3d& position, const Vector3d& ro
 :	m_name(name)
 {
 	m_relativeMatrix = Matrix44::from_axis_angle_translation(rotationAxis, rotationAngle, position);
+}
 
-	// NYI
-	throw 23;
+//#################### PUBLIC METHODS ####################
+const std::string& Bone::name() const
+{
+	return m_name;
+}
+
+void Bone::set_parent(const Bone_Ptr& parent)
+{
+	m_parent = parent;
 }
 
 }

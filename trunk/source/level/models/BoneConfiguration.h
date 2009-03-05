@@ -20,7 +20,9 @@ private:
 	std::vector<Bone_Ptr> m_bones;
 	std::map<std::string,int> m_boneLookup;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	BoneConfiguration(const std::vector<Bone_Ptr>& bones);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -33,6 +35,10 @@ public:
 private:
 	Bone_Ptr find_bone(const std::string& name) const;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<BoneConfiguration> BoneConfiguration_Ptr;
+typedef shared_ptr<const BoneConfiguration> BoneConfiguration_CPtr;
 
 }
 

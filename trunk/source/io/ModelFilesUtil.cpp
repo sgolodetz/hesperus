@@ -60,11 +60,21 @@ try
 	}
 
 	// Construct the bone configuration.
-	// TODO
+	BoneConfiguration_Ptr boneConfiguration(new BoneConfiguration(bones));
 
 	// Load in the bone hierarchy.
 	XMLElement_CPtr bonehierarchyElt = skeletonElt->find_unique_child("bonehierarchy");
-	// TODO
+	std::vector<XMLElement_CPtr> boneparentElts = bonehierarchyElt->find_children("boneparent");
+	int boneparentCount = static_cast<int>(boneparentElts.size());
+	for(int i=0; i<boneparentCount; ++i)
+	{
+		const XMLElement_CPtr& boneparentElt = boneparentElts[i];
+		std::string childName = boneparentElt->attribute("bone");
+		std::string parentName = boneparentElt->attribute("parent");
+		Bone_Ptr child = boneConfiguration->bones(childName);
+		Bone_Ptr parent = boneConfiguration->bones(parentName);
+		child->set_parent(parent);
+	}
 
 	// Load in the animations.
 	// TODO

@@ -32,6 +32,11 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Bone(const std::string& name, const Vector3d& position, const Vector3d& rotationAxis, double rotationAngle);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	const std::string& name() const;
+	void set_parent(const Bone_Ptr& parent);
 };
 
 }

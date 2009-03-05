@@ -9,6 +9,17 @@
 
 namespace hesp {
 
+//#################### CONSTRUCTORS ####################
+BoneConfiguration::BoneConfiguration(const std::vector<Bone_Ptr>& bones)
+:	m_bones(bones)
+{
+	int boneCount = static_cast<int>(bones.size());
+	for(int i=0; i<boneCount; ++i)
+	{
+		m_boneLookup.insert(std::make_pair(bones[i]->name(), i));
+	}
+}
+
 //#################### PUBLIC METHODS ####################
 Bone_Ptr BoneConfiguration::bones(int i)
 {
