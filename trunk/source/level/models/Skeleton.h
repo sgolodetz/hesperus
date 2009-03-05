@@ -26,7 +26,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void render_bones() const;
-	void select_keyframe(const std::string& animationName, int keyframe);
+	void select_keyframe(const std::string& animationName, int keyframeIndex);
 	void specify_relative_bone_matrices(const std::vector<Matrix44_CPtr>& boneMatrices);
 
 	//#################### PRIVATE METHODS ####################

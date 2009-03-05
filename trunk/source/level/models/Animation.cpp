@@ -19,9 +19,9 @@ Animation::Animation(double length, const std::vector<Keyframe_Ptr>& keyframes)
 {}
 
 //#################### PUBLIC METHODS ####################
-const Keyframe& Animation::keyframes(int i) const
+const Keyframe_Ptr& Animation::keyframes(int i) const
 {
-	if(0 <= i && i < static_cast<int>(m_keyframes.size()) && m_keyframes[i]) return *m_keyframes[i];
+	if(0 <= i && i < static_cast<int>(m_keyframes.size()) && m_keyframes[i]) return m_keyframes[i];
 	else throw Exception("Invalid keyframe " + lexical_cast<std::string,int>(i));
 }
 

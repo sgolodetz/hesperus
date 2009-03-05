@@ -24,6 +24,10 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Keyframe(const std::vector<Matrix44_CPtr>& boneMatrices);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	const std::vector<Matrix44_CPtr>& bone_matrices() const;
 };
 
 //#################### TYPEDEFS ####################
