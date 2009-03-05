@@ -22,6 +22,16 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::map<std::string,Animation_Ptr>& animations);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	void render_bones() const;
+	void select_keyframe(const std::string& animationName, int keyframe);
+	void specify_relative_bone_matrices(const std::vector<Matrix44_CPtr>& boneMatrices);
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void update_absolute_bone_matrices();
 };
 
 //#################### TYPEDEFS ####################

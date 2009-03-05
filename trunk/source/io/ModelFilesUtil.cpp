@@ -137,7 +137,7 @@ try
 		std::vector<Keyframe_Ptr> keyframes(keyframeCount);
 		for(int j=0; j<keyframeCount; ++j)
 		{
-			std::vector<Matrix44_Ptr> boneMatrices(boneCount);
+			std::vector<Matrix44_CPtr> boneMatrices(boneCount);
 			for(int k=0; k<boneCount; ++k)
 			{
 				Bone_CPtr bone = boneConfiguration->bones(k);

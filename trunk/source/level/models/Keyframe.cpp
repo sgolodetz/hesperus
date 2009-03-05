@@ -8,7 +8,7 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Keyframe::Keyframe(const std::vector<Matrix44_Ptr>& boneMatrices)
+Keyframe::Keyframe(const std::vector<Matrix44_CPtr>& boneMatrices)
 :	m_boneMatrices(boneMatrices)
 {}
 
