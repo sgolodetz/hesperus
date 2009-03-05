@@ -36,6 +36,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::string& name() const;
+	const Matrix44_Ptr& relative_matrix() const;
 	void set_parent(const Bone_Ptr& parent);
 };
 

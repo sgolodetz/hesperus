@@ -7,6 +7,11 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::map<std::string,Animation_Ptr>& animations)
+:	m_boneConfiguration(boneConfiguration), m_animations(animations)
+{
+	// TODO: Extract and store base bone matrices.
+}
 
 }

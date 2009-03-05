@@ -86,13 +86,11 @@ try
 	{
 		const XMLElement_CPtr& animationElt = animationElts[i];
 
-		std::string name = animationElt->attribute("name");
-		double length = lexical_cast<double,std::string>(animationElt->attribute("length"));
-
 		// Load in the tracks for the bones.
 		XMLElement_CPtr tracksElt = animationElt->find_unique_child("tracks");
 		std::vector<XMLElement_CPtr> trackElts = tracksElt->find_children("track");
 		int trackCount = static_cast<int>(trackElts.size());
+		int keyframeCount = 0;
 
 		typedef std::vector<Matrix44_Ptr> Track;
 		std::map<std::string,Track> tracks;
@@ -103,10 +101,10 @@ try
 
 			std::string bone = trackElt->attribute("bone");
 
-			// Read in the keyframes for this particular bone.
+			// Read in the bone keyframes for this particular bone.
 			XMLElement_CPtr keyframesElt = trackElt->find_unique_child("keyframes");
 			std::vector<XMLElement_CPtr> keyframeElts = keyframesElt->find_children("keyframe");
-			int keyframeCount = static_cast<int>(keyframeElts.size());
+			keyframeCount = static_cast<int>(keyframeElts.size());
 
 			Track track(keyframeCount);
 			for(int k=0; k<keyframeCount; ++k)
@@ -121,20 +119,52 @@ try
 				XMLElement_CPtr axisElt = rotateElt->find_unique_child("axis");
 				Vector3d rotateAxis = extract_vector3d(axisElt);
 
-				// TODO: Make use scale here as well if necessary.
+				// TODO: Make use of scale here as well if necessary.
 
 				track[k] = Matrix44::from_axis_angle_translation(rotateAxis, rotateAngle, translation);
 			}
 			tracks.insert(std::make_pair(bone,track));
 		}
 
-		// Use the tracks to create the keyframes (note that the file contains 'keyframes'
-		// for each bone, but I'm talking about keyframes for the whole model here).
-		// TODO
+		// Check that each track has the same number of bone keyframes.
+		for(std::map<std::string,Track>::const_iterator kt=tracks.begin(), kend=tracks.end(); kt!=kend; ++kt)
+		{
+			const Track& track = kt->second;
+			if(track.size() != keyframeCount) throw Exception("Bad track length");
+		}
+
+		// Use the tracks to create the *model* keyframes (note: these are distinct from the bone keyframes!).
+		std::vector<Keyframe_Ptr> keyframes(keyframeCount);
+		for(int j=0; j<keyframeCount; ++j)
+		{
+			std::vector<Matrix44_Ptr> boneMatrices(boneCount);
+			for(int k=0; k<boneCount; ++k)
+			{
+				Bone_CPtr bone = boneConfiguration->bones(k);
+				std::map<std::string,Track>::const_iterator kt = tracks.find(bone->name());
+				if(kt != tracks.end())
+				{
+					// If there's an animation track for this bone, use the track matrix.
+					const Track& track = kt->second;
+					boneMatrices[k] = track[j];
+				}
+				else
+				{
+					// Otherwise, use the identity matrix.
+					boneMatrices[k] = Matrix44::identity();
+				}
+			}
+
+			keyframes[j].reset(new Keyframe(boneMatrices));
+		}
+
+		std::string name = animationElt->attribute("name");
+		double length = lexical_cast<double,std::string>(animationElt->attribute("length"));
+		Animation_Ptr animation(new Animation(length, keyframes));
+		animations.insert(std::make_pair(name, animation));
 	}
 
-	// NYI
-	throw 23;
+	return Skeleton_Ptr(new Skeleton(boneConfiguration, animations));
 }
 catch(bad_lexical_cast&)
 {

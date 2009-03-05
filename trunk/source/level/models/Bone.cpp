@@ -20,6 +20,11 @@ const std::string& Bone::name() const
 	return m_name;
 }
 
+const Matrix44_Ptr& Bone::relative_matrix() const
+{
+	return m_relativeMatrix;
+}
+
 void Bone::set_parent(const Bone_Ptr& parent)
 {
 	m_parent = parent;

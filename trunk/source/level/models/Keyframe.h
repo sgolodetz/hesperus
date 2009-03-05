@@ -19,9 +19,11 @@ class Keyframe
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<Matrix44> m_boneMatrices;
+	std::vector<Matrix44_Ptr> m_boneMatrices;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	Keyframe(const std::vector<Matrix44_Ptr>& boneMatrices);
 };
 
 //#################### TYPEDEFS ####################
