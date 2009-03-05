@@ -6,6 +6,7 @@
 #include "Skeleton.h"
 
 #include <source/exceptions/Exception.h>
+#include <source/ogl/WrappedGL.h>
 
 namespace hesp {
 
@@ -25,8 +26,23 @@ Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::ma
 //#################### PUBLIC METHODS ####################
 void Skeleton::render_bones() const
 {
-	// NYI
-	throw 23;
+	int boneCount = m_boneConfiguration->bone_count();
+	for(int i=0; i<boneCount; ++i)
+	{
+		const Bone_Ptr& bone = m_boneConfiguration->bones(i);
+		const Bone_Ptr& parent = bone->parent();
+		if(parent)
+		{
+			Vector3d pos = bone->position();
+			Vector3d parentPos = parent->position();
+
+			glColor3d(1,1,1);
+			glBegin(GL_LINES);
+				glVertex3d(pos.x, pos.y, pos.z);
+				glVertex3d(parentPos.x, parentPos.y, parentPos.z);
+			glEnd();
+		}
+	}
 }
 
 void Skeleton::select_keyframe(const std::string& animationName, int keyframeIndex)
@@ -41,17 +57,46 @@ void Skeleton::select_keyframe(const std::string& animationName, int keyframeInd
 	else throw Exception("There is no animation named " + animationName);
 }
 
-void Skeleton::specify_relative_bone_matrices(const std::vector<Matrix44_CPtr>& boneMatrices)
+void Skeleton::specify_relative_bone_matrices(const std::vector<Matrix44_Ptr>& boneMatrices)
 {
-	// NYI
-	throw 23;
+	int boneCount = m_boneConfiguration->bone_count();
+	for(int i=0; i<boneCount; ++i)
+	{
+		m_boneConfiguration->bones(i)->relative_matrix() = m_baseBoneMatrices[i] * boneMatrices[i];
+	}
+	update_absolute_bone_matrices();
+}
+
+void Skeleton::update_absolute_bone_matrices()
+{
+	int boneCount = m_boneConfiguration->bone_count();
+
+	// Step 1: Clear all the existing absolute bone matrices.
+	for(int i=0; i<boneCount; ++i)
+	{
+		m_boneConfiguration->bones(i)->absolute_matrix().reset();
+	}
+
+	// Step 2: Calculate the new absolute bone matrices.
+	for(int i=0; i<boneCount; ++i)
+	{
+		calculate_absolute_bone_matrix(m_boneConfiguration->bones(i));
+	}
 }
 
 //#################### PRIVATE METHODS ####################
-void Skeleton::update_absolute_bone_matrices()
+void Skeleton::calculate_absolute_bone_matrix(const Bone_Ptr& bone)
 {
-	// NYI
-	throw 23;
+	Bone_Ptr parent = bone->parent();
+	if(parent)
+	{
+		if(!parent->absolute_matrix()) calculate_absolute_bone_matrix(parent);
+		bone->absolute_matrix() = parent->absolute_matrix() * bone->relative_matrix();
+	}
+	else
+	{
+		bone->absolute_matrix() = bone->relative_matrix();
+	}
 }
 
 }

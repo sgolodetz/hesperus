@@ -35,8 +35,13 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	Matrix44_Ptr& absolute_matrix();
+	const Matrix44_Ptr& absolute_matrix() const;
 	const std::string& name() const;
-	Matrix44_CPtr relative_matrix() const;
+	const Bone_Ptr& parent() const;
+	Vector3d position() const;
+	Matrix44_Ptr& relative_matrix();
+	const Matrix44_Ptr& relative_matrix() const;
 	void set_parent(const Bone_Ptr& parent);
 };
 

@@ -43,6 +43,9 @@ public:
 	const double *rep() const;
 };
 
+//#################### GLOBAL OPERATORS ####################
+Matrix44_Ptr operator*(const Matrix44_Ptr& lhs, const Matrix44_Ptr& rhs);
+
 }
 
 #endif

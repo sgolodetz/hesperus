@@ -16,7 +16,7 @@ class Skeleton
 	//#################### PRIVATE VARIABLES ####################
 private:
 	BoneConfiguration_Ptr m_boneConfiguration;
-	std::vector<Matrix44_CPtr> m_baseBoneMatrices;
+	std::vector<Matrix44_Ptr> m_baseBoneMatrices;
 	std::map<std::string,Animation_Ptr> m_animations;
 
 	//#################### CONSTRUCTORS ####################
@@ -27,11 +27,12 @@ public:
 public:
 	void render_bones() const;
 	void select_keyframe(const std::string& animationName, int keyframeIndex);
-	void specify_relative_bone_matrices(const std::vector<Matrix44_CPtr>& boneMatrices);
+	void specify_relative_bone_matrices(const std::vector<Matrix44_Ptr>& boneMatrices);
+	void update_absolute_bone_matrices();
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void update_absolute_bone_matrices();
+	void calculate_absolute_bone_matrix(const Bone_Ptr& bone);
 };
 
 //#################### TYPEDEFS ####################

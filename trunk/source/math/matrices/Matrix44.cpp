@@ -86,4 +86,23 @@ const double *Matrix44::rep() const
 	return &m[0];
 }
 
+//#################### GLOBAL OPERATORS ####################
+Matrix44_Ptr operator*(const Matrix44_Ptr& lhs, const Matrix44_Ptr& rhs)
+{
+	Matrix44_Ptr ret = Matrix44::zeros();
+
+	Matrix44& lmat = *lhs;
+	Matrix44& rmat = *rhs;
+	Matrix44& mat = *ret;
+
+	for(int i=0; i<4; ++i)
+		for(int j=0; j<4; ++j)
+			for(int k=0; k<4; ++k)
+			{
+				mat(i,j) += lmat(i,k) * rmat(k,j);
+			}
+
+	return ret;
+}
+
 }
