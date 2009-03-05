@@ -30,18 +30,14 @@ void Skeleton::render_bones() const
 	for(int i=0; i<boneCount; ++i)
 	{
 		const Bone_Ptr& bone = m_boneConfiguration->bones(i);
-		const Bone_Ptr& parent = bone->parent();
-		if(parent)
-		{
-			Vector3d pos = bone->position();
-			Vector3d parentPos = parent->position();
+		Vector3d pos = bone->position();
+		Vector3d orient = bone->orientation();
+		Vector3d end = pos + orient * 0.5;
 
-			glColor3d(1,1,1);
-			glBegin(GL_LINES);
-				glVertex3d(pos.x, pos.y, pos.z);
-				glVertex3d(parentPos.x, parentPos.y, parentPos.z);
-			glEnd();
-		}
+		glBegin(GL_LINES);
+			glColor3d(1,0,0);	glVertex3d(pos.x, pos.y, pos.z);
+			glColor3d(0,1,0);	glVertex3d(end.x, end.y, end.z);
+		glEnd();
 	}
 }
 

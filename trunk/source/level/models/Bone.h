@@ -38,6 +38,7 @@ public:
 	Matrix44_Ptr& absolute_matrix();
 	const Matrix44_Ptr& absolute_matrix() const;
 	const std::string& name() const;
+	Vector3d orientation() const;
 	const Bone_Ptr& parent() const;
 	Vector3d position() const;
 	Matrix44_Ptr& relative_matrix();

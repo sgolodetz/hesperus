@@ -18,6 +18,11 @@ using boost::shared_ptr;
 #include <source/level/vis/VisTable.h>
 #include "GeometryRenderer.h"
 
+// FIXME: Remove this - it's just a test.
+#if 0
+#include <source/level/models/Skeleton.h>
+#endif
+
 namespace hesp {
 
 class Level
@@ -40,6 +45,11 @@ private:
 	OnionPortalVector m_onionPortals;
 	NavDatasetVector m_navDatasets;
 	EntityManager_Ptr m_entityManager;
+
+	// FIXME: Remove this - it's just a test.
+#if 0
+	Skeleton_Ptr m_skeleton;
+#endif
 
 	//#################### CONSTRUCTORS ####################
 public:

@@ -14,6 +14,11 @@
 #include <source/colours/Colour3d.h>
 #include <source/math/vectors/Vector3.h>
 
+// FIXME: Remove this - it's just a test.
+#if 0
+#include <source/io/ModelFilesUtil.h>
+#endif
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -32,6 +37,11 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	{
 		m_navDatasets[i]->nav_mesh()->build_collision_to_nav_lookup();
 	}
+
+	// FIXME: Remove this - it's just a test.
+#if 0
+	m_skeleton = ModelFilesUtil::load_skeleton("resources/models/Test.skeleton.xml");
+#endif
 }
 
 //#################### PUBLIC METHODS ####################
@@ -120,6 +130,16 @@ void Level::render() const
 	// Render the portals.
 #if 0
 	render_portals();
+#endif
+
+	// FIXME: Remove this - it's just a test.
+#if 0
+	// Render the test skeleton.
+	static int keyframe = 0;
+	keyframe = (keyframe + 1) % 21;
+	//m_skeleton->select_keyframe("walk", 0);
+	m_skeleton->update_absolute_bone_matrices();
+	m_skeleton->render_bones();
 #endif
 
 	glPopAttrib();

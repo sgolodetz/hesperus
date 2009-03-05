@@ -20,6 +20,16 @@ Bone::Bone(const std::string& name, const Vector3d& position, const Vector3d& ro
 Matrix44_Ptr& Bone::absolute_matrix()				{ return m_absoluteMatrix; }
 const Matrix44_Ptr& Bone::absolute_matrix() const	{ return m_absoluteMatrix; }
 const std::string& Bone::name() const				{ return m_name; }
+
+Vector3d Bone::orientation() const
+{
+	if(!m_absoluteMatrix) throw Exception("The absolute matrix for the bone has not yet been calculated");
+
+	// Extract the bone orientation from the absolute matrix and return it.
+	Matrix44& m = *m_absoluteMatrix;
+	return Vector3d(m(0,1), m(1,1), m(2,1));
+}
+
 const Bone_Ptr& Bone::parent() const				{ return m_parent; }
 
 Vector3d Bone::position() const
