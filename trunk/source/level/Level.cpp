@@ -134,10 +134,15 @@ void Level::render() const
 
 	// FIXME: Remove this - it's just a test.
 #if 0
-	// Render the test skeleton.
+	static int rate = 0;
 	static int keyframe = 0;
-	keyframe = (keyframe + 1) % 21;
-	//m_skeleton->select_keyframe("walk", 0);
+	if(rate == 0) keyframe = (keyframe + 1) % 21;
+	rate = (rate + 1) % 5;
+
+	// Render the test skeleton.
+	glTranslated(20,20,6);
+	glScaled(0.1,0.1,0.1);
+	//m_skeleton->select_keyframe("walk", keyframe);
 	m_skeleton->update_absolute_bone_matrices();
 	m_skeleton->render_bones();
 #endif
