@@ -72,10 +72,10 @@ void Skeleton::specify_relative_bone_matrices(const std::vector<Matrix44_Ptr>& b
 		Matrix44_Ptr relMatrix = baseRot * rot;
 
 		const Vector3d& basePos = m_boneConfiguration->bones(i)->base_position();
-		Vector3d pos((*boneMatrices[i])(0,3), (*boneMatrices[i])(1,3), (*boneMatrices[i])(2,3));
-		(*relMatrix)(0,3) = basePos.x + pos.x;
-		(*relMatrix)(1,3) = basePos.y + pos.y;
-		(*relMatrix)(2,3) = basePos.z + pos.z;
+		Vector3d trans((*boneMatrices[i])(0,3), (*boneMatrices[i])(1,3), (*boneMatrices[i])(2,3));
+		(*relMatrix)(0,3) = basePos.x + trans.x;
+		(*relMatrix)(1,3) = basePos.y + trans.y;
+		(*relMatrix)(2,3) = basePos.z + trans.z;
 
 		m_boneConfiguration->bones(i)->relative_matrix() = relMatrix;
 	}
