@@ -38,6 +38,21 @@ void Skeleton::render_bones() const
 			glColor3d(1,0,0);	glVertex3d(pos.x, pos.y, pos.z);
 			glColor3d(0,1,0);	glVertex3d(end.x, end.y, end.z);
 		glEnd();
+
+#if 0
+		Bone_Ptr parent = bone->parent();
+		if(bone->name() == "foot.l") parent = m_boneConfiguration->bones("lower_leg.l");
+		if(bone->name() == "foot.r") parent = m_boneConfiguration->bones("lower_leg.r");
+		if(parent)
+		{
+			Vector3d parentPos = parent->position();
+			glColor3d(1,1,1);
+			glBegin(GL_LINES);
+				glVertex3d(pos.x, pos.y, pos.z);
+				glVertex3d(parentPos.x, parentPos.y, parentPos.z);
+			glEnd();
+		}
+#endif
 	}
 }
 
@@ -58,7 +73,21 @@ void Skeleton::specify_relative_bone_matrices(const std::vector<Matrix44_Ptr>& b
 	int boneCount = m_boneConfiguration->bone_count();
 	for(int i=0; i<boneCount; ++i)
 	{
+#if 0
 		m_boneConfiguration->bones(i)->relative_matrix() = m_baseBoneMatrices[i] * boneMatrices[i];
+#else
+		Matrix44_Ptr baseRot(new Matrix44(*m_baseBoneMatrices[i]));
+		(*baseRot)(0,3) = (*baseRot)(1,3) = (*baseRot)(2,3) = 0;
+		Matrix44_Ptr rot(new Matrix44(*boneMatrices[i]));
+		(*rot)(0,3) = (*rot)(1,3) = (*rot)(2,3) = 0;
+
+		Matrix44_Ptr relMatrix = baseRot * rot;
+		(*relMatrix)(0,3) = (*m_baseBoneMatrices[i])(0,3) + (*boneMatrices[i])(0,3);
+		(*relMatrix)(1,3) = (*m_baseBoneMatrices[i])(1,3) + (*boneMatrices[i])(1,3);
+		(*relMatrix)(2,3) = (*m_baseBoneMatrices[i])(2,3) + (*boneMatrices[i])(2,3);
+
+		m_boneConfiguration->bones(i)->relative_matrix() = relMatrix;
+#endif
 	}
 	update_absolute_bone_matrices();
 }
