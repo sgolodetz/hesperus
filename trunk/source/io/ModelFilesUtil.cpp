@@ -22,6 +22,37 @@ Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
 	return Vector3d(x,y,z);
 }
 
+Mesh_Ptr ModelFilesUtil::load_mesh(const std::string& filename)
+try
+{
+	XMLLexer_Ptr lexer(new XMLLexer(filename));
+	XMLParser parser(lexer);
+	XMLElement_CPtr root = parser.parse();
+	XMLElement_CPtr meshElt = root->find_unique_child("mesh");
+
+	XMLElement_CPtr submeshesElt = meshElt->find_unique_child("submeshes");
+
+	std::vector<XMLElement_CPtr> submeshElts = submeshesElt->find_children("submesh");
+	int submeshCount = static_cast<int>(submeshElts.size());
+	for(int i=0; i<submeshCount; ++i)
+	{
+		const XMLElement_CPtr& submeshElt = submeshElts[i];
+
+		std::string material = submeshElt->attribute("material");
+
+		// TODO
+	}
+
+	// TODO
+
+	// NYI
+	throw 23;
+}
+catch(bad_lexical_cast&)
+{
+	throw Exception("An element attribute was not of the correct type");
+}
+
 Skeleton_Ptr ModelFilesUtil::load_skeleton(const std::string& filename)
 try
 {

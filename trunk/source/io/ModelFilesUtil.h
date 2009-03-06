@@ -6,7 +6,7 @@
 #ifndef H_HESP_MODELFILESUTIL
 #define H_HESP_MODELFILESUTIL
 
-#include <source/level/models/Skeleton.h>
+#include <source/level/models/Model.h>
 #include <source/xml/XMLParser.h>
 
 namespace hesp {
@@ -22,6 +22,7 @@ public:
 private:
 #endif
 	static Vector3d extract_vector3d(const XMLElement_CPtr& elt);
+	static Mesh_Ptr load_mesh(const std::string& filename);
 	static Skeleton_Ptr load_skeleton(const std::string& filename);
 };
 

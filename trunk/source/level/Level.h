@@ -20,7 +20,7 @@ using boost::shared_ptr;
 
 // FIXME: Remove this - it's just a test.
 #if 0
-#include <source/level/models/Skeleton.h>
+#include <source/level/models/Model.h>
 #endif
 
 namespace hesp {
@@ -48,6 +48,7 @@ private:
 
 	// FIXME: Remove this - it's just a test.
 #if 0
+	Mesh_Ptr m_mesh;
 	Skeleton_Ptr m_skeleton;
 #endif
 
