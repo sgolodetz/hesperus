@@ -25,6 +25,8 @@ class Bone
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::string m_name;
+	Vector3d m_basePosition;
+	Matrix44_Ptr m_baseRotation;
 	Matrix44_Ptr m_absoluteMatrix;
 	Matrix44_Ptr m_relativeMatrix;
 	Bone_Ptr m_parent;
@@ -37,6 +39,8 @@ public:
 public:
 	Matrix44_Ptr& absolute_matrix();
 	const Matrix44_Ptr& absolute_matrix() const;
+	const Vector3d& base_position() const;
+	const Matrix44_Ptr& base_rotation() const;
 	const std::string& name() const;
 	Vector3d orientation() const;
 	const Bone_Ptr& parent() const;

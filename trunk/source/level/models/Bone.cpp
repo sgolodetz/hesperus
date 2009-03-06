@@ -11,14 +11,16 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Bone::Bone(const std::string& name, const Vector3d& position, const Vector3d& rotationAxis, double rotationAngle)
-:	m_name(name)
+:	m_name(name), m_basePosition(position)
 {
-	m_relativeMatrix = Matrix44::from_axis_angle_translation(rotationAxis, rotationAngle, position);
+	m_baseRotation = Matrix44::from_axis_angle_translation(rotationAxis, rotationAngle, Vector3d(0,0,0));
 }
 
 //#################### PUBLIC METHODS ####################
 Matrix44_Ptr& Bone::absolute_matrix()				{ return m_absoluteMatrix; }
 const Matrix44_Ptr& Bone::absolute_matrix() const	{ return m_absoluteMatrix; }
+const Vector3d& Bone::base_position() const			{ return m_basePosition; }
+const Matrix44_Ptr& Bone::base_rotation() const		{ return m_baseRotation; }
 const std::string& Bone::name() const				{ return m_name; }
 
 Vector3d Bone::orientation() const
