@@ -13,7 +13,10 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::map<std::string,Animation_Ptr>& animations)
 :	m_boneConfiguration(boneConfiguration), m_animations(animations)
-{}
+{
+	set_rest_pose();
+	build_to_bone_matrices();
+}
 
 //#################### PUBLIC METHODS ####################
 void Skeleton::render_bones() const
@@ -90,6 +93,18 @@ void Skeleton::set_rest_pose()
 }
 
 //#################### PRIVATE METHODS ####################
+void Skeleton::build_to_bone_matrices()
+{
+	int boneCount = m_boneConfiguration->bone_count();
+	m_toBoneMatrices.resize(boneCount);
+
+	for(int i=0; i<boneCount; ++i)
+	{
+		const Matrix44_Ptr& fromBoneMatrix = m_boneConfiguration->bones(i)->absolute_matrix();
+		m_toBoneMatrices[i] = invert_rigid_body_transform(fromBoneMatrix);
+	}
+}
+
 void Skeleton::calculate_absolute_bone_matrix(const Bone_Ptr& bone)
 {
 	Bone_Ptr parent = bone->parent();
@@ -102,6 +117,53 @@ void Skeleton::calculate_absolute_bone_matrix(const Bone_Ptr& bone)
 	{
 		bone->absolute_matrix() = bone->relative_matrix();
 	}
+}
+
+Matrix44_Ptr invert_rigid_body_transform(const Matrix44_Ptr& mat)
+{
+	/*
+	[ux vx wx tx] -1   ( [1 0 0 tx]   [ux vx wx 0] ) -1
+	[uy vy wy ty]      ( [0 1 0 ty]   [uy vy wy 0] )
+	[uz vz wz tz]    = ( [0 0 1 tz] * [uz vz wz 0] )
+	[ 0  0  0  1]      ( [0 0 0  1]   [ 0  0  0 1] )
+
+		               [ux vx wx 0] -1   [1 0 0 tx] -1
+			           [uy vy wy 0]      [0 1 0 ty]
+				     = [ux vz wz 0]    * [0 0 1 tz]
+					   [ 0  0  0 1]      [0 0 0  1]
+
+	                   [ux uy uz 0]   [1 0 0 -tx]
+		               [vx vy vz 0]   [0 1 0 -ty]
+			         = [wx wy wz 0] * [0 0 1 -tz]
+				       [ 0  0  0 1]   [0 0 0  1 ]
+
+	                   [ux uy uz -ux*tx-uy*ty-uz*tz]
+		               [vx vy vz -vx*tx-vy*ty-vz*tz]
+			         = [wx wy wz -wx*tx-wy*ty-wz*tz]
+				       [ 0  0  0          1        ]
+
+	                   [ux uy uz -dot(u,t)]
+		               [vx vy vz -dot(v,t)]
+			         = [wx wy wz -dot(w,t)]
+				       [ 0  0  0     1    ]
+	*/
+
+	const Matrix44& m = *mat;
+
+	Vector3d u(m(0,0), m(1,0), m(2,0));
+	Vector3d v(m(0,1), m(1,1), m(2,1));
+	Vector3d w(m(0,2), m(1,2), m(2,2));
+	Vector3d t(m(0,3), m(1,3), m(2,3));
+
+	Matrix44_Ptr inv = Matrix44::zeros();
+	Matrix44& i = *inv;
+
+	i(0,0) = u.x;	i(0,1) = u.y;	i(0,2) = u.z;	i(0,3) = -u.dot(t);
+	i(1,0) = v.x;	i(1,1) = v.y;	i(1,2) = v.z;	i(1,3) = -v.dot(t);
+	i(2,0) = w.x;	i(2,1) = w.y;	i(2,2) = w.z;	i(2,3) = -w.dot(t);
+													i(3,3) = 1;
+
+	return inv;
 }
 
 void Skeleton::update_absolute_bone_matrices()
