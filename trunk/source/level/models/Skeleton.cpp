@@ -19,6 +19,11 @@ Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::ma
 }
 
 //#################### PUBLIC METHODS ####################
+const BoneConfiguration_Ptr& Skeleton::bone_configuration() const
+{
+	return m_boneConfiguration;
+}
+
 void Skeleton::render_bones() const
 {
 	int boneCount = m_boneConfiguration->bone_count();
@@ -92,6 +97,11 @@ void Skeleton::set_rest_pose()
 	specify_relative_bone_matrices(boneMatrices);
 }
 
+const Matrix44_Ptr& Skeleton::to_bone_matrix(int i) const
+{
+	return m_toBoneMatrices[i];
+}
+
 //#################### PRIVATE METHODS ####################
 void Skeleton::build_to_bone_matrices()
 {
@@ -119,7 +129,7 @@ void Skeleton::calculate_absolute_bone_matrix(const Bone_Ptr& bone)
 	}
 }
 
-Matrix44_Ptr invert_rigid_body_transform(const Matrix44_Ptr& mat)
+Matrix44_Ptr Skeleton::invert_rigid_body_transform(const Matrix44_Ptr& mat)
 {
 	/*
 	[ux vx wx tx] -1   ( [1 0 0 tx]   [ux vx wx 0] ) -1

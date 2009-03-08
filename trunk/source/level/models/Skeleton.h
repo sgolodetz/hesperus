@@ -18,9 +18,8 @@ private:
 	BoneConfiguration_Ptr m_boneConfiguration;
 	std::map<std::string,Animation_Ptr> m_animations;
 
-	// In order to do mesh skinning, we need to be able to move points into
-	// the (rest) coordinate frame of each bone. These matrices fulfil that
-	// role.
+	// In order to do mesh skinning, we need to be able to move points into the
+	// (rest) coordinate frame of each bone. These matrices fulfil that role.
 	std::vector<Matrix44_Ptr> m_toBoneMatrices;
 
 	//#################### CONSTRUCTORS ####################
@@ -29,10 +28,12 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const BoneConfiguration_Ptr& bone_configuration() const;
 	void render_bones() const;
 	void select_keyframe(const std::string& animationName, int keyframeIndex);
 	void specify_relative_bone_matrices(const std::vector<Matrix44_Ptr>& boneMatrices);
 	void set_rest_pose();
+	const Matrix44_Ptr& to_bone_matrix(int i) const;
 
 	//#################### PRIVATE METHODS ####################
 private:

@@ -24,9 +24,8 @@ private:
 	std::vector<int> m_vertIndices;
 	std::vector<ModelVertex> m_vertices;
 
-	// Note: These are created as necessary using the skin() method.
+	// Note: This is created as necessary using the skin() method.
 	std::vector<GLdouble> m_vertexArray;
-	std::vector<GLdouble> m_normalArray;
 
 	//#################### CONSTRUCTORS ####################
 public:
