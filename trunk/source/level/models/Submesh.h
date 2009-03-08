@@ -18,11 +18,17 @@ class Submesh
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Material m_material;
-	// TODO
+	std::vector<int> m_vertIndices;
 	std::vector<ModelVertex> m_vertices;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	Submesh(const Material& material, const std::vector<int>& vertIndices, const std::vector<ModelVertex>& vertices);
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Submesh> Submesh_Ptr;
+typedef shared_ptr<const Submesh> Submesh_CPtr;
 
 }
 

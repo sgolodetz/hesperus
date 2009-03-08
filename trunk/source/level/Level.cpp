@@ -15,7 +15,7 @@
 #include <source/math/vectors/Vector3.h>
 
 // FIXME: Remove this - it's just a test.
-#if 0
+#if 1
 #include <source/io/ModelFilesUtil.h>
 #endif
 
@@ -39,10 +39,10 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	}
 
 	// FIXME: Remove this - it's just a test.
-#if 0
+#if 1
 	m_mesh = ModelFilesUtil::load_mesh("resources/models/Test.mesh.xml");
 #endif
-#if 0
+#if 1
 	m_skeleton = ModelFilesUtil::load_skeleton("resources/models/Test.skeleton.xml");
 #endif
 }
@@ -136,7 +136,7 @@ void Level::render() const
 #endif
 
 	// FIXME: Remove this - it's just a test.
-#if 0
+#if 1
 	static int rate = 0;
 	static int keyframe = 0;
 	if(rate == 0) keyframe = (keyframe + 1) % 21;
@@ -145,8 +145,8 @@ void Level::render() const
 	// Render the test skeleton.
 	glTranslated(20,20,6);
 	glScaled(0.1,0.1,0.1);
-	//m_skeleton->select_keyframe("walk", keyframe);
-	m_skeleton->set_rest_pose();
+	m_skeleton->select_keyframe("walk", keyframe);
+	//m_skeleton->set_rest_pose();
 	m_skeleton->render_bones();
 #endif
 

@@ -14,9 +14,11 @@ class Mesh
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<Submesh> m_submeshes;
+	std::vector<Submesh_Ptr> m_submeshes;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	Mesh(const std::vector<Submesh_Ptr>& submeshes);
 };
 
 //#################### TYPEDEFS ####################

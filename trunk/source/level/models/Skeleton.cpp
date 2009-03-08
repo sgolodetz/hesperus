@@ -31,7 +31,7 @@ void Skeleton::render_bones() const
 			glColor3d(0,1,0);	glVertex3d(end.x, end.y, end.z);
 		glEnd();
 
-#if 0
+#if 1
 		Bone_Ptr parent = bone->parent();
 		if(bone->name() == "foot.l") parent = m_boneConfiguration->bones("lower_leg.l");
 		if(bone->name() == "foot.r") parent = m_boneConfiguration->bones("lower_leg.r");

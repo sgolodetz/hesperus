@@ -21,7 +21,13 @@ private:
 	Vector3d m_normal;
 	std::vector<BoneWeight> m_boneWeights;
 
-	// TODO
+	//#################### CONSTRUCTORS ####################
+public:
+	ModelVertex(const Vector3d& position, const Vector3d& normal);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	void add_bone_weight(const BoneWeight& boneWeight);
 };
 
 }

@@ -1214,11 +1214,23 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\Mesh.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\Model.cpp"
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\ModelVertex.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\Skeleton.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Submesh.cpp"
 						>
 					</File>
 				</Filter>

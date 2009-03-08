@@ -34,19 +34,81 @@ try
 
 	std::vector<XMLElement_CPtr> submeshElts = submeshesElt->find_children("submesh");
 	int submeshCount = static_cast<int>(submeshElts.size());
+
+	std::vector<Submesh_Ptr> submeshes;
 	for(int i=0; i<submeshCount; ++i)
 	{
 		const XMLElement_CPtr& submeshElt = submeshElts[i];
 
 		std::string material = submeshElt->attribute("material");
 
-		// TODO
+		// Read in the vertex indices for the triangles in the mesh.
+		XMLElement_CPtr facesElt = submeshElt->find_unique_child("faces");
+		std::vector<XMLElement_CPtr> faceElts = facesElt->find_children("face");
+		int faceCount = static_cast<int>(faceElts.size());
+
+		std::vector<int> vertIndices;
+		vertIndices.reserve(faceCount * 3);
+
+		for(int j=0; j<faceCount; ++j)
+		{
+			const XMLElement_CPtr& faceElt = faceElts[j];
+			int v1 = lexical_cast<int,std::string>(faceElt->attribute("v1"));
+			int v2 = lexical_cast<int,std::string>(faceElt->attribute("v2"));
+			int v3 = lexical_cast<int,std::string>(faceElt->attribute("v3"));
+			vertIndices.push_back(v1);
+			vertIndices.push_back(v2);
+			vertIndices.push_back(v3);
+		}
+
+		// Read in the vertex positions and normals.
+		XMLElement_CPtr geometryElt = submeshElt->find_unique_child("geometry");
+		XMLElement_CPtr vertexbufferElt = geometryElt->find_unique_child("vertexbuffer");
+		if(vertexbufferElt->attribute("positions") != "true" || vertexbufferElt->attribute("normals") != "true")
+			throw Exception("Both vertex positions and normals are required to be present - did you make sure to export them?");
+		std::vector<XMLElement_CPtr> vertexElts = vertexbufferElt->find_children("vertex");
+		int vertCount = static_cast<int>(vertexElts.size());
+
+		std::vector<ModelVertex> vertices;
+		vertices.reserve(vertCount);
+
+		for(int j=0; j<vertCount; ++j)
+		{
+			const XMLElement_CPtr& vertexElt = vertexElts[j];
+			XMLElement_CPtr positionElt = vertexElt->find_unique_child("position");
+			XMLElement_CPtr normalElt = vertexElt->find_unique_child("normal");
+			Vector3d position = extract_vector3d(positionElt);
+			Vector3d normal = extract_vector3d(normalElt);
+
+			vertices.push_back(ModelVertex(position, normal));
+		}
+
+		// Read in the vertex bone assignments.
+		XMLElement_CPtr boneassignmentsElt = submeshElt->find_unique_child("boneassignments");
+		std::vector<XMLElement_CPtr> vertexboneassignmentElts = boneassignmentsElt->find_children("vertexboneassignment");
+		int boneassignmentCount = static_cast<int>(vertexboneassignmentElts.size());
+
+		for(int j=0; j<boneassignmentCount; ++j)
+		{
+			const XMLElement_CPtr& vbaElt = vertexboneassignmentElts[j];
+
+			int vertIndex = lexical_cast<int,std::string>(vbaElt->attribute("vertexindex"));
+			if(vertIndex < 0 || vertIndex >= vertCount)
+				throw Exception("Invalid vertex index in bone assignment " + lexical_cast<std::string,int>(j));
+
+			int boneIndex = lexical_cast<int,std::string>(vbaElt->attribute("boneindex"));
+			double weight = lexical_cast<double,std::string>(vbaElt->attribute("weight"));
+
+			vertices[vertIndex].add_bone_weight(BoneWeight(boneIndex, weight));
+		}
+
+		// FIXME: Obtain the material from the .material file.
+		Material tempMaterial(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0));
+
+		submeshes.push_back(Submesh_Ptr(new Submesh(tempMaterial, vertIndices, vertices)));
 	}
 
-	// TODO
-
-	// NYI
-	throw 23;
+	return Mesh_Ptr(new Mesh(submeshes));
 }
 catch(bad_lexical_cast&)
 {
