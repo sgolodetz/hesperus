@@ -10,9 +10,9 @@
 
 #include <source/ogl/WrappedGL.h>
 
-#include "BoneConfiguration.h"
 #include "Material.h"
 #include "ModelVertex.h"
+#include "Skeleton.h"
 
 namespace hesp {
 
@@ -35,7 +35,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void render() const;
-	void skin(const BoneConfiguration_Ptr& boneConfiguration);
+	void skin(const Skeleton_Ptr& skeleton);
 };
 
 //#################### TYPEDEFS ####################

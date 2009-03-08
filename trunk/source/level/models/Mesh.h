@@ -23,7 +23,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void render() const;
-	void skin(const BoneConfiguration_Ptr& boneConfiguration);
+	void skin(const Skeleton_Ptr& skeleton);
 };
 
 //#################### TYPEDEFS ####################

@@ -21,11 +21,11 @@ void Mesh::render() const
 	}
 }
 
-void Mesh::skin(const BoneConfiguration_Ptr& boneConfiguration)
+void Mesh::skin(const Skeleton_Ptr& skeleton)
 {
 	for(size_t i=0, size=m_submeshes.size(); i<size; ++i)
 	{
-		m_submeshes[i]->skin(boneConfiguration);
+		m_submeshes[i]->skin(skeleton);
 	}
 }
 

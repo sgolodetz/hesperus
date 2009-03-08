@@ -20,7 +20,7 @@ void Submesh::render() const
 	throw 23;
 }
 
-void Submesh::skin(const BoneConfiguration_Ptr& boneConfiguration)
+void Submesh::skin(const Skeleton_Ptr& skeleton)
 {
 	int vertCount = static_cast<int>(m_vertices.size());
 	for(int i=0; i<vertCount; ++i)
