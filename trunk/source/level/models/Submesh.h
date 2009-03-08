@@ -8,6 +8,9 @@
 
 #include <vector>
 
+#include <source/ogl/WrappedGL.h>
+
+#include "BoneConfiguration.h"
 #include "Material.h"
 #include "ModelVertex.h"
 
@@ -21,9 +24,18 @@ private:
 	std::vector<int> m_vertIndices;
 	std::vector<ModelVertex> m_vertices;
 
+	// Note: These are created as necessary using the skin() method.
+	std::vector<GLdouble> m_vertexArray;
+	std::vector<GLdouble> m_normalArray;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	Submesh(const Material& material, const std::vector<int>& vertIndices, const std::vector<ModelVertex>& vertices);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	void render() const;
+	void skin(const BoneConfiguration_Ptr& boneConfiguration);
 };
 
 //#################### TYPEDEFS ####################

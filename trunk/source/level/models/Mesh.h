@@ -19,6 +19,11 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Mesh(const std::vector<Submesh_Ptr>& submeshes);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	void render() const;
+	void skin(const BoneConfiguration_Ptr& boneConfiguration);
 };
 
 //#################### TYPEDEFS ####################

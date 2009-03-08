@@ -28,6 +28,8 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_bone_weight(const BoneWeight& boneWeight);
+	const std::vector<BoneWeight>& bone_weights() const;
+	const Vector3d& position() const;
 };
 
 }

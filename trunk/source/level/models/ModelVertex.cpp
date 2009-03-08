@@ -18,4 +18,14 @@ void ModelVertex::add_bone_weight(const BoneWeight& boneWeight)
 	m_boneWeights.push_back(boneWeight);
 }
 
+const std::vector<BoneWeight>& ModelVertex::bone_weights() const
+{
+	return m_boneWeights;
+}
+
+const Vector3d& ModelVertex::position() const
+{
+	return m_position;
+}
+
 }
