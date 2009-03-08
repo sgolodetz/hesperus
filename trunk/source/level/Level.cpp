@@ -15,7 +15,7 @@
 #include <source/math/vectors/Vector3.h>
 
 // FIXME: Remove this - it's just a test.
-#if 1
+#if 0
 #include <source/io/ModelFilesUtil.h>
 #endif
 
@@ -39,10 +39,8 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	}
 
 	// FIXME: Remove this - it's just a test.
-#if 1
+#if 0
 	m_mesh = ModelFilesUtil::load_mesh("resources/models/Test.mesh.xml");
-#endif
-#if 1
 	m_skeleton = ModelFilesUtil::load_skeleton("resources/models/Test.skeleton.xml");
 #endif
 }
@@ -136,7 +134,7 @@ void Level::render() const
 #endif
 
 	// FIXME: Remove this - it's just a test.
-#if 1
+#if 0
 	static int rate = 0;
 	static int keyframe = 0;
 	if(rate == 0) keyframe = (keyframe + 1) % 21;

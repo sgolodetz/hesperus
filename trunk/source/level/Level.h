@@ -19,7 +19,7 @@ using boost::shared_ptr;
 #include "GeometryRenderer.h"
 
 // FIXME: Remove this - it's just a test.
-#if 1
+#if 0
 #include <source/level/models/Model.h>
 #endif
 
@@ -47,7 +47,7 @@ private:
 	EntityManager_Ptr m_entityManager;
 
 	// FIXME: Remove this - it's just a test.
-#if 1
+#if 0
 	Mesh_Ptr m_mesh;
 	Skeleton_Ptr m_skeleton;
 #endif
