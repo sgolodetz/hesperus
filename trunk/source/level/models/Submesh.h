@@ -25,7 +25,7 @@ private:
 	std::vector<ModelVertex> m_vertices;
 
 	// Note: This is created as necessary using the skin() method.
-	std::vector<GLdouble> m_vertexArray;
+	std::vector<GLdouble> m_vertArray;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -35,6 +35,10 @@ public:
 public:
 	void render() const;
 	void skin(const Skeleton_Ptr& skeleton);
+
+	//#################### PRIVATE METHODS ####################
+private:
+	static Vector3d apply_rbt(const Matrix44_Ptr& rbt, const Vector3d& p);
 };
 
 //#################### TYPEDEFS ####################

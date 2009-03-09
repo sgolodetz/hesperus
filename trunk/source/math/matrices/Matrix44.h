@@ -44,7 +44,11 @@ public:
 };
 
 //#################### GLOBAL OPERATORS ####################
+Matrix44_Ptr& operator+=(Matrix44_Ptr& lhs, const Matrix44_Ptr& rhs);
+Matrix44_Ptr& operator*=(Matrix44_Ptr& lhs, double scale);
 Matrix44_Ptr operator*(const Matrix44_Ptr& lhs, const Matrix44_Ptr& rhs);
+Matrix44_Ptr operator*(const Matrix44_Ptr& lhs, double scale);
+Matrix44_Ptr operator*(double scale, const Matrix44_Ptr& rhs);
 
 }
 

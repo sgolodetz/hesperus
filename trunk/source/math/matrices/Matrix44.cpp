@@ -87,6 +87,28 @@ const double *Matrix44::rep() const
 }
 
 //#################### GLOBAL OPERATORS ####################
+Matrix44_Ptr& operator+=(Matrix44_Ptr& lhs, const Matrix44_Ptr& rhs)
+{
+	for(int i=0; i<4; ++i)
+		for(int j=0; j<4; ++j)
+		{
+			(*lhs)(i,j) += (*rhs)(i,j);
+		}
+
+	return lhs;
+}
+
+Matrix44_Ptr& operator*=(Matrix44_Ptr& lhs, double scale)
+{
+	for(int i=0; i<4; ++i)
+		for(int j=0; j<4; ++j)
+		{
+			(*lhs)(i,j) *= scale;
+		}
+
+	return lhs;
+}
+
 Matrix44_Ptr operator*(const Matrix44_Ptr& lhs, const Matrix44_Ptr& rhs)
 {
 	Matrix44_Ptr ret = Matrix44::zeros();
@@ -103,6 +125,20 @@ Matrix44_Ptr operator*(const Matrix44_Ptr& lhs, const Matrix44_Ptr& rhs)
 			}
 
 	return ret;
+}
+
+Matrix44_Ptr operator*(const Matrix44_Ptr& lhs, double scale)
+{
+	Matrix44_Ptr copy(new Matrix44(*lhs));
+	copy *= scale;
+	return copy;
+}
+
+Matrix44_Ptr operator*(double scale, const Matrix44_Ptr& rhs)
+{
+	Matrix44_Ptr copy(new Matrix44(*rhs));
+	copy *= scale;
+	return copy;
 }
 
 }
