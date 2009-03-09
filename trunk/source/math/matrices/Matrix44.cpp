@@ -48,7 +48,7 @@ Matrix44_Ptr Matrix44::from_axis_angle_translation(Vector3d axis, double angle, 
 	// See www.cprogramming.com/tutorial/3d/rotation.html for this matrix (I've derived it in the past and couldn't be bothered to do it again!)
 	mat(0,0) = t*x*x + c;		mat(0,1) = t*x*y - s*z;		mat(0,2) = t*x*z + s*y;		mat(0,3) = translation.x;
 	mat(1,0) = t*x*y + s*z;		mat(1,1) = t*y*y + c;		mat(1,2) = t*y*z - s*x;		mat(1,3) = translation.y;
-	mat(2,0) = t*x*y - s*y;		mat(2,1) = t*y*z + s*x;		mat(2,2) = t*z*z + c;		mat(2,3) = translation.z;
+	mat(2,0) = t*x*z - s*y;		mat(2,1) = t*y*z + s*x;		mat(2,2) = t*z*z + c;		mat(2,3) = translation.z;
 	mat(3,0) = 0;				mat(3,1) = 0;				mat(3,2) = 0;				mat(3,3) = 1;
 
 	return ret;
