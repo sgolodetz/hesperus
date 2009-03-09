@@ -47,15 +47,15 @@ try
 		std::vector<XMLElement_CPtr> faceElts = facesElt->find_children("face");
 		int faceCount = static_cast<int>(faceElts.size());
 
-		std::vector<int> vertIndices;
+		std::vector<unsigned int> vertIndices;
 		vertIndices.reserve(faceCount * 3);
 
 		for(int j=0; j<faceCount; ++j)
 		{
 			const XMLElement_CPtr& faceElt = faceElts[j];
-			int v1 = lexical_cast<int,std::string>(faceElt->attribute("v1"));
-			int v2 = lexical_cast<int,std::string>(faceElt->attribute("v2"));
-			int v3 = lexical_cast<int,std::string>(faceElt->attribute("v3"));
+			unsigned int v1 = lexical_cast<unsigned int,std::string>(faceElt->attribute("v1"));
+			unsigned int v2 = lexical_cast<unsigned int,std::string>(faceElt->attribute("v2"));
+			unsigned int v3 = lexical_cast<unsigned int,std::string>(faceElt->attribute("v3"));
 			vertIndices.push_back(v1);
 			vertIndices.push_back(v2);
 			vertIndices.push_back(v3);

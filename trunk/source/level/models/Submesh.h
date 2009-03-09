@@ -21,7 +21,7 @@ class Submesh
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Material m_material;
-	std::vector<int> m_vertIndices;
+	std::vector<unsigned int> m_vertIndices;
 	std::vector<ModelVertex> m_vertices;
 
 	// Note: This is created as necessary using the skin() method.
@@ -29,7 +29,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Submesh(const Material& material, const std::vector<int>& vertIndices, const std::vector<ModelVertex>& vertices);
+	Submesh(const Material& material, const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices);
 
 	//#################### PUBLIC METHODS ####################
 public:

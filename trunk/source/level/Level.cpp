@@ -146,6 +146,9 @@ void Level::render() const
 	m_skeleton->select_keyframe("walk", keyframe);
 	//m_skeleton->set_rest_pose();
 	m_skeleton->render_bones();
+
+	m_mesh->skin(m_skeleton);
+	m_mesh->render();
 #endif
 
 	glPopAttrib();
