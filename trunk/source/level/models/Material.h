@@ -6,6 +6,9 @@
 #ifndef H_HESP_MATERIAL
 #define H_HESP_MATERIAL
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 #include <source/colours/Colour3d.h>
 
 namespace hesp {
@@ -33,6 +36,10 @@ public:
 	const Colour3d& specular() const;
 	double specular_exponent() const;
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Material> Material_Ptr;
+typedef shared_ptr<const Material> Material_CPtr;
 
 }
 

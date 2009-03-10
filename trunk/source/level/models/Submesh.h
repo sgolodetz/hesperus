@@ -8,7 +8,9 @@
 
 #include <vector>
 
+#include <source/math/vectors/TexCoords.h>
 #include <source/ogl/WrappedGL.h>
+#include <source/textures/Texture.h>
 
 #include "Material.h"
 #include "ModelVertex.h"
@@ -20,16 +22,21 @@ class Submesh
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	Material m_material;
 	std::vector<unsigned int> m_vertIndices;
 	std::vector<ModelVertex> m_vertices;
 
-	// Note: This is created as necessary using the skin() method.
+	// Note: We're either using a material, or a texture, but never both at once.
+	Material_Ptr m_material;
+	Texture_Ptr m_texture;
+	std::vector<GLdouble> m_texCoordArray;	// the tex coord array is empty if we're using a material
+
+	// Note: The vertex array is created as necessary using the skin() method.
 	std::vector<GLdouble> m_vertArray;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Submesh(const Material& material, const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices);
+	Submesh(const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices, const Material_Ptr& material);
+	Submesh(const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices, const Texture_Ptr& texture, const std::vector<TexCoords>& texCoords);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -39,6 +46,8 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	static Vector3d apply_rbt(const Matrix44_Ptr& rbt, const Vector3d& p);
+	void render_using_material() const;
+	void render_using_texture() const;
 };
 
 //#################### TYPEDEFS ####################

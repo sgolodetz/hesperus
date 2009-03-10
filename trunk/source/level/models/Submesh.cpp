@@ -8,31 +8,26 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Submesh::Submesh(const Material& material, const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices)
-:	m_material(material), m_vertIndices(vertIndices), m_vertices(vertices), m_vertArray(vertices.size() * 3)
+Submesh::Submesh(const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices, const Material_Ptr& material)
+:	m_vertIndices(vertIndices), m_vertices(vertices), m_vertArray(vertices.size() * 3), m_material(material)
 {}
+
+Submesh::Submesh(const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices, const Texture_Ptr& texture, const std::vector<TexCoords>& texCoords)
+:	m_vertIndices(vertIndices), m_vertices(vertices), m_vertArray(vertices.size() * 3), m_texture(texture), m_texCoordArray(texCoords.size() * 2)
+{
+	int texCoordCount = static_cast<int>(texCoords.size());
+	for(int i=0, offset=0; i<texCoordCount; ++i, offset+=2)
+	{
+		m_texCoordArray[offset] = texCoords[i].u;
+		m_texCoordArray[offset+1] = texCoords[i].v;
+	}
+}
 
 //#################### PUBLIC METHODS ####################
 void Submesh::render() const
 {
-	const bool wireframe = false;
-
-	glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
-	if(wireframe)
-	{
-		glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glDisable(GL_CULL_FACE);
-	}
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_DOUBLE, 0, &m_vertArray[0]);
-
-	glColor3d(1,1,1);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_vertIndices.size()), GL_UNSIGNED_INT, &m_vertIndices[0]);
-
-	if(wireframe) glPopAttrib();
-	glPopClientAttrib();
+	if(m_texture) render_using_texture();
+	else render_using_material();
 }
 
 void Submesh::skin(const Skeleton_Ptr& skeleton)
@@ -113,6 +108,48 @@ Vector3d Submesh::apply_rbt(const Matrix44_Ptr& rbt, const Vector3d& p)
 		(*rbt)(1,0) * p.x + (*rbt)(1,1) * p.y + (*rbt)(1,2) * p.z + (*rbt)(1,3),
 		(*rbt)(2,0) * p.x + (*rbt)(2,1) * p.y + (*rbt)(2,2) * p.z + (*rbt)(2,3)
 	);
+}
+
+void Submesh::render_using_material() const
+{
+	const bool wireframe = true;
+
+	glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+	if(wireframe)
+	{
+		glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glDisable(GL_CULL_FACE);
+	}
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_DOUBLE, 0, &m_vertArray[0]);
+
+	glColor3d(1,1,1);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_vertIndices.size()), GL_UNSIGNED_INT, &m_vertIndices[0]);
+
+	if(wireframe) glPopAttrib();
+	glPopClientAttrib();
+}
+
+void Submesh::render_using_texture() const
+{
+	glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+	glPushAttrib(GL_ENABLE_BIT);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glVertexPointer(3, GL_DOUBLE, 0, &m_vertArray[0]);
+	glTexCoordPointer(2, GL_DOUBLE, 0, &m_texCoordArray[0]);
+
+	glEnable(GL_TEXTURE_2D);
+	m_texture->bind();
+
+	glColor3d(1,1,1);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_vertIndices.size()), GL_UNSIGNED_INT, &m_vertIndices[0]);
+
+	glPopAttrib();
+	glPopClientAttrib();
 }
 
 }

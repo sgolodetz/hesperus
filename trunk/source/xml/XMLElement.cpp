@@ -46,6 +46,11 @@ XMLElement_CPtr XMLElement::find_unique_child(const std::string& name) const
 	else throw Exception("The element has no child named " + name);
 }
 
+bool XMLElement::has_attribute(const std::string& name) const
+{
+	return m_attributes.find(name) != m_attributes.end();
+}
+
 const std::string& XMLElement::name() const
 {
 	return m_name;

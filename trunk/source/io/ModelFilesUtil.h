@@ -21,6 +21,7 @@ public:
 #if 0	// TEMPORARY: To enable easy development testing
 private:
 #endif
+	static TexCoords extract_texcoords(const XMLElement_CPtr& elt);
 	static Vector3d extract_vector3d(const XMLElement_CPtr& elt);
 	static Mesh_Ptr load_mesh(const std::string& filename);
 	static Skeleton_Ptr load_skeleton(const std::string& filename);

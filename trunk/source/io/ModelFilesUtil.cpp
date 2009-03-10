@@ -10,10 +10,19 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/images/BitmapLoader.h>
+#include <source/textures/TextureFactory.h>
 
 namespace hesp {
 
 //#################### LOADING SUPPORT METHODS ####################
+TexCoords ModelFilesUtil::extract_texcoords(const XMLElement_CPtr& elt)
+{
+	double u = lexical_cast<double,std::string>(elt->attribute("u"));
+	double v = lexical_cast<double,std::string>(elt->attribute("v"));
+	return TexCoords(u,v);
+}
+
 Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
 {
 	double x = lexical_cast<double,std::string>(elt->attribute("x"));
@@ -64,8 +73,14 @@ try
 		// Read in the vertex positions and normals.
 		XMLElement_CPtr geometryElt = submeshElt->find_unique_child("geometry");
 		XMLElement_CPtr vertexbufferElt = geometryElt->find_unique_child("vertexbuffer");
-		if(vertexbufferElt->attribute("positions") != "true" || vertexbufferElt->attribute("normals") != "true")
+		if(!vertexbufferElt->has_attribute("positions") || vertexbufferElt->attribute("positions") != "true" ||
+		   !vertexbufferElt->has_attribute("normals") || vertexbufferElt->attribute("normals") != "true")
+		{
 			throw Exception("Both vertex positions and normals are required to be present - did you make sure to export them?");
+		}
+
+		bool useTexture = vertexbufferElt->has_attribute("texture_coords") && vertexbufferElt->attribute("texture_coords") == "1";
+
 		std::vector<XMLElement_CPtr> vertexElts = vertexbufferElt->find_children("vertex");
 		int vertCount = static_cast<int>(vertexElts.size());
 
@@ -81,6 +96,18 @@ try
 			Vector3d normal = extract_vector3d(normalElt);
 
 			vertices.push_back(ModelVertex(position, normal));
+		}
+
+		std::vector<TexCoords> texCoords;
+		if(useTexture)
+		{
+			texCoords.reserve(vertCount);
+			for(int j=0; j<vertCount; ++j)
+			{
+				const XMLElement_CPtr& vertexElt = vertexElts[j];
+				XMLElement_CPtr texcoordElt = vertexElt->find_unique_child("texcoord");
+				texCoords.push_back(extract_texcoords(texcoordElt));
+			}
 		}
 
 		// Read in the vertex bone assignments.
@@ -102,10 +129,20 @@ try
 			vertices[vertIndex].add_bone_weight(BoneWeight(boneIndex, weight));
 		}
 
-		// FIXME: Obtain the material from the .material file.
-		Material tempMaterial(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0));
+		if(useTexture)
+		{
+			// FIXME: Work out which texture to load by reading the .material file.
+			Texture_Ptr tempTexture = TextureFactory::create_texture24(BitmapLoader::load_image24("resources/models/UV.bmp"));
 
-		submeshes.push_back(Submesh_Ptr(new Submesh(tempMaterial, vertIndices, vertices)));
+			submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, tempTexture, texCoords)));
+		}
+		else
+		{
+			// FIXME: Obtain the material from the .material file.
+			Material_Ptr tempMaterial(new Material(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0)));
+
+			submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, tempMaterial)));
+		}
 	}
 
 	return Mesh_Ptr(new Mesh(submeshes));

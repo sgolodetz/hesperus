@@ -40,8 +40,8 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 
 	// FIXME: Remove this - it's just a test.
 #if 0
-	m_mesh = ModelFilesUtil::load_mesh("resources/models/Test.mesh.xml");
-	m_skeleton = ModelFilesUtil::load_skeleton("resources/models/Test.skeleton.xml");
+	m_mesh = ModelFilesUtil::load_mesh("resources/models/Test-15.mesh.xml");
+	m_skeleton = ModelFilesUtil::load_skeleton("resources/models/Test-15.skeleton.xml");
 #endif
 }
 

@@ -31,13 +31,13 @@ XMLToken_Ptr XMLLexer::next_token()
 			case LEX_START:
 			{
 				unsigned char c = next_char();
-				if(m_eof)										{ m_state = LEX_EOF; }
-				else if(c == '=')								{ m_state = LEX_EQUALS; }
-				else if(c == '/')								{ m_state = LEX_HALF_RSLASH; }
-				else if(c == '"')								{ m_state = LEX_HALF_VALUE; }
-				else if(c == '<')								{ m_state = LEX_LBRACKET; }
-				else if(c == '>')								{ m_state = LEX_RBRACKET; }
-				else if(isalpha(c) || isdigit(c) || c == '.')	{ m_state = LEX_IDENT; value += c; }
+				if(m_eof)													{ m_state = LEX_EOF; }
+				else if(c == '=')											{ m_state = LEX_EQUALS; }
+				else if(c == '/')											{ m_state = LEX_HALF_RSLASH; }
+				else if(c == '"')											{ m_state = LEX_HALF_VALUE; }
+				else if(c == '<')											{ m_state = LEX_LBRACKET; }
+				else if(c == '>')											{ m_state = LEX_RBRACKET; }
+				else if(isalpha(c) || isdigit(c) || c == '.')				{ m_state = LEX_IDENT; value += c; }
 				break;
 			}
 			case LEX_EOF:
@@ -51,33 +51,33 @@ XMLToken_Ptr XMLLexer::next_token()
 			case LEX_HALF_RSLASH:
 			{
 				unsigned char c = next_char();
-				if(m_eof)										{ m_state = LEX_BAD; value = ">"; }
-				else if(c == '>')								{ m_state = LEX_RSLASH; }
-				else											{ m_state = LEX_BAD; value = ">"; }
+				if(m_eof)													{ m_state = LEX_BAD; value = ">"; }
+				else if(c == '>')											{ m_state = LEX_RSLASH; }
+				else														{ m_state = LEX_BAD; value = ">"; }
 				break;
 			}
 			case LEX_HALF_VALUE:
 			{
 				unsigned char c = next_char();
-				if(m_eof)										{ m_state = LEX_BAD; value = "\""; }
-				else if(c == '"')								{ m_state = LEX_VALUE; }
-				else											{ value += c; }
+				if(m_eof)													{ m_state = LEX_BAD; value = "\""; }
+				else if(c == '"')											{ m_state = LEX_VALUE; }
+				else														{ value += c; }
 				break;
 			}
 			case LEX_IDENT:
 			{
 				unsigned char c = next_char();
-				if(m_eof)										{ m_state = LEX_EOF; return XMLToken_Ptr(new XMLToken(XMLT_IDENT, value)); }
-				else if(isalpha(c) || isdigit(c) || c == '.')	{ value += c; }
-				else											{ m_lookahead.push_back(c); return XMLToken_Ptr(new XMLToken(XMLT_IDENT, value)); }
+				if(m_eof)													{ m_state = LEX_EOF; return XMLToken_Ptr(new XMLToken(XMLT_IDENT, value)); }
+				else if(isalpha(c) || isdigit(c) || c == '.' || c == '_')	{ value += c; }
+				else														{ m_lookahead.push_back(c); return XMLToken_Ptr(new XMLToken(XMLT_IDENT, value)); }
 				break;
 			}
 			case LEX_LBRACKET:
 			{
 				unsigned char c = next_char();
-				if(m_eof)										{ m_state = LEX_EOF; return XMLToken_Ptr(new XMLToken(XMLT_LBRACKET, "")); }
-				else if(c == '/')								{ m_state = LEX_LSLASH; }
-				else											{ m_lookahead.push_back(c); return XMLToken_Ptr(new XMLToken(XMLT_LBRACKET, "")); }
+				if(m_eof)													{ m_state = LEX_EOF; return XMLToken_Ptr(new XMLToken(XMLT_LBRACKET, "")); }
+				else if(c == '/')											{ m_state = LEX_LSLASH; }
+				else														{ m_lookahead.push_back(c); return XMLToken_Ptr(new XMLToken(XMLT_LBRACKET, "")); }
 				break;
 			}
 			case LEX_LSLASH:
