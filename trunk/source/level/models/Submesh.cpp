@@ -15,6 +15,7 @@ Submesh::Submesh(const std::vector<unsigned int>& vertIndices, const std::vector
 Submesh::Submesh(const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices, const Texture_Ptr& texture, const std::vector<TexCoords>& texCoords)
 :	m_vertIndices(vertIndices), m_vertices(vertices), m_vertArray(vertices.size() * 3), m_texture(texture), m_texCoordArray(texCoords.size() * 2)
 {
+	// Construct the tex coord array.
 	int texCoordCount = static_cast<int>(texCoords.size());
 	for(int i=0, offset=0; i<texCoordCount; ++i, offset+=2)
 	{
@@ -112,6 +113,8 @@ Vector3d Submesh::apply_rbt(const Matrix44_Ptr& rbt, const Vector3d& p)
 
 void Submesh::render_using_material() const
 {
+	// TODO: Actually use the loaded material for rendering: at the moment I'm just rendering in wireframe.
+
 	const bool wireframe = true;
 
 	glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);

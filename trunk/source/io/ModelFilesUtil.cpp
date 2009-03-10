@@ -13,6 +13,13 @@ using boost::lexical_cast;
 #include <source/images/BitmapLoader.h>
 #include <source/textures/TextureFactory.h>
 
+namespace {
+
+//#################### CONSTANTS ####################
+const double SCALE = 1.0/10;	// the models are built such that 10 units in Blender corresponds to 1 unit in the game
+
+}
+
 namespace hesp {
 
 //#################### LOADING SUPPORT METHODS ####################
@@ -92,7 +99,7 @@ try
 			const XMLElement_CPtr& vertexElt = vertexElts[j];
 			XMLElement_CPtr positionElt = vertexElt->find_unique_child("position");
 			XMLElement_CPtr normalElt = vertexElt->find_unique_child("normal");
-			Vector3d position = extract_vector3d(positionElt);
+			Vector3d position = extract_vector3d(positionElt) * SCALE;
 			Vector3d normal = extract_vector3d(normalElt);
 
 			vertices.push_back(ModelVertex(position, normal));
@@ -177,7 +184,7 @@ try
 		std::string name = boneElt->attribute("name");
 
 		XMLElement_CPtr positionElt = boneElt->find_unique_child("position");
-		Vector3d position = extract_vector3d(positionElt);
+		Vector3d position = extract_vector3d(positionElt) * SCALE;
 
 		XMLElement_CPtr rotationElt = boneElt->find_unique_child("rotation");
 
@@ -242,7 +249,7 @@ try
 				const XMLElement_CPtr& keyframeElt = keyframeElts[k];
 
 				XMLElement_CPtr translateElt = keyframeElt->find_unique_child("translate");
-				Vector3d translation = extract_vector3d(translateElt);
+				Vector3d translation = extract_vector3d(translateElt) * SCALE;
 
 				XMLElement_CPtr rotateElt = keyframeElt->find_unique_child("rotate");
 				double rotateAngle = lexical_cast<double,std::string>(rotateElt->attribute("angle"));

@@ -142,7 +142,6 @@ void Level::render() const
 
 	// Render the test skeleton.
 	glTranslated(20,20,6);
-	glScaled(0.1,0.1,0.1);
 	m_skeleton->select_keyframe("walk", keyframe);
 	//m_skeleton->set_rest_pose();
 	m_skeleton->render_bones();
