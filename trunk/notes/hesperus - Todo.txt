@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 25-02-09
+Last Updated: 11-03-09
 
 ----
 Easy
@@ -28,3 +28,7 @@ Hard
 * Detail and hint brushes to improve vis/nav. This will require changes to both MapEditor and the toolchain.
 * Update MapEditor to allow placement of entities, lights, etc. Ultimately scripted paths should be added as well.
 * Write the model loading and animation code.
+  - Sort out where the textures are coming from.
+  - Integrate model loading with entities.
+  - Sort out inter-model attachment (e.g. for weapons).
+  - Design the animation controller.

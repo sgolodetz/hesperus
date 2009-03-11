@@ -1,19 +1,17 @@
 /***
- * hesperus: Material.h
+ * hesperus: BasicMaterial.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_MATERIAL
-#define H_HESP_MATERIAL
-
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
+#ifndef H_HESP_BASICMATERIAL
+#define H_HESP_BASICMATERIAL
 
 #include <source/colours/Colour3d.h>
+#include "Material.h"
 
 namespace hesp {
 
-class Material
+class BasicMaterial : public Material
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -25,21 +23,18 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Material(const Colour3d& ambient, const Colour3d& diffuse, const Colour3d& specular, double specularExponent,
-			 const Colour3d& emissive);
+	BasicMaterial(const Colour3d& ambient, const Colour3d& diffuse, const Colour3d& specular, double specularExponent, const Colour3d& emissive);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const Colour3d& ambient() const;
+	void apply() const;
 	const Colour3d& diffuse() const;
 	const Colour3d& emissive() const;
 	const Colour3d& specular() const;
 	double specular_exponent() const;
+	bool uses_texcoords() const;
 };
-
-//#################### TYPEDEFS ####################
-typedef shared_ptr<Material> Material_Ptr;
-typedef shared_ptr<const Material> Material_CPtr;
 
 }
 

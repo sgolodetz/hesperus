@@ -15,7 +15,7 @@ class ModelFilesUtil
 {
 	//#################### LOADING METHODS ####################
 public:
-	// TODO
+	static Model_Ptr load_model(const std::string& name);
 
 	//#################### LOADING SUPPORT METHODS ####################
 #if 0	// TEMPORARY: To enable easy development testing

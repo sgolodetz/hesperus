@@ -1210,10 +1210,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\models\Material.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\level\models\Mesh.cpp"
 						>
 					</File>
@@ -1255,10 +1251,6 @@
 					</File>
 					<File
 						RelativePath="..\level\models\Keyframe.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\models\Material.h"
 						>
 					</File>
 					<File
@@ -1628,6 +1620,38 @@
 				</File>
 				<File
 					RelativePath="..\xml\XMLToken.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="materials"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\materials\BasicMaterial.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\materials\TextureMaterial.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\materials\BasicMaterial.h"
+					>
+				</File>
+				<File
+					RelativePath="..\materials\Material.h"
+					>
+				</File>
+				<File
+					RelativePath="..\materials\TextureMaterial.h"
 					>
 				</File>
 			</Filter>

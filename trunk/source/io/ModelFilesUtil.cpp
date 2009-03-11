@@ -11,6 +11,8 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
+#include <source/materials/BasicMaterial.h>
+#include <source/materials/TextureMaterial.h>
 #include <source/textures/TextureFactory.h>
 
 namespace {
@@ -21,6 +23,13 @@ const double SCALE = 1.0/10;	// the models are built such that 10 units in Blend
 }
 
 namespace hesp {
+
+//#################### LOADING METHODS ####################
+Model_Ptr ModelFilesUtil::load_model(const std::string& name)
+{
+	// NYI
+	throw 23;
+}
 
 //#################### LOADING SUPPORT METHODS ####################
 TexCoords ModelFilesUtil::extract_texcoords(const XMLElement_CPtr& elt)
@@ -105,6 +114,7 @@ try
 			vertices.push_back(ModelVertex(position, normal));
 		}
 
+		// Read in the texture coordinates (if present).
 		std::vector<TexCoords> texCoords;
 		if(useTexture)
 		{
@@ -136,20 +146,19 @@ try
 			vertices[vertIndex].add_bone_weight(BoneWeight(boneIndex, weight));
 		}
 
+		// FIXME: Obtain the material from the .material file.
+		Material_Ptr tempMaterial;
 		if(useTexture)
 		{
-			// FIXME: Work out which texture to load by reading the .material file.
 			Texture_Ptr tempTexture = TextureFactory::create_texture24(BitmapLoader::load_image24("resources/models/UV.bmp"));
-
-			submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, tempTexture, texCoords)));
+			tempMaterial.reset(new TextureMaterial(tempTexture));
 		}
 		else
 		{
-			// FIXME: Obtain the material from the .material file.
-			Material_Ptr tempMaterial(new Material(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0)));
-
-			submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, tempMaterial)));
+			tempMaterial.reset(new BasicMaterial(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0)));
 		}
+
+		submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, tempMaterial, texCoords)));
 	}
 
 	return Mesh_Ptr(new Mesh(submeshes));

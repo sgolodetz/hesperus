@@ -23,6 +23,10 @@ public:
 	Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton);
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<Model> Model_Ptr;
+typedef shared_ptr<const Model> Model_CPtr;
+
 }
 
 #endif
