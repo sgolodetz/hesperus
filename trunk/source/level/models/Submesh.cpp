@@ -42,7 +42,6 @@ void Submesh::render() const
 
 	m_material->apply();
 
-	glColor3d(1,1,1);
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_vertIndices.size()), GL_UNSIGNED_INT, &m_vertIndices[0]);
 
 	glPopAttrib();

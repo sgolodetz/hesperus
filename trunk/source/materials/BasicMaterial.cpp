@@ -10,8 +10,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-BasicMaterial::BasicMaterial(const Colour3d& ambient, const Colour3d& diffuse, const Colour3d& specular, double specularExponent, const Colour3d& emissive)
-:	m_ambient(ambient), m_diffuse(diffuse), m_specular(specular), m_specularExponent(specularExponent), m_emissive(emissive)
+BasicMaterial::BasicMaterial(const Colour3d& ambient, const Colour3d& diffuse, const Colour3d& specular, double specularExponent, const Colour3d& emissive, bool wireframe)
+:	m_ambient(ambient), m_diffuse(diffuse), m_specular(specular), m_specularExponent(specularExponent), m_emissive(emissive), m_wireframe(wireframe)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -19,9 +19,13 @@ const Colour3d& BasicMaterial::ambient() const	{ return m_ambient; }
 
 void BasicMaterial::apply() const
 {
-	// FIXME: Use the material properly.
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDisable(GL_CULL_FACE);
+	glColor3d(m_diffuse.r, m_diffuse.g, m_diffuse.b);
+
+	if(m_wireframe)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glDisable(GL_CULL_FACE);
+	}
 }
 
 const Colour3d& BasicMaterial::diffuse() const	{ return m_diffuse; }

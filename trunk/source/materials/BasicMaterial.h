@@ -20,10 +20,12 @@ private:
 	Colour3d m_emissive;
 	Colour3d m_specular;
 	double m_specularExponent;
+	bool m_wireframe;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BasicMaterial(const Colour3d& ambient, const Colour3d& diffuse, const Colour3d& specular, double specularExponent, const Colour3d& emissive);
+	BasicMaterial(const Colour3d& ambient, const Colour3d& diffuse, const Colour3d& specular, double specularExponent, const Colour3d& emissive,
+				  bool wireframe = false);
 
 	//#################### PUBLIC METHODS ####################
 public:

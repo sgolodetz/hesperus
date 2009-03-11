@@ -155,7 +155,7 @@ try
 		}
 		else
 		{
-			tempMaterial.reset(new BasicMaterial(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0)));
+			tempMaterial.reset(new BasicMaterial(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0), true));
 		}
 
 		submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, tempMaterial, texCoords)));

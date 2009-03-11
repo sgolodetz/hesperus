@@ -17,6 +17,7 @@ void TextureMaterial::apply() const
 {
 	glEnable(GL_TEXTURE_2D);
 	m_texture->bind();
+	glColor3d(1,1,1);
 }
 
 bool TextureMaterial::uses_texcoords() const
