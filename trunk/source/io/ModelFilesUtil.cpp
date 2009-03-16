@@ -35,7 +35,8 @@ Model_Ptr ModelFilesUtil::load_model(const std::string& name)
 	bf::path skeletonPath = modelsDir / (name + ".skeleton.xml");
 
 	// TODO: Load in the materials and pass them into load_mesh().
-	Mesh_Ptr mesh = load_mesh(meshPath.file_string());
+	std::map<std::string,Material_Ptr> materials = load_materials(materialsPath.file_string());
+	Mesh_Ptr mesh = load_mesh(meshPath.file_string()/*, materials*/);
 	Skeleton_Ptr skeleton = load_skeleton(skeletonPath.file_string());
 
 	// NYI
@@ -58,6 +59,12 @@ Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
 	double y = lexical_cast<double,std::string>(elt->attribute("y"));
 	double z = lexical_cast<double,std::string>(elt->attribute("z"));
 	return Vector3d(x,y,z);
+}
+
+std::map<std::string,Material_Ptr> ModelFilesUtil::load_materials(const std::string& filename)
+{
+	// NYI
+	throw 23;
 }
 
 Mesh_Ptr ModelFilesUtil::load_mesh(const std::string& filename)
