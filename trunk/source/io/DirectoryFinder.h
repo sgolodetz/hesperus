@@ -10,9 +10,11 @@
 
 namespace hesp {
 
+boost::filesystem::path determine_base_directory_from_game();
+boost::filesystem::path determine_base_directory_from_tool();
 boost::filesystem::path determine_executable_location();
-boost::filesystem::path determine_settings_directory_from_game();
-boost::filesystem::path determine_settings_directory_from_tool();
+boost::filesystem::path determine_models_directory(const boost::filesystem::path& baseDir);
+boost::filesystem::path determine_settings_directory(const boost::filesystem::path& baseDir);
 
 }
 

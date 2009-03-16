@@ -147,7 +147,7 @@ Level_Ptr LevelFileUtil::load_lit(std::istream& is)
 	FileSectionUtil::load_polygons_section(is, "OnionPortals", onionPortals);
 	navDatasets = FileSectionUtil::load_nav_section(is);
 
-	bf::path settingsDir = determine_settings_directory_from_game();
+	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
 	entityManager = FileSectionUtil::load_entities_section(is, settingsDir);
 
 	// Construct and return the level.
@@ -183,7 +183,7 @@ Level_Ptr LevelFileUtil::load_unlit(std::istream& is)
 	FileSectionUtil::load_polygons_section(is, "OnionPortals", onionPortals);
 	navDatasets = FileSectionUtil::load_nav_section(is);
 
-	bf::path settingsDir = determine_settings_directory_from_game();
+	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
 	entityManager = FileSectionUtil::load_entities_section(is, settingsDir);
 
 	// Construct and return the level.

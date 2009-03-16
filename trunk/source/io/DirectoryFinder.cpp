@@ -12,6 +12,18 @@ namespace bf = boost::filesystem;
 
 namespace hesp {
 
+bf::path determine_base_directory_from_game()
+{
+	bf::path exePath = determine_executable_location();		// hesperus/bin/?.exe
+	return exePath.branch_path();							// -> hesperus/bin
+}
+
+bf::path determine_base_directory_from_tool()
+{
+	bf::path exePath = determine_executable_location();		// hesperus/bin/tools/?.exe
+	return exePath.branch_path().branch_path();				// -> hesperus/bin
+}
+
 bf::path determine_executable_location()
 {
 #ifdef _WIN32
@@ -25,21 +37,14 @@ bf::path determine_executable_location()
 #endif
 }
 
-bf::path determine_settings_directory_from_game()
+bf::path determine_models_directory(const bf::path& baseDir)
 {
-	bf::path settingsDir = determine_executable_location();
-	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/
-	settingsDir /= "resources/settings/";		// -> hesperus/bin/resources/settings
-	return settingsDir;
+	return baseDir / "resources/models/";
 }
 
-bf::path determine_settings_directory_from_tool()
+bf::path determine_settings_directory(const bf::path& baseDir)
 {
-	bf::path settingsDir = determine_executable_location();
-	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/tools/
-	settingsDir = settingsDir.branch_path();	// -> hesperus/bin/
-	settingsDir /= "resources/settings/";		// -> hesperus/bin/resources/settings
-	return settingsDir;
+	return baseDir / "resources/settings/";
 }
 
 }
