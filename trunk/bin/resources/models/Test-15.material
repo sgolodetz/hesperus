@@ -1,4 +1,4 @@
-material Beige/SOLID/TEX/UV.jpg
+material Beige/SOLID/TEX/UV.bmp
 {
 	technique
 	{
@@ -8,7 +8,7 @@ material Beige/SOLID/TEX/UV.jpg
 			specular 0.500000 0.500000 0.500000 12.500000
 			texture_unit
 			{
-				texture UV.jpg
+				texture UV.bmp
 			}
 		}
 	}
