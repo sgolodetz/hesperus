@@ -14,6 +14,8 @@ using boost::lexical_cast;
 #include <source/materials/BasicMaterial.h>
 #include <source/materials/TextureMaterial.h>
 #include <source/textures/TextureFactory.h>
+#include "DirectoryFinder.h"
+namespace bf = boost::filesystem;
 
 namespace {
 
@@ -27,8 +29,19 @@ namespace hesp {
 //#################### LOADING METHODS ####################
 Model_Ptr ModelFilesUtil::load_model(const std::string& name)
 {
+	bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
+	bf::path materialsPath = modelsDir / (name + ".material");
+	bf::path meshPath = modelsDir / (name + ".mesh.xml");
+	bf::path skeletonPath = modelsDir / (name + ".skeleton.xml");
+
+	// TODO: Load in the materials and pass them into load_mesh().
+	Mesh_Ptr mesh = load_mesh(meshPath.file_string());
+	Skeleton_Ptr skeleton = load_skeleton(skeletonPath.file_string());
+
 	// NYI
 	throw 23;
+
+	return Model_Ptr(new Model(mesh, skeleton));
 }
 
 //#################### LOADING SUPPORT METHODS ####################
