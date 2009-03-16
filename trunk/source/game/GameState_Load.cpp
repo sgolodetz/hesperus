@@ -10,7 +10,9 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
+#include <source/io/DirectoryFinder.h>
 #include "GameState_Level.h"
+namespace bf = boost::filesystem;
 
 namespace hesp {
 
@@ -47,20 +49,22 @@ Component_Ptr GameState_Load::construct_display()
 {
 	Container<ExplicitLayout> *display = new Container<ExplicitLayout>;
 
+	bf::path imagesDir = determine_images_directory(determine_base_directory_from_game());
+
 	const Screen& screen = Screen::instance();
 	int width = screen.dimensions().width();
 	int height = screen.dimensions().height();
-	display->layout().add(new Picture("resources/images/loading.bmp"), Extents(width/4, 0, width*3/4, width/8));
+	display->layout().add(new Picture((imagesDir / "loading.bmp").file_string()), Extents(width/4, 0, width*3/4, width/8));
 
 	// Determine the level name.
-	size_t i = m_levelFilename.find_last_of('/');
+	size_t i = m_levelFilename.find_last_of("/\\");		// find the last slash (slanting either way) in the filename
 	std::string levelName = i == std::string::npos ? m_levelFilename.substr(0) : m_levelFilename.substr(i+1);
 	levelName = levelName.substr(0, levelName.length()-4);
 
 	// Load the appropriate loading image for the level.
 	Picture *loadingPicture;
-	try { loadingPicture = new Picture("resources/images/load-" + levelName + ".bmp"); }
-	catch(FileNotFoundException&) { loadingPicture = new Picture("resources/images/load-missing.bmp"); }
+	try { loadingPicture = new Picture((imagesDir / ("load-" + levelName + ".bmp")).file_string()); }
+	catch(FileNotFoundException&) { loadingPicture = new Picture((imagesDir / "load-missing.bmp").file_string()); }
 
 	display->layout().add(loadingPicture, Extents(50, width/8, width - 50, height - 50));
 

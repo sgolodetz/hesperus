@@ -15,9 +15,11 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
+#include <source/io/DirectoryFinder.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/level/entities/MovementFunctions.h>
 #include <source/level/LevelViewer.h>
+namespace bf = boost::filesystem;
 
 namespace hesp {
 
@@ -105,13 +107,15 @@ Component_Ptr GameState_Level::construct_display()
 {
 	Container<ExplicitLayout> *display = new Container<ExplicitLayout>;
 
+	bf::path imagesDir = determine_images_directory(determine_base_directory_from_game());
+
 	const Screen& screen = Screen::instance();
 	int width = screen.dimensions().width();
 	int height = screen.dimensions().height();
-	display->layout().add(new Picture("resources/images/title.bmp"), Extents(width/4, 0, width*3/4, width/8));
+	display->layout().add(new Picture((imagesDir / "title.bmp").file_string()), Extents(width/4, 0, width*3/4, width/8));
 	display->layout().add(new LevelViewer(m_level), Extents(50, 200, width - 50, height - 50));
 	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
-	cont->layout().add(new Picture("resources/images/title.bmp"), Extents(500, 0, 700, 50));
+	cont->layout().add(new Picture((imagesDir / "title.bmp").file_string()), Extents(500, 0, 700, 50));
 	display->layout().add(cont, Extents(100, 100, 200, 200));
 
 	return Component_Ptr(display);

@@ -16,7 +16,9 @@
 
 // FIXME: Remove this - it's just a test.
 #if 0
+#include <source/io/DirectoryFinder.h>
 #include <source/io/ModelFilesUtil.h>
+namespace bf = boost::filesystem;
 #endif
 
 namespace hesp {
@@ -40,8 +42,9 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 
 	// FIXME: Remove this - it's just a test.
 #if 0
-	m_mesh = ModelFilesUtil::load_mesh("resources/models/Test-15.mesh.xml");
-	m_skeleton = ModelFilesUtil::load_skeleton("resources/models/Test-15.skeleton.xml");
+	bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
+	m_mesh = ModelFilesUtil::load_mesh((modelsDir / "Test-15.mesh.xml").file_string());
+	m_skeleton = ModelFilesUtil::load_skeleton((modelsDir / "Test-15.skeleton.xml").file_string());
 #endif
 }
 

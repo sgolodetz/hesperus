@@ -37,6 +37,16 @@ bf::path determine_executable_location()
 #endif
 }
 
+bf::path determine_images_directory(const bf::path& baseDir)
+{
+	return baseDir / "resources/images/";
+}
+
+bf::path determine_levels_directory(const bf::path& baseDir)
+{
+	return baseDir / "resources/levels/";
+}
+
 bf::path determine_models_directory(const bf::path& baseDir)
 {
 	return baseDir / "resources/models/";
@@ -45,6 +55,11 @@ bf::path determine_models_directory(const bf::path& baseDir)
 bf::path determine_settings_directory(const bf::path& baseDir)
 {
 	return baseDir / "resources/settings/";
+}
+
+bf::path determine_textures_directory(const bf::path& baseDir)
+{
+	return baseDir / "resources/textures/";
 }
 
 }

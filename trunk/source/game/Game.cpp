@@ -11,7 +11,9 @@
 
 #include <source/exceptions/Exception.h>
 #include <source/gui/Screen.h>
+#include <source/io/DirectoryFinder.h>
 #include "GameState_Load.h"
+namespace bf = boost::filesystem;
 
 namespace hesp {
 
@@ -45,7 +47,8 @@ try
 	if(!glewGetExtension("GL_ARB_multitexture")) quit_with_error("Multitexturing not supported");
 
 	// Set the initial game state.
-	m_state.reset(new GameState_Load("resources/levels/tricky/tricky.bsp"));
+	bf::path levelsDir = determine_levels_directory(determine_base_directory_from_game());
+	m_state.reset(new GameState_Load((levelsDir / "tricky/tricky.bsp").file_string()));
 	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }

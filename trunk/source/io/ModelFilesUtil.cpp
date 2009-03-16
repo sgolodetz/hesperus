@@ -170,7 +170,8 @@ try
 		Material_Ptr tempMaterial;
 		if(useTexture)
 		{
-			Texture_Ptr tempTexture = TextureFactory::create_texture24(BitmapLoader::load_image24("resources/models/UV.bmp"));
+			bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
+			Texture_Ptr tempTexture = TextureFactory::create_texture24(BitmapLoader::load_image24((modelsDir / "UV.bmp").file_string()));
 			tempMaterial.reset(new TextureMaterial(tempTexture));
 		}
 		else
