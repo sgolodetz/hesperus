@@ -1194,6 +1194,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\AnimationController.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\Bone.cpp"
 						>
 					</File>
@@ -1235,6 +1239,10 @@
 					>
 					<File
 						RelativePath="..\level\models\Animation.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\AnimationController.h"
 						>
 					</File>
 					<File

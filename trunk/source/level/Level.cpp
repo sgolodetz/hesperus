@@ -162,7 +162,7 @@ void Level::render_entities() const
 			model->skeleton()->select_keyframe("walk", keyframe);
 #endif
 
-			model->mesh()->skin(model->skeleton());			
+			model->mesh()->skin(model->skeleton());
 
 			// Note:	This matrix maps x -> u, -y -> n, z -> z, and translates by p. Since models are
 			//			built in Blender facing in the -y direction, this turns out to be exactly the
