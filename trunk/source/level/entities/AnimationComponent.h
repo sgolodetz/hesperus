@@ -16,7 +16,8 @@ class AnimationComponent : public IAnimationComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::string m_modelFilename;
+	Model_Ptr m_model;
+	std::string m_modelName;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -24,6 +25,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const Model_Ptr& model() const;
 	void save(std::ostream& os) const;
 };
 

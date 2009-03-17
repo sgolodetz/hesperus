@@ -2,13 +2,12 @@
 hesperus - Todo
 ===============
 
-Last Updated: 11-03-09
+Last Updated: 17-03-09
 
 ----
 Easy
 ----
 
-* Sort out how the game determines where its files are.
 * Split FileSectionUtil into a class for each type of section: it's a 'kitchen sink' class at the moment.
 * Walk/run etc. - sort out where the various different entity speeds are coming from (I'd suggest the entity definition file, possibly).
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
@@ -26,9 +25,11 @@ Hard
 ----
 
 * Detail and hint brushes to improve vis/nav. This will require changes to both MapEditor and the toolchain.
-* Update MapEditor to allow placement of entities, lights, etc. Ultimately scripted paths should be added as well.
-* Write the model loading and animation code.
-  - Sort out where the textures are coming from.
-  - Integrate model loading with entities.
+* Update MapEditor to allow placement of entities, etc. Some sort of scripted paths should be added as well.
+* Write the model and animation code.
   - Sort out inter-model attachment (e.g. for weapons).
   - Design the animation controller.
+    - Support for animation blending?
+    - Support for IK?
+    - Animations which play on some bones but not others?
+* Implement AI scripting.

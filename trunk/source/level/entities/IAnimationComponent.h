@@ -11,6 +11,8 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/level/models/Model.h>
+
 namespace hesp {
 
 class IAnimationComponent
@@ -21,6 +23,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual const Model_Ptr& model() const = 0;
 	virtual void save(std::ostream& os) const = 0;
 };
 

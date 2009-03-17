@@ -12,12 +12,8 @@
 #include <gl/glu.h>
 
 #include <source/colours/Colour3d.h>
+#include <source/level/models/Model.h>
 #include <source/math/vectors/Vector3.h>
-
-// FIXME: Remove this - it's just a test.
-#if 0
-#include <source/io/ModelFilesUtil.h>
-#endif
 
 namespace hesp {
 
@@ -37,13 +33,6 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	{
 		m_navDatasets[i]->nav_mesh()->build_collision_to_nav_lookup();
 	}
-
-	// FIXME: Remove this - it's just a test.
-#if 0
-	Model_Ptr model = ModelFilesUtil::load_model("Test-15");
-	m_mesh = model->mesh();
-	m_skeleton = model->skeleton();
-#endif
 }
 
 //#################### PUBLIC METHODS ####################
@@ -134,23 +123,6 @@ void Level::render() const
 	render_portals();
 #endif
 
-	// FIXME: Remove this - it's just a test.
-#if 0
-	static int rate = 0;
-	static int keyframe = 0;
-	if(rate == 0) keyframe = (keyframe + 1) % 21;
-	rate = (rate + 1) % 5;
-
-	// Render the test skeleton.
-	glTranslated(20,20,6);
-	m_skeleton->select_keyframe("walk", keyframe);
-	//m_skeleton->set_rest_pose();
-	m_skeleton->render_bones();
-
-	m_mesh->skin(m_skeleton);
-	m_mesh->render();
-#endif
-
 	glPopAttrib();
 }
 
@@ -159,26 +131,66 @@ void Level::render_entities() const
 {
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDisable(GL_CULL_FACE);
-	glColor3d(1,1,0);
-
 	const std::vector<Entity_Ptr>& animatables = m_entityManager->animatables();
 	int animatablesCount = static_cast<int>(animatables.size());
 	for(int i=0; i<animatablesCount; ++i)
 	{
-		// FIXME: Eventually we'll just call render(m_tree, m_leafVis) on each visible entity.
+		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
 		ICameraComponent_Ptr camComponent = animatables[i]->camera_component();
 		ICollisionComponent_Ptr colComponent = animatables[i]->collision_component();
-		if(camComponent && colComponent && animatables[i] != m_entityManager->viewer())
+		if(animComponent && camComponent && colComponent && animatables[i] != m_entityManager->viewer())
 		{
+			// FIXME: For performance reasons, we should only be rendering entities which are potentially visible.
 			const Camera& camera = camComponent->camera();
 			const AABB3d& aabb = m_entityManager->aabbs()[colComponent->aabb_indices()[colComponent->pose()]];
+			const Vector3d& p = camera.position();
+			const Vector3d& n = camera.n();
+			const Vector3d& u = camera.u();
+			const Vector3d& v = camera.v();
+
+			// Render the model.
+			Model_Ptr model = animComponent->model();
+
+			// FIXME: Eventually the pose of the model will be set elsewhere by an animation controller.
+#if 1
+			model->skeleton()->set_rest_pose();
+#else
+			static int rate = 0;
+			static int keyframe = 0;
+			if(rate == 0) keyframe = (keyframe + 1) % 21;
+			rate = (rate + 1) % 5;
+			model->skeleton()->select_keyframe("walk", keyframe);
+#endif
+
+			model->mesh()->skin(model->skeleton());			
+
+			// Note:	This matrix maps x -> u, -y -> n, z -> z, and translates by p. Since models are
+			//			built in Blender facing in the -y direction, this turns out to be exactly the
+			//			transformation required to render the models with the correct position and
+			//			orientation.
+			Matrix44_Ptr mat = Matrix44::zeros();
+			Matrix44& m = *mat;
+			m(0,0) = u.x;	m(0,1) = -n.x;	m(0,2) = 0;		m(0,3) = p.x;
+			m(1,0) = u.y;	m(1,1) = -n.y;	m(1,2) = 0;		m(1,3) = p.y;
+			m(2,0) = u.z;	m(2,1) = -n.z;	m(2,2) = 1;		m(2,3) = p.z;
+			m(3,0) = 0;		m(3,1) = 0;		m(3,2) = 0;		m(3,3) = 1;
+
+			glPushMatrix();
+			glMultMatrixd(m.rep());
+
+			model->mesh()->render();
+
+			glPopMatrix();
+
+			// Render the AABB.
 			AABB3d tAABB = aabb.translate(camera.position());
 			const Vector3d& mins = tAABB.minimum();
 			const Vector3d& maxs = tAABB.maximum();
 
-			// Render the translated AABB.
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glDisable(GL_CULL_FACE);
+			glColor3d(1,1,0);
+
 			glBegin(GL_QUADS);
 				// Front
 				glVertex3d(mins.x, mins.y, mins.z);
@@ -205,11 +217,13 @@ void Level::render_entities() const
 				glVertex3d(mins.x, maxs.y, maxs.z);
 			glEnd();
 
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glEnable(GL_CULL_FACE);
+
 			// Render the entity camera axes.
-			const Vector3d& p = camera.position();
-			Vector3d pn = p + camera.n();
-			Vector3d pu = p + camera.u();
-			Vector3d pv = p + camera.v();
+			Vector3d pn = p + n;
+			Vector3d pu = p + u;
+			Vector3d pv = p + v;
 			glBegin(GL_LINES);
 				glColor3d(1,0,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pn.x, pn.y, pn.z);
 				glColor3d(0,1,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pu.x, pu.y, pu.z);
