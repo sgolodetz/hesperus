@@ -12,4 +12,15 @@ Model::Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton)
 :	m_mesh(mesh), m_skeleton(skeleton)
 {}
 
+//#################### PUBLIC METHODS ####################
+const Mesh_Ptr& Model::mesh() const
+{
+	return m_mesh;
+}
+
+const Skeleton_Ptr& Model::skeleton() const
+{
+	return m_skeleton;
+}
+
 }

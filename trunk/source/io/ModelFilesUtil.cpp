@@ -5,12 +5,15 @@
 
 #include "ModelFilesUtil.h"
 
+#include <iostream>
+
 #include <boost/lexical_cast.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
+#include <source/io/LineIO.h>
 #include <source/materials/BasicMaterial.h>
 #include <source/materials/TextureMaterial.h>
 #include <source/textures/TextureFactory.h>
@@ -27,47 +30,23 @@ const double SCALE = 1.0/10;	// the models are built such that 10 units in Blend
 namespace hesp {
 
 //#################### LOADING METHODS ####################
-Model_Ptr ModelFilesUtil::load_model(const std::string& name)
-{
-	bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
-	bf::path materialsPath = modelsDir / (name + ".material");
-	bf::path meshPath = modelsDir / (name + ".mesh.xml");
-	bf::path skeletonPath = modelsDir / (name + ".skeleton.xml");
-
-	// TODO: Load in the materials and pass them into load_mesh().
-	std::map<std::string,Material_Ptr> materials = load_materials(materialsPath.file_string());
-	Mesh_Ptr mesh = load_mesh(meshPath.file_string()/*, materials*/);
-	Skeleton_Ptr skeleton = load_skeleton(skeletonPath.file_string());
-
-	// NYI
-	throw 23;
-
-	return Model_Ptr(new Model(mesh, skeleton));
-}
-
-//#################### LOADING SUPPORT METHODS ####################
-TexCoords ModelFilesUtil::extract_texcoords(const XMLElement_CPtr& elt)
-{
-	double u = lexical_cast<double,std::string>(elt->attribute("u"));
-	double v = lexical_cast<double,std::string>(elt->attribute("v"));
-	return TexCoords(u,v);
-}
-
-Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
-{
-	double x = lexical_cast<double,std::string>(elt->attribute("x"));
-	double y = lexical_cast<double,std::string>(elt->attribute("y"));
-	double z = lexical_cast<double,std::string>(elt->attribute("z"));
-	return Vector3d(x,y,z);
-}
-
 std::map<std::string,Material_Ptr> ModelFilesUtil::load_materials(const std::string& filename)
 {
-	// NYI
-	throw 23;
+	std::map<std::string,Material_Ptr> ret;
+
+	std::ifstream is(filename.c_str());
+	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
+
+	NamedMaterial_Ptr material;
+	while(material = read_material(is))
+	{
+		ret.insert(std::make_pair(material->first, material->second));
+	}
+
+	return ret;
 }
 
-Mesh_Ptr ModelFilesUtil::load_mesh(const std::string& filename)
+Mesh_Ptr ModelFilesUtil::load_mesh(const std::string& filename, const std::map<std::string,Material_Ptr>& materials)
 try
 {
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
@@ -85,7 +64,20 @@ try
 	{
 		const XMLElement_CPtr& submeshElt = submeshElts[i];
 
-		std::string material = submeshElt->attribute("material");
+		std::string materialName = submeshElt->attribute("material");
+
+		// Lookup the material in the materials map. Use a default material and output an error if it's missing.
+		Material_Ptr material;
+		std::map<std::string,Material_Ptr>::const_iterator jt = materials.find(materialName);
+		if(jt != materials.end())
+		{
+			material = jt->second;
+		}
+		else
+		{
+			material.reset(new BasicMaterial(Colour3d(1,1,1), Colour3d(1,1,1), Colour3d(1,1,1), 1, Colour3d(1,1,1), true));
+			std::cerr << "Missing material: " << materialName << std::endl;
+		}
 
 		// Read in the vertex indices for the triangles in the mesh.
 		XMLElement_CPtr facesElt = submeshElt->find_unique_child("faces");
@@ -166,20 +158,7 @@ try
 			vertices[vertIndex].add_bone_weight(BoneWeight(boneIndex, weight));
 		}
 
-		// FIXME: Obtain the material from the .material file.
-		Material_Ptr tempMaterial;
-		if(useTexture)
-		{
-			bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
-			Texture_Ptr tempTexture = TextureFactory::create_texture24(BitmapLoader::load_image24((modelsDir / "UV.bmp").file_string()));
-			tempMaterial.reset(new TextureMaterial(tempTexture));
-		}
-		else
-		{
-			tempMaterial.reset(new BasicMaterial(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0), true));
-		}
-
-		submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, tempMaterial, texCoords)));
+		submeshes.push_back(Submesh_Ptr(new Submesh(vertIndices, vertices, material, texCoords)));
 	}
 
 	return Mesh_Ptr(new Mesh(submeshes));
@@ -187,6 +166,20 @@ try
 catch(bad_lexical_cast&)
 {
 	throw Exception("An element attribute was not of the correct type");
+}
+
+Model_Ptr ModelFilesUtil::load_model(const std::string& name)
+{
+	bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
+	bf::path materialsPath = modelsDir / (name + ".material");
+	bf::path meshPath = modelsDir / (name + ".mesh.xml");
+	bf::path skeletonPath = modelsDir / (name + ".skeleton.xml");
+
+	std::map<std::string,Material_Ptr> materials = load_materials(materialsPath.file_string());
+	Mesh_Ptr mesh = load_mesh(meshPath.file_string(), materials);
+	Skeleton_Ptr skeleton = load_skeleton(skeletonPath.file_string());
+
+	return Model_Ptr(new Model(mesh, skeleton));
 }
 
 Skeleton_Ptr ModelFilesUtil::load_skeleton(const std::string& filename)
@@ -336,6 +329,187 @@ try
 catch(bad_lexical_cast&)
 {
 	throw Exception("An element attribute was not of the correct type");
+}
+
+//#################### LOADING SUPPORT METHODS ####################
+TexCoords ModelFilesUtil::extract_texcoords(const XMLElement_CPtr& elt)
+{
+	double u = lexical_cast<double,std::string>(elt->attribute("u"));
+	double v = lexical_cast<double,std::string>(elt->attribute("v"));
+	return TexCoords(u,v);
+}
+
+Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
+{
+	double x = lexical_cast<double,std::string>(elt->attribute("x"));
+	double y = lexical_cast<double,std::string>(elt->attribute("y"));
+	double z = lexical_cast<double,std::string>(elt->attribute("z"));
+	return Vector3d(x,y,z);
+}
+
+ModelFilesUtil::NamedMaterial_Ptr ModelFilesUtil::read_material(std::istream& is)
+{
+	// Note:	We don't make use of most of the information for each material - we're only interested in certain bits,
+	//			which is why the code might look strange.
+
+	std::string line;
+	if(!std::getline(is, line)) return NamedMaterial_Ptr();
+
+	NamedMaterial_Ptr ret;
+
+	if(line.substr(0,9) != "material ") throw Exception("Expected material");
+	std::string name = line.substr(9);
+
+	LineIO::read_checked_line(is, "{");
+
+	bool done = false;
+	int bracketCount = 1;
+	for(;;)
+	{
+		LineIO::read_trimmed_line(is, line, "material");
+
+		if(line == "{")
+		{
+			++bracketCount;
+		}
+		if(line == "}")
+		{
+			--bracketCount;
+			if(bracketCount == 0) break;
+		}
+		else if(line == "technique")
+		{
+			Material_Ptr material = read_technique(is);
+			if(done)
+			{
+				std::cerr << "Ignoring extra techniques for material " << name << std::endl;
+			}
+			else
+			{
+				ret.reset(new NamedMaterial(name, material));
+				done = true;
+			}
+		}
+	}
+
+	return ret;
+}
+
+Material_Ptr ModelFilesUtil::read_pass(std::istream& is)
+{
+	Material_Ptr ret;
+
+	LineIO::read_checked_trimmed_line(is, "{");
+
+	std::string line;
+
+	bool useTexture = false;
+	Colour3d ambient, diffuse, emissive, specular;
+	double specularExponent = 0;
+	std::string textureFilename;
+
+	int bracketCount = 1;
+	for(;;)
+	{
+		LineIO::read_trimmed_line(is, line, "pass");
+
+		if(line == "{")
+		{
+			++bracketCount;
+		}
+		else if(line == "}")
+		{
+			--bracketCount;
+			if(bracketCount == 0) break;
+		}
+		else if(line == "ambient")
+		{
+			// TODO
+		}
+		else if(line == "diffuse")
+		{
+			// TODO
+		}
+		else if(line == "emissive")
+		{
+			// TODO
+		}
+		else if(line == "specular")
+		{
+			// TODO
+		}
+		else if(line == "texture_unit")
+		{
+			useTexture = true;
+
+			LineIO::read_checked_trimmed_line(is, "{");
+
+			LineIO::read_trimmed_line(is, line, "texture");
+			if(line.substr(0,8) != "texture ") throw Exception("Expected texture");
+			textureFilename = line.substr(8);
+
+			LineIO::read_checked_trimmed_line(is, "}");
+		}
+	}
+
+	if(useTexture)
+	{
+		bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
+		Texture_Ptr texture = TextureFactory::create_texture24(BitmapLoader::load_image24((modelsDir / textureFilename).file_string()));
+		ret.reset(new TextureMaterial(texture));
+	}
+	else
+	{
+		// FIXME: Load the material colours in properly above.
+#if 0
+		ret.reset(new BasicMaterial(ambient, diffuse, specular, specularExponent, emissive, true));
+#else
+		ret.reset(new BasicMaterial(Colour3d(0.5,0.5,0.5), Colour3d(0.8,0.8,0.64), Colour3d(0.5,0.5,0.5), 12.5, Colour3d(0,0,0), true));
+#endif
+	}
+
+	return ret;
+}
+
+Material_Ptr ModelFilesUtil::read_technique(std::istream& is)
+{
+	Material_Ptr ret;
+
+	LineIO::read_checked_trimmed_line(is, "{");
+
+	std::string line;
+
+	bool done = false;
+	int bracketCount = 1;
+	for(;;)
+	{
+		LineIO::read_trimmed_line(is, line, "technique");
+
+		if(line == "{")
+		{
+			++bracketCount;
+		}
+		if(line == "}")
+		{
+			--bracketCount;
+			if(bracketCount == 0) break;
+		}
+		else if(line == "pass")
+		{
+			Material_Ptr material = read_pass(is);
+			if(done)
+			{
+				std::cerr << "Ignoring extra passes for technique" << std::endl;
+			}
+			else
+			{
+				ret = material;
+				done = true;
+			}
+		}
+	}
+
+	return ret;
 }
 
 }

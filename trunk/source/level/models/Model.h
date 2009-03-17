@@ -21,6 +21,11 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	const Mesh_Ptr& mesh() const;
+	const Skeleton_Ptr& skeleton() const;
 };
 
 //#################### TYPEDEFS ####################

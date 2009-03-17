@@ -5,6 +5,8 @@
 
 #include "LineIO.h"
 
+#include <boost/algorithm/string/trim.hpp>
+
 #include <source/exceptions/Exception.h>
 
 namespace hesp {
@@ -25,6 +27,16 @@ void LineIO::read_checked_line(std::istream& is, const std::string& expected)
 }
 
 /**
+A version of read_checked_line which trims the read line before checking it.
+*/
+void LineIO::read_checked_trimmed_line(std::istream& is, const std::string& expected)
+{
+	std::string line;
+	read_trimmed_line(is, line, expected);
+	if(line != expected) throw Exception("Expected " + expected);
+}
+
+/**
 Attempts to read a line from a std::istream into a string.
 
 @param is			The std::istream
@@ -35,6 +47,15 @@ Attempts to read a line from a std::istream into a string.
 void LineIO::read_line(std::istream& is, std::string& line, const std::string& description)
 {
 	if(!std::getline(is, line)) throw Exception("Unexpected EOF whilst trying to read " + description);
+}
+
+/**
+A version of read_line which trims the line after reading it in.
+*/
+void LineIO::read_trimmed_line(std::istream& is, std::string& line, const std::string& description)
+{
+	read_line(is, line, description);
+	boost::trim(line);
 }
 
 }
