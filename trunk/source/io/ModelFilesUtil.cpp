@@ -30,6 +30,12 @@ const double SCALE = 1.0/10;	// the models are built such that 10 units in Blend
 namespace hesp {
 
 //#################### LOADING METHODS ####################
+/**
+Loads a set of materials from the specified Ogre materials file.
+
+@param filename	The name of the file
+@return			The set of materials as a std::map, indexed by name
+*/
 std::map<std::string,Material_Ptr> ModelFilesUtil::load_materials(const std::string& filename)
 {
 	std::map<std::string,Material_Ptr> ret;
@@ -46,6 +52,13 @@ std::map<std::string,Material_Ptr> ModelFilesUtil::load_materials(const std::str
 	return ret;
 }
 
+/**
+Loads a mesh from the specified Ogre mesh file.
+
+@param filename		The name of the file
+@param materials	The set of materials referenced in the file
+@return				The mesh
+*/
 Mesh_Ptr ModelFilesUtil::load_mesh(const std::string& filename, const std::map<std::string,Material_Ptr>& materials)
 try
 {
@@ -107,8 +120,6 @@ try
 			throw Exception("Both vertex positions and normals are required to be present - did you make sure to export them?");
 		}
 
-		bool useTexture = vertexbufferElt->has_attribute("texture_coords") && vertexbufferElt->attribute("texture_coords") == "1";
-
 		std::vector<XMLElement_CPtr> vertexElts = vertexbufferElt->find_children("vertex");
 		int vertCount = static_cast<int>(vertexElts.size());
 
@@ -127,6 +138,8 @@ try
 		}
 
 		// Read in the texture coordinates (if present).
+		bool useTexture = vertexbufferElt->has_attribute("texture_coords") && vertexbufferElt->attribute("texture_coords") == "1";
+
 		std::vector<TexCoords> texCoords;
 		if(useTexture)
 		{
@@ -168,6 +181,12 @@ catch(bad_lexical_cast&)
 	throw Exception("An element attribute was not of the correct type");
 }
 
+/**
+Loads the model with the specified name.
+
+@param name	The name of the model
+@return		The model
+*/
 Model_Ptr ModelFilesUtil::load_model(const std::string& name)
 {
 	bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
@@ -182,6 +201,12 @@ Model_Ptr ModelFilesUtil::load_model(const std::string& name)
 	return Model_Ptr(new Model(mesh, skeleton));
 }
 
+/**
+Loads a skeleton from the specified Ogre skeleton file.
+
+@param filename	The name of the file
+@return			The skeleton
+*/
 Skeleton_Ptr ModelFilesUtil::load_skeleton(const std::string& filename)
 try
 {
@@ -332,6 +357,12 @@ catch(bad_lexical_cast&)
 }
 
 //#################### LOADING SUPPORT METHODS ####################
+/**
+Extracts (u,v) texture coordinates from the specified XML element.
+
+@param elt	The XML element
+@return		The (u,v) texture coordinates
+*/
 TexCoords ModelFilesUtil::extract_texcoords(const XMLElement_CPtr& elt)
 {
 	double u = lexical_cast<double,std::string>(elt->attribute("u"));
@@ -339,6 +370,12 @@ TexCoords ModelFilesUtil::extract_texcoords(const XMLElement_CPtr& elt)
 	return TexCoords(u,v);
 }
 
+/**
+Extracts a 3D vector from the specified XML element.
+
+@param elt	The XML element
+@return		The 3D vector
+*/
 Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
 {
 	double x = lexical_cast<double,std::string>(elt->attribute("x"));
