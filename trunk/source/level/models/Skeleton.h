@@ -20,7 +20,7 @@ private:
 
 	// In order to do mesh skinning, we need to be able to move points into the
 	// (rest) coordinate frame of each bone. These matrices fulfil that role.
-	std::vector<Matrix44_Ptr> m_toBoneMatrices;
+	std::vector<RBTMatrix_Ptr> m_toBoneMatrices;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -31,15 +31,14 @@ public:
 	const BoneConfiguration_Ptr& bone_configuration() const;
 	void render_bones() const;
 	void select_keyframe(const std::string& animationName, int keyframeIndex);
-	void specify_relative_bone_matrices(const std::vector<Matrix44_Ptr>& boneMatrices);
+	void specify_relative_bone_matrices(const std::vector<RBTMatrix_Ptr>& boneMatrices);
 	void set_rest_pose();
-	const Matrix44_Ptr& to_bone_matrix(int i) const;
+	const RBTMatrix_Ptr& to_bone_matrix(int i) const;
 
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_to_bone_matrices();
 	void calculate_absolute_bone_matrix(const Bone_Ptr& bone);
-	static Matrix44_Ptr invert_rigid_body_transform(const Matrix44_Ptr& mat);
 	void update_absolute_bone_matrices();
 };
 

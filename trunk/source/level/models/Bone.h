@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/math/matrices/Matrix44.h>
+#include <source/math/matrices/RBTMatrix.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -26,9 +26,9 @@ class Bone
 private:
 	std::string m_name;
 	Vector3d m_basePosition;
-	Matrix44_Ptr m_baseRotation;
-	Matrix44_Ptr m_absoluteMatrix;
-	Matrix44_Ptr m_relativeMatrix;
+	RBTMatrix_Ptr m_baseRotation;
+	RBTMatrix_Ptr m_absoluteMatrix;
+	RBTMatrix_Ptr m_relativeMatrix;
 	Bone_Ptr m_parent;
 
 	//#################### CONSTRUCTORS ####################
@@ -37,16 +37,16 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	Matrix44_Ptr& absolute_matrix();
-	const Matrix44_Ptr& absolute_matrix() const;
+	RBTMatrix_Ptr& absolute_matrix();
+	const RBTMatrix_Ptr& absolute_matrix() const;
 	const Vector3d& base_position() const;
-	const Matrix44_Ptr& base_rotation() const;
+	const RBTMatrix_Ptr& base_rotation() const;
 	const std::string& name() const;
 	Vector3d orientation() const;
 	const Bone_Ptr& parent() const;
 	Vector3d position() const;
-	Matrix44_Ptr& relative_matrix();
-	const Matrix44_Ptr& relative_matrix() const;
+	RBTMatrix_Ptr& relative_matrix();
+	const RBTMatrix_Ptr& relative_matrix() const;
 	void set_parent(const Bone_Ptr& parent);
 };
 

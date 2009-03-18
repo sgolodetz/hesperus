@@ -277,7 +277,7 @@ try
 		int trackCount = static_cast<int>(trackElts.size());
 		int keyframeCount = 0;
 
-		typedef std::vector<Matrix44_Ptr> Track;
+		typedef std::vector<RBTMatrix_Ptr> Track;
 		std::map<std::string,Track> tracks;
 
 		for(int j=0; j<trackCount; ++j)
@@ -306,7 +306,7 @@ try
 
 				// TODO: Make use of scale here as well if necessary.
 
-				track[k] = Matrix44::from_axis_angle_translation(rotateAxis, rotateAngle, translation);
+				track[k] = RBTMatrix::from_axis_angle_translation(rotateAxis, rotateAngle, translation);
 			}
 			tracks.insert(std::make_pair(bone,track));
 		}
@@ -322,7 +322,7 @@ try
 		std::vector<Keyframe_Ptr> keyframes(keyframeCount);
 		for(int j=0; j<keyframeCount; ++j)
 		{
-			std::vector<Matrix44_Ptr> boneMatrices(boneCount);
+			std::vector<RBTMatrix_Ptr> boneMatrices(boneCount);
 			for(int k=0; k<boneCount; ++k)
 			{
 				Bone_CPtr bone = boneConfiguration->bones(k);
@@ -336,7 +336,7 @@ try
 				else
 				{
 					// Otherwise, use the identity matrix.
-					boneMatrices[k] = Matrix44::identity();
+					boneMatrices[k] = RBTMatrix::identity();
 				}
 			}
 

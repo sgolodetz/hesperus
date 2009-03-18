@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/math/matrices/Matrix44.h>
+#include <source/math/matrices/RBTMatrix.h>
 
 namespace hesp {
 
@@ -19,15 +19,15 @@ class Keyframe
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<Matrix44_Ptr> m_boneMatrices;
+	std::vector<RBTMatrix_Ptr> m_boneMatrices;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Keyframe(const std::vector<Matrix44_Ptr>& boneMatrices);
+	Keyframe(const std::vector<RBTMatrix_Ptr>& boneMatrices);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const std::vector<Matrix44_Ptr>& bone_matrices() const;
+	const std::vector<RBTMatrix_Ptr>& bone_matrices() const;
 };
 
 //#################### TYPEDEFS ####################

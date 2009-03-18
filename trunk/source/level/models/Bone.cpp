@@ -13,14 +13,14 @@ namespace hesp {
 Bone::Bone(const std::string& name, const Vector3d& position, const Vector3d& rotationAxis, double rotationAngle)
 :	m_name(name), m_basePosition(position)
 {
-	m_baseRotation = Matrix44::from_axis_angle_translation(rotationAxis, rotationAngle, Vector3d(0,0,0));
+	m_baseRotation = RBTMatrix::from_axis_angle_translation(rotationAxis, rotationAngle, Vector3d(0,0,0));
 }
 
 //#################### PUBLIC METHODS ####################
-Matrix44_Ptr& Bone::absolute_matrix()				{ return m_absoluteMatrix; }
-const Matrix44_Ptr& Bone::absolute_matrix() const	{ return m_absoluteMatrix; }
+RBTMatrix_Ptr& Bone::absolute_matrix()				{ return m_absoluteMatrix; }
+const RBTMatrix_Ptr& Bone::absolute_matrix() const	{ return m_absoluteMatrix; }
 const Vector3d& Bone::base_position() const			{ return m_basePosition; }
-const Matrix44_Ptr& Bone::base_rotation() const		{ return m_baseRotation; }
+const RBTMatrix_Ptr& Bone::base_rotation() const	{ return m_baseRotation; }
 const std::string& Bone::name() const				{ return m_name; }
 
 Vector3d Bone::orientation() const
@@ -28,7 +28,7 @@ Vector3d Bone::orientation() const
 	if(!m_absoluteMatrix) throw Exception("The absolute matrix for the bone has not yet been calculated");
 
 	// Extract the bone orientation from the absolute matrix and return it.
-	Matrix44& m = *m_absoluteMatrix;
+	RBTMatrix& m = *m_absoluteMatrix;
 	return Vector3d(m(0,1), m(1,1), m(2,1));
 }
 
@@ -39,12 +39,12 @@ Vector3d Bone::position() const
 	if(!m_absoluteMatrix) throw Exception("The absolute matrix for the bone has not yet been calculated");
 
 	// Extract the bone position from the absolute matrix and return it.
-	Matrix44& m = *m_absoluteMatrix;
+	RBTMatrix& m = *m_absoluteMatrix;
 	return Vector3d(m(0,3), m(1,3), m(2,3));
 }
 
-Matrix44_Ptr& Bone::relative_matrix()				{ return m_relativeMatrix; }
-const Matrix44_Ptr& Bone::relative_matrix() const	{ return m_relativeMatrix; }
+RBTMatrix_Ptr& Bone::relative_matrix()				{ return m_relativeMatrix; }
+const RBTMatrix_Ptr& Bone::relative_matrix() const	{ return m_relativeMatrix; }
 void Bone::set_parent(const Bone_Ptr& parent)		{ m_parent = parent; }
 
 }

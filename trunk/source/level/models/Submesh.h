@@ -39,10 +39,6 @@ public:
 public:
 	void render() const;
 	void skin(const Skeleton_Ptr& skeleton);
-
-	//#################### PRIVATE METHODS ####################
-private:
-	static Vector3d apply_rbt(const Matrix44_Ptr& rbt, const Vector3d& p);
 };
 
 //#################### TYPEDEFS ####################
