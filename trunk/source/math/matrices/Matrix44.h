@@ -6,8 +6,6 @@
 #ifndef H_HESP_MATRIX44
 #define H_HESP_MATRIX44
 
-#include <vector>
-
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -21,7 +19,7 @@ class Matrix44
 	//#################### PRIVATE VARIABLES ####################
 private:
 	// Note: The internal array is ordered in column-major order in order to inter-operate easily with OpenGL.
-	std::vector<double> m;
+	double m[16];
 
 	//#################### CONSTRUCTORS ####################
 private:

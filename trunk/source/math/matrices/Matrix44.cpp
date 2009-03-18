@@ -15,8 +15,12 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Matrix44::Matrix44(double initValue)
-:	m(16, initValue)
-{}
+{
+	for(int i=0; i<16; ++i)
+	{
+		m[i] = initValue;
+	}
+}
 
 //#################### STATIC FACTORY METHODS ####################
 /**
