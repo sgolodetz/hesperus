@@ -483,6 +483,26 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="quaternions"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\math\quaternions\Quaternion.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\math\quaternions\Quaternion.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="level"
