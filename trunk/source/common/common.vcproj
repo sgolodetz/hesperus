@@ -473,12 +473,20 @@
 						RelativePath="..\math\matrices\Matrix44.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\math\matrices\RBTMatrix.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
 					>
 					<File
 						RelativePath="..\math\matrices\Matrix44.h"
+						>
+					</File>
+					<File
+						RelativePath="..\math\matrices\RBTMatrix.h"
 						>
 					</File>
 				</Filter>

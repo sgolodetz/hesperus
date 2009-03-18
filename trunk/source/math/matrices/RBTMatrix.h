@@ -1,0 +1,57 @@
+/***
+ * hesperus: RBTMatrix.h
+ * Copyright Stuart Golodetz, 2009. All rights reserved.
+ ***/
+
+#ifndef H_HESP_RBTMATRIX
+#define H_HESP_RBTMATRIX
+
+#include <source/math/vectors/Vector3.h>
+
+namespace hesp {
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<class RBTMatrix> RBTMatrix_Ptr;
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
+
+/**
+This class represents rigid-body transformation matrices.
+*/
+class RBTMatrix
+{
+	//#################### PRIVATE VARIABLES ####################
+private:
+	double m[3][4];
+
+	//#################### CONSTRUCTORS ####################
+private:
+	RBTMatrix();
+
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static RBTMatrix_Ptr from_axis_angle_translation(Vector3d axis, double angle, const Vector3d& translation);
+	static RBTMatrix_Ptr identity();
+	static RBTMatrix_Ptr zeros();
+
+	//#################### PUBLIC OPERATORS ####################
+public:
+	double& operator()(int i, int j);
+	double operator()(int i, int j) const;
+
+	//#################### PUBLIC METHODS ####################
+public:
+	Vector3d apply(const Vector3d& p) const;
+	RBTMatrix_Ptr inverse() const;
+	std::vector<double> rep() const;
+};
+
+//#################### GLOBAL OPERATORS ####################
+RBTMatrix_Ptr& operator+=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs);
+RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, double scale);
+RBTMatrix_Ptr operator*(const RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs);
+RBTMatrix_Ptr operator*(const RBTMatrix_Ptr& lhs, double scale);
+RBTMatrix_Ptr operator*(double scale, const RBTMatrix_Ptr& rhs);
+
+}
+
+#endif
