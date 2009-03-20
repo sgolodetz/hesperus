@@ -92,6 +92,13 @@ Quaternion& Quaternion::normalize()
 
 Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, double t)
 {
+	/*
+	As per p.75 of "Mathematics for 3D Game Programming & Computer Graphics" (Eric Lengyel),
+	the formula for slerp is:
+
+	q(t) = (sin(theta*(1-t)) * q1 + sin(theta*t) * q2) / sin(theta)
+	*/
+
 	assert(fabs(q1.length_squared() - 1) < SMALL_EPSILON);
 	assert(fabs(q2.length_squared() - 1) < SMALL_EPSILON);
 
