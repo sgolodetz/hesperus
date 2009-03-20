@@ -31,7 +31,7 @@ Constructs a rigid-body transformation matrix from an axis, an angle and a trans
 */
 RBTMatrix_Ptr RBTMatrix::from_axis_angle_translation(Vector3d axis, double angle, const Vector3d& translation)
 {
-	if(fabs(axis.length() - 1) > SMALL_EPSILON)
+	if(fabs(axis.length_squared() - 1) > SMALL_EPSILON)
 	{
 		if(axis.length_squared() > EPSILON*EPSILON) axis.normalize();
 		else throw Exception("RBTMatrix::from_axis_angle_translation: Can't rotate about a zero-length axis");

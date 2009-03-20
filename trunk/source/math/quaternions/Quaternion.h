@@ -20,6 +20,9 @@ struct Quaternion
 	//#################### CONSTRUCTORS ####################
 	Quaternion(double w_, double x_, double y_, double z_);
 
+	//#################### STATIC FACTORY METHODS ####################
+	static Quaternion from_axis_angle(Vector3d axis, double angle);
+
 	//#################### PUBLIC OPERATORS ####################
 	Quaternion& operator+=(const Quaternion& rhs);
 	Quaternion& operator*=(const Quaternion& rhs);

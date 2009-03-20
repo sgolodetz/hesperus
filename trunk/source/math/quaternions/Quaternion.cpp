@@ -17,6 +17,20 @@ Quaternion::Quaternion(double w_, double x_, double y_, double z_)
 :	w(w_), x(x_), y(y_), z(z_)
 {}
 
+//#################### STATIC FACTORY METHODS ####################
+Quaternion Quaternion::from_axis_angle(Vector3d axis, double angle)
+{
+	if(fabs(axis.length_squared() - 1) > SMALL_EPSILON)
+	{
+		if(axis.length_squared() > EPSILON*EPSILON) axis.normalize();
+		else throw Exception("Quaternion::from_axis_angle: Can't rotate about a zero-length axis");
+	}
+
+	double cosHalfTheta = cos(angle/2);
+	double sinHalfTheta = sqrt(1 - cosHalfTheta*cosHalfTheta);
+	return Quaternion(cosHalfTheta, sinHalfTheta * axis.x, sinHalfTheta * axis.y, sinHalfTheta * axis.z);
+}
+
 //#################### PUBLIC OPERATORS ####################
 Quaternion& Quaternion::operator+=(const Quaternion& rhs)
 {
