@@ -493,12 +493,20 @@
 						RelativePath="..\math\quaternions\Quaternion.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\math\quaternions\RBTQuaternion.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
 					>
 					<File
 						RelativePath="..\math\quaternions\Quaternion.h"
+						>
+					</File>
+					<File
+						RelativePath="..\math\quaternions\RBTQuaternion.h"
 						>
 					</File>
 				</Filter>
