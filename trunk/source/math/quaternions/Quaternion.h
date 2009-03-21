@@ -30,6 +30,7 @@ struct Quaternion
 
 	//#################### PUBLIC METHODS ####################
 	Vector3d apply_rotation(const Vector3d& p) const;
+	Vector3d apply_unit_rotation(const Vector3d& p) const;
 	Quaternion conjugate() const;
 	double dot(const Quaternion& rhs) const;
 	Quaternion inverse() const;

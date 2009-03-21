@@ -21,7 +21,7 @@ RBTQuaternion_Ptr RBTQuaternion::from_axis_angle_translation(Vector3d axis, doub
 //#################### PUBLIC METHODS ####################
 Vector3d RBTQuaternion::apply(const Vector3d& p) const
 {
-	return m_rotation.apply_rotation(p) + m_translation;
+	return m_rotation.apply_unit_rotation(p) + m_translation;
 }
 
 RBTQuaternion_Ptr RBTQuaternion::interpolate(const RBTQuaternion_Ptr& lhs, const RBTQuaternion_Ptr& rhs, double t)

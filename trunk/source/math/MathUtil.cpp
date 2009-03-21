@@ -11,6 +11,8 @@ namespace hesp {
 RBTQuaternion_Ptr MathUtil::rbt_matrix_to_quaternion(const RBTMatrix_Ptr& mat)
 {
 	const RBTMatrix& m = *mat;
+	Vector3d trans(m(0,3), m(1,3), m(2,3));
+
 	// NYI
 	throw 23;
 }

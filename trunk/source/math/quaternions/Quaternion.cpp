@@ -61,6 +61,16 @@ Vector3d Quaternion::apply_rotation(const Vector3d& p) const
 	return Vector3d(result.x, result.y, result.z);
 }
 
+Vector3d Quaternion::apply_unit_rotation(const Vector3d& p) const
+{
+	// This method is simply an optimized version of apply_rotation for unit quaternions.
+	// Since the inverse of a unit quaternion is its conjugate, we can save some work.
+	assert(fabs(length_squared() - 1) < SMALL_EPSILON);
+	Quaternion quatP(0, p.x, p.y, p.z);
+	Quaternion result = *this * quatP * conjugate();
+	return Vector3d(result.x, result.y, result.z);
+}
+
 Quaternion Quaternion::conjugate() const
 {
 	return Quaternion(w, -x, -y, -z);
