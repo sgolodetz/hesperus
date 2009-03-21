@@ -39,6 +39,7 @@ public:
 public:
 	Vector3d apply(const Vector3d& p) const;
 	static RBTQuaternion_Ptr interpolate(const RBTQuaternion_Ptr& lhs, const RBTQuaternion_Ptr& rhs, double t);
+	RBTQuaternion_Ptr inverse() const;
 	const Quaternion& rotation() const;
 	const Vector3d& translation() const;
 };
