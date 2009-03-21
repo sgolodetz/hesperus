@@ -390,6 +390,10 @@
 					RelativePath="..\math\Interval.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\math\MathUtil.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
@@ -400,6 +404,10 @@
 				</File>
 				<File
 					RelativePath="..\math\Interval.h"
+					>
+				</File>
+				<File
+					RelativePath="..\math\MathUtil.h"
 					>
 				</File>
 			</Filter>

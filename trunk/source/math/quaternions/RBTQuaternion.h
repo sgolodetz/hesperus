@@ -28,8 +28,8 @@ private:
 	Vector3d m_translation;
 
 	//#################### CONSTRUCTORS ####################
-private:
-	RBTQuaternion();
+public:
+	RBTQuaternion(const Quaternion& rotation, const Vector3d& translation);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -38,6 +38,9 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	Vector3d apply(const Vector3d& p) const;
+	static RBTQuaternion_Ptr interpolate(const RBTQuaternion_Ptr& lhs, const RBTQuaternion_Ptr& rhs, double t);
+	const Quaternion& rotation() const;
+	const Vector3d& translation() const;
 };
 
 }
