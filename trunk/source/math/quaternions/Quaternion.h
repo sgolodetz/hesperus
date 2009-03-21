@@ -18,6 +18,7 @@ struct Quaternion
 	double w, x, y, z;
 
 	//#################### CONSTRUCTORS ####################
+	Quaternion();
 	Quaternion(double w_, double x_, double y_, double z_);
 
 	//#################### STATIC FACTORY METHODS ####################

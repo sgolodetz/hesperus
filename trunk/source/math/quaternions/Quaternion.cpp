@@ -13,6 +13,10 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
+Quaternion::Quaternion()
+:	w(0), x(0), y(0), z(0)
+{}
+
 Quaternion::Quaternion(double w_, double x_, double y_, double z_)
 :	w(w_), x(x_), y(y_), z(z_)
 {}
