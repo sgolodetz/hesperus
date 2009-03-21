@@ -14,8 +14,8 @@ namespace hesp {
 struct MathUtil
 {
 	//#################### PUBLIC METHODS ####################
-	static RBTQuaternion_Ptr matrix_to_quaternion(const RBTMatrix_Ptr& m);
-	static RBTMatrix_Ptr quaternion_to_matrix(const RBTQuaternion_Ptr& q);
+	static RBTQuaternion_Ptr rbt_matrix_to_quaternion(const RBTMatrix_Ptr& mat);
+	static RBTMatrix_Ptr rbt_quaternion_to_matrix(const RBTQuaternion_Ptr& q);
 };
 
 }
