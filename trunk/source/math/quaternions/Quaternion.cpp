@@ -159,12 +159,65 @@ Quaternion Quaternion::slerp(const Quaternion& q1, const Quaternion& q2, double 
 //#################### GLOBAL OPERATORS ####################
 Quaternion operator*(const Quaternion& q1, const Quaternion& q2)
 {
+#if 1
+	/*
+	Optimized as per www.gamasutra.com/features/19980703/quaternions_01.htm (with slight modifications).
+	Note that additions are generally substantially faster than multiplications.
+
+	- The normal method takes 16 multiplications and 12 additions.
+	- The optimized method takes 8 multiplications, 4 divisions and 28 additions.
+
+	A = (w1 + x1) * (w2 + x2) = w1w2 + w1x2 + x1w2 + x1x2
+	B = (z1 - y1) * (y2 - z2) = z1y2 - z1z2 - y1y2 + y1z2
+	C = (w1 - x1) * (y2 + z2) = w1y2 + w1z2 - x1y2 - x1z2
+	D = (y1 + z1) * (w2 - x2) = y1w2 - y1x2 + z1w2 - z1x2
+	E = (x1 + z1) * (x2 + y2) = x1x2 + x1y2 + z1x2 + z1y2
+	F = (x1 - z1) * (x2 - y2) = x1x2 - x1y2 - z1x2 + z1y2
+	G = (w1 + y1) * (w2 - z2) = w1w2 - w1z2 + y1w2 - y1z2
+	H = (w1 - y1) * (w2 + z2) = w1w2 + w1z2 - y1w2 - y1z2
+	...
+	I = (E + F)/2 = x1x2 + z1y2
+	J = (E - F)/2 = x1y2 + z1x2
+	K = (G + H)/2 = w1w2 - y1z2
+	L = (G - H)/2 = -w1z2 + y1w2
+	...
+	w = B - I + K
+	  = (z1y2 - z1z2 - y1y2 + y1z2) - (x1x2 + z1y2) + (w1w2 - y1z2)
+	  = w1w2 - x1x2 - y1y2 - z1z2
+	x = A - I - K
+	  = (w1w2 + w1x2 + x1w2 + x1x2) - (x1x2 + z1y2) - (w1w2 - y1z2)
+	  = w1x2 + x1w2 - z1y2 + y1z2
+	y = C + J + L
+	  = (w1y2 + w1z2 - x1y2 - x1z2) + (x1y2 + z1x2) + (-w1z2 + y1w2)
+	  = w1y2 - x1z2 + z1x2 + y1w2
+	z = D + J - L
+	  = (y1w2 - y1x2 + z1w2 - z1x2) + (x1y2 + z1x2) - (-w1z2 + y1w2)
+	  = -y1x2 + z1w2 + x1y2 + w1z2
+	*/
+
+	double	A = (q1.w + q1.x) * (q2.w + q2.x),
+			B = (q1.z - q1.y) * (q2.y - q2.z),
+			C = (q1.w - q1.x) * (q2.y + q2.z),
+			D = (q1.y + q1.z) * (q2.w - q2.x),
+			E = (q1.x + q1.z) * (q2.x + q2.y),
+			F = (q1.x - q1.z) * (q2.x - q2.y),
+			G = (q1.w + q1.y) * (q2.w - q2.z),
+			H = (q1.w - q1.y) * (q2.w + q2.z);
+
+	double	I = (E + F)/2,
+			J = (E - F)/2,
+			K = (G + H)/2,
+			L = (G - H)/2;
+
+	return Quaternion(B - I + K, A - I - K, C + J + L, D + J - L);
+#else
 	return Quaternion(
 		q1.w*q2.w - q1.x*q2.x - q1.y*q2.y - q1.z*q2.z,
 		q1.w*q2.x + q1.x*q2.w + q1.y*q2.z - q1.z*q2.y,
 		q1.w*q2.y - q1.x*q2.z + q1.y*q2.w + q1.z*q2.x,
 		q1.w*q2.z + q1.x*q2.y - q1.y*q2.x + q1.z*q2.w
 	);
+#endif
 }
 
 Quaternion operator*(const Quaternion& q, double scale)
