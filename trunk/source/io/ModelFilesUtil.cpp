@@ -319,7 +319,7 @@ try
 		}
 
 		// Use the tracks to create the *model* keyframes (note: these are distinct from the bone keyframes!).
-		std::vector<Keyframe_Ptr> keyframes(keyframeCount);
+		std::vector<Pose_Ptr> keyframes(keyframeCount);
 		for(int j=0; j<keyframeCount; ++j)
 		{
 			std::vector<RBTMatrix_Ptr> boneMatrices(boneCount);
@@ -340,7 +340,7 @@ try
 				}
 			}
 
-			keyframes[j].reset(new Keyframe(boneMatrices));
+			keyframes[j].reset(new Pose(boneMatrices));
 		}
 
 		std::string name = animationElt->attribute("name");

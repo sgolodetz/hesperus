@@ -14,12 +14,12 @@ using boost::lexical_cast;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Animation::Animation(double length, const std::vector<Keyframe_Ptr>& keyframes)
+Animation::Animation(double length, const std::vector<Pose_Ptr>& keyframes)
 :	m_length(length), m_keyframes(keyframes)
 {}
 
 //#################### PUBLIC METHODS ####################
-const Keyframe_Ptr& Animation::keyframes(int i) const
+const Pose_Ptr& Animation::keyframes(int i) const
 {
 	if(0 <= i && i < static_cast<int>(m_keyframes.size()) && m_keyframes[i]) return m_keyframes[i];
 	else throw Exception("Invalid keyframe " + lexical_cast<std::string,int>(i));

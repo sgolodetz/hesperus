@@ -62,7 +62,7 @@ void Skeleton::select_keyframe(const std::string& animationName, int keyframeInd
 	if(it != m_animations.end())
 	{
 		const Animation_Ptr& animation = it->second;
-		const Keyframe_Ptr& keyframe = animation->keyframes(keyframeIndex);
+		const Pose_Ptr& keyframe = animation->keyframes(keyframeIndex);
 		specify_relative_bone_matrices(keyframe->bone_matrices());
 	}
 	else throw Exception("There is no animation named " + animationName);

@@ -1,10 +1,10 @@
 /***
- * hesperus: Keyframe.h
+ * hesperus: Pose.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_KEYFRAME
-#define H_HESP_KEYFRAME
+#ifndef H_HESP_POSE
+#define H_HESP_POSE
 
 #include <vector>
 
@@ -15,7 +15,7 @@ using boost::shared_ptr;
 
 namespace hesp {
 
-class Keyframe
+class Pose
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -23,7 +23,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Keyframe(const std::vector<RBTMatrix_Ptr>& boneMatrices);
+	Pose(const std::vector<RBTMatrix_Ptr>& boneMatrices);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -31,8 +31,8 @@ public:
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<Keyframe> Keyframe_Ptr;
-typedef shared_ptr<const Keyframe> Keyframe_CPtr;
+typedef shared_ptr<Pose> Pose_Ptr;
+typedef shared_ptr<const Pose> Pose_CPtr;
 
 }
 

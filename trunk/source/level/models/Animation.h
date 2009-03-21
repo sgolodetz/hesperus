@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "Keyframe.h"
+#include "Pose.h"
 
 namespace hesp {
 
@@ -17,15 +17,15 @@ class Animation
 	//#################### PRIVATE VARIABLES ####################
 private:
 	double m_length;
-	std::vector<Keyframe_Ptr> m_keyframes;
+	std::vector<Pose_Ptr> m_keyframes;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Animation(double length, const std::vector<Keyframe_Ptr>& keyframes);
+	Animation(double length, const std::vector<Pose_Ptr>& keyframes);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Keyframe_Ptr& keyframes(int i) const;
+	const Pose_Ptr& keyframes(int i) const;
 	double length() const;
 };
 

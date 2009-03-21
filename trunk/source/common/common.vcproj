@@ -1246,10 +1246,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\models\Keyframe.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\level\models\Mesh.cpp"
 						>
 					</File>
@@ -1259,6 +1255,10 @@
 					</File>
 					<File
 						RelativePath="..\level\models\ModelVertex.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Pose.cpp"
 						>
 					</File>
 					<File
@@ -1294,10 +1294,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\models\Keyframe.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\models\Mesh.h"
 						>
 					</File>
@@ -1307,6 +1303,10 @@
 					</File>
 					<File
 						RelativePath="..\level\models\ModelVertex.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\Pose.h"
 						>
 					</File>
 					<File
