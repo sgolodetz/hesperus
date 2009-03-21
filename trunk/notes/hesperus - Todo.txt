@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 17-03-09
+Last Updated: 21-03-09
 
 ----
 Easy
@@ -12,7 +12,6 @@ Easy
 * Walk/run etc. - sort out where the various different entity speeds are coming from (I'd suggest the entity definition file, possibly).
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
 * Separate viewers from entities: we shouldn't have to see through the eyes of an entity, we should be able to position the camera anywhere we like.
-* Remake the loading screenshot for blakeney_hall now that the lightmaps have been fixed.
 
 ------
 Medium
@@ -33,3 +32,4 @@ Hard
     - Support for IK?
     - Animations which play on some bones but not others?
 * Implement AI scripting.
+* Implement collision handling between dynamic objects.
