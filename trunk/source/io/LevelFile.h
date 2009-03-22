@@ -1,10 +1,10 @@
 /***
- * hesperus: LevelFileUtil.h
+ * hesperus: LevelFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVELFILEUTIL
-#define H_HESP_LEVELFILEUTIL
+#ifndef H_HESP_LEVELFILE
+#define H_HESP_LEVELFILE
 
 #include <source/images/Image.h>
 #include <source/level/Level.h>
@@ -12,7 +12,7 @@
 
 namespace hesp {
 
-class LevelFileUtil
+class LevelFile
 {
 	//#################### LOADING METHODS ####################
 public:

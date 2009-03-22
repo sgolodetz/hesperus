@@ -12,8 +12,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/PortalsFileUtil.h>
-#include <source/io/TreeFileUtil.h>
+#include <source/io/PortalsFile.h>
+#include <source/io/TreeFile.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/portals/PortalGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -43,7 +43,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	BSPTree_Ptr tree;
 	try
 	{
-		TreeFileUtil::load(inputFilename, polygons, tree);
+		TreeFile::load(inputFilename, polygons, tree);
 	}
 	catch(Exception& e) { quit_with_error(e.cause()); }
 
@@ -52,7 +52,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 
 	// Save the portals to the output file.
 	std::vector<Portal_Ptr> vec(portals->begin(), portals->end());
-	PortalsFileUtil::save(outputFilename, tree->empty_leaf_count(), vec);
+	PortalsFile::save(outputFilename, tree->empty_leaf_count(), vec);
 }
 
 int main(int argc, char *argv[])

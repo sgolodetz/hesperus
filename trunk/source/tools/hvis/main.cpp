@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include <source/io/PortalsFileUtil.h>
-#include <source/io/VisFileUtil.h>
+#include <source/io/PortalsFile.h>
+#include <source/io/VisFile.h>
 #include <source/level/vis/VisCalculator.h>
 using namespace hesp;
 
@@ -32,14 +32,14 @@ try
 	// Read in the empty leaf count and portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	PortalsFileUtil::load(inputFilename, emptyLeafCount, portals);
+	PortalsFile::load(inputFilename, emptyLeafCount, portals);
 
 	// Run the visibility calculator.
 	VisCalculator visCalc(emptyLeafCount, portals);
 	LeafVisTable_Ptr leafVis = visCalc.calculate_leaf_vis_table();
 
 	// Write the leaf visibility table to the output file.
-	VisFileUtil::save(outputFilename, leafVis);
+	VisFile::save(outputFilename, leafVis);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

@@ -15,15 +15,15 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
-#include <source/io/EntitiesFileUtil.h>
-#include <source/io/LevelFileUtil.h>
-#include <source/io/LitTreeFileUtil.h>
-#include <source/io/NavFileUtil.h>
-#include <source/io/OnionPortalsFileUtil.h>
-#include <source/io/OnionTreeFileUtil.h>
-#include <source/io/PortalsFileUtil.h>
-#include <source/io/TreeFileUtil.h>
-#include <source/io/VisFileUtil.h>
+#include <source/io/EntitiesFile.h>
+#include <source/io/LevelFile.h>
+#include <source/io/LitTreeFile.h>
+#include <source/io/NavFile.h>
+#include <source/io/OnionPortalsFile.h>
+#include <source/io/OnionTreeFile.h>
+#include <source/io/PortalsFile.h>
+#include <source/io/TreeFile.h>
+#include <source/io/VisFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -51,15 +51,15 @@ try
 	TexLitPolyVector polygons;
 	BSPTree_Ptr tree;
 	std::string lightmapPrefix;
-	LitTreeFileUtil::load(treeFilename, polygons, tree, lightmapPrefix);
+	LitTreeFile::load(treeFilename, polygons, tree, lightmapPrefix);
 
 	// Load the portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
+	PortalsFile::load(portalsFilename, emptyLeafCount, portals);
 
 	// Load the vis table.
-	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
+	LeafVisTable_Ptr leafVis = VisFile::load(visFilename);
 
 	// Load the lightmaps.
 	int polyCount = static_cast<int>(polygons.size());
@@ -74,28 +74,28 @@ try
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 	ColPolyVector onionPolygons;
 	OnionTree_Ptr onionTree;
-	OnionTreeFileUtil::load(onionTreeFilename, onionPolygons, onionTree);
+	OnionTreeFile::load(onionTreeFilename, onionPolygons, onionTree);
 
 	// Load the onion portals.
-	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFileUtil::load(onionPortalsFilename);
+	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFile::load(onionPortalsFilename);
 
 	// Load the navigation data.
-	std::vector<NavDataset_Ptr> navDatasets = NavFileUtil::load(navFilename);
+	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
 
 	// Load the entities.
 	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_tool());
-	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, settingsDir);
 
 	// Write everything to the output file.
-	LevelFileUtil::save_lit(outputFilename,
-							polygons, tree,
-							portals,
-							leafVis,
-							lightmaps,
-							onionPolygons, onionTree,
-							onionPortals,
-							navDatasets,
-							entityManager);
+	LevelFile::save_lit(outputFilename,
+						polygons, tree,
+						portals,
+						leafVis,
+						lightmaps,
+						onionPolygons, onionTree,
+						onionPortals,
+						navDatasets,
+						entityManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
@@ -108,41 +108,41 @@ try
 	typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
 	TexPolyVector polygons;
 	BSPTree_Ptr tree;
-	TreeFileUtil::load(treeFilename, polygons, tree);
+	TreeFile::load(treeFilename, polygons, tree);
 
 	// Load the portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
+	PortalsFile::load(portalsFilename, emptyLeafCount, portals);
 
 	// Load the vis table.
-	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
+	LeafVisTable_Ptr leafVis = VisFile::load(visFilename);
 
 	// Load the onion tree.
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 	ColPolyVector onionPolygons;
 	OnionTree_Ptr onionTree;
-	OnionTreeFileUtil::load(onionTreeFilename, onionPolygons, onionTree);
+	OnionTreeFile::load(onionTreeFilename, onionPolygons, onionTree);
 
 	// Load the onion portals.
-	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFileUtil::load(onionPortalsFilename);
+	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFile::load(onionPortalsFilename);
 
 	// Load the navigation data.
-	std::vector<NavDataset_Ptr> navDatasets = NavFileUtil::load(navFilename);
+	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
 
 	// Load the entities.
 	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_tool());
-	EntityManager_Ptr entityManager = EntitiesFileUtil::load(entitiesFilename, settingsDir);
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, settingsDir);
 
 	// Write everything to the output file.
-	LevelFileUtil::save_unlit(outputFilename,
-							  polygons, tree,
-							  portals,
-							  leafVis,
-							  onionPolygons, onionTree,
-							  onionPortals,
-							  navDatasets,
-							  entityManager);
+	LevelFile::save_unlit(outputFilename,
+						  polygons, tree,
+						  portals,
+						  leafVis,
+						  onionPolygons, onionTree,
+						  onionPortals,
+						  navDatasets,
+						  entityManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

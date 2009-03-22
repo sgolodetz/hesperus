@@ -15,7 +15,7 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#include <source/io/LevelFileUtil.h>
+#include <source/io/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/entities/MovementFunctions.h>
 #include <source/level/LevelViewer.h>
@@ -27,7 +27,7 @@ namespace hesp {
 GameState_Level::GameState_Level(const std::string& levelFilename)
 :	m_inputGrabbed(false)
 {
-	m_level = LevelFileUtil::load(levelFilename);
+	m_level = LevelFile::load(levelFilename);
 }
 
 //#################### PUBLIC METHODS ####################

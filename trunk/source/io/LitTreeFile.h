@@ -1,16 +1,16 @@
 /***
- * hesperus: LitTreeFileUtil.h
+ * hesperus: LitTreeFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LITTREEFILEUTIL
-#define H_HESP_LITTREEFILEUTIL
+#ifndef H_HESP_LITTREEFILE
+#define H_HESP_LITTREEFILE
 
 #include <source/level/bsp/BSPTree.h>
 
 namespace hesp {
 
-struct LitTreeFileUtil
+struct LitTreeFile
 {
 	//#################### LOADING METHODS ####################
 	template <typename Poly> static void load(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons,
@@ -23,6 +23,6 @@ struct LitTreeFileUtil
 
 }
 
-#include "LitTreeFileUtil.tpp"
+#include "LitTreeFile.tpp"
 
 #endif

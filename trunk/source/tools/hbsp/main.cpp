@@ -13,8 +13,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/GeometryFileUtil.h>
-#include <source/io/TreeFileUtil.h>
+#include <source/io/GeometryFile.h>
+#include <source/io/TreeFile.h>
 #include <source/level/bsp/BSPCompiler.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -40,13 +40,13 @@ void run_compiler(const std::string& inputFilename, const std::string& outputFil
 
 	// Load the input polygons from disk.
 	PolyVector polygons;
-	GeometryFileUtil::load(inputFilename, polygons);
+	GeometryFile::load(inputFilename, polygons);
 
 	// Build the BSP tree.
 	BSPTree_Ptr tree = BSPCompiler::build_tree(polygons, weight);
 
 	// Save the polygons and the BSP tree to the output file.
-	TreeFileUtil::save(outputFilename, polygons, tree);
+	TreeFile::save(outputFilename, polygons, tree);
 }
 
 int main(int argc, char *argv[])

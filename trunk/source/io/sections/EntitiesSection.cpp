@@ -9,7 +9,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/EntDefFileUtil.h>
+#include <source/io/EntDefFile.h>
 #include <source/io/util/EntityComponents.h>
 #include <source/io/util/FieldIO.h>
 #include <source/level/entities/AnimationComponent.h>
@@ -46,7 +46,7 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const boost::filesyste
 		LineIO::read_line(is, entDefFilename, "entity definitions filename");
 		std::vector<AABB3d> aabbs;
 		std::map<std::string,EntityComponents> entityComponentsMap;
-		EntDefFileUtil::load((settingsDir / entDefFilename).file_string(), aabbs, entityComponentsMap);
+		EntDefFile::load((settingsDir / entDefFilename).file_string(), aabbs, entityComponentsMap);
 
 	LineIO::read_checked_line(is, "}");
 

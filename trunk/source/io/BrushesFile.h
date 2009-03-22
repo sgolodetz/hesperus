@@ -1,10 +1,10 @@
 /***
- * hesperus: BrushesFileUtil.h
+ * hesperus: BrushesFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_BRUSHESFILEUTIL
-#define H_HESP_BRUSHESFILEUTIL
+#ifndef H_HESP_BRUSHESFILE
+#define H_HESP_BRUSHESFILE
 
 #include <string>
 #include <vector>
@@ -16,7 +16,7 @@ using boost::shared_ptr;
 
 namespace hesp {
 
-struct BrushesFileUtil
+struct BrushesFile
 {
 	//#################### LOADING METHODS ####################
 	template <typename Poly> static std::vector<shared_ptr<PolyhedralBrush<Poly> > > load(const std::string& filename);
@@ -27,6 +27,6 @@ struct BrushesFileUtil
 
 }
 
-#include "BrushesFileUtil.tpp"
+#include "BrushesFile.tpp"
 
 #endif

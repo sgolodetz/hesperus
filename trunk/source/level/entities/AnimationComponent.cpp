@@ -5,7 +5,7 @@
 
 #include "AnimationComponent.h"
 
-#include <source/io/ModelFilesUtil.h>
+#include <source/io/ModelFiles.h>
 #include <source/io/util/FieldIO.h>
 
 namespace hesp {
@@ -22,7 +22,7 @@ const Model_Ptr& AnimationComponent::model() const
 	if(!m_model)
 	{
 		// FIXME: Load the appropriate models here once they've been created.
-		m_model = ModelFilesUtil::load_model("Test-15");
+		m_model = ModelFiles::load_model("Test-15");
 	}
 	return m_model;
 }

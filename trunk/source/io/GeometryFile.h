@@ -1,10 +1,10 @@
 /***
- * hesperus: GeometryFileUtil.h
+ * hesperus: GeometryFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_GEOMETRYFILEUTIL
-#define H_HESP_GEOMETRYFILEUTIL
+#ifndef H_HESP_GEOMETRYFILE
+#define H_HESP_GEOMETRYFILE
 
 #include <string>
 #include <vector>
@@ -14,7 +14,7 @@ using boost::shared_ptr;
 
 namespace hesp {
 
-struct GeometryFileUtil
+struct GeometryFile
 {
 	//#################### LOADING METHODS ####################
 	template <typename Poly> static void load(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons);
@@ -25,6 +25,6 @@ struct GeometryFileUtil
 
 }
 
-#include "GeometryFileUtil.tpp"
+#include "GeometryFile.tpp"
 
 #endif

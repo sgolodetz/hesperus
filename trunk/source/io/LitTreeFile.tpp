@@ -1,5 +1,5 @@
 /***
- * hesperus: LitTreeFileUtil.tpp
+ * hesperus: LitTreeFile.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -21,8 +21,8 @@ Loads the polygons, tree and lightmap prefix from the specified lit tree file.
 @param lightmapPrefix	Used to return the lightmap prefix to the caller
 */
 template <typename Poly>
-void LitTreeFileUtil::load(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree,
-						   std::string& lightmapPrefix)
+void LitTreeFile::load(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree,
+					   std::string& lightmapPrefix)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
@@ -42,8 +42,8 @@ Saves the polygons, tree and lightmap prefix to the specified lit tree file.
 @param lightmapPrefix	The lightmap prefix
 */
 template <typename Poly>
-void LitTreeFileUtil::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons,
-						   const BSPTree_Ptr& tree, const std::string& lightmapPrefix)
+void LitTreeFile::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons,
+					   const BSPTree_Ptr& tree, const std::string& lightmapPrefix)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

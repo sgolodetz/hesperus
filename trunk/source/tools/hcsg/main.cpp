@@ -9,8 +9,8 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/BrushesFileUtil.h>
-#include <source/io/GeometryFileUtil.h>
+#include <source/io/BrushesFile.h>
+#include <source/io/GeometryFile.h>
 #include <source/level/csg/CSGUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -38,7 +38,7 @@ void run_csg(const std::string& inputFilename, const std::string& outputFilename
 	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
 	typedef std::vector<PolyBrush_Ptr> PolyBrushVector;
-	PolyBrushVector brushes = BrushesFileUtil::load<Poly>(inputFilename);
+	PolyBrushVector brushes = BrushesFile::load<Poly>(inputFilename);
 
 	// Perform the CSG union.
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -48,7 +48,7 @@ void run_csg(const std::string& inputFilename, const std::string& outputFilename
 
 	// Write the polygons to disk.
 	std::vector<Poly_Ptr> polygons(fragments->begin(), fragments->end());
-	GeometryFileUtil::save(outputFilename, polygons);
+	GeometryFile::save(outputFilename, polygons);
 }
 
 int main(int argc, char *argv[])

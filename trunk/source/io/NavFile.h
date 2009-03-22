@@ -1,10 +1,10 @@
 /***
- * hesperus: NavFileUtil.h
+ * hesperus: NavFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_NAVFILEUTIL
-#define H_HESP_NAVFILEUTIL
+#ifndef H_HESP_NAVFILE
+#define H_HESP_NAVFILE
 
 #include <string>
 
@@ -12,7 +12,7 @@
 
 namespace hesp {
 
-struct NavFileUtil
+struct NavFile
 {
 	//#################### LOADING METHODS ####################
 	static std::vector<NavDataset_Ptr> load(const std::string& filename);

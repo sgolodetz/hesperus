@@ -1,9 +1,9 @@
 /***
- * hesperus: VisFileUtil.cpp
+ * hesperus: VisFile.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "VisFileUtil.h"
+#include "VisFile.h"
 
 #include <fstream>
 
@@ -19,7 +19,7 @@ Loads a leaf visibility table from the specified file.
 @param filename	The name of the file from which to load the visibility table
 @return			The visibility table
 */
-LeafVisTable_Ptr VisFileUtil::load(const std::string& filename)
+LeafVisTable_Ptr VisFile::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The vis file could not be read");
@@ -33,7 +33,7 @@ Saves a vis table file.
 @param filename	The name of the file to which to save the visibility table
 @param leafVis	The visibility table
 */
-void VisFileUtil::save(const std::string& filename, const LeafVisTable_Ptr& leafVis)
+void VisFile::save(const std::string& filename, const LeafVisTable_Ptr& leafVis)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

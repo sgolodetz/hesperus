@@ -1,10 +1,10 @@
 /***
- * hesperus: ModelFilesUtil.h
+ * hesperus: ModelFiles.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_MODELFILESUTIL
-#define H_HESP_MODELFILESUTIL
+#ifndef H_HESP_MODELFILES
+#define H_HESP_MODELFILES
 
 #include <map>
 #include <string>
@@ -14,7 +14,7 @@
 
 namespace hesp {
 
-class ModelFilesUtil
+class ModelFiles
 {
 	//#################### TYPEDEFS ####################
 private:

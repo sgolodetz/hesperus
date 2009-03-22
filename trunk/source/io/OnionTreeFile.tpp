@@ -1,5 +1,5 @@
 /***
- * hesperus: OnionTreeFileUtil.tpp
+ * hesperus: OnionTreeFile.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -20,7 +20,7 @@ Loads the polygons and onion tree from the specified onion tree file.
 @param tree			Used to return the onion tree to the caller
 */
 template <typename Poly>
-void OnionTreeFileUtil::load(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, OnionTree_Ptr& tree)
+void OnionTreeFile::load(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, OnionTree_Ptr& tree)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
@@ -38,7 +38,7 @@ Saves the polygons and onion tree to the specified onion tree file.
 @param tree			The onion tree
 */
 template <typename Poly>
-void OnionTreeFileUtil::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons, const OnionTree_Ptr& tree)
+void OnionTreeFile::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons, const OnionTree_Ptr& tree)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

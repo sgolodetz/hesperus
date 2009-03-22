@@ -1,5 +1,5 @@
 /***
- * hesperus: BrushesFileUtil.tpp
+ * hesperus: BrushesFile.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -15,7 +15,7 @@ Loads an array of polyhedral brushes from the specified brushes file.
 @return			The brushes
 */
 template <typename Poly>
-std::vector<shared_ptr<PolyhedralBrush<Poly> > > BrushesFileUtil::load(const std::string& filename)
+std::vector<shared_ptr<PolyhedralBrush<Poly> > > BrushesFile::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
@@ -43,7 +43,7 @@ Saves a brushes file to disk.
 @throws Exception	If the output file could not be opened for writing
 */
 template <typename Poly>
-void BrushesFileUtil::save(const std::string& filename, const std::vector<shared_ptr<PolyhedralBrush<Poly> > >& brushes)
+void BrushesFile::save(const std::string& filename, const std::vector<shared_ptr<PolyhedralBrush<Poly> > >& brushes)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

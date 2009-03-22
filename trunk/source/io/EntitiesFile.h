@@ -1,10 +1,10 @@
 /***
- * hesperus: EntitiesFileUtil.h
+ * hesperus: EntitiesFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_ENTITIESFILEUTIL
-#define H_HESP_ENTITIESFILEUTIL
+#ifndef H_HESP_ENTITIESFILE
+#define H_HESP_ENTITIESFILE
 
 #include <string>
 
@@ -14,7 +14,7 @@
 
 namespace hesp {
 
-struct EntitiesFileUtil
+struct EntitiesFile
 {
 	//#################### LOADING METHODS ####################
 	static EntityManager_Ptr load(const std::string& filename, const boost::filesystem::path& settingsDir);

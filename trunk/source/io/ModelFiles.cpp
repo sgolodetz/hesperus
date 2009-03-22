@@ -1,9 +1,9 @@
 /***
- * hesperus: ModelFilesUtil.cpp
+ * hesperus: ModelFiles.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "ModelFilesUtil.h"
+#include "ModelFiles.h"
 
 #include <iostream>
 
@@ -36,7 +36,7 @@ Loads a set of materials from the specified Ogre materials file.
 @param filename	The name of the file
 @return			The set of materials as a std::map, indexed by name
 */
-std::map<std::string,Material_Ptr> ModelFilesUtil::load_materials(const std::string& filename)
+std::map<std::string,Material_Ptr> ModelFiles::load_materials(const std::string& filename)
 {
 	std::map<std::string,Material_Ptr> ret;
 
@@ -59,7 +59,7 @@ Loads a mesh from the specified Ogre mesh file.
 @param materials	The set of materials referenced in the file
 @return				The mesh
 */
-Mesh_Ptr ModelFilesUtil::load_mesh(const std::string& filename, const std::map<std::string,Material_Ptr>& materials)
+Mesh_Ptr ModelFiles::load_mesh(const std::string& filename, const std::map<std::string,Material_Ptr>& materials)
 try
 {
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
@@ -187,7 +187,7 @@ Loads the model with the specified name.
 @param name	The name of the model
 @return		The model
 */
-Model_Ptr ModelFilesUtil::load_model(const std::string& name)
+Model_Ptr ModelFiles::load_model(const std::string& name)
 {
 	bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
 	bf::path materialsPath = modelsDir / (name + ".material");
@@ -207,7 +207,7 @@ Loads a skeleton from the specified Ogre skeleton file.
 @param filename	The name of the file
 @return			The skeleton
 */
-Skeleton_Ptr ModelFilesUtil::load_skeleton(const std::string& filename)
+Skeleton_Ptr ModelFiles::load_skeleton(const std::string& filename)
 try
 {
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
@@ -363,7 +363,7 @@ Extracts (u,v) texture coordinates from the specified XML element.
 @param elt	The XML element
 @return		The (u,v) texture coordinates
 */
-TexCoords ModelFilesUtil::extract_texcoords(const XMLElement_CPtr& elt)
+TexCoords ModelFiles::extract_texcoords(const XMLElement_CPtr& elt)
 {
 	double u = lexical_cast<double,std::string>(elt->attribute("u"));
 	double v = lexical_cast<double,std::string>(elt->attribute("v"));
@@ -376,7 +376,7 @@ Extracts a 3D vector from the specified XML element.
 @param elt	The XML element
 @return		The 3D vector
 */
-Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
+Vector3d ModelFiles::extract_vector3d(const XMLElement_CPtr& elt)
 {
 	double x = lexical_cast<double,std::string>(elt->attribute("x"));
 	double y = lexical_cast<double,std::string>(elt->attribute("y"));
@@ -384,7 +384,7 @@ Vector3d ModelFilesUtil::extract_vector3d(const XMLElement_CPtr& elt)
 	return Vector3d(x,y,z);
 }
 
-ModelFilesUtil::NamedMaterial_Ptr ModelFilesUtil::read_material(std::istream& is)
+ModelFiles::NamedMaterial_Ptr ModelFiles::read_material(std::istream& is)
 {
 	// Note:	We don't make use of most of the information for each material - we're only interested in certain bits,
 	//			which is why the code might look strange.
@@ -432,7 +432,7 @@ ModelFilesUtil::NamedMaterial_Ptr ModelFilesUtil::read_material(std::istream& is
 	return ret;
 }
 
-Material_Ptr ModelFilesUtil::read_pass(std::istream& is)
+Material_Ptr ModelFiles::read_pass(std::istream& is)
 {
 	Material_Ptr ret;
 
@@ -508,7 +508,7 @@ Material_Ptr ModelFilesUtil::read_pass(std::istream& is)
 	return ret;
 }
 
-Material_Ptr ModelFilesUtil::read_technique(std::istream& is)
+Material_Ptr ModelFiles::read_technique(std::istream& is)
 {
 	Material_Ptr ret;
 

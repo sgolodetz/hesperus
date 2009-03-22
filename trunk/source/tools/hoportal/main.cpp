@@ -11,8 +11,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/OnionPortalsFileUtil.h>
-#include <source/io/OnionTreeFileUtil.h>
+#include <source/io/OnionPortalsFile.h>
+#include <source/io/OnionTreeFile.h>
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/OnionPortalGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -40,14 +40,14 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	// Read in the polygons and onion tree.
 	PolyVector polygons;
 	OnionTree_Ptr tree;
-	OnionTreeFileUtil::load(inputFilename, polygons, tree);
+	OnionTreeFile::load(inputFilename, polygons, tree);
 
 	// Generate the onion portals.
 	shared_ptr<std::list<OnionPortal_Ptr> > portals = OnionPortalGenerator().generate_portals(polygons, tree);
 
 	// Save the onion portals to the output file.
 	std::vector<OnionPortal_Ptr> vec(portals->begin(), portals->end());
-	OnionPortalsFileUtil::save(outputFilename, vec);
+	OnionPortalsFile::save(outputFilename, vec);
 }
 
 int main(int argc, char *argv[])

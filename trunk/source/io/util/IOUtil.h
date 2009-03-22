@@ -3,8 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_SECTIONUTIL
-#define H_HESP_SECTIONUTIL
+#ifndef H_HESP_IOUTIL
+#define H_HESP_IOUTIL
 
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/Polygon.h>

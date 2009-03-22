@@ -1,10 +1,10 @@
 /***
- * hesperus: VisFileUtil.h
+ * hesperus: VisFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_VISFILEUTIL
-#define H_HESP_VISFILEUTIL
+#ifndef H_HESP_VISFILE
+#define H_HESP_VISFILE
 
 #include <iosfwd>
 #include <vector>
@@ -13,7 +13,7 @@
 
 namespace hesp {
 
-struct VisFileUtil
+struct VisFile
 {
 	//#################### LOADING METHODS ####################
 	static LeafVisTable_Ptr load(const std::string& filename);

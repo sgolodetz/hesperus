@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include <source/io/GeometryFileUtil.h>
-#include <source/io/PortalsFileUtil.h>
-#include <source/io/TreeFileUtil.h>
+#include <source/io/GeometryFile.h>
+#include <source/io/PortalsFile.h>
+#include <source/io/TreeFile.h>
 #include <source/level/bsp/BSPTree.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -61,12 +61,12 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	typedef std::vector<Poly_Ptr> PolyVector;
 	PolyVector polygons;
 	BSPTree_Ptr tree;
-	TreeFileUtil::load(treeFilename, polygons, tree);
+	TreeFile::load(treeFilename, polygons, tree);
 
 	// Load the portals.
 	int emptyLeafCount;
 	std::vector<Portal_Ptr> portals;
-	PortalsFileUtil::load(portalsFilename, emptyLeafCount, portals);
+	PortalsFile::load(portalsFilename, emptyLeafCount, portals);
 
 	// Build the "portals from leaf" data structure.
 	std::map<int,std::vector<Portal_Ptr> > portalsFromLeaf;
@@ -102,7 +102,7 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	}
 
 	// Write the polygons to the output file.
-	GeometryFileUtil::save(outputFilename, validPolygons);
+	GeometryFile::save(outputFilename, validPolygons);
 }
 
 int main(int argc, char *argv[])

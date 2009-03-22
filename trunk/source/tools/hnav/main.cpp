@@ -8,9 +8,9 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/EntDefFileUtil.h>
-#include <source/io/NavFileUtil.h>
-#include <source/io/OnionTreeFileUtil.h>
+#include <source/io/EntDefFile.h>
+#include <source/io/NavFile.h>
+#include <source/io/OnionTreeFile.h>
 #include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavMeshGenerator.h>
@@ -36,12 +36,12 @@ void run(const std::string& entDefFilename, const std::string& treeFilename, con
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 
 	// Read in the AABBs.
-	std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only(entDefFilename);
+	std::vector<AABB3d> aabbs = EntDefFile::load_aabbs_only(entDefFilename);
 
 	// Read in the polygons and onion tree.
 	ColPolyVector polygons;
 	OnionTree_Ptr tree;
-	OnionTreeFileUtil::load(treeFilename, polygons, tree);
+	OnionTreeFile::load(treeFilename, polygons, tree);
 
 	// Check that the number of AABBs and the number of maps in the tree match up.
 	int aabbCount = static_cast<int>(aabbs.size());
@@ -84,7 +84,7 @@ void run(const std::string& entDefFilename, const std::string& treeFilename, con
 	}
 
 	// Write the navigation datasets to disk.
-	NavFileUtil::save(outputFilename, datasets);
+	NavFile::save(outputFilename, datasets);
 }
 
 int main(int argc, char *argv[])

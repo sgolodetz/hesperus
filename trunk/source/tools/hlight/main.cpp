@@ -13,10 +13,10 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/images/BitmapSaver.h>
-#include <source/io/LightsFileUtil.h>
-#include <source/io/LitTreeFileUtil.h>
-#include <source/io/TreeFileUtil.h>
-#include <source/io/VisFileUtil.h>
+#include <source/io/LightsFile.h>
+#include <source/io/LitTreeFile.h>
+#include <source/io/TreeFile.h>
+#include <source/io/VisFile.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -41,13 +41,13 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	// Read in the polygons and tree.
 	std::vector<TexturedPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;
-	TreeFileUtil::load(treeFilename, polygons, tree);
+	TreeFile::load(treeFilename, polygons, tree);
 
 	// Read in the vis table.
-	LeafVisTable_Ptr leafVis = VisFileUtil::load(visFilename);
+	LeafVisTable_Ptr leafVis = VisFile::load(visFilename);
 
 	// Read in the lights.
-	std::vector<Light> lights = LightsFileUtil::load(lightsFilename);
+	std::vector<Light> lights = LightsFile::load(lightsFilename);
 
 	// Generate the lit polygons and lightmaps.
 	LightmapGenerator lg(polygons, lights, tree, leafVis);
@@ -62,7 +62,7 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	LightmapVector_Ptr lightmaps = lg.lightmaps();
 
 	// Write the lit polygons, tree and lightmap prefix to the output file.
-	LitTreeFileUtil::save(outputFilename, *litPolygons, tree, lightmapPrefix);
+	LitTreeFile::save(outputFilename, *litPolygons, tree, lightmapPrefix);
 
 	// Write the lightmaps out as 24-bit bitmaps.
 	int lightmapCount = static_cast<int>(lightmaps->size());

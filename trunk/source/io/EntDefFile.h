@@ -1,10 +1,10 @@
 /***
- * hesperus: EntDefFileUtil.h
+ * hesperus: EntDefFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_ENTDEFFILEUTIL
-#define H_HESP_ENTDEFFILEUTIL
+#ifndef H_HESP_ENTDEFFILE
+#define H_HESP_ENTDEFFILE
 
 #include <map>
 #include <string>
@@ -15,7 +15,7 @@
 
 namespace hesp {
 
-struct EntDefFileUtil
+struct EntDefFile
 {
 	//#################### LOADING METHODS ####################
 	static void load(const std::string& filename, std::vector<AABB3d>& aabbs, std::map<std::string,EntityComponents>& entityComponentsMap);

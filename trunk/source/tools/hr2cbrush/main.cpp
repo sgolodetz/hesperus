@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/io/BrushesFileUtil.h>
+#include <source/io/BrushesFile.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -78,7 +78,7 @@ ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)
 void run_converter(const std::string& inputFilename, const std::string& outputFilename)
 {
 	// Read in the rendering brushes.
-	TexPolyBrushVector inputBrushes = BrushesFileUtil::load<TexturedPolygon>(inputFilename);
+	TexPolyBrushVector inputBrushes = BrushesFile::load<TexturedPolygon>(inputFilename);
 
 	// Convert each rendering brush into a collision brush.
 	int brushCount = static_cast<int>(inputBrushes.size());
@@ -89,7 +89,7 @@ void run_converter(const std::string& inputFilename, const std::string& outputFi
 	}
 
 	// Write the collision brushes to disk.
-	BrushesFileUtil::save(outputFilename, outputBrushes);
+	BrushesFile::save(outputFilename, outputBrushes);
 }
 
 int main(int argc, char *argv[])

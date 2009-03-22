@@ -1,9 +1,9 @@
 /***
- * hesperus: OnionPortalsFileUtil.cpp
+ * hesperus: OnionPortalsFile.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "OnionPortalsFileUtil.h"
+#include "OnionPortalsFile.h"
 
 #include <fstream>
 
@@ -18,7 +18,7 @@ Loads an array of onion portals from the specified file.
 @param filename		The name of the onion portals file
 @return				The onion portals
 */
-std::vector<OnionPortal_Ptr> OnionPortalsFileUtil::load(const std::string& filename)
+std::vector<OnionPortal_Ptr> OnionPortalsFile::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
@@ -35,7 +35,7 @@ Saves an array of onion portals to the specified file.
 @param filename		The name of the onion portals file
 @param portals		The onion portals
 */
-void OnionPortalsFileUtil::save(const std::string& filename, const std::vector<OnionPortal_Ptr>& portals)
+void OnionPortalsFile::save(const std::string& filename, const std::vector<OnionPortal_Ptr>& portals)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

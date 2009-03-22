@@ -1,9 +1,9 @@
 /***
- * hesperus: PortalsFileUtil.cpp
+ * hesperus: PortalsFile.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "PortalsFileUtil.h"
+#include "PortalsFile.h"
 
 #include <fstream>
 
@@ -24,7 +24,7 @@ Loads an empty leaf count and an array of portals from the specified file.
 @param emptyLeafCount	Used to return the empty leaf count to the caller
 @param portals			Used to return the portals to the caller
 */
-void PortalsFileUtil::load(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals)
+void PortalsFile::load(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
@@ -45,7 +45,7 @@ Saves an empty leaf count and an array of portals to the specified file.
 @param emptyLeafCount	The empty leaf count
 @param portals			The portals
 */
-void PortalsFileUtil::save(const std::string& filename, int emptyLeafCount, const std::vector<Portal_Ptr>& portals)
+void PortalsFile::save(const std::string& filename, int emptyLeafCount, const std::vector<Portal_Ptr>& portals)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

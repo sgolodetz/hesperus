@@ -13,8 +13,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/BrushesFileUtil.h>
-#include <source/io/EntDefFileUtil.h>
+#include <source/io/BrushesFile.h>
+#include <source/io/EntDefFile.h>
 #include <source/level/brushes/BrushExpander.h>
 #include <source/math/geom/AABB.h>
 #include <source/util/PolygonTypes.h>
@@ -36,13 +36,13 @@ void quit_with_usage()
 void run_expander(const std::string& entDefFilename, const std::string& inputFilename)
 {
 	// Read in the input AABBs.
-	std::vector<AABB3d> aabbs = EntDefFileUtil::load_aabbs_only(entDefFilename);
+	std::vector<AABB3d> aabbs = EntDefFile::load_aabbs_only(entDefFilename);
 
 	// Read in the input brushes.
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;
 	typedef shared_ptr<ColPolyBrush> ColPolyBrush_Ptr;
 	typedef std::vector<ColPolyBrush_Ptr> ColPolyBrushVector;
-	ColPolyBrushVector inputBrushes = BrushesFileUtil::load<CollisionPolygon>(inputFilename);
+	ColPolyBrushVector inputBrushes = BrushesFile::load<CollisionPolygon>(inputFilename);
 
 	// Calculate the output stem and extension.
 	std::string::size_type k = inputFilename.find('.');
@@ -67,7 +67,7 @@ void run_expander(const std::string& entDefFilename, const std::string& inputFil
 		// Write the expanded brushes to file.
 		std::ostringstream oss;
 		oss << outputStem << i << outputExtension;
-		BrushesFileUtil::save(oss.str(), expandedBrushes);
+		BrushesFile::save(oss.str(), expandedBrushes);
 	}
 }
 

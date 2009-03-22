@@ -11,9 +11,9 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/GeometryFileUtil.h>
-#include <source/io/OnionTreeFileUtil.h>
-#include <source/io/TreeFileUtil.h>
+#include <source/io/GeometryFile.h>
+#include <source/io/OnionTreeFile.h>
+#include <source/io/TreeFile.h>
 #include <source/level/onionbsp/OnionCompiler.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
@@ -43,7 +43,7 @@ void run_compiler(const std::vector<std::string>& geomFilenames, const std::vect
 	std::vector<PolyVector> maps(mapCount);
 	for(size_t i=0; i<mapCount; ++i)
 	{
-		GeometryFileUtil::load(geomFilenames[i], maps[i]);
+		GeometryFile::load(geomFilenames[i], maps[i]);
 	}
 
 	// Read in the input trees.
@@ -52,7 +52,7 @@ void run_compiler(const std::vector<std::string>& geomFilenames, const std::vect
 	{
 		PolyVector polygons;
 		BSPTree_Ptr mapTree;
-		TreeFileUtil::load(treeFilenames[i], polygons, mapTree);
+		TreeFile::load(treeFilenames[i], polygons, mapTree);
 		mapTrees.push_back(mapTree);
 	}
 
@@ -61,7 +61,7 @@ void run_compiler(const std::vector<std::string>& geomFilenames, const std::vect
 	compiler.build_tree();
 
 	// Write the output polygons and onion tree to disk.
-	OnionTreeFileUtil::save(outputFilename, *compiler.polygons(), compiler.tree());
+	OnionTreeFile::save(outputFilename, *compiler.polygons(), compiler.tree());
 }
 
 int main(int argc, char *argv[])

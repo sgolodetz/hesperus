@@ -1,16 +1,16 @@
 /***
- * hesperus: TreeFileUtil.h
+ * hesperus: TreeFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_TREEFILEUTIL
-#define H_HESP_TREEFILEUTIL
+#ifndef H_HESP_TREEFILE
+#define H_HESP_TREEFILE
 
 #include <source/level/bsp/BSPTree.h>
 
 namespace hesp {
 
-struct TreeFileUtil
+struct TreeFile
 {
 	//#################### LOADING METHODS ####################
 	template <typename Poly> static void load(const std::string& filename, std::vector<shared_ptr<Poly> >& polygons, BSPTree_Ptr& tree);
@@ -21,6 +21,6 @@ struct TreeFileUtil
 
 }
 
-#include "TreeFileUtil.tpp"
+#include "TreeFile.tpp"
 
 #endif

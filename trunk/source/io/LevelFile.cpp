@@ -1,9 +1,9 @@
 /***
- * hesperus: LevelFileUtil.cpp
+ * hesperus: LevelFile.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "LevelFileUtil.h"
+#include "LevelFile.h"
 
 #include <fstream>
 
@@ -32,7 +32,7 @@ Loads a level from the specified file.
 @param filename	The name of the level file
 @return			The level
 */
-Level_Ptr LevelFileUtil::load(const std::string& filename)
+Level_Ptr LevelFile::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str(), std::ios_base::binary);
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
@@ -60,15 +60,15 @@ Saves all the relevant pieces of information to the specified level file.
 @param onionPortals		The onion portals for the level
 @param navDatasets		The navigation datasets for the level
 */
-void LevelFileUtil::save_lit(const std::string& filename,
-							 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
-							 const std::vector<Portal_Ptr>& portals,
-							 const LeafVisTable_Ptr& leafVis,
-							 const std::vector<Image24_Ptr>& lightmaps,
-							 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
-							 const std::vector<OnionPortal_Ptr>& onionPortals,
-							 const std::vector<NavDataset_Ptr>& navDatasets,
-							 const EntityManager_Ptr& entityManager)
+void LevelFile::save_lit(const std::string& filename,
+						 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+						 const std::vector<Portal_Ptr>& portals,
+						 const LeafVisTable_Ptr& leafVis,
+						 const std::vector<Image24_Ptr>& lightmaps,
+						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+						 const std::vector<OnionPortal_Ptr>& onionPortals,
+						 const std::vector<NavDataset_Ptr>& navDatasets,
+						 const EntityManager_Ptr& entityManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -99,14 +99,14 @@ Saves all the relevant pieces of information to the specified level file.
 @param onionPortals		The onion portals for the level
 @param navDatasets		The navigation datasets for the level
 */
-void LevelFileUtil::save_unlit(const std::string& filename,
-							   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
-							   const std::vector<Portal_Ptr>& portals,
-							   const LeafVisTable_Ptr& leafVis,
-							   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
-							   const std::vector<OnionPortal_Ptr>& onionPortals,
-							   const std::vector<NavDataset_Ptr>& navDatasets,
-							   const EntityManager_Ptr& entityManager)
+void LevelFile::save_unlit(const std::string& filename,
+						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+						   const std::vector<Portal_Ptr>& portals,
+						   const LeafVisTable_Ptr& leafVis,
+						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+						   const std::vector<OnionPortal_Ptr>& onionPortals,
+						   const std::vector<NavDataset_Ptr>& navDatasets,
+						   const EntityManager_Ptr& entityManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -130,7 +130,7 @@ Loads a lit level from the specified std::istream.
 @param is	The std::istream
 @return		The lit level
 */
-Level_Ptr LevelFileUtil::load_lit(std::istream& is)
+Level_Ptr LevelFile::load_lit(std::istream& is)
 {
 	std::vector<TexturedLitPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;
@@ -167,7 +167,7 @@ Loads an unlit level from the specified std::istream.
 @param is	The std::istream
 @return		The unlit level
 */
-Level_Ptr LevelFileUtil::load_unlit(std::istream& is)
+Level_Ptr LevelFile::load_unlit(std::istream& is)
 {
 	std::vector<TexturedPolygon_Ptr> polygons;
 	BSPTree_Ptr tree;

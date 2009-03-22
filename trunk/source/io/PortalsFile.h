@@ -1,10 +1,10 @@
 /***
- * hesperus: PortalsFileUtil.h
+ * hesperus: PortalsFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_PORTALSFILEUTIL
-#define H_HESP_PORTALSFILEUTIL
+#ifndef H_HESP_PORTALSFILE
+#define H_HESP_PORTALSFILE
 
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 
 namespace hesp {
 
-struct PortalsFileUtil
+struct PortalsFile
 {
 	//#################### LOADING METHODS ####################
 	static void load(const std::string& filename, int& emptyLeafCount, std::vector<Portal_Ptr>& portals);

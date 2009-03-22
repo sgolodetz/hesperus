@@ -1,10 +1,10 @@
 /***
- * hesperus: OnionPortalsFileUtil.h
+ * hesperus: OnionPortalsFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_ONIONPORTALSFILEUTIL
-#define H_HESP_ONIONPORTALSFILEUTIL
+#ifndef H_HESP_ONIONPORTALSFILE
+#define H_HESP_ONIONPORTALSFILE
 
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 
 namespace hesp {
 
-struct OnionPortalsFileUtil
+struct OnionPortalsFile
 {
 	//#################### LOADING METHODS ####################
 	static std::vector<OnionPortal_Ptr> load(const std::string& filename);

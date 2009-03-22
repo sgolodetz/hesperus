@@ -1375,59 +1375,59 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\io\BrushesFileUtil.h"
+					RelativePath="..\io\BrushesFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\EntDefFileUtil.h"
+					RelativePath="..\io\EntDefFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\EntitiesFileUtil.h"
+					RelativePath="..\io\EntitiesFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\GeometryFileUtil.h"
+					RelativePath="..\io\GeometryFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\LevelFileUtil.h"
+					RelativePath="..\io\LevelFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\LightsFileUtil.h"
+					RelativePath="..\io\LightsFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\LitTreeFileUtil.h"
+					RelativePath="..\io\LitTreeFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\ModelFilesUtil.h"
+					RelativePath="..\io\ModelFiles.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\NavFileUtil.h"
+					RelativePath="..\io\NavFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\OnionPortalsFileUtil.h"
+					RelativePath="..\io\OnionPortalsFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\OnionTreeFileUtil.h"
+					RelativePath="..\io\OnionTreeFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\PortalsFileUtil.h"
+					RelativePath="..\io\PortalsFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\TreeFileUtil.h"
+					RelativePath="..\io\TreeFile.h"
 					>
 				</File>
 				<File
-					RelativePath="..\io\VisFileUtil.h"
+					RelativePath="..\io\VisFile.h"
 					>
 				</File>
 			</Filter>
@@ -1435,23 +1435,23 @@
 				Name=".tpp"
 				>
 				<File
-					RelativePath="..\io\BrushesFileUtil.tpp"
+					RelativePath="..\io\BrushesFile.tpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\GeometryFileUtil.tpp"
+					RelativePath="..\io\GeometryFile.tpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\LitTreeFileUtil.tpp"
+					RelativePath="..\io\LitTreeFile.tpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\OnionTreeFileUtil.tpp"
+					RelativePath="..\io\OnionTreeFile.tpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\TreeFileUtil.tpp"
+					RelativePath="..\io\TreeFile.tpp"
 					>
 				</File>
 			</Filter>
@@ -1459,39 +1459,39 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\io\EntDefFileUtil.cpp"
+					RelativePath="..\io\EntDefFile.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\EntitiesFileUtil.cpp"
+					RelativePath="..\io\EntitiesFile.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\LevelFileUtil.cpp"
+					RelativePath="..\io\LevelFile.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\LightsFileUtil.cpp"
+					RelativePath="..\io\LightsFile.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\ModelFilesUtil.cpp"
+					RelativePath="..\io\ModelFiles.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\NavFileUtil.cpp"
+					RelativePath="..\io\NavFile.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\OnionPortalsFileUtil.cpp"
+					RelativePath="..\io\OnionPortalsFile.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\PortalsFileUtil.cpp"
+					RelativePath="..\io\PortalsFile.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\io\VisFileUtil.cpp"
+					RelativePath="..\io\VisFile.cpp"
 					>
 				</File>
 			</Filter>
