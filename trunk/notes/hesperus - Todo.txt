@@ -8,7 +8,6 @@ Last Updated: 22-03-09
 Easy
 ----
 
-* Split FileSectionUtil into a class for each type of section: it's a 'kitchen sink' class at the moment.
 * Walk/run etc. - sort out where the various different entity speeds are coming from (I'd suggest the entity definition file, possibly).
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
 * Separate viewers from entities: we shouldn't have to see through the eyes of an entity, we should be able to position the camera anywhere we like.

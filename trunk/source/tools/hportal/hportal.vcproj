@@ -61,7 +61,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;"
@@ -139,7 +138,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;"
 				GenerateDebugInformation="true"
