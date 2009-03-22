@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 21-03-09
+Last Updated: 22-03-09
 
 ----
 Easy
@@ -27,9 +27,5 @@ Hard
 * Update MapEditor to allow placement of entities, etc. Some sort of scripted paths should be added as well.
 * Write the model and animation code.
   - Sort out inter-model attachment (e.g. for weapons).
-  - Design the animation controller.
-    - Support for animation blending?
-    - Support for IK?
-    - Animations which play on some bones but not others?
 * Implement AI scripting.
 * Implement collision handling between dynamic objects.
