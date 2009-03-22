@@ -15,33 +15,12 @@ AnimationController::AnimationController(const Mesh_Ptr& mesh, const Skeleton_Pt
 //#################### PUBLIC METHODS ####################
 void AnimationController::request_animation(const std::string& newAnimation)
 {
-	switch(m_state)
-	{
-		case AS_REST:
-		{
-			// Start the new animation immediately as there's no existing animation from which to transition.
-			m_state = AS_PLAY;
-			m_animation = newAnimation;
-			m_animationTime = 0;
-			break;
-		}
-		case AS_PLAY:
-		{
-			// Start a transition between the current animation and the new one.
-			m_state = AS_TRANSITION;
-			m_animation = newAnimation;
-			m_animationTime = 0;
-			m_transitionTime = 0;
-			break;
-		}
-		case AS_TRANSITION:
-		{
-			// Start transitioning towards a new animation instead of the one to which we were previously transitioning.
-			m_animation = newAnimation;
-			m_transitionTime = 0;
-			break;
-		}
-	}
+	// Note: If we're already transitioning, we keep transitioning, just towards a new target.
+	if(m_state == AS_REST) m_state = AS_PLAY;
+	else if(m_state == AS_PLAY) m_state = AS_TRANSITION;
+
+	m_animation = newAnimation;
+	m_animationTime = 0;
 }
 
 void AnimationController::update(int milliseconds)
@@ -63,13 +42,56 @@ void AnimationController::update_skeleton(int milliseconds)
 		case AS_PLAY:
 		{
 			// Interpolate between the current pose and an appropriate keyframe of the current animation.
-			// TODO
+
+			m_animationTime += milliseconds;
+			// TODO: If the animation time has been longer than the (scaled) length of the animation, loop back round.
+
+			int keyframeIndex;
+			double t;
+
+			// TODO: Calculate keyframe index and t.
+			throw 23;
+
+			Pose_Ptr curPose = m_skeleton->get_current_pose();
+			Pose_Ptr newPose = m_skeleton->get_keyframe(m_animation, keyframeIndex);
+			m_skeleton->set_pose(Pose::interpolate(curPose, newPose, t));
 			break;
 		}
 		case AS_TRANSITION:
 		{
-			// Interpolate between the current pose and the start keyframe of the new animation.
-			// TODO
+			Pose_Ptr curPose = m_skeleton->get_current_pose();
+			Pose_Ptr newPose;
+			double t;
+
+			if(m_animation != "<rest>")
+			{
+				// NYI: Calculate t.
+				throw 23;
+
+				// If the new animation isn't the rest animation, transition to its start keyframe.
+				newPose = m_skeleton->get_keyframe(m_animation, 0);
+			}
+			else
+			{
+				// NYI: Calculate t.
+				throw 23;
+
+				newPose = m_skeleton->get_rest_pose();
+			}
+
+			m_animationTime += milliseconds;
+			if(m_animationTime >= TRANSITION_TIME)
+			{
+				// The transition is over, switch back to normal play.
+				m_state = AS_PLAY;
+				m_animationTime = 0;
+				m_skeleton->set_pose(newPose);
+			}
+			else
+			{
+				// Still transitioning: interpolate between the current pose and the new pose.
+				m_skeleton->set_pose(Pose::interpolate(curPose, newPose, t));
+			}
 			break;
 		}
 	}

@@ -34,8 +34,7 @@ private:
 
 	State m_state;
 	std::string m_animation;		// the current animation
-	int m_animationTime;			// the number of ms for which the current animation has been playing
-	int m_transitionTime;			// the number of ms for which we have been transitioning to a new animation
+	int m_animationTime;			// the number of ms for which the current animation (or transition) has been playing
 
 	//#################### CONSTRUCTORS ####################
 public:

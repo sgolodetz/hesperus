@@ -15,6 +15,10 @@ using boost::shared_ptr;
 
 namespace hesp {
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<class Pose> Pose_Ptr;
+typedef shared_ptr<const class Pose> Pose_CPtr;
+
 class Pose
 {
 	//#################### PRIVATE VARIABLES ####################
@@ -28,11 +32,8 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<RBTMatrix_Ptr>& bone_matrices() const;
+	static Pose_Ptr interpolate(const Pose_Ptr& lhs, const Pose_Ptr& rhs, double t);
 };
-
-//#################### TYPEDEFS ####################
-typedef shared_ptr<Pose> Pose_Ptr;
-typedef shared_ptr<const Pose> Pose_CPtr;
 
 }
 

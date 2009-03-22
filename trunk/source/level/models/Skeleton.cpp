@@ -24,6 +24,12 @@ const BoneConfiguration_Ptr& Skeleton::bone_configuration() const
 	return m_boneConfiguration;
 }
 
+Pose_Ptr Skeleton::get_current_pose() const
+{
+	// NYI
+	throw 23;
+}
+
 Pose_Ptr Skeleton::get_keyframe(const std::string& animationName, int keyframeIndex) const
 {
 	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(animationName);
