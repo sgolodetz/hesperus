@@ -9,6 +9,12 @@
 
 namespace hesp {
 
+//#################### CONSTANTS ####################
+enum
+{
+	TRANSITION_TIME = 50		// the desired length of an animation transition (in ms)
+};
+
 //#################### CONSTRUCTORS ####################
 AnimationController::AnimationController(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton, bool interpolateKeyframes)
 :	m_mesh(mesh), m_skeleton(skeleton), m_interpolateKeyframes(interpolateKeyframes),

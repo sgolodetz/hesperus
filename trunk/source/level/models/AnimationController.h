@@ -13,13 +13,8 @@ namespace hesp {
 
 class AnimationController
 {
-	//#################### CONSTANTS ####################
+	//#################### ENUMERATIONS ####################
 private:
-	enum
-	{
-		TRANSITION_TIME = 50		// the desired length of an animation transition (in ms)
-	};
-
 	enum State
 	{
 		AS_REST,					// not playing any animation
