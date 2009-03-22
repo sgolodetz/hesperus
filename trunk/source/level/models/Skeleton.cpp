@@ -24,10 +24,26 @@ const BoneConfiguration_Ptr& Skeleton::bone_configuration() const
 	return m_boneConfiguration;
 }
 
+double Skeleton::get_animation_length(const std::string& animationName) const
+{
+	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(animationName);
+	if(it != m_animations.end())
+	{
+		const Animation_Ptr& animation = it->second;
+		return animation->length();
+	}
+	else throw Exception("There is no animation named " + animationName);
+}
+
 Pose_Ptr Skeleton::get_current_pose() const
 {
-	// NYI
-	throw 23;
+	int boneCount = m_boneConfiguration->bone_count();
+	std::vector<RBTMatrix_Ptr> boneMatrices(boneCount);
+	for(int i=0; i<boneCount; ++i)
+	{
+		boneMatrices[i] = m_boneConfiguration->bones(i)->relative_matrix();
+	}
+	return Pose_Ptr(new Pose(boneMatrices));
 }
 
 Pose_Ptr Skeleton::get_keyframe(const std::string& animationName, int keyframeIndex) const

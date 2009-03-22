@@ -29,6 +29,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const BoneConfiguration_Ptr& bone_configuration() const;
+	double get_animation_length(const std::string& animationName) const;
 	Pose_Ptr get_current_pose() const;
 	Pose_Ptr get_keyframe(const std::string& animationName, int keyframeIndex) const;
 	Pose_Ptr get_rest_pose() const;

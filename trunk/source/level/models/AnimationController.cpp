@@ -43,8 +43,10 @@ void AnimationController::update_skeleton(int milliseconds)
 		{
 			// Interpolate between the current pose and an appropriate keyframe of the current animation.
 
+			// Loop if we've gone past the end of the animation.
 			m_animationTime += milliseconds;
-			// TODO: If the animation time has been longer than the (scaled) length of the animation, loop back round.
+			int animationLength = static_cast<int>(m_skeleton->get_animation_length(m_animation) * 1000);
+			m_animationTime %= animationLength;
 
 			int keyframeIndex;
 			double t;
@@ -82,8 +84,8 @@ void AnimationController::update_skeleton(int milliseconds)
 			m_animationTime += milliseconds;
 			if(m_animationTime >= TRANSITION_TIME)
 			{
-				// The transition is over, switch back to normal play.
-				m_state = AS_PLAY;
+				// The transition is over.
+				m_state = m_animation != "<rest>" ? AS_PLAY : AS_REST;
 				m_animationTime = 0;
 				m_skeleton->set_pose(newPose);
 			}
