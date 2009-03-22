@@ -159,7 +159,7 @@ void Level::render_entities() const
 			static int keyframe = 0;
 			if(rate == 0) keyframe = (keyframe + 1) % 21;
 			rate = (rate + 1) % 5;
-			model->skeleton()->set_pose(model->skeleton()->get_keyframe("walk", keyframe));
+			model->skeleton()->set_pose(model->skeleton()->animation("walk")->keyframe(keyframe));
 #endif
 
 			model->mesh()->skin(model->skeleton());

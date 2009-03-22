@@ -19,20 +19,19 @@ Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::ma
 }
 
 //#################### PUBLIC METHODS ####################
+const Animation_Ptr& Skeleton::animation(const std::string& name) const
+{
+	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(name);
+	if(it != m_animations.end())
+	{
+		return it->second;
+	}
+	else throw Exception("There is no animation named " + name);
+}
+
 const BoneConfiguration_Ptr& Skeleton::bone_configuration() const
 {
 	return m_boneConfiguration;
-}
-
-double Skeleton::get_animation_length(const std::string& animationName) const
-{
-	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(animationName);
-	if(it != m_animations.end())
-	{
-		const Animation_Ptr& animation = it->second;
-		return animation->length();
-	}
-	else throw Exception("There is no animation named " + animationName);
 }
 
 Pose_Ptr Skeleton::get_current_pose() const
@@ -44,17 +43,6 @@ Pose_Ptr Skeleton::get_current_pose() const
 		boneMatrices[i] = m_boneConfiguration->bones(i)->relative_matrix();
 	}
 	return Pose_Ptr(new Pose(boneMatrices));
-}
-
-Pose_Ptr Skeleton::get_keyframe(const std::string& animationName, int keyframeIndex) const
-{
-	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(animationName);
-	if(it != m_animations.end())
-	{
-		const Animation_Ptr& animation = it->second;
-		return animation->keyframes(keyframeIndex);
-	}
-	else throw Exception("There is no animation named " + animationName);
 }
 
 Pose_Ptr Skeleton::get_rest_pose() const

@@ -33,7 +33,7 @@ private:
 	Skeleton_Ptr m_skeleton;
 
 	State m_state;
-	std::string m_animation;		// the current animation
+	std::string m_animationName;	// the name of the current animation
 	int m_animationTime;			// the number of ms for which the current animation (or transition) has been playing
 
 	//#################### CONSTRUCTORS ####################
@@ -42,7 +42,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void request_animation(const std::string& newAnimation);
+	void request_animation(const std::string& newAnimationName);
 	void update(int milliseconds);
 
 	//#################### PRIVATE METHODS ####################

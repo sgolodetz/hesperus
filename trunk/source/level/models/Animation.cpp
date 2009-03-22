@@ -19,7 +19,12 @@ Animation::Animation(double length, const std::vector<Pose_Ptr>& keyframes)
 {}
 
 //#################### PUBLIC METHODS ####################
-const Pose_Ptr& Animation::keyframes(int i) const
+int Animation::keyframe_count() const
+{
+	return static_cast<int>(m_keyframes.size());
+}
+
+const Pose_Ptr& Animation::keyframe(int i) const
 {
 	if(0 <= i && i < static_cast<int>(m_keyframes.size()) && m_keyframes[i]) return m_keyframes[i];
 	else throw Exception("Invalid keyframe " + lexical_cast<std::string,int>(i));
