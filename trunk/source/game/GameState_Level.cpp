@@ -55,6 +55,47 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 		else grab_input();
 	}
 
+	do_entities(milliseconds, input);
+	do_physics(milliseconds);
+	do_animations(milliseconds);
+
+	return GameState_Ptr();
+}
+
+//#################### PRIVATE METHODS ####################
+Component_Ptr GameState_Level::construct_display()
+{
+	Container<ExplicitLayout> *display = new Container<ExplicitLayout>;
+
+	bf::path imagesDir = determine_images_directory(determine_base_directory_from_game());
+
+	const Screen& screen = Screen::instance();
+	int width = screen.dimensions().width();
+	int height = screen.dimensions().height();
+	display->layout().add(new Picture((imagesDir / "title.bmp").file_string()), Extents(width/4, 0, width*3/4, width/8));
+	display->layout().add(new LevelViewer(m_level), Extents(50, 200, width - 50, height - 50));
+	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
+	cont->layout().add(new Picture((imagesDir / "title.bmp").file_string()), Extents(500, 0, 700, 50));
+	display->layout().add(cont, Extents(100, 100, 200, 200));
+
+	return Component_Ptr(display);
+}
+
+void GameState_Level::do_animations(int milliseconds)
+{
+	// Update the model animations.
+	const EntityManager_Ptr& entityManager = m_level->entity_manager();
+	const std::vector<Entity_Ptr>& animatables = entityManager->animatables();
+	int animatableCount = static_cast<int>(animatables.size());
+	for(int i=0; i<animatableCount; ++i)
+	{
+		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
+		animComponent->model()->update(milliseconds);
+	}
+}
+
+void GameState_Level::do_entities(int milliseconds, UserInput& input)
+{
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
 	const std::vector<Entity_Ptr>& yokeables = entityManager->yokeables();
@@ -78,13 +119,18 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 	// Step 2:	Execute the entity commands.
 	for(std::list<EntityCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
 	{
-		(*it)->execute(m_level->entity_manager()->aabbs(), m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
+		(*it)->execute(entityManager->aabbs(), m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
 	}
+}
 
-	// Step 3:	Apply gravity to simulable entities (i.e. those which have a physics component).
+void GameState_Level::do_physics(int milliseconds)
+{
+	// Apply gravity to simulable entities (i.e. those which have a physics component).
+
 	// FIXME: Gravity strength should eventually be a level property.
 	const double GRAVITY_STRENGTH = 9.81;	// strength of gravity in Newtons
 
+	const EntityManager_Ptr& entityManager = m_level->entity_manager();
 	const std::vector<Entity_Ptr>& simulables = entityManager->simulables();
 	int simulableCount = static_cast<int>(simulables.size());
 	for(int i=0; i<simulableCount; ++i)
@@ -98,36 +144,6 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 			physComponent->set_velocity(Vector3d(0,0,0));
 		}
 	}
-
-	// Step 4:	Update the model animations.
-	const std::vector<Entity_Ptr>& animatables = entityManager->animatables();
-	int animatableCount = static_cast<int>(animatables.size());
-	for(int i=0; i<animatableCount; ++i)
-	{
-		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
-		animComponent->model()->update(milliseconds);
-	}
-
-	return GameState_Ptr();
-}
-
-//#################### PRIVATE METHODS ####################
-Component_Ptr GameState_Level::construct_display()
-{
-	Container<ExplicitLayout> *display = new Container<ExplicitLayout>;
-
-	bf::path imagesDir = determine_images_directory(determine_base_directory_from_game());
-
-	const Screen& screen = Screen::instance();
-	int width = screen.dimensions().width();
-	int height = screen.dimensions().height();
-	display->layout().add(new Picture((imagesDir / "title.bmp").file_string()), Extents(width/4, 0, width*3/4, width/8));
-	display->layout().add(new LevelViewer(m_level), Extents(50, 200, width - 50, height - 50));
-	Container<ExplicitLayout> *cont = new Container<ExplicitLayout>;
-	cont->layout().add(new Picture((imagesDir / "title.bmp").file_string()), Extents(500, 0, 700, 50));
-	display->layout().add(cont, Extents(100, 100, 200, 200));
-
-	return Component_Ptr(display);
 }
 
 void GameState_Level::grab_input()

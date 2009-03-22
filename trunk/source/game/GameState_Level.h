@@ -33,6 +33,9 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	Component_Ptr construct_display();
+	void do_animations(int milliseconds);
+	void do_entities(int milliseconds, UserInput& input);
+	void do_physics(int milliseconds);
 	void grab_input();
 	void ungrab_input();
 };
