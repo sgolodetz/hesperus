@@ -1,5 +1,5 @@
 /***
- * hesperus: SectionUtil.tpp
+ * hesperus: IOUtil.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -16,7 +16,7 @@ The polygon count is stored on a separate line before the polygons.
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Poly>
-void SectionUtil::load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
+void IOUtil::load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
 {
 	std::string line;
 
@@ -37,7 +37,7 @@ Loads a polygon from a std::string (generally a line of text taken from a file).
 @return		The polygon
 */
 template <typename Vert, typename AuxData>
-shared_ptr<Polygon<Vert,AuxData> > SectionUtil::load_polygon(const std::string& line, const std::string& n)
+shared_ptr<Polygon<Vert,AuxData> > IOUtil::load_polygon(const std::string& line, const std::string& n)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -90,7 +90,7 @@ Loads a sequence of polygons from a stream, one per line.
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Vert, typename AuxData>
-void SectionUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead)
+void IOUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -118,7 +118,7 @@ Loads a polyhedral brush from a std::istream.
 @throws Exception	If anything else goes wrong whilst trying to read the polyhedral brush
 */
 template <typename Poly>
-shared_ptr<PolyhedralBrush<Poly> > SectionUtil::load_polyhedral_brush(std::istream& is)
+shared_ptr<PolyhedralBrush<Poly> > IOUtil::load_polyhedral_brush(std::istream& is)
 {
 	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
@@ -149,7 +149,7 @@ Loads a sequence of polygons of unknown length from a std::istream, one per line
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Poly>
-void SectionUtil::load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
+void IOUtil::load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
 {
 	return load_polygons(is, polygons);
 }
@@ -163,7 +163,7 @@ Writes a sequence of polygons to a stream, one per line.
 @param writeCount	Whether the polygon count should be output to the stream first
 */
 template <typename Vert, typename AuxData>
-void SectionUtil::write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount)
+void IOUtil::write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -190,7 +190,7 @@ Writes a polyhedral brush to a std::ostream.
 @param brush	The polyhedral brush
 */
 template <typename Poly>
-void SectionUtil::write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush)
+void IOUtil::write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush)
 {
 	os << "{\n";
 	os << brush.bounds().minimum() << ' ' << brush.bounds().maximum() << '\n';

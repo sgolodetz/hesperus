@@ -5,7 +5,7 @@
 
 #include <fstream>
 
-#include <source/io/util/SectionUtil.h>
+#include <source/io/util/IOUtil.h>
 
 namespace hesp {
 
@@ -21,7 +21,7 @@ void GeometryFileUtil::load(const std::string& filename, std::vector<shared_ptr<
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	SectionUtil::load_uncounted_polygons(is, polygons);
+	IOUtil::load_uncounted_polygons(is, polygons);
 }
 
 //#################### SAVING METHODS ####################
@@ -36,7 +36,7 @@ void GeometryFileUtil::save(const std::string& filename, const std::vector<share
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open" + filename + " for writing");
-	SectionUtil::write_polygons(os, polygons, false);
+	IOUtil::write_polygons(os, polygons, false);
 }
 
 }

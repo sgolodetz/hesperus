@@ -4,7 +4,7 @@
  ***/
 
 #include <source/io/util/LineIO.h>
-#include <source/io/util/SectionUtil.h>
+#include <source/io/util/IOUtil.h>
 
 namespace hesp {
 
@@ -21,7 +21,7 @@ void PolygonsSection::load(std::istream& is, const std::string& sectionName, std
 {
 	LineIO::read_checked_line(is, sectionName);
 	LineIO::read_checked_line(is, "{");
-	SectionUtil::load_counted_polygons(is, polygons);
+	IOUtil::load_counted_polygons(is, polygons);
 	LineIO::read_checked_line(is, "}");
 }
 
@@ -38,7 +38,7 @@ void PolygonsSection::save(std::ostream& os, const std::string& sectionName, con
 {
 	os << sectionName << '\n';
 	os << "{\n";
-	SectionUtil::write_polygons(os, polygons, true);
+	IOUtil::write_polygons(os, polygons, true);
 	os << "}\n";
 }
 

@@ -113,7 +113,7 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 		if(line.substr(0,7) != "Polygon" || line.length() < 9) throw Exception("PolyhedralBrush: Expected Polygon");
 
 		// Parse polygon.
-		MEFPolygon_Ptr poly = SectionUtil::load_polygon<Vector3d,MEFAuxData>(line.substr(8));
+		MEFPolygon_Ptr poly = IOUtil::load_polygon<Vector3d,MEFAuxData>(line.substr(8));
 
 		// Convert polygon to hesperus form.
 		std::vector<TexturedVector3d> newVertices;

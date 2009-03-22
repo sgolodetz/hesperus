@@ -1650,15 +1650,15 @@
 						>
 					</File>
 					<File
+						RelativePath="..\io\util\IOUtil.h"
+						>
+					</File>
+					<File
 						RelativePath="..\io\util\LineIO.h"
 						>
 					</File>
 					<File
 						RelativePath="..\io\util\NavLinkFactory.h"
-						>
-					</File>
-					<File
-						RelativePath="..\io\util\SectionUtil.h"
 						>
 					</File>
 				</Filter>
@@ -1670,7 +1670,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\io\util\SectionUtil.tpp"
+						RelativePath="..\io\util\IOUtil.tpp"
 						>
 					</File>
 				</Filter>

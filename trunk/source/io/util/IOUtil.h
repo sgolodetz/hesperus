@@ -1,5 +1,5 @@
 /***
- * hesperus: SectionUtil.h
+ * hesperus: IOUtil.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -11,7 +11,7 @@
 
 namespace hesp {
 
-struct SectionUtil
+struct IOUtil
 {
 	//#################### LOADING SUPPORT METHODS ####################
 	template <typename Poly> static void load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons);
@@ -27,6 +27,6 @@ struct SectionUtil
 
 }
 
-#include "SectionUtil.tpp"
+#include "IOUtil.tpp"
 
 #endif

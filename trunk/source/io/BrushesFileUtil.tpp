@@ -3,7 +3,7 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include <source/io/util/SectionUtil.h>
+#include <source/io/util/IOUtil.h>
 
 namespace hesp {
 
@@ -26,7 +26,7 @@ std::vector<shared_ptr<PolyhedralBrush<Poly> > > BrushesFileUtil::load(const std
 
 	PolyBrushVector brushes;
 	PolyBrush_Ptr brush;
-	while(brush = SectionUtil::load_polyhedral_brush<Poly>(is))
+	while(brush = IOUtil::load_polyhedral_brush<Poly>(is))
 	{
 		brushes.push_back(brush);
 	}
@@ -51,7 +51,7 @@ void BrushesFileUtil::save(const std::string& filename, const std::vector<shared
 	int brushCount = static_cast<int>(brushes.size());
 	for(int i=0; i<brushCount; ++i)
 	{
-		SectionUtil::write_polyhedral_brush(os, *brushes[i]);
+		IOUtil::write_polyhedral_brush(os, *brushes[i]);
 	}
 }
 
