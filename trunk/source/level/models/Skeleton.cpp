@@ -14,7 +14,7 @@ namespace hesp {
 Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::map<std::string,Animation_Ptr>& animations)
 :	m_boneConfiguration(boneConfiguration), m_animations(animations)
 {
-	set_rest_pose();
+	set_pose(get_rest_pose());
 	build_to_bone_matrices();
 }
 
@@ -22,6 +22,24 @@ Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::ma
 const BoneConfiguration_Ptr& Skeleton::bone_configuration() const
 {
 	return m_boneConfiguration;
+}
+
+Pose_Ptr Skeleton::get_keyframe(const std::string& animationName, int keyframeIndex) const
+{
+	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(animationName);
+	if(it != m_animations.end())
+	{
+		const Animation_Ptr& animation = it->second;
+		return animation->keyframes(keyframeIndex);
+	}
+	else throw Exception("There is no animation named " + animationName);
+}
+
+Pose_Ptr Skeleton::get_rest_pose() const
+{
+	int boneCount = m_boneConfiguration->bone_count();
+	std::vector<RBTMatrix_Ptr> boneMatrices(boneCount, RBTMatrix::identity());
+	return Pose_Ptr(new Pose(boneMatrices));
 }
 
 void Skeleton::render_bones() const
@@ -56,20 +74,9 @@ void Skeleton::render_bones() const
 	}
 }
 
-void Skeleton::select_keyframe(const std::string& animationName, int keyframeIndex)
+void Skeleton::set_pose(const Pose_Ptr& pose)
 {
-	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(animationName);
-	if(it != m_animations.end())
-	{
-		const Animation_Ptr& animation = it->second;
-		const Pose_Ptr& keyframe = animation->keyframes(keyframeIndex);
-		specify_relative_bone_matrices(keyframe->bone_matrices());
-	}
-	else throw Exception("There is no animation named " + animationName);
-}
-
-void Skeleton::specify_relative_bone_matrices(const std::vector<RBTMatrix_Ptr>& boneMatrices)
-{
+	const std::vector<RBTMatrix_Ptr>& boneMatrices = pose->bone_matrices();
 	int boneCount = m_boneConfiguration->bone_count();
 	for(int i=0; i<boneCount; ++i)
 	{
@@ -88,13 +95,6 @@ void Skeleton::specify_relative_bone_matrices(const std::vector<RBTMatrix_Ptr>& 
 		m_boneConfiguration->bones(i)->relative_matrix() = relMatrix;
 	}
 	update_absolute_bone_matrices();
-}
-
-void Skeleton::set_rest_pose()
-{
-	int boneCount = m_boneConfiguration->bone_count();
-	std::vector<RBTMatrix_Ptr> boneMatrices(boneCount, RBTMatrix::identity());
-	specify_relative_bone_matrices(boneMatrices);
 }
 
 const RBTMatrix_Ptr& Skeleton::to_bone_matrix(int i) const

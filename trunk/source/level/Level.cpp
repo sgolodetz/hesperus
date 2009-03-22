@@ -153,13 +153,13 @@ void Level::render_entities() const
 
 			// FIXME: Eventually the pose of the model will be set elsewhere by an animation controller.
 #if 1
-			model->skeleton()->set_rest_pose();
+			model->skeleton()->set_pose(model->skeleton()->get_rest_pose());
 #else
 			static int rate = 0;
 			static int keyframe = 0;
 			if(rate == 0) keyframe = (keyframe + 1) % 21;
 			rate = (rate + 1) % 5;
-			model->skeleton()->select_keyframe("walk", keyframe);
+			model->skeleton()->set_pose(model->skeleton()->get_keyframe("walk", keyframe));
 #endif
 
 			model->mesh()->skin(model->skeleton());

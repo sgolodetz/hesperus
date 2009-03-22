@@ -57,7 +57,7 @@ void AnimationController::update_skeleton(int milliseconds)
 	{
 		case AS_REST:
 		{
-			m_skeleton->set_rest_pose();
+			m_skeleton->set_pose(m_skeleton->get_rest_pose());
 			break;
 		}
 		case AS_PLAY:

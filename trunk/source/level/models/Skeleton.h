@@ -29,10 +29,10 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const BoneConfiguration_Ptr& bone_configuration() const;
+	Pose_Ptr get_keyframe(const std::string& animationName, int keyframeIndex) const;
+	Pose_Ptr get_rest_pose() const;
 	void render_bones() const;
-	void select_keyframe(const std::string& animationName, int keyframeIndex);
-	void specify_relative_bone_matrices(const std::vector<RBTMatrix_Ptr>& boneMatrices);
-	void set_rest_pose();
+	void set_pose(const Pose_Ptr& pose);
 	const RBTMatrix_Ptr& to_bone_matrix(int i) const;
 
 	//#################### PRIVATE METHODS ####################
