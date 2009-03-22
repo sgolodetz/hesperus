@@ -151,18 +151,20 @@ void Level::render_entities() const
 			// Render the model.
 			Model_Ptr model = animComponent->model();
 
-			// FIXME: Eventually the pose of the model will be set elsewhere by an animation controller.
 #if 1
-			model->skeleton()->set_pose(model->skeleton()->get_rest_pose());
-#else
-			static int rate = 0;
-			static int keyframe = 0;
-			if(rate == 0) keyframe = (keyframe + 1) % 21;
-			rate = (rate + 1) % 5;
-			model->skeleton()->set_pose(model->skeleton()->animation("walk")->keyframe(keyframe));
+			// FIXME: Animations should eventually be requested from elsewhere.
+			static int blah = 0;
+			++blah;
+			int blah2 = blah/250;
+			if(blah2 % 2 == 0)
+			{
+				model->anim_controller()->request_animation("walk");
+			}
+			else
+			{
+				model->anim_controller()->request_animation("<rest>");
+			}
 #endif
-
-			model->mesh()->skin(model->skeleton());
 
 			// Note:	This matrix maps x -> u, -y -> n, z -> z, and translates by p. Since models are
 			//			built in Blender facing in the -y direction, this turns out to be exactly the
@@ -177,7 +179,7 @@ void Level::render_entities() const
 			glPushMatrix();
 			glMultMatrixd(&m.rep()[0]);
 
-			model->mesh()->render();
+			model->render();
 
 			glPopMatrix();
 

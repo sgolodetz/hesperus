@@ -9,18 +9,23 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Model::Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton)
-:	m_mesh(mesh), m_skeleton(skeleton)
+:	m_mesh(mesh), m_skeleton(skeleton), m_animController(new AnimationController(mesh, skeleton))
 {}
 
 //#################### PUBLIC METHODS ####################
-const Mesh_Ptr& Model::mesh() const
+const AnimationController_Ptr& Model::anim_controller() const
 {
-	return m_mesh;
+	return m_animController;
 }
 
-const Skeleton_Ptr& Model::skeleton() const
+void Model::render() const
 {
-	return m_skeleton;
+	m_mesh->render();
+}
+
+void Model::update(int milliseconds)
+{
+	m_animController->update(milliseconds);
 }
 
 }

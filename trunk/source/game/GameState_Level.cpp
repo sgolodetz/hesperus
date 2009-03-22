@@ -85,7 +85,7 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 	// FIXME: Gravity strength should eventually be a level property.
 	const double GRAVITY_STRENGTH = 9.81;	// strength of gravity in Newtons
 
-	const std::vector<Entity_Ptr> simulables = entityManager->simulables();
+	const std::vector<Entity_Ptr>& simulables = entityManager->simulables();
 	int simulableCount = static_cast<int>(simulables.size());
 	for(int i=0; i<simulableCount; ++i)
 	{
@@ -97,6 +97,15 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 			// A collision occurred, so set the velocity back to zero.
 			physComponent->set_velocity(Vector3d(0,0,0));
 		}
+	}
+
+	// Step 4:	Update the model animations.
+	const std::vector<Entity_Ptr>& animatables = entityManager->animatables();
+	int animatableCount = static_cast<int>(animatables.size());
+	for(int i=0; i<animatableCount; ++i)
+	{
+		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
+		animComponent->model()->update(milliseconds);
 	}
 
 	return GameState_Ptr();

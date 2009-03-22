@@ -10,19 +10,24 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-AnimationController::AnimationController(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton)
-:	m_mesh(mesh), m_skeleton(skeleton), m_state(AS_REST), m_animationTime(0)
+AnimationController::AnimationController(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton, bool interpolateKeyframes)
+:	m_mesh(mesh), m_skeleton(skeleton), m_interpolateKeyframes(interpolateKeyframes),
+	m_state(AS_REST), m_animationTime(0)
 {}
 
 //#################### PUBLIC METHODS ####################
 void AnimationController::request_animation(const std::string& newAnimationName)
 {
+	// If we're already playing this animation, ignore the request.
+	if(m_animationName == newAnimationName) return;
+
 	// Note: If we're already transitioning, we keep transitioning, just towards a new target.
 	if(m_state == AS_REST) m_state = AS_PLAY;
 	else if(m_state == AS_PLAY) m_state = AS_TRANSITION;
 
 	m_animationName = newAnimationName;
 	m_animationTime = 0;
+	m_transitionStart = m_skeleton->get_current_pose();
 }
 
 void AnimationController::update(int milliseconds)
@@ -43,13 +48,12 @@ void AnimationController::update_skeleton(int milliseconds)
 		}
 		case AS_PLAY:
 		{
-			// Interpolate between the current pose and an appropriate keyframe of the current animation.
+			Animation_Ptr animation = m_skeleton->animation(m_animationName);
+			int animationLength = static_cast<int>(animation->length() * 1000);
 
 			m_animationTime += milliseconds;
 
 			// Loop if we've gone past the end of the animation.
-			Animation_Ptr animation = m_skeleton->animation(m_animationName);
-			int animationLength = static_cast<int>(animation->length() * 1000);
 			m_animationTime %= animationLength;
 
 			// Calculate the keyframe index and interpolation parameter.
@@ -61,16 +65,23 @@ void AnimationController::update_skeleton(int milliseconds)
 			double t = modf(keyframePos, &dummy);	// t is the floating-point part of the keyframe position
 
 			// Clamp the keyframe index to be safe.
-			keyframeIndex = std::max(keyframeIndex, lastKeyframe);
+			keyframeIndex = std::min(keyframeIndex, lastKeyframe);
 
-			Pose_Ptr curPose = m_skeleton->get_current_pose();
 			Pose_Ptr newPose = animation->keyframe(keyframeIndex);
-			m_skeleton->set_pose(Pose::interpolate(curPose, newPose, t));
+			if(m_interpolateKeyframes)
+			{
+				int oldKeyframeIndex = (keyframeIndex + lastKeyframe) % animation->keyframe_count();
+				Pose_Ptr oldPose = animation->keyframe(oldKeyframeIndex);
+				m_skeleton->set_pose(Pose::interpolate(oldPose, newPose, t));
+			}
+			else
+			{
+				m_skeleton->set_pose(newPose);
+			}
 			break;
 		}
 		case AS_TRANSITION:
 		{
-			Pose_Ptr curPose = m_skeleton->get_current_pose();
 			Pose_Ptr newPose;
 
 			if(m_animationName != "<rest>")
@@ -89,13 +100,14 @@ void AnimationController::update_skeleton(int milliseconds)
 				// The transition is over.
 				m_state = m_animationName != "<rest>" ? AS_PLAY : AS_REST;
 				m_animationTime = 0;
+				m_transitionStart.reset();
 				m_skeleton->set_pose(newPose);
 			}
 			else
 			{
-				// Still transitioning: interpolate between the current pose and the new pose.
+				// Still transitioning: interpolate between the transition start pose and the new pose.
 				double t = (double)m_animationTime / TRANSITION_TIME;
-				m_skeleton->set_pose(Pose::interpolate(curPose, newPose, t));
+				m_skeleton->set_pose(Pose::interpolate(m_transitionStart, newPose, t));
 			}
 			break;
 		}

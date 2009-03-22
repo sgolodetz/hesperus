@@ -6,6 +6,7 @@
 #ifndef H_HESP_MODEL
 #define H_HESP_MODEL
 
+#include "AnimationController.h"
 #include "Mesh.h"
 #include "Skeleton.h"
 
@@ -15,6 +16,7 @@ class Model
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
+	AnimationController_Ptr m_animController;
 	Mesh_Ptr m_mesh;
 	Skeleton_Ptr m_skeleton;
 
@@ -24,8 +26,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Mesh_Ptr& mesh() const;
-	const Skeleton_Ptr& skeleton() const;
+	const AnimationController_Ptr& anim_controller() const;
+	void render() const;
+	void update(int milliseconds);
 };
 
 //#################### TYPEDEFS ####################

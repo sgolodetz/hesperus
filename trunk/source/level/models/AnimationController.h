@@ -31,14 +31,16 @@ private:
 private:
 	Mesh_Ptr m_mesh;
 	Skeleton_Ptr m_skeleton;
+	bool m_interpolateKeyframes;
 
 	State m_state;
 	std::string m_animationName;	// the name of the current animation
 	int m_animationTime;			// the number of ms for which the current animation (or transition) has been playing
+	Pose_Ptr m_transitionStart;		// the pose at the start of the transition
 
 	//#################### CONSTRUCTORS ####################
 public:
-	AnimationController(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton);
+	AnimationController(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton, bool interpolateKeyframes = false);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -49,6 +51,10 @@ public:
 private:
 	void update_skeleton(int milliseconds);
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<AnimationController> AnimationController_Ptr;
+typedef shared_ptr<const AnimationController> AnimationController_CPtr;
 
 }
 
