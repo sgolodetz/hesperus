@@ -28,7 +28,11 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 	if(m_animationName == newAnimationName) return;
 
 	// Note: If we're already transitioning, we keep transitioning, just towards a new target.
-	if(m_state == AS_REST) m_state = AS_PLAY;
+	if(m_state == AS_REST)
+	{
+		m_state = AS_TRANSITION;
+		m_transitionStart = m_skeleton->get_rest_pose();
+	}
 	else if(m_state == AS_PLAY)
 	{
 		m_state = AS_TRANSITION;
