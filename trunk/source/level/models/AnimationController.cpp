@@ -29,11 +29,14 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 
 	// Note: If we're already transitioning, we keep transitioning, just towards a new target.
 	if(m_state == AS_REST) m_state = AS_PLAY;
-	else if(m_state == AS_PLAY) m_state = AS_TRANSITION;
+	else if(m_state == AS_PLAY)
+	{
+		m_state = AS_TRANSITION;
+		m_transitionStart = m_skeleton->get_current_pose();
+	}
 
 	m_animationName = newAnimationName;
 	m_animationTime = 0;
-	m_transitionStart = m_skeleton->get_current_pose();
 }
 
 void AnimationController::update(int milliseconds)
