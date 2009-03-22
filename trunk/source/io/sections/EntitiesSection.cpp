@@ -10,8 +10,8 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/EntDefFileUtil.h>
-#include <source/io/EntityComponents.h>
-#include <source/io/FieldIO.h>
+#include <source/io/util/EntityComponents.h>
+#include <source/io/util/FieldIO.h>
 #include <source/level/entities/AnimationComponent.h>
 #include <source/level/entities/CollisionComponent.h>
 #include <source/level/entities/HealthComponent.h>

@@ -5,8 +5,8 @@
 
 #include "AnimationComponent.h"
 
-#include <source/io/FieldIO.h>
 #include <source/io/ModelFilesUtil.h>
+#include <source/io/util/FieldIO.h>
 
 namespace hesp {
 

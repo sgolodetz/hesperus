@@ -10,7 +10,7 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#include <source/io/DirectoryFinder.h>
+#include <source/io/util/DirectoryFinder.h>
 #include "GameState_Level.h"
 namespace bf = boost::filesystem;
 

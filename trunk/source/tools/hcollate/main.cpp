@@ -15,7 +15,6 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
-#include <source/io/DirectoryFinder.h>
 #include <source/io/EntitiesFileUtil.h>
 #include <source/io/LevelFileUtil.h>
 #include <source/io/LitTreeFileUtil.h>
@@ -25,6 +24,7 @@ using boost::lexical_cast;
 #include <source/io/PortalsFileUtil.h>
 #include <source/io/TreeFileUtil.h>
 #include <source/io/VisFileUtil.h>
+#include <source/io/util/DirectoryFinder.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 

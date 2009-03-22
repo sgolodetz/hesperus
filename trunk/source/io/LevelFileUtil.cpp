@@ -19,9 +19,9 @@ namespace bf = boost::filesystem;
 #include <source/io/sections/PolygonsSection.h>
 #include <source/io/sections/TreeSection.h>
 #include <source/io/sections/VisSection.h>
+#include <source/io/util/DirectoryFinder.h>
 #include <source/level/LitGeometryRenderer.h>
 #include <source/level/UnlitGeometryRenderer.h>
-#include "DirectoryFinder.h"
 
 namespace hesp {
 

@@ -10,8 +10,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/LineIO.h>
-#include <source/io/NavLinkFactory.h>
+#include <source/io/util/LineIO.h>
+#include <source/io/util/NavLinkFactory.h>
 
 namespace hesp {
 

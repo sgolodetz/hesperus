@@ -11,7 +11,7 @@
 #include <source/io/sections/AABBsSection.h>
 #include <source/io/sections/EntityComponentsSection.h>
 #include <source/io/sections/EntityTypesSection.h>
-#include "LineIO.h"
+#include <source/io/util/LineIO.h>
 
 namespace hesp {
 

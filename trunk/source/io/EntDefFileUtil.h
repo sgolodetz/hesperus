@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
+#include <source/io/util/EntityComponents.h>
 #include <source/math/geom/AABB.h>
-#include "EntityComponents.h"
 
 namespace hesp {
 

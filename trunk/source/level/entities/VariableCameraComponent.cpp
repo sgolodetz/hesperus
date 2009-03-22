@@ -6,7 +6,7 @@
 #include "VariableCameraComponent.h"
 
 #include <source/camera/VariableCamera.h>
-#include <source/io/FieldIO.h>
+#include <source/io/util/FieldIO.h>
 
 namespace hesp {
 

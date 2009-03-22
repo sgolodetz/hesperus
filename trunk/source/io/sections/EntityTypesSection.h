@@ -9,7 +9,7 @@
 #include <iosfwd>
 #include <map>
 
-#include <source/io/EntityComponents.h>
+#include <source/io/util/EntityComponents.h>
 
 namespace hesp {
 

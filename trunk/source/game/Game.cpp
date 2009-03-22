@@ -11,7 +11,7 @@
 
 #include <source/exceptions/Exception.h>
 #include <source/gui/Screen.h>
-#include <source/io/DirectoryFinder.h>
+#include <source/io/util/DirectoryFinder.h>
 #include "GameState_Load.h"
 namespace bf = boost::filesystem;
 

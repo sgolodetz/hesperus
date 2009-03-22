@@ -3,7 +3,7 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include <source/io/LineIO.h>
+#include <source/io/util/LineIO.h>
 
 namespace hesp {
 

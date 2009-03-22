@@ -6,7 +6,7 @@
 #include "GeometryRenderer.h"
 
 #include <source/images/BitmapLoader.h>
-#include <source/io/DirectoryFinder.h>
+#include <source/io/util/DirectoryFinder.h>
 #include <source/textures/TextureFactory.h>
 namespace bf = boost::filesystem;
 

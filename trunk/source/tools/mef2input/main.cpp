@@ -14,8 +14,8 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/io/BrushesFileUtil.h>
-#include <source/io/FieldIO.h>
 #include <source/io/LightsFileUtil.h>
+#include <source/io/util/FieldIO.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/AABB.h>
 #include <source/math/geom/GeomUtil.h>

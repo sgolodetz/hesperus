@@ -7,7 +7,7 @@
 
 #include <boost/tokenizer.hpp>
 
-#include <source/io/LineIO.h>
+#include <source/io/util/LineIO.h>
 
 namespace hesp {
 

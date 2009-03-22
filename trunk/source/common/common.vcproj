@@ -1379,23 +1379,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\DirectoryFinder.h"
-					>
-				</File>
-				<File
 					RelativePath="..\io\EntDefFileUtil.h"
 					>
 				</File>
 				<File
 					RelativePath="..\io\EntitiesFileUtil.h"
-					>
-				</File>
-				<File
-					RelativePath="..\io\EntityComponents.h"
-					>
-				</File>
-				<File
-					RelativePath="..\io\FieldIO.h"
 					>
 				</File>
 				<File
@@ -1411,10 +1399,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\LineIO.h"
-					>
-				</File>
-				<File
 					RelativePath="..\io\LitTreeFileUtil.h"
 					>
 				</File>
@@ -1424,10 +1408,6 @@
 				</File>
 				<File
 					RelativePath="..\io\NavFileUtil.h"
-					>
-				</File>
-				<File
-					RelativePath="..\io\NavLinkFactory.h"
 					>
 				</File>
 				<File
@@ -1459,10 +1439,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\FieldIO.tpp"
-					>
-				</File>
-				<File
 					RelativePath="..\io\GeometryFileUtil.tpp"
 					>
 				</File>
@@ -1483,23 +1459,11 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\io\DirectoryFinder.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\io\EntDefFileUtil.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\io\EntitiesFileUtil.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\io\EntityComponents.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\io\FieldIO.cpp"
 					>
 				</File>
 				<File
@@ -1511,19 +1475,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\LineIO.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\io\ModelFilesUtil.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\io\NavFileUtil.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\io\NavLinkFactory.cpp"
 					>
 				</File>
 				<File
@@ -1655,6 +1611,66 @@
 					</File>
 					<File
 						RelativePath="..\io\sections\SectionUtil.tpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="util"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\io\util\DirectoryFinder.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\EntityComponents.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\FieldIO.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\LineIO.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\NavLinkFactory.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\io\util\DirectoryFinder.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\EntityComponents.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\FieldIO.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\LineIO.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\NavLinkFactory.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\io\util\FieldIO.tpp"
 						>
 					</File>
 				</Filter>

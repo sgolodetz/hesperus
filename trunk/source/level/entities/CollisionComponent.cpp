@@ -5,7 +5,7 @@
 
 #include "CollisionComponent.h"
 
-#include <source/io/FieldIO.h>
+#include <source/io/util/FieldIO.h>
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {

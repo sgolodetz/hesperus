@@ -12,7 +12,7 @@ using boost::lexical_cast;
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
 #include <source/images/BitmapSaver.h>
-#include <source/io/LineIO.h>
+#include <source/io/util/LineIO.h>
 
 namespace hesp {
 

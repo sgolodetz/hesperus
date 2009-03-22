@@ -15,8 +15,8 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#include <source/io/DirectoryFinder.h>
 #include <source/io/LevelFileUtil.h>
+#include <source/io/util/DirectoryFinder.h>
 #include <source/level/entities/MovementFunctions.h>
 #include <source/level/LevelViewer.h>
 namespace bf = boost::filesystem;

@@ -13,11 +13,11 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/BitmapLoader.h>
-#include <source/io/LineIO.h>
+#include <source/io/util/DirectoryFinder.h>
+#include <source/io/util/LineIO.h>
 #include <source/materials/BasicMaterial.h>
 #include <source/materials/TextureMaterial.h>
 #include <source/textures/TextureFactory.h>
-#include "DirectoryFinder.h"
 namespace bf = boost::filesystem;
 
 namespace {
