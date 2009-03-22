@@ -16,7 +16,7 @@ class AnimationComponent : public IAnimationComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	Model_Ptr m_model;
+	mutable Model_Ptr m_model;
 	std::string m_modelName;
 
 	//#################### CONSTRUCTORS ####################

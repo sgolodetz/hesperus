@@ -8,7 +8,9 @@
 #include <fstream>
 
 #include <source/exceptions/Exception.h>
-#include "FileSectionUtil.h"
+#include <source/io/sections/AABBsSection.h>
+#include <source/io/sections/EntityComponentsSection.h>
+#include <source/io/sections/EntityTypesSection.h>
 #include "LineIO.h"
 
 namespace hesp {
@@ -27,9 +29,9 @@ void EntDefFileUtil::load(const std::string& filename, std::vector<AABB3d>& aabb
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
 
 	LineIO::read_checked_line(is, "HENTDEF");
-	aabbs = FileSectionUtil::load_aabbs_section(is);
-	FileSectionUtil::load_entity_components_section(is);	// the game itself doesn't use anything from this section
-	entityComponentsMap = FileSectionUtil::load_entity_types_section(is);
+	aabbs = AABBsSection::load(is);
+	EntityComponentsSection::load(is);	// the game itself doesn't use anything from this section
+	entityComponentsMap = EntityTypesSection::load(is);
 }
 
 /**
@@ -44,7 +46,7 @@ std::vector<AABB3d> EntDefFileUtil::load_aabbs_only(const std::string& filename)
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
 
 	LineIO::read_checked_line(is, "HENTDEF");
-	return FileSectionUtil::load_aabbs_section(is);
+	return AABBsSection::load(is);
 }
 
 }

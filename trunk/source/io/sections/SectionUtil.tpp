@@ -1,26 +1,11 @@
 /***
- * hesperus: FileSectionUtil_Load.tpp
+ * hesperus: SectionUtil.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
+#include <source/io/LineIO.h>
+
 namespace hesp {
-
-//#################### LOADING METHODS ####################
-/**
-Loads a polygon section from the specified std::istream.
-
-@param is			The std::istream
-@param sectionName	The name of the section in the file (e.g. Polygons, Portals, etc.)
-@param polygons		The array into which to read the polygons
-*/
-template <typename Poly>
-void FileSectionUtil::load_polygons_section(std::istream& is, const std::string& sectionName, std::vector<shared_ptr<Poly> >& polygons)
-{
-	LineIO::read_checked_line(is, sectionName);
-	LineIO::read_checked_line(is, "{");
-	load_counted_polygons(is, polygons);
-	LineIO::read_checked_line(is, "}");
-}
 
 //#################### LOADING SUPPORT METHODS ####################
 /**
@@ -31,7 +16,7 @@ The polygon count is stored on a separate line before the polygons.
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Poly>
-void FileSectionUtil::load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
+void SectionUtil::load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
 {
 	std::string line;
 
@@ -52,7 +37,7 @@ Loads a polygon from a std::string (generally a line of text taken from a file).
 @return		The polygon
 */
 template <typename Vert, typename AuxData>
-shared_ptr<Polygon<Vert,AuxData> > FileSectionUtil::load_polygon(const std::string& line, const std::string& n)
+shared_ptr<Polygon<Vert,AuxData> > SectionUtil::load_polygon(const std::string& line, const std::string& n)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -105,7 +90,7 @@ Loads a sequence of polygons from a stream, one per line.
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Vert, typename AuxData>
-void FileSectionUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead)
+void SectionUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -133,7 +118,7 @@ Loads a polyhedral brush from a std::istream.
 @throws Exception	If anything else goes wrong whilst trying to read the polyhedral brush
 */
 template <typename Poly>
-shared_ptr<PolyhedralBrush<Poly> > FileSectionUtil::load_polyhedral_brush(std::istream& is)
+shared_ptr<PolyhedralBrush<Poly> > SectionUtil::load_polyhedral_brush(std::istream& is)
 {
 	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
@@ -150,7 +135,7 @@ shared_ptr<PolyhedralBrush<Poly> > FileSectionUtil::load_polyhedral_brush(std::i
 	// Read faces.
 	typedef shared_ptr<Poly> Poly_Ptr;
 	std::vector<Poly_Ptr> faces;
-	FileSectionUtil::load_counted_polygons(is, faces);
+	load_counted_polygons(is, faces);
 
 	LineIO::read_checked_line(is, "}");
 
@@ -164,9 +149,53 @@ Loads a sequence of polygons of unknown length from a std::istream, one per line
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Poly>
-void FileSectionUtil::load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
+void SectionUtil::load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
 {
 	return load_polygons(is, polygons);
+}
+
+//#################### SAVING SUPPORT METHODS ####################
+/**
+Writes a sequence of polygons to a stream, one per line.
+
+@param os			The stream to which to write
+@param polygons		The polygons to write to the stream
+@param writeCount	Whether the polygon count should be output to the stream first
+*/
+template <typename Vert, typename AuxData>
+void SectionUtil::write_polygons(std::ostream& os, const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, bool writeCount)
+{
+	typedef Polygon<Vert,AuxData> Poly;
+	typedef shared_ptr<Poly> Poly_Ptr;
+	typedef std::vector<Poly_Ptr> PolyVector;
+
+	if(writeCount) os << polygons.size() << '\n';
+	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
+	{
+		const Poly& curPoly = **it;
+		int vertCount = curPoly.vertex_count();
+		os << vertCount << ' ';
+		for(int j=0; j<vertCount; ++j)
+		{
+			os << curPoly.vertex(j) << ' ';
+		}
+		os << curPoly.auxiliary_data() << '\n';
+	}
+}
+
+/**
+Writes a polyhedral brush to a std::ostream.
+
+@param os		The std::ostream
+@param brush	The polyhedral brush
+*/
+template <typename Poly>
+void SectionUtil::write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush)
+{
+	os << "{\n";
+	os << brush.bounds().minimum() << ' ' << brush.bounds().maximum() << '\n';
+	write_polygons(os, brush.faces(), true);
+	os << "}\n";
 }
 
 }

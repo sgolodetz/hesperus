@@ -14,14 +14,16 @@ namespace hesp {
 AnimationComponent::AnimationComponent(std::istream& is)
 {
 	m_modelName = FieldIO::read_field(is, "GameModel");
-
-	// FIXME: Load the appropriate models here once they've been created.
-	m_model = ModelFilesUtil::load_model("Test-15");
 }
 
 //#################### PUBLIC METHODS ####################
 const Model_Ptr& AnimationComponent::model() const
 {
+	if(!m_model)
+	{
+		// FIXME: Load the appropriate models here once they've been created.
+		m_model = ModelFilesUtil::load_model("Test-15");
+	}
 	return m_model;
 }
 

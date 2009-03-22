@@ -12,10 +12,16 @@ namespace bf = boost::filesystem;
 
 #include <source/images/BitmapLoader.h>
 #include <source/images/BitmapSaver.h>
+#include <source/io/sections/EntitiesSection.h>
+#include <source/io/sections/LightmapsSection.h>
+#include <source/io/sections/NavSection.h>
+#include <source/io/sections/OnionTreeSection.h>
+#include <source/io/sections/PolygonsSection.h>
+#include <source/io/sections/TreeSection.h>
+#include <source/io/sections/VisSection.h>
 #include <source/level/LitGeometryRenderer.h>
 #include <source/level/UnlitGeometryRenderer.h>
 #include "DirectoryFinder.h"
-#include "FileSectionUtil.h"
 
 namespace hesp {
 
@@ -68,16 +74,16 @@ void LevelFileUtil::save_lit(const std::string& filename,
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
 
 	os << "HBSPL\n";
-	FileSectionUtil::save_polygons_section(os, "Polygons", polygons);
-	FileSectionUtil::save_tree_section(os, tree);
-	FileSectionUtil::save_polygons_section(os, "Portals", portals);
-	FileSectionUtil::save_vis_section(os, leafVis);
-	FileSectionUtil::save_lightmaps_section(os, lightmaps);
-	FileSectionUtil::save_polygons_section(os, "OnionPolygons", onionPolygons);
-	FileSectionUtil::save_onion_tree_section(os, onionTree);
-	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
-	FileSectionUtil::save_nav_section(os, navDatasets);
-	FileSectionUtil::save_entities_section(os, entityManager);
+	PolygonsSection::save(os, "Polygons", polygons);
+	TreeSection::save(os, tree);
+	PolygonsSection::save(os, "Portals", portals);
+	VisSection::save(os, leafVis);
+	LightmapsSection::save(os, lightmaps);
+	PolygonsSection::save(os, "OnionPolygons", onionPolygons);
+	OnionTreeSection::save(os, onionTree);
+	PolygonsSection::save(os, "OnionPortals", onionPortals);
+	NavSection::save(os, navDatasets);
+	EntitiesSection::save(os, entityManager);
 }
 
 /**
@@ -106,15 +112,15 @@ void LevelFileUtil::save_unlit(const std::string& filename,
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
 
 	os << "HBSPU\n";
-	FileSectionUtil::save_polygons_section(os, "Polygons", polygons);
-	FileSectionUtil::save_tree_section(os, tree);
-	FileSectionUtil::save_polygons_section(os, "Portals", portals);
-	FileSectionUtil::save_vis_section(os, leafVis);
-	FileSectionUtil::save_polygons_section(os, "OnionPolygons", onionPolygons);
-	FileSectionUtil::save_onion_tree_section(os, onionTree);
-	FileSectionUtil::save_polygons_section(os, "OnionPortals", onionPortals);
-	FileSectionUtil::save_nav_section(os, navDatasets);
-	FileSectionUtil::save_entities_section(os, entityManager);
+	PolygonsSection::save(os, "Polygons", polygons);
+	TreeSection::save(os, tree);
+	PolygonsSection::save(os, "Portals", portals);
+	VisSection::save(os, leafVis);
+	PolygonsSection::save(os, "OnionPolygons", onionPolygons);
+	OnionTreeSection::save(os, onionTree);
+	PolygonsSection::save(os, "OnionPortals", onionPortals);
+	NavSection::save(os, navDatasets);
+	EntitiesSection::save(os, entityManager);
 }
 
 //#################### LOADING SUPPORT METHODS ####################
@@ -137,18 +143,18 @@ Level_Ptr LevelFileUtil::load_lit(std::istream& is)
 	EntityManager_Ptr entityManager;
 
 	// Load the data.
-	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
-	tree = FileSectionUtil::load_tree_section(is);
-	FileSectionUtil::load_polygons_section(is, "Portals", portals);
-	leafVis = FileSectionUtil::load_vis_section(is);
-	std::vector<Image24_Ptr> lightmaps = FileSectionUtil::load_lightmaps_section(is);
-	FileSectionUtil::load_polygons_section(is, "OnionPolygons", onionPolygons);
-	onionTree = FileSectionUtil::load_onion_tree_section(is);
-	FileSectionUtil::load_polygons_section(is, "OnionPortals", onionPortals);
-	navDatasets = FileSectionUtil::load_nav_section(is);
+	PolygonsSection::load(is, "Polygons", polygons);
+	tree = TreeSection::load(is);
+	PolygonsSection::load(is, "Portals", portals);
+	leafVis = VisSection::load(is);
+	std::vector<Image24_Ptr> lightmaps = LightmapsSection::load(is);
+	PolygonsSection::load(is, "OnionPolygons", onionPolygons);
+	onionTree = OnionTreeSection::load(is);
+	PolygonsSection::load(is, "OnionPortals", onionPortals);
+	navDatasets = NavSection::load(is);
 
 	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
-	entityManager = FileSectionUtil::load_entities_section(is, settingsDir);
+	entityManager = EntitiesSection::load(is, settingsDir);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
@@ -174,17 +180,17 @@ Level_Ptr LevelFileUtil::load_unlit(std::istream& is)
 	EntityManager_Ptr entityManager;
 
 	// Load the data.
-	FileSectionUtil::load_polygons_section(is, "Polygons", polygons);
-	tree = FileSectionUtil::load_tree_section(is);
-	FileSectionUtil::load_polygons_section(is, "Portals", portals);
-	leafVis = FileSectionUtil::load_vis_section(is);
-	FileSectionUtil::load_polygons_section(is, "OnionPolygons", onionPolygons);
-	onionTree = FileSectionUtil::load_onion_tree_section(is);
-	FileSectionUtil::load_polygons_section(is, "OnionPortals", onionPortals);
-	navDatasets = FileSectionUtil::load_nav_section(is);
+	PolygonsSection::load(is, "Polygons", polygons);
+	tree = TreeSection::load(is);
+	PolygonsSection::load(is, "Portals", portals);
+	leafVis = VisSection::load(is);
+	PolygonsSection::load(is, "OnionPolygons", onionPolygons);
+	onionTree = OnionTreeSection::load(is);
+	PolygonsSection::load(is, "OnionPortals", onionPortals);
+	navDatasets = NavSection::load(is);
 
 	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
-	entityManager = FileSectionUtil::load_entities_section(is, settingsDir);
+	entityManager = EntitiesSection::load(is, settingsDir);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));

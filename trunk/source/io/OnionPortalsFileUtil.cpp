@@ -7,7 +7,7 @@
 
 #include <fstream>
 
-#include "FileSectionUtil.h"
+#include <source/io/sections/PolygonsSection.h>
 
 namespace hesp {
 
@@ -24,7 +24,7 @@ std::vector<OnionPortal_Ptr> OnionPortalsFileUtil::load(const std::string& filen
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
 
 	std::vector<OnionPortal_Ptr> portals;
-	FileSectionUtil::load_polygons_section(is, "OnionPortals", portals);
+	PolygonsSection::load(is, "OnionPortals", portals);
 	return portals;
 }
 
@@ -39,7 +39,7 @@ void OnionPortalsFileUtil::save(const std::string& filename, const std::vector<O
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
-	FileSectionUtil::save_polygons_section(os, "OnionPortals", portals);
+	PolygonsSection::save(os, "OnionPortals", portals);
 }
 
 }

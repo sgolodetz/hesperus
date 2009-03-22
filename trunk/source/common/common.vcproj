@@ -1399,10 +1399,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\FileSectionUtil.h"
-					>
-				</File>
-				<File
 					RelativePath="..\io\GeometryFileUtil.h"
 					>
 				</File>
@@ -1467,14 +1463,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\FileSectionUtil_Load.tpp"
-					>
-				</File>
-				<File
-					RelativePath="..\io\FileSectionUtil_Save.tpp"
-					>
-				</File>
-				<File
 					RelativePath="..\io\GeometryFileUtil.tpp"
 					>
 				</File>
@@ -1515,14 +1503,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\FileSectionUtil_Load.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\io\FileSectionUtil_Save.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\io\LevelFileUtil.cpp"
 					>
 				</File>
@@ -1558,6 +1538,126 @@
 					RelativePath="..\io\VisFileUtil.cpp"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="sections"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\io\sections\AABBsSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\EntitiesSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\EntityComponentsSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\EntityTypesSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\LightmapPrefixSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\LightmapsSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\LightsSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\NavSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\OnionTreeSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\TreeSection.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\VisSection.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\io\sections\AABBsSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\EntitiesSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\EntityComponentsSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\EntityTypesSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\LightmapPrefixSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\LightmapsSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\LightsSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\NavSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\OnionTreeSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\PolygonsSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\SectionUtil.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\TreeSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\VisSection.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".tpp"
+					>
+					<File
+						RelativePath="..\io\sections\PolygonsSection.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\SectionUtil.tpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

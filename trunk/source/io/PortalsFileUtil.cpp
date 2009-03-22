@@ -12,7 +12,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
-#include "FileSectionUtil.h"
+#include <source/io/sections/PolygonsSection.h>
 
 namespace hesp {
 
@@ -34,7 +34,7 @@ void PortalsFileUtil::load(const std::string& filename, int& emptyLeafCount, std
 	try							{ emptyLeafCount = lexical_cast<int,std::string>(line); }
 	catch(bad_lexical_cast&)	{ throw Exception("The empty leaf count was not an integer"); }
 
-	FileSectionUtil::load_polygons_section(is, "Portals", portals);
+	PolygonsSection::load(is, "Portals", portals);
 }
 
 //#################### SAVING METHODS ####################
@@ -51,7 +51,7 @@ void PortalsFileUtil::save(const std::string& filename, int emptyLeafCount, cons
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
 
 	os << emptyLeafCount << '\n';
-	FileSectionUtil::save_polygons_section(os, "Portals", portals);
+	PolygonsSection::save(os, "Portals", portals);
 }
 
 }

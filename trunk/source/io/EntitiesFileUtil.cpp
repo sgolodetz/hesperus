@@ -10,7 +10,7 @@
 namespace bf = boost::filesystem;
 
 #include <source/exceptions/Exception.h>
-#include "FileSectionUtil.h"
+#include <source/io/sections/EntitiesSection.h>
 
 namespace hesp {
 
@@ -26,7 +26,7 @@ EntityManager_Ptr EntitiesFileUtil::load(const std::string& filename, const bf::
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	return FileSectionUtil::load_entities_section(is, settingsDir);
+	return EntitiesSection::load(is, settingsDir);
 }
 
 //#################### SAVING METHODS ####################
@@ -40,7 +40,7 @@ void EntitiesFileUtil::save(const std::string& filename, const EntityManager_Ptr
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
-	FileSectionUtil::save_entities_section(os, entityManager);
+	EntitiesSection::save(os, entityManager);
 }
 
 }

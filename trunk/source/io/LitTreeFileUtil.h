@@ -6,6 +6,8 @@
 #ifndef H_HESP_LITTREEFILEUTIL
 #define H_HESP_LITTREEFILEUTIL
 
+#include <source/level/bsp/BSPTree.h>
+
 namespace hesp {
 
 struct LitTreeFileUtil

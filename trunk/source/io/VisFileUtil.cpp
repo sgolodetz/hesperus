@@ -7,7 +7,8 @@
 
 #include <fstream>
 
-#include "FileSectionUtil.h"
+#include <source/exceptions/Exception.h>
+#include <source/io/sections/VisSection.h>
 
 namespace hesp {
 
@@ -22,7 +23,7 @@ LeafVisTable_Ptr VisFileUtil::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("The vis file could not be read");
-	return FileSectionUtil::load_vis_section(is);
+	return VisSection::load(is);
 }
 
 //#################### SAVING METHODS ####################
@@ -36,7 +37,7 @@ void VisFileUtil::save(const std::string& filename, const LeafVisTable_Ptr& leaf
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
-	FileSectionUtil::save_vis_section(os, leafVis);
+	VisSection::save(os, leafVis);
 }
 
 }
