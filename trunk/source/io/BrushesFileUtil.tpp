@@ -3,7 +3,7 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include <source/io/sections/SectionUtil.h>
+#include <source/io/util/SectionUtil.h>
 
 namespace hesp {
 

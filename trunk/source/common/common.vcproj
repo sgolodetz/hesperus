@@ -1590,10 +1590,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\io\sections\SectionUtil.h"
-						>
-					</File>
-					<File
 						RelativePath="..\io\sections\TreeSection.h"
 						>
 					</File>
@@ -1607,10 +1603,6 @@
 					>
 					<File
 						RelativePath="..\io\sections\PolygonsSection.tpp"
-						>
-					</File>
-					<File
-						RelativePath="..\io\sections\SectionUtil.tpp"
 						>
 					</File>
 				</Filter>
@@ -1665,12 +1657,20 @@
 						RelativePath="..\io\util\NavLinkFactory.h"
 						>
 					</File>
+					<File
+						RelativePath="..\io\util\SectionUtil.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
 					>
 					<File
 						RelativePath="..\io\util\FieldIO.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\SectionUtil.tpp"
 						>
 					</File>
 				</Filter>
