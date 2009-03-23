@@ -10,8 +10,6 @@
 #include <boost/filesystem/operations.hpp>
 namespace bf = boost::filesystem;
 
-#include <source/images/BitmapLoader.h>
-#include <source/images/BitmapSaver.h>
 #include <source/io/sections/EntitiesSection.h>
 #include <source/io/sections/LightmapsSection.h>
 #include <source/io/sections/NavSection.h>
