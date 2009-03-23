@@ -34,11 +34,6 @@ const BoneConfiguration_Ptr& Skeleton::bone_configuration() const
 	return m_boneConfiguration;
 }
 
-Pose_Ptr Skeleton::get_current_pose() const
-{
-	return m_curPose;
-}
-
 Pose_Ptr Skeleton::get_rest_pose() const
 {
 	int boneCount = m_boneConfiguration->bone_count();
@@ -80,8 +75,6 @@ void Skeleton::render_bones() const
 
 void Skeleton::set_pose(const Pose_Ptr& pose)
 {
-	m_curPose = pose;
-
 	const std::vector<RBTMatrix_Ptr>& boneMatrices = pose->bone_matrices();
 	int boneCount = m_boneConfiguration->bone_count();
 	for(int i=0; i<boneCount; ++i)

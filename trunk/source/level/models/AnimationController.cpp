@@ -36,7 +36,7 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 	else if(m_state == AS_PLAY)
 	{
 		m_state = AS_TRANSITION;
-		m_transitionStart = m_skeleton->get_current_pose();
+		m_transitionStart = m_curPose;
 	}
 
 	m_animationName = newAnimationName;
@@ -50,13 +50,19 @@ void AnimationController::update(int milliseconds)
 }
 
 //#################### PRIVATE METHODS ####################
+void AnimationController::set_pose(const Pose_Ptr& pose)
+{
+	m_curPose = pose;
+	m_skeleton->set_pose(pose);
+}
+
 void AnimationController::update_skeleton(int milliseconds)
 {
 	switch(m_state)
 	{
 		case AS_REST:
 		{
-			m_skeleton->set_pose(m_skeleton->get_rest_pose());
+			set_pose(m_skeleton->get_rest_pose());
 			break;
 		}
 		case AS_PLAY:
@@ -85,11 +91,11 @@ void AnimationController::update_skeleton(int milliseconds)
 			{
 				int oldKeyframeIndex = (keyframeIndex + lastKeyframe) % animation->keyframe_count();
 				Pose_Ptr oldPose = animation->keyframe(oldKeyframeIndex);
-				m_skeleton->set_pose(Pose::interpolate(oldPose, newPose, t));
+				set_pose(Pose::interpolate(oldPose, newPose, t));
 			}
 			else
 			{
-				m_skeleton->set_pose(newPose);
+				set_pose(newPose);
 			}
 			break;
 		}
@@ -114,13 +120,13 @@ void AnimationController::update_skeleton(int milliseconds)
 				m_state = m_animationName != "<rest>" ? AS_PLAY : AS_REST;
 				m_animationTime = 0;
 				m_transitionStart.reset();
-				m_skeleton->set_pose(newPose);
+				set_pose(newPose);
 			}
 			else
 			{
 				// Still transitioning: interpolate between the transition start pose and the new pose.
 				double t = (double)m_animationTime / TRANSITION_TIME;
-				m_skeleton->set_pose(Pose::interpolate(m_transitionStart, newPose, t));
+				set_pose(Pose::interpolate(m_transitionStart, newPose, t));
 			}
 			break;
 		}

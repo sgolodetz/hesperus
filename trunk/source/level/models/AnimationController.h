@@ -31,6 +31,7 @@ private:
 	State m_state;
 	std::string m_animationName;	// the name of the current animation
 	int m_animationTime;			// the number of ms for which the current animation (or transition) has been playing
+	Pose_Ptr m_curPose;				// the current pose
 	Pose_Ptr m_transitionStart;		// the pose at the start of the transition
 
 	//#################### CONSTRUCTORS ####################
@@ -44,6 +45,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	void set_pose(const Pose_Ptr& pose);
 	void update_skeleton(int milliseconds);
 };
 

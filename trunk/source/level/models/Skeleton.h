@@ -22,14 +22,6 @@ private:
 	// (rest) coordinate frame of each bone. These matrices fulfil that role.
 	std::vector<RBTMatrix_Ptr> m_toBoneMatrices;
 
-	// FIXME:	This stores the current pose relative to the base transformations.
-	//			This is NOT the same as the set of relative matrices stored in the
-	//			bone configuration, which have been subjected to the base transforms.
-	//			Ideally we want to avoid storing this, as it doubles the memory
-	//			usage per model, but recalculating it each frame would be worse.
-	//			A better solution is needed!
-	Pose_Ptr m_curPose;
-
 	//#################### CONSTRUCTORS ####################
 public:
 	Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::map<std::string,Animation_Ptr>& animations);
@@ -38,7 +30,6 @@ public:
 public:
 	const Animation_Ptr& animation(const std::string& name) const;
 	const BoneConfiguration_Ptr& bone_configuration() const;
-	Pose_Ptr get_current_pose() const;
 	Pose_Ptr get_rest_pose() const;
 	void render_bones() const;
 	void set_pose(const Pose_Ptr& pose);
