@@ -1254,6 +1254,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\ModelManager.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\ModelVertex.cpp"
 						>
 					</File>
@@ -1299,6 +1303,10 @@
 					</File>
 					<File
 						RelativePath="..\level\models\Model.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\ModelManager.h"
 						>
 					</File>
 					<File
