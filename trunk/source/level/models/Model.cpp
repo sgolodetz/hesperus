@@ -9,7 +9,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Model::Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton)
-:	m_mesh(mesh), m_skeleton(skeleton), m_animController(new AnimationController(mesh, skeleton))
+:	m_mesh(mesh), m_skeleton(skeleton), m_animController(new AnimationController(skeleton))
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -20,6 +20,7 @@ const AnimationController_Ptr& Model::anim_controller() const
 
 void Model::render() const
 {
+	m_mesh->skin(m_skeleton);
 	m_mesh->render();
 }
 

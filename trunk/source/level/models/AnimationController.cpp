@@ -16,8 +16,8 @@ enum
 };
 
 //#################### CONSTRUCTORS ####################
-AnimationController::AnimationController(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton, bool interpolateKeyframes)
-:	m_mesh(mesh), m_skeleton(skeleton), m_interpolateKeyframes(interpolateKeyframes),
+AnimationController::AnimationController(const Skeleton_Ptr& skeleton, bool interpolateKeyframes)
+:	m_skeleton(skeleton), m_interpolateKeyframes(interpolateKeyframes),
 	m_state(AS_REST), m_animationTime(0)
 {}
 
@@ -46,7 +46,6 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 void AnimationController::update(int milliseconds)
 {
 	update_skeleton(milliseconds);
-	m_mesh->skin(m_skeleton);
 }
 
 //#################### PRIVATE METHODS ####################

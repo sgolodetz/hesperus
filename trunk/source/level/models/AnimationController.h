@@ -6,7 +6,6 @@
 #ifndef H_HESP_ANIMATIONCONTROLLER
 #define H_HESP_ANIMATIONCONTROLLER
 
-#include "Mesh.h"
 #include "Skeleton.h"
 
 namespace hesp {
@@ -24,7 +23,6 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	Mesh_Ptr m_mesh;
 	Skeleton_Ptr m_skeleton;
 	bool m_interpolateKeyframes;
 
@@ -36,7 +34,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	AnimationController(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton, bool interpolateKeyframes = false);
+	AnimationController(const Skeleton_Ptr& skeleton, bool interpolateKeyframes = false);
 
 	//#################### PUBLIC METHODS ####################
 public:
