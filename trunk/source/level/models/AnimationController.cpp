@@ -16,9 +16,8 @@ enum
 };
 
 //#################### CONSTRUCTORS ####################
-AnimationController::AnimationController(const Skeleton_Ptr& skeleton, bool interpolateKeyframes)
-:	m_skeleton(skeleton), m_interpolateKeyframes(interpolateKeyframes),
-	m_state(AS_REST), m_animationTime(0)
+AnimationController::AnimationController(bool interpolateKeyframes)
+:	m_interpolateKeyframes(interpolateKeyframes), m_state(AS_REST), m_animationTime(0)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -46,6 +45,11 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 
 	m_animationName = newAnimationName;
 	m_animationTime = 0;
+}
+
+void AnimationController::set_skeleton(const Skeleton_Ptr& skeleton)
+{
+	m_skeleton = skeleton;
 }
 
 void AnimationController::update(int milliseconds)

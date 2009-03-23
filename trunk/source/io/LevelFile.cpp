@@ -139,8 +139,9 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	std::vector<OnionPortal_Ptr> onionPortals;
 	std::vector<NavDataset_Ptr> navDatasets;
 	EntityManager_Ptr entityManager;
+	ModelManager_Ptr modelManager;
 
-	// Load the data.
+	// Load the level data.
 	PolygonsSection::load(is, "Polygons", polygons);
 	tree = TreeSection::load(is);
 	PolygonsSection::load(is, "Portals", portals);
@@ -154,9 +155,35 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
 	entityManager = EntitiesSection::load(is, settingsDir);
 
+	// Load the models.
+	modelManager = load_models(entityManager);
+
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager, modelManager));
+}
+
+/**
+Loads the models necessary for the animatable entities in the specified entity manager.
+
+@param entityManager	The entity manager
+@return					A model manager containing the loaded models
+*/
+ModelManager_Ptr LevelFile::load_models(const EntityManager_Ptr& entityManager)
+{
+	ModelManager_Ptr modelManager(new ModelManager);
+
+	const std::vector<Entity_Ptr>& animatables = entityManager->animatables();
+	int animatableCount = static_cast<int>(animatables.size());
+	for(int i=0; i<animatableCount; ++i)
+	{
+		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
+		modelManager->register_model(animComponent->model_name());
+	}
+
+	modelManager->load_all();
+
+	return modelManager;
 }
 
 /**
@@ -176,8 +203,9 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	std::vector<OnionPortal_Ptr> onionPortals;
 	std::vector<NavDataset_Ptr> navDatasets;
 	EntityManager_Ptr entityManager;
+	ModelManager_Ptr modelManager;
 
-	// Load the data.
+	// Load the level data.
 	PolygonsSection::load(is, "Polygons", polygons);
 	tree = TreeSection::load(is);
 	PolygonsSection::load(is, "Portals", portals);
@@ -190,9 +218,12 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
 	entityManager = EntitiesSection::load(is, settingsDir);
 
+	// Load the models.
+	modelManager = load_models(entityManager);
+
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager, modelManager));
 }
 
 }

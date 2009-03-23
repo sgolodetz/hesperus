@@ -11,6 +11,7 @@ using boost::shared_ptr;
 
 #include <source/level/bsp/BSPTree.h>
 #include <source/level/entities/EntityManager.h>
+#include <source/level/models/ModelManager.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/OnionPortal.h>
@@ -40,6 +41,7 @@ private:
 	OnionPortalVector m_onionPortals;
 	NavDatasetVector m_navDatasets;
 	EntityManager_Ptr m_entityManager;
+	ModelManager_Ptr m_modelManager;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -47,7 +49,7 @@ public:
 		  const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 		  const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
 		  const OnionPortalVector& onionPortals, const NavDatasetVector& navDatasets,
-		  const EntityManager_Ptr& entityManager);
+		  const EntityManager_Ptr& entityManager, const ModelManager_Ptr& modelManager);
 
 	//#################### PUBLIC METHODS ####################
 public:

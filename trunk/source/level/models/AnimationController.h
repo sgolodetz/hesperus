@@ -34,12 +34,13 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	AnimationController(const Skeleton_Ptr& skeleton, bool interpolateKeyframes = false);
+	AnimationController(bool interpolateKeyframes = false);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const Pose_Ptr& get_pose() const;
 	void request_animation(const std::string& newAnimationName);
+	void set_skeleton(const Skeleton_Ptr& skeleton);
 	void update(int milliseconds);
 
 	//#################### PRIVATE METHODS ####################

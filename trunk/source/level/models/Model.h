@@ -16,7 +16,6 @@ class Model
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	AnimationController_Ptr m_animController;
 	Mesh_Ptr m_mesh;
 	Skeleton_Ptr m_skeleton;
 
@@ -26,9 +25,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const AnimationController_Ptr& anim_controller() const;
-	void render() const;
-	void update(int milliseconds);
+	void render(const AnimationController_Ptr& animController) const;
+	const Skeleton_Ptr& skeleton() const;
 };
 
 //#################### TYPEDEFS ####################

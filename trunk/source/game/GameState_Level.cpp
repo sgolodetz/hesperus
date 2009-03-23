@@ -90,7 +90,7 @@ void GameState_Level::do_animations(int milliseconds)
 	for(int i=0; i<animatableCount; ++i)
 	{
 		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
-		animComponent->model()->update(milliseconds);
+		animComponent->anim_controller()->update(milliseconds);
 	}
 }
 

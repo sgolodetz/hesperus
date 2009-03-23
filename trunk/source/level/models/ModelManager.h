@@ -26,6 +26,10 @@ public:
 	void register_model(const std::string& modelName);
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<ModelManager> ModelManager_Ptr;
+typedef shared_ptr<const ModelManager> ModelManager_CPtr;
+
 }
 
 #endif

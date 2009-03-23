@@ -22,16 +22,26 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 			 const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 			 const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
 			 const OnionPortalVector& onionPortals, const NavDatasetVector& navDatasets,
-			 const EntityManager_Ptr& entityManager)
+			 const EntityManager_Ptr& entityManager, const ModelManager_Ptr& modelManager)
 :	m_geomRenderer(geomRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis),
 	m_onionPolygons(onionPolygons), m_onionTree(onionTree), m_onionPortals(onionPortals),
-	m_navDatasets(navDatasets), m_entityManager(entityManager)
+	m_navDatasets(navDatasets), m_entityManager(entityManager), m_modelManager(modelManager)
 {
 	// Build the collision -> nav poly index lookups.
 	int datasetCount = static_cast<int>(m_navDatasets.size());
 	for(int i=0; i<datasetCount; ++i)
 	{
 		m_navDatasets[i]->nav_mesh()->build_collision_to_nav_lookup();
+	}
+
+	// Set the skeletons in the entity animation controllers.
+	const std::vector<Entity_Ptr>& animatables = m_entityManager->animatables();
+	int animatableCount = static_cast<int>(animatables.size());
+	for(int i=0; i<animatableCount; ++i)
+	{
+		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
+		Skeleton_Ptr skeleton = m_modelManager->model(animComponent->model_name())->skeleton();
+		animComponent->anim_controller()->set_skeleton(skeleton);
 	}
 }
 
@@ -149,7 +159,7 @@ void Level::render_entities() const
 			const Vector3d& v = camera.v();
 
 			// Render the model.
-			Model_Ptr model = animComponent->model();
+			AnimationController_Ptr animController = animComponent->anim_controller();
 
 #if 1
 			// FIXME: Animations should eventually be requested from elsewhere.
@@ -158,11 +168,11 @@ void Level::render_entities() const
 			int blah2 = blah/250;
 			if(blah2 % 2 == 0)
 			{
-				model->anim_controller()->request_animation("walk");
+				animController->request_animation("walk");
 			}
 			else
 			{
-				model->anim_controller()->request_animation("<rest>");
+				animController->request_animation("<rest>");
 			}
 #endif
 
@@ -179,7 +189,8 @@ void Level::render_entities() const
 			glPushMatrix();
 			glMultMatrixd(&m.rep()[0]);
 
-			model->render();
+			Model_Ptr model = m_modelManager->model(animComponent->model_name());
+			model->render(animController);
 
 			glPopMatrix();
 
