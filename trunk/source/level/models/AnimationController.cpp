@@ -22,6 +22,11 @@ AnimationController::AnimationController(const Skeleton_Ptr& skeleton, bool inte
 {}
 
 //#################### PUBLIC METHODS ####################
+const Pose_Ptr& AnimationController::get_pose() const
+{
+	return m_pose;
+}
+
 void AnimationController::request_animation(const std::string& newAnimationName)
 {
 	// If we're already playing this animation, ignore the request.
@@ -36,7 +41,7 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 	else if(m_state == AS_PLAY)
 	{
 		m_state = AS_TRANSITION;
-		m_transitionStart = m_curPose;
+		m_transitionStart = get_pose();
 	}
 
 	m_animationName = newAnimationName;
@@ -45,17 +50,16 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 
 void AnimationController::update(int milliseconds)
 {
-	update_skeleton(milliseconds);
+	update_pose(milliseconds);
 }
 
 //#################### PRIVATE METHODS ####################
 void AnimationController::set_pose(const Pose_Ptr& pose)
 {
-	m_curPose = pose;
-	m_skeleton->set_pose(pose);
+	m_pose = pose;
 }
 
-void AnimationController::update_skeleton(int milliseconds)
+void AnimationController::update_pose(int milliseconds)
 {
 	switch(m_state)
 	{

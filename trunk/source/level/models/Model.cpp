@@ -20,6 +20,7 @@ const AnimationController_Ptr& Model::anim_controller() const
 
 void Model::render() const
 {
+	m_skeleton->set_pose(m_animController->get_pose());
 	m_mesh->skin(m_skeleton);
 	m_mesh->render();
 }
