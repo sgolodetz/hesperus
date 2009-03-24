@@ -40,7 +40,7 @@ std::vector<Image24_Ptr> LightmapsSection::load(std::istream& is)
 	lightmaps.resize(lightmapCount);
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		lightmaps[i] = BitmapLoader::load_image24(is);
+		lightmaps[i] = BitmapLoader::load_streamed_image24(is);
 	}
 
 	if(is.get() != '\n') throw Exception("Expected newline after lightmaps");
@@ -67,7 +67,7 @@ void LightmapsSection::save(std::ostream& os, const std::vector<Image24_Ptr>& li
 
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		BitmapSaver::save_image24(os, lightmaps[i]);
+		BitmapSaver::save_streamed_image24(os, lightmaps[i]);
 	}
 
 	os << "\n}\n";

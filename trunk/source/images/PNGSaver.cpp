@@ -18,6 +18,38 @@ Saves a 24-bit PNG to a file.
 */
 void PNGSaver::save_image24(const std::string& filename, const Image24_Ptr& image)
 {
+	std::vector<unsigned char> buffer;
+	encode_png(image, buffer);
+	LodePNG::saveFile(buffer, filename);
+}
+
+/**
+Saves a 24-bit PNG to a std::ostream.
+
+@param os		The std::ostream to which to save the image
+@param image	An Image24_Ptr holding the representation of the image
+*/
+void PNGSaver::save_streamed_image24(std::ostream& os, const Image24_Ptr& image)
+{
+	std::vector<unsigned char> buffer;
+	encode_png(image, buffer);
+
+	unsigned long len = static_cast<unsigned long>(buffer.size());
+
+	// TODO: There may be endian issues with this if we ever port to another platform.
+	os.write(reinterpret_cast<char*>(&len), sizeof(unsigned long));
+	os.write(reinterpret_cast<char*>(&buffer[0]), len);
+}
+
+//#################### PRIVATE METHODS ####################
+/**
+Encodes a 24-bit image into PNG format.
+
+@param image	The image
+@param buffer	The buffer into which to store the result
+*/
+void PNGSaver::encode_png(const Image24_Ptr& image, std::vector<unsigned char>& buffer)
+{
 	int width = image->width();
 	int height = image->height();
 	const int pixelCount = width*height;
@@ -36,8 +68,8 @@ void PNGSaver::save_image24(const std::string& filename, const Image24_Ptr& imag
 			p += 4;
 		}
 
-	// Encode and save the PNG.
-	LodePNG::encode(filename, data, width, height);
+	// Encode the PNG.
+	LodePNG::encode(buffer, &data[0], width, height);
 }
 
 }

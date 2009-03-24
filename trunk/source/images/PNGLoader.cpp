@@ -23,16 +23,47 @@ Loads a 24-bit PNG from a file.
 */
 Image24_Ptr PNGLoader::load_image24(const std::string& filename)
 {
-	// Load the raw data.
 	std::vector<unsigned char> buffer;
 	LodePNG::loadFile(buffer, filename);
 	if(buffer.empty()) throw FileNotFoundException(filename);
+	return decode_png(buffer, filename);
+}
 
+/**
+Loads a 24-bit PNG from a std::istream.
+
+@param is	The std::istream from which to load the bitmap
+@return		An Image24_Ptr holding the representation of the image
+*/
+Image24_Ptr PNGLoader::load_streamed_image24(std::istream& is)
+{
+	// TODO: There may be endian issues with this if we ever port to another platform.
+	unsigned long len;
+	is.read(reinterpret_cast<char*>(&len), sizeof(unsigned long));
+	std::vector<unsigned char> buffer(len);
+	is.read(reinterpret_cast<char*>(&buffer[0]), len);
+	return decode_png(buffer);
+}
+
+//#################### PRIVATE METHODS ####################
+/**
+Decodes a PNG to a 24-bit image.
+
+@param buffer		A buffer containing the loaded raw image data
+@param filename		The name of the file from which the data was originally loaded (if known, else "")
+@return				An Image24_Ptr holding the representation of the image
+*/
+Image24_Ptr PNGLoader::decode_png(const std::vector<unsigned char>& buffer, const std::string& filename)
+{
 	// Decode the PNG.
 	std::vector<unsigned char> data;
 	LodePNG::Decoder decoder;
 	decoder.decode(data, &buffer[0], buffer.size());
-	if(decoder.hasError()) throw Exception("An error occurred whilst trying to decode the PNG in " + filename);
+	if(decoder.hasError())
+	{
+		if(filename != "") throw Exception("An error occurred whilst trying to decode the PNG in " + filename);
+		else throw Exception("An error occurred whilst trying to decode the PNG");
+	}
 
 	// Construct the 24-bit image.
 	int width = decoder.getWidth();

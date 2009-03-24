@@ -32,7 +32,7 @@ Image24_Ptr BitmapLoader::load_image24(const std::string& filename)
 {
 	std::ifstream fs(filename.c_str(), std::ios_base::binary);
 	if(fs.fail()) throw FileNotFoundException(filename);
-	else return load_image24(fs);
+	else return load_streamed_image24(fs);
 }
 
 /**
@@ -41,7 +41,7 @@ Loads a 24-bit bitmap from a std::istream.
 @param is	The std::istream from which to load the bitmap
 @return		An Image24_Ptr holding the representation of the image
 */
-Image24_Ptr BitmapLoader::load_image24(std::istream& is)
+Image24_Ptr BitmapLoader::load_streamed_image24(std::istream& is)
 {
 	// Read in the file header and check that we're dealing with a valid bitmap.
 	BITMAPFILEHEADER bfh;

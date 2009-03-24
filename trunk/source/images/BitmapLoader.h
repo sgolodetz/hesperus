@@ -20,7 +20,7 @@ struct BitmapLoader
 {
 	//#################### PUBLIC METHODS ####################
 	static Image24_Ptr load_image24(const std::string& filename);
-	static Image24_Ptr load_image24(std::istream& is);
+	static Image24_Ptr load_streamed_image24(std::istream& is);
 };
 
 }

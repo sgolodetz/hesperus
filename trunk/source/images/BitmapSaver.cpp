@@ -32,7 +32,7 @@ void BitmapSaver::save_image24(const std::string& filename, const Image24_Ptr& i
 {
 	std::ofstream fs(filename.c_str(), std::ios_base::binary);
 	if(fs.fail()) throw Exception("Could not open " + filename + " for writing");
-	else save_image24(fs, image);
+	else save_streamed_image24(fs, image);
 }
 
 /**
@@ -41,7 +41,7 @@ Saves a 24-bit bitmap to a std::ostream.
 @param os		The std::ostream to which to save the image
 @param image	An Image24_Ptr holding the representation of the image
 */
-void BitmapSaver::save_image24(std::ostream& os, const Image24_Ptr& image)
+void BitmapSaver::save_streamed_image24(std::ostream& os, const Image24_Ptr& image)
 {
 	const int w = image->width();
 	const int h = image->height();

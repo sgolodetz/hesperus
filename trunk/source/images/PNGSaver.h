@@ -8,18 +8,25 @@
 
 #include <iosfwd>
 #include <string>
+#include <vector>
 
 #include "Image.h"
 
 namespace hesp {
 
 /**
-This struct provides saving functions for PNGs of various bit depths (e.g. 24-bit).
+This class provides saving functions for PNGs of various bit depths (e.g. 24-bit).
 */
-struct PNGSaver
+class PNGSaver
 {
 	//#################### PUBLIC METHODS ####################
+public:
 	static void save_image24(const std::string& filename, const Image24_Ptr& image);
+	static void save_streamed_image24(std::ostream& os, const Image24_Ptr& image);
+
+	//#################### PRIVATE METHODS ####################
+private:
+	static void encode_png(const Image24_Ptr& image, std::vector<unsigned char>& buffer);
 };
 
 }
