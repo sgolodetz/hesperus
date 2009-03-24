@@ -275,6 +275,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\images\ImageLoader.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\images\PNGLoader.cpp"
 					>
 				</File>
@@ -296,6 +300,10 @@
 				</File>
 				<File
 					RelativePath="..\images\Image.h"
+					>
+				</File>
+				<File
+					RelativePath="..\images\ImageLoader.h"
 					>
 				</File>
 				<File

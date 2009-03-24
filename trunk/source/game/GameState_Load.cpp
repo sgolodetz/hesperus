@@ -54,7 +54,7 @@ Component_Ptr GameState_Load::construct_display()
 	const Screen& screen = Screen::instance();
 	int width = screen.dimensions().width();
 	int height = screen.dimensions().height();
-	display->layout().add(new Picture((imagesDir / "loading.bmp").file_string()), Extents(width/4, 0, width*3/4, width/8));
+	display->layout().add(new Picture((imagesDir / "loading.png").file_string()), Extents(width/4, 0, width*3/4, width/8));
 
 	// Determine the level name.
 	size_t i = m_levelFilename.find_last_of("/\\");		// find the last slash (slanting either way) in the filename
@@ -63,8 +63,8 @@ Component_Ptr GameState_Load::construct_display()
 
 	// Load the appropriate loading image for the level.
 	Picture *loadingPicture;
-	try { loadingPicture = new Picture((imagesDir / ("load-" + levelName + ".bmp")).file_string()); }
-	catch(FileNotFoundException&) { loadingPicture = new Picture((imagesDir / "load-missing.bmp").file_string()); }
+	try { loadingPicture = new Picture((imagesDir / ("load-" + levelName + ".png")).file_string()); }
+	catch(FileNotFoundException&) { loadingPicture = new Picture((imagesDir / "load-missing.png").file_string()); }
 
 	display->layout().add(loadingPicture, Extents(50, width/8, width - 50, height - 50));
 

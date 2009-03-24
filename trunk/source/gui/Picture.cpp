@@ -8,16 +8,16 @@
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
-#include "Screen.h"
-#include <source/images/BitmapLoader.h>
+#include <source/images/ImageLoader.h>
 #include <source/textures/TextureFactory.h>
+#include "Screen.h"
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Picture::Picture(const std::string& filename)
 {
-	m_texture = TextureFactory::create_texture24(BitmapLoader::load_image24(filename));
+	m_texture = TextureFactory::create_texture24(ImageLoader::load_image24(filename));
 }
 
 //#################### PUBLIC METHODS ####################
