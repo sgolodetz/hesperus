@@ -6,7 +6,7 @@
 #ifndef H_HESP_BITMAPLOADER
 #define H_HESP_BITMAPLOADER
 
-#include <istream>
+#include <iosfwd>
 #include <string>
 
 #include "Image.h"
