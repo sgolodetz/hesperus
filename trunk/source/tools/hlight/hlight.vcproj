@@ -61,9 +61,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lodepng_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;;&quot;..\..\..\..\hesperus_libraries\lodepng-20080927\lib&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"
@@ -138,8 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lodepng.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;;&quot;..\..\..\..\hesperus_libraries\lodepng-20080927\lib&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"

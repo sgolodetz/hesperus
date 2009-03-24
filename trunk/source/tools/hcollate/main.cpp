@@ -14,7 +14,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
-#include <source/images/BitmapLoader.h>
+#include <source/images/PNGLoader.h>
 #include <source/io/EntitiesFile.h>
 #include <source/io/LevelFile.h>
 #include <source/io/LitTreeFile.h>
@@ -66,8 +66,8 @@ try
 	std::vector<Image24_Ptr> lightmaps(polyCount);
 	for(int i=0; i<polyCount; ++i)
 	{
-		std::string filename = lightmapPrefix + lexical_cast<std::string,int>(i) + ".bmp";
-		lightmaps[i] = BitmapLoader::load_image24(filename);
+		std::string filename = lightmapPrefix + lexical_cast<std::string,int>(i) + ".png";
+		lightmaps[i] = PNGLoader::load_image24(filename);
 	}
 
 	// Load the onion tree.

@@ -65,7 +65,7 @@ del *.rt*
 del *.rp*
 del *.vis
 del *.lbt
-del *.bmp
+del *.png
 
 REM #########################
 REM Cleanup Collision Section

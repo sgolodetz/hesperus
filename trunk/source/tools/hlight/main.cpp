@@ -12,7 +12,7 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/images/BitmapSaver.h>
+#include <source/images/PNGSaver.h>
 #include <source/io/LightsFile.h>
 #include <source/io/LitTreeFile.h>
 #include <source/io/TreeFile.h>
@@ -68,9 +68,9 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	int lightmapCount = static_cast<int>(lightmaps->size());
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		std::string lightmapFilename = lightmapPrefix + lexical_cast<std::string,int>(i) + ".bmp";
+		std::string lightmapFilename = lightmapPrefix + lexical_cast<std::string,int>(i) + ".png";
 		Image24_Ptr image = (*lightmaps)[i]->to_image();
-		BitmapSaver::save_image24(lightmapFilename, image);
+		PNGSaver::save_image24(lightmapFilename, image);
 	}
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
