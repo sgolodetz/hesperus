@@ -12,7 +12,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
-#include <source/images/BitmapLoader.h>
+#include <source/images/ImageLoader.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/io/util/LineIO.h>
 #include <source/materials/BasicMaterial.h>
@@ -492,7 +492,7 @@ Material_Ptr ModelFiles::read_pass(std::istream& is)
 	if(useTexture)
 	{
 		bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
-		Texture_Ptr texture = TextureFactory::create_texture24(BitmapLoader::load_image24((modelsDir / textureFilename).file_string()));
+		Texture_Ptr texture = TextureFactory::create_texture24(ImageLoader::load_image24((modelsDir / textureFilename).file_string()));
 		ret.reset(new TextureMaterial(texture));
 	}
 	else
