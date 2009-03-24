@@ -10,8 +10,8 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
-#include <source/images/BitmapLoader.h>
-#include <source/images/BitmapSaver.h>
+#include <source/images/PNGLoader.h>
+#include <source/images/PNGSaver.h>
 #include <source/io/util/LineIO.h>
 
 namespace hesp {
@@ -40,7 +40,7 @@ std::vector<Image24_Ptr> LightmapsSection::load(std::istream& is)
 	lightmaps.resize(lightmapCount);
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		lightmaps[i] = BitmapLoader::load_streamed_image24(is);
+		lightmaps[i] = PNGLoader::load_streamed_image24(is);
 	}
 
 	if(is.get() != '\n') throw Exception("Expected newline after lightmaps");
@@ -67,7 +67,7 @@ void LightmapsSection::save(std::ostream& os, const std::vector<Image24_Ptr>& li
 
 	for(int i=0; i<lightmapCount; ++i)
 	{
-		BitmapSaver::save_streamed_image24(os, lightmaps[i]);
+		PNGSaver::save_streamed_image24(os, lightmaps[i]);
 	}
 
 	os << "\n}\n";

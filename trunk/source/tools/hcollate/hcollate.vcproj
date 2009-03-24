@@ -61,10 +61,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib lodepng_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;;&quot;..\..\..\..\hesperus_libraries\glew-1.5.1\lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;;&quot;..\..\..\..\hesperus_libraries\glew-1.5.1\lib&quot;;&quot;..\..\..\..\hesperus_libraries\lodepng-20080927\lib&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"
@@ -139,9 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib lodepng.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;;&quot;..\..\..\..\hesperus_libraries\glew-1.5.1\lib&quot;"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\hesperus_libraries\boost_1_37_0-lib&quot;;&quot;..\..\..\..\hesperus_libraries\glew-1.5.1\lib&quot;;&quot;..\..\..\..\hesperus_libraries\lodepng-20080927\lib&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"
