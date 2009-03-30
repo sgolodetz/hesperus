@@ -58,6 +58,9 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		if(!pathFound)			{ m_state = YOKE_FAILED; return std::vector<EntityCommand_Ptr>(); }
 	}
 
+	// FIXME:	The way this yoke decides that it's traversed a link isn't sufficient.
+	//			I've devised a better way of doing it, but it's not yet implemented.
+
 	// Step 1:	If the path is non-empty, go to the next link that we haven't already passed.
 	Vector3d dir;
 	while(!m_path->empty())
