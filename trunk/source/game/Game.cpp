@@ -65,12 +65,16 @@ void Game::run()
 
 		Uint32 frameTime = SDL_GetTicks();
 
-		if(frameTime - lastDraw >= 16)	// aim for 62.5 frames per second
+		Uint32 timeElapsed = frameTime - lastDraw;
+		if(timeElapsed >= 16)	// aim for 62.5 frames per second
 		{
 #if 0
 			std::cout << "Render " << frameTime - lastDraw << std::endl;
 #endif
-			GameState_Ptr newState = m_state->update(frameTime - lastDraw, m_input);
+
+			// Note:	We clamp the elapsed time to 50ms to prevent things moving
+			//			too far between one frame and the next.
+			GameState_Ptr newState = m_state->update(std::min(timeElapsed, Uint32(50)), m_input);
 			if(newState)
 			{
 				m_state->leave();
