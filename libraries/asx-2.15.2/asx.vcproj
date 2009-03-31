@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;D:\Program Files\boost_1_35_0&quot;;&quot;C:\Documents and Settings\Stuart\My Documents\Visual Studio 2005\Projects\asx\source\add_on\scriptstring&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../boost_1_37_0&quot;;&quot;$(SolutionDir)/include&quot;;&quot;$(SolutionDir)/source/add_on/scriptstring&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;D:\Program Files\boost_1_35_0&quot;;&quot;C:\Documents and Settings\Stuart\My Documents\Visual Studio 2005\Projects\asx\source\add_on\scriptstring&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../boost_1_37_0&quot;;&quot;$(SolutionDir)/include&quot;;&quot;$(SolutionDir)/source/add_on/scriptstring&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
