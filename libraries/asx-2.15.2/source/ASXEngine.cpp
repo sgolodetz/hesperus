@@ -8,6 +8,7 @@
 #include <fstream>
 #include <vector>
 
+#include <scriptbuilder.h>
 #include <scriptstring.h>
 
 #include "ASXException.h"
@@ -46,26 +47,10 @@ ASXModule_Ptr ASXEngine::get_module(const std::string& moduleName) const
 	else throw ASXException("Unknown module: " + moduleName);
 }
 
-void ASXEngine::load_script(const std::string& filename, const std::string& moduleName)
+bool ASXEngine::load_and_build_script(const std::string& filename, const std::string& moduleName)
 {
-	// Load in the file.
-	std::ifstream is(filename.c_str(), std::ios_base::binary);
-	if(is.fail()) throw ASXException("Could not open " + filename + " for reading");
-
-	is.seekg(0, std::ios::end);
-	int len = is.tellg();
-	if(len == 0) throw ASXException("Could not add script section from empty file " + filename);
-
-	std::vector<char> buffer(len);
-	is.seekg(0, std::ios::beg);
-	is.read(&buffer[0], len);
-
-	// Add the loaded script to the module.
-	asIScriptModule *module = m_engine->GetModule(moduleName.c_str(), asGM_CREATE_IF_NOT_EXISTS);
-	if(module->AddScriptSection(filename.c_str(), &buffer[0], len) < 0)
-	{
-		throw ASXException("Could not add script section from file " + filename);
-	}
+	CScriptBuilder builder;
+	return builder.BuildScriptFromFile(m_engine, moduleName.c_str(), filename.c_str()) >= 0;
 }
 
 const std::vector<ASXMessage>& ASXEngine::messages() const

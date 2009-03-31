@@ -27,7 +27,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	bool build();
 	template <typename F> ASXFunction<F> get_global_function(const std::string& name, const ASXFunction<F>&) const;
 	template <typename F> ASXFunction<F> get_global_function_ex(const std::string& decl, const ASXFunction<F>&) const;
 	template <typename T> ASXVariable<T> get_global_variable(const std::string& name, const ASXVariable<T>&) const;

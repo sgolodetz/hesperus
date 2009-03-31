@@ -37,7 +37,7 @@ public:
 
 	ASXModule_Ptr get_module(const std::string& moduleName) const;
 
-	void load_script(const std::string& filename, const std::string& moduleName);
+	bool load_and_build_script(const std::string& filename, const std::string& moduleName);
 
 	const std::vector<ASXMessage>& messages() const;
 
