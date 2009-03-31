@@ -13,8 +13,7 @@ template <typename T> struct ASXGetReturnValue
 {
 	T operator()(const ASXContext& context) const
 	{
-		T *p = static_cast<T*>(context->GetReturnObject());
-		return *p;
+		return *static_cast<T*>(context->GetReturnObject());
 	}
 };
 
@@ -23,7 +22,7 @@ template <typename T> struct ASXGetReturnValue<T*>
 {
 	T *operator()(const ASXContext& context) const
 	{
-		return static_cast<T*>(context->GetReturnAddress());
+		return static_cast<T*>(context->GetReturnObject());
 	}
 };
 

@@ -14,7 +14,7 @@ template <typename T> struct ASXSetArgValue
 
 //#################### SPECIALIZATIONS ####################
 template <typename T> struct ASXSetArgValue<T*>
-{ void operator()(const ASXContext& context, int arg, T *value) const { context->SetArgAddress(arg, value); } };
+{ void operator()(const ASXContext& context, int arg, T *value) const { context->SetArgObject(arg, value); } };
 
 template <> struct ASXSetArgValue<double>
 { void operator()(const ASXContext& context, int arg, double value) const { context->SetArgDouble(arg, value); } };

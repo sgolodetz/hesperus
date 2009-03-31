@@ -270,7 +270,7 @@ int CScriptBuilder::ProcessScriptSection(const char *script, const char *section
 #ifdef USE_SMG_MODIFICATIONS
 	{
 		// Get the path to the directory containing the original script and prepend it onto each include
-		string originalScript = *includedScripts.begin();
+		string originalScript = sectionname;
 		string::size_type i = originalScript.find_last_of("/\\");
 		if(i != string::npos)
 		{

@@ -10,7 +10,7 @@ template <typename T>
 class ASXRefType
 {
 	//#################### NESTED CLASSES ####################
-protected:
+public:
 	struct Releaser
 	{
 		void operator()(T *p)
@@ -28,6 +28,10 @@ protected:
 	ASXRefType()
 	:	m_refCount(1)
 	{}
+
+	//#################### DESTRUCTOR ####################
+public:
+	virtual ~ASXRefType() {}
 
 	//#################### PUBLIC METHODS ####################
 public:
