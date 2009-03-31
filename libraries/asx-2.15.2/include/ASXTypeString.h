@@ -184,7 +184,27 @@ template <typename R, typename Arg0, typename Arg1> struct ASXTypeString<R (Arg0
 	{
 		std::ostringstream os;
 		os << ASXTypeString<R>()() << ' ' << name << '(';
-		os << ASXTypeString<Arg0>().as_param()() << ',' << ASXTypeString<Arg1>().as_param()();
+		os << ASXTypeString<Arg0>().as_param()() << ',';
+		os << ASXTypeString<Arg1>().as_param()();
+		os << ')';
+		return os.str();
+	}
+};
+
+// 3 arguments
+template <typename R, typename Arg0, typename Arg1, typename Arg2> struct ASXTypeString<R (Arg0,Arg1,Arg2)>
+{
+	std::string name;
+
+	explicit ASXTypeString(const std::string& name_) : name(name_) {}
+
+	std::string operator()()
+	{
+		std::ostringstream os;
+		os << ASXTypeString<R>()() << ' ' << name << '(';
+		os << ASXTypeString<Arg0>().as_param()() << ',';
+		os << ASXTypeString<Arg1>().as_param()() << ',';
+		os << ASXTypeString<Arg2>().as_param()();
 		os << ')';
 		return os.str();
 	}
@@ -215,6 +235,13 @@ template <typename R, typename Arg0, typename Arg1> struct ASXTypeString<R (*)(A
 :	ASXTypeString<R (Arg0,Arg1)>
 {
 	explicit ASXTypeString(const std::string& name_) : ASXTypeString<R (Arg0,Arg1)>(name_) {}
+};
+
+// 3 arguments
+template <typename R, typename Arg0, typename Arg1, typename Arg2> struct ASXTypeString<R (*)(Arg0,Arg1,Arg2)>
+:	ASXTypeString<R (Arg0,Arg1,Arg2)>
+{
+	explicit ASXTypeString(const std::string& name_) : ASXTypeString<R (Arg0,Arg1,Arg2)>(name_) {}
 };
 
 // TODO: Pointers to functions with more arguments
