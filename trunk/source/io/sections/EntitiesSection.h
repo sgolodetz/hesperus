@@ -13,7 +13,7 @@ namespace hesp {
 struct EntitiesSection
 {
 	//#################### LOADING METHODS ####################
-	static EntityManager_Ptr load(std::istream& is, const boost::filesystem::path& settingsDir);
+	static EntityManager_Ptr load(std::istream& is, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING METHODS ####################
 	static void save(std::ostream& os, const EntityManager_Ptr& entityManager);

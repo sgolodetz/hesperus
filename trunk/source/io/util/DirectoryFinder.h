@@ -16,6 +16,7 @@ boost::filesystem::path determine_executable_location();
 boost::filesystem::path determine_images_directory(const boost::filesystem::path& baseDir);
 boost::filesystem::path determine_levels_directory(const boost::filesystem::path& baseDir);
 boost::filesystem::path determine_models_directory(const boost::filesystem::path& baseDir);
+boost::filesystem::path determine_scripts_directory(const boost::filesystem::path& baseDir);
 boost::filesystem::path determine_settings_directory(const boost::filesystem::path& baseDir);
 boost::filesystem::path determine_textures_directory(const boost::filesystem::path& baseDir);
 

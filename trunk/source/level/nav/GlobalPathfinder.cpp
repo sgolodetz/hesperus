@@ -30,7 +30,14 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 								 const Vector3d& destPos, int destPoly,
 								 std::list<int>& path) const
 {
-	// Step 1:	Find the shortest unblocked path-table path from a source navlink to a dest navlink.
+	// Step 1:	If the source position and dest position are both in the same nav polygon,
+	//			the high-level path is empty (the entity just needs to go in a straight line).
+	if(sourcePoly == destPoly)
+	{
+		return true;
+	}
+
+	// Step 2:	Find the shortest unblocked path-table path from a source navlink to a dest navlink.
 	//			If such a path is found, and it's no more than (say) 25% longer than the optimal path
 	//			we'd have if we ignored blocks, then use it.
 	const std::vector<NavLink_Ptr>& links = m_navMesh->links();
@@ -83,13 +90,13 @@ bool GlobalPathfinder::find_path(const Vector3d& sourcePos, int sourcePoly,
 		}
 	}
 
-	// Step 2:	If a reasonable unblocked path-table path does not exist, do an A* search on
+	// Step 3:	If a reasonable unblocked path-table path does not exist, do an A* search on
 	//			the adjacency list representation of the navigation graph. Use a temporary node
 	//			in both the source and destination polygons to represent the actual position of
 	//			the player.
 	// TODO
 
-	// Step 3:	If an A* path was found, use it. Otherwise, no valid path exists.
+	// Step 4:	If an A* path was found, use it. Otherwise, no valid path exists.
 	// TODO
 
 	// NYI

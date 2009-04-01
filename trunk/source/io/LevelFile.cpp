@@ -152,8 +152,8 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	PolygonsSection::load(is, "OnionPortals", onionPortals);
 	navDatasets = NavSection::load(is);
 
-	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
-	entityManager = EntitiesSection::load(is, settingsDir);
+	bf::path baseDir = determine_base_directory_from_game();
+	entityManager = EntitiesSection::load(is, baseDir);
 
 	// Load the models.
 	modelManager = load_models(entityManager);
@@ -215,8 +215,8 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	PolygonsSection::load(is, "OnionPortals", onionPortals);
 	navDatasets = NavSection::load(is);
 
-	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_game());
-	entityManager = EntitiesSection::load(is, settingsDir);
+	bf::path baseDir = determine_base_directory_from_game();
+	entityManager = EntitiesSection::load(is, baseDir);
 
 	// Load the models.
 	modelManager = load_models(entityManager);

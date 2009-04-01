@@ -18,15 +18,15 @@ namespace hesp {
 /**
 Loads a set of entities from the specified entities file.
 
-@param filename		The name of the file from which to load the entities
-@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
-@return				An EntityManager containing the loaded entities
+@param filename	The name of the file from which to load the entities
+@param baseDir	The location of the project base directory
+@return			An EntityManager containing the loaded entities
 */
-EntityManager_Ptr EntitiesFile::load(const std::string& filename, const bf::path& settingsDir)
+EntityManager_Ptr EntitiesFile::load(const std::string& filename, const bf::path& baseDir)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	return EntitiesSection::load(is, settingsDir);
+	return EntitiesSection::load(is, baseDir);
 }
 
 //#################### SAVING METHODS ####################

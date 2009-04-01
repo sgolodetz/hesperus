@@ -52,6 +52,11 @@ bf::path determine_models_directory(const bf::path& baseDir)
 	return baseDir / "resources/models/";
 }
 
+bf::path determine_scripts_directory(const bf::path& baseDir)
+{
+	return baseDir / "resources/scripts/";
+}
+
 bf::path determine_settings_directory(const bf::path& baseDir)
 {
 	return baseDir / "resources/settings/";

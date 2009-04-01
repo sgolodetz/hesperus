@@ -6,10 +6,12 @@
 #include "EntitiesSection.h"
 
 #include <boost/lexical_cast.hpp>
+namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/EntDefFile.h>
+#include <source/io/util/DirectoryFinder.h>
 #include <source/io/util/EntityComponents.h>
 #include <source/io/util/FieldIO.h>
 #include <source/level/entities/AnimationComponent.h>
@@ -19,6 +21,7 @@ using boost::lexical_cast;
 #include <source/level/entities/PhysicsComponent.h>
 #include <source/level/entities/VariableCameraComponent.h>
 #include <source/level/entities/YokeComponent.h>
+#include <source/level/yokes/minimus/MinimusScriptYoke.h>
 #include <source/level/yokes/null/NullYoke.h>
 #include <source/level/yokes/user/UserBipedYoke.h>
 
@@ -29,11 +32,16 @@ namespace hesp {
 Constructs an entity manager containing a set of entities loaded from the specified std::istream.
 
 @param is			The std::istream
-@param settingsDir	The location of the directory containing the project settings files (e.g. the entity definitions file)
+@param baseDir		The location of the project base directory
 @throws Exception	If EOF is encountered whilst trying to read the entities
 */
-EntityManager_Ptr EntitiesSection::load(std::istream& is, const boost::filesystem::path& settingsDir)
+EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDir)
 {
+	// Set up the shared scripting engines.
+	ASXEngine_Ptr aiEngine(new ASXEngine);
+	MinimusScriptYoke::register_for_scripting(aiEngine);
+
+	// Read in the Entities section.
 	LineIO::read_checked_line(is, "Entities");
 	LineIO::read_checked_line(is, "{");
 
@@ -46,6 +54,7 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const boost::filesyste
 		LineIO::read_line(is, entDefFilename, "entity definitions filename");
 		std::vector<AABB3d> aabbs;
 		std::map<std::string,EntityComponents> entityComponentsMap;
+		bf::path settingsDir = determine_settings_directory(baseDir);
 		EntDefFile::load((settingsDir / entDefFilename).file_string(), aabbs, entityComponentsMap);
 
 	LineIO::read_checked_line(is, "}");
@@ -113,7 +122,7 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const boost::filesyste
 				// Note:	We should replace this with a yoke factory if the number of yokes increases.
 				//			It's probably not worth the extra code for the moment.
 				if(yokeType == "User")		{ yoke.reset(new UserBipedYoke(entity)); }
-				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); /*MinimusGotoPositionYoke(entity, Vector3d(14,6,6)));*/ /* TEMPORARY */ }
+				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); /*new MinimusScriptYoke(entity, aiEngine, baseDir));*/ /* TEMPORARY */ }
 				else if(yokeType == "None")	{ yoke.reset(new NullYoke); }
 				else						{ throw Exception("Unknown yoke type: " + yokeType); }
 

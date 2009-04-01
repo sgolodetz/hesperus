@@ -20,7 +20,7 @@ class Yoke
 public:
 	enum State
 	{
-		YOKE_ACTIVE,		// the yoke's still in the process of generating commands
+		YOKE_ACTIVE,		// the yoke is still in the process of generating commands
 		YOKE_FAILED,		// the yoke is no longer generating commands because it failed
 		YOKE_SUCCEEDED		// the yoke is no longer generating commands because it succeeded
 	};

@@ -83,8 +83,8 @@ try
 	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
 
 	// Load the entities.
-	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_tool());
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, settingsDir);
+	bf::path baseDir = determine_base_directory_from_tool();
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_lit(outputFilename,
@@ -131,8 +131,8 @@ try
 	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
 
 	// Load the entities.
-	bf::path settingsDir = determine_settings_directory(determine_base_directory_from_tool());
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, settingsDir);
+	bf::path baseDir = determine_base_directory_from_tool();
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_unlit(outputFilename,
