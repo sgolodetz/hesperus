@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../boost_1_37_0&quot;;&quot;$(SolutionDir)/include&quot;;&quot;$(SolutionDir)/source/add_on/scriptbuilder&quot;;&quot;$(SolutionDir)/source/add_on/scriptstring&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../boost_1_37_0&quot;;&quot;$(SolutionDir)/include&quot;;&quot;$(SolutionDir)/source/add_on/scriptbuilder&quot;;&quot;$(SolutionDir)/source/add_on/scriptstdstring&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../boost_1_37_0&quot;;&quot;$(SolutionDir)/include&quot;;&quot;$(SolutionDir)/source/add_on/scriptbuilder&quot;;&quot;$(SolutionDir)/source/add_on/scriptstring&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)/../boost_1_37_0&quot;;&quot;$(SolutionDir)/include&quot;;&quot;$(SolutionDir)/source/add_on/scriptbuilder&quot;;&quot;$(SolutionDir)/source/add_on/scriptstdstring&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -228,30 +228,6 @@
 			Name="add_on"
 			>
 			<Filter
-				Name="scriptstring"
-				>
-				<Filter
-					Name=".cpp"
-					>
-					<File
-						RelativePath=".\source\add_on\scriptstring\scriptstring.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\source\add_on\scriptstring\scriptstring_utils.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".h"
-					>
-					<File
-						RelativePath=".\source\add_on\scriptstring\scriptstring.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
 				Name="scriptbuilder"
 				>
 				<Filter
@@ -267,6 +243,26 @@
 					>
 					<File
 						RelativePath=".\source\add_on\scriptbuilder\scriptbuilder.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="scriptstdstring"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath=".\source\add_on\scriptstdstring\scriptstdstring.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath=".\source\add_on\scriptstdstring\scriptstdstring.h"
 						>
 					</File>
 				</Filter>

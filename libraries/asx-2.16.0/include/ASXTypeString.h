@@ -75,6 +75,12 @@ template <> struct ASXTypeString<int> : ASXSimpleTypeString
 	std::string type() { return "int"; }
 };
 
+template <> struct ASXTypeString<std::string> : ASXSimpleTypeString
+{
+	explicit ASXTypeString(const std::string& name_ = "") : ASXSimpleTypeString(name_) {}
+	std::string type() { return "string"; }
+};
+
 template <> struct ASXTypeString<void> : ASXSimpleTypeString
 {
 	explicit ASXTypeString(const std::string& name_ = "") : ASXSimpleTypeString(name_) {}

@@ -9,7 +9,7 @@
 #include <vector>
 
 #include <scriptbuilder.h>
-#include <scriptstring.h>
+#include <scriptstdstring.h>
 
 #include "ASXException.h"
 
@@ -25,7 +25,7 @@ ASXEngine::ASXEngine()
 
 	m_engine->SetMessageCallback(asMETHOD(ASXEngine, message_callback), this, asCALL_THISCALL);
 
-	RegisterScriptString(m_engine);
+	RegisterStdString(m_engine);
 }
 
 //#################### DESTRUCTOR ####################
