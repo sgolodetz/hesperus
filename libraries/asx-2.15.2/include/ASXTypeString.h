@@ -51,6 +51,12 @@ template <typename T> struct ASXTypeString : ASXSimpleTypeString
 // Specializations for simple types
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+template <> struct ASXTypeString<bool> : ASXSimpleTypeString
+{
+	explicit ASXTypeString(const std::string& name_ = "") : ASXSimpleTypeString(name_) {}
+	std::string type() { return "bool"; }
+};
+
 template <> struct ASXTypeString<double> : ASXSimpleTypeString
 {
 	explicit ASXTypeString(const std::string& name_ = "") : ASXSimpleTypeString(name_) {}

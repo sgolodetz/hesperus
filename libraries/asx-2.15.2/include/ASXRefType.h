@@ -20,7 +20,7 @@ public:
 	};
 
 	//#################### PRIVATE VARIABLES ####################
-private:
+protected:
 	int m_refCount;
 
 	//#################### CONSTRUCTORS ####################
@@ -32,18 +32,6 @@ protected:
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~ASXRefType() {}
-
-	//#################### PUBLIC METHODS ####################
-public:
-	void add_ref()
-	{
-		++m_refCount;
-	}
-
-	void release()
-	{
-		if(--m_refCount == 0) delete this;
-	}
 };
 
 #endif
