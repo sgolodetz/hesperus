@@ -27,7 +27,7 @@ AABBs = [0]
 Pose = 0
 Health = 75
 Mass = 75
-Yoke = Bot
+Yoke = None
 }
 }
 }

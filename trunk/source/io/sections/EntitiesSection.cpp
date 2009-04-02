@@ -119,17 +119,21 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 				std::string yokeType = FieldIO::read_field(is, "Yoke");
 				Yoke_Ptr yoke;
 
+				std::string yokeClass, yokeParams;
+				std::string::size_type sp = yokeType.find(' ');
+				if(sp != std::string::npos)
+				{
+					yokeClass = yokeType.substr(0,sp);
+					yokeParams = yokeType.substr(sp+1);
+				}
+				else yokeClass = yokeType;
+
 				// Note:	We should replace this with a yoke factory if the number of yokes increases.
 				//			It's probably not worth the extra code for the moment.
-				if(yokeType == "User")		{ yoke.reset(new UserBipedYoke(entity)); }
-#if 1
-				// FIXME: Switch to using MinimusScriptYoke when scripting is properly implemented.
-				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); }
-#else
-				else if(yokeType == "Bot")	{ yoke.reset(new MinimusScriptYoke(entity, aiEngine, baseDir)); }
-#endif
-				else if(yokeType == "None")	{ yoke.reset(new NullYoke); }
-				else						{ throw Exception("Unknown yoke type: " + yokeType); }
+				if(yokeClass == "User")			{ yoke.reset(new UserBipedYoke(entity)); }
+				else if(yokeClass == "Minimus")	{ yoke.reset(new MinimusScriptYoke(entity, yokeParams, aiEngine, baseDir)); }
+				else if(yokeClass == "None")	{ yoke.reset(new NullYoke); }
+				else							{ throw Exception("Unknown yoke class: " + yokeClass); }
 
 				if(yoke)
 				{

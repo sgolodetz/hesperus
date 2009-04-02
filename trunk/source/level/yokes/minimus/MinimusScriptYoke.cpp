@@ -14,7 +14,8 @@ namespace bf = boost::filesystem;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-MinimusScriptYoke::MinimusScriptYoke(const Entity_Ptr& biped, const ASXEngine_Ptr& engine, const bf::path& baseDir)
+MinimusScriptYoke::MinimusScriptYoke(const Entity_Ptr& biped, const std::string& scriptName, const ASXEngine_Ptr& engine,
+									 const bf::path& baseDir)
 :	m_biped(biped), m_engine(engine), m_initialised(false)
 {
 	if(!m_biped->animation_component() ||
@@ -25,9 +26,6 @@ MinimusScriptYoke::MinimusScriptYoke(const Entity_Ptr& biped, const ASXEngine_Pt
 	{
 		throw Exception("Couldn't attach a biped yoke to a non-biped");
 	}
-
-	// FIXME: Load the appropriate script here.
-	std::string scriptName = "guard-ai";
 
 	bf::path scriptsDir = determine_scripts_directory(baseDir);
 	std::string scriptFilename = (scriptsDir / (scriptName + ".as")).file_string();

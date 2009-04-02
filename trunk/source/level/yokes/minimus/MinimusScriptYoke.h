@@ -31,7 +31,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	MinimusScriptYoke(const Entity_Ptr& biped, const ASXEngine_Ptr& engine, const boost::filesystem::path& baseDir);
+	MinimusScriptYoke(const Entity_Ptr& biped, const std::string& scriptName, const ASXEngine_Ptr& engine, const boost::filesystem::path& baseDir);
 
 	//#################### PUBLIC METHODS ####################
 public:
