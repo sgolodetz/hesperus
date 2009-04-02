@@ -5,6 +5,8 @@
 
 #include "ASXContext.h"
 
+#include <iostream>
+
 struct ASXContextReleaser
 {
 	void operator()(asIScriptContext *context)
@@ -16,7 +18,9 @@ struct ASXContextReleaser
 //#################### CONSTRUCTORS ####################
 ASXContext::ASXContext(asIScriptContext *context, int funcID)
 :	m_context(context, ASXContextReleaser()), m_funcID(funcID)
-{}
+{
+	m_context->SetExceptionCallback(asMETHOD(ASXContext,exception_callback), this, asCALL_THISCALL);
+}
 
 //#################### PUBLIC OPERATORS ####################
 asIScriptContext *ASXContext::operator->() const
@@ -33,4 +37,15 @@ int ASXContext::execute()
 int ASXContext::prepare()
 {
 	return m_context->Prepare(m_funcID);
+}
+
+//#################### PRIVATE METHODS ####################
+void ASXContext::exception_callback(asIScriptContext *context)
+{
+	int col;
+	int row = context->GetExceptionLineNumber(&col);
+
+	std::cout	<< "A script exception occurred: "
+				<< context->GetExceptionString() << " at position (" << row << ',' << col << ')'
+				<< std::endl;
 }

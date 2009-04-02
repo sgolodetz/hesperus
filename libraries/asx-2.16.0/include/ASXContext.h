@@ -30,6 +30,10 @@ public:
 public:
 	int execute();
 	int prepare();
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void exception_callback(asIScriptContext *context);
 };
 
 #endif
