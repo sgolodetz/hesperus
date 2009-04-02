@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..;&quot;..\..\hesperus_libraries\asx-2.15.2\include&quot;;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..;&quot;..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -121,7 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..;&quot;..\..\hesperus_libraries\asx-2.15.2\include&quot;;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..;&quot;..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -190,6 +190,10 @@
 		<Filter
 			Name=".as"
 			>
+			<File
+				RelativePath="..\bin\resources\scripts\config.as"
+				>
+			</File>
 			<File
 				RelativePath="..\bin\resources\scripts\guard-ai.as"
 				>

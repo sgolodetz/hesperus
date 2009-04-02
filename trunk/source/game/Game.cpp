@@ -9,6 +9,8 @@
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
+#include <ASXEngine.h>
+
 #include <source/exceptions/Exception.h>
 #include <source/gui/Screen.h>
 #include <source/io/util/DirectoryFinder.h>
@@ -21,6 +23,18 @@ namespace hesp {
 Game::Game()
 try
 {
+	// Read in the configuration options.
+	ASXEngine configEngine;
+	bf::path baseDir = determine_base_directory_from_game();
+	bf::path scriptsDir = determine_scripts_directory(baseDir);
+	if(!configEngine.load_and_build_script((scriptsDir / "config.as").file_string(), "config"))
+	{
+		configEngine.output_messages(std::cout);
+		quit_with_error("Could not load configuration options - check the config.as script for problems");
+	}
+	ASXModule_Ptr configModule = configEngine.get_module("config");
+	const std::string& levelName = configModule->get_global_variable<std::string>("levelName");
+
 	// Set up the window.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
 
@@ -47,8 +61,9 @@ try
 	if(!glewGetExtension("GL_ARB_multitexture")) quit_with_error("Multitexturing not supported");
 
 	// Set the initial game state.
-	bf::path levelsDir = determine_levels_directory(determine_base_directory_from_game());
-	m_state.reset(new GameState_Load((levelsDir / "tricky/tricky.bsp").file_string()));
+	bf::path levelsDir = determine_levels_directory(baseDir);
+	std::string relativeLevelPath = levelName + "/" + levelName + ".bsp";
+	m_state.reset(new GameState_Load((levelsDir / relativeLevelPath).file_string()));
 	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
