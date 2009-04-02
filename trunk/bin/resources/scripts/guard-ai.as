@@ -7,59 +7,69 @@ State@ state;
 
 class State
 {
+	void enter(ScriptYoke@ yoke)
+	{
+		// No implementaion needed to be overridden in subclasses
+	}
+
+	void exit(ScriptYoke@ yoke)
+	{
+		// No implementaion needed to be overridden in subclasses
+	}
+
 	void process(ScriptYoke@ yoke)
 	{
-		// No implementation needed - to be overriden in subclasses
+		// No implementation needed - to be overridden in subclasses
 	}
+}
+
+void change_state(State@ newState, ScriptYoke@ yoke)
+{
+	if(state !is null) state.exit(yoke);
+	@state = @newState;
+	state.enter(yoke);
 }
 
 class TestState : State
 {
-	TestState(ScriptYoke@ yoke)
+	void enter(ScriptYoke@ yoke)
 	{
-		// TODO
+		yoke.goto_position(14,6,6);
 	}
 
 	void process(ScriptYoke@ yoke)
 	{
-		if(!yoke.subyoke_exists())
+		if(!yoke.subyoke_active())
 		{
-			yoke.goto_position(14,6,6);
-		}
-		else if(!yoke.subyoke_active())
-		{
-			yoke.clear_subyoke();
-			@state = @OtherState(yoke);
+			change_state(@OtherState(), yoke);
 		}
 	}
 }
 
 class OtherState : State
 {
-	OtherState(ScriptYoke@ yoke)
+	void enter(ScriptYoke@ yoke)
 	{
-		// TODO
+		yoke.goto_position(25,20,6);
 	}
 
 	void process(ScriptYoke@ yoke)
 	{
-		if(!yoke.subyoke_exists())
+		if(!yoke.subyoke_active())
 		{
-			yoke.goto_position(25,20,6);
+			change_state(@TestState(), yoke);
 		}
 	}
 }
 
 // TODO
 
-void f() {}
-
 void init(ScriptYoke@ yoke)
 {
-	@state = @TestState(yoke);
+	change_state(@TestState(), yoke);
 }
 
 void process(ScriptYoke@ yoke)
 {
-	state.process(yoke);
+	if(state !is null) state.process(yoke);
 }
