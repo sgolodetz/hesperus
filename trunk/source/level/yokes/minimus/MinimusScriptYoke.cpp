@@ -15,8 +15,17 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 MinimusScriptYoke::MinimusScriptYoke(const Entity_Ptr& biped, const ASXEngine_Ptr& engine, const bf::path& baseDir)
-:	m_biped(biped), m_engine(engine)
+:	m_biped(biped), m_engine(engine), m_initialised(false)
 {
+	if(!m_biped->animation_component() ||
+	   !m_biped->camera_component() ||
+	   !m_biped->collision_component() ||
+	   !m_biped->nav_component() ||
+	   !m_biped->physics_component())
+	{
+		throw Exception("Couldn't attach a biped yoke to a non-biped");
+	}
+
 	// FIXME: Load the appropriate script here.
 	std::string scriptName = "guard-ai";
 
@@ -31,10 +40,6 @@ MinimusScriptYoke::MinimusScriptYoke(const Entity_Ptr& biped, const ASXEngine_Pt
 	}
 
 	m_module = m_engine->get_module(scriptName);
-
-	// Run the script init method.
-	ASXFunction<void(MinimusScriptYoke*)> init = m_module->get_global_function("init", init);
-	init(this);
 }
 
 //#################### PUBLIC METHODS ####################
@@ -45,6 +50,15 @@ void MinimusScriptYoke::add_ref()
 
 std::vector<EntityCommand_Ptr> MinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
+	if(!m_initialised)
+	{
+		// Run the script init method.
+		ASXFunction<void(MinimusScriptYoke*)> init = m_module->get_global_function("init", init);
+		init(this);
+
+		m_initialised = true;
+	}
+
 	// Run the script process method.
 	ASXFunction<void(MinimusScriptYoke*)> process = m_module->get_global_function("process", process);
 	process(this);
@@ -61,9 +75,9 @@ void MinimusScriptYoke::register_for_scripting(const ASXEngine_Ptr& engine)
 	engine->register_uninstantiable_ref_type<MinimusScriptYoke>();
 	engine->register_object_method(&clear_subyoke, "clear_subyoke");
 	engine->register_object_method(&goto_position, "goto_position");
+	engine->register_object_method(&request_animation, "request_animation");
 	engine->register_object_method(&subyoke_active, "subyoke_active");
 	engine->register_object_method(&subyoke_exists, "subyoke_exists");
-	// TODO
 }
 
 void MinimusScriptYoke::release()
@@ -86,6 +100,13 @@ void MinimusScriptYoke::clear_subyoke()
 void MinimusScriptYoke::goto_position(double x, double y, double z)
 {
 	m_subyoke.reset(new MinimusGotoPositionYoke(m_biped, Vector3d(x,y,z)));
+}
+
+void MinimusScriptYoke::request_animation(const std::string& name)
+{
+	const IAnimationComponent_Ptr& animComponent = m_biped->animation_component();
+	const AnimationController_Ptr& animController = animComponent->anim_controller();
+	animController->request_animation(name);
 }
 
 bool MinimusScriptYoke::subyoke_active() const

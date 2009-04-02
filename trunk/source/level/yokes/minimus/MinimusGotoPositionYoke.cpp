@@ -16,7 +16,8 @@ namespace hesp {
 MinimusGotoPositionYoke::MinimusGotoPositionYoke(const Entity_Ptr& biped, const Vector3d& dest)
 :	m_biped(biped), m_dest(dest)
 {
-	if(!m_biped->camera_component() ||
+	if(!m_biped->animation_component() ||
+	   !m_biped->camera_component() ||
 	   !m_biped->collision_component() ||
 	   !m_biped->nav_component() ||
 	   !m_biped->physics_component())

@@ -18,7 +18,8 @@ namespace hesp {
 UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 :	m_biped(biped)
 {
-	if(!m_biped->camera_component() ||
+	if(!m_biped->animation_component() ||
+	   !m_biped->camera_component() ||
 	   !m_biped->collision_component() ||
 	   !m_biped->nav_component() ||
 	   !m_biped->physics_component())

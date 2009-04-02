@@ -122,7 +122,12 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 				// Note:	We should replace this with a yoke factory if the number of yokes increases.
 				//			It's probably not worth the extra code for the moment.
 				if(yokeType == "User")		{ yoke.reset(new UserBipedYoke(entity)); }
-				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); /*new MinimusScriptYoke(entity, aiEngine, baseDir));*/ /* TEMPORARY */ }
+#if 1
+				// FIXME: Switch to using MinimusScriptYoke when scripting is properly implemented.
+				else if(yokeType == "Bot")	{ yoke.reset(new NullYoke); }
+#else
+				else if(yokeType == "Bot")	{ yoke.reset(new MinimusScriptYoke(entity, aiEngine, baseDir)); }
+#endif
 				else if(yokeType == "None")	{ yoke.reset(new NullYoke); }
 				else						{ throw Exception("Unknown yoke type: " + yokeType); }
 

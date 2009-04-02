@@ -35,6 +35,7 @@ class TestState : State
 	void enter(ScriptYoke@ yoke)
 	{
 		yoke.goto_position(14,6,6);
+		yoke.request_animation("walk");
 	}
 
 	void process(ScriptYoke@ yoke)
@@ -51,6 +52,7 @@ class OtherState : State
 	void enter(ScriptYoke@ yoke)
 	{
 		yoke.goto_position(25,20,6);
+		yoke.request_animation("<rest>");
 	}
 
 	void process(ScriptYoke@ yoke)

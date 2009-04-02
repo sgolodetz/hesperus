@@ -24,6 +24,7 @@ class MinimusScriptYoke : public Yoke, public ASXRefType<MinimusScriptYoke>
 private:
 	ASXEngine_Ptr m_engine;
 	ASXModule_Ptr m_module;
+	bool m_initialised;
 
 	Entity_Ptr m_biped;
 	Yoke_Ptr m_subyoke;
@@ -44,6 +45,7 @@ public:
 private:
 	void clear_subyoke();
 	void goto_position(double x, double y, double z);
+	void request_animation(const std::string& name);
 	bool subyoke_active() const;
 	bool subyoke_exists() const;
 };
