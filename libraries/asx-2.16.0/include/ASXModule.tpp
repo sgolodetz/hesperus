@@ -26,11 +26,24 @@ ASXFunction<F> ASXModule::get_global_function_ex(const std::string& decl, const 
 }
 
 template <typename T>
+T& ASXModule::get_global_variable(const std::string& name) const
+{
+	std::string decl = ASXTypeString<T>(name)();
+	return *static_cast<T*>(m_module->GetAddressOfGlobalVar(m_module->GetGlobalVarIndexByDecl(decl.c_str())));
+}
+
+template <typename T>
 ASXVariable<T> ASXModule::get_global_variable(const std::string& name, const ASXVariable<T>&) const
 {
 	std::string decl = ASXTypeString<T>(name)();
 	T *obj = static_cast<T*>(m_module->GetAddressOfGlobalVar(m_module->GetGlobalVarIndexByDecl(decl.c_str())));
 	return ASXVariable<T>(obj);
+}
+
+template <typename T>
+T& ASXModule::get_global_variable_ex(const std::string& decl) const
+{
+	return *static_cast<T*>(m_module->GetAddressOfGlobalVar(m_module->GetGlobalVarIndexByDecl(decl.c_str())));
 }
 
 template <typename T>
