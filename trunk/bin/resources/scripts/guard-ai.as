@@ -9,12 +9,12 @@ class State
 {
 	void enter(ScriptYoke@ yoke)
 	{
-		// No implementaion needed to be overridden in subclasses
+		// No implementation needed - to be overridden in subclasses
 	}
 
 	void exit(ScriptYoke@ yoke)
 	{
-		// No implementaion needed to be overridden in subclasses
+		// No implementation needed - to be overridden in subclasses
 	}
 
 	void process(ScriptYoke@ yoke)
