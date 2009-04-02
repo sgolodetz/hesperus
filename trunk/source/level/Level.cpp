@@ -159,22 +159,6 @@ void Level::render_entities() const
 			const Vector3d& v = camera.v();
 
 			// Render the model.
-			AnimationController_Ptr animController = animComponent->anim_controller();
-
-#if 1
-			// FIXME: Animations should eventually be requested from elsewhere.
-			static int blah = 0;
-			++blah;
-			int blah2 = blah/250;
-			if(blah2 % 2 == 0)
-			{
-				animController->request_animation("walk");
-			}
-			else
-			{
-				animController->request_animation("<rest>");
-			}
-#endif
 
 			// Note:	This matrix maps x -> u, -y -> n, z -> z, and translates by p. Since models are
 			//			built in Blender facing in the -y direction, this turns out to be exactly the
@@ -190,7 +174,7 @@ void Level::render_entities() const
 			glMultMatrixd(&m.rep()[0]);
 
 			Model_Ptr model = m_modelManager->model(animComponent->model_name());
-			model->render(animController);
+			model->render(animComponent->anim_controller());
 
 			glPopMatrix();
 
