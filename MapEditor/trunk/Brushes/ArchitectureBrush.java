@@ -163,14 +163,16 @@ public abstract class ArchitectureBrush extends TransformableBrush
 			setLayout(new BorderLayout(0, 5));
 
 			Panel top = new Panel();
-			top.setLayout(new GridLayout(3, 1));
+			top.setLayout(new GridLayout(0, 2, 5, 0));
 			add("Center", top);
 
+			top.add(new Label("Brush Function:"));
+
 			Choice choice = new Choice();
-			choice.add("Collision");
-			choice.add("Detail");
+			choice.add("Collision");		// (¬Render, ¬Vis, Collisions)
+			choice.add("Detail");			// (Render, ¬Vis, ¬Collisions)
 			choice.add("Fog");
-			choice.add("Hint");
+			choice.add("Hint");				// (¬Render, Vis, ¬Collisions)
 			choice.add("Normal");
 			choice.add("Water");
 			top.add(choice);
@@ -201,7 +203,6 @@ public abstract class ArchitectureBrush extends TransformableBrush
 			bottom.add(cancelButton);
 
 			pack();
-			setSize(new Dimension(250, 150));
 			setLocationRelativeTo(owner);		// centre the dialog relative to its owner
 			setResizable(false);
 			setVisible(true);
