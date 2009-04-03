@@ -8,10 +8,6 @@ This class represents 3D vectors, storing their components as doubles.
 Note that the class can be used to represent both point vectors and
 free vectors. This is by design and is intended to make working with
 vectors easier.
-
-IMPORTANT: This is not yet used in the editor code, but a Java3D class
-of the same name is. Don't get confused!
-TODO: Remove this comment when the editor code has been updated.
 */
 public class Vector3d implements IVector<Vector3d>
 {

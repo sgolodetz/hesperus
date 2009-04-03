@@ -5,8 +5,8 @@ import MapEditor.Geom.Planar.*;
 import MapEditor.Graphics.IRenderer;
 import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.Pair;
-import java.awt.BasicStroke;
-import java.awt.Stroke;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.LinkedList;
 
 /**
@@ -49,7 +49,7 @@ public abstract class ArchitectureBrush extends TransformableBrush
 
 	@return	The faces as a LinkedList
 	*/
-	public abstract LinkedList<Polygon> faces();
+	public abstract LinkedList<MapEditor.Geom.Planar.Polygon> faces();
 
 	/**
 	Reflects the brush across a plane.
@@ -83,8 +83,18 @@ public abstract class ArchitectureBrush extends TransformableBrush
 	@return	A list of polygon iterables for tree generation, as specified, or null if no tree
 			can be generated from this brush
 	*/
-	public abstract LinkedList<Iterable<Polygon>> tree_polygons();
+	public abstract LinkedList<Iterable<MapEditor.Geom.Planar.Polygon>> tree_polygons();
 
+	//################## PROTECTED ABSTRACT METHODS ##################//
+	/**
+	TODO
+	*/
+	//protected abstract Properties get_properties();
+
+	/**
+	TODO
+	*/
+	//protected abstract void set_properties(Properties properties);
 
 	//################## PUBLIC METHODS ##################//
 	/**
@@ -127,5 +137,74 @@ public abstract class ArchitectureBrush extends TransformableBrush
 	final public boolean is_flippable()
 	{
 		return true;
+	}
+
+	public Dialog properties_dialog(Frame owner)
+	{
+		return new PropertiesDialog(owner);
+	}
+
+	//################## NESTED CLASSES ##################//
+	private class PropertiesDialog extends Dialog
+	{
+		//################## CONSTRUCTORS ##################//
+		public PropertiesDialog(Frame owner)
+		{
+			super(owner, "Architecture Brush Properties", true);
+
+			addWindowListener(new WindowAdapter()
+			{
+				public void windowClosing(WindowEvent e)
+				{
+					dispose();
+				}
+			});
+
+			setLayout(new BorderLayout(0, 5));
+
+			Panel top = new Panel();
+			top.setLayout(new GridLayout(3, 1));
+			add("Center", top);
+
+			Choice choice = new Choice();
+			choice.add("Collision");
+			choice.add("Detail");
+			choice.add("Fog");
+			choice.add("Hint");
+			choice.add("Normal");
+			choice.add("Water");
+			top.add(choice);
+
+			Panel bottom = new Panel();
+			bottom.setLayout(new GridLayout(0, 2, 5, 0));
+			add("South", bottom);
+
+			Button okButton = new Button("OK");
+			okButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					// TODO
+
+					dispose();
+				}
+			});
+			bottom.add(okButton);
+			Button cancelButton = new Button("Cancel");
+			cancelButton.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					dispose();
+				}
+			});
+			bottom.add(cancelButton);
+
+			pack();
+			setSize(new Dimension(250, 150));
+			setLocationRelativeTo(owner);		// centre the dialog relative to its owner
+			setResizable(false);
+			setVisible(true);
+		}
 	}
 }

@@ -10,6 +10,7 @@ import MapEditor.Math.MathUtil;
 import MapEditor.Math.Vectors.*;
 import MapEditor.Misc.*;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -215,6 +216,11 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 		GLCapabilities capabilities = new GLCapabilities();
 		capabilities.setStencilBits(1);
 		m_canvas = GLDrawableFactory.getFactory().createGLCanvas(capabilities);
+
+		// Note:	This fixes the canvas flickering problem, at the cost of using a proprietary API
+		//			which may be removed at a later date.
+		sun.awt.SunToolkit sunToolkit = (sun.awt.SunToolkit)Toolkit.getDefaultToolkit();
+		sunToolkit.disableBackgroundErase(m_canvas);
 
 		m_canvas.addGLEventListener(this);
 
