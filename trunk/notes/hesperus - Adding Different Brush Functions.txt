@@ -13,7 +13,7 @@ Structural
 hbsp
 ----
 
-* Iff constructing a rendering tree, read in hint planes from the .hpl and use them during construction
+* Iff constructing a rendering tree, read in hint planes from the .rhp and use them during construction
 
 -------------
 hbrushdivider
@@ -22,7 +22,7 @@ hbrushdivider
 * Read in each brush from the .bru
 * Output NORMAL brushes (no need to include their functions) to the .rbr (rendering brushes)
 * Output DETAIL polygons (i.e. the detail brush faces) to the .dgm (detail geometry)
-* Output HINT planes (i.e. the planes of HINT brush faces marked with the hint texture) to the .hpl (hint planes)
+* Output HINT planes (i.e. the planes of HINT brush faces marked with the hint texture) to the .rhp (rendering hint planes)
 * Output (converted) NORMAL/COLLISION brushes (no need to include their functions) to the .cbr (collision brushes)
 * Output FOG/WATER brushes (include their functions) to the .sbr (special brushes)
 
@@ -46,3 +46,29 @@ mef2input
 ---------
 
 * Output all the brushes (including their functions) to a .bru file
+
+==================
+Migration Strategy
+==================
+
+-------
+Phase 1
+-------
+
+1) Get mef2input to output the brushes to a .bru (whilst leaving the existing functionality in place).
+2) Implement hbrushdivider and test it (outside the toolchain).
+3) When it works, remove the existing functionality from mef2input, update the toolchain to use hbrushdivider and remove hr2cbrush.
+
+------------
+Phase 2 or 3
+------------
+
+1) Implement hdetailer and test it.
+2) Update the toolchain to use hdetailer.
+
+------------
+Phase 2 or 3
+------------
+
+1) Update hportal to use the tree node split planes.
+2) Update hbsp to use hint planes when building rendering trees.
