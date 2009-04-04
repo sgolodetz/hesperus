@@ -830,6 +830,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\brushes\BrushFunction.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\brushes\PolyhedralBrush.h"
 						>
 					</File>
@@ -847,6 +851,10 @@
 					>
 					<File
 						RelativePath="..\level\brushes\BrushExpander.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\brushes\BrushFunction.cpp"
 						>
 					</File>
 				</Filter>

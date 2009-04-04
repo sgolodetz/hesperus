@@ -72,7 +72,7 @@ ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)
 		colFaces[i].reset(new CollisionPolygon(colVertices, colAuxData));
 	}
 
-	return ColPolyBrush_Ptr(new ColPolyBrush(bounds, colFaces));
+	return ColPolyBrush_Ptr(new ColPolyBrush(bounds, colFaces, texBrush->function()));
 }
 
 void run_converter(const std::string& inputFilename, const std::string& outputFilename)

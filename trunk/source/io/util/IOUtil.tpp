@@ -128,6 +128,10 @@ shared_ptr<PolyhedralBrush<Poly> > IOUtil::load_polyhedral_brush(std::istream& i
 	if(!std::getline(is,line)) return PolyBrush_Ptr();
 	if(line != "{") throw Exception("Expected {");
 
+	// Read brush function.
+	LineIO::read_line(is, line, "brush function");
+	BrushFunction function = boost::lexical_cast<BrushFunction,std::string>(line);
+
 	// Read bounds.
 	LineIO::read_line(is, line, "bounds");
 	AABB3d bounds = read_aabb<Vector3d>(line);
@@ -139,7 +143,7 @@ shared_ptr<PolyhedralBrush<Poly> > IOUtil::load_polyhedral_brush(std::istream& i
 
 	LineIO::read_checked_line(is, "}");
 
-	return PolyBrush_Ptr(new PolyBrush(bounds, faces));
+	return PolyBrush_Ptr(new PolyBrush(bounds, faces, function));
 }
 
 /**
@@ -193,6 +197,7 @@ template <typename Poly>
 void IOUtil::write_polyhedral_brush(std::ostream& os, const PolyhedralBrush<Poly>& brush)
 {
 	os << "{\n";
+	os << brush.function() << '\n';
 	os << brush.bounds().minimum() << ' ' << brush.bounds().maximum() << '\n';
 	write_polygons(os, brush.faces(), true);
 	os << "}\n";

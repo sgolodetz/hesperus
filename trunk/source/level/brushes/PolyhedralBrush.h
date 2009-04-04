@@ -13,6 +13,7 @@ using boost::shared_ptr;
 
 #include <source/math/geom/AABB.h>
 #include <source/math/geom/Polygon.h>
+#include "BrushFunction.h"
 
 namespace hesp {
 
@@ -32,15 +33,17 @@ private:
 private:
 	AABB3d m_bounds;
 	PolyVector m_faces;
+	BrushFunction m_function;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit PolyhedralBrush(const AABB3d& bounds, const PolyVector& faces);
+	explicit PolyhedralBrush(const AABB3d& bounds, const PolyVector& faces, BrushFunction function);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const AABB3d& bounds() const;
 	const PolyVector& faces() const;
+	BrushFunction function() const;
 };
 
 }

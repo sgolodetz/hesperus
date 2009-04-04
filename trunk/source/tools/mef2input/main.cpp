@@ -91,19 +91,17 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	if(line != "{") throw Exception("PolyhedralBrush: Expected {");
 
 	// Read in the brush function (if present).
-	// FIXME: Use an enum for the brush function.
-	std::string function;
+	BrushFunction function;
 	bool functionPresent = true;
 	LineIO::read_line(is, line, "read brush function");
 	if(line.length() >= 10 && line.substr(0,8) == "Function")
 	{
-		// FIXME: Validate the brush function properly.
-		function = line.substr(9);
+		function = lexical_cast<BrushFunction,std::string>(line.substr(9));
 	}
 	else
 	{
 		std::cout << "Warning: Missing brush function, defaulting to NORMAL" << std::endl;
-		function = "NORMAL";
+		function = BF_NORMAL;
 		functionPresent = false;
 	}
 
@@ -145,7 +143,7 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 		}
 		faces.push_back(TexturedPolygon_Ptr(new TexturedPolygon(newVertices, poly->auxiliary_data().texture)));
 	}
-	brushes.push_back(TexPolyhedralBrush_Ptr(new TexPolyhedralBrush(bounds, faces)));
+	brushes.push_back(TexPolyhedralBrush_Ptr(new TexPolyhedralBrush(bounds, faces, function)));
 
 	LineIO::read_line(is, line, "read PolyhedralBrush");
 	if(line != "}") throw Exception("PolyhedralBrush: Expected }");

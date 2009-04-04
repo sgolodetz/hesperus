@@ -96,7 +96,7 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 	// Construct a bounding box for the expanded brush.
 	AABB3d expandedBounds = construct_bounding_box(expandedFaces);
 
-	return ColPolyBrush_Ptr(new ColPolyBrush(expandedBounds, expandedFaces));
+	return ColPolyBrush_Ptr(new ColPolyBrush(expandedBounds, expandedFaces, brush->function()));
 }
 
 //#################### PRIVATE METHODS ####################

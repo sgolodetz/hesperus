@@ -9,8 +9,8 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 template <typename Poly>
-PolyhedralBrush<Poly>::PolyhedralBrush(const AABB3d& bounds, const PolyVector& faces)
-:	m_bounds(bounds), m_faces(faces)
+PolyhedralBrush<Poly>::PolyhedralBrush(const AABB3d& bounds, const PolyVector& faces, BrushFunction function)
+:	m_bounds(bounds), m_faces(faces), m_function(function)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -25,6 +25,12 @@ const typename PolyhedralBrush<Poly>::PolyVector&
 PolyhedralBrush<Poly>::faces() const
 {
 	return m_faces;
+}
+
+template <typename Poly>
+BrushFunction PolyhedralBrush<Poly>::function() const
+{
+	return m_function;
 }
 
 }
