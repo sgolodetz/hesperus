@@ -160,15 +160,21 @@ void Level::render_entities() const
 
 			// Render the model.
 
-			// Note:	This matrix maps x -> u, -y -> n, z -> z, and translates by p. Since models are
+			// Project u and n into the horizontal plane (i.e. z = 0) to form uH and nH respectively.
+			// Note that the camera is prevented from ever pointing directly upwards/downwards, so
+			// renormalizing the resulting vectors isn't a problem.
+			Vector3d uH = u;	uH.z = 0;	uH.normalize();
+			Vector3d nH = n;	nH.z = 0;	nH.normalize();
+
+			// Note:	This matrix maps x -> uH, -y -> nH, z -> z, and translates by p. Since models are
 			//			built in Blender facing in the -y direction, this turns out to be exactly the
 			//			transformation required to render the models with the correct position and
 			//			orientation.
 			RBTMatrix_Ptr mat = RBTMatrix::zeros();
 			RBTMatrix& m = *mat;
-			m(0,0) = u.x;		m(0,1) = -n.x;		/*m(0,2) = 0;*/		m(0,3) = p.x;
-			m(1,0) = u.y;		m(1,1) = -n.y;		/*m(1,2) = 0;*/		m(1,3) = p.y;
-			m(2,0) = u.z;		m(2,1) = -n.z;		m(2,2) = 1;			m(2,3) = p.z;
+			m(0,0) = uH.x;		m(0,1) = -nH.x;		/*m(0,2) = 0;*/		m(0,3) = p.x;
+			m(1,0) = uH.y;		m(1,1) = -nH.y;		/*m(1,2) = 0;*/		m(1,3) = p.y;
+			/*m(2,0) = 0;*/		/*m(2,1) = 0;*/		m(2,2) = 1;			m(2,3) = p.z;
 
 			glPushMatrix();
 			glMultMatrixd(&m.rep()[0]);
