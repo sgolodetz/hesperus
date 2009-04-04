@@ -444,23 +444,47 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		return load_MEF(br, "load_MEF3");
 	}
 
+	/**
+	This method exists so that we don't have to rewrite the saving code every time we have a new version of
+	the MEF file format. It's effectively the same each time, except that the name of the save methods to call
+	to save component brushes changes. We therefore pass the correct method name in as a parameter.
+	*/
+	public void save_MEF(PrintWriter pw, String methodName)
+	{
+		try
+		{
+			java.lang.reflect.Method saveMethod = ArchitectureBrush.class.getMethod(methodName, new Class[] { PrintWriter.class });
+
+			if(m_transient)
+			{
+				for(Pair<ArchitectureBrush,BrushData> p: m_brushes) saveMethod.invoke(p.first, new Object[] { pw });
+			}
+			else
+			{
+				pw.println();
+				pw.println("ArchitectureBrushComposite");
+				pw.print("{");
+
+				for(Pair<ArchitectureBrush,BrushData> p: m_brushes) saveMethod.invoke(p.first, new Object[] { pw });
+
+				pw.println();
+				pw.print("}");
+			}
+		}
+		catch(Exception e)
+		{
+			throw new Error("An unexpected error occurred whilst trying to save: " + e.getMessage());
+		}
+	}
+
 	public void save_MEF2(PrintWriter pw)
 	{
-		if(m_transient)
-		{
-			for(Pair<ArchitectureBrush,BrushData> p: m_brushes) p.first.save_MEF2(pw);
-		}
-		else
-		{
-			pw.println();
-			pw.println("ArchitectureBrushComposite");
-			pw.print("{");
+		save_MEF(pw, "save_MEF2");
+	}
 
-			for(Pair<ArchitectureBrush,BrushData> p: m_brushes) p.first.save_MEF2(pw);
-
-			pw.println();
-			pw.print("}");
-		}
+	public void save_MEF3(PrintWriter pw)
+	{
+		save_MEF(pw, "save_MEF3");
 	}
 
 	//################## PROTECTED METHODS ##################//

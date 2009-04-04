@@ -162,7 +162,7 @@ public abstract class ArchitectureBrush extends TransformableBrush
 	}
 
 	//################## NESTED CLASSES ##################//
-	protected class Properties
+	protected static class Properties
 	{
 		private BrushFunction m_function;
 

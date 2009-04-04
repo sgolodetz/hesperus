@@ -748,7 +748,93 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 	public static IBrush load_MEF3(BufferedReader br) throws IOException
 	{
-		return load_MEF2(br);
+		String line;
+		String[] tokens;
+
+		// Read the opening brace.
+		br.readLine();
+
+		PolyhedralBrush b = new PolyhedralBrush(false, false);
+
+		// Read the brush function (if present).
+		BrushFunction function;
+		boolean functionPresent = true;
+		line = br.readLine();
+		tokens = line.split(" ", 0);
+		if(tokens.length >= 1 && tokens[0].equals("Function"))
+		{
+			try
+			{
+				function = BrushFunction.valueOf(tokens[1]);
+			}
+			catch(Exception e)
+			{
+				System.err.println("Warning: Bad brush function " + tokens[1] + ", defaulting to NORMAL");
+				function = BrushFunction.NORMAL;
+			}
+		}
+		else
+		{
+			System.err.println("Warning: Missing brush function, defaulting to NORMAL");
+			function = BrushFunction.NORMAL;
+			functionPresent = false;
+		}
+		b.m_properties = new Properties(function);
+
+		// Read the bounds.
+		if(functionPresent) line = br.readLine();
+		tokens = line.split(" ", 0);
+		if(tokens.length < 1 || !tokens[0].equals("Bounds")) throw new IOException("Bounds not found");
+		Vector3d[] corners = new Vector3d[] {	new Vector3d(	Double.parseDouble(tokens[2]),
+															Double.parseDouble(tokens[3]),
+															Double.parseDouble(tokens[4])	),
+											new Vector3d(	Double.parseDouble(tokens[7]),
+															Double.parseDouble(tokens[8]),
+															Double.parseDouble(tokens[9])	) };
+		b.m_boundingBox = new BoundingBox(corners[0], corners[1]);
+
+		// Read the polygons.
+		int polyCount = Integer.parseInt(br.readLine().substring("PolyCount".length() + 1));	// read the polygon count
+		if (polyCount <= 0) throw new IOException("Invalid polygon count");
+		b.m_polys = new Polygon[polyCount];
+
+		for (int i = 0; i < polyCount; ++i)
+		{
+			line = br.readLine();
+			tokens = line.split(" ", 0);
+			if (tokens.length < 1 || !tokens[0].equals("Polygon"))
+			{
+				throw new IOException("Polygon not found");
+			}
+			int vertCount = Integer.parseInt(tokens[1]);
+			if (vertCount <= 0) throw new IOException("Invalid vertex count");
+			Vector3d[] vertices = new Vector3d[vertCount];
+			for (int j = 0; j < vertCount; ++j)
+			{
+				int offset = 3 + 5 * j;
+				vertices[j] = new Vector3d(Double.parseDouble(tokens[offset]),
+											Double.parseDouble(tokens[offset + 1]),
+											Double.parseDouble(tokens[offset + 2]));
+			}
+
+			// Load the texture details.
+			String texture = tokens[2 + 5 * vertCount];
+			int offset = 4 + 5 * vertCount;
+			double offsetU = Double.parseDouble(tokens[offset]);
+			double offsetV = Double.parseDouble(tokens[offset + 1]);
+			double scaleU = Double.parseDouble(tokens[offset + 2]);
+			double scaleV = Double.parseDouble(tokens[offset + 3]);
+			double angle = Double.parseDouble(tokens[offset + 4]);
+			Vector3d normal = MathUtil.calculate_normal(vertices[0], vertices[1], vertices[2]);
+			TexturePlane texturePlane = new TexturePlane(normal, scaleU, scaleV, offsetU, offsetV, angle);
+
+			b.m_polys[i] = new Polygon(vertices, texture, texturePlane);
+		}
+
+		// Read the closing brace.
+		br.readLine();
+
+		return b;
 	}
 
 	public void save_MEF2(PrintWriter pw)
@@ -756,6 +842,41 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		pw.println();
 		pw.println("PolyhedralBrush");
 		pw.println("{");
+
+		Vector3d[] bounds = m_boundingBox.get_bounds();
+		pw.print("Bounds");
+		for(int i=0; i<2; ++i) pw.print(" ( " + bounds[i].x + " " + bounds[i].y + " " + bounds[i].z + " )");
+		pw.println();
+
+		int polyCount = m_polys.length;
+		pw.println("PolyCount " + polyCount);
+
+		for(int i=0; i<polyCount; ++i)
+		{
+			Polygon p = m_polys[i];
+			pw.print("Polygon " + p.get_vertices().length);
+			for(Vector3d v: p.get_vertices())
+			{
+				pw.print(" ( " + v.x + " " + v.y + " " + v.z + " )");
+			}
+
+			// Output the texture details.
+			Pair<String,TexturePlane> textureDetails = p.get_texture_details();
+			pw.print(" " + textureDetails.first);
+			pw.println(" " + textureDetails.second);
+		}
+
+		pw.print("}");
+	}
+
+	public void save_MEF3(PrintWriter pw)
+	{
+		pw.println();
+		pw.println("PolyhedralBrush");
+		pw.println("{");
+
+		pw.print("Function ");
+		pw.println(m_properties.get_function().toString());
 
 		Vector3d[] bounds = m_boundingBox.get_bounds();
 		pw.print("Bounds");
