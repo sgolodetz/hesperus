@@ -90,10 +90,26 @@ void read_polyhedral_brush(std::istream& is, std::vector<TexPolyhedralBrush_Ptr>
 	LineIO::read_line(is, line, "read PolyhedralBrush");
 	if(line != "{") throw Exception("PolyhedralBrush: Expected {");
 
-	LineIO::read_line(is, line, "read bounds");
-	if(line.substr(0,6) != "Bounds" || line.length() < 8) throw Exception("PolyhedralBrush: Expected Bounds");
+	// Read in the brush function (if present).
+	// FIXME: Use an enum for the brush function.
+	std::string function;
+	bool functionPresent = true;
+	LineIO::read_line(is, line, "read brush function");
+	if(line.length() >= 10 && line.substr(0,8) == "Function")
+	{
+		// FIXME: Validate the brush function properly.
+		function = line.substr(9);
+	}
+	else
+	{
+		std::cout << "Warning: Missing brush function, defaulting to NORMAL" << std::endl;
+		function = "NORMAL";
+		functionPresent = false;
+	}
 
-	// Parse bounds.
+	// Read bounds.
+	if(functionPresent) LineIO::read_line(is, line, "read bounds");
+	if(line.substr(0,6) != "Bounds" || line.length() < 8) throw Exception("PolyhedralBrush: Expected Bounds");
 	line = line.substr(7);
 	AABB3d bounds = read_aabb<Vector3d>(line, SCALE);
 
