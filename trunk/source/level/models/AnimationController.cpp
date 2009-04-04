@@ -7,13 +7,17 @@
 
 #include <cmath>
 
-namespace hesp {
+namespace {
 
 //#################### CONSTANTS ####################
 enum
 {
 	TRANSITION_TIME = 50		// the desired length of an animation transition (in ms)
 };
+
+}
+
+namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 AnimationController::AnimationController(bool interpolateKeyframes)
