@@ -1,5 +1,6 @@
 package MapEditor.Brushes;
 
+import MapEditor.Commands.*;
 import MapEditor.Geom.AxisPair;
 import MapEditor.Geom.Planar.*;
 import MapEditor.Graphics.IRenderer;
@@ -14,6 +15,18 @@ This is the base class for the polygonal brushes which represent the level archi
 */
 public abstract class ArchitectureBrush extends TransformableBrush
 {
+	//################## ENUMERATIONS ##################//
+	protected enum BrushFunction
+	{
+		COLLISION,		// ¬Render, ¬Vis, Collisions
+		DETAIL,			// Render, ¬Vis, ¬Collisions
+		FOG,
+		HINT,			// ¬Render, Vis (treated specially), ¬Collisions
+		MULTIPLE,		// used for composite brushes (when the contained brushes have different functions)
+		NORMAL,
+		WATER,
+	}
+
 	//################## CONSTRUCTORS ##################//
 	/**
 	Constructs an ArchitectureBrush whose initial state depends on whether or not it's a
@@ -87,14 +100,18 @@ public abstract class ArchitectureBrush extends TransformableBrush
 
 	//################## PROTECTED ABSTRACT METHODS ##################//
 	/**
-	TODO
+	Returns the brush properties.
+
+	@return	As stated
 	*/
-	//protected abstract Properties get_properties();
+	protected abstract Properties get_properties();
 
 	/**
-	TODO
+	Sets the brush properties.
+
+	@param properties	The new brush properties
 	*/
-	//protected abstract void set_properties(Properties properties);
+	protected abstract void set_properties(Properties properties);
 
 	//################## PUBLIC METHODS ##################//
 	/**
@@ -145,6 +162,36 @@ public abstract class ArchitectureBrush extends TransformableBrush
 	}
 
 	//################## NESTED CLASSES ##################//
+	protected class Properties
+	{
+		private BrushFunction m_function;
+
+		public Properties()
+		{
+			m_function = BrushFunction.NORMAL;
+		}
+
+		public Properties(BrushFunction function)
+		{
+			m_function = function;
+		}
+
+		public Properties clone()
+		{
+			return new Properties(m_function);
+		}
+
+		public BrushFunction get_function()
+		{
+			return m_function;
+		}
+
+		public void set_function(BrushFunction function)
+		{
+			m_function = function;
+		}
+	}
+
 	private class PropertiesDialog extends Dialog
 	{
 		//################## CONSTRUCTORS ##################//
@@ -168,13 +215,15 @@ public abstract class ArchitectureBrush extends TransformableBrush
 
 			top.add(new Label("Brush Function:"));
 
-			Choice choice = new Choice();
-			choice.add("Collision");		// (¬Render, ¬Vis, Collisions)
-			choice.add("Detail");			// (Render, ¬Vis, ¬Collisions)
-			choice.add("Fog");
-			choice.add("Hint");				// (¬Render, Vis, ¬Collisions)
-			choice.add("Normal");
-			choice.add("Water");
+			final LinkedList<Pair<ArchitectureBrush,Properties>> componentProperties = component_properties();
+			BrushFunction oldFunction = determine_brush_function(componentProperties);
+
+			final Choice choice = new Choice();
+			for(BrushFunction function: BrushFunction.values())
+			{
+				choice.add(function.toString());
+			}
+			choice.select(oldFunction.toString());
 			top.add(choice);
 
 			Panel bottom = new Panel();
@@ -186,7 +235,28 @@ public abstract class ArchitectureBrush extends TransformableBrush
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					// TODO
+					if(choice.getSelectedItem() != "MULTIPLE")
+					{
+						CommandManager.instance().execute_command(new Command("Change Architecture Brush Properties")
+						{
+							public void execute()
+							{
+								BrushFunction curFunction = BrushFunction.valueOf(choice.getSelectedItem());
+								for(Pair<ArchitectureBrush,Properties> p: componentProperties)
+								{
+									p.first.set_properties(new Properties(curFunction));
+								}
+							}
+
+							public void undo()
+							{
+								for(Pair<ArchitectureBrush,Properties> p: componentProperties)
+								{
+									p.first.set_properties(p.second);
+								}
+							}
+						});
+					}
 
 					dispose();
 				}
@@ -206,6 +276,38 @@ public abstract class ArchitectureBrush extends TransformableBrush
 			setLocationRelativeTo(owner);		// centre the dialog relative to its owner
 			setResizable(false);
 			setVisible(true);
+		}
+
+		//################## PRIVATE METHODS ##################//
+		private LinkedList<Pair<ArchitectureBrush,Properties>> component_properties()
+		{
+			LinkedList<Pair<ArchitectureBrush,Properties>> ret = new LinkedList<Pair<ArchitectureBrush,Properties>>();
+
+			LinkedList<ArchitectureBrush> componentBrushes = component_brushes();
+			for(ArchitectureBrush b: componentBrushes)
+			{
+				ret.add(Pair.make_pair(b, b.get_properties()));
+			}
+
+			return ret;
+		}
+
+		private BrushFunction determine_brush_function(LinkedList<Pair<ArchitectureBrush,Properties>> componentProperties)
+		{
+			BrushFunction function = BrushFunction.MULTIPLE;
+			for(Pair<ArchitectureBrush,Properties> p: componentProperties)
+			{
+				BrushFunction f = p.second.get_function();
+				if(function == BrushFunction.MULTIPLE)
+				{
+					function = f;
+				}
+				else if(f != function)
+				{
+					return BrushFunction.MULTIPLE;
+				}
+			}
+			return function;
 		}
 	}
 }

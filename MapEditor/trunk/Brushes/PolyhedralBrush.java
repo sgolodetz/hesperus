@@ -31,6 +31,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	private Color m_colour;						// the colour with which we will render the brush on a design canvas
 	private Polygon[] m_cachedPolys;			// used to cache the polygons at the start of a transformation
 	private Polygon[] m_polys;
+	private Properties m_properties;
 
 	//################## CONSTRUCTORS ##################//
 	// Private to prevent direct instantiation.
@@ -39,6 +40,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		super(isNew);
 		m_ghost = ghost;
 		m_colour = COLOUR_CYCLE.next_colour();
+		m_properties = new Properties();
 	}
 
 	// Private to prevent direct instantiation.
@@ -114,6 +116,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		ret.m_polys = new Polygon[polyCount];
 		for(int i=0; i<polyCount; ++i) ret.m_polys[i] = m_polys[i].clone();
 		ret.m_boundingBox = m_boundingBox.clone();
+		ret.m_properties = m_properties.clone();
 		return ret;
 	}
 
@@ -813,6 +816,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		recalculate_bounding_box();
 	}
 
+	protected Properties get_properties()
+	{
+		return m_properties;
+	}
+
 	protected void resize(Vector2d corner0, Vector2d corner1, AxisPair ap)
 	{
 		// Generate our resized brush from the brush we had at the start of the transformation
@@ -873,6 +881,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				return newV;
 			}
 		});
+	}
+
+	protected void set_properties(Properties properties)
+	{
+		m_properties = properties;
 	}
 
 	protected void shear_horizontal(final Vector2d anchor, final double factor, AxisPair ap)

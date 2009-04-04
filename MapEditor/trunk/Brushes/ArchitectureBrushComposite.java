@@ -491,6 +491,14 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		recalculate_bounds();
 	}
 
+	protected Properties get_properties()
+	{
+		// Note:	This function will never actually be called, since get_properties() is only
+		//			ever invoked on component brushes from within ArchitectureBrush. The only
+		//			reason it's implemented here at all is to satisfy an interface requirement.
+		throw new UnsupportedOperationException();
+	}
+
 	protected void render_bounds(IRenderer renderer)
 	{
 		if(m_boundingBox != null)
@@ -551,6 +559,14 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 	protected void rotate(Vector2d centre, double angle, AxisPair ap)
 	{
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes) p.first.rotate(centre, angle, ap);
+	}
+
+	protected void set_properties(Properties properties)
+	{
+		// Note:	This function will never actually be called, since get_properties() is only
+		//			ever invoked on component brushes from within ArchitectureBrush. The only
+		//			reason it's implemented here at all is to satisfy an interface requirement.
+		throw new UnsupportedOperationException();
 	}
 
 	protected void shear_horizontal(Vector2d anchor, double factor, AxisPair ap)
