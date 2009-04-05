@@ -1,5 +1,5 @@
 /***
- * hbrushdivider: main.cpp
+ * hdivide: main.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 

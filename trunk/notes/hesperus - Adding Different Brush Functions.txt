@@ -6,7 +6,7 @@ Changes Required
 Structural
 ----------
 
-* Replace hr2cbrush with hbrushdivider
+* Replace hr2cbrush with hdivide
 * Add hdetailer
 
 ----
@@ -14,17 +14,6 @@ hbsp
 ----
 
 * Iff constructing a rendering tree, read in hint planes from the .rhp and use them during construction
-
--------------
-hbrushdivider
--------------
-
-* Read in each brush from the .bru
-* Output NORMAL brushes (no need to include their functions) to the .rbr (rendering brushes)
-* Output DETAIL polygons (i.e. the detail brush faces) to the .dgm (detail geometry)
-* Output HINT planes (i.e. the planes of HINT brush faces marked with the hint texture) to the .rhp (rendering hint planes)
-* Output (converted) NORMAL/COLLISION brushes (no need to include their functions) to the .cbr (collision brushes)
-* Output FOG/WATER brushes (include their functions) to the .sbr (special brushes)
 
 ---------
 hdetailer
@@ -34,6 +23,17 @@ hdetailer
 * Read in the .rt2 and .dgm
 * Clip each detail brush face to the rendering tree and add face fragments to the relevant leaves
 * Output the result to the .rt3
+
+-------
+hdivide
+-------
+
+* Read in each brush from the .bru
+* Output NORMAL brushes (no need to include their functions) to the .rbr (rendering brushes)
+* Output DETAIL polygons (i.e. the detail brush faces) to the .dgm (detail geometry)
+* Output HINT planes (i.e. the planes of HINT brush faces marked with the hint texture) to the .rhp (rendering hint planes)
+* Output (converted) NORMAL/COLLISION brushes (no need to include their functions) to the .cbr (collision brushes)
+* Output FOG/WATER brushes (include their functions) to the .sbr (special brushes)
 
 -------
 hportal

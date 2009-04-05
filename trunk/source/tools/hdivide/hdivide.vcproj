@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="hbrushdivider"
-	ProjectGUID="{27A0AEFA-BAE2-415B-8CE3-AB8B44A073DA}"
-	RootNamespace="hbrushdivider"
+	Name="hdivide"
+	ProjectGUID="{41358316-E169-4645-81CD-A94B71060FEE}"
+	RootNamespace="hdivide"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)/../bin/tools"
-			IntermediateDirectory="$(SolutionDir)/../obj/tools/hbrushdivider/$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)/../obj/tools/hdivide/$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -63,7 +63,7 @@
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(IntDir)/$(TargetName).pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -95,7 +95,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)/../bin/tools"
-			IntermediateDirectory="$(SolutionDir)/../obj/tools/hbrushdivider/$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)/../obj/tools/hdivide/$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -137,7 +137,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(IntDir)/$(TargetName).pdb"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
