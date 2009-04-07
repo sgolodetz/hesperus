@@ -7,7 +7,7 @@ Structural
 ----------
 
 * Replace hr2cbrush with hdivide
-* Add hdetailer
+* Add hdetail
 
 ----
 hbsp
@@ -15,9 +15,9 @@ hbsp
 
 * Iff constructing a rendering tree, read in hint planes from the .rhp and use them during construction
 
----------
-hdetailer
----------
+-------
+hdetail
+-------
 
 * Run after the second rendering tree is constructed
 * Read in the .rt2 and .dgm
@@ -55,16 +55,15 @@ Migration Strategy
 Phase 1
 -------
 
-1) Get mef2input to output the brushes to a .bru (whilst leaving the existing functionality in place).
-2) Implement hbrushdivider and test it (outside the toolchain).
-3) When it works, remove the existing functionality from mef2input, update the toolchain to use hbrushdivider and remove hr2cbrush.
+1) Implement hdivide and test it (outside the toolchain).
+2) Update the toolchain to use hdivide and remove hr2cbrush.
 
 ------------
 Phase 2 or 3
 ------------
 
-1) Implement hdetailer and test it.
-2) Update the toolchain to use hdetailer.
+1) Implement hdetail and test it.
+2) Update the toolchain to use hdetail.
 
 ------------
 Phase 2 or 3

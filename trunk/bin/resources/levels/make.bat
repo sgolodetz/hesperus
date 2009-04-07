@@ -5,7 +5,8 @@ IF [%1]==[] GOTO Finished
 cd %1
 set PATH=%PATH%;..\..\..\tools
 
-mef2input %1.mef %1.rbr %1.ent %1.lum
+mef2input %1.mef %1.bru %1.ent %1.lum
+hdivide %1.bru %1.rbr %1.cbr %1.dgm %1.hpl %1.sbr
 
 REM #################
 REM Rendering Section
@@ -24,7 +25,6 @@ REM #################
 REM Collision Section
 REM #################
 
-hr2cbrush %1.rbr %1.cbr
 hexpand ..\..\settings\hesperus.edf %1.cbr
 
 FOR %%f IN (*.ebr) DO (
@@ -48,38 +48,47 @@ hoportal -c %1.ot %1.op
 hnav ..\..\settings\hesperus.edf %1.ot %1.nav
 
 REM #################
-REM Collation Section (this will need updating ultimately)
+REM Collation Section
 REM #################
 
 hcollate +L %1.lbt %1.rp2 %1.vis %1.ot %1.op %1.nav %1.ent %1.bsp
 
 IF [%2]==[noclean] GOTO SkipCleanup
 
+REM #######################
+REM General Cleanup Section
+REM #######################
+
+del *.bru
+del *.sbr
+
 REM #########################
 REM Cleanup Rendering Section
 REM #########################
 
+del *.dgm
+del *.hpl
+del *.lbt
 del *.lum
+del *.png
 del *.rbr
 del *.rg*
-del *.rt*
 del *.rp*
+del *.rt*
 del *.vis
-del *.lbt
-del *.png
 
 REM #########################
 REM Cleanup Collision Section
 REM #########################
 
 del *.cbr
-del *.ebr
 del *.cg*
-del *.ct*
 del *.cp
-del *.ot
-del *.op
+del *.ct*
+del *.ebr
 del *.nav
+del *.op
+del *.ot
 
 :SkipCleanup
 
