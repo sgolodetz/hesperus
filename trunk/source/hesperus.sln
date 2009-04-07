@@ -73,6 +73,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hdivide", "tools\hdivide\hd
 		{57B520D8-1A0C-4F5D-BE95-26C288CA60FC} = {57B520D8-1A0C-4F5D-BE95-26C288CA60FC}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hdetail", "tools\hdetail\hdetail.vcproj", "{5FD5A1C9-929A-4F79-81F0-D5D53395F890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -139,6 +141,10 @@ Global
 		{41358316-E169-4645-81CD-A94B71060FEE}.Debug|Win32.Build.0 = Debug|Win32
 		{41358316-E169-4645-81CD-A94B71060FEE}.Release|Win32.ActiveCfg = Release|Win32
 		{41358316-E169-4645-81CD-A94B71060FEE}.Release|Win32.Build.0 = Release|Win32
+		{5FD5A1C9-929A-4F79-81F0-D5D53395F890}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5FD5A1C9-929A-4F79-81F0-D5D53395F890}.Debug|Win32.Build.0 = Debug|Win32
+		{5FD5A1C9-929A-4F79-81F0-D5D53395F890}.Release|Win32.ActiveCfg = Release|Win32
+		{5FD5A1C9-929A-4F79-81F0-D5D53395F890}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
