@@ -20,7 +20,6 @@ public abstract class ArchitectureBrush extends TransformableBrush
 	{
 		COLLISION,		// ¬Render, ¬Vis, Collisions
 		DETAIL,			// Render, ¬Vis, ¬Collisions
-		FOG,
 		HINT,			// ¬Render, Vis (treated specially), ¬Collisions
 		MULTIPLE,		// used for composite brushes (when the contained brushes have different functions)
 		NORMAL,
