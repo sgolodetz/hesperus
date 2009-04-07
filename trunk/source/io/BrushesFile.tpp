@@ -3,6 +3,8 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
+#include <fstream>
+
 #include <source/io/util/IOUtil.h>
 
 namespace hesp {
@@ -26,7 +28,7 @@ std::vector<shared_ptr<PolyhedralBrush<Poly> > > BrushesFile::load(const std::st
 
 	PolyBrushVector brushes;
 	PolyBrush_Ptr brush;
-	while(brush = IOUtil::load_polyhedral_brush<Poly>(is))
+	while(brush = IOUtil::read_polyhedral_brush<Poly>(is))
 	{
 		brushes.push_back(brush);
 	}

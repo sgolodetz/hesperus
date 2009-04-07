@@ -21,7 +21,7 @@ void GeometryFile::load(const std::string& filename, std::vector<shared_ptr<Poly
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	IOUtil::load_uncounted_polygons(is, polygons);
+	IOUtil::read_uncounted_polygons(is, polygons);
 }
 
 //#################### SAVING METHODS ####################

@@ -21,7 +21,7 @@ void PolygonsSection::load(std::istream& is, const std::string& sectionName, std
 {
 	LineIO::read_checked_line(is, sectionName);
 	LineIO::read_checked_line(is, "{");
-	IOUtil::load_counted_polygons(is, polygons);
+	IOUtil::read_counted_polygons(is, polygons);
 	LineIO::read_checked_line(is, "}");
 }
 

@@ -7,16 +7,16 @@
 
 namespace hesp {
 
-//#################### LOADING SUPPORT METHODS ####################
+//#################### READING METHODS ####################
 /**
-Loads a sequence of polygons of known length from a std::istream, one per line.
+Reads a sequence of polygons of known length from a std::istream, one per line.
 The polygon count is stored on a separate line before the polygons.
 
 @param is		The std::istream
-@param polygons	The std::vector into which to write the loaded polygons
+@param polygons	The std::vector into which to write the read polygons
 */
 template <typename Poly>
-void IOUtil::load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
+void IOUtil::read_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
 {
 	std::string line;
 
@@ -24,20 +24,20 @@ void IOUtil::load_counted_polygons(std::istream& is, std::vector<shared_ptr<Poly
 	try
 	{
 		int polyCount = boost::lexical_cast<int,std::string>(line);
-		load_polygons(is, polygons, polyCount);
+		read_polygons(is, polygons, polyCount);
 	}
 	catch(boost::bad_lexical_cast&) { throw Exception("The polygon count is not an integer"); }
 }
 
 /**
-Loads a polygon from a std::string (generally a line of text taken from a file).
+Reads a polygon from a std::string (generally a line of text taken from a file).
 
 @param line	The std::string containing the polygon definition
 @param n	The number of the line in the file (if available), as a std::string
 @return		The polygon
 */
 template <typename Vert, typename AuxData>
-shared_ptr<Polygon<Vert,AuxData> > IOUtil::load_polygon(const std::string& line, const std::string& n)
+shared_ptr<Polygon<Vert,AuxData> > IOUtil::read_polygon(const std::string& line, const std::string& n)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -84,13 +84,13 @@ shared_ptr<Polygon<Vert,AuxData> > IOUtil::load_polygon(const std::string& line,
 }
 
 /**
-Loads a sequence of polygons from a stream, one per line.
+Reads a sequence of polygons from a stream, one per line.
 
 @param is		The stream from which to load
 @param polygons	The std::vector into which to write the loaded polygons
 */
 template <typename Vert, typename AuxData>
-void IOUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead)
+void IOUtil::read_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polygons, int maxToRead)
 {
 	typedef Polygon<Vert,AuxData> Poly;
 	typedef shared_ptr<Poly> Poly_Ptr;
@@ -102,7 +102,7 @@ void IOUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert
 		boost::trim(line);
 		if(line != "")
 		{
-			polygons.push_back(load_polygon<Vert,AuxData>(line, boost::lexical_cast<std::string,int>(n)));
+			polygons.push_back(read_polygon<Vert,AuxData>(line, boost::lexical_cast<std::string,int>(n)));
 		}
 
 		++n;
@@ -111,14 +111,14 @@ void IOUtil::load_polygons(std::istream& is, std::vector<shared_ptr<Polygon<Vert
 }
 
 /**
-Loads a polyhedral brush from a std::istream.
+Reads a polyhedral brush from a std::istream.
 
 @param is			The std::istream
 @return				The polyhedral brush, or NULL if EOF was encountered
 @throws Exception	If anything else goes wrong whilst trying to read the polyhedral brush
 */
 template <typename Poly>
-shared_ptr<PolyhedralBrush<Poly> > IOUtil::load_polyhedral_brush(std::istream& is)
+shared_ptr<PolyhedralBrush<Poly> > IOUtil::read_polyhedral_brush(std::istream& is)
 {
 	typedef PolyhedralBrush<Poly> PolyBrush;
 	typedef shared_ptr<PolyBrush> PolyBrush_Ptr;
@@ -139,7 +139,7 @@ shared_ptr<PolyhedralBrush<Poly> > IOUtil::load_polyhedral_brush(std::istream& i
 	// Read faces.
 	typedef shared_ptr<Poly> Poly_Ptr;
 	std::vector<Poly_Ptr> faces;
-	load_counted_polygons(is, faces);
+	read_counted_polygons(is, faces);
 
 	LineIO::read_checked_line(is, "}");
 
@@ -147,15 +147,15 @@ shared_ptr<PolyhedralBrush<Poly> > IOUtil::load_polyhedral_brush(std::istream& i
 }
 
 /**
-Loads a sequence of polygons of unknown length from a std::istream, one per line.
+Reads a sequence of polygons of unknown length from a std::istream, one per line.
 
 @param is		The std::istream
-@param polygons	The std::vector into which to write the loaded polygons
+@param polygons	The std::vector into which to write the read polygons
 */
 template <typename Poly>
-void IOUtil::load_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
+void IOUtil::read_uncounted_polygons(std::istream& is, std::vector<shared_ptr<Poly> >& polygons)
 {
-	return load_polygons(is, polygons);
+	return read_polygons(is, polygons, INT_MAX);
 }
 
 //#################### SAVING SUPPORT METHODS ####################
