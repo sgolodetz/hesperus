@@ -15,7 +15,6 @@ enum BrushFunction
 {
 	BF_COLLISION,
 	BF_DETAIL,
-	BF_FOG,
 	BF_HINT,
 	BF_NORMAL,
 	BF_WATER,

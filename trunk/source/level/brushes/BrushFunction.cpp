@@ -18,7 +18,6 @@ std::ostream& operator<<(std::ostream& os, BrushFunction rhs)
 	{
 		case BF_COLLISION:	os << "COLLISION";	break;
 		case BF_DETAIL:		os << "DETAIL";		break;
-		case BF_FOG:		os << "FOG";		break;
 		case BF_HINT:		os << "HINT";		break;
 		case BF_NORMAL:		os << "NORMAL";		break;
 		case BF_WATER:		os << "WATER";		break;
@@ -33,7 +32,6 @@ std::istream& operator>>(std::istream& is, BrushFunction& rhs)
 	is >> s;
 	if(s == "COLLISION")	rhs = BF_COLLISION;
 	else if(s == "DETAIL")	rhs = BF_DETAIL;
-	else if(s == "FOG")		rhs = BF_FOG;
 	else if(s == "HINT")	rhs = BF_HINT;
 	else if(s == "NORMAL")	rhs = BF_NORMAL;
 	else if(s == "WATER")	rhs = BF_WATER;

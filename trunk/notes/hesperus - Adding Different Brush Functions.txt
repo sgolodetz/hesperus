@@ -33,7 +33,7 @@ hdivide
 * Output DETAIL polygons (i.e. the detail brush faces) to the .dgm (detail geometry)
 * Output HINT planes (i.e. the planes of HINT brush faces marked with the hint texture) to the .rhp (rendering hint planes)
 * Output (converted) NORMAL/COLLISION brushes (no need to include their functions) to the .cbr (collision brushes)
-* Output FOG/WATER brushes (include their functions) to the .sbr (special brushes)
+* Output WATER brushes (include their functions) to the .sbr (special brushes)
 
 -------
 hportal
