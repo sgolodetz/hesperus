@@ -11,6 +11,7 @@ Easy
 * Walk/run etc. - sort out where the various different entity speeds are coming from (I'd suggest the entity definition file, possibly).
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
 * Separate viewers from entities: we shouldn't have to see through the eyes of an entity, we should be able to position the camera anywhere we like.
+* Move BSPTree::find_leaf_index(const Vector3d&) to BSPUtil.
 
 ------
 Medium

@@ -6,7 +6,7 @@ cd %1
 set PATH=%PATH%;..\..\..\tools
 
 mef2input %1.mef %1.bru %1.ent %1.lum
-hdivide %1.bru %1.rbr %1.cbr %1.dgm %1.hpl %1.sbr
+hdivide %1.bru %1.rbr %1.cbr %1.dbr %1.hpl %1.sbr
 
 REM #################
 REM Rendering Section
@@ -19,7 +19,7 @@ hflood -r %1.rt1 %1.rp1 %1.rg2
 hbsp -r %1.rg2 %1.rt2
 hportal -r %1.rt2 %1.rp2
 hvis %1.rp2 %1.vis
-hdetail %1.rt2 %1.dgm %1.rt3
+hdetail %1.rt2 %1.dbr %1.rt3
 hlight %1.rt3 %1.vis %1.lum LM %1.lbt
 
 REM #################
@@ -67,7 +67,7 @@ REM #########################
 REM Cleanup Rendering Section
 REM #########################
 
-del *.dgm
+del *.dbr
 del *.hpl
 del *.lbt
 del *.lum

@@ -8,7 +8,6 @@
 #include <vector>
 
 #include <source/io/BrushesFile.h>
-#include <source/io/GeometryFile.h>
 #include <source/io/util/IOUtil.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/GeomUtil.h>
@@ -77,17 +76,6 @@ ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)
 	return ColPolyBrush_Ptr(new ColPolyBrush(bounds, colFaces, texBrush->function()));
 }
 
-TexPolyVector extract_detail_polygons(const TexPolyBrushVector& detailBrushes)
-{
-	TexPolyVector ret;
-	for(TexPolyBrushVector::const_iterator it=detailBrushes.begin(), iend=detailBrushes.end(); it!=iend; ++it)
-	{
-		const TexPolyVector& brushFaces = (*it)->faces();
-		std::copy(brushFaces.begin(), brushFaces.end(), std::back_inserter(ret));
-	}
-	return ret;
-}
-
 PlaneVector extract_hint_planes(const TexPolyBrushVector& hintBrushes)
 {
 	PlaneVector ret;
@@ -103,7 +91,7 @@ PlaneVector extract_hint_planes(const TexPolyBrushVector& hintBrushes)
 }
 
 void run_divider(const std::string& inputBrushesFilename, const std::string& renderingBrushesFilename,
-				 const std::string& collisionBrushesFilename, const std::string& detailPolygonsFilename,
+				 const std::string& collisionBrushesFilename, const std::string& detailBrushesFilename,
 				 const std::string& hintPlanesFilename, const std::string& specialBrushesFilename)
 {
 	// Read in the rendering brushes.
@@ -145,9 +133,8 @@ void run_divider(const std::string& inputBrushesFilename, const std::string& ren
 	}
 	BrushesFile::save(collisionBrushesFilename, convertedCollisionBrushes);
 
-	// Extract the detail polygons from the detail brushes and write them to disk.
-	TexPolyVector detailPolygons = extract_detail_polygons(detailBrushes);
-	GeometryFile::save(detailPolygonsFilename, detailPolygons);
+	// Write the detail brushes to disk.
+	BrushesFile::save(detailBrushesFilename, detailBrushes);
 
 	// Extract the hint planes from the hint brushes and write them to disk.
 	PlaneVector hintPlanes = extract_hint_planes(hintBrushes);

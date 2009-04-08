@@ -10,8 +10,9 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/GeometryFile.h>
+#include <source/io/BrushesFile.h>
 #include <source/io/TreeFile.h>
+#include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/bsp/BSPUtil.h>
 #include <source/level/csg/CSGUtil.h>
 #include <source/util/PolygonTypes.h>
@@ -19,7 +20,11 @@ using namespace hesp;
 
 //#################### TYPEDEFS ####################
 typedef std::list<TexturedPolygon_Ptr> TexPolyList;
+typedef shared_ptr<TexPolyList> TexPolyList_Ptr;
 typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
+typedef PolyhedralBrush<TexturedPolygon> TexPolyBrush;
+typedef shared_ptr<TexPolyBrush> TexPolyBrush_Ptr;
+typedef std::vector<TexPolyBrush_Ptr> TexPolyBrushVector;
 
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
@@ -45,13 +50,12 @@ void run_detailer(const std::string& inputBSPFilename, const std::string& inputD
 	BSPTree_Ptr tree;
 	TreeFile::load(inputBSPFilename, polygons, tree);
 
-	// Read in the detail geometry.
-	TexPolyVector detailPolygons;
-	GeometryFile::load(inputDetailGeometryFilename, detailPolygons);
+	// Read in the detail brushes and perform a CSG union on them.
+	TexPolyBrushVector detailBrushes = BrushesFile::load<TexturedPolygon>(inputDetailGeometryFilename);
+	TexPolyList_Ptr detailFaces = CSGUtil<Vert,AuxData>::union_all(detailBrushes);
 
 	// Clip the detail faces to the tree.
-	TexPolyList detailPolysList(detailPolygons.begin(), detailPolygons.end());
-	TexPolyList fragments = CSGUtil<Vert,AuxData>::clip_polygons_to_tree(detailPolysList, tree, true);
+	TexPolyList fragments = CSGUtil<Vert,AuxData>::clip_polygons_to_tree(*detailFaces, tree, true);
 
 	// Add the face fragments to the polygons array.
 	int firstFragment = static_cast<int>(polygons.size());
