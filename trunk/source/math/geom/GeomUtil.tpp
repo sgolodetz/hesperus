@@ -4,7 +4,6 @@
  ***/
 
 #include <cmath>
-#include <set>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -12,7 +11,6 @@
 
 #include <source/exceptions/InvalidParameterException.h>
 #include <source/math/Constants.h>
-#include "UniquePlanePred.h"
 
 namespace hesp {
 
@@ -176,35 +174,6 @@ std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1,
 
 	std::pair<Vec,double> intersection = determine_line_intersection_with_plane(p1, p2 - p1, plane);
 	return std::make_pair(intersection.first, strict ? 0 < intersection.second && intersection.second < 1 : 0 <= intersection.second && intersection.second <= 1);
-}
-
-/**
-Finds the unique set of planes in which the specified polygons lie.
-Note that planes which differ only in the orientation of their
-normal are treated as equivalent here.
-
-@param polygons	The polygons whose unique set of planes we wish to find
-@return			As stated
-*/
-template <typename Poly>
-shared_ptr<std::list<Plane> > find_unique_planes(const std::vector<shared_ptr<Poly> >& polygons)
-{
-	typedef std::list<Plane> PlaneList;
-	typedef shared_ptr<PlaneList> PlaneList_Ptr;
-	typedef shared_ptr<Poly> Poly_Ptr;
-	typedef std::vector<Poly_Ptr> PolyVector;
-
-	const double angleTolerance = 0.5 * PI / 180;	// convert 0.5 degrees to radians
-	const double distTolerance = 0.001;
-	std::set<Plane, UniquePlanePred> planes(UniquePlanePred(angleTolerance, distTolerance));
-
-	for(PolyVector::const_iterator it=polygons.begin(), iend=polygons.end(); it!=iend; ++it)
-	{
-		Plane plane = make_plane(**it).to_undirected_form();
-		planes.insert(plane);
-	}
-
-	return PlaneList_Ptr(new PlaneList(planes.begin(), planes.end()));
 }
 
 /**

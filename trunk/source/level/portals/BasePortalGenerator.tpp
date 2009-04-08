@@ -12,21 +12,19 @@ namespace hesp {
 /**
 Generates a list of portals for a 3D world.
 
-@param polygons	The world polygons
 @param tree		The tree for the world
 @return			As stated
 */
 BPG_HEADER
-template <typename Poly>
 typename BPG_THIS::PortalTList_Ptr
-BPG_THIS::generate_portals(const std::vector<shared_ptr<Poly> >& polygons, const TreeT_Ptr& tree) const
+BPG_THIS::generate_portals(const TreeT_Ptr& tree) const
 {
 	PortalTList_Ptr portals(new PortalTList);
-	PlaneList_Ptr planes = find_unique_planes(polygons);
+	std::list<Plane_CPtr> planes = find_unique_planes(tree->split_planes());
 
-	for(PlaneList::const_iterator it=planes->begin(), iend=planes->end(); it!=iend; ++it)
+	for(std::list<Plane_CPtr>::const_iterator it=planes.begin(), iend=planes.end(); it!=iend; ++it)
 	{
-		PortalT_Ptr portal = make_initial_portal(*it);
+		PortalT_Ptr portal = make_initial_portal(**it);
 		portals->splice(portals->end(), clip_portal_to_tree(portal, tree));
 	}
 

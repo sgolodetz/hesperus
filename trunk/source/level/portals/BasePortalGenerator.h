@@ -18,8 +18,6 @@ class BasePortalGenerator
 {
 	//#################### TYPEDEFS ####################
 private:
-	typedef std::list<Plane> PlaneList;
-	typedef shared_ptr<PlaneList> PlaneList_Ptr;
 	typedef shared_ptr<PortalT> PortalT_Ptr;
 	typedef std::list<PortalT_Ptr> PortalTList;
 	typedef shared_ptr<PortalTList> PortalTList_Ptr;
@@ -39,8 +37,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	template <typename Poly>
-	PortalTList_Ptr generate_portals(const std::vector<shared_ptr<Poly> >& polygons, const TreeT_Ptr& tree) const;
+	PortalTList_Ptr generate_portals(const TreeT_Ptr& tree) const;
 
 	//#################### PRIVATE METHODS ####################
 private:

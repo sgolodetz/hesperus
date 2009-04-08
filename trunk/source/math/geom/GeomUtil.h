@@ -52,8 +52,7 @@ double displacement_from_plane(const Vector3d& p, const Plane& plane);
 
 double distance_to_plane(const Vector3d& p, const Plane& plane);
 
-template <typename Poly>
-shared_ptr<std::list<Plane> > find_unique_planes(const std::vector<shared_ptr<Poly> >& polygons);
+std::list<Plane_CPtr> find_unique_planes(const std::list<Plane_CPtr>& planes);
 
 Vector3d generate_arbitrary_coplanar_unit_vector(const Plane& plane);
 

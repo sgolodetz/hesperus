@@ -43,7 +43,7 @@ void run_generator(const std::string& inputFilename, const std::string& outputFi
 	OnionTreeFile::load(inputFilename, polygons, tree);
 
 	// Generate the onion portals.
-	shared_ptr<std::list<OnionPortal_Ptr> > portals = OnionPortalGenerator().generate_portals(polygons, tree);
+	shared_ptr<std::list<OnionPortal_Ptr> > portals = OnionPortalGenerator().generate_portals(tree);
 
 	// Save the onion portals to the output file.
 	std::vector<OnionPortal_Ptr> vec(portals->begin(), portals->end());

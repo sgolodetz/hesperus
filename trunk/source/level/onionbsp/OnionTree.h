@@ -6,6 +6,8 @@
 #ifndef H_HESP_ONIONTREE
 #define H_HESP_ONIONTREE
 
+#include <list>
+
 #include <source/math/vectors/Vector3.h>
 #include "OnionBranch.h"
 #include "OnionLeaf.h"
@@ -68,12 +70,14 @@ public:
 	int map_count() const;
 	void output_postorder_text(std::ostream& os) const;
 	OnionNode_Ptr root() const;
+	std::list<Plane_CPtr> split_planes() const;
 
 	//#################### PRIVATE METHODS ####################
 private:
 	Transition find_first_transition_sub(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionNode_Ptr& node) const;
 	void index_leaves();
 	void index_leaves_sub(const OnionNode_Ptr& node);
+	std::list<Plane_CPtr> split_planes_sub(const OnionNode_Ptr& node) const;
 };
 
 }

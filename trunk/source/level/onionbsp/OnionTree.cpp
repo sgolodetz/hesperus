@@ -172,6 +172,11 @@ OnionNode_Ptr OnionTree::root() const
 	return m_nodes.back();
 }
 
+std::list<Plane_CPtr> OnionTree::split_planes() const
+{
+	return split_planes_sub(root());
+}
+
 //#################### PRIVATE METHODS ####################
 OnionTree::Transition OnionTree::find_first_transition_sub(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionNode_Ptr& node) const
 {
@@ -310,6 +315,21 @@ void OnionTree::index_leaves_sub(const OnionNode_Ptr& node)
 		index_leaves_sub(branch->left());
 		index_leaves_sub(branch->right());
 	}
+}
+
+std::list<Plane_CPtr> OnionTree::split_planes_sub(const OnionNode_Ptr& node) const
+{
+	std::list<Plane_CPtr> ret;
+
+	if(!node->is_leaf())
+	{
+		const OnionBranch *branch = node->as_branch();
+		ret.push_back(branch->splitter());
+		ret.splice(ret.end(), split_planes_sub(branch->left()));
+		ret.splice(ret.end(), split_planes_sub(branch->right()));
+	}
+
+	return ret;
 }
 
 }

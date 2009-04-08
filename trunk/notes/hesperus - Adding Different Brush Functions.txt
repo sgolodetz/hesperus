@@ -51,23 +51,28 @@ mef2input
 Migration Strategy
 ==================
 
--------
-Phase 1
--------
+--------------------------
+Phase 1: Collision Brushes
+--------------------------
 
 1) Implement hdivide and test it (outside the toolchain).
 2) Update the toolchain to use hdivide and remove hr2cbrush.
 
-------------
-Phase 2 or 3
-------------
+----------------------------------------
+Phase 2: Fix Inconvenient Implementation
+----------------------------------------
+
+1) Update hportal to use the tree node split planes.
+
+-----------------------------
+Phase 3 or 4: Detail Polygons
+-----------------------------
 
 1) Implement hdetail and test it.
 2) Update the toolchain to use hdetail.
 
-------------
-Phase 2 or 3
-------------
+-------------------------
+Phase 3 or 4: Hint Planes
+-------------------------
 
-1) Update hportal to use the tree node split planes.
-2) Update hbsp to use hint planes when building rendering trees.
+1) Update hbsp to use hint planes when building rendering trees.

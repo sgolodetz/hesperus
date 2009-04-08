@@ -5,6 +5,10 @@
 
 #include "GeomUtil.h"
 
+#include <set>
+
+#include "UniquePlanePred.h"
+
 namespace hesp {
 
 //#################### GLOBAL FUNCTIONS ####################
@@ -110,6 +114,35 @@ Calculates the perpendicular distance between the point p and the plane.
 double distance_to_plane(const Vector3d& p, const Plane& plane)
 {
 	return fabs(displacement_from_plane(p, plane));
+}
+
+/**
+Finds the unique set of planes from an initial list which may contain duplicates.
+Note that planes which differ only in the orientation of their normal are treated
+as equivalent here.
+
+@param planes	The initial list of planes
+@return			As stated
+*/
+std::list<Plane_CPtr> find_unique_planes(const std::list<Plane_CPtr>& planes)
+{
+	typedef std::set<Plane, UniquePlanePred> UniquePlaneSet;
+
+	const double angleTolerance = 0.5 * PI / 180;	// convert 0.5 degrees to radians
+	const double distTolerance = 0.001;
+	UniquePlaneSet uniquePlanes(UniquePlanePred(angleTolerance, distTolerance));
+
+	for(std::list<Plane_CPtr>::const_iterator it=planes.begin(), iend=planes.end(); it!=iend; ++it)
+	{
+		uniquePlanes.insert((*it)->to_undirected_form());
+	}
+
+	std::list<Plane_CPtr> ret;
+	for(UniquePlaneSet::const_iterator it=uniquePlanes.begin(), iend=uniquePlanes.end(); it!=iend; ++it)
+	{
+		ret.push_back(Plane_CPtr(new Plane(*it)));
+	}
+	return ret;
 }
 
 /**
