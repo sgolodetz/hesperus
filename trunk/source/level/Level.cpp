@@ -12,6 +12,7 @@
 #include <gl/glu.h>
 
 #include <source/colours/Colour3d.h>
+#include <source/level/bsp/BSPUtil.h>
 #include <source/level/models/Model.h>
 #include <source/math/vectors/Vector3.h>
 
@@ -93,7 +94,7 @@ void Level::render() const
 
 	// Determine which leaves are potentially visible from the current viewer position.
 	bool renderAllLeaves = false;
-	int curLeaf = m_tree->find_leaf_index(pos);
+	int curLeaf = BSPUtil::find_leaf_index(pos, m_tree);
 	if(curLeaf >= m_tree->empty_leaf_count())
 	{
 		// If we're erroneously in a solid leaf, the best we can do is render the entire level.

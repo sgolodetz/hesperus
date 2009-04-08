@@ -9,14 +9,14 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 template <typename Vert, typename AuxData>
-std::list<int> BSPUtil::find_leaf_indices(const Polygon<Vert,AuxData>& poly, const BSPTree_Ptr& tree)
+std::list<int> BSPUtil::find_leaf_indices(const Polygon<Vert,AuxData>& poly, const BSPTree_CPtr& tree)
 {
-	return find_leaf_indices(poly, tree->root());
+	return find_leaf_indices_sub(poly, tree->root());
 }
 
 //#################### PRIVATE METHODS ####################
 template <typename Vert, typename AuxData>
-std::list<int> BSPUtil::find_leaf_indices(const Polygon<Vert,AuxData>& poly, const BSPNode_Ptr& node)
+std::list<int> BSPUtil::find_leaf_indices_sub(const Polygon<Vert,AuxData>& poly, const BSPNode_Ptr& node)
 {
 	if(node->is_leaf())
 	{
@@ -32,19 +32,19 @@ std::list<int> BSPUtil::find_leaf_indices(const Polygon<Vert,AuxData>& poly, con
 		{
 			case CP_BACK:
 			{
-				return find_leaf_indices(poly, branch->right());
+				return find_leaf_indices_sub(poly, branch->right());
 			}
 			case CP_COPLANAR:
 			case CP_FRONT:
 			{
-				return find_leaf_indices(poly, branch->left());
+				return find_leaf_indices_sub(poly, branch->left());
 			}
 			default:	// case CP_STRADDLE
 			{
 				SplitResults<Vert,AuxData> sr = split_polygon(poly, *branch->splitter());
 				std::list<int> leafIndices;
-				leafIndices.splice(leafIndices.end(), find_leaf_indices(*sr.front, branch->left()));
-				leafIndices.splice(leafIndices.end(), find_leaf_indices(*sr.back, branch->right()));
+				leafIndices.splice(leafIndices.end(), find_leaf_indices_sub(*sr.front, branch->left()));
+				leafIndices.splice(leafIndices.end(), find_leaf_indices_sub(*sr.back, branch->right()));
 				return leafIndices;
 			}
 		}

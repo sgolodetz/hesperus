@@ -8,7 +8,6 @@
 
 #include <list>
 
-#include <source/math/vectors/Vector3.h>
 #include "BSPBranch.h"
 #include "BSPLeaf.h"
 
@@ -39,10 +38,8 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	int empty_leaf_count() const;
-	int find_leaf_index(const Vector3d& p) const;
 	BSPLeaf *leaf(int n);
 	const BSPLeaf *leaf(int n) const;
-	bool line_of_sight(const Vector3d& p1, const Vector3d& p2) const;
 	static BSPTree_Ptr load_postorder_text(std::istream& is);
 	void output_postorder_text(std::ostream& os) const;
 	BSPNode_Ptr root() const;
@@ -52,7 +49,6 @@ public:
 private:
 	void index_leaves();
 	void index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag);
-	bool line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_Ptr& node) const;
 	std::list<Plane_CPtr> split_planes_sub(const BSPNode_Ptr& node) const;
 };
 

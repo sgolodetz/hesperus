@@ -8,17 +8,24 @@
 
 #include <list>
 
+#include <source/math/geom/Polygon.h>
+#include <source/math/vectors/Vector3.h>
+#include "BSPTree.h"
+
 namespace hesp {
 
 class BSPUtil
 {
 	//#################### PUBLIC METHODS ####################
 public:
-	template <typename Vert, typename AuxData> static std::list<int> find_leaf_indices(const Polygon<Vert,AuxData>& poly, const BSPTree_Ptr& tree);
+	static int find_leaf_index(const Vector3d& p, const BSPTree_CPtr& tree);
+	template <typename Vert, typename AuxData> static std::list<int> find_leaf_indices(const Polygon<Vert,AuxData>& poly, const BSPTree_CPtr& tree);
+	static bool line_of_sight(const Vector3d& p1, const Vector3d& p2, const BSPTree_CPtr& tree);
 
 	//#################### PRIVATE METHODS ####################
 private:
-	template <typename Vert, typename AuxData> static std::list<int> find_leaf_indices(const Polygon<Vert,AuxData>& poly, const BSPNode_Ptr& node);
+	template <typename Vert, typename AuxData> static std::list<int> find_leaf_indices_sub(const Polygon<Vert,AuxData>& poly, const BSPNode_Ptr& node);
+	static bool line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_Ptr& node);
 };
 
 }

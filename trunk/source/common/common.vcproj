@@ -569,6 +569,10 @@
 						RelativePath="..\level\bsp\BSPTree.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\bsp\BSPUtil.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"

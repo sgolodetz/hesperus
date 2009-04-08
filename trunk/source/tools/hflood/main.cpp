@@ -13,7 +13,7 @@
 #include <source/io/GeometryFile.h>
 #include <source/io/PortalsFile.h>
 #include <source/io/TreeFile.h>
-#include <source/level/bsp/BSPTree.h>
+#include <source/level/bsp/BSPUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
@@ -77,7 +77,7 @@ void run_flood(const std::string& treeFilename, const std::string& portalsFilena
 	}
 
 	// Flood from an arbitrary point outside the level to figure out which leaves aren't valid.
-	int startLeaf = tree->find_leaf_index(Vector3d(100000, 0, 0));
+	int startLeaf = BSPUtil::find_leaf_index(Vector3d(100000, 0, 0), tree);
 
 	std::set<int> reachableLeaves;
 	flood_from(startLeaf, portalsFromLeaf, reachableLeaves);

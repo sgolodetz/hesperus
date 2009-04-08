@@ -5,6 +5,8 @@
 
 #include "LightmapGrid.h"
 
+#include <source/level/bsp/BSPUtil.h>
+
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
@@ -33,7 +35,7 @@ Lightmap_Ptr LightmapGrid::lightmap_from_light(const Light& light, const BSPTree
 			if(m_grid[r][c].withinPolygon)
 			{
 				const Vector3d& p = m_grid[r][c].position;
-				if(tree->line_of_sight(light.position, p))
+				if(BSPUtil::line_of_sight(light.position, p, tree))
 				{
 					// Use the light equation I = I_p . k_d . (N . L) . fAtt (see OUCL Computer Graphics notes - Set 8).
 					// In this, fAtt (the atmospheric attenuation coefficient) = min(1/(c1+c2.dL+c3.dL^2), 1), where
