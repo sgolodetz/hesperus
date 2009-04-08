@@ -19,7 +19,8 @@ hflood -r %1.rt1 %1.rp1 %1.rg2
 hbsp -r %1.rg2 %1.rt2
 hportal -r %1.rt2 %1.rp2
 hvis %1.rp2 %1.vis
-hlight %1.rt2 %1.vis %1.lum LM %1.lbt
+hdetail %1.rt2 %1.dgm %1.rt3
+hlight %1.rt3 %1.vis %1.lum LM %1.lbt
 
 REM #################
 REM Collision Section

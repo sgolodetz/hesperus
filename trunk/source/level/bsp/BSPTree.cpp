@@ -74,6 +74,16 @@ Returns the leaf with leaf index n.
 @return				As stated
 @throws Exception	If the leaf index is out of range
 */
+BSPLeaf *BSPTree::leaf(int n)
+{
+	int leafCount = static_cast<int>(m_leaves.size());
+	if(n >= 0 && n < leafCount) return m_leaves[n];
+	else throw Exception("Leaf index out of range");
+}
+
+/**
+Returns the leaf with leaf index n (as above).
+*/
 const BSPLeaf *BSPTree::leaf(int n) const
 {
 	int leafCount = static_cast<int>(m_leaves.size());

@@ -19,6 +19,7 @@ hflood -r %1.rt1 %1.rp1 %1.rg2
 hbsp -r %1.rg2 %1.rt2
 hportal -r %1.rt2 %1.rp2
 hvis %1.rp2 %1.vis
+hdetail %1.rt2 %1.dgm %1.rt3
 
 REM #################
 REM Collision Section
@@ -50,7 +51,7 @@ REM #################
 REM Collation Section
 REM #################
 
-hcollate -L %1.rt2 %1.rp2 %1.vis %1.ot %1.op %1.nav %1.ent %1.bsp
+hcollate -L %1.rt3 %1.rp2 %1.vis %1.ot %1.op %1.nav %1.ent %1.bsp
 
 IF [%2]==[noclean] GOTO SkipCleanup
 

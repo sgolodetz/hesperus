@@ -5,16 +5,20 @@
 
 #include <fstream>
 #include <iostream>
+#include <list>
 #include <string>
 #include <vector>
 
 #include <source/exceptions/Exception.h>
 #include <source/io/GeometryFile.h>
 #include <source/io/TreeFile.h>
+#include <source/level/bsp/BSPUtil.h>
+#include <source/level/csg/CSGUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
 //#################### TYPEDEFS ####################
+typedef std::list<TexturedPolygon_Ptr> TexPolyList;
 typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
 
 //#################### FUNCTIONS ####################
@@ -33,6 +37,9 @@ void quit_with_usage()
 void run_detailer(const std::string& inputBSPFilename, const std::string& inputDetailGeometryFilename,
 				  const std::string& outputBSPFilename)
 {
+	typedef TexturedPolygon::Vert Vert;
+	typedef TexturedPolygon::AuxData AuxData;
+
 	// Read in the polygons and tree.
 	TexPolyVector polygons;
 	BSPTree_Ptr tree;
@@ -42,9 +49,25 @@ void run_detailer(const std::string& inputBSPFilename, const std::string& inputD
 	TexPolyVector detailPolygons;
 	GeometryFile::load(inputDetailGeometryFilename, detailPolygons);
 
-	// Clip each detail face to the tree and add face fragments to the relevant leaves.
-	// NYI
-	throw 23;
+	// Clip the detail faces to the tree.
+	TexPolyList detailPolysList(detailPolygons.begin(), detailPolygons.end());
+	TexPolyList fragments = CSGUtil<Vert,AuxData>::clip_polygons_to_tree(detailPolysList, tree, true);
+
+	// Add the face fragments to the polygons array.
+	int firstFragment = static_cast<int>(polygons.size());
+	std::copy(fragments.begin(), fragments.end(), std::back_inserter(polygons));
+	int lastFragment = static_cast<int>(polygons.size()) - 1;
+
+	// Add the face fragments to the relevant leaves.
+	for(int i=firstFragment; i<=lastFragment; ++i)
+	{
+		std::list<int> leafIndices = BSPUtil::find_leaf_indices(*polygons[i], tree);
+		for(std::list<int>::const_iterator jt=leafIndices.begin(), jend=leafIndices.end(); jt!=jend; ++jt)
+		{
+			BSPLeaf *leaf = tree->leaf(*jt);
+			leaf->add_polygon_index(i);
+		}
+	}
 
 	// Write the modified polygon array and tree to disk.
 	TreeFile::save(outputBSPFilename, polygons, tree);

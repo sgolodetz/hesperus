@@ -593,12 +593,20 @@
 						RelativePath="..\level\bsp\BSPTree.h"
 						>
 					</File>
+					<File
+						RelativePath="..\level\bsp\BSPUtil.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
 					>
 					<File
 						RelativePath="..\level\bsp\BSPCompiler.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bsp\BSPUtil.tpp"
 						>
 					</File>
 				</Filter>

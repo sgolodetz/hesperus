@@ -32,6 +32,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void add_polygon_index(int polyIndex);
 	BSPBranch *as_branch();
 	const BSPBranch *as_branch() const;
 	BSPLeaf *as_leaf();

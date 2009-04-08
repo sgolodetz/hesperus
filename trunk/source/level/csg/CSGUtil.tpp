@@ -12,6 +12,26 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 /**
+Clips a list of polygons to a tree.
+
+@param polys			The polygons
+@param tree				The tree
+@param coplanarFlag		Whether same-facing coplanar polygons should be passed down the front side of the tree
+@return					A list of polygon fragments that survived the clipping process
+*/
+CSGUtil_HEADER
+typename CSGUtil_THIS::PolyList
+CSGUtil_THIS::clip_polygons_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag)
+{
+	PolyList ret;
+	for(PolyList::const_iterator it=polys.begin(), iend=polys.end(); it!=iend; ++it)
+	{
+		ret.splice(ret.end(), clip_polygon_to_subtree(*it, tree->root(), coplanarFlag).first);
+	}
+	return ret;
+}
+
+/**
 Unions the polygons in a set of convex brushes to produce a valid set of polygon geometry
 
 @param brushes	The brushes
@@ -169,26 +189,6 @@ CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& n
 			}
 		}
 	}
-}
-
-/**
-Clips a list of polygons to a tree.
-
-@param polys			The polygons
-@param tree				The tree
-@param coplanarFlag		Whether same-facing coplanar polygons should be passed down the front side of the tree
-@return					A list of polygon fragments that survived the clipping process
-*/
-CSGUtil_HEADER
-typename CSGUtil_THIS::PolyList
-CSGUtil_THIS::clip_polygons_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag)
-{
-	PolyList ret;
-	for(PolyList::const_iterator it=polys.begin(), iend=polys.end(); it!=iend; ++it)
-	{
-		ret.splice(ret.end(), clip_polygon_to_subtree(*it, tree->root(), coplanarFlag).first);
-	}
-	return ret;
 }
 
 }

@@ -5,6 +5,8 @@
 
 #include "BrushExpander.h"
 
+#include <iostream>
+
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {
@@ -69,7 +71,8 @@ BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_P
 				case CP_COPLANAR:
 				{
 					// The planes are unique, so this should never happen.
-					throw Exception("BrushExpander: Unexpected duplicate plane");
+					std::cout << "BrushExpander: Unexpected duplicate plane" << std::endl;
+					continue;
 				}
 				case CP_FRONT:
 				{

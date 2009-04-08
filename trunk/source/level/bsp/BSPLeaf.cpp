@@ -29,6 +29,7 @@ BSPNode_Ptr BSPLeaf::make_solid_leaf(int index)
 }
 
 //#################### PUBLIC METHODS ####################
+void BSPLeaf::add_polygon_index(int polyIndex)				{ m_polygonIndices.push_back(polyIndex); }
 BSPBranch *BSPLeaf::as_branch()								{ return NULL; }
 const BSPBranch *BSPLeaf::as_branch() const					{ return NULL; }
 BSPLeaf *BSPLeaf::as_leaf()									{ return this; }
