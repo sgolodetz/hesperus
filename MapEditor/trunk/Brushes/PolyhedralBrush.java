@@ -294,61 +294,15 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		if(bRenderTextures)
+		switch(m_properties.get_function())
 		{
-			for(Polygon p: m_polys)
-			{
-				Pair<String,TexturePlane> textureDetails = p.get_texture_details();
-				Texture texture = TextureManager.instance().get_texture(textureDetails.first);
-				if(texture != null)		// if there's a texture to use, render a textured polygon
-				{
-					gl.glEnable(GL.GL_TEXTURE_2D);
-					texture.bind(gl, glu);
-
-					gl.glBegin(GL.GL_POLYGON);
-						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Vector3d v: p.get_vertices())
-						{
-							TextureCoord texCoords = textureDetails.second.calculate_coordinates(v);
-							gl.glTexCoord2d(texCoords.u, texCoords.v);
-							gl.glVertex3d(v.x, v.y, v.z);
-						}
-					gl.glEnd();
-
-					gl.glDisable(GL.GL_TEXTURE_2D);
-				}
-				else					// otherwise, render a blank white polygon
-				{
-					gl.glBegin(GL.GL_POLYGON);
-						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Vector3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
-					gl.glEnd();
-				}
-			}
+			case COLLISION:
+				render3D_COLLISION(gl, glu, bRenderNormals, bRenderTextures);
+				break;
+			default:
+				render3D_NORMAL(gl, glu, bRenderNormals, bRenderTextures);
+				break;
 		}
-		else
-		{
-			if(Options.is_set("Flat-Shading"))
-			{
-				// Use flat-shaded rendering without textures.
-				float[] colour = null;
-				colour = m_colour.getRGBComponents(colour);
-
-				render_flatshaded_polygons(gl, colour);
-			}
-			else
-			{
-				// Use multi-coloured rendering without textures.
-				render_multicoloured_polygons(gl, new float[][]
-				{
-					{1.0f, 0.0f, 0.0f},
-					{0.0f, 1.0f, 0.0f},
-					{0.0f, 0.0f, 1.0f}
-				});
-			}
-		}
-
-		if(bRenderNormals) render_normals(gl);
 	}
 
 	public void render_selected(IRenderer renderer, Color overrideColour)
@@ -363,84 +317,15 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
 	{
-		if(bRenderTextures)
+		switch(m_properties.get_function())
 		{
-			for(Polygon p: m_polys)
-			{
-				Pair<String,TexturePlane> textureDetails = p.get_texture_details();
-				Texture texture = TextureManager.instance().get_texture(textureDetails.first);
-				if(texture != null)		// if there's a texture to use, render a textured polygon
-				{
-					gl.glEnable(GL.GL_TEXTURE_2D);
-					texture.bind(gl, glu);
-
-					// Set up the stencil buffer to write 1 when the depth test passes, and 0 otherwise.
-					gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-					gl.glStencilOp(GL.GL_ZERO, GL.GL_ZERO, GL.GL_REPLACE);
-					gl.glEnable(GL.GL_STENCIL_TEST);
-
-					// Render the textured polygon.
-					gl.glBegin(GL.GL_POLYGON);
-						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Vector3d v: p.get_vertices())
-						{
-							TextureCoord texCoords = textureDetails.second.calculate_coordinates(v);
-							gl.glTexCoord2d(texCoords.u, texCoords.v);
-							gl.glVertex3d(v.x, v.y, v.z);
-						}
-					gl.glEnd();
-
-					gl.glDisable(GL.GL_TEXTURE_2D);
-
-					// Set up the stencil buffer to pass when it contains a 1, and disable depth testing.
-					gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-					gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-					gl.glDisable(GL.GL_DEPTH_TEST);
-
-					// Render the selection highlight polygon by blending it with the texture underneath.
-					gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-					gl.glEnable(GL.GL_BLEND);
-					gl.glBegin(GL.GL_POLYGON);
-						gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-						for(Vector3d v: p.get_vertices())
-						{
-							gl.glVertex3d(v.x, v.y, v.z);
-						}
-					gl.glEnd();
-					gl.glDisable(GL.GL_BLEND);
-
-					gl.glEnable(GL.GL_DEPTH_TEST);
-					gl.glDisable(GL.GL_STENCIL_TEST);
-				}
-				else				// otherwise, render a blank white polygon
-				{
-					gl.glBegin(GL.GL_POLYGON);
-						gl.glColor3f(1.0f, 1.0f, 1.0f);
-						for(Vector3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
-					gl.glEnd();
-				}
-			}
+			case COLLISION:
+				render3D_selected_COLLISION(gl, glu, bRenderNormals, bRenderTextures);
+				break;
+			default:
+				render3D_selected_NORMAL(gl, glu, bRenderNormals, bRenderTextures);
+				break;
 		}
-		else
-		{
-			if(Options.is_set("Flat-Shading"))
-			{
-				// Use flat-shaded rendering without textures.
-				render_flatshaded_polygons(gl, new float[] {1.0f, 0.0f, 0.0f});
-			}
-			else
-			{
-				// Use multi-coloured rendering without textures.
-				render_multicoloured_polygons(gl, new float[][]
-				{
-					{1.0f, 1.0f, 0.0f},
-					{0.0f, 1.0f, 1.0f},
-					{1.0f, 0.0f, 1.0f}
-				});
-			}
-		}
-
-		if(bRenderNormals) render_normals(gl);
 	}
 
 	public double selection_metric(Vector2d p, IRenderer renderer)
@@ -1234,6 +1119,169 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				gl.glVertex3d(centrePLUSnormal.x, centrePLUSnormal.y, centrePLUSnormal.z);
 			}
 		gl.glEnd();
+	}
+
+	private void render3D_COLLISION(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	{
+		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glDisable(GL.GL_CULL_FACE);
+
+		render_flatshaded_polygons(gl, new float[] { 1.0f, 1.0f, 1.0f });
+
+		gl.glPopAttrib();
+	}
+
+	private void render3D_NORMAL(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	{
+		if(bRenderTextures)
+		{
+			for(Polygon p: m_polys)
+			{
+				Pair<String,TexturePlane> textureDetails = p.get_texture_details();
+				Texture texture = TextureManager.instance().get_texture(textureDetails.first);
+				if(texture != null)		// if there's a texture to use, render a textured polygon
+				{
+					gl.glEnable(GL.GL_TEXTURE_2D);
+					texture.bind(gl, glu);
+
+					gl.glBegin(GL.GL_POLYGON);
+						gl.glColor3f(1.0f, 1.0f, 1.0f);
+						for(Vector3d v: p.get_vertices())
+						{
+							TextureCoord texCoords = textureDetails.second.calculate_coordinates(v);
+							gl.glTexCoord2d(texCoords.u, texCoords.v);
+							gl.glVertex3d(v.x, v.y, v.z);
+						}
+					gl.glEnd();
+
+					gl.glDisable(GL.GL_TEXTURE_2D);
+				}
+				else					// otherwise, render a blank white polygon
+				{
+					gl.glBegin(GL.GL_POLYGON);
+						gl.glColor3f(1.0f, 1.0f, 1.0f);
+						for(Vector3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
+					gl.glEnd();
+				}
+			}
+		}
+		else
+		{
+			if(Options.is_set("Flat-Shading"))
+			{
+				// Use flat-shaded rendering without textures.
+				float[] colour = null;
+				colour = m_colour.getRGBComponents(colour);
+
+				render_flatshaded_polygons(gl, colour);
+			}
+			else
+			{
+				// Use multi-coloured rendering without textures.
+				render_multicoloured_polygons(gl, new float[][]
+				{
+					{1.0f, 0.0f, 0.0f},
+					{0.0f, 1.0f, 0.0f},
+					{0.0f, 0.0f, 1.0f}
+				});
+			}
+		}
+
+		if(bRenderNormals) render_normals(gl);
+	}
+
+	private void render3D_selected_COLLISION(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	{
+		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glDisable(GL.GL_CULL_FACE);
+
+		render_flatshaded_polygons(gl, new float[] { 1.0f, 1.0f, 0.0f });
+
+		gl.glPopAttrib();
+	}
+
+	private void render3D_selected_NORMAL(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	{
+		if(bRenderTextures)
+		{
+			for(Polygon p: m_polys)
+			{
+				Pair<String,TexturePlane> textureDetails = p.get_texture_details();
+				Texture texture = TextureManager.instance().get_texture(textureDetails.first);
+				if(texture != null)		// if there's a texture to use, render a textured polygon
+				{
+					gl.glEnable(GL.GL_TEXTURE_2D);
+					texture.bind(gl, glu);
+
+					// Set up the stencil buffer to write 1 when the depth test passes, and 0 otherwise.
+					gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+					gl.glStencilOp(GL.GL_ZERO, GL.GL_ZERO, GL.GL_REPLACE);
+					gl.glEnable(GL.GL_STENCIL_TEST);
+
+					// Render the textured polygon.
+					gl.glBegin(GL.GL_POLYGON);
+						gl.glColor3f(1.0f, 1.0f, 1.0f);
+						for(Vector3d v: p.get_vertices())
+						{
+							TextureCoord texCoords = textureDetails.second.calculate_coordinates(v);
+							gl.glTexCoord2d(texCoords.u, texCoords.v);
+							gl.glVertex3d(v.x, v.y, v.z);
+						}
+					gl.glEnd();
+
+					gl.glDisable(GL.GL_TEXTURE_2D);
+
+					// Set up the stencil buffer to pass when it contains a 1, and disable depth testing.
+					gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+					gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+					gl.glDisable(GL.GL_DEPTH_TEST);
+
+					// Render the selection highlight polygon by blending it with the texture underneath.
+					gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+					gl.glEnable(GL.GL_BLEND);
+					gl.glBegin(GL.GL_POLYGON);
+						gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+						for(Vector3d v: p.get_vertices())
+						{
+							gl.glVertex3d(v.x, v.y, v.z);
+						}
+					gl.glEnd();
+					gl.glDisable(GL.GL_BLEND);
+
+					gl.glEnable(GL.GL_DEPTH_TEST);
+					gl.glDisable(GL.GL_STENCIL_TEST);
+				}
+				else				// otherwise, render a blank white polygon
+				{
+					gl.glBegin(GL.GL_POLYGON);
+						gl.glColor3f(1.0f, 1.0f, 1.0f);
+						for(Vector3d v: p.get_vertices()) gl.glVertex3d(v.x, v.y, v.z);
+					gl.glEnd();
+				}
+			}
+		}
+		else
+		{
+			if(Options.is_set("Flat-Shading"))
+			{
+				// Use flat-shaded rendering without textures.
+				render_flatshaded_polygons(gl, new float[] {1.0f, 0.0f, 0.0f});
+			}
+			else
+			{
+				// Use multi-coloured rendering without textures.
+				render_multicoloured_polygons(gl, new float[][]
+				{
+					{1.0f, 1.0f, 0.0f},
+					{0.0f, 1.0f, 1.0f},
+					{1.0f, 0.0f, 1.0f}
+				});
+			}
+		}
+
+		if(bRenderNormals) render_normals(gl);
 	}
 
 	//################## PRIVATE NESTED CLASSES ##################//
