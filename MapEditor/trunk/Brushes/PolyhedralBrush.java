@@ -301,7 +301,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				break;
 			case DETAIL:
 				render3D_NORMAL(gl, glu);
-				render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
+				if(Options.is_set("Render Distinguishable Details")) render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
 				break;
 			default:
 				render3D_NORMAL(gl, glu);
@@ -330,7 +330,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				break;
 			case DETAIL:
 				render3D_selected_NORMAL(gl, glu);
-				render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
+				if(Options.is_set("Render Distinguishable Details")) render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
 				break;
 			default:
 				render3D_selected_NORMAL(gl, glu);
