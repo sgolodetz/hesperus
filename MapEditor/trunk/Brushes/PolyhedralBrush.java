@@ -1170,26 +1170,23 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				}
 			}
 		}
+		else if(Options.is_set("Flat-Shading"))
+		{
+			// Use flat-shaded rendering without textures.
+			float[] colour = null;
+			colour = m_colour.getRGBComponents(colour);
+
+			render_flatshaded_polygons(gl, colour);
+		}
 		else
 		{
-			if(Options.is_set("Flat-Shading"))
+			// Use multi-coloured rendering without textures.
+			render_multicoloured_polygons(gl, new float[][]
 			{
-				// Use flat-shaded rendering without textures.
-				float[] colour = null;
-				colour = m_colour.getRGBComponents(colour);
-
-				render_flatshaded_polygons(gl, colour);
-			}
-			else
-			{
-				// Use multi-coloured rendering without textures.
-				render_multicoloured_polygons(gl, new float[][]
-				{
-					{1.0f, 0.0f, 0.0f},
-					{0.0f, 1.0f, 0.0f},
-					{0.0f, 0.0f, 1.0f}
-				});
-			}
+				{1.0f, 0.0f, 0.0f},
+				{0.0f, 1.0f, 0.0f},
+				{0.0f, 0.0f, 1.0f}
+			});
 		}
 	}
 
@@ -1264,23 +1261,20 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				}
 			}
 		}
+		else if(Options.is_set("Flat-Shading"))
+		{
+			// Use flat-shaded rendering without textures.
+			render_flatshaded_polygons(gl, new float[] {1.0f, 0.0f, 0.0f});
+		}
 		else
 		{
-			if(Options.is_set("Flat-Shading"))
+			// Use multi-coloured rendering without textures.
+			render_multicoloured_polygons(gl, new float[][]
 			{
-				// Use flat-shaded rendering without textures.
-				render_flatshaded_polygons(gl, new float[] {1.0f, 0.0f, 0.0f});
-			}
-			else
-			{
-				// Use multi-coloured rendering without textures.
-				render_multicoloured_polygons(gl, new float[][]
-				{
-					{1.0f, 1.0f, 0.0f},
-					{0.0f, 1.0f, 1.0f},
-					{1.0f, 0.0f, 1.0f}
-				});
-			}
+				{1.0f, 1.0f, 0.0f},
+				{0.0f, 1.0f, 1.0f},
+				{1.0f, 0.0f, 1.0f}
+			});
 		}
 	}
 
