@@ -292,17 +292,19 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		}
 	}
 
-	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D(GL gl, GLU glu)
 	{
 		switch(m_properties.get_function())
 		{
 			case COLLISION:
-				render3D_COLLISION(gl, glu, bRenderNormals, bRenderTextures);
+				render3D_COLLISION(gl, glu);
 				break;
 			default:
-				render3D_NORMAL(gl, glu, bRenderNormals, bRenderTextures);
+				render3D_NORMAL(gl, glu);
 				break;
 		}
+
+		if(Options.is_set("Render Polygon Normals")) render_normals(gl);
 	}
 
 	public void render_selected(IRenderer renderer, Color overrideColour)
@@ -315,17 +317,19 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		render_transformation_effects(renderer);
 	}
 
-	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D_selected(GL gl, GLU glu)
 	{
 		switch(m_properties.get_function())
 		{
 			case COLLISION:
-				render3D_selected_COLLISION(gl, glu, bRenderNormals, bRenderTextures);
+				render3D_selected_COLLISION(gl, glu);
 				break;
 			default:
-				render3D_selected_NORMAL(gl, glu, bRenderNormals, bRenderTextures);
+				render3D_selected_NORMAL(gl, glu);
 				break;
 		}
+
+		if(Options.is_set("Render Polygon Normals")) render_normals(gl);
 	}
 
 	public double selection_metric(Vector2d p, IRenderer renderer)
@@ -1121,7 +1125,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		gl.glEnd();
 	}
 
-	private void render3D_COLLISION(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	private void render3D_COLLISION(GL gl, GLU glu)
 	{
 		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
@@ -1132,9 +1136,9 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		gl.glPopAttrib();
 	}
 
-	private void render3D_NORMAL(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	private void render3D_NORMAL(GL gl, GLU glu)
 	{
-		if(bRenderTextures)
+		if(Options.is_set("Render Textures"))
 		{
 			for(Polygon p: m_polys)
 			{
@@ -1187,11 +1191,9 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				});
 			}
 		}
-
-		if(bRenderNormals) render_normals(gl);
 	}
 
-	private void render3D_selected_COLLISION(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	private void render3D_selected_COLLISION(GL gl, GLU glu)
 	{
 		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
@@ -1202,9 +1204,9 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		gl.glPopAttrib();
 	}
 
-	private void render3D_selected_NORMAL(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	private void render3D_selected_NORMAL(GL gl, GLU glu)
 	{
-		if(bRenderTextures)
+		if(Options.is_set("Render Textures"))
 		{
 			for(Polygon p: m_polys)
 			{
@@ -1280,8 +1282,6 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				});
 			}
 		}
-
-		if(bRenderNormals) render_normals(gl);
 	}
 
 	//################## PRIVATE NESTED CLASSES ##################//

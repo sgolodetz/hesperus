@@ -13,22 +13,22 @@ to inherit from BrushAdapter.
 */
 abstract class BrushAdapter implements IBrush
 {
-	public void deghost(IBrushContainer container)											{}
-	public BrushDetails details()															{ return new BrushDetails(0); }
-	public IBrush deselect(IBrushContainer container)										{ return null; }
-	public void flip_x()																	{}
-	public void flip_y()																	{}
-	public void flip_z()																	{}
-	public boolean is_flippable()															{ return false; }
-	public void mouse_moved(IRenderer renderer, Vector2d p)									{}
-	public void mouse_released()															{}
-	public PickResults pick(final Vector3d start, final Vector3d direction)					{ return null; }
-	public Dialog properties_dialog(Frame owner)											{ return null; }
+	public void deghost(IBrushContainer container)								{}
+	public BrushDetails details()												{ return new BrushDetails(0); }
+	public IBrush deselect(IBrushContainer container)							{ return null; }
+	public void flip_x()														{}
+	public void flip_y()														{}
+	public void flip_z()														{}
+	public boolean is_flippable()												{ return false; }
+	public void mouse_moved(IRenderer renderer, Vector2d p)						{}
+	public void mouse_released()												{}
+	public PickResults pick(final Vector3d start, final Vector3d direction)		{ return null; }
+	public Dialog properties_dialog(Frame owner)								{ return null; }
 
-	public void render(IRenderer renderer, Color overrideColour)							{ throw new UnsupportedOperationException(); }
-	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)	{ throw new UnsupportedOperationException(); }
+	public void render(IRenderer renderer, Color overrideColour)				{ throw new UnsupportedOperationException(); }
+	public void render3D(GL gl, GLU glu)										{ throw new UnsupportedOperationException(); }
 
-	public void select(IBrushContainer container)											{}
+	public void select(IBrushContainer container)								{}
 
 	// Saving
 	public void save_MEF2(PrintWriter pw)	{ throw new UnsupportedOperationException(); }

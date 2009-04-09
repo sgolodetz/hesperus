@@ -153,10 +153,8 @@ public interface IBrush
 
 	@param gl				The OpenGL object to use for rendering
 	@param glu				The corresponding GLU context
-	@param bRenderNormals	Whether or not to render the face normals
-	@param bRenderTextures	Whether or not to render textures
 	*/
-	void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures);
+	void render3D(GL gl, GLU glu);
 
 	/**
 	Renders the brush onto the rendering surface associated with the specified renderer
@@ -178,10 +176,8 @@ public interface IBrush
 
 	@param gl				The OpenGL object to use for rendering
 	@param glu				The corresponding GLU context
-	@param bRenderNormals	Whether or not to render the face normals
-	@param bRenderTextures	Whether or not to render textures
 	*/
-	void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures);
+	void render3D_selected(GL gl, GLU glu);
 
 	/**
 	Saves the brush in MEF 2 format. In practice, this involves writing the MEF representation of the brush to the current

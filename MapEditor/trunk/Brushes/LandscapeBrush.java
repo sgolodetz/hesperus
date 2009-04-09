@@ -569,15 +569,15 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 		}
 	}
 
-	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D(GL gl, GLU glu)
 	{
-		render3D_mesh(gl, glu, bRenderTextures);
+		render3D_mesh(gl, glu);
 	}
 
-	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D_selected(GL gl, GLU glu)
 	{
 		// TODO: Do something to distinguish this from the unselected case, like changing the colour.
-		render3D_mesh(gl, glu, bRenderTextures);
+		render3D_mesh(gl, glu);
 
 		switch(m_landscapeState)
 		{
@@ -976,9 +976,8 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 
 	@param gl				The OpenGL context with which to render the mesh
 	@param glu				The corresponding GLU context
-	@param bRenderTextures	Whether or not to render a textured mesh
 	*/
-	private void render3D_mesh(GL gl, GLU glu, boolean bRenderTextures)
+	private void render3D_mesh(GL gl, GLU glu)
 	{
 		if(m_meshNeedsUpdating)
 		{
@@ -986,7 +985,7 @@ public class LandscapeBrush extends ResizableTranslatableBrush
 			m_meshNeedsUpdating = false;
 		}
 
-		if(bRenderTextures) render3D_textured_mesh(gl, glu, m_mesh);
+		if(Options.is_set("Render Textures")) render3D_textured_mesh(gl, glu, m_mesh);
 		else render3D_mesh(gl, m_mesh);
 	}
 

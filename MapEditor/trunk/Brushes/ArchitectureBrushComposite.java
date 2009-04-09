@@ -264,11 +264,11 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		}
 	}
 
-	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D(GL gl, GLU glu)
 	{
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes)
 		{
-			p.first.render3D(gl, glu, bRenderNormals, bRenderTextures);
+			p.first.render3D(gl, glu);
 		}
 	}
 
@@ -290,11 +290,11 @@ public class ArchitectureBrushComposite extends ArchitectureBrush implements Geo
 		render_transformation_effects(renderer);
 	}
 
-	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D_selected(GL gl, GLU glu)
 	{
 		for(Pair<ArchitectureBrush,BrushData> p: m_brushes)
 		{
-			p.first.render3D_selected(gl, glu, bRenderNormals, bRenderTextures);
+			p.first.render3D_selected(gl, glu);
 		}
 	}
 

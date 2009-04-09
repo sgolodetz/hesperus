@@ -176,18 +176,18 @@ public class SplitterBrush extends BrushAdapter implements Constants, GeomConsta
 		renderer.set_stroke(new BasicStroke());
 	}
 
-	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D(GL gl, GLU glu)
 	{
 		// This isn't an unnecessary function, even though splitter brushes only exist when
 		// they're selected. There are occasions when it makes sense to render brushes as
 		// unselected even if they're actually selected, for instance when in texture-editing
 		// mode.
-		m_brush.render3D(gl, glu, bRenderNormals, bRenderTextures);
+		m_brush.render3D(gl, glu);
 	}
 
-	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D_selected(GL gl, GLU glu)
 	{
-		m_brush.render3D_selected(gl, glu, bRenderNormals, bRenderTextures);
+		m_brush.render3D_selected(gl, glu);
 
 // FIXME: Render the splitting plane, if there is one. This sort of works, but it looks rubbish at the moment.
 // Recalculating it every time is also ludicrously inefficient.

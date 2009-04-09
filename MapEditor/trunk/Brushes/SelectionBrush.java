@@ -88,7 +88,7 @@ public class SelectionBrush extends ResizableTranslatableBrush
 		render_transformation_effects(renderer);
 	}
 
-	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D_selected(GL gl, GLU glu)
 	{
 		Vector3d[] bounds = m_boundingBox.get_bounds();
 		gl.glColor3f(1.0f, 1.0f, 1.0f);

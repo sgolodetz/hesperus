@@ -169,7 +169,7 @@ public class LightBrush extends TranslatableBrush
 		render2D_light(renderer);
 	}
 
-	public void render3D(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D(GL gl, GLU glu)
 	{
 		float[] colour = null;
 		colour = m_colour.getRGBComponents(colour);
@@ -191,9 +191,9 @@ public class LightBrush extends TranslatableBrush
 		renderer.draw_line(new Vector3d(x, y, z + ARM_LENGTH), new Vector3d(x, y, z - ARM_LENGTH));
 	}
 
-	public void render3D_selected(GL gl, GLU glu, boolean bRenderNormals, boolean bRenderTextures)
+	public void render3D_selected(GL gl, GLU glu)
 	{
-		render3D(gl, glu, bRenderNormals, bRenderTextures);
+		render3D(gl, glu);
 
 		Vector3d centre = m_boundingBox.centre();
 		double x = centre.x, y = centre.y, z = centre.z;

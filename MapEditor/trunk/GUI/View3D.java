@@ -147,7 +147,7 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 		if(Options.is_set("Texture-Editing Mode"))
 		{
 			// Render all the brushes as unselected.
-			for(IBrush b: m_map.get_brushes()) b.render3D(gl, glu, Options.is_set("Render Polygon Normals"), true);
+			for(IBrush b: m_map.get_brushes()) b.render3D(gl, glu);
 
 			if(Options.is_set("Render Texture Mask"))
 			{
@@ -197,12 +197,12 @@ public class View3D implements Constants, GLEventListener, IRepaintListener
 			// Render all the brushes except for the currently selected brush (if there is one, obviously).
 			for(IBrush b: m_map.get_brushes())
 			{
-				if(b != selectedBrush) b.render3D(gl, glu, Options.is_set("Render Polygon Normals"), Options.is_set("Render Textures"));
+				if(b != selectedBrush) b.render3D(gl, glu);
 			}
 
 			// Now render the selected brush. Note that rendering the selected brush separately is
 			// essential because in the case of a SelectionBrush it may not be part of the map.
-			if(selectedBrush != null) selectedBrush.render3D_selected(gl, glu, Options.is_set("Render Polygon Normals"), Options.is_set("Render Textures"));
+			if(selectedBrush != null) selectedBrush.render3D_selected(gl, glu);
 		}
 	}
 

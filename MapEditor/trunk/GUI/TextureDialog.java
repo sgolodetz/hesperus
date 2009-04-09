@@ -24,6 +24,7 @@ import java.util.LinkedList;
 public class TextureDialog extends Dialog implements ISelectionListener, TextureConstants
 {
 	//################## PRIVATE VARIABLES ##################//
+	private boolean m_forceRenderTexturesOption;	// true iff we turned on the Render Textures option for texture editing
 	private Choice m_nameChoice = new Choice();
 	private ImageCanvas m_thumbnail = new ImageCanvas();
 	private Map m_map;
@@ -34,9 +35,6 @@ public class TextureDialog extends Dialog implements ISelectionListener, Texture
 	private TextField m_rotationField = new TextField();
 
 	//################## CONSTRUCTORS ##################//
-	/**
-	TODO: Comment here.
-	*/
 	public TextureDialog(Frame owner, Map map)
 	{
 		super(owner, "Edit Texture Details", false);
@@ -44,6 +42,13 @@ public class TextureDialog extends Dialog implements ISelectionListener, Texture
 		m_map = map;
 
 		Options.set_internal("Texture-Editing Mode", true);
+
+		// We can't edit textures if we can't see them, so temporarily turn on the Render Textures option if necessary.
+		m_forceRenderTexturesOption = !Options.is_set("Render Textures");
+		if(m_forceRenderTexturesOption)
+		{
+			Options.set("Render Textures", true);
+		}
 
 		// Check whether there's a brush currently selected and, if so, select its faces, if any. If there weren't any faces to select,
 		// set the selected face to null.
@@ -151,6 +156,13 @@ public class TextureDialog extends Dialog implements ISelectionListener, Texture
 	{
 		super.dispose();
 		Options.set_internal("Texture-Editing Mode", false);
+
+		// If we temporarily turned on the Render Textures option for texture-editing, turn it off again.
+		if(m_forceRenderTexturesOption)
+		{
+			Options.set("Render Textures", false);
+		}
+
 		m_map.set_selection_listener(ISelectionListener.NULL);
 		m_map.repaint_full();
 	}
