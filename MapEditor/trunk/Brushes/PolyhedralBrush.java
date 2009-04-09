@@ -297,7 +297,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		switch(m_properties.get_function())
 		{
 			case COLLISION:
-				render3D_COLLISION(gl, glu);
+				render_wireframe_polygons(gl, new float[] {1.0f, 1.0f, 1.0f});
+				break;
+			case DETAIL:
+				render3D_NORMAL(gl, glu);
+				render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
 				break;
 			default:
 				render3D_NORMAL(gl, glu);
@@ -322,7 +326,11 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		switch(m_properties.get_function())
 		{
 			case COLLISION:
-				render3D_selected_COLLISION(gl, glu);
+				render_wireframe_polygons(gl, new float[] {1.0f, 1.0f, 0.0f});
+				break;
+			case DETAIL:
+				render3D_selected_NORMAL(gl, glu);
+				render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
 				break;
 			default:
 				render3D_selected_NORMAL(gl, glu);
@@ -1093,6 +1101,17 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		}
 	}
 
+	private void render_wireframe_polygons(GL gl, float[] colour)
+	{
+		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glDisable(GL.GL_CULL_FACE);
+
+		render_flatshaded_polygons(gl, colour);
+
+		gl.glPopAttrib();
+	}
+
 	/**
 	Render the face normals onto a 3D view using the specified OpenGL object.
 
@@ -1123,17 +1142,6 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				gl.glVertex3d(centrePLUSnormal.x, centrePLUSnormal.y, centrePLUSnormal.z);
 			}
 		gl.glEnd();
-	}
-
-	private void render3D_COLLISION(GL gl, GLU glu)
-	{
-		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-		gl.glDisable(GL.GL_CULL_FACE);
-
-		render_flatshaded_polygons(gl, new float[] { 1.0f, 1.0f, 1.0f });
-
-		gl.glPopAttrib();
 	}
 
 	private void render3D_NORMAL(GL gl, GLU glu)
@@ -1188,17 +1196,6 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				{0.0f, 0.0f, 1.0f}
 			});
 		}
-	}
-
-	private void render3D_selected_COLLISION(GL gl, GLU glu)
-	{
-		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-		gl.glDisable(GL.GL_CULL_FACE);
-
-		render_flatshaded_polygons(gl, new float[] { 1.0f, 1.0f, 0.0f });
-
-		gl.glPopAttrib();
 	}
 
 	private void render3D_selected_NORMAL(GL gl, GLU glu)
