@@ -218,15 +218,15 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, do
 	int curColPolyIndex = navPoly.collision_poly_index();
 	const CollisionPolygon& curPoly = *polygons[curColPolyIndex];
 	Plane plane = make_plane(curPoly);
-	Vector3d dir = project_vector_onto_plane(move.dir, plane);
-	if(dir.length_squared() > SMALL_EPSILON*SMALL_EPSILON) dir.normalize();
+	move.dir = project_vector_onto_plane(move.dir, plane);
+	if(move.dir.length_squared() > SMALL_EPSILON*SMALL_EPSILON) move.dir.normalize();
 
 	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the out navlinks.
 
 	ICameraComponent_Ptr camComponent = entity->camera_component();
 
 	Vector3d source = camComponent->camera().position();
-	Vector3d dest = source + dir * speed * move.timeRemaining;
+	Vector3d dest = source + move.dir * speed * move.timeRemaining;
 
 	Vector3d_Ptr hit;
 	int hitNavlink = -1;
