@@ -44,7 +44,7 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 	}
 
 	// Private to prevent direct instantiation.
-	private PolyhedralBrush(Iterable<Polygon> polys, int polyCount, boolean ghost, boolean isNew)
+	private PolyhedralBrush(Iterable<Polygon> polys, int polyCount, boolean ghost, boolean isNew, Properties properties)
 	{
 		this(ghost, isNew);
 
@@ -58,11 +58,13 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 		m_boundingBox = new BoundingBox(new Vector3d(0,0,0), new Vector3d(1,1,1));
 		recalculate_bounding_box();
+
+		m_properties = properties;
 	}
 
 	public PolyhedralBrush(LinkedList<Polygon> polys)
 	{
-		this(polys, polys.size(), false, false);
+		this(polys, polys.size(), false, false, new Properties(BrushFunction.NORMAL));
 	}
 
 	//################## PUBLIC METHODS ##################//
@@ -415,14 +417,14 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		Polygon universePoly = GeomUtil.make_universe_polygon(plane.negate());
 		Iterable<Polygon> fragments = TreeUtil.clip_to_tree(universePoly, PolygonClipFunctor.no_coplanars(), tree, TreeUtil.CPTT_SOLID_FRAGMENTS).first;
 		for(Polygon fragment: fragments) frontPolys.add(fragment);
-		ArchitectureBrush frontBrush = new PolyhedralBrush(frontPolys, frontPolys.size(), false, false);
+		ArchitectureBrush frontBrush = new PolyhedralBrush(frontPolys, frontPolys.size(), false, false, m_properties.clone());
 
 		// Back brush
 		tree = new Tree(backPolys);
 		universePoly = GeomUtil.make_universe_polygon(plane);
 		fragments = TreeUtil.clip_to_tree(universePoly, PolygonClipFunctor.no_coplanars(), tree, TreeUtil.CPTT_SOLID_FRAGMENTS).first;
 		for(Polygon fragment: fragments) backPolys.add(fragment);
-		ArchitectureBrush backBrush = new PolyhedralBrush(backPolys, backPolys.size(), false, false);
+		ArchitectureBrush backBrush = new PolyhedralBrush(backPolys, backPolys.size(), false, false, m_properties.clone());
 
 		return Pair.make_pair(frontBrush, backBrush);
 	}
