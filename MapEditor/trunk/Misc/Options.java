@@ -39,8 +39,11 @@ public final class Options
 		// Do we want to render the brush creation anchor?
 		s_optionsMap.put("Render Brush Creation Anchor", false);
 
-		// Do we want to render detail brushes in a easily distinguishable way?
+		// Do we want to render detail brushes in a easily distinguishable way in the 3D view?
 		s_optionsMap.put("Render Distinguishable Details", true);
+
+		// Do we want to render hint brushes?
+		s_optionsMap.put("Render Hint Brushes", true);
 
 		// Do we want to render all the brushes in the same colour?
 		s_optionsMap.put("Render In Unicolour", false);

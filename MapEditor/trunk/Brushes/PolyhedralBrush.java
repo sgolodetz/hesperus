@@ -198,6 +198,9 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 	public PickResults pick(final Vector3d start, final Vector3d direction)
 	{
+		// Ensure that hint brushes can't be picked if they're currently invisible.
+		if(m_properties.get_function() == BrushFunction.HINT && !Options.is_set("Render Hint Brushes")) return null;
+
 		Polygon nearestFace = null;
 		Vector3d nearestPoint = null;
 		double nearestDistanceSquared = Double.MAX_VALUE;
@@ -250,47 +253,14 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 	public void render(IRenderer renderer, Color overrideColour)
 	{
-		if(overrideColour != null) renderer.set_colour(overrideColour);
-		else if(m_ghost) renderer.set_colour(Color.white);
-		else renderer.set_colour(m_colour);
-
-		for(Polygon p: m_polys)
+		switch(m_properties.get_function())
 		{
-			for(int i=0, len=p.get_vertices().length; i<len; ++i)
-			{
-				int j = (i+1)%len;
-				renderer.draw_line(p.get_vertices()[i], p.get_vertices()[j]);
-			}
-		}
-
-		render_centre_cross(renderer);
-
-		if(Options.is_set("Render Polygon Normals"))
-		{
-			// Draw the polygon normals.
-			for(Polygon p: m_polys)
-			{
-				Vector3d centre = new Vector3d();
-				for(Vector3d v: p.get_vertices())
-				{
-					centre.add(v);
-				}
-				centre.scale(1.0/p.get_vertices().length);
-
-				Vector3d scaledNormal = p.get_normal().clone();
-				scaledNormal.scale(15);
-				Vector3d centrePLUSnormal = centre.clone();
-				centrePLUSnormal.add(scaledNormal);
-
-				renderer.set_colour(Color.magenta);
-				renderer.draw_line(centre, centrePLUSnormal);
-
-				scaledNormal.scale(0.5);
-				Vector3d centrePLUShalfNormal = centre.clone();
-				centrePLUShalfNormal.add(scaledNormal);
-				renderer.set_colour(Color.cyan);
-				renderer.draw_line(centrePLUShalfNormal, centrePLUSnormal);
-			}
+			case HINT:
+				if(Options.is_set("Render Hint Brushes")) render_NORMAL(renderer, overrideColour);
+				break;
+			default:
+				render_NORMAL(renderer, overrideColour);
+				break;
 		}
 	}
 
@@ -299,11 +269,18 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		switch(m_properties.get_function())
 		{
 			case COLLISION:
-				render_wireframe_polygons(gl, new float[] {1.0f, 1.0f, 1.0f});
+				render_wireframe_polygons(gl, new float[] { 1.0f, 1.0f, 1.0f });
 				break;
 			case DETAIL:
 				render3D_NORMAL(gl, glu);
 				if(Options.is_set("Render Distinguishable Details")) render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
+				break;
+			case HINT:
+				if(Options.is_set("Render Hint Brushes"))
+				{
+					render3D_NORMAL(gl, glu);
+					render_wireframe_polygons(gl, new float[] { 0.0f, 1.0f, 1.0f });
+				}
 				break;
 			default:
 				render3D_NORMAL(gl, glu);
@@ -315,12 +292,15 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 
 	public void render_selected(IRenderer renderer, Color overrideColour)
 	{
-		renderer.set_colour(Color.red);
-		render_bounds(renderer);
-
-		render(renderer, overrideColour);
-
-		render_transformation_effects(renderer);
+		switch(m_properties.get_function())
+		{
+			case HINT:
+				if(Options.is_set("Render Hint Brushes")) render_selected_NORMAL(renderer, overrideColour);
+				break;
+			default:
+				render_selected_NORMAL(renderer, overrideColour);
+				break;
+		}
 	}
 
 	public void render3D_selected(GL gl, GLU glu)
@@ -333,6 +313,13 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 			case DETAIL:
 				render3D_selected_NORMAL(gl, glu);
 				if(Options.is_set("Render Distinguishable Details")) render_wireframe_polygons(gl, new float[] { 1.0f, 0.0f, 1.0f });
+				break;
+			case HINT:
+				if(Options.is_set("Render Hint Brushes"))
+				{
+					render3D_selected_NORMAL(gl, glu);
+					render_wireframe_polygons(gl, new float[] { 0.0f, 1.0f, 1.0f });
+				}
 				break;
 			default:
 				render3D_selected_NORMAL(gl, glu);
@@ -1103,15 +1090,50 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 		}
 	}
 
-	private void render_wireframe_polygons(GL gl, float[] colour)
+	private void render_NORMAL(IRenderer renderer, Color overrideColour)
 	{
-		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-		gl.glDisable(GL.GL_CULL_FACE);
+		if(overrideColour != null) renderer.set_colour(overrideColour);
+		else if(m_ghost) renderer.set_colour(Color.white);
+		else renderer.set_colour(m_colour);
 
-		render_flatshaded_polygons(gl, colour);
+		for(Polygon p: m_polys)
+		{
+			for(int i=0, len=p.get_vertices().length; i<len; ++i)
+			{
+				int j = (i+1)%len;
+				renderer.draw_line(p.get_vertices()[i], p.get_vertices()[j]);
+			}
+		}
 
-		gl.glPopAttrib();
+		render_centre_cross(renderer);
+
+		if(Options.is_set("Render Polygon Normals"))
+		{
+			// Draw the polygon normals.
+			for(Polygon p: m_polys)
+			{
+				Vector3d centre = new Vector3d();
+				for(Vector3d v: p.get_vertices())
+				{
+					centre.add(v);
+				}
+				centre.scale(1.0/p.get_vertices().length);
+
+				Vector3d scaledNormal = p.get_normal().clone();
+				scaledNormal.scale(15);
+				Vector3d centrePLUSnormal = centre.clone();
+				centrePLUSnormal.add(scaledNormal);
+
+				renderer.set_colour(Color.magenta);
+				renderer.draw_line(centre, centrePLUSnormal);
+
+				scaledNormal.scale(0.5);
+				Vector3d centrePLUShalfNormal = centre.clone();
+				centrePLUShalfNormal.add(scaledNormal);
+				renderer.set_colour(Color.cyan);
+				renderer.draw_line(centrePLUShalfNormal, centrePLUSnormal);
+			}
+		}
 	}
 
 	/**
@@ -1144,6 +1166,27 @@ public class PolyhedralBrush extends ArchitectureBrush implements Constants, Geo
 				gl.glVertex3d(centrePLUSnormal.x, centrePLUSnormal.y, centrePLUSnormal.z);
 			}
 		gl.glEnd();
+	}
+
+	private void render_selected_NORMAL(IRenderer renderer, Color overrideColour)
+	{
+		renderer.set_colour(Color.red);
+		render_bounds(renderer);
+
+		render(renderer, overrideColour);
+
+		render_transformation_effects(renderer);
+	}
+
+	private void render_wireframe_polygons(GL gl, float[] colour)
+	{
+		gl.glPushAttrib(GL.GL_ENABLE_BIT | GL.GL_POLYGON_BIT);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glDisable(GL.GL_CULL_FACE);
+
+		render_flatshaded_polygons(gl, colour);
+
+		gl.glPopAttrib();
 	}
 
 	private void render3D_NORMAL(GL gl, GLU glu)
