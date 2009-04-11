@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 09-04-09
+Last Updated: 11-04-09
 
 ----
 Easy
@@ -10,19 +10,19 @@ Easy
 
 * Walk/run etc. - sort out where the various different entity speeds are coming from (I'd suggest the entity definition file, possibly).
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
-* Separate viewers from entities: we shouldn't have to see through the eyes of an entity, we should be able to position the camera anywhere we like.
 
 ------
 Medium
 ------
 
 * Implement some AI yokes (it probably makes sense to have composite yokes so that we can switch between different yokes for different behaviours - could we have yoke trees corresponding to goal trees?).
+* Separate viewers from entities: we shouldn't have to see through the eyes of an entity, we should be able to position the camera anywhere we like.
 
 ----
 Hard
 ----
 
-* Detail and hint brushes to improve vis/nav. This will require changes to both MapEditor and the toolchain.
+* Hint brushes to improve vis. This requires changes to both MapEditor (done) and the BSP compiler (todo).
 * Update MapEditor to allow placement of entities, etc. Some sort of scripted paths should be added as well.
 * Write the model and animation code.
   - Sort out inter-model attachment (e.g. for weapons).
