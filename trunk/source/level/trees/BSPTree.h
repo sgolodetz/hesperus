@@ -6,8 +6,6 @@
 #ifndef H_HESP_BSPTREE
 #define H_HESP_BSPTREE
 
-#include <list>
-
 #include "BSPBranch.h"
 #include "BSPLeaf.h"
 

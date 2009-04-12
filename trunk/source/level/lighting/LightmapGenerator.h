@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include <source/level/bsp/BSPTree.h>
+#include <source/level/trees/BSPTree.h>
 #include <source/level/vis/VisTable.h>
 #include <source/util/PolygonTypes.h>
 #include "Light.h"

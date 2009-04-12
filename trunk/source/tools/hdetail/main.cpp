@@ -13,8 +13,8 @@
 #include <source/io/BrushesFile.h>
 #include <source/io/TreeFile.h>
 #include <source/level/brushes/PolyhedralBrush.h>
-#include <source/level/bsp/BSPUtil.h>
 #include <source/level/csg/CSGUtil.h>
+#include <source/level/trees/BSPUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 

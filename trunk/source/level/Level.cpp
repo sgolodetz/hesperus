@@ -12,8 +12,8 @@
 #include <gl/glu.h>
 
 #include <source/colours/Colour3d.h>
-#include <source/level/bsp/TreeUtil.h>
 #include <source/level/models/Model.h>
+#include <source/level/trees/TreeUtil.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {

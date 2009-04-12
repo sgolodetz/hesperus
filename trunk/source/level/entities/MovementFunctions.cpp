@@ -7,8 +7,8 @@
 
 #include <iostream>
 
-#include <source/level/bsp/TreeUtil.h>
-#include <source/level/onionbsp/OnionUtil.h>
+#include <source/level/trees/OnionUtil.h>
+#include <source/level/trees/TreeUtil.h>
 #include <source/math/Constants.h>
 #include <source/math/geom/GeomUtil.h>
 

@@ -9,13 +9,13 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/level/bsp/BSPTree.h>
 #include <source/level/entities/EntityManager.h>
 #include <source/level/models/ModelManager.h>
 #include <source/level/nav/NavDataset.h>
-#include <source/level/onionbsp/OnionTree.h>
 #include <source/level/portals/OnionPortal.h>
 #include <source/level/portals/Portal.h>
+#include <source/level/trees/BSPTree.h>
+#include <source/level/trees/OnionTree.h>
 #include <source/level/vis/VisTable.h>
 #include "GeometryRenderer.h"
 

@@ -13,7 +13,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/level/onionbsp/OnionUtil.h>
+#include <source/level/trees/OnionUtil.h>
 
 namespace hesp {
 

@@ -6,7 +6,7 @@
 #define CSGUtil_HEADER	template <typename Vert, typename AuxData>
 #define CSGUtil_THIS	CSGUtil<Vert,AuxData>
 
-#include <source/level/bsp/BSPBranch.h>
+#include <source/level/trees/BSPBranch.h>
 
 namespace hesp {
 

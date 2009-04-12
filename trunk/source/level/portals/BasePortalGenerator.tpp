@@ -6,7 +6,7 @@
 #define BPG_HEADER	template <typename PortalT, typename TreeT>
 #define BPG_THIS	BasePortalGenerator<PortalT, TreeT>
 
-#include <source/level/bsp/TreeUtil.h>
+#include <source/level/trees/TreeUtil.h>
 
 namespace hesp {
 

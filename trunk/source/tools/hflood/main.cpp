@@ -13,7 +13,7 @@
 #include <source/io/GeometryFile.h>
 #include <source/io/PortalsFile.h>
 #include <source/io/TreeFile.h>
-#include <source/level/bsp/TreeUtil.h>
+#include <source/level/trees/TreeUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 

@@ -6,9 +6,6 @@
 #ifndef H_HESP_ONIONTREE
 #define H_HESP_ONIONTREE
 
-#include <list>
-
-#include <source/math/vectors/Vector3.h>
 #include "OnionBranch.h"
 #include "OnionLeaf.h"
 

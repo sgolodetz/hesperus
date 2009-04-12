@@ -5,7 +5,7 @@
 
 #include "BipedChangePoseCommand.h"
 
-#include <source/level/bsp/TreeUtil.h>
+#include <source/level/trees/TreeUtil.h>
 
 namespace hesp {
 

@@ -11,9 +11,9 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/math/geom/AABB.h>
-#include <source/level/onionbsp/OnionTree.h>
 #include <source/level/nav/NavDataset.h>
+#include <source/level/trees/OnionTree.h>
+#include <source/math/geom/AABB.h>
 
 namespace hesp {
 

@@ -6,7 +6,7 @@
 #ifndef H_HESP_PORTALGENERATOR
 #define H_HESP_PORTALGENERATOR
 
-#include <source/level/bsp/BSPTree.h>
+#include <source/level/trees/BSPTree.h>
 #include "BasePortalGenerator.h"
 #include "Portal.h"
 

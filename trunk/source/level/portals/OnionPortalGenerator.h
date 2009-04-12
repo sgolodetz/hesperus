@@ -6,7 +6,7 @@
 #ifndef H_HESP_ONIONPORTALGENERATOR
 #define H_HESP_ONIONPORTALGENERATOR
 
-#include <source/level/onionbsp/OnionTree.h>
+#include <source/level/trees/OnionTree.h>
 #include "BasePortalGenerator.h"
 #include "OnionPortal.h"
 

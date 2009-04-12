@@ -6,7 +6,7 @@
 #ifndef H_HESP_BIPEDTURNCOMMAND
 #define H_HESP_BIPEDTURNCOMMAND
 
-#include <source/level/onionbsp/OnionTree.h>
+#include <source/level/trees/OnionTree.h>
 #include "Entity.h"
 #include "EntityCommand.h"
 

@@ -3,9 +3,9 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include <source/level/bsp/TreeUtil.h>
 #include <source/math/geom/GeomUtil.h>
 #include "OnionBranch.h"
+#include "TreeUtil.h"
 
 namespace hesp {
 

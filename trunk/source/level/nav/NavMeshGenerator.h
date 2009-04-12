@@ -8,7 +8,7 @@
 
 #include <map>
 
-#include <source/level/onionbsp/OnionTree.h>
+#include <source/level/trees/OnionTree.h>
 #include <source/math/Interval.h>
 #include <source/math/geom/LineSegment.h>
 #include <source/math/geom/UniquePlanePred.h>

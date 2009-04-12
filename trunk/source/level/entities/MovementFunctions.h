@@ -6,8 +6,8 @@
 #ifndef H_HESP_MOVEMENTFUNCTIONS
 #define H_HESP_MOVEMENTFUNCTIONS
 
-#include <source/level/onionbsp/OnionTree.h>
 #include <source/level/nav/NavDataset.h>
+#include <source/level/trees/OnionTree.h>
 #include <source/math/vectors/Vector3.h>
 #include "Entity.h"
 
