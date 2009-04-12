@@ -9,38 +9,6 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 /**
-Finds the index of the leaf in the specified BSP tree in which the specified point resides.
-
-@param p		The point
-@param tree		The BSP tree
-@return			The leaf index
-*/
-int BSPUtil::find_leaf_index(const Vector3d& p, const BSPTree_CPtr& tree)
-{
-	BSPNode_Ptr cur = tree->root();
-	while(!cur->is_leaf())
-	{
-		const BSPBranch *branch = cur->as_branch();
-		switch(classify_point_against_plane(p, *branch->splitter()))
-		{
-			case CP_BACK:
-			{
-				cur = branch->right();
-				break;
-			}
-			default:	// CP_COPLANAR or CP_FRONT
-			{
-				cur = branch->left();
-				break;
-			}
-		}
-	}
-
-	const BSPLeaf *leaf = cur->as_leaf();
-	return leaf->leaf_index();
-}
-
-/**
 Determines whether or not there is line-of-sight between p1 and p2 in the specified BSP tree.
 
 @param p1		A point in the world

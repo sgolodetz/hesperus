@@ -601,6 +601,10 @@
 						RelativePath="..\level\bsp\BSPUtil.h"
 						>
 					</File>
+					<File
+						RelativePath="..\level\bsp\TreeUtil.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
@@ -611,6 +615,10 @@
 					</File>
 					<File
 						RelativePath="..\level\bsp\BSPUtil.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bsp\TreeUtil.tpp"
 						>
 					</File>
 				</Filter>
@@ -893,6 +901,10 @@
 						RelativePath="..\level\onionbsp\OnionTree.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionUtil.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -915,6 +927,10 @@
 					</File>
 					<File
 						RelativePath="..\level\onionbsp\OnionTree.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\onionbsp\OnionUtil.h"
 						>
 					</File>
 				</Filter>

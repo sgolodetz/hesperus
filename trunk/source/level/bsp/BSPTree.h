@@ -43,13 +43,11 @@ public:
 	static BSPTree_Ptr load_postorder_text(std::istream& is);
 	void output_postorder_text(std::ostream& os) const;
 	BSPNode_Ptr root() const;
-	std::list<Plane_CPtr> split_planes() const;
 
 	//#################### PRIVATE METHODS ####################
 private:
 	void index_leaves();
 	void index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag);
-	std::list<Plane_CPtr> split_planes_sub(const BSPNode_Ptr& node) const;
 };
 
 }

@@ -3,7 +3,7 @@
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include <source/level/bsp/BSPUtil.h>
+#include <source/level/bsp/TreeUtil.h>
 #include <source/math/geom/GeomUtil.h>
 #include "OnionBranch.h"
 
@@ -184,7 +184,7 @@ boost::dynamic_bitset<> OnionCompiler<Poly>::determine_leaf_solidity(const std::
 	boost::dynamic_bitset<> solidityDescriptor(m_mapCount);
 	for(int i=0; i<m_mapCount; ++i)
 	{
-		int leafIndex = BSPUtil::find_leaf_index(p, m_mapTrees[i]);
+		int leafIndex = TreeUtil::find_leaf_index(p, m_mapTrees[i]);
 		const BSPLeaf *leaf = m_mapTrees[i]->leaf(leafIndex);
 		solidityDescriptor[i] = leaf->is_solid();
 	}

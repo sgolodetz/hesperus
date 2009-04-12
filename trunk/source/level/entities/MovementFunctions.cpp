@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include <source/level/bsp/TreeUtil.h>
+#include <source/level/onionbsp/OnionUtil.h>
 #include <source/math/Constants.h>
 #include <source/math/geom/GeomUtil.h>
 
@@ -59,7 +61,7 @@ int MovementFunctions::find_nav_polygon(const Vector3d& p, int suggestedNavPoly,
 	// Step 2:	Find the other potential collision polygons in which the point could lie.
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	int leafIndex = tree->find_leaf_index(p);
+	int leafIndex = TreeUtil::find_leaf_index(p, tree);
 	const std::vector<int>& polyIndices = tree->leaf(leafIndex)->polygon_indices();
 
 	std::vector<int> potentialColPolyIndices;
@@ -159,15 +161,15 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, dou
 	Vector3d dest = source + move.dir * speed * move.timeRemaining;
 
 	// Check the ray against the tree.
-	OnionTree::Transition transition = tree->find_first_transition(move.mapIndex, source, dest);
+	OnionUtil::Transition transition = OnionUtil::find_first_transition(move.mapIndex, source, dest, tree);
 	switch(transition.classifier)
 	{
-		case OnionTree::RAY_EMPTY:
+		case OnionUtil::RAY_EMPTY:
 		{
 			// It's perfectly fine to let the entity move along this ray, as it doesn't intersect a wall.
 			break;
 		}
-		case OnionTree::RAY_SOLID:
+		case OnionUtil::RAY_SOLID:
 		{
 			// We were on a wall (i.e. coplanar to it) prior to the move - prevent any further moves into the wall,
 			// and update the move direction to allow sliding along the wall instead.
@@ -175,21 +177,21 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, dou
 			move.timeRemaining -= 0.001;	// make this cost 1ms of time (otherwise the calling function will think we got stuck)
 			return true;
 		}
-		case OnionTree::RAY_TRANSITION_ES:
+		case OnionUtil::RAY_TRANSITION_ES:
 		{
 			// Stop the entity going into a wall.
 			dest = *transition.location;
 			collisionOccurred = true;
 
 			// Record this as the latest transition.
-			colComponent->update_recent_transitions(OnionTree::Transition_Ptr(new OnionTree::Transition(transition)));
+			colComponent->update_recent_transitions(OnionUtil::Transition_Ptr(new OnionUtil::Transition(transition)));
 
 			// Update the move direction to allow sliding.
 			update_move_direction_for_sliding(entity, move);
 
 			break;
 		}
-		case OnionTree::RAY_TRANSITION_SE:
+		case OnionUtil::RAY_TRANSITION_SE:
 		{
 			// This should never happen (since entities can't move into walls), but better let the entity back into
 			// the world if it does happen.
@@ -346,8 +348,8 @@ void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& enti
 
 	const Vector3d& source = entity->camera_component()->camera().position();
 	Vector3d dummyDest = source + move.dir;
-	const std::list<OnionTree::Transition_Ptr>& recentTransitions = entity->collision_component()->recent_transitions();
-	for(std::list<OnionTree::Transition_Ptr>::const_iterator it=recentTransitions.begin(), iend=recentTransitions.end(); it!=iend; ++it)
+	const std::list<OnionUtil::Transition_Ptr>& recentTransitions = entity->collision_component()->recent_transitions();
+	for(std::list<OnionUtil::Transition_Ptr>::const_iterator it=recentTransitions.begin(), iend=recentTransitions.end(); it!=iend; ++it)
 	{
 		if(classify_point_against_plane(dummyDest, *(*it)->plane) == CP_BACK)
 		{

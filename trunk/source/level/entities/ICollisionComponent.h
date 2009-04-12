@@ -13,7 +13,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/level/onionbsp/OnionTree.h>
+#include <source/level/onionbsp/OnionUtil.h>
 
 namespace hesp {
 
@@ -27,10 +27,10 @@ public:
 public:
 	virtual const std::vector<int>& aabb_indices() const = 0;
 	virtual int pose() const = 0;
-	virtual const std::list<OnionTree::Transition_Ptr>& recent_transitions() const = 0;
+	virtual const std::list<OnionUtil::Transition_Ptr>& recent_transitions() const = 0;
 	virtual void save(std::ostream& os) const = 0;
 	virtual void set_pose(int pose) = 0;
-	virtual void update_recent_transitions(const OnionTree::Transition_Ptr& transition) = 0;
+	virtual void update_recent_transitions(const OnionUtil::Transition_Ptr& transition) = 0;
 };
 
 //#################### TYPEDEFS ####################

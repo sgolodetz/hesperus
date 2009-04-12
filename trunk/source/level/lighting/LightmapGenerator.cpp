@@ -5,7 +5,7 @@
 
 #include "LightmapGenerator.h"
 
-#include <source/level/bsp/BSPUtil.h>
+#include <source/level/bsp/TreeUtil.h>
 
 namespace hesp {
 
@@ -132,7 +132,7 @@ void LightmapGenerator::process_light(int n)
 
 	// Determine the BSP leaf in which the light resides.
 	const Light& light = m_lights[n];
-	int lightLeaf = BSPUtil::find_leaf_index(light.position, m_tree);
+	int lightLeaf = TreeUtil::find_leaf_index(light.position, m_tree);
 
 	// If the light is in a wall, we can simply ignore it.
 	if(lightLeaf >= m_tree->empty_leaf_count()) return;

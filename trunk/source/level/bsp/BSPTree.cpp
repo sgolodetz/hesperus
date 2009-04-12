@@ -152,11 +152,6 @@ BSPNode_Ptr BSPTree::root() const
 	return m_nodes.back();
 }
 
-std::list<Plane_CPtr> BSPTree::split_planes() const
-{
-	return split_planes_sub(root());
-}
-
 //#################### PRIVATE METHODS ####################
 void BSPTree::index_leaves()
 {
@@ -183,21 +178,6 @@ void BSPTree::index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag)
 		index_specific_leaves(branch->left(), solidFlag);
 		index_specific_leaves(branch->right(), solidFlag);
 	}
-}
-
-std::list<Plane_CPtr> BSPTree::split_planes_sub(const BSPNode_Ptr& node) const
-{
-	std::list<Plane_CPtr> ret;
-
-	if(!node->is_leaf())
-	{
-		const BSPBranch *branch = node->as_branch();
-		ret.push_back(branch->splitter());
-		ret.splice(ret.end(), split_planes_sub(branch->left()));
-		ret.splice(ret.end(), split_planes_sub(branch->right()));
-	}
-
-	return ret;
 }
 
 }

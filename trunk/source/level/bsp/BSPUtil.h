@@ -18,7 +18,6 @@ class BSPUtil
 {
 	//#################### PUBLIC METHODS ####################
 public:
-	static int find_leaf_index(const Vector3d& p, const BSPTree_CPtr& tree);
 	template <typename Vert, typename AuxData> static std::list<int> find_leaf_indices(const Polygon<Vert,AuxData>& poly, const BSPTree_CPtr& tree);
 	static bool line_of_sight(const Vector3d& p1, const Vector3d& p2, const BSPTree_CPtr& tree);
 

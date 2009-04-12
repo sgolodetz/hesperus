@@ -6,6 +6,8 @@
 #define BPG_HEADER	template <typename PortalT, typename TreeT>
 #define BPG_THIS	BasePortalGenerator<PortalT, TreeT>
 
+#include <source/level/bsp/TreeUtil.h>
+
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
@@ -20,7 +22,7 @@ typename BPG_THIS::PortalTList_Ptr
 BPG_THIS::generate_portals(const TreeT_Ptr& tree) const
 {
 	PortalTList_Ptr portals(new PortalTList);
-	std::list<Plane_CPtr> planes = find_unique_planes(tree->split_planes());
+	std::list<Plane_CPtr> planes = find_unique_planes(TreeUtil::split_planes(tree));
 
 	for(std::list<Plane_CPtr>::const_iterator it=planes.begin(), iend=planes.end(); it!=iend; ++it)
 	{

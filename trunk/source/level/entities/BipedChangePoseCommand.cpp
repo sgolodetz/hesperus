@@ -5,6 +5,8 @@
 
 #include "BipedChangePoseCommand.h"
 
+#include <source/level/bsp/TreeUtil.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -39,7 +41,7 @@ void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const std
 	Vector3d dest = source + Vector3d(0,0,deltaZ);
 
 	// Check that changing pose won't put us in a wall.
-	int destLeafIndex = tree->find_leaf_index(dest);
+	int destLeafIndex = TreeUtil::find_leaf_index(dest, tree);
 	const OnionLeaf *destLeaf = tree->leaf(destLeafIndex);
 	if(destLeaf->is_solid(newMapIndex)) return;
 

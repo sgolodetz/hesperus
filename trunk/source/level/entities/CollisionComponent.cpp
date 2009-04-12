@@ -28,7 +28,7 @@ int CollisionComponent::pose() const
 	return m_pose;
 }
 
-const std::list<OnionTree::Transition_Ptr>& CollisionComponent::recent_transitions() const
+const std::list<OnionUtil::Transition_Ptr>& CollisionComponent::recent_transitions() const
 {
 	return m_recentTransitions;
 }
@@ -47,13 +47,13 @@ void CollisionComponent::set_pose(int pose)
 	}
 }
 
-void CollisionComponent::update_recent_transitions(const OnionTree::Transition_Ptr& transition)
+void CollisionComponent::update_recent_transitions(const OnionUtil::Transition_Ptr& transition)
 {
 	assert(transition->location != NULL);
 
 	// Remove any recent transition planes which the entity's no longer on.
 	const Vector3d& location = *transition->location;
-	for(std::list<OnionTree::Transition_Ptr>::iterator it=m_recentTransitions.begin(), iend=m_recentTransitions.end(); it!=iend;)
+	for(std::list<OnionUtil::Transition_Ptr>::iterator it=m_recentTransitions.begin(), iend=m_recentTransitions.end(); it!=iend;)
 	{
 		if(classify_point_against_plane(location, *(*it)->plane) == CP_COPLANAR) ++it;
 		else it = m_recentTransitions.erase(it);
