@@ -1314,6 +1314,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\trees\BSPCompilerEx.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\trees\BSPLeaf.h"
 						>
 					</File>
@@ -1363,6 +1367,10 @@
 					>
 					<File
 						RelativePath="..\level\trees\BSPCompiler.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\trees\BSPCompilerEx.tpp"
 						>
 					</File>
 					<File

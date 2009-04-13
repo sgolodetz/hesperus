@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <source/io/BrushesFile.h>
+#include <source/io/GeometryFile.h>
 #include <source/io/util/IOUtil.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/GeomUtil.h>
@@ -76,15 +77,16 @@ ColPolyBrush_Ptr convert_brush(const TexPolyBrush_Ptr& texBrush)
 	return ColPolyBrush_Ptr(new ColPolyBrush(bounds, colFaces, texBrush->function()));
 }
 
-PlaneVector extract_hint_planes(const TexPolyBrushVector& hintBrushes)
+TexPolyVector extract_hint_polygons(const TexPolyBrushVector& hintBrushes)
 {
-	PlaneVector ret;
+	TexPolyVector ret;
 	for(TexPolyBrushVector::const_iterator it=hintBrushes.begin(), iend=hintBrushes.end(); it!=iend; ++it)
 	{
 		const TexPolyVector& brushFaces = (*it)->faces();
 		for(TexPolyVector::const_iterator jt=brushFaces.begin(), jend=brushFaces.end(); jt!=jend; ++jt)
 		{
-			ret.push_back(make_plane(**jt));
+			const TexturedPolygon_Ptr& brushFace = *jt;
+			if(brushFace->auxiliary_data() == "HINT") ret.push_back(brushFace);
 		}
 	}
 	return ret;
@@ -92,7 +94,7 @@ PlaneVector extract_hint_planes(const TexPolyBrushVector& hintBrushes)
 
 void run_divider(const std::string& inputBrushesFilename, const std::string& renderingBrushesFilename,
 				 const std::string& collisionBrushesFilename, const std::string& detailBrushesFilename,
-				 const std::string& hintPlanesFilename, const std::string& specialBrushesFilename)
+				 const std::string& hintPolygonsFilename, const std::string& specialBrushesFilename)
 {
 	// Read in the rendering brushes.
 	TexPolyBrushVector inputBrushes = BrushesFile::load<TexturedPolygon>(inputBrushesFilename);
@@ -136,10 +138,9 @@ void run_divider(const std::string& inputBrushesFilename, const std::string& ren
 	// Write the detail brushes to disk.
 	BrushesFile::save(detailBrushesFilename, detailBrushes);
 
-	// Extract the hint planes from the hint brushes and write them to disk.
-	PlaneVector hintPlanes = extract_hint_planes(hintBrushes);
-	std::ofstream os(hintPlanesFilename.c_str());
-	IOUtil::write_planes(os, hintPlanes, false);
+	// Extract the hint polygons from the hint brushes and write them to disk.
+	TexPolyVector hintPolygons = extract_hint_polygons(hintBrushes);
+	GeometryFile::save(hintPolygonsFilename, hintPolygons);
 
 	// Write the rendering brushes to disk.
 	BrushesFile::save(renderingBrushesFilename, renderingBrushes);

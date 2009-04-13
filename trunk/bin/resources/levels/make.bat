@@ -6,17 +6,17 @@ cd %1
 set PATH=%PATH%;..\..\..\tools
 
 mef2input %1.mef %1.bru %1.ent %1.lum
-hdivide %1.bru %1.rbr %1.cbr %1.dbr %1.hpl %1.sbr
+hdivide %1.bru %1.rbr %1.cbr %1.dbr %1.hgm %1.sbr
 
 REM #################
 REM Rendering Section
 REM #################
 
 hcsg -r %1.rbr %1.rg1
-hbsp -r %1.rg1 %1.rt1
+hbsp -r %1.rg1 %1.hgm %1.rt1
 hportal -r %1.rt1 %1.rp1
 hflood -r %1.rt1 %1.rp1 %1.rg2
-hbsp -r %1.rg2 %1.rt2
+hbsp -r %1.rg2 %1.hgm %1.rt2
 hportal -r %1.rt2 %1.rp2
 hvis %1.rp2 %1.vis
 hdetail %1.rt2 %1.dbr %1.rt3
@@ -30,10 +30,10 @@ hexpand ..\..\settings\hesperus.edf %1.cbr
 
 FOR %%f IN (*.ebr) DO (
 hcsg -c %%f %%~nf.cg1
-hbsp -c %%~nf.cg1 %%~nf.ct1
+hbsp -c %%~nf.cg1 nohints %%~nf.ct1
 hportal -c %%~nf.ct1 %%~nf.cp
 hflood -c %%~nf.ct1 %%~nf.cp %%~nf.cg2
-hbsp -c %%~nf.cg2 %%~nf.ct2
+hbsp -c %%~nf.cg2 nohints %%~nf.ct2
 )
 
 SETLOCAL ENABLEDELAYEDEXPANSION
@@ -68,7 +68,7 @@ REM Cleanup Rendering Section
 REM #########################
 
 del *.dbr
-del *.hpl
+del *.hgm
 del *.lbt
 del *.lum
 del *.png

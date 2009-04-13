@@ -6,7 +6,6 @@
 #ifndef H_HESP_ONIONCOMPILER
 #define H_HESP_ONIONCOMPILER
 
-#include <map>
 #include <vector>
 
 #include <source/math/geom/Plane.h>
