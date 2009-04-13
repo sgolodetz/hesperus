@@ -1,5 +1,5 @@
 /***
- * hesperus: BSPCompilerEx.tpp
+ * hesperus: BSPCompiler.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -7,7 +7,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 template <typename Poly>
-BSPCompilerEx<Poly>::BSPCompilerEx(const PolyVector& polygons, const PolyVector& hintPolygons, double weight)
+BSPCompiler<Poly>::BSPCompiler(const PolyVector& polygons, const PolyVector& hintPolygons, double weight)
 :	m_polygons(polygons), m_weight(weight)
 {
 	std::copy(hintPolygons.begin(), hintPolygons.end(), std::back_inserter(m_polygons));
@@ -23,7 +23,7 @@ BSPCompilerEx<Poly>::BSPCompilerEx(const PolyVector& polygons, const PolyVector&
 
 //#################### PUBLIC METHODS ####################
 template <typename Poly>
-void BSPCompilerEx<Poly>::build_tree()
+void BSPCompiler<Poly>::build_tree()
 {
 	std::vector<BSPNode_Ptr> nodes;
 	build_subtree(m_polyIndices, nodes, SD_UNKNOWN);
@@ -31,20 +31,20 @@ void BSPCompilerEx<Poly>::build_tree()
 }
 
 template <typename Poly>
-const typename BSPCompilerEx<Poly>::PolyVector& BSPCompilerEx<Poly>::polygons() const
+const typename BSPCompiler<Poly>::PolyVector& BSPCompiler<Poly>::polygons() const
 {
 	return m_polygons;
 }
 
 template <typename Poly>
-BSPTree_Ptr BSPCompilerEx<Poly>::tree() const
+BSPTree_Ptr BSPCompiler<Poly>::tree() const
 {
 	return m_tree;
 }
 
 //#################### PRIVATE METHODS ####################
 template <typename Poly>
-BSPNode_Ptr BSPCompilerEx<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<BSPNode_Ptr>& nodes, SolidityDescriptor solidityDescriptor)
+BSPNode_Ptr BSPCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<BSPNode_Ptr>& nodes, SolidityDescriptor solidityDescriptor)
 {
 	typedef typename Poly::Vert Vert;
 	typedef typename Poly::AuxData AuxData;
@@ -140,7 +140,7 @@ BSPNode_Ptr BSPCompilerEx<Poly>::build_subtree(const std::vector<PolyIndex>& pol
 }
 
 template <typename Poly>
-typename BSPCompilerEx<Poly>::PolyIndex_Ptr BSPCompilerEx<Poly>::choose_split_poly(const std::vector<PolyIndex>& polyIndices) const
+typename BSPCompiler<Poly>::PolyIndex_Ptr BSPCompiler<Poly>::choose_split_poly(const std::vector<PolyIndex>& polyIndices) const
 {
 	PolyIndex_Ptr bestPolyIndex;
 	double bestMetric = INT_MAX;

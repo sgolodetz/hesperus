@@ -1,5 +1,5 @@
 /***
- * hesperus: BSPCompilerEx.h
+ * hesperus: BSPCompiler.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
@@ -14,7 +14,7 @@
 namespace hesp {
 
 template <typename Poly>
-class BSPCompilerEx
+class BSPCompiler
 {
 	//#################### ENUMERATIONS ####################
 private:
@@ -58,7 +58,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BSPCompilerEx(const PolyVector& polygons, const PolyVector& hintPolygons, double weight);
+	BSPCompiler(const PolyVector& polygons, const PolyVector& hintPolygons, double weight);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -74,6 +74,6 @@ private:
 
 }
 
-#include "BSPCompilerEx.tpp"
+#include "BSPCompiler.tpp"
 
 #endif

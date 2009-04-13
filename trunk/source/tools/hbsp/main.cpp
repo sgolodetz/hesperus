@@ -15,7 +15,7 @@ using boost::lexical_cast;
 
 #include <source/io/GeometryFile.h>
 #include <source/io/TreeFile.h>
-#include <source/level/trees/BSPCompilerEx.h>
+#include <source/level/trees/BSPCompiler.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
@@ -64,7 +64,7 @@ void run_compiler_ex(const std::string& inputGeometryFilename, const std::string
 	if(hintGeometryFilename != "nohints") GeometryFile::load(hintGeometryFilename, hintPolygons);
 
 	// Build the BSP tree.
-	BSPCompilerEx<Poly> compiler(polygons, hintPolygons, weight);
+	BSPCompiler<Poly> compiler(polygons, hintPolygons, weight);
 	compiler.build_tree();
 
 	// Save the polygons and the BSP tree to the output file.

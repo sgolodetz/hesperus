@@ -1310,7 +1310,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\trees\BSPCompilerEx.h"
+						RelativePath="..\level\trees\BSPCompiler.h"
 						>
 					</File>
 					<File
@@ -1362,7 +1362,7 @@
 					Name=".tpp"
 					>
 					<File
-						RelativePath="..\level\trees\BSPCompilerEx.tpp"
+						RelativePath="..\level\trees\BSPCompiler.tpp"
 						>
 					</File>
 					<File
