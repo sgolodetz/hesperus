@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 11-04-09
+Last Updated: 13-04-09
 
 ----
 Easy
@@ -22,7 +22,6 @@ Medium
 Hard
 ----
 
-* Hint brushes to improve vis. This requires changes to both MapEditor (done) and the BSP compiler (todo).
 * Update MapEditor to allow placement of entities, etc. Some sort of scripted paths should be added as well.
 * Write the model and animation code.
   - Sort out inter-model attachment (e.g. for weapons).
