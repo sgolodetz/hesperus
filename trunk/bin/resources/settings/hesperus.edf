@@ -33,7 +33,7 @@ Physics
 }
 Yoke
 {
-	Yoke : {None|User|Bot}
+	Yoke : {None|User|Minimus <script>}
 }
 }
 EntityTypes
@@ -56,6 +56,6 @@ AABBs = [stand,crouch]
 Pose = stand
 Health = 50
 Mass = 75
-Yoke = Bot
+Yoke = Minimus
 }
 }

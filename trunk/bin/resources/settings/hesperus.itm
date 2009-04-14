@@ -1,0 +1,37 @@
+HITEMDEF
+Knife
+{
+AnimationExtension = melee
+Model = Knife
+Script = weapon-knife.as
+}
+Lockpick
+{
+AnimationExtension = melee
+Model = Lockpick
+Script = tool-lockpick.as
+}
+Medkit
+{
+AnimationExtension = melee
+Model = Medkit
+Script = item-medkit.as
+}
+Pistol
+{
+AnimationExtension = pistol
+Model = Pistol
+Script = weapon-pistol.as
+}
+Rifle
+{
+AnimationExtension = rifle
+Model = Rifle
+Script = weapon-rifle.as
+}
+Sword
+{
+AnimationExtension = melee
+Model = Sword
+Script = weapon-sword.as
+}
