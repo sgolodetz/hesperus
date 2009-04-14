@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 13-04-09
+Last Updated: 14-04-09
 
 ----
 Easy
@@ -23,8 +23,7 @@ Hard
 ----
 
 * Update MapEditor to allow placement of entities, etc. Some sort of scripted paths should be added as well.
-* Write the model and animation code.
-  - Sort out inter-model attachment (e.g. for weapons).
 * Implement AI scripting.
 * Implement collision handling between dynamic objects.
 * Reimplement hlight to allow dynamic lighting.
+* Implement weapons and projectiles.

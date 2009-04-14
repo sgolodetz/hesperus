@@ -38,6 +38,7 @@ public:
 	std::vector<XMLElement_CPtr> find_children(const std::string& name) const;
 	XMLElement_CPtr find_unique_child(const std::string& name) const;
 	bool has_attribute(const std::string& name) const;
+	bool has_child(const std::string& name) const;
 	const std::string& name() const;
 	void set_attribute(const std::string& name, const std::string& value);
 };

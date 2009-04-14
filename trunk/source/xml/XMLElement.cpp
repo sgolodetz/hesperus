@@ -51,6 +51,11 @@ bool XMLElement::has_attribute(const std::string& name) const
 	return m_attributes.find(name) != m_attributes.end();
 }
 
+bool XMLElement::has_child(const std::string& name) const
+{
+	return m_children.find(name) != m_children.end();
+}
+
 const std::string& XMLElement::name() const
 {
 	return m_name;
