@@ -54,6 +54,7 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 void AnimationController::set_skeleton(const Skeleton_Ptr& skeleton)
 {
 	m_skeleton = skeleton;
+	reset_controller();
 }
 
 void AnimationController::update(int milliseconds)
@@ -62,6 +63,15 @@ void AnimationController::update(int milliseconds)
 }
 
 //#################### PRIVATE METHODS ####################
+void AnimationController::reset_controller()
+{
+	m_state = AS_REST;
+	m_animationName = "";
+	m_animationTime = 0;
+	m_pose.reset();
+	m_transitionStart.reset();
+}
+
 void AnimationController::set_pose(const Pose_Ptr& pose)
 {
 	m_pose = pose;

@@ -12,6 +12,10 @@
 
 namespace hesp {
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<class Model> Model_Ptr;
+typedef shared_ptr<const class Model> Model_CPtr;
+
 class Model
 {
 	//#################### PRIVATE VARIABLES ####################
@@ -25,13 +29,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void attach_to_parent(const Model_Ptr& parent, const std::string& parentBoneName);
+	void detach_from_parent();
 	void render(const AnimationController_Ptr& animController) const;
 	const Skeleton_Ptr& skeleton() const;
 };
-
-//#################### TYPEDEFS ####################
-typedef shared_ptr<Model> Model_Ptr;
-typedef shared_ptr<const Model> Model_CPtr;
 
 }
 

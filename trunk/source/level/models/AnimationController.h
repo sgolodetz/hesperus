@@ -45,6 +45,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	void reset_controller();
 	void set_pose(const Pose_Ptr& pose);
 	void update_pose(int milliseconds);
 };
