@@ -926,10 +926,6 @@
 					Name=".h"
 					>
 					<File
-						RelativePath="..\level\entities\AnimationComponent.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\BipedChangePoseCommand.h"
 						>
 					</File>
@@ -946,10 +942,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\CollisionComponent.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\Entity.h"
 						>
 					</File>
@@ -962,73 +954,17 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\FixedCameraComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\HealthComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\IAnimationComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\ICameraComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\ICollisionComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\IHealthComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\INavComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\IPhysicsComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\IYokeComponent.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\MovementFunctions.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\NavComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\PhysicsComponent.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\VariableCameraComponent.h"
 						>
 					</File>
 					<File
 						RelativePath="..\level\entities\Yoke.h"
 						>
 					</File>
-					<File
-						RelativePath="..\level\entities\YokeComponent.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name=".cpp"
 					>
-					<File
-						RelativePath="..\level\entities\AnimationComponent.cpp"
-						>
-					</File>
 					<File
 						RelativePath="..\level\entities\BipedChangePoseCommand.cpp"
 						>
@@ -1046,10 +982,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\CollisionComponent.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\Entity.cpp"
 						>
 					</File>
@@ -1058,27 +990,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\entities\HealthComponent.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\level\entities\MovementFunctions.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\NavComponent.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\PhysicsComponent.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\VariableCameraComponent.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\YokeComponent.cpp"
 						>
 					</File>
 				</Filter>

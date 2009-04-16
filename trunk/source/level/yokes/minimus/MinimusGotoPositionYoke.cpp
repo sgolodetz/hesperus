@@ -16,11 +16,8 @@ namespace hesp {
 MinimusGotoPositionYoke::MinimusGotoPositionYoke(const Entity_Ptr& biped, const Vector3d& dest)
 :	m_biped(biped), m_dest(dest)
 {
-	if(!m_biped->animation_component() ||
-	   !m_biped->camera_component() ||
-	   !m_biped->collision_component() ||
-	   !m_biped->nav_component() ||
-	   !m_biped->physics_component())
+	// Check that the yoke isn't being attached to a non-biped.
+	if(!m_biped->is_biped())
 	{
 		throw Exception("Couldn't attach a biped yoke to a non-biped");
 	}
@@ -36,16 +33,15 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		return std::vector<EntityCommand_Ptr>();
 	}
 
-	const Vector3d& source = m_biped->camera_component()->camera().position();
+	const Vector3d& source = m_biped->position();
 
 	if(!m_path)
 	{
-		ICollisionComponent_Ptr colComponent = m_biped->collision_component();
-		int mapIndex = colComponent->aabb_indices()[colComponent->pose()];
+		int mapIndex = m_biped->aabb_indices()[m_biped->pose()];
 		NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 		GlobalPathfinder pathfinder(navMesh, navDatasets[mapIndex]->adjacency_list(), navDatasets[mapIndex]->path_table());
 
-		int suggestedSourcePoly = m_biped->nav_component()->cur_nav_poly_index();
+		int suggestedSourcePoly = m_biped->cur_nav_poly_index();
 		int sourcePoly = MovementFunctions::find_nav_polygon(source, suggestedSourcePoly, polygons, tree, navMesh);
 		if(sourcePoly == -1)	{ m_state = YOKE_FAILED; return std::vector<EntityCommand_Ptr>(); }
 		int destPoly = MovementFunctions::find_nav_polygon(m_dest, -1, polygons, tree, navMesh);
@@ -83,7 +79,7 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 	if(!m_path->empty())
 	{
 		std::vector<EntityCommand_Ptr> commands;
-		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, m_biped->physics_component()->walk_speed())));
+		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, m_biped->walk_speed())));
 		return commands;
 	}
 
@@ -94,7 +90,7 @@ std::vector<EntityCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		dir.normalize();
 
 		std::vector<EntityCommand_Ptr> commands;
-		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, m_biped->physics_component()->walk_speed())));
+		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, m_biped->walk_speed())));
 		return commands;
 	}
 	else

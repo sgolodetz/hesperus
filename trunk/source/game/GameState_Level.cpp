@@ -85,12 +85,11 @@ void GameState_Level::do_animations(int milliseconds)
 {
 	// Update the model animations.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<Entity_Ptr>& animatables = entityManager->animatables();
+	const std::vector<Entity_Ptr>& animatables = entityManager->group("Animatables");
 	int animatableCount = static_cast<int>(animatables.size());
 	for(int i=0; i<animatableCount; ++i)
 	{
-		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
-		animComponent->anim_controller()->update(milliseconds);
+		animatables[i]->character_anim_controller()->update(milliseconds);
 	}
 }
 
@@ -98,14 +97,14 @@ void GameState_Level::do_entities(int milliseconds, UserInput& input)
 {
 	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<Entity_Ptr>& yokeables = entityManager->yokeables();
+	const std::vector<Entity_Ptr>& yokeables = entityManager->group("Yokeables");
 
 	std::list<EntityCommand_Ptr> cmdQueue;	// implement the queue as a list so that we can use back_inserter below
 
 	int yokeableCount = static_cast<int>(yokeables.size());
 	for(int i=0; i<yokeableCount; ++i)
 	{
-		const Yoke_Ptr& yoke = yokeables[i]->yoke_component()->yoke();
+		const Yoke_Ptr& yoke = yokeables[i]->yoke();
 		if(yoke)
 		{
 			// Use the entity's yoke to generate entity commands.
@@ -131,17 +130,16 @@ void GameState_Level::do_physics(int milliseconds)
 	const double GRAVITY_STRENGTH = 9.81;	// strength of gravity in Newtons
 
 	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<Entity_Ptr>& simulables = entityManager->simulables();
+	const std::vector<Entity_Ptr>& simulables = entityManager->group("Simulables");
 	int simulableCount = static_cast<int>(simulables.size());
 	for(int i=0; i<simulableCount; ++i)
 	{
-		IPhysicsComponent_Ptr physComponent = simulables[i]->physics_component();
-		Vector3d velocity = physComponent->velocity();
-		physComponent->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
-		if(MovementFunctions::single_move_without_navmesh(simulables[i], physComponent->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
+		Vector3d velocity = simulables[i]->velocity();
+		simulables[i]->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
+		if(MovementFunctions::single_move_without_navmesh(simulables[i], simulables[i]->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
 		{
 			// A collision occurred, so set the velocity back to zero.
-			physComponent->set_velocity(Vector3d(0,0,0));
+			simulables[i]->set_velocity(Vector3d(0,0,0));
 		}
 	}
 }

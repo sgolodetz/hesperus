@@ -18,18 +18,15 @@ BipedJumpCommand::BipedJumpCommand(const Entity_Ptr& biped, const Vector3d& dir)
 void BipedJumpCommand::execute(const std::vector<AABB3d>& aabbs, const std::vector<CollisionPolygon_Ptr>& polygons,
 							   const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	ICollisionComponent_Ptr colComponent = m_biped->collision_component();
-	int mapIndex = colComponent->aabb_indices()[colComponent->pose()];
+	int mapIndex = m_biped->aabb_indices()[m_biped->pose()];
 	NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 
 	if(MovementFunctions::attempt_navmesh_acquisition(m_biped, polygons, tree, navMesh))
 	{
-		IPhysicsComponent_Ptr physComponent = m_biped->physics_component();
-
 		// FIXME: The jump strength should eventually be a property of the entity.
 		const double JUMP_STRENGTH = 3;		// force of jump in Newtons
 		Vector3d velocity = m_dir / JUMP_STRENGTH + Vector3d(0,0,1) * JUMP_STRENGTH;
-		physComponent->set_velocity(velocity);
+		m_biped->set_velocity(velocity);
 	}
 }
 

@@ -36,13 +36,12 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	}
 
 	// Set the skeletons in the entity animation controllers.
-	const std::vector<Entity_Ptr>& animatables = m_entityManager->animatables();
+	const std::vector<Entity_Ptr>& animatables = m_entityManager->group("Animatables");
 	int animatableCount = static_cast<int>(animatables.size());
 	for(int i=0; i<animatableCount; ++i)
 	{
-		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
-		Skeleton_Ptr skeleton = m_modelManager->model(animComponent->model_name())->skeleton();
-		animComponent->anim_controller()->set_skeleton(skeleton);
+		Skeleton_Ptr skeleton = m_modelManager->model(animatables[i]->character_model())->skeleton();
+		animatables[i]->character_anim_controller()->set_skeleton(skeleton);
 	}
 }
 
@@ -81,11 +80,11 @@ void Level::render() const
 	glEnable(GL_DEPTH_TEST);
 
 	Entity_Ptr viewer = m_entityManager->viewer();
-	const Vector3d& pos = viewer->camera_component()->camera().position();
-	const Vector3d& look = viewer->camera_component()->camera().n();
+	const Vector3d& pos = viewer->position();
+	const Vector3d& look = viewer->camera().n();
 
 	// Calculate the viewer's eye position and where they're looking at.
-	const AABB3d& aabb = m_entityManager->aabbs()[viewer->collision_component()->pose()];
+	const AABB3d& aabb = m_entityManager->aabbs()[viewer->pose()];
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 
@@ -142,18 +141,16 @@ void Level::render_entities() const
 {
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 
-	const std::vector<Entity_Ptr>& animatables = m_entityManager->animatables();
+	const std::vector<Entity_Ptr>& animatables = m_entityManager->group("Animatables");
 	int animatablesCount = static_cast<int>(animatables.size());
 	for(int i=0; i<animatablesCount; ++i)
 	{
-		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
-		ICameraComponent_Ptr camComponent = animatables[i]->camera_component();
-		ICollisionComponent_Ptr colComponent = animatables[i]->collision_component();
-		if(animComponent && camComponent && colComponent && animatables[i] != m_entityManager->viewer())
+		const Entity_Ptr& entity = animatables[i];
+		if(entity != m_entityManager->viewer())
 		{
 			// FIXME: For performance reasons, we should only be rendering entities which are potentially visible.
-			const Camera& camera = camComponent->camera();
-			const AABB3d& aabb = m_entityManager->aabbs()[colComponent->aabb_indices()[colComponent->pose()]];
+			const Camera& camera = entity->camera();
+			const AABB3d& aabb = m_entityManager->aabbs()[entity->aabb_indices()[entity->pose()]];
 			const Vector3d& p = camera.position();
 			const Vector3d& n = camera.n();
 			const Vector3d& u = camera.u();
@@ -180,8 +177,8 @@ void Level::render_entities() const
 			glPushMatrix();
 			glMultMatrixd(&m.rep()[0]);
 
-			Model_Ptr model = m_modelManager->model(animComponent->model_name());
-			model->render(animComponent->anim_controller());
+			Model_Ptr model = m_modelManager->model(entity->character_model());
+			model->render(entity->character_anim_controller());
 
 			glPopMatrix();
 

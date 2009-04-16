@@ -6,6 +6,8 @@
 #ifndef H_HESP_ENTITIESSECTION
 #define H_HESP_ENTITIESSECTION
 
+#include <boost/filesystem/operations.hpp>
+
 #include <source/level/entities/EntityManager.h>
 
 namespace hesp {

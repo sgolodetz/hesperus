@@ -6,58 +6,120 @@
 #ifndef H_HESP_ENTITY
 #define H_HESP_ENTITY
 
-#include "IAnimationComponent.h"
-#include "ICameraComponent.h"
-#include "ICollisionComponent.h"
-#include "IHealthComponent.h"
-#include "IPhysicsComponent.h"
-#include "INavComponent.h"
-#include "IYokeComponent.h"
+#include <list>
+#include <string>
+#include <vector>
+
+#include <boost/filesystem/operations.hpp>
+
+#include <source/camera/Camera.h>
+#include <source/level/models/AnimationController.h>
+#include <source/level/trees/OnionUtil.h>
+#include <source/math/vectors/Vector3.h>
+#include "Yoke.h"
 
 namespace hesp {
 
 class Entity
 {
+	//#################### NESTED CLASSES ####################
+public:
+	struct Properties
+	{
+		std::string entityType;
+
+		shared_ptr<std::vector<int> >	aabbIndices;
+		shared_ptr<std::string>			characterModel;
+		shared_ptr<int>					health;
+		shared_ptr<Vector3d>			look;
+		shared_ptr<double>				mass;
+		shared_ptr<int>					pose;
+		shared_ptr<Vector3d>			position;
+		shared_ptr<Vector3d>			velocity;
+
+		Properties(const std::string& entityType_)
+		:	entityType(entityType_)
+		{}
+	};
+
+	struct Traversal
+	{
+		const int linkIndex;
+		const Vector3d source;
+		const double t;
+
+		Traversal(int linkIndex_, const Vector3d& source_, double t_)
+		:	linkIndex(linkIndex_), source(source_), t(t_)
+		{}
+	};
+
+	//#################### TYPEDEFS ####################
+public:
+	typedef shared_ptr<Traversal> Traversal_Ptr;
+	typedef shared_ptr<const Traversal> Traversal_CPtr;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
-	int m_id;
 	std::string m_entityType;
-	IAnimationComponent_Ptr m_animationComponent;
-	ICameraComponent_Ptr m_cameraComponent;
-	ICollisionComponent_Ptr m_collisionComponent;
-	IHealthComponent_Ptr m_healthComponent;
-	INavComponent_Ptr m_navComponent;
-	IPhysicsComponent_Ptr m_physicsComponent;
-	IYokeComponent_Ptr m_yokeComponent;
+
+	shared_ptr<std::vector<int> >						m_aabbIndices;
+	shared_ptr<Camera>									m_camera;
+	shared_ptr<AnimationController>						m_characterAnimController;
+	shared_ptr<std::string>								m_characterModel;
+
+	// The index of the nav polygon in which the centre of the entity's AABB currently resides (-1 if unknown)
+	shared_ptr<int>										m_curNavPolyIndex;
+
+	// The details of the current nav link traversal (NULL if not currently traversing a link)
+	shared_ptr<Traversal>								m_curTraversal;
+
+	shared_ptr<int>										m_health;
+	shared_ptr<double>									m_mass;
+	shared_ptr<int>										m_pose;
+
+	// Records the details of recent times the entity would have crossed a wall into solid space (had we not stopped it)
+	shared_ptr<std::list<OnionUtil::Transition_Ptr> >	m_recentTransitions;
+
+	shared_ptr<Vector3d>								m_velocity;
+	shared_ptr<Yoke>									m_yoke;
+	shared_ptr<std::string>								m_yokeType;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Entity(const std::string& entityType);
+	Entity(const Properties& properties);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	IAnimationComponent_Ptr animation_component();
-	ICameraComponent_Ptr camera_component();
-	ICollisionComponent_Ptr collision_component();
+	const std::vector<int>& aabb_indices() const;
+	Camera& camera();
+	const AnimationController_Ptr& character_anim_controller() const;
+	const std::string& character_model() const;
+	int cur_nav_poly_index() const;
+	Traversal_CPtr cur_traversal() const;
 	const std::string& entity_type() const;
-	IHealthComponent_Ptr health_component();
-	int id() const;
-	INavComponent_Ptr nav_component();
-	IPhysicsComponent_Ptr physics_component();
-	IYokeComponent_Ptr yoke_component();
+	bool is_animatable() const;
+	bool is_biped() const;
+	bool is_simulable() const;
+	int pose() const;
+	const Vector3d& position() const;
+	const std::list<OnionUtil::Transition_Ptr>& recent_transitions() const;
+	double run_speed() const;
 	void save(std::ostream& os) const;
-	void set_animation_component(const IAnimationComponent_Ptr& animationComponent);
-	void set_camera_component(const ICameraComponent_Ptr& cameraComponent);
-	void set_collision_component(const ICollisionComponent_Ptr& collisionComponent);
-	void set_health_component(const IHealthComponent_Ptr& healthComponent);
-	void set_id(int id);
-	void set_nav_component(const INavComponent_Ptr& navComponent);
-	void set_physics_component(const IPhysicsComponent_Ptr& physicsComponent);
-	void set_yoke_component(const IYokeComponent_Ptr& yokeComponent);
+	void set_cur_nav_poly_index(int curNavPolyIndex);
+	void set_cur_traversal(const Traversal_Ptr& curTraversal);
+	void set_pose(int pose);
+	void set_position(const Vector3d& position);
+	void set_velocity(const Vector3d& velocity);
+	void set_yoke(const Yoke_Ptr& yoke, const std::string& yokeType);
+	void update_recent_transitions(const OnionUtil::Transition_Ptr& transition);
+	const Vector3d& velocity() const;
+	double walk_speed() const;
+	const Yoke_Ptr& yoke() const;
 };
 
 //#################### TYPEDEFS ####################
 typedef shared_ptr<Entity> Entity_Ptr;
+typedef shared_ptr<const Entity> Entity_CPtr;
 
 }
 

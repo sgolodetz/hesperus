@@ -16,7 +16,7 @@ BipedTurnCommand::BipedTurnCommand(const Entity_Ptr& biped, int mouseMotionX, in
 void BipedTurnCommand::execute(const std::vector<AABB3d>& aabbs, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 							   const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	Camera& camera = m_biped->camera_component()->camera();
+	Camera& camera = m_biped->camera();
 
 	const double CAMERA_SPEED = 15.0;
 

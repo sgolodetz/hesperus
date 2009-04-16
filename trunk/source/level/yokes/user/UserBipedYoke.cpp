@@ -18,24 +18,22 @@ namespace hesp {
 UserBipedYoke::UserBipedYoke(const Entity_Ptr& biped)
 :	m_biped(biped)
 {
-	if(!m_biped->animation_component() ||
-	   !m_biped->camera_component() ||
-	   !m_biped->collision_component() ||
-	   !m_biped->nav_component() ||
-	   !m_biped->physics_component())
+	// Check that the yoke isn't being attached to a non-biped.
+	if(!m_biped->is_biped())
 	{
 		throw Exception("Couldn't attach a biped yoke to a non-biped");
 	}
 }
 
 //#################### PUBLIC METHODS ####################
-std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+																const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	// FIXME: The key mappings should be defined externally, not hard-coded like this.
 
 	std::vector<EntityCommand_Ptr> commands;
 
-	const Camera& camera = m_biped->camera_component()->camera();
+	const Camera& camera = m_biped->camera();
 
 	//~~~~~~~~~~~~~~~~
 	// NORMAL MOVEMENT
@@ -62,7 +60,7 @@ std::vector<EntityCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 		dir.normalize();
 
 		// Decide whether to run or walk.
-		double speed = input.key_down(SDLK_LSHIFT) ? m_biped->physics_component()->walk_speed() : m_biped->physics_component()->run_speed();
+		double speed = input.key_down(SDLK_LSHIFT) ? m_biped->walk_speed() : m_biped->run_speed();
 
 		commands.push_back(EntityCommand_Ptr(new BipedMoveCommand(m_biped, dir, speed)));
 	}

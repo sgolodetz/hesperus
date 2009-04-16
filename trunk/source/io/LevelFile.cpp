@@ -173,12 +173,11 @@ ModelManager_Ptr LevelFile::load_models(const EntityManager_Ptr& entityManager)
 {
 	ModelManager_Ptr modelManager(new ModelManager);
 
-	const std::vector<Entity_Ptr>& animatables = entityManager->animatables();
+	const std::vector<Entity_Ptr>& animatables = entityManager->group("Animatables");
 	int animatableCount = static_cast<int>(animatables.size());
 	for(int i=0; i<animatableCount; ++i)
 	{
-		IAnimationComponent_Ptr animComponent = animatables[i]->animation_component();
-		modelManager->register_model(animComponent->model_name());
+		modelManager->register_model(animatables[i]->character_model());
 	}
 
 	modelManager->load_all();

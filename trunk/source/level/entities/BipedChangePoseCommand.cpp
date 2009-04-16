@@ -20,19 +20,15 @@ void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const std
 {
 	// FIXME: Crouching is currently a "jolt" from one pose to another. It should really be a smooth transition.
 
-	ICameraComponent_Ptr camComponent = m_biped->camera_component();
-	ICollisionComponent_Ptr colComponent = m_biped->collision_component();
-	INavComponent_Ptr navComponent = m_biped->nav_component();
-
 	// Check that we're not currently traversing a nav link.
-	if(navComponent->cur_traversal()) return;
+	if(m_biped->cur_traversal()) return;
 
-	Vector3d source = camComponent->camera().position();
+	Vector3d source = m_biped->position();
 
-	int curPose = colComponent->pose();
+	int curPose = m_biped->pose();
 	int newPose = 1 - curPose;
-	int curMapIndex = colComponent->aabb_indices()[curPose];
-	int newMapIndex = colComponent->aabb_indices()[newPose];
+	int curMapIndex = m_biped->aabb_indices()[curPose];
+	int newMapIndex = m_biped->aabb_indices()[newPose];
 	const AABB3d& curAABB = aabbs[curMapIndex];
 	const AABB3d& newAABB = aabbs[newMapIndex];
 
@@ -46,9 +42,9 @@ void BipedChangePoseCommand::execute(const std::vector<AABB3d>& aabbs, const std
 	if(destLeaf->is_solid(newMapIndex)) return;
 
 	// If the pose change is ok, set the new pose and update the entity position to reflect the centre of the new AABB.
-	colComponent->set_pose(newPose);
-	camComponent->camera().set_position(dest);
-	navComponent->set_cur_nav_poly_index(-1);
+	m_biped->set_pose(newPose);
+	m_biped->set_position(dest);
+	m_biped->set_cur_nav_poly_index(-1);
 }
 
 }

@@ -18,14 +18,11 @@ namespace hesp {
 bool MovementFunctions::attempt_navmesh_acquisition(const Entity_Ptr& entity, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 													const NavMesh_Ptr& navMesh)
 {
-	ICameraComponent_Ptr camComponent = entity->camera_component();
-	INavComponent_Ptr navComponent = entity->nav_component();
-
-	const Vector3d& position = camComponent->camera().position();
-	int suggestedNavPoly = navComponent->cur_nav_poly_index();
+	const Vector3d& position = entity->position();
+	int suggestedNavPoly = entity->cur_nav_poly_index();
 
 	int navPolyIndex = find_nav_polygon(position, suggestedNavPoly, polygons, tree, navMesh);
-	navComponent->set_cur_nav_poly_index(navPolyIndex);
+	entity->set_cur_nav_poly_index(navPolyIndex);
 
 	return navPolyIndex != -1;
 }
@@ -102,12 +99,9 @@ int MovementFunctions::find_nav_polygon(const Vector3d& p, int suggestedNavPoly,
 void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector3d& dir, double speed, const std::vector<CollisionPolygon_Ptr>& polygons,
 										  const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	ICollisionComponent_Ptr colComponent = entity->collision_component();
-	INavComponent_Ptr navComponent = entity->nav_component();
-
 	Move move;
 	move.dir = dir;
-	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
+	move.mapIndex = entity->aabb_indices()[entity->pose()];
 	move.timeRemaining = milliseconds / 1000.0;
 
 	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
@@ -117,7 +111,7 @@ void MovementFunctions::move_with_navmesh(const Entity_Ptr& entity, const Vector
 	{
 		oldTimeRemaining = move.timeRemaining;
 
-		if(navComponent->cur_traversal()) do_traverse_move(entity, move, speed /* FIXME: Select the appropriate speed here */, polygons, navMesh);
+		if(entity->cur_traversal()) do_traverse_move(entity, move, speed /* FIXME: Select the appropriate speed here */, polygons, navMesh);
 		if(move.timeRemaining == 0) break;
 
 		if(attempt_navmesh_acquisition(entity, polygons, tree, navMesh)) do_navmesh_move(entity, move, speed, polygons, tree, navMesh);
@@ -132,15 +126,12 @@ bool MovementFunctions::single_move_without_navmesh(const Entity_Ptr& entity, co
 {
 	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
 
-	ICollisionComponent_Ptr colComponent = entity->collision_component();
-	INavComponent_Ptr navComponent = entity->nav_component();
-
 	// Check to make sure we're not currently traversing a link: don't let the entity be moved if we are.
-	if(navComponent->cur_traversal()) return true;
+	if(entity->cur_traversal()) return true;
 
 	Move move;
 	move.dir = dir;
-	move.mapIndex = colComponent->aabb_indices()[colComponent->pose()];
+	move.mapIndex = entity->aabb_indices()[entity->pose()];
 	move.timeRemaining = milliseconds / 1000.0;
 
 	return do_direct_move(entity, move, speed, tree);
@@ -154,10 +145,7 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, dou
 {
 	bool collisionOccurred = false;
 
-	ICameraComponent_Ptr camComponent = entity->camera_component();
-	ICollisionComponent_Ptr colComponent = entity->collision_component();
-
-	Vector3d source = camComponent->camera().position();
+	Vector3d source = entity->position();
 	Vector3d dest = source + move.dir * speed * move.timeRemaining;
 
 	// Check the ray against the tree.
@@ -184,7 +172,7 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, dou
 			collisionOccurred = true;
 
 			// Record this as the latest transition.
-			colComponent->update_recent_transitions(OnionUtil::Transition_Ptr(new OnionUtil::Transition(transition)));
+			entity->update_recent_transitions(OnionUtil::Transition_Ptr(new OnionUtil::Transition(transition)));
 
 			// Update the move direction to allow sliding.
 			update_move_direction_for_sliding(entity, move);
@@ -199,7 +187,7 @@ bool MovementFunctions::do_direct_move(const Entity_Ptr& entity, Move& move, dou
 		}
 	}
 
-	camComponent->camera().set_position(dest);
+	entity->set_position(dest);
 
 	// Update the time remaining.
 	double moveLength = source.distance(dest);
@@ -214,8 +202,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, do
 {
 	// Step 1:		Project the movement vector onto the plane of the current nav polygon.
 
-	INavComponent_Ptr navComponent = entity->nav_component();
-	int curNavPolyIndex = navComponent->cur_nav_poly_index();
+	int curNavPolyIndex = entity->cur_nav_poly_index();
 	const NavPolygon& navPoly = *navMesh->polygons()[curNavPolyIndex];
 	int curColPolyIndex = navPoly.collision_poly_index();
 	const CollisionPolygon& curPoly = *polygons[curColPolyIndex];
@@ -225,9 +212,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, do
 
 	// Step 2:		Check whether the new movement vector goes through the influence zone of any of the out navlinks.
 
-	ICameraComponent_Ptr camComponent = entity->camera_component();
-
-	Vector3d source = camComponent->camera().position();
+	Vector3d source = entity->position();
 	Vector3d dest = source + move.dir * speed * move.timeRemaining;
 
 	Vector3d_Ptr hit;
@@ -260,7 +245,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, do
 	{
 		if(point_in_polygon(dest, curPoly))
 		{
-			camComponent->camera().set_position(dest);
+			entity->set_position(dest);
 			move.timeRemaining = 0;
 		}
 		else
@@ -275,7 +260,7 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, do
 	//				and reduce the time remaining appropriately. Then, initiate the link traversal.
 
 	// Move the entity to the link entrance point.
-	camComponent->camera().set_position(*hit);
+	entity->set_position(*hit);
 
 	// Update the time remaining.
 	double moveLength = source.distance(*hit);
@@ -283,16 +268,13 @@ void MovementFunctions::do_navmesh_move(const Entity_Ptr& entity, Move& move, do
 	move.timeRemaining -= timeTaken;
 
 	// Initiate the link traversal.
-	INavComponent::Traversal_Ptr traversal(new INavComponent::Traversal(hitNavlink, *hit, 0));
-	navComponent->set_cur_traversal(traversal);
+	Entity::Traversal_Ptr traversal(new Entity::Traversal(hitNavlink, *hit, 0));
+	entity->set_cur_traversal(traversal);
 }
 
 void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, double speed, const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_Ptr& navMesh)
 {
-	ICameraComponent_Ptr camComponent = entity->camera_component();
-	INavComponent_Ptr navComponent = entity->nav_component();
-
-	INavComponent::Traversal_Ptr traversal = navComponent->cur_traversal();
+	Entity::Traversal_CPtr traversal = entity->cur_traversal();
 	if(!traversal) return;
 
 	NavLink_Ptr link = navMesh->links()[traversal->linkIndex];
@@ -305,12 +287,12 @@ void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, d
 		// Finish traversing the link:
 
 		// Update the current nav polygon and clear the current traversal.
-		navComponent->set_cur_nav_poly_index(link->dest_poly());
-		navComponent->set_cur_traversal(INavComponent::Traversal_Ptr());
+		entity->set_cur_nav_poly_index(link->dest_poly());
+		entity->set_cur_traversal(Entity::Traversal_Ptr());
 
 		// Move to an exit point on the link.
 		Vector3d dest = link->traverse(traversal->source, 1);
-		camComponent->camera().set_position(dest);
+		entity->set_position(dest);
 		move.timeRemaining -= remainingTraversalTime;
 		
 #if 0
@@ -324,18 +306,18 @@ void MovementFunctions::do_traverse_move(const Entity_Ptr& entity, Move& move, d
 		Plane destPlane = make_plane(destPoly);
 		Vector3d destDir = project_vector_onto_plane(move.dir, destPlane);
 		dest += destDir * 0.001;
-		if(point_in_polygon(dest, destPoly)) camComponent->camera().set_position(dest);
+		if(point_in_polygon(dest, destPoly)) entity->set_position(dest);
 	}
 	else
 	{
 		// Work out how much further we've progressed and update the traversal field accordingly.
 		double deltaT = (availableTraversalTime / remainingTraversalTime) * remaining;
-		INavComponent::Traversal_Ptr newTraversal(new INavComponent::Traversal(traversal->linkIndex, traversal->source, traversal->t + deltaT));
-		navComponent->set_cur_traversal(newTraversal);
+		Entity::Traversal_Ptr newTraversal(new Entity::Traversal(traversal->linkIndex, traversal->source, traversal->t + deltaT));
+		entity->set_cur_traversal(newTraversal);
 
 		// Move further along the link.
 		Vector3d dest = link->traverse(newTraversal->source, newTraversal->t);
-		camComponent->camera().set_position(dest);
+		entity->set_position(dest);
 		move.timeRemaining = 0;
 	}
 }
@@ -346,9 +328,9 @@ void MovementFunctions::update_move_direction_for_sliding(const Entity_Ptr& enti
 	// component of the movement which is normal to the wall. To find the wall we're on, we look at
 	// all the 'recent' transitions and choose one which we're trying to walk behind.
 
-	const Vector3d& source = entity->camera_component()->camera().position();
+	const Vector3d& source = entity->position();
 	Vector3d dummyDest = source + move.dir;
-	const std::list<OnionUtil::Transition_Ptr>& recentTransitions = entity->collision_component()->recent_transitions();
+	const std::list<OnionUtil::Transition_Ptr>& recentTransitions = entity->recent_transitions();
 	for(std::list<OnionUtil::Transition_Ptr>::const_iterator it=recentTransitions.begin(), iend=recentTransitions.end(); it!=iend; ++it)
 	{
 		if(classify_point_against_plane(dummyDest, *(*it)->plane) == CP_BACK)

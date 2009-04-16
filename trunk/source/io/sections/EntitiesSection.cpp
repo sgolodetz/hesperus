@@ -14,13 +14,6 @@ using boost::lexical_cast;
 #include <source/io/util/DirectoryFinder.h>
 #include <source/io/util/EntityComponents.h>
 #include <source/io/util/FieldIO.h>
-#include <source/level/entities/AnimationComponent.h>
-#include <source/level/entities/CollisionComponent.h>
-#include <source/level/entities/HealthComponent.h>
-#include <source/level/entities/NavComponent.h>
-#include <source/level/entities/PhysicsComponent.h>
-#include <source/level/entities/VariableCameraComponent.h>
-#include <source/level/entities/YokeComponent.h>
 #include <source/level/yokes/minimus/MinimusScriptYoke.h>
 #include <source/level/yokes/null/NullYoke.h>
 #include <source/level/yokes/user/UserBipedYoke.h>
@@ -79,68 +72,39 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 
 			LineIO::read_checked_line(is, "{");
 
-			std::map<std::string,EntityComponents>::const_iterator jt = entityComponentsMap.find(entityType);
-			if(jt == entityComponentsMap.end()) throw Exception("Cannot create entity instance of type: " + entityType);
-			const EntityComponents& entityComponents = jt->second;
+			// FIXME: Do this properly (requires changing the file format).
+			Entity::Properties properties(entityType);
+			properties.characterModel.reset(new std::string(FieldIO::read_typed_field<std::string>(is, "GameModel")));
+			properties.position.reset(new Vector3d(FieldIO::read_typed_field<Vector3d>(is, "Position")));
+			properties.look.reset(new Vector3d(FieldIO::read_typed_field<Vector3d>(is, "Look")));
+			properties.aabbIndices.reset(new std::vector<int>(FieldIO::read_intarray_field(is, "AABBs")));
+			properties.pose.reset(new int(FieldIO::read_typed_field<int>(is, "Pose")));
+			properties.health.reset(new int(FieldIO::read_typed_field<int>(is, "Health")));
+			properties.mass.reset(new double(FieldIO::read_typed_field<double>(is, "Mass")));
+			properties.velocity.reset(new Vector3d);
 
-			Entity_Ptr entity(new Entity(entityType));
+			Entity_Ptr entity(new Entity(properties));
 
-			if(entityComponents.has("Animation"))
-			{
-				IAnimationComponent_Ptr animationComponent(new AnimationComponent(is));
-				entity->set_animation_component(animationComponent);
-			}
-			if(entityComponents.has("VariableCamera"))
-			{
-				ICameraComponent_Ptr cameraComponent(new VariableCameraComponent(is));
-				entity->set_camera_component(cameraComponent);
-			}
-			if(entityComponents.has("Collision"))
-			{
-				ICollisionComponent_Ptr collisionComponent(new CollisionComponent(is));
-				entity->set_collision_component(collisionComponent);
-			}
-			if(entityComponents.has("Health"))
-			{
-				IHealthComponent_Ptr healthComponent(new HealthComponent(is));
-				entity->set_health_component(healthComponent);
-			}
-			if(entityComponents.has("Nav"))
-			{
-				entity->set_nav_component(INavComponent_Ptr(new NavComponent));
-			}
-			if(entityComponents.has("Physics"))
-			{
-				IPhysicsComponent_Ptr physicsComponent(new PhysicsComponent(is));
-				entity->set_physics_component(physicsComponent);
-			}
-			if(entityComponents.has("Yoke"))
-			{
-				std::string yokeType = FieldIO::read_field(is, "Yoke");
-				Yoke_Ptr yoke;
+			std::string yokeType = FieldIO::read_field(is, "Yoke");
+			Yoke_Ptr yoke;
 
-				std::string yokeClass, yokeParams;
-				std::string::size_type sp = yokeType.find(' ');
-				if(sp != std::string::npos)
-				{
-					yokeClass = yokeType.substr(0,sp);
-					yokeParams = yokeType.substr(sp+1);
-				}
-				else yokeClass = yokeType;
-
-				// Note:	We should replace this with a yoke factory if the number of yokes increases.
-				//			It's probably not worth the extra code for the moment.
-				if(yokeClass == "User")			{ yoke.reset(new UserBipedYoke(entity)); }
-				else if(yokeClass == "Minimus")	{ yoke.reset(new MinimusScriptYoke(entity, yokeParams, aiEngine, baseDir)); }
-				else if(yokeClass == "None")	{ yoke.reset(new NullYoke); }
-				else							{ throw Exception("Unknown yoke class: " + yokeClass); }
-
-				if(yoke)
-				{
-					IYokeComponent_Ptr yokeComponent(new YokeComponent(yoke, yokeType));
-					entity->set_yoke_component(yokeComponent);
-				}
+			std::string yokeClass, yokeParams;
+			std::string::size_type sp = yokeType.find(' ');
+			if(sp != std::string::npos)
+			{
+				yokeClass = yokeType.substr(0,sp);
+				yokeParams = yokeType.substr(sp+1);
 			}
+			else yokeClass = yokeType;
+
+			// Note:	We should replace this with a yoke factory if the number of yokes increases.
+			//			It's probably not worth the extra code for the moment.
+			if(yokeClass == "User")			{ yoke.reset(new UserBipedYoke(entity)); }
+			else if(yokeClass == "Minimus")	{ yoke.reset(new MinimusScriptYoke(entity, yokeParams, aiEngine, baseDir)); }
+			else if(yokeClass == "None")	{ yoke.reset(new NullYoke); }
+			else							{ throw Exception("Unknown yoke class: " + yokeClass); }
+
+			if(yoke) entity->set_yoke(yoke, yokeType);
 
 			entities.push_back(entity);
 

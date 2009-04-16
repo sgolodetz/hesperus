@@ -14,15 +14,11 @@ namespace bf = boost::filesystem;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-MinimusScriptYoke::MinimusScriptYoke(const Entity_Ptr& biped, const std::string& scriptName, const ASXEngine_Ptr& engine,
-									 const bf::path& baseDir)
+MinimusScriptYoke::MinimusScriptYoke(const Entity_Ptr& biped, const std::string& scriptName, const ASXEngine_Ptr& engine, const bf::path& baseDir)
 :	m_biped(biped), m_engine(engine), m_initialised(false)
 {
-	if(!m_biped->animation_component() ||
-	   !m_biped->camera_component() ||
-	   !m_biped->collision_component() ||
-	   !m_biped->nav_component() ||
-	   !m_biped->physics_component())
+	// Check that the yoke isn't being attached to a non-biped.
+	if(!m_biped->is_biped())
 	{
 		throw Exception("Couldn't attach a biped yoke to a non-biped");
 	}
@@ -46,7 +42,8 @@ void MinimusScriptYoke::add_ref()
 	++m_refCount;
 }
 
-std::vector<EntityCommand_Ptr> MinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+std::vector<EntityCommand_Ptr> MinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+																	const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	if(!m_initialised)
 	{
@@ -102,8 +99,7 @@ void MinimusScriptYoke::goto_position(double x, double y, double z)
 
 void MinimusScriptYoke::request_animation(const std::string& name)
 {
-	const IAnimationComponent_Ptr& animComponent = m_biped->animation_component();
-	const AnimationController_Ptr& animController = animComponent->anim_controller();
+	const AnimationController_Ptr& animController = m_biped->character_anim_controller();
 	animController->request_animation(name);
 }
 
