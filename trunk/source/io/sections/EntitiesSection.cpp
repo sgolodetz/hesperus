@@ -65,50 +65,8 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 		std::vector<Entity_Ptr> entities;
 		for(int i=0; i<entityCount; ++i)
 		{
-			LineIO::read_line(is, line, "entity type");
-			size_t n = line.find(' ');
-			if(n+2 > line.length()) throw Exception("Missing entity type after Instance");
-			std::string entityType = line.substr(n+1);
-
-			LineIO::read_checked_line(is, "{");
-
-			// FIXME: Do this properly (requires changing the file format).
-			Entity::Properties properties(entityType);
-			properties.characterModel.reset(new std::string(FieldIO::read_typed_field<std::string>(is, "GameModel")));
-			properties.position.reset(new Vector3d(FieldIO::read_typed_field<Vector3d>(is, "Position")));
-			properties.look.reset(new Vector3d(FieldIO::read_typed_field<Vector3d>(is, "Look")));
-			properties.aabbIndices.reset(new std::vector<int>(FieldIO::read_intarray_field(is, "AABBs")));
-			properties.pose.reset(new int(FieldIO::read_typed_field<int>(is, "Pose")));
-			properties.health.reset(new int(FieldIO::read_typed_field<int>(is, "Health")));
-			properties.mass.reset(new double(FieldIO::read_typed_field<double>(is, "Mass")));
-			properties.velocity.reset(new Vector3d);
-
-			Entity_Ptr entity(new Entity(properties));
-
-			std::string yokeType = FieldIO::read_field(is, "Yoke");
-			Yoke_Ptr yoke;
-
-			std::string yokeClass, yokeParams;
-			std::string::size_type sp = yokeType.find(' ');
-			if(sp != std::string::npos)
-			{
-				yokeClass = yokeType.substr(0,sp);
-				yokeParams = yokeType.substr(sp+1);
-			}
-			else yokeClass = yokeType;
-
-			// Note:	We should replace this with a yoke factory if the number of yokes increases.
-			//			It's probably not worth the extra code for the moment.
-			if(yokeClass == "User")			{ yoke.reset(new UserBipedYoke(entity)); }
-			else if(yokeClass == "Minimus")	{ yoke.reset(new MinimusScriptYoke(entity, yokeParams, aiEngine, baseDir)); }
-			else if(yokeClass == "None")	{ yoke.reset(new NullYoke); }
-			else							{ throw Exception("Unknown yoke class: " + yokeClass); }
-
-			if(yoke) entity->set_yoke(yoke, yokeType);
-
+			Entity_Ptr entity = load_entity(is, aiEngine, baseDir);
 			entities.push_back(entity);
-
-			LineIO::read_checked_line(is, "}");
 		}
 
 	LineIO::read_checked_line(is, "}");
@@ -143,10 +101,82 @@ void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityMana
 	os << entityCount << '\n';
 	for(int i=0; i<entityCount; ++i)
 	{
-		entities[i]->save(os);
+		save_entity(os, entities[i]);
 	}
 
 	os << "}\n";
+
+	os << "}\n";
+}
+
+//#################### LOADING SUPPORT METHODS ####################
+Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir)
+{
+	Properties properties;
+
+	std::string line;
+	LineIO::read_line(is, line, "entity type");
+	size_t n = line.find(' ');
+	if(n+2 > line.length()) throw Exception("Missing entity type after Instance");
+	properties.set("EntityType", line.substr(n+1));
+
+	LineIO::read_checked_line(is, "{");
+
+	// FIXME: Do this properly (requires changing the file format).
+	properties.set("GameModel", FieldIO::read_field(is, "GameModel"));
+	properties.set("Position", FieldIO::read_typed_field<Vector3d>(is, "Position"));
+	properties.set("Look", FieldIO::read_typed_field<Vector3d>(is, "Look"));
+	properties.set("AABBs", FieldIO::read_intarray_field(is, "AABBs"));
+	properties.set("Pose", FieldIO::read_typed_field<int>(is, "Pose"));
+	properties.set("Health", FieldIO::read_typed_field<int>(is, "Health"));
+	properties.set("Mass", FieldIO::read_typed_field<double>(is, "Mass"));
+	properties.set("Yoke", FieldIO::read_field(is, "Yoke"));
+
+	LineIO::read_checked_line(is, "}");
+
+	Entity_Ptr entity(new Entity(properties));
+
+	const std::string& yokeType = *properties.get<std::string>("Yoke");
+	Yoke_Ptr yoke;
+
+	std::string yokeClass, yokeParams;
+	std::string::size_type sp = yokeType.find(' ');
+	if(sp != std::string::npos)
+	{
+		yokeClass = yokeType.substr(0,sp);
+		yokeParams = yokeType.substr(sp+1);
+	}
+	else yokeClass = yokeType;
+
+	// Note:	We should replace this with a yoke factory if the number of yokes increases.
+	//			It's probably not worth the extra code for the moment.
+	if(yokeClass == "User")			{ yoke.reset(new UserBipedYoke(entity)); }
+	else if(yokeClass == "Minimus")	{ yoke.reset(new MinimusScriptYoke(entity, yokeParams, aiEngine, baseDir)); }
+	else if(yokeClass == "None")	{ yoke.reset(new NullYoke); }
+	else							{ throw Exception("Unknown yoke class: " + yokeClass); }
+
+	entity->set_yoke(yoke, yokeType);
+
+	return entity;
+}
+
+//#################### SAVING SUPPORT METHODS ####################
+void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity)
+{
+	const Properties& properties = entity->properties();
+
+	os << "Instance " << *properties.get<std::string>("EntityType") << '\n';
+	os << "{\n";
+
+	// FIXME: Do this properly (requires changing the file format).
+	if(properties.has("GameModel")) FieldIO::write_typed_field(os, "GameModel", *properties.get<std::string>("GameModel"));
+	if(properties.has("Position")) FieldIO::write_typed_field(os, "Position", *properties.get<Vector3d>("Position"));
+	if(properties.has("Look")) FieldIO::write_typed_field(os, "Look", *properties.get<Vector3d>("Look"));
+	if(properties.has("AABBs")) FieldIO::write_intarray_field(os, "AABBs", *properties.get<std::vector<int> >("AABBs"));
+	if(properties.has("Pose")) FieldIO::write_typed_field(os, "Pose", *properties.get<int>("Pose"));
+	if(properties.has("Health")) FieldIO::write_typed_field(os, "Health", *properties.get<int>("Health"));
+	if(properties.has("Mass")) FieldIO::write_typed_field(os, "Mass", *properties.get<double>("Mass"));
+	if(properties.has("Yoke")) FieldIO::write_typed_field(os, "Yoke", *properties.get<std::string>("Yoke"));
 
 	os << "}\n";
 }

@@ -13,25 +13,28 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Entity::Entity(const Properties& properties)
-:	m_entityType(properties.entityType),
-	m_aabbIndices(properties.aabbIndices),
-	m_characterModel(properties.characterModel),
-	m_health(properties.health),
-	m_mass(properties.mass),
-	m_pose(properties.pose),
-	m_velocity(properties.velocity)
 {
-	if(properties.position && properties.look)
+	if(properties.has("EntityType")) m_entityType = *properties.get<std::string>("EntityType");
+	else throw Exception("Missing entity type");
+
+	m_aabbIndices = properties.get<std::vector<int> >("AABBs");
+	m_characterModel = properties.get<std::string>("GameModel");
+	m_health = properties.get<int>("Health");
+	m_mass = properties.get<double>("Mass");
+	m_pose = properties.get<int>("Pose");
+
+	if(properties.has("Position") && properties.has("Look"))
 	{
-		m_camera.reset(new VariableCamera(*properties.position, *properties.look));
+		m_camera.reset(new VariableCamera(*properties.get<Vector3d>("Position"), *properties.get<Vector3d>("Look")));
+		m_velocity.reset(new Vector3d);
 	}
 
-	if(properties.characterModel)
+	if(m_characterModel)
 	{
 		m_characterAnimController.reset(new AnimationController);
 	}
 
-	if(properties.aabbIndices)
+	if(m_aabbIndices)
 	{
 		m_curNavPolyIndex.reset(new int(-1));
 		m_recentTransitions.reset(new std::list<OnionUtil::Transition_Ptr>());
@@ -105,6 +108,23 @@ const Vector3d& Entity::position() const
 	return m_camera->position();
 }
 
+Properties Entity::properties() const
+{
+	Properties ret;
+
+	ret.set("EntityType", m_entityType);
+	ret.set("AABBs", m_aabbIndices);
+	ret.set("GameModel", m_characterModel);
+	ret.set("Health", m_health);
+	ret.set("Look", m_camera->n());
+	ret.set("Mass", m_mass);
+	ret.set("Pose", m_pose);
+	ret.set("Position", m_camera->position());
+	ret.set("Yoke", m_yokeType);
+
+	return ret;
+}
+
 const std::list<OnionUtil::Transition_Ptr>& Entity::recent_transitions() const
 {
 	return *m_recentTransitions;
@@ -114,24 +134,6 @@ double Entity::run_speed() const
 {
 	// FIXME: This should be loaded in the constructor.
 	return 10.0;	// in units/s
-}
-
-void Entity::save(std::ostream& os) const
-{
-	os << "Instance " << m_entityType << '\n';
-	os << "{\n";
-
-	// FIXME: Do this properly (requires changing the file format).
-	if(m_characterModel) FieldIO::write_typed_field(os, "GameModel", *m_characterModel);
-	if(m_camera) FieldIO::write_typed_field(os, "Position", m_camera->position());
-	if(m_camera) FieldIO::write_typed_field(os, "Look", m_camera->n());
-	if(m_aabbIndices) FieldIO::write_intarray_field(os, "AABBs", *m_aabbIndices);
-	if(m_pose) FieldIO::write_typed_field(os, "Pose", *m_pose);
-	if(m_health) FieldIO::write_typed_field(os, "Health", *m_health);
-	if(m_mass) FieldIO::write_typed_field(os, "Mass", *m_mass);
-	if(m_yokeType) FieldIO::write_typed_field(os, "Yoke", *m_yokeType);
-
-	os << "}\n";
 }
 
 void Entity::set_cur_nav_poly_index(int curNavPolyIndex)

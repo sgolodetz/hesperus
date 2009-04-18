@@ -1303,6 +1303,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\util\Properties.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\util\UserInput.cpp"
 					>
 				</File>
@@ -1315,7 +1319,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\util\Properties.h"
+					>
+				</File>
+				<File
 					RelativePath="..\util\UserInput.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".tpp"
+				>
+				<File
+					RelativePath="..\util\Properties.tpp"
 					>
 				</File>
 			</Filter>

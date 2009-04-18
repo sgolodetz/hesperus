@@ -16,32 +16,19 @@
 #include <source/level/models/AnimationController.h>
 #include <source/level/trees/OnionUtil.h>
 #include <source/math/vectors/Vector3.h>
+#include <source/util/Properties.h>
 #include "Yoke.h"
 
 namespace hesp {
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<class Entity> Entity_Ptr;
+typedef shared_ptr<const class Entity> Entity_CPtr;
 
 class Entity
 {
 	//#################### NESTED CLASSES ####################
 public:
-	struct Properties
-	{
-		std::string entityType;
-
-		shared_ptr<std::vector<int> >	aabbIndices;
-		shared_ptr<std::string>			characterModel;
-		shared_ptr<int>					health;
-		shared_ptr<Vector3d>			look;
-		shared_ptr<double>				mass;
-		shared_ptr<int>					pose;
-		shared_ptr<Vector3d>			position;
-		shared_ptr<Vector3d>			velocity;
-
-		Properties(const std::string& entityType_)
-		:	entityType(entityType_)
-		{}
-	};
-
 	struct Traversal
 	{
 		const int linkIndex;
@@ -100,11 +87,11 @@ public:
 	bool is_animatable() const;
 	bool is_biped() const;
 	bool is_simulable() const;
+	Properties properties() const;
 	int pose() const;
 	const Vector3d& position() const;
 	const std::list<OnionUtil::Transition_Ptr>& recent_transitions() const;
 	double run_speed() const;
-	void save(std::ostream& os) const;
 	void set_cur_nav_poly_index(int curNavPolyIndex);
 	void set_cur_traversal(const Traversal_Ptr& curTraversal);
 	void set_pose(int pose);
@@ -116,10 +103,6 @@ public:
 	double walk_speed() const;
 	const Yoke_Ptr& yoke() const;
 };
-
-//#################### TYPEDEFS ####################
-typedef shared_ptr<Entity> Entity_Ptr;
-typedef shared_ptr<const Entity> Entity_CPtr;
 
 }
 
