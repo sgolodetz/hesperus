@@ -9,24 +9,24 @@ Instances
 2
 Instance Player
 {
-GameModel = Player
-Position = ( 7 10 5 )
-Look = ( 1 -0.5 0 )
 AABBs = [0,1]
-Pose = 0
+GameModel = Player
 Health = 100
+Look = ( 1 -0.5 0 )
 Mass = 75
+Pose = 0
+Position = ( 7 10 5 )
 Yoke = User
 }
 Instance Guard
 {
-GameModel = Guard
-Position = ( 20 15 9 )
-Look = ( -1 0 0 )
 AABBs = [0]
-Pose = 0
+GameModel = Guard
 Health = 75
+Look = ( -1 0 0 )
 Mass = 75
+Pose = 0
+Position = ( 20 15 9 )
 Yoke = None
 }
 }

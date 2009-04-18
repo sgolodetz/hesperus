@@ -112,6 +112,7 @@ void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityMana
 //#################### LOADING SUPPORT METHODS ####################
 Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir)
 {
+	// Read in the entity instance.
 	Properties properties;
 
 	std::string line;
@@ -120,20 +121,9 @@ Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& a
 	if(n+2 > line.length()) throw Exception("Missing entity type after Instance");
 	properties.set("EntityType", line.substr(n+1));
 
-	LineIO::read_checked_line(is, "{");
+	load_entity_properties(is, properties);
 
-	// FIXME: Do this properly (requires changing the file format).
-	properties.set("GameModel", FieldIO::read_field(is, "GameModel"));
-	properties.set("Position", FieldIO::read_typed_field<Vector3d>(is, "Position"));
-	properties.set("Look", FieldIO::read_typed_field<Vector3d>(is, "Look"));
-	properties.set("AABBs", FieldIO::read_intarray_field(is, "AABBs"));
-	properties.set("Pose", FieldIO::read_typed_field<int>(is, "Pose"));
-	properties.set("Health", FieldIO::read_typed_field<int>(is, "Health"));
-	properties.set("Mass", FieldIO::read_typed_field<double>(is, "Mass"));
-	properties.set("Yoke", FieldIO::read_field(is, "Yoke"));
-
-	LineIO::read_checked_line(is, "}");
-
+	// Construct it and set the appropriate yoke.
 	Entity_Ptr entity(new Entity(properties));
 
 	const std::string& yokeType = *properties.get<std::string>("Yoke");
@@ -160,6 +150,23 @@ Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& a
 	return entity;
 }
 
+void EntitiesSection::load_entity_properties(std::istream& is, Properties& properties)
+{
+	LineIO::read_checked_line(is, "{");
+
+	// FIXME: Do this properly.
+	properties.set("AABBs", FieldIO::read_intarray_field(is, "AABBs"));
+	properties.set("GameModel", FieldIO::read_field(is, "GameModel"));
+	properties.set("Health", FieldIO::read_typed_field<int>(is, "Health"));
+	properties.set("Look", FieldIO::read_typed_field<Vector3d>(is, "Look"));
+	properties.set("Mass", FieldIO::read_typed_field<double>(is, "Mass"));
+	properties.set("Pose", FieldIO::read_typed_field<int>(is, "Pose"));
+	properties.set("Position", FieldIO::read_typed_field<Vector3d>(is, "Position"));
+	properties.set("Yoke", FieldIO::read_field(is, "Yoke"));
+
+	LineIO::read_checked_line(is, "}");
+}
+
 //#################### SAVING SUPPORT METHODS ####################
 void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity)
 {
@@ -168,14 +175,14 @@ void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity)
 	os << "Instance " << *properties.get<std::string>("EntityType") << '\n';
 	os << "{\n";
 
-	// FIXME: Do this properly (requires changing the file format).
-	if(properties.has("GameModel")) FieldIO::write_typed_field(os, "GameModel", *properties.get<std::string>("GameModel"));
-	if(properties.has("Position")) FieldIO::write_typed_field(os, "Position", *properties.get<Vector3d>("Position"));
-	if(properties.has("Look")) FieldIO::write_typed_field(os, "Look", *properties.get<Vector3d>("Look"));
+	// FIXME: Do this properly.
 	if(properties.has("AABBs")) FieldIO::write_intarray_field(os, "AABBs", *properties.get<std::vector<int> >("AABBs"));
-	if(properties.has("Pose")) FieldIO::write_typed_field(os, "Pose", *properties.get<int>("Pose"));
+	if(properties.has("GameModel")) FieldIO::write_typed_field(os, "GameModel", *properties.get<std::string>("GameModel"));
 	if(properties.has("Health")) FieldIO::write_typed_field(os, "Health", *properties.get<int>("Health"));
+	if(properties.has("Look")) FieldIO::write_typed_field(os, "Look", *properties.get<Vector3d>("Look"));
 	if(properties.has("Mass")) FieldIO::write_typed_field(os, "Mass", *properties.get<double>("Mass"));
+	if(properties.has("Pose")) FieldIO::write_typed_field(os, "Pose", *properties.get<int>("Pose"));
+	if(properties.has("Position")) FieldIO::write_typed_field(os, "Position", *properties.get<Vector3d>("Position"));
 	if(properties.has("Yoke")) FieldIO::write_typed_field(os, "Yoke", *properties.get<std::string>("Yoke"));
 
 	os << "}\n";

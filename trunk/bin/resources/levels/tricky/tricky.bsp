@@ -886,24 +886,24 @@ Instances
 2
 Instance Player
 {
-GameModel = Player
-Position = ( 6 24 6 )
-Look = ( 0.894427 -0.447214 0 )
 AABBs = [0,1]
-Pose = 0
+GameModel = Player
 Health = 100
+Look = ( 0.894427 -0.447214 0 )
 Mass = 75
+Pose = 0
+Position = ( 6 24 6 )
 Yoke = User
 }
 Instance Guard
 {
-GameModel = Guard
-Position = ( 20 20 6 )
-Look = ( -1 0 0 )
 AABBs = [0,1]
-Pose = 0
+GameModel = Guard
 Health = 75
+Look = ( -1 0 0 )
 Mass = 75
+Pose = 0
+Position = ( 20 20 6 )
 Yoke = Minimus guard-ai
 }
 }

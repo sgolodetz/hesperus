@@ -27,6 +27,7 @@ public:
 	//#################### LOADING SUPPORT METHODS ####################
 private:
 	static Entity_Ptr load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir);
+	static void load_entity_properties(std::istream& is, Properties& properties);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
