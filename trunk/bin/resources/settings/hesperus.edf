@@ -4,58 +4,41 @@ AABBs
 stand = ( -0.5 -0.5 -1 ) ( 0.5 0.5 1 )
 crouch = ( -0.5 -0.5 -0.5 ) ( 0.5 0.5 0.5 )
 }
-EntityComponents
+EntityProperties
 {
-Animation
-{
-	GameModel : string
+AABBs : [AABBid]
+AIScript : string
+GameModel : string
+Health : int
+Look : Vector3d
+Mass : double
+Pose : AABBid
+Position : Vector3d
+Yoke : {None|User|Minimus}
 }
-VariableCamera	// this is treated as a special case in the editor to allow the entity to be dragged around
+EntityArchetypes
 {
-	Position : Vector3d
-	Look : Vector3d
-}
-Collision
+Archetype Guard
 {
-	AABBs : [AABBid]
-	Pose : AABBid
-}
-Health
-{
-	Health : int
-}
-Nav		// this has no editable components
-{
-}
-Physics
-{
-	Mass : double
-}
-Yoke
-{
-	Yoke : {None|User|Minimus <script>}
-}
-}
-EntityTypes
-{
-Player : Animation, VariableCamera, Collision, Health, Nav, Physics, Yoke
-{
-GameModel = Player
-Look = ( 1 0 0 )
 AABBs = [stand,crouch]
-Pose = stand
-Health = 100
-Mass = 75
-Yoke = User
-}
-Guard : Animation, VariableCamera, Collision, Health, Nav, Physics, Yoke
-{
+AIScript = ?
 GameModel = Guard
-Look = ( 1 0 0 )
-AABBs = [stand,crouch]
-Pose = stand
-Health = 50
+Health = ?
+Look = ?
 Mass = 75
+Pose = stand
+Position = ?
 Yoke = Minimus
+}
+Archetype Player
+{
+AABBs = [stand,crouch]
+GameModel = Player
+Health = 100
+Look = ?
+Mass = 75
+Pose = stand
+Position = ?
+Yoke = User
 }
 }

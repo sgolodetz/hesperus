@@ -14,8 +14,8 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 Entity::Entity(const Properties& properties)
 {
-	if(properties.has("EntityType")) m_entityType = *properties.get<std::string>("EntityType");
-	else throw Exception("Missing entity type");
+	if(properties.has("Archetype")) m_archetype = *properties.get<std::string>("Archetype");
+	else throw Exception("Missing archetype");
 
 	m_aabbIndices = properties.get<std::vector<int> >("AABBs");
 	m_characterModel = properties.get<std::string>("GameModel");
@@ -45,6 +45,11 @@ Entity::Entity(const Properties& properties)
 const std::vector<int>& Entity::aabb_indices() const
 {
 	return *m_aabbIndices;
+}
+
+const std::string& Entity::archetype() const
+{
+	return m_archetype;
 }
 
 Camera& Entity::camera()
@@ -78,11 +83,6 @@ Entity::Traversal_CPtr Entity::cur_traversal() const
 	return m_curTraversal;
 }
 
-const std::string& Entity::entity_type() const
-{
-	return m_entityType;
-}
-
 bool Entity::is_animatable() const
 {
 	return m_camera && m_characterAnimController && m_characterModel;
@@ -112,7 +112,8 @@ Properties Entity::properties() const
 {
 	Properties ret;
 
-	ret.set("EntityType", m_entityType);
+	ret.set("Archetype", m_archetype);
+
 	ret.set("AABBs", m_aabbIndices);
 	ret.set("GameModel", m_characterModel);
 	ret.set("Health", m_health);

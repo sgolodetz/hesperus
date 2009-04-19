@@ -42,15 +42,13 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 	LineIO::read_checked_line(is, "DefinitionFile");
 	LineIO::read_checked_line(is, "{");
 
-		// Read in the entity definition file and extract the AABBs and entity types.
+		// Read in the entity definition file and extract the AABBs.
 		std::string entDefFilename;
 		LineIO::read_line(is, entDefFilename, "entity definitions filename");
-		std::vector<AABB3d> aabbs;
-		std::map<std::string,EntityComponents> entityComponentsMap;
 		bf::path settingsDir = determine_settings_directory(baseDir);
-		EntDefFile::load((settingsDir / entDefFilename).file_string(), aabbs, entityComponentsMap);
+		std::vector<AABB3d> aabbs = EntDefFile::load_aabbs_only((settingsDir / entDefFilename).file_string());
 
-	LineIO::read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");		// end DefinitionFile
 
 	// Read in the Instances section.
 	LineIO::read_checked_line(is, "Instances");
@@ -69,9 +67,8 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 			entities.push_back(entity);
 		}
 
-	LineIO::read_checked_line(is, "}");
-
-	LineIO::read_checked_line(is, "}");
+	LineIO::read_checked_line(is, "}");		// end Instances
+	LineIO::read_checked_line(is, "}");		// end Entities
 
 	return EntityManager_Ptr(new EntityManager(entities, aabbs, entDefFilename));
 }
@@ -114,13 +111,7 @@ Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& a
 {
 	// Read in the entity instance.
 	Properties properties;
-
-	std::string line;
-	LineIO::read_line(is, line, "entity type");
-	size_t n = line.find(' ');
-	if(n+2 > line.length()) throw Exception("Missing entity type after Instance");
-	properties.set("EntityType", line.substr(n+1));
-
+	LineIO::read_checked_line(is, "Instance");
 	load_entity_properties(is, properties);
 
 	// Construct it and set the appropriate yoke.
@@ -156,6 +147,7 @@ void EntitiesSection::load_entity_properties(std::istream& is, Properties& prope
 
 	// FIXME: Do this properly.
 	properties.set("AABBs", FieldIO::read_intarray_field(is, "AABBs"));
+	properties.set("Archetype", FieldIO::read_field(is, "Archetype"));
 	properties.set("GameModel", FieldIO::read_field(is, "GameModel"));
 	properties.set("Health", FieldIO::read_typed_field<int>(is, "Health"));
 	properties.set("Look", FieldIO::read_typed_field<Vector3d>(is, "Look"));
@@ -172,11 +164,12 @@ void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity)
 {
 	const Properties& properties = entity->properties();
 
-	os << "Instance " << *properties.get<std::string>("EntityType") << '\n';
+	os << "Instance\n";
 	os << "{\n";
 
 	// FIXME: Do this properly.
 	if(properties.has("AABBs")) FieldIO::write_intarray_field(os, "AABBs", *properties.get<std::vector<int> >("AABBs"));
+	if(properties.has("Archetype")) FieldIO::write_typed_field(os, "Archetype", *properties.get<std::string>("Archetype"));
 	if(properties.has("GameModel")) FieldIO::write_typed_field(os, "GameModel", *properties.get<std::string>("GameModel"));
 	if(properties.has("Health")) FieldIO::write_typed_field(os, "Health", *properties.get<int>("Health"));
 	if(properties.has("Look")) FieldIO::write_typed_field(os, "Look", *properties.get<Vector3d>("Look"));

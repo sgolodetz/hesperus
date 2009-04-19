@@ -47,7 +47,7 @@ public:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::string m_entityType;
+	std::string m_archetype;
 
 	shared_ptr<std::vector<int> >						m_aabbIndices;
 	shared_ptr<Camera>									m_camera;
@@ -78,12 +78,12 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<int>& aabb_indices() const;
+	const std::string& archetype() const;
 	Camera& camera();
 	const AnimationController_Ptr& character_anim_controller() const;
 	const std::string& character_model() const;
 	int cur_nav_poly_index() const;
 	Traversal_CPtr cur_traversal() const;
-	const std::string& entity_type() const;
 	bool is_animatable() const;
 	bool is_biped() const;
 	bool is_simulable() const;

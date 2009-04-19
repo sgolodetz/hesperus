@@ -1498,14 +1498,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\io\sections\EntityComponentsSection.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\io\sections\EntityTypesSection.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\io\sections\LightmapPrefixSection.cpp"
 						>
 					</File>
@@ -1543,14 +1535,6 @@
 					</File>
 					<File
 						RelativePath="..\io\sections\EntitiesSection.h"
-						>
-					</File>
-					<File
-						RelativePath="..\io\sections\EntityComponentsSection.h"
-						>
-					</File>
-					<File
-						RelativePath="..\io\sections\EntityTypesSection.h"
 						>
 					</File>
 					<File

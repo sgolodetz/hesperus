@@ -24,7 +24,7 @@ EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities, const std:
 		if(entities[i]->is_simulable()) simulables.push_back(entities[i]);
 		if(entities[i]->yoke()) yokeables.push_back(entities[i]);
 
-		if(entities[i]->entity_type() == "Player")
+		if(entities[i]->archetype() == "Player")
 		{
 			if(!m_viewer) m_viewer = entities[i];
 			else throw Exception("There can only be one viewer in a level");

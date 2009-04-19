@@ -884,9 +884,10 @@ hesperus.edf
 Instances
 {
 2
-Instance Player
+Instance
 {
 AABBs = [0,1]
+Archetype = Player
 GameModel = Player
 Health = 100
 Look = ( 0.894427 -0.447214 0 )
@@ -895,9 +896,10 @@ Pose = 0
 Position = ( 6 24 6 )
 Yoke = User
 }
-Instance Guard
+Instance
 {
 AABBs = [0,1]
+Archetype = Guard
 GameModel = Guard
 Health = 75
 Look = ( -1 0 0 )

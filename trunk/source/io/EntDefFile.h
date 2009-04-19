@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include <source/io/util/EntityComponents.h>
 #include <source/math/geom/AABB.h>
 
 namespace hesp {
@@ -18,7 +17,6 @@ namespace hesp {
 struct EntDefFile
 {
 	//#################### LOADING METHODS ####################
-	static void load(const std::string& filename, std::vector<AABB3d>& aabbs, std::map<std::string,EntityComponents>& entityComponentsMap);
 	static std::vector<AABB3d> load_aabbs_only(const std::string& filename);
 };
 

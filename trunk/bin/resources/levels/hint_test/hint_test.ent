@@ -7,9 +7,10 @@ hesperus.edf
 Instances
 {
 1
-Instance Player
+Instance
 {
 AABBs = [0,1]
+Archetype = Player
 GameModel = Player
 Health = 100
 Look = ( 0 1 0 )
