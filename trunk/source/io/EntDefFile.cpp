@@ -29,7 +29,8 @@ std::vector<AABB3d> EntDefFile::load_aabbs_only(const std::string& filename)
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
 	XMLParser parser(lexer);
 	XMLElement_CPtr root = parser.parse();
-	XMLElement_CPtr entitiesElt = root->find_unique_child("entities");
+	XMLElement_CPtr definitionsElt = root->find_unique_child("definitions");
+	XMLElement_CPtr entitiesElt = definitionsElt->find_unique_child("entities");
 
 	XMLElement_CPtr aabbsElt = entitiesElt->find_unique_child("aabbs");
 	std::vector<XMLElement_CPtr> aabbElts = aabbsElt->find_children("aabb");

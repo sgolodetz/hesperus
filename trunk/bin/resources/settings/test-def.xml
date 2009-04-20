@@ -1,104 +1,106 @@
-<entities>
-	<aabbs>
-		<aabb name="stand">
-			<mins x="-0.5" y="-0.5" z="-1"/>
-			<maxs x="0.5" y="0.5" z="1"/>
-		</aabb>
-		<aabb name="crouch">
-			<mins x="-0.5" y="-0.5" z="-0.5"/>
-			<maxs x="0.5" y="0.5" z="0.5"/>
-		</aabb>
-	</aabbs>
-	<properties>
-		<property name="AABBs" type="[AABBid]"/>
-		<property name="AIScript" type="string"/>
-		<property name="GameModel" type="string"/>
-		<property name="Health" type="int"/>
-		<property name="Look" type="Vector3d"/>
-		<property name="Mass" type="double"/>
-		<property name="Pose" type="AABBid"/>
-		<property name="Position" type="Vector3d"/>
-		<property name="Yoke" type="{None|User|Minimus}"/>
-	</properties>
-	<archetypes>
-		<archetype name="Guard">
-			<property name="AABBs" fixed="[stand,crouch]"/>
-			<property name="AIScript"/>
-			<property name="GameModel" default="Guard"/>
-			<property name="Health"/>
-			<property name="Look"/>
-			<property name="Mass" default="75"/>
-			<property name="Pose" default="stand"/>
-			<property name="Position"/>
-			<property name="Yoke" default="Minimus"/>
-		</archetype>
-		<archetype name="Player">
-			<property name="AABBs" fixed="[stand,crouch]"/>
-			<property name="GameModel" default="Player"/>
-			<property name="Health" default="100"/>
-			<property name="Look"/>
-			<property name="Mass" default="75"/>
-			<property name="Pose" default="stand"/>
-			<property name="Position"/>
-			<property name="Yoke" fixed="User"/>
-		</archetype>
-	</archetypes>
-</entities>
-<projectiles>
-	<projectile name="PistolBullet" type="Simple">
-		<property name="Mass" value="0.03"/>
-		<property name="Sprite" value="projectile-pistolbullet.png"/>
-	</projectile>
-	<projectile name="RifleBullet" type="Simple">
-		<property name="Mass" value="0.05"/>
-		<property name="Sprite" value="projectile-riflebullet.png"/>
-	</projectile>
-</projectiles>
-<usables>
-	<usable name="Knife">
-		<property name="AnimationExtension" value="melee"/>
-		<property name="Icon" value="icon-knife.png"/>
-		<property name="Model" value="Knife"/>
-		<property name="Script" value="usable-knife.as"/>
-	</usable>
-	<usable name="Lockpick">
-		<property name="AnimationExtension" value="melee"/>
-		<property name="Icon" value="icon-lockpick.png"/>
-		<property name="Model" value="Lockpick"/>
-		<property name="Script" value="usable-lockpick.as"/>
-	</usable>
-	<usable name="Medkit">
-		<property name="AnimationExtension" value="melee"/>
-		<property name="Icon" value="icon-medkit.png"/>
-		<property name="Model" value="Medkit"/>
-		<property name="Script" value="usable-medkit.as"/>
-	</usable>
-	<usable name="Pistol">
-		<property name="AnimationExtension" value="pistol"/>
-		<property name="Icon" value="icon-pistol.png"/>
-		<property name="Model" value="Pistol"/>
-		<property name="MuzzleVelocity" value="50"/>
-		<property name="Script" value="usable-pistol.as"/>
-	</usable>
-	<usable name="Rifle">
-		<property name="AnimationExtension" value="rifle"/>
-		<property name="Icon" value="icon-rifle.png"/>
-		<property name="Model" value="Rifle"/>
-		<property name="MuzzleVelocity" value="100"/>
-		<property name="Script" value="usable-rifle.as"/>
-	</usable>
-	<usable name="Sword">
-		<property name="AnimationExtension" value="melee"/>
-		<property name="Icon" value="icon-sword.png"/>
-		<property name="Model" value="Sword"/>
-		<property name="Script" value="usable-sword.as"/>
-	</usable>
-	<slots>
-		<slot no="1" contents="Knife"/>
-		<slot no="2" contents="Sword"/>
-		<slot no="3" contents="Pistol"/>
-		<slot no="4" contents="Rifle"/>
-		<slot no="9" contents="Lockpick"/>
-		<slot no="0" contents="Medkit"/>
-	</slots>
-</usables>
+<definitions>
+	<entities>
+		<aabbs>
+			<aabb name="stand">
+				<mins x="-0.5" y="-0.5" z="-1"/>
+				<maxs x="0.5" y="0.5" z="1"/>
+			</aabb>
+			<aabb name="crouch">
+				<mins x="-0.5" y="-0.5" z="-0.5"/>
+				<maxs x="0.5" y="0.5" z="0.5"/>
+			</aabb>
+		</aabbs>
+		<properties>
+			<property name="AABBs" type="[AABBid]"/>
+			<property name="AIScript" type="string"/>
+			<property name="GameModel" type="string"/>
+			<property name="Health" type="int"/>
+			<property name="Look" type="Vector3d"/>
+			<property name="Mass" type="double"/>
+			<property name="Pose" type="AABBid"/>
+			<property name="Position" type="Vector3d"/>
+			<property name="Yoke" type="{None|User|Minimus}"/>
+		</properties>
+		<archetypes>
+			<archetype name="Guard">
+				<property name="AABBs" fixed="[stand,crouch]"/>
+				<property name="AIScript"/>
+				<property name="GameModel" default="Guard"/>
+				<property name="Health"/>
+				<property name="Look"/>
+				<property name="Mass" default="75"/>
+				<property name="Pose" default="stand"/>
+				<property name="Position"/>
+				<property name="Yoke" default="Minimus"/>
+			</archetype>
+			<archetype name="Player">
+				<property name="AABBs" fixed="[stand,crouch]"/>
+				<property name="GameModel" default="Player"/>
+				<property name="Health" default="100"/>
+				<property name="Look"/>
+				<property name="Mass" default="75"/>
+				<property name="Pose" default="stand"/>
+				<property name="Position"/>
+				<property name="Yoke" fixed="User"/>
+			</archetype>
+		</archetypes>
+	</entities>
+	<projectiles>
+		<projectile name="PistolBullet" type="Simple">
+			<property name="Mass" value="0.03"/>
+			<property name="Sprite" value="projectile-pistolbullet.png"/>
+		</projectile>
+		<projectile name="RifleBullet" type="Simple">
+			<property name="Mass" value="0.05"/>
+			<property name="Sprite" value="projectile-riflebullet.png"/>
+		</projectile>
+	</projectiles>
+	<usables>
+		<usable name="Knife">
+			<property name="AnimationExtension" value="melee"/>
+			<property name="Icon" value="icon-knife.png"/>
+			<property name="Model" value="Knife"/>
+			<property name="Script" value="usable-knife.as"/>
+		</usable>
+		<usable name="Lockpick">
+			<property name="AnimationExtension" value="melee"/>
+			<property name="Icon" value="icon-lockpick.png"/>
+			<property name="Model" value="Lockpick"/>
+			<property name="Script" value="usable-lockpick.as"/>
+		</usable>
+		<usable name="Medkit">
+			<property name="AnimationExtension" value="melee"/>
+			<property name="Icon" value="icon-medkit.png"/>
+			<property name="Model" value="Medkit"/>
+			<property name="Script" value="usable-medkit.as"/>
+		</usable>
+		<usable name="Pistol">
+			<property name="AnimationExtension" value="pistol"/>
+			<property name="Icon" value="icon-pistol.png"/>
+			<property name="Model" value="Pistol"/>
+			<property name="MuzzleVelocity" value="50"/>
+			<property name="Script" value="usable-pistol.as"/>
+		</usable>
+		<usable name="Rifle">
+			<property name="AnimationExtension" value="rifle"/>
+			<property name="Icon" value="icon-rifle.png"/>
+			<property name="Model" value="Rifle"/>
+			<property name="MuzzleVelocity" value="100"/>
+			<property name="Script" value="usable-rifle.as"/>
+		</usable>
+		<usable name="Sword">
+			<property name="AnimationExtension" value="melee"/>
+			<property name="Icon" value="icon-sword.png"/>
+			<property name="Model" value="Sword"/>
+			<property name="Script" value="usable-sword.as"/>
+		</usable>
+		<slots>
+			<slot no="1" contents="Knife"/>
+			<slot no="2" contents="Sword"/>
+			<slot no="3" contents="Pistol"/>
+			<slot no="4" contents="Rifle"/>
+			<slot no="9" contents="Lockpick"/>
+			<slot no="0" contents="Medkit"/>
+		</slots>
+	</usables>
+</definitions>
