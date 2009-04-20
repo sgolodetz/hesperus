@@ -26,7 +26,7 @@ REM #################
 REM Collision Section
 REM #################
 
-hexpand ..\..\settings\test-entdef.xml %1.cbr
+hexpand ..\..\settings\test-def.xml %1.cbr
 
 FOR %%f IN (*.ebr) DO (
 hcsg -c %%f %%~nf.cg1
@@ -46,7 +46,7 @@ set GEOMTREEPAIRS=
 ENDLOCAL
 
 hoportal -c %1.ot %1.op
-hnav ..\..\settings\test-entdef.xml %1.ot %1.nav
+hnav ..\..\settings\test-def.xml %1.ot %1.nav
 
 REM #################
 REM Collation Section

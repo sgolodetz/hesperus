@@ -2,7 +2,7 @@ Entities
 {
 DefinitionFile
 {
-test-entdef.xml
+test-def.xml
 }
 Instances
 {
