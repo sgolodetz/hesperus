@@ -14,8 +14,7 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 Entity::Entity(const Properties& properties)
 {
-	if(properties.has("Archetype")) m_archetype = *properties.get<std::string>("Archetype");
-	else throw Exception("Missing archetype");
+	m_archetype = properties.get_actual<std::string>("Archetype");
 
 	m_aabbIndices = properties.get<std::vector<int> >("AABBs");
 	m_characterModel = properties.get<std::string>("GameModel");
@@ -25,7 +24,7 @@ Entity::Entity(const Properties& properties)
 
 	if(properties.has("Position") && properties.has("Look"))
 	{
-		m_camera.reset(new VariableCamera(*properties.get<Vector3d>("Position"), *properties.get<Vector3d>("Look")));
+		m_camera.reset(new VariableCamera(properties.get_actual<Vector3d>("Position"), properties.get_actual<Vector3d>("Look")));
 		m_velocity.reset(new Vector3d);
 	}
 
@@ -112,15 +111,15 @@ Properties Entity::properties() const
 {
 	Properties ret;
 
-	ret.set("Archetype", m_archetype);
+	ret.set_actual("Archetype", m_archetype);
 
 	ret.set("AABBs", m_aabbIndices);
 	ret.set("GameModel", m_characterModel);
 	ret.set("Health", m_health);
-	ret.set("Look", m_camera->n());
+	ret.set_actual("Look", m_camera->n());
 	ret.set("Mass", m_mass);
 	ret.set("Pose", m_pose);
-	ret.set("Position", m_camera->position());
+	ret.set_actual("Position", m_camera->position());
 	ret.set("Yoke", m_yokeType);
 
 	return ret;

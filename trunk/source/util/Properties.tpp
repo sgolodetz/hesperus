@@ -24,15 +24,23 @@ shared_ptr<T> Properties::get(const std::string& name) const
 }
 
 template <typename T>
-void Properties::set(const std::string& name, const T& value)
+const T& Properties::get_actual(const std::string& name) const
 {
-	m_properties[name] = shared_ptr<T>(new T(value));
+	shared_ptr<T> p = get<T>(name);
+	if(p) return *p;
+	else throw Exception("Missing property: " + name);
 }
 
 template <typename T>
 void Properties::set(const std::string& name, const shared_ptr<T>& value)
 {
 	m_properties[name] = value;
+}
+
+template <typename T>
+void Properties::set_actual(const std::string& name, const T& value)
+{
+	m_properties[name] = shared_ptr<T>(new T(value));
 }
 
 }

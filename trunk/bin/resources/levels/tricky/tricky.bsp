@@ -879,7 +879,7 @@ Entities
 {
 DefinitionFile
 {
-hesperus.edf
+test-entdef.xml
 }
 Instances
 {

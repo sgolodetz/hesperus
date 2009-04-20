@@ -146,15 +146,15 @@ void EntitiesSection::load_entity_properties(std::istream& is, Properties& prope
 	LineIO::read_checked_line(is, "{");
 
 	// FIXME: Do this properly.
-	properties.set("AABBs", FieldIO::read_intarray_field(is, "AABBs"));
-	properties.set("Archetype", FieldIO::read_field(is, "Archetype"));
-	properties.set("GameModel", FieldIO::read_field(is, "GameModel"));
-	properties.set("Health", FieldIO::read_typed_field<int>(is, "Health"));
-	properties.set("Look", FieldIO::read_typed_field<Vector3d>(is, "Look"));
-	properties.set("Mass", FieldIO::read_typed_field<double>(is, "Mass"));
-	properties.set("Pose", FieldIO::read_typed_field<int>(is, "Pose"));
-	properties.set("Position", FieldIO::read_typed_field<Vector3d>(is, "Position"));
-	properties.set("Yoke", FieldIO::read_field(is, "Yoke"));
+	properties.set_actual("AABBs", FieldIO::read_intarray_field(is, "AABBs"));
+	properties.set_actual("Archetype", FieldIO::read_field(is, "Archetype"));
+	properties.set_actual("GameModel", FieldIO::read_field(is, "GameModel"));
+	properties.set_actual("Health", FieldIO::read_typed_field<int>(is, "Health"));
+	properties.set_actual("Look", FieldIO::read_typed_field<Vector3d>(is, "Look"));
+	properties.set_actual("Mass", FieldIO::read_typed_field<double>(is, "Mass"));
+	properties.set_actual("Pose", FieldIO::read_typed_field<int>(is, "Pose"));
+	properties.set_actual("Position", FieldIO::read_typed_field<Vector3d>(is, "Position"));
+	properties.set_actual("Yoke", FieldIO::read_field(is, "Yoke"));
 
 	LineIO::read_checked_line(is, "}");
 }

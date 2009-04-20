@@ -1490,10 +1490,6 @@
 					Name=".cpp"
 					>
 					<File
-						RelativePath="..\io\sections\AABBsSection.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\io\sections\EntitiesSection.cpp"
 						>
 					</File>
@@ -1529,10 +1525,6 @@
 				<Filter
 					Name=".h"
 					>
-					<File
-						RelativePath="..\io\sections\AABBsSection.h"
-						>
-					</File>
 					<File
 						RelativePath="..\io\sections\EntitiesSection.h"
 						>

@@ -1,0 +1,46 @@
+<entdef>
+	<aabbs>
+		<aabb name="stand">
+			<mins x="-0.5" y="-0.5" z="-1"/>
+			<maxs x="0.5" y="0.5" z="1"/>
+		</aabb>
+		<aabb name="crouch">
+			<mins x="-0.5" y="-0.5" z="-0.5"/>
+			<maxs x="0.5" y="0.5" z="0.5"/>
+		</aabb>
+	</aabbs>
+	<properties>
+		<property name="AABBs" type="[AABBid]"/>
+		<property name="AIScript" type="string"/>
+		<property name="GameModel" type="string"/>
+		<property name="Health" type="int"/>
+		<property name="Look" type="Vector3d"/>
+		<property name="Mass" type="double"/>
+		<property name="Pose" type="AABBid"/>
+		<property name="Position" type="Vector3d"/>
+		<property name="Yoke" type="{None|User|Minimus}"/>
+	</properties>
+	<archetypes>
+		<archetype name="Guard">
+			<property name="AABBs" fixed="[stand,crouch]"/>
+			<property name="AIScript"/>
+			<property name="GameModel" default="Guard"/>
+			<property name="Health"/>
+			<property name="Look"/>
+			<property name="Mass" default="75"/>
+			<property name="Pose" default="stand"/>
+			<property name="Position"/>
+			<property name="Yoke" default="Minimus"/>
+		</archetype>
+		<archetype name="Player">
+			<property name="AABBs" fixed="[stand,crouch]"/>
+			<property name="GameModel" default="Player"/>
+			<property name="Health" default="100"/>
+			<property name="Look"/>
+			<property name="Mass" default="75"/>
+			<property name="Pose" default="stand"/>
+			<property name="Position"/>
+			<property name="Yoke" fixed="User"/>
+		</archetype>
+	</archetypes>
+</entdef>
