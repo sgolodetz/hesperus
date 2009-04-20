@@ -1,4 +1,4 @@
-<entdef>
+<entities>
 	<aabbs>
 		<aabb name="stand">
 			<mins x="-0.5" y="-0.5" z="-1"/>
@@ -43,4 +43,62 @@
 			<property name="Yoke" fixed="User"/>
 		</archetype>
 	</archetypes>
-</entdef>
+</entities>
+<projectiles>
+	<projectile name="PistolBullet" type="Simple">
+		<property name="Mass" value="0.03"/>
+		<property name="Sprite" value="projectile-pistolbullet.png"/>
+	</projectile>
+	<projectile name="RifleBullet" type="Simple">
+		<property name="Mass" value="0.05"/>
+		<property name="Sprite" value="projectile-riflebullet.png"/>
+	</projectile>
+</projectiles>
+<usables>
+	<usable name="Knife">
+		<property name="AnimationExtension" value="melee"/>
+		<property name="Icon" value="icon-knife.png"/>
+		<property name="Model" value="Knife"/>
+		<property name="Script" value="usable-knife.as"/>
+	</usable>
+	<usable name="Lockpick">
+		<property name="AnimationExtension" value="melee"/>
+		<property name="Icon" value="icon-lockpick.png"/>
+		<property name="Model" value="Lockpick"/>
+		<property name="Script" value="usable-lockpick.as"/>
+	</usable>
+	<usable name="Medkit">
+		<property name="AnimationExtension" value="melee"/>
+		<property name="Icon" value="icon-medkit.png"/>
+		<property name="Model" value="Medkit"/>
+		<property name="Script" value="usable-medkit.as"/>
+	</usable>
+	<usable name="Pistol">
+		<property name="AnimationExtension" value="pistol"/>
+		<property name="Icon" value="icon-pistol.png"/>
+		<property name="Model" value="Pistol"/>
+		<property name="MuzzleVelocity" value="50"/>
+		<property name="Script" value="usable-pistol.as"/>
+	</usable>
+	<usable name="Rifle">
+		<property name="AnimationExtension" value="rifle"/>
+		<property name="Icon" value="icon-rifle.png"/>
+		<property name="Model" value="Rifle"/>
+		<property name="MuzzleVelocity" value="100"/>
+		<property name="Script" value="usable-rifle.as"/>
+	</usable>
+	<usable name="Sword">
+		<property name="AnimationExtension" value="melee"/>
+		<property name="Icon" value="icon-sword.png"/>
+		<property name="Model" value="Sword"/>
+		<property name="Script" value="usable-sword.as"/>
+	</usable>
+	<slots>
+		<slot no="1" contents="Knife"/>
+		<slot no="2" contents="Sword"/>
+		<slot no="3" contents="Pistol"/>
+		<slot no="4" contents="Rifle"/>
+		<slot no="9" contents="Lockpick"/>
+		<slot no="0" contents="Medkit"/>
+	</slots>
+</usables>
