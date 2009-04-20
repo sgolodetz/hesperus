@@ -78,14 +78,12 @@
 			<property name="AnimationExtension" value="pistol"/>
 			<property name="Icon" value="icon-pistol.png"/>
 			<property name="Model" value="Pistol"/>
-			<property name="MuzzleVelocity" value="50"/>
 			<property name="Script" value="usable-pistol.as"/>
 		</usable>
 		<usable name="Rifle">
 			<property name="AnimationExtension" value="rifle"/>
 			<property name="Icon" value="icon-rifle.png"/>
 			<property name="Model" value="Rifle"/>
-			<property name="MuzzleVelocity" value="100"/>
 			<property name="Script" value="usable-rifle.as"/>
 		</usable>
 		<usable name="Sword">

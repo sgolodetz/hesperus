@@ -1,9 +1,9 @@
 /***
- * hesperus: EntDefFile.cpp
+ * hesperus: DefinitionsFile.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "EntDefFile.h"
+#include "DefinitionsFile.h"
 
 #include <fstream>
 
@@ -19,12 +19,12 @@ namespace hesp {
 
 //#################### LOADING METHODS ####################
 /**
-Loads an array of AABBs from the specified entity definition file.
+Loads an array of AABBs from the specified definitions file.
 
 @param filename	The name of the file from which to load the AABBs
 @return			The AABBs
 */
-std::vector<AABB3d> EntDefFile::load_aabbs_only(const std::string& filename)
+std::vector<AABB3d> DefinitionsFile::load_aabbs_only(const std::string& filename)
 {
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
 	XMLParser parser(lexer);
@@ -48,7 +48,7 @@ std::vector<AABB3d> EntDefFile::load_aabbs_only(const std::string& filename)
 }
 
 //#################### LOADING SUPPORT METHODS ####################
-Vector3d EntDefFile::extract_vector3d(const XMLElement_CPtr& elt)
+Vector3d DefinitionsFile::extract_vector3d(const XMLElement_CPtr& elt)
 {
 	// FIXME: This is the same as the method in ModelFiles. Both should be extracted into a single function elsewhere.
 	double x = lexical_cast<double,std::string>(elt->attribute("x"));

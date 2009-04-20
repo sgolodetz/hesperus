@@ -10,7 +10,7 @@ namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/EntDefFile.h>
+#include <source/io/DefinitionsFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/io/util/EntityComponents.h>
 #include <source/io/util/FieldIO.h>
@@ -43,10 +43,10 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 	LineIO::read_checked_line(is, "{");
 
 		// Read in the entity definition file and extract the AABBs.
-		std::string entDefFilename;
-		LineIO::read_line(is, entDefFilename, "entity definitions filename");
+		std::string definitionsFilename;
+		LineIO::read_line(is, definitionsFilename, "definitions filename");
 		bf::path settingsDir = determine_settings_directory(baseDir);
-		std::vector<AABB3d> aabbs = EntDefFile::load_aabbs_only((settingsDir / entDefFilename).file_string());
+		std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
 
 	LineIO::read_checked_line(is, "}");		// end DefinitionFile
 
@@ -70,7 +70,7 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 	LineIO::read_checked_line(is, "}");		// end Instances
 	LineIO::read_checked_line(is, "}");		// end Entities
 
-	return EntityManager_Ptr(new EntityManager(entities, aabbs, entDefFilename));
+	return EntityManager_Ptr(new EntityManager(entities, aabbs, definitionsFilename));
 }
 
 //#################### SAVING METHODS ####################
@@ -87,7 +87,7 @@ void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityMana
 
 	os << "DefinitionFile\n";
 	os << "{\n";
-	os << entityManager->definition_filename() << '\n';
+	os << entityManager->definitions_filename() << '\n';
 	os << "}\n";
 
 	os << "Instances\n";

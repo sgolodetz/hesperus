@@ -8,7 +8,7 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/EntDefFile.h>
+#include <source/io/DefinitionsFile.h>
 #include <source/io/NavFile.h>
 #include <source/io/OnionTreeFile.h>
 #include <source/level/nav/AdjacencyTable.h>
@@ -31,12 +31,12 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-void run(const std::string& entDefFilename, const std::string& treeFilename, const std::string& outputFilename)
+void run(const std::string& definitionsFilename, const std::string& treeFilename, const std::string& outputFilename)
 {
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 
 	// Read in the AABBs.
-	std::vector<AABB3d> aabbs = EntDefFile::load_aabbs_only(entDefFilename);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only(definitionsFilename);
 
 	// Read in the polygons and onion tree.
 	ColPolyVector polygons;

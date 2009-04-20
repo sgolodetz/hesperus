@@ -1367,7 +1367,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\io\EntDefFile.h"
+					RelativePath="..\io\DefinitionsFile.h"
 					>
 				</File>
 				<File
@@ -1447,7 +1447,7 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\io\EntDefFile.cpp"
+					RelativePath="..\io\DefinitionsFile.cpp"
 					>
 				</File>
 				<File

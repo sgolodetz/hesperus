@@ -14,7 +14,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/BrushesFile.h>
-#include <source/io/EntDefFile.h>
+#include <source/io/DefinitionsFile.h>
 #include <source/level/brushes/BrushExpander.h>
 #include <source/math/geom/AABB.h>
 #include <source/util/PolygonTypes.h>
@@ -33,10 +33,10 @@ void quit_with_usage()
 	exit(EXIT_FAILURE);
 }
 
-void run_expander(const std::string& entDefFilename, const std::string& inputFilename)
+void run_expander(const std::string& definitionsFilename, const std::string& inputFilename)
 {
 	// Read in the input AABBs.
-	std::vector<AABB3d> aabbs = EntDefFile::load_aabbs_only(entDefFilename);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only(definitionsFilename);
 
 	// Read in the input brushes.
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;

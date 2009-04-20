@@ -1,10 +1,10 @@
 /***
- * hesperus: EntDefFile.h
+ * hesperus: DefinitionsFile.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_ENTDEFFILE
-#define H_HESP_ENTDEFFILE
+#ifndef H_HESP_DEFINITIONSFILE
+#define H_HESP_DEFINITIONSFILE
 
 #include <string>
 #include <vector>
@@ -14,7 +14,7 @@
 
 namespace hesp {
 
-class EntDefFile
+class DefinitionsFile
 {
 	//#################### LOADING METHODS ####################
 public:
