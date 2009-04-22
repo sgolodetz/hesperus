@@ -28,6 +28,7 @@ public:
 						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
 						 const std::vector<OnionPortal_Ptr>& onionPortals,
 						 const std::vector<NavDataset_Ptr>& navDatasets,
+						 const std::string& definitionsFilename,
 						 const EntityManager_Ptr& entityManager);
 	static void save_unlit(const std::string& filename,
 						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
@@ -36,6 +37,7 @@ public:
 						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
 						   const std::vector<OnionPortal_Ptr>& onionPortals,
 						   const std::vector<NavDataset_Ptr>& navDatasets,
+						   const std::string& definitionsFilename,
 						   const EntityManager_Ptr& entityManager);
 
 	//#################### LOADING SUPPORT METHODS ####################

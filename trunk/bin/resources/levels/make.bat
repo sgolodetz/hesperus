@@ -52,7 +52,7 @@ REM #################
 REM Collation Section
 REM #################
 
-hcollate +L %1.lbt %1.rp2 %1.vis %1.ot %1.op %1.nav %1.ent %1.bsp
+hcollate +L %1.lbt %1.rp2 %1.vis %1.ot %1.op %1.nav %1.dsf %1.ent %1.bsp
 
 IF [%2]==[noclean] GOTO SkipCleanup
 

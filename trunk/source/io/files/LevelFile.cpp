@@ -10,6 +10,7 @@
 #include <boost/filesystem/operations.hpp>
 namespace bf = boost::filesystem;
 
+#include <source/io/sections/DefinitionsSpecifierSection.h>
 #include <source/io/sections/EntitiesSection.h>
 #include <source/io/sections/LightmapsSection.h>
 #include <source/io/sections/NavSection.h>
@@ -47,16 +48,18 @@ Level_Ptr LevelFile::load(const std::string& filename)
 /**
 Saves all the relevant pieces of information to the specified level file.
 
-@param filename			The name of the output file
-@param polygons			The level polygons
-@param tree				The BSP tree for the level
-@param portals			The portals for the level
-@param leafVis			The leaf visibility table for the level
-@param lightmaps		The lightmaps for the level
-@param onionPolygons	The polygons for the onion tree
-@param onionTree		The onion tree for the level
-@param onionPortals		The onion portals for the level
-@param navDatasets		The navigation datasets for the level
+@param filename					The name of the output file
+@param polygons					The level polygons
+@param tree						The BSP tree for the level
+@param portals					The portals for the level
+@param leafVis					The leaf visibility table for the level
+@param lightmaps				The lightmaps for the level
+@param onionPolygons			The polygons for the onion tree
+@param onionTree				The onion tree for the level
+@param onionPortals				The onion portals for the level
+@param navDatasets				The navigation datasets for the level
+@param definitionsFilename		The name of the definitions file for the level
+@param entityManager			The entity manager containing the entities for the level
 */
 void LevelFile::save_lit(const std::string& filename,
 						 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
@@ -66,6 +69,7 @@ void LevelFile::save_lit(const std::string& filename,
 						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
 						 const std::vector<OnionPortal_Ptr>& onionPortals,
 						 const std::vector<NavDataset_Ptr>& navDatasets,
+						 const std::string& definitionsFilename,
 						 const EntityManager_Ptr& entityManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
@@ -81,21 +85,24 @@ void LevelFile::save_lit(const std::string& filename,
 	OnionTreeSection::save(os, onionTree);
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navDatasets);
+	DefinitionsSpecifierSection::save(os, definitionsFilename);
 	EntitiesSection::save(os, entityManager);
 }
 
 /**
 Saves all the relevant pieces of information to the specified level file.
 
-@param filename			The name of the output file
-@param polygons			The level polygons
-@param tree				The BSP tree for the level
-@param portals			The portals for the level
-@param leafVis			The leaf visibility table for the level
-@param onionPolygons	The polygons for the onion tree
-@param onionTree		The onion tree for the level
-@param onionPortals		The onion portals for the level
-@param navDatasets		The navigation datasets for the level
+@param filename					The name of the output file
+@param polygons					The level polygons
+@param tree						The BSP tree for the level
+@param portals					The portals for the level
+@param leafVis					The leaf visibility table for the level
+@param onionPolygons			The polygons for the onion tree
+@param onionTree				The onion tree for the level
+@param onionPortals				The onion portals for the level
+@param navDatasets				The navigation datasets for the level
+@param definitionsFilename		The name of the definitions file for the level
+@param entityManager			The entity manager containing the entities for the level
 */
 void LevelFile::save_unlit(const std::string& filename,
 						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
@@ -104,6 +111,7 @@ void LevelFile::save_unlit(const std::string& filename,
 						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
 						   const std::vector<OnionPortal_Ptr>& onionPortals,
 						   const std::vector<NavDataset_Ptr>& navDatasets,
+						   const std::string& definitionsFilename,
 						   const EntityManager_Ptr& entityManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
@@ -118,6 +126,7 @@ void LevelFile::save_unlit(const std::string& filename,
 	OnionTreeSection::save(os, onionTree);
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navDatasets);
+	DefinitionsSpecifierSection::save(os, definitionsFilename);
 	EntitiesSection::save(os, entityManager);
 }
 
@@ -138,6 +147,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	OnionTree_Ptr onionTree;
 	std::vector<OnionPortal_Ptr> onionPortals;
 	std::vector<NavDataset_Ptr> navDatasets;
+	std::string definitionsFilename;
 	EntityManager_Ptr entityManager;
 	ModelManager_Ptr modelManager;
 
@@ -151,6 +161,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	onionTree = OnionTreeSection::load(is);
 	PolygonsSection::load(is, "OnionPortals", onionPortals);
 	navDatasets = NavSection::load(is);
+	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
 	bf::path baseDir = determine_base_directory_from_game();
 	entityManager = EntitiesSection::load(is, baseDir);
@@ -201,6 +212,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	OnionTree_Ptr onionTree;
 	std::vector<OnionPortal_Ptr> onionPortals;
 	std::vector<NavDataset_Ptr> navDatasets;
+	std::string definitionsFilename;
 	EntityManager_Ptr entityManager;
 	ModelManager_Ptr modelManager;
 
@@ -213,6 +225,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	onionTree = OnionTreeSection::load(is);
 	PolygonsSection::load(is, "OnionPortals", onionPortals);
 	navDatasets = NavSection::load(is);
+	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
 	bf::path baseDir = determine_base_directory_from_game();
 	entityManager = EntitiesSection::load(is, baseDir);

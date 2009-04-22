@@ -15,6 +15,7 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/PNGLoader.h>
+#include <source/io/files/DefinitionsSpecifierFile.h>
 #include <source/io/files/EntitiesFile.h>
 #include <source/io/files/LevelFile.h>
 #include <source/io/files/LitTreeFile.h>
@@ -37,13 +38,14 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hcollate {+L <input lit tree> | -L <input tree>} <input portals> <input vis> <input onion tree> <input onion portals> <input nav data> <input entities> <output filename>" << std::endl;
+	std::cout << "Usage: hcollate {+L <input lit tree> | -L <input tree>} <input portals> <input vis> <input onion tree> <input onion portals> <input nav data> <input definitions specifier file> <input entities> <output filename>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
 void collate_lit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename,
 				 const std::string& onionTreeFilename, const std::string& onionPortalsFilename,
-				 const std::string& navFilename, const std::string& entitiesFilename, const std::string& outputFilename)
+				 const std::string& navFilename, const std::string& definitionsSpecifierFilename,
+				 const std::string& entitiesFilename, const std::string& outputFilename)
 try
 {
 	// Load the lit polygons, tree and lightmap prefix.
@@ -82,6 +84,9 @@ try
 	// Load the navigation data.
 	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
 
+	// Load the definitions specifier.
+	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
+
 	// Load the entities.
 	bf::path baseDir = determine_base_directory_from_tool();
 	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, baseDir);
@@ -95,13 +100,15 @@ try
 						onionPolygons, onionTree,
 						onionPortals,
 						navDatasets,
+						definitionsFilename,
 						entityManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
 void collate_unlit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename,
 				   const std::string& onionTreeFilename, const std::string& onionPortalsFilename,
-				   const std::string& navFilename, const std::string& entitiesFilename, const std::string& outputFilename)
+				   const std::string& navFilename, const std::string& definitionsSpecifierFilename,
+				   const std::string& entitiesFilename, const std::string& outputFilename)
 try
 {
 	// Load the unlit polygons and tree.
@@ -130,6 +137,9 @@ try
 	// Load the navigation data.
 	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
 
+	// Load the definitions specifier.
+	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
+
 	// Load the entities.
 	bf::path baseDir = determine_base_directory_from_tool();
 	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, baseDir);
@@ -142,17 +152,18 @@ try
 						  onionPolygons, onionTree,
 						  onionPortals,
 						  navDatasets,
+						  definitionsFilename,
 						  entityManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
 int main(int argc, char *argv[])
 {
-	if(argc != 10) quit_with_usage();
+	if(argc != 11) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
 
-	if(args[1] == "+L") collate_lit(args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
-	else if(args[1] == "-L") collate_unlit(args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+	if(args[1] == "+L") collate_lit(args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
+	else if(args[1] == "-L") collate_unlit(args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
 	else quit_with_usage();
 
 	return 0;
