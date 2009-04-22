@@ -1,9 +1,9 @@
-Entities
-{
-DefinitionFile
+DefinitionsSpecifier
 {
 test-def.xml
 }
+Entities
+{
 Instances
 {
 1

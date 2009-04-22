@@ -17,6 +17,7 @@ using boost::lexical_cast;
 #include <source/level/yokes/minimus/MinimusScriptYoke.h>
 #include <source/level/yokes/null/NullYoke.h>
 #include <source/level/yokes/user/UserBipedYoke.h>
+#include "DefinitionsSpecifierSection.h"
 
 namespace hesp {
 
@@ -34,21 +35,16 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	MinimusScriptYoke::register_for_scripting(aiEngine);
 
+	// Read in the DefinitionsSpecifier section.
+	std::string definitionsFilename = DefinitionsSpecifierSection::load(is);
+
+	// Read in the definitions file and extract the AABBs.
+	bf::path settingsDir = determine_settings_directory(baseDir);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+
 	// Read in the Entities section.
 	LineIO::read_checked_line(is, "Entities");
 	LineIO::read_checked_line(is, "{");
-
-	// Read in the DefinitionFile section.
-	LineIO::read_checked_line(is, "DefinitionFile");
-	LineIO::read_checked_line(is, "{");
-
-		// Read in the entity definition file and extract the AABBs.
-		std::string definitionsFilename;
-		LineIO::read_line(is, definitionsFilename, "definitions filename");
-		bf::path settingsDir = determine_settings_directory(baseDir);
-		std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
-
-	LineIO::read_checked_line(is, "}");		// end DefinitionFile
 
 	// Read in the Instances section.
 	LineIO::read_checked_line(is, "Instances");
@@ -82,13 +78,10 @@ Saves a set of entities to the specified std::ostream.
 */
 void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityManager)
 {
+	DefinitionsSpecifierSection::save(os, entityManager->definitions_filename());
+
 	os << "Entities\n";
 	os << "{\n";
-
-	os << "DefinitionFile\n";
-	os << "{\n";
-	os << entityManager->definitions_filename() << '\n';
-	os << "}\n";
 
 	os << "Instances\n";
 	os << "{\n";
