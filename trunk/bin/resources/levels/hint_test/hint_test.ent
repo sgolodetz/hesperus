@@ -1,9 +1,7 @@
 Entities
 {
-Instances
-{
 1
-Instance
+Entity
 {
 AABBs = [0,1]
 Archetype = Player
@@ -14,6 +12,5 @@ Mass = 75
 Pose = 0
 Position = ( 6 8 5 )
 Yoke = User
-}
 }
 }

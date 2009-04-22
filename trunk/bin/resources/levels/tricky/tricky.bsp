@@ -881,10 +881,8 @@ test-def.xml
 }
 Entities
 {
-Instances
-{
 2
-Instance
+Entity
 {
 AABBs = [0,1]
 Archetype = Player
@@ -896,7 +894,7 @@ Pose = 0
 Position = ( 6 24 6 )
 Yoke = User
 }
-Instance
+Entity
 {
 AABBs = [0,1]
 Archetype = Guard
@@ -907,6 +905,5 @@ Mass = 75
 Pose = 0
 Position = ( 20 20 6 )
 Yoke = Minimus guard-ai
-}
 }
 }

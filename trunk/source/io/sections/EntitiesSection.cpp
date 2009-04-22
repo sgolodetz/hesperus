@@ -38,10 +38,6 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const std::vector<AABB
 	LineIO::read_checked_line(is, "Entities");
 	LineIO::read_checked_line(is, "{");
 
-	// Read in the Instances section.
-	LineIO::read_checked_line(is, "Instances");
-	LineIO::read_checked_line(is, "{");
-
 		std::string line;
 		LineIO::read_line(is, line, "entity count");
 		int entityCount;
@@ -55,7 +51,6 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const std::vector<AABB
 			entities.push_back(entity);
 		}
 
-	LineIO::read_checked_line(is, "}");		// end Instances
 	LineIO::read_checked_line(is, "}");		// end Entities
 
 	return EntityManager_Ptr(new EntityManager(entities, aabbs));
@@ -73,9 +68,6 @@ void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityMana
 	os << "Entities\n";
 	os << "{\n";
 
-	os << "Instances\n";
-	os << "{\n";
-
 	const std::vector<Entity_Ptr>& entities = entityManager->entities();
 	int entityCount = static_cast<int>(entities.size());
 	os << entityCount << '\n';
@@ -85,8 +77,6 @@ void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityMana
 	}
 
 	os << "}\n";
-
-	os << "}\n";
 }
 
 //#################### LOADING SUPPORT METHODS ####################
@@ -94,7 +84,7 @@ Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& a
 {
 	// Read in the entity instance.
 	Properties properties;
-	LineIO::read_checked_line(is, "Instance");
+	LineIO::read_checked_line(is, "Entity");
 	load_entity_properties(is, properties);
 
 	// Construct it and set the appropriate yoke.
@@ -147,7 +137,7 @@ void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity)
 {
 	const Properties& properties = entity->properties();
 
-	os << "Instance\n";
+	os << "Entity\n";
 	os << "{\n";
 
 	// FIXME: Do this properly.
