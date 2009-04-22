@@ -18,7 +18,7 @@ class EntitiesSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static EntityManager_Ptr load(std::istream& is, const boost::filesystem::path& baseDir);
+	static EntityManager_Ptr load(std::istream& is, const std::vector<AABB3d>& aabbs, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING METHODS ####################
 public:

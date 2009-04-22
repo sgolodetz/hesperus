@@ -16,8 +16,6 @@ class EntityManager
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::string m_definitionsFilename;
-
 	std::vector<AABB3d> m_aabbs;
 	std::vector<Entity_Ptr> m_entities;
 	std::map<std::string,std::vector<Entity_Ptr> > m_groups;
@@ -25,12 +23,11 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	EntityManager(const std::vector<Entity_Ptr>& entities, const std::vector<AABB3d>& aabbs, const std::string& definitionsFilename);
+	EntityManager(const std::vector<Entity_Ptr>& entities, const std::vector<AABB3d>& aabbs);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<AABB3d>& aabbs() const;
-	const std::string& definitions_filename() const;
 	const std::vector<Entity_Ptr>& entities() const;
 	const std::vector<Entity_Ptr>& group(const std::string& name) const;
 	const Entity_Ptr& viewer() const;

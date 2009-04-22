@@ -17,7 +17,7 @@ namespace hesp {
 struct EntitiesFile
 {
 	//#################### LOADING METHODS ####################
-	static EntityManager_Ptr load(const std::string& filename, const boost::filesystem::path& baseDir);
+	static EntityManager_Ptr load(const std::string& filename, const std::vector<AABB3d>& aabbs, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING METHODS ####################
 	static void save(const std::string& filename, const EntityManager_Ptr& entityManager);

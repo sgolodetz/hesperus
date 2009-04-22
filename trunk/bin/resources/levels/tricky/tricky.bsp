@@ -879,10 +879,6 @@ DefinitionsSpecifier
 {
 test-def.xml
 }
-DefinitionsSpecifier
-{
-test-def.xml
-}
 Entities
 {
 Instances

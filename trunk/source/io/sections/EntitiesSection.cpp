@@ -10,14 +10,12 @@ namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/files/DefinitionsFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/io/util/EntityComponents.h>
 #include <source/io/util/FieldIO.h>
 #include <source/level/yokes/minimus/MinimusScriptYoke.h>
 #include <source/level/yokes/null/NullYoke.h>
 #include <source/level/yokes/user/UserBipedYoke.h>
-#include "DefinitionsSpecifierSection.h"
 
 namespace hesp {
 
@@ -26,21 +24,15 @@ namespace hesp {
 Constructs an entity manager containing a set of entities loaded from the specified std::istream.
 
 @param is			The std::istream
+@param aabbs		The entity AABBs
 @param baseDir		The location of the project base directory
 @throws Exception	If EOF is encountered whilst trying to read the entities
 */
-EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDir)
+EntityManager_Ptr EntitiesSection::load(std::istream& is, const std::vector<AABB3d>& aabbs, const bf::path& baseDir)
 {
 	// Set up the shared scripting engines.
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	MinimusScriptYoke::register_for_scripting(aiEngine);
-
-	// Read in the DefinitionsSpecifier section.
-	std::string definitionsFilename = DefinitionsSpecifierSection::load(is);
-
-	// Read in the definitions file and extract the AABBs.
-	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
 
 	// Read in the Entities section.
 	LineIO::read_checked_line(is, "Entities");
@@ -66,7 +58,7 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const bf::path& baseDi
 	LineIO::read_checked_line(is, "}");		// end Instances
 	LineIO::read_checked_line(is, "}");		// end Entities
 
-	return EntityManager_Ptr(new EntityManager(entities, aabbs, definitionsFilename));
+	return EntityManager_Ptr(new EntityManager(entities, aabbs));
 }
 
 //#################### SAVING METHODS ####################
@@ -78,8 +70,6 @@ Saves a set of entities to the specified std::ostream.
 */
 void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityManager)
 {
-	DefinitionsSpecifierSection::save(os, entityManager->definitions_filename());
-
 	os << "Entities\n";
 	os << "{\n";
 

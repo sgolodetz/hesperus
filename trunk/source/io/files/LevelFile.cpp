@@ -10,6 +10,7 @@
 #include <boost/filesystem/operations.hpp>
 namespace bf = boost::filesystem;
 
+#include <source/io/files/DefinitionsFile.h>
 #include <source/io/sections/DefinitionsSpecifierSection.h>
 #include <source/io/sections/EntitiesSection.h>
 #include <source/io/sections/LightmapsSection.h>
@@ -164,7 +165,9 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
 	bf::path baseDir = determine_base_directory_from_game();
-	entityManager = EntitiesSection::load(is, baseDir);
+	bf::path settingsDir = determine_settings_directory(baseDir);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+	entityManager = EntitiesSection::load(is, aabbs, baseDir);
 
 	// Load the models.
 	modelManager = load_models(entityManager);
@@ -228,7 +231,9 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
 	bf::path baseDir = determine_base_directory_from_game();
-	entityManager = EntitiesSection::load(is, baseDir);
+	bf::path settingsDir = determine_settings_directory(baseDir);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+	entityManager = EntitiesSection::load(is, aabbs, baseDir);
 
 	// Load the models.
 	modelManager = load_models(entityManager);

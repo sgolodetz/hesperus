@@ -15,6 +15,7 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/PNGLoader.h>
+#include <source/io/files/DefinitionsFile.h>
 #include <source/io/files/DefinitionsSpecifierFile.h>
 #include <source/io/files/EntitiesFile.h>
 #include <source/io/files/LevelFile.h>
@@ -87,9 +88,13 @@ try
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Load the entities.
+	// Load the entity AABBs from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, baseDir);
+	bf::path settingsDir = determine_settings_directory(baseDir);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+
+	// Load the entities.
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_lit(outputFilename,
@@ -140,9 +145,13 @@ try
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Load the entities.
+	// Load the entity AABBs from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, baseDir);
+	bf::path settingsDir = determine_settings_directory(baseDir);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+
+	// Load the entities.
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_unlit(outputFilename,

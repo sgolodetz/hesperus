@@ -19,14 +19,15 @@ namespace hesp {
 Loads a set of entities from the specified entities file.
 
 @param filename	The name of the file from which to load the entities
+@param aabbs	The entity AABBs
 @param baseDir	The location of the project base directory
 @return			An EntityManager containing the loaded entities
 */
-EntityManager_Ptr EntitiesFile::load(const std::string& filename, const bf::path& baseDir)
+EntityManager_Ptr EntitiesFile::load(const std::string& filename, const std::vector<AABB3d>& aabbs, const bf::path& baseDir)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	return EntitiesSection::load(is, baseDir);
+	return EntitiesSection::load(is, aabbs, baseDir);
 }
 
 //#################### SAVING METHODS ####################
