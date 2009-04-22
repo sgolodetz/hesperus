@@ -9,12 +9,16 @@
 #include <string>
 #include <vector>
 
+#include <boost/filesystem/operations.hpp>
 #include <boost/lexical_cast.hpp>
+namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/files/BrushesFile.h>
 #include <source/io/files/DefinitionsFile.h>
+#include <source/io/files/DefinitionsSpecifierFile.h>
+#include <source/io/util/DirectoryFinder.h>
 #include <source/level/brushes/BrushExpander.h>
 #include <source/math/geom/AABB.h>
 #include <source/util/PolygonTypes.h>
@@ -29,14 +33,19 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hexpand <input entity definitions> <input brushes>" << std::endl;
+	std::cout << "Usage: hexpand <input definitions specifier> <input brushes>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void run_expander(const std::string& definitionsFilename, const std::string& inputFilename)
+void run_expander(const std::string& definitionsSpecifierFilename, const std::string& inputFilename)
 {
-	// Read in the input AABBs.
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only(definitionsFilename);
+	// Read in the input definitions specifier.
+	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
+
+	// Read in the entity AABBs.
+	bf::path baseDir = determine_base_directory_from_tool();
+	bf::path settingsDir = determine_settings_directory(baseDir);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
 
 	// Read in the input brushes.
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;

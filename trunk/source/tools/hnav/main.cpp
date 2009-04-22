@@ -7,10 +7,15 @@
 #include <string>
 #include <vector>
 
+#include <boost/filesystem/operations.hpp>
+namespace bf = boost::filesystem;
+
 #include <source/exceptions/Exception.h>
 #include <source/io/files/DefinitionsFile.h>
+#include <source/io/files/DefinitionsSpecifierFile.h>
 #include <source/io/files/NavFile.h>
 #include <source/io/files/OnionTreeFile.h>
+#include <source/io/util/DirectoryFinder.h>
 #include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavMeshGenerator.h>
@@ -27,16 +32,21 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hnav <input entity definitions> <input onion tree> <output navmesh stem>" << std::endl;
+	std::cout << "Usage: hnav <input definitions specifier> <input onion tree> <output navmesh stem>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
-void run(const std::string& definitionsFilename, const std::string& treeFilename, const std::string& outputFilename)
+void run(const std::string& definitionsSpecifierFilename, const std::string& treeFilename, const std::string& outputFilename)
 {
 	typedef std::vector<CollisionPolygon_Ptr> ColPolyVector;
 
-	// Read in the AABBs.
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only(definitionsFilename);
+	// Read in the definitions specifier.
+	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
+
+	// Read in the entity AABBs.
+	bf::path baseDir = determine_base_directory_from_tool();
+	bf::path settingsDir = determine_settings_directory(baseDir);
+	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
 
 	// Read in the polygons and onion tree.
 	ColPolyVector polygons;
