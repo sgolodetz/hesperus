@@ -13,10 +13,10 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/images/PNGSaver.h>
-#include <source/io/LightsFile.h>
-#include <source/io/LitTreeFile.h>
-#include <source/io/TreeFile.h>
-#include <source/io/VisFile.h>
+#include <source/io/files/LightsFile.h>
+#include <source/io/files/LitTreeFile.h>
+#include <source/io/files/TreeFile.h>
+#include <source/io/files/VisFile.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;

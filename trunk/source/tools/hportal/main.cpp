@@ -12,8 +12,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/PortalsFile.h>
-#include <source/io/TreeFile.h>
+#include <source/io/files/PortalsFile.h>
+#include <source/io/files/TreeFile.h>
 #include <source/level/portals/PortalGenerator.h>
 #include <source/level/trees/BSPTree.h>
 #include <source/util/PolygonTypes.h>

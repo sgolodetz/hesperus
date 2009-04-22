@@ -6,7 +6,7 @@
 #include "ModelManager.h"
 
 #include <source/exceptions/Exception.h>
-#include <source/io/ModelFiles.h>
+#include <source/io/files/ModelFiles.h>
 
 namespace hesp {
 

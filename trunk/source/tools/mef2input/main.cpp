@@ -13,8 +13,8 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
-#include <source/io/BrushesFile.h>
-#include <source/io/LightsFile.h>
+#include <source/io/files/BrushesFile.h>
+#include <source/io/files/LightsFile.h>
 #include <source/io/util/FieldIO.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/AABB.h>

@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 
-#include <source/io/BrushesFile.h>
-#include <source/io/GeometryFile.h>
+#include <source/io/files/BrushesFile.h>
+#include <source/io/files/GeometryFile.h>
 #include <source/io/util/IOUtil.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/math/geom/GeomUtil.h>

@@ -10,8 +10,8 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/BrushesFile.h>
-#include <source/io/TreeFile.h>
+#include <source/io/files/BrushesFile.h>
+#include <source/io/files/TreeFile.h>
 #include <source/level/brushes/PolyhedralBrush.h>
 #include <source/level/csg/CSGUtil.h>
 #include <source/level/trees/BSPUtil.h>

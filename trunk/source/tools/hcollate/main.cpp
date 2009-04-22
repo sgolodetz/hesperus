@@ -15,15 +15,15 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/images/PNGLoader.h>
-#include <source/io/EntitiesFile.h>
-#include <source/io/LevelFile.h>
-#include <source/io/LitTreeFile.h>
-#include <source/io/NavFile.h>
-#include <source/io/OnionPortalsFile.h>
-#include <source/io/OnionTreeFile.h>
-#include <source/io/PortalsFile.h>
-#include <source/io/TreeFile.h>
-#include <source/io/VisFile.h>
+#include <source/io/files/EntitiesFile.h>
+#include <source/io/files/LevelFile.h>
+#include <source/io/files/LitTreeFile.h>
+#include <source/io/files/NavFile.h>
+#include <source/io/files/OnionPortalsFile.h>
+#include <source/io/files/OnionTreeFile.h>
+#include <source/io/files/PortalsFile.h>
+#include <source/io/files/TreeFile.h>
+#include <source/io/files/VisFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;

@@ -8,9 +8,9 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/DefinitionsFile.h>
-#include <source/io/NavFile.h>
-#include <source/io/OnionTreeFile.h>
+#include <source/io/files/DefinitionsFile.h>
+#include <source/io/files/NavFile.h>
+#include <source/io/files/OnionTreeFile.h>
 #include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavMeshGenerator.h>

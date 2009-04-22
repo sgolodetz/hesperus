@@ -9,8 +9,8 @@
 #include <vector>
 
 #include <source/exceptions/Exception.h>
-#include <source/io/BrushesFile.h>
-#include <source/io/GeometryFile.h>
+#include <source/io/files/BrushesFile.h>
+#include <source/io/files/GeometryFile.h>
 #include <source/level/csg/CSGUtil.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;

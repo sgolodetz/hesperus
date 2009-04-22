@@ -10,7 +10,7 @@ namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/DefinitionsFile.h>
+#include <source/io/files/DefinitionsFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/io/util/EntityComponents.h>
 #include <source/io/util/FieldIO.h>

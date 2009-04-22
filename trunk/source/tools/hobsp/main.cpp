@@ -11,9 +11,9 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/GeometryFile.h>
-#include <source/io/OnionTreeFile.h>
-#include <source/io/TreeFile.h>
+#include <source/io/files/GeometryFile.h>
+#include <source/io/files/OnionTreeFile.h>
+#include <source/io/files/TreeFile.h>
 #include <source/level/trees/OnionCompiler.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;

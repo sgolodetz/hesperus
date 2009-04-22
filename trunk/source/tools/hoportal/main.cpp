@@ -11,8 +11,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
-#include <source/io/OnionPortalsFile.h>
-#include <source/io/OnionTreeFile.h>
+#include <source/io/files/OnionPortalsFile.h>
+#include <source/io/files/OnionTreeFile.h>
 #include <source/level/portals/OnionPortalGenerator.h>
 #include <source/level/trees/OnionTree.h>
 #include <source/util/PolygonTypes.h>

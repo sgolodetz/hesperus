@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include <source/io/PortalsFile.h>
-#include <source/io/VisFile.h>
+#include <source/io/files/PortalsFile.h>
+#include <source/io/files/VisFile.h>
 #include <source/level/vis/VisCalculator.h>
 using namespace hesp;
 

@@ -15,7 +15,7 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#include <source/io/LevelFile.h>
+#include <source/io/files/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/entities/MovementFunctions.h>
 #include <source/level/LevelViewer.h>
