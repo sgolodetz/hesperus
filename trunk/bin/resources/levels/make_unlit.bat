@@ -5,7 +5,7 @@ IF [%1]==[] GOTO Finished
 cd %1
 set PATH=%PATH%;..\..\..\tools
 
-mef2input %1.mef %1.bru %1.ent %1.lum
+mef2input %1.mef %1.bru %1.dsf %1.ent %1.lum
 hdivide %1.bru %1.rbr %1.cbr %1.dbr %1.hgm %1.sbr
 
 REM #################
@@ -60,6 +60,7 @@ REM General Cleanup Section
 REM #######################
 
 del *.bru
+del *.dsf
 del *.sbr
 
 REM #########################

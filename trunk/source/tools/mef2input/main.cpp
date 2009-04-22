@@ -14,6 +14,7 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/io/files/BrushesFile.h>
+#include <source/io/files/DefinitionsSpecifierFile.h>
 #include <source/io/files/LightsFile.h>
 #include <source/io/util/FieldIO.h>
 #include <source/level/brushes/PolyhedralBrush.h>
@@ -66,7 +67,7 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: mef2input <input MEF> <output brushes> <output entities> <output lights>" << std::endl;
+	std::cout << "Usage: mef2input <input MEF> <output brushes> <output definitions specifier> <output entities> <output lights>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
@@ -190,7 +191,8 @@ void read_light_brush(std::istream& is, std::vector<Light>& lights)
 	if(line != "}") throw Exception("LightBrush: Expected }");
 }
 
-void run_converter(const std::string& inputFilename, const std::string& brushesFilename, const std::string& entitiesFilename, const std::string& lightsFilename)
+void run_converter(const std::string& inputFilename, const std::string& brushesFilename, const std::string& definitionsSpecifierFilename,
+				   const std::string& entitiesFilename, const std::string& lightsFilename)
 {
 	std::vector<TexPolyhedralBrush_Ptr> brushes;
 	std::vector<Light> lights;
@@ -223,6 +225,10 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 	// Write the brushes to disk.
 	BrushesFile::save(brushesFilename, brushes);
 
+	// Write the definitions specifier to disk.
+	// FIXME: Write the proper specifier to disk once it can be extracted from the MEF.
+	DefinitionsSpecifierFile::save(definitionsSpecifierFilename, "test-def.xml");
+
 	// Write the entities to disk.
 	// TODO
 
@@ -233,9 +239,9 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 int main(int argc, char *argv[])
 try
 {
-	if(argc != 5) quit_with_usage();
+	if(argc != 6) quit_with_usage();
 	std::vector<std::string> args(argv, argv + argc);
-	run_converter(args[1], args[2], args[3], args[4]);
+	run_converter(args[1], args[2], args[3], args[4], args[5]);
 	return 0;
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
