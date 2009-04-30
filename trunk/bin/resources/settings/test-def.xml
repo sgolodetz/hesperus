@@ -12,9 +12,9 @@
 		</aabbs>
 		<properties>
 			<property name="AABBs" type="[AABBid]"/>
-			<property name="ActivationRadius" type="double"/>
 			<property name="AnimExtension" type="string"/>
 			<property name="Archetype" type="string"/>
+			<property name="CollectionRadius" type="double"/>
 			<property name="GameModel" type="string"/>
 			<property name="Health" type="int"/>
 			<property name="Icon" type="string"/>
@@ -62,7 +62,7 @@
 				<property name="Script" fixed="pistol_usable.as"/>
 			</archetype>
 			<archetype name="PistolAmmo">
-				<property name="ActivationRadius" fixed="1.0"/>
+				<property name="CollectionRadius" fixed="1.0"/>
 				<property name="GameModel" fixed="PistolAmmo"/>
 				<property name="Position"/>
 				<property name="Script" fixed="pistolammo.as"/>
@@ -84,7 +84,7 @@
 				<property name="Script" fixed="rifle_usable.as"/>
 			</archetype>
 			<archetype name="RifleAmmo">
-				<property name="ActivationRadius" fixed="1.0"/>
+				<property name="CollectionRadius" fixed="1.0"/>
 				<property name="GameModel" fixed="RifleAmmo"/>
 				<property name="Position"/>
 				<property name="Script" fixed="rifleammo.as"/>

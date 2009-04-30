@@ -108,29 +108,32 @@ Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& a
 	LineIO::read_checked_line(is, "Entity");
 	load_entity_properties(is, properties, propertyTypes);
 
-	// Construct it and set the appropriate yoke.
+	// Construct it and set the appropriate yoke (if applicable).
 	Entity_Ptr entity(new Entity(properties));
 
-	const std::string& yokeType = properties.get_actual<std::string>("Yoke");
-	Yoke_Ptr yoke;
-
-	std::string yokeClass, yokeParams;
-	std::string::size_type sp = yokeType.find(' ');
-	if(sp != std::string::npos)
+	if(properties.has("Yoke"))
 	{
-		yokeClass = yokeType.substr(0,sp);
-		yokeParams = yokeType.substr(sp+1);
+		const std::string& yokeType = properties.get_actual<std::string>("Yoke");
+		Yoke_Ptr yoke;
+
+		std::string yokeClass, yokeParams;
+		std::string::size_type sp = yokeType.find(' ');
+		if(sp != std::string::npos)
+		{
+			yokeClass = yokeType.substr(0,sp);
+			yokeParams = yokeType.substr(sp+1);
+		}
+		else yokeClass = yokeType;
+
+		// Note:	We should replace this with a yoke factory if the number of yokes increases.
+		//			It's probably not worth the extra code for the moment.
+		if(yokeClass == "User")			{ yoke.reset(new UserBipedYoke(entity)); }
+		else if(yokeClass == "Minimus")	{ yoke.reset(new MinimusScriptYoke(entity, yokeParams, aiEngine, baseDir)); }
+		else if(yokeClass == "None")	{ yoke.reset(new NullYoke); }
+		else							{ throw Exception("Unknown yoke class: " + yokeClass); }
+
+		entity->set_yoke(yoke, yokeType);
 	}
-	else yokeClass = yokeType;
-
-	// Note:	We should replace this with a yoke factory if the number of yokes increases.
-	//			It's probably not worth the extra code for the moment.
-	if(yokeClass == "User")			{ yoke.reset(new UserBipedYoke(entity)); }
-	else if(yokeClass == "Minimus")	{ yoke.reset(new MinimusScriptYoke(entity, yokeParams, aiEngine, baseDir)); }
-	else if(yokeClass == "None")	{ yoke.reset(new NullYoke); }
-	else							{ throw Exception("Unknown yoke class: " + yokeClass); }
-
-	entity->set_yoke(yoke, yokeType);
 
 	return entity;
 }

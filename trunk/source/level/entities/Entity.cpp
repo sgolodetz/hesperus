@@ -113,14 +113,14 @@ Properties Entity::properties() const
 
 	ret.set_actual("Archetype", m_archetype);
 
-	ret.set("AABBs", m_aabbIndices);
-	ret.set("GameModel", m_characterModel);
-	ret.set("Health", m_health);
-	ret.set_actual("Look", m_camera->n());
-	ret.set("Mass", m_mass);
-	ret.set("Pose", m_pose);
-	ret.set_actual("Position", m_camera->position());
-	ret.set("Yoke", m_yokeType);
+	if(m_aabbIndices) ret.set("AABBs", m_aabbIndices);
+	if(m_characterModel) ret.set("GameModel", m_characterModel);
+	if(m_health) ret.set("Health", m_health);
+	if(m_camera) ret.set_actual("Look", m_camera->n());
+	if(m_mass) ret.set("Mass", m_mass);
+	if(m_pose) ret.set("Pose", m_pose);
+	if(m_camera) ret.set_actual("Position", m_camera->position());
+	if(m_yokeType) ret.set("Yoke", m_yokeType);
 
 	return ret;
 }
