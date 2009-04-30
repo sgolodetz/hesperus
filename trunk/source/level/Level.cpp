@@ -93,7 +93,7 @@ void Level::render() const
 
 	// Determine which leaves are potentially visible from the current viewer position.
 	bool renderAllLeaves = false;
-	int curLeaf = TreeUtil::find_leaf_index(pos, m_tree);
+	int curLeaf = TreeUtil::find_leaf_index(eye, m_tree);
 	if(curLeaf >= m_tree->empty_leaf_count())
 	{
 		// If we're erroneously in a solid leaf, the best we can do is render the entire level.
