@@ -8,12 +8,14 @@
 #include <fstream>
 
 // FIXME: These are only necessary because of extract_vector3d() - they can be removed when it's refactored.
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/io/util/LineIO.h>
+#include <source/xml/XMLParser.h>
 
 namespace hesp {
 
@@ -59,7 +61,14 @@ void DefinitionsFile::load(const std::string& filename, std::vector<AABB3d>& ent
 		{
 			const XMLElement_CPtr& propertyElt = propertyElts[i];
 			const std::string& name = propertyElt->attribute("name");
-			const std::string& type = propertyElt->attribute("type");
+			std::string type = propertyElt->attribute("type");
+
+			// Treat an AABBid as an int within the game (the map editor needs to treat them specially though).
+			boost::algorithm::replace_all(type, "AABBid", "int");
+
+			// Treat enumerated types as strings within the game (the map editor needs to treat them specially though).
+			if(type.length() > 0 && type[0] == '{') type = "string";
+
 			entityPropertyTypes.insert(std::make_pair(name, type));
 		}
 	}

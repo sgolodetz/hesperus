@@ -11,7 +11,7 @@
 #include <vector>
 
 #include <source/math/geom/AABB.h>
-#include <source/xml/XMLParser.h>
+#include <source/xml/XMLElement.h>
 
 namespace hesp {
 

@@ -10,8 +10,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities, const std::vector<AABB3d>& aabbs)
-:	m_entities(entities), m_aabbs(aabbs)
+EntityManager::EntityManager(const std::vector<Entity_Ptr>& entities, const std::vector<AABB3d>& aabbs, const std::map<std::string,std::string>& propertyTypes)
+:	m_entities(entities), m_aabbs(aabbs), m_propertyTypes(propertyTypes)
 {
 	// Add the entities to the relevant groups.
 	std::vector<Entity_Ptr>& animatables = m_groups["Animatables"];
@@ -50,6 +50,11 @@ const std::vector<Entity_Ptr>& EntityManager::group(const std::string& name) con
 	std::map<std::string,std::vector<Entity_Ptr> >::const_iterator it = m_groups.find(name);
 	if(it != m_groups.end()) return it->second;
 	else throw Exception("No such entity group: " + name);
+}
+
+const std::map<std::string,std::string>& EntityManager::property_types() const
+{
+	return m_propertyTypes;
 }
 
 const Entity_Ptr& EntityManager::viewer() const

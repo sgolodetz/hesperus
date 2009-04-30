@@ -166,8 +166,10 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
-	entityManager = EntitiesSection::load(is, aabbs, baseDir);
+	std::vector<AABB3d> aabbs;
+	std::map<std::string,std::string> propertyTypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
+	entityManager = EntitiesSection::load(is, aabbs, propertyTypes, baseDir);
 
 	// Load the models.
 	modelManager = load_models(entityManager);
@@ -232,8 +234,10 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
-	entityManager = EntitiesSection::load(is, aabbs, baseDir);
+	std::vector<AABB3d> aabbs;
+	std::map<std::string,std::string> propertyTypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
+	entityManager = EntitiesSection::load(is, aabbs, propertyTypes, baseDir);
 
 	// Load the models.
 	modelManager = load_models(entityManager);

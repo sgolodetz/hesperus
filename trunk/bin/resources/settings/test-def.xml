@@ -14,6 +14,7 @@
 			<property name="AABBs" type="[AABBid]"/>
 			<property name="ActivationRadius" type="double"/>
 			<property name="AnimExtension" type="string"/>
+			<property name="Archetype" type="string"/>
 			<property name="GameModel" type="string"/>
 			<property name="Health" type="int"/>
 			<property name="Icon" type="string"/>

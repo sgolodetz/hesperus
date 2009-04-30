@@ -18,7 +18,7 @@ class EntitiesSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static EntityManager_Ptr load(std::istream& is, const std::vector<AABB3d>& aabbs, const boost::filesystem::path& baseDir);
+	static EntityManager_Ptr load(std::istream& is, const std::vector<AABB3d>& aabbs, const std::map<std::string,std::string>& propertyTypes, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING METHODS ####################
 public:
@@ -26,12 +26,12 @@ public:
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
-	static Entity_Ptr load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir);
-	static void load_entity_properties(std::istream& is, Properties& properties);
+	static Entity_Ptr load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const std::map<std::string,std::string>& propertyTypes, const boost::filesystem::path& baseDir);
+	static void load_entity_properties(std::istream& is, Properties& properties, const std::map<std::string,std::string>& propertyTypes);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
-	static void save_entity(std::ostream& os, const Entity_Ptr& entity);
+	static void save_entity(std::ostream& os, const Entity_Ptr& entity, const std::map<std::string,std::string>& propertyTypes);
 };
 
 }

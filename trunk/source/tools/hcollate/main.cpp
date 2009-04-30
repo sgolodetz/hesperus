@@ -91,10 +91,12 @@ try
 	// Load the entity AABBs from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+	std::vector<AABB3d> aabbs;
+	std::map<std::string,std::string> propertyTypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
 
 	// Load the entities.
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, baseDir);
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, propertyTypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_lit(outputFilename,
@@ -148,10 +150,12 @@ try
 	// Load the entity AABBs from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+	std::vector<AABB3d> aabbs;
+	std::map<std::string,std::string> propertyTypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
 
 	// Load the entities.
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, baseDir);
+	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, propertyTypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_unlit(outputFilename,

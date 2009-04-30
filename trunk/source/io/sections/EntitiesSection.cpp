@@ -6,6 +6,8 @@
 #include "EntitiesSection.h"
 
 #include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/tuple/tuple.hpp>
 namespace bf = boost::filesystem;
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
@@ -22,12 +24,13 @@ namespace hesp {
 /**
 Constructs an entity manager containing a set of entities loaded from the specified std::istream.
 
-@param is			The std::istream
-@param aabbs		The entity AABBs
-@param baseDir		The location of the project base directory
-@throws Exception	If EOF is encountered whilst trying to read the entities
+@param is				The std::istream
+@param aabbs			The entity AABBs
+@param propertyTypes	The types of the possible entity properties
+@param baseDir			The location of the project base directory
+@throws Exception		If EOF is encountered whilst trying to read the entities
 */
-EntityManager_Ptr EntitiesSection::load(std::istream& is, const std::vector<AABB3d>& aabbs, const bf::path& baseDir)
+EntityManager_Ptr EntitiesSection::load(std::istream& is, const std::vector<AABB3d>& aabbs, const std::map<std::string,std::string>& propertyTypes, const bf::path& baseDir)
 {
 	// Set up the shared scripting engines.
 	ASXEngine_Ptr aiEngine(new ASXEngine);
@@ -46,13 +49,13 @@ EntityManager_Ptr EntitiesSection::load(std::istream& is, const std::vector<AABB
 		std::vector<Entity_Ptr> entities;
 		for(int i=0; i<entityCount; ++i)
 		{
-			Entity_Ptr entity = load_entity(is, aiEngine, baseDir);
+			Entity_Ptr entity = load_entity(is, aiEngine, propertyTypes, baseDir);
 			entities.push_back(entity);
 		}
 
 	LineIO::read_checked_line(is, "}");		// end Entities
 
-	return EntityManager_Ptr(new EntityManager(entities, aabbs));
+	return EntityManager_Ptr(new EntityManager(entities, aabbs, propertyTypes));
 }
 
 //#################### SAVING METHODS ####################
@@ -67,29 +70,31 @@ void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityMana
 	os << "Entities\n";
 	os << "{\n";
 
+	const std::map<std::string,std::string>& propertyTypes = entityManager->property_types();
 	const std::vector<Entity_Ptr>& entities = entityManager->entities();
 	int entityCount = static_cast<int>(entities.size());
 	os << entityCount << '\n';
 	for(int i=0; i<entityCount; ++i)
 	{
-		save_entity(os, entities[i]);
+		save_entity(os, entities[i], propertyTypes);
 	}
 
 	os << "}\n";
 }
 
 //#################### LOADING SUPPORT METHODS ####################
-Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir)
+Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const std::map<std::string,std::string>& propertyTypes,
+										const boost::filesystem::path& baseDir)
 {
 	// Read in the entity instance.
 	Properties properties;
 	LineIO::read_checked_line(is, "Entity");
-	load_entity_properties(is, properties);
+	load_entity_properties(is, properties, propertyTypes);
 
 	// Construct it and set the appropriate yoke.
 	Entity_Ptr entity(new Entity(properties));
 
-	const std::string& yokeType = *properties.get<std::string>("Yoke");
+	const std::string& yokeType = properties.get_actual<std::string>("Yoke");
 	Yoke_Ptr yoke;
 
 	std::string yokeClass, yokeParams;
@@ -113,42 +118,78 @@ Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& a
 	return entity;
 }
 
-void EntitiesSection::load_entity_properties(std::istream& is, Properties& properties)
+void EntitiesSection::load_entity_properties(std::istream& is, Properties& properties, const std::map<std::string,std::string>& propertyTypes)
 {
 	LineIO::read_checked_line(is, "{");
 
-	// FIXME: Do this properly.
-	properties.set_actual("AABBs", FieldIO::read_intarray_field(is, "AABBs"));
-	properties.set_actual("Archetype", FieldIO::read_field(is, "Archetype"));
-	properties.set_actual("GameModel", FieldIO::read_field(is, "GameModel"));
-	properties.set_actual("Health", FieldIO::read_typed_field<int>(is, "Health"));
-	properties.set_actual("Look", FieldIO::read_typed_field<Vector3d>(is, "Look"));
-	properties.set_actual("Mass", FieldIO::read_typed_field<double>(is, "Mass"));
-	properties.set_actual("Pose", FieldIO::read_typed_field<int>(is, "Pose"));
-	properties.set_actual("Position", FieldIO::read_typed_field<Vector3d>(is, "Position"));
-	properties.set_actual("Yoke", FieldIO::read_field(is, "Yoke"));
+	std::string line;
+	for(;;)
+	{
+		LineIO::read_line(is, line, "entity property");
+		if(line == "}") break;
 
-	LineIO::read_checked_line(is, "}");
+		// Parse the field.
+		std::string name, value;
+		boost::tie(name, value) = FieldIO::parse_field(line);
+
+		// Lookup the type of the value.
+		std::map<std::string,std::string>::const_iterator it = propertyTypes.find(name);
+		if(it == propertyTypes.end()) throw Exception("Unknown property: " + name);
+		const std::string& type = it->second;
+
+		// Convert the value to the correct type and add it to the properties map.
+		try
+		{
+			if(type == "double")			properties.set_actual(name, lexical_cast<double,std::string>(value));
+			else if(type == "int")			properties.set_actual(name, lexical_cast<int,std::string>(value));
+			else if(type == "string")		properties.set_actual(name, value);
+			else if(type == "Vector3d")		properties.set_actual(name, lexical_cast<Vector3d,std::string>(value));
+			else if(type == "[int]")
+			{
+				typedef boost::char_separator<char> sep;
+				typedef boost::tokenizer<sep> tokenizer;
+
+				tokenizer tok(value.begin(), value.end(), sep("[,]"));
+				std::vector<std::string> tokens(tok.begin(), tok.end());
+
+				std::vector<int> arr;
+				for(size_t i=0, size=tokens.size(); i<size; ++i)
+				{
+					arr.push_back(lexical_cast<int,std::string>(tokens[i]));
+				}
+
+				properties.set_actual(name, arr);
+			}
+			else throw Exception("The type " + type + " is not currently supported");
+		}
+		catch(bad_lexical_cast&)
+		{
+			throw Exception("The value " + value + " for " + name + " was not of the right type");
+		}
+	}
 }
 
 //#################### SAVING SUPPORT METHODS ####################
-void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity)
+void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity, const std::map<std::string,std::string>& propertyTypes)
 {
 	const Properties& properties = entity->properties();
 
 	os << "Entity\n";
 	os << "{\n";
 
-	// FIXME: Do this properly.
-	if(properties.has("AABBs")) FieldIO::write_intarray_field(os, "AABBs", *properties.get<std::vector<int> >("AABBs"));
-	if(properties.has("Archetype")) FieldIO::write_typed_field(os, "Archetype", *properties.get<std::string>("Archetype"));
-	if(properties.has("GameModel")) FieldIO::write_typed_field(os, "GameModel", *properties.get<std::string>("GameModel"));
-	if(properties.has("Health")) FieldIO::write_typed_field(os, "Health", *properties.get<int>("Health"));
-	if(properties.has("Look")) FieldIO::write_typed_field(os, "Look", *properties.get<Vector3d>("Look"));
-	if(properties.has("Mass")) FieldIO::write_typed_field(os, "Mass", *properties.get<double>("Mass"));
-	if(properties.has("Pose")) FieldIO::write_typed_field(os, "Pose", *properties.get<int>("Pose"));
-	if(properties.has("Position")) FieldIO::write_typed_field(os, "Position", *properties.get<Vector3d>("Position"));
-	if(properties.has("Yoke")) FieldIO::write_typed_field(os, "Yoke", *properties.get<std::string>("Yoke"));
+	for(std::map<std::string,std::string>::const_iterator it=propertyTypes.begin(), iend=propertyTypes.end(); it!=iend; ++it)
+	{
+		std::string name, type;
+		boost::tie(name, type) = *it;
+
+		if(!properties.has(name)) continue;
+
+		if(type == "double")		FieldIO::write_typed_field(os, name, properties.get_actual<double>(name));
+		else if(type == "int")		FieldIO::write_typed_field(os, name, properties.get_actual<int>(name));
+		else if(type == "string")	FieldIO::write_typed_field(os, name, properties.get_actual<std::string>(name));
+		else if(type == "Vector3d")	FieldIO::write_typed_field(os, name, properties.get_actual<Vector3d>(name));
+		else if(type == "[int]")	FieldIO::write_intarray_field(os, name, properties.get_actual<std::vector<int> >(name));
+	}
 
 	os << "}\n";
 }
