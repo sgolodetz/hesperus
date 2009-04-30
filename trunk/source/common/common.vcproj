@@ -1602,10 +1602,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\io\util\EntityComponents.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\io\util\FieldIO.cpp"
 						>
 					</File>
@@ -1627,10 +1623,6 @@
 					>
 					<File
 						RelativePath="..\io\util\DirectoryFinder.h"
-						>
-					</File>
-					<File
-						RelativePath="..\io\util\EntityComponents.h"
 						>
 					</File>
 					<File

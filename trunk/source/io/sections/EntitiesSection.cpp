@@ -11,7 +11,6 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/io/util/DirectoryFinder.h>
-#include <source/io/util/EntityComponents.h>
 #include <source/io/util/FieldIO.h>
 #include <source/level/yokes/minimus/MinimusScriptYoke.h>
 #include <source/level/yokes/null/NullYoke.h>

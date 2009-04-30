@@ -6,6 +6,7 @@
 #ifndef H_HESP_DEFINITIONSFILE
 #define H_HESP_DEFINITIONSFILE
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -18,6 +19,7 @@ class DefinitionsFile
 {
 	//#################### LOADING METHODS ####################
 public:
+	static void load(const std::string& filename, std::vector<AABB3d>& entityAABBs, std::map<std::string,std::string>& entityPropertyTypes);
 	static std::vector<AABB3d> load_aabbs_only(const std::string& filename);
 
 	//#################### LOADING SUPPORT METHODS ####################

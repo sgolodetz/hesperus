@@ -54,16 +54,6 @@
 				<property name="Icon" fixed="icon-medkit.png"/>
 				<property name="Script" fixed="medkit_usable.as"/>
 			</archetype>
-			<archetype name="Player">
-				<property name="AABBs" fixed="[stand,crouch]"/>
-				<property name="GameModel" default="Player"/>
-				<property name="Health" default="100"/>
-				<property name="Look"/>
-				<property name="Mass" default="75"/>
-				<property name="Pose" default="stand"/>
-				<property name="Position"/>
-				<property name="Yoke" fixed="User"/>
-			</archetype>
 			<archetype name="Pistol_Usable">
 				<property name="AnimExtension" fixed="pistol"/>
 				<property name="GameModel" fixed="Pistol"/>
@@ -75,6 +65,16 @@
 				<property name="GameModel" fixed="PistolAmmo"/>
 				<property name="Position"/>
 				<property name="Script" fixed="pistolammo.as"/>
+			</archetype>
+			<archetype name="Player">
+				<property name="AABBs" fixed="[stand,crouch]"/>
+				<property name="GameModel" default="Player"/>
+				<property name="Health" default="100"/>
+				<property name="Look"/>
+				<property name="Mass" default="75"/>
+				<property name="Pose" default="stand"/>
+				<property name="Position"/>
+				<property name="Yoke" fixed="User"/>
 			</archetype>
 			<archetype name="Rifle_Usable">
 				<property name="AnimExtension" fixed="rifle"/>

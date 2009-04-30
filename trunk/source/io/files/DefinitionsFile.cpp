@@ -19,6 +19,55 @@ namespace hesp {
 
 //#################### LOADING METHODS ####################
 /**
+Loads the specified definitions file.
+
+@param filename				The name of the file
+@param entityAABBs			Used to return the AABBs used for entities
+@param entityPropertyTypes	Used to return the types of the various entity properties
+*/
+void DefinitionsFile::load(const std::string& filename, std::vector<AABB3d>& entityAABBs, std::map<std::string,std::string>& entityPropertyTypes)
+{
+	XMLLexer_Ptr lexer(new XMLLexer(filename));
+	XMLParser parser(lexer);
+	XMLElement_CPtr root = parser.parse();
+	XMLElement_CPtr definitionsElt = root->find_unique_child("definitions");
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Process the entities subtree.
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	{
+		XMLElement_CPtr entitiesElt = definitionsElt->find_unique_child("entities");
+
+		// Load the entity AABBs.
+		XMLElement_CPtr aabbsElt = entitiesElt->find_unique_child("aabbs");
+		std::vector<XMLElement_CPtr> aabbElts = aabbsElt->find_children("aabb");
+
+		for(size_t i=0, size=aabbElts.size(); i<size; ++i)
+		{
+			const XMLElement_CPtr& aabbElt = aabbElts[i];
+			XMLElement_CPtr minsElt = aabbElt->find_unique_child("mins");
+			XMLElement_CPtr maxsElt = aabbElt->find_unique_child("maxs");
+			entityAABBs.push_back(AABB3d(extract_vector3d(minsElt), extract_vector3d(maxsElt)));
+		}
+
+		// Load the entity property types.
+		XMLElement_CPtr propertiesElt = entitiesElt->find_unique_child("properties");
+		std::vector<XMLElement_CPtr> propertyElts = propertiesElt->find_children("property");
+
+		for(size_t i=0, size=propertyElts.size(); i<size; ++i)
+		{
+			const XMLElement_CPtr& propertyElt = propertyElts[i];
+			const std::string& name = propertyElt->attribute("name");
+			const std::string& type = propertyElt->attribute("type");
+			entityPropertyTypes.insert(std::make_pair(name, type));
+		}
+	}
+
+	// TODO: Process the other subtrees when it becomes necessary.
+}
+
+/**
 Loads an array of AABBs from the specified definitions file.
 
 @param filename	The name of the file from which to load the AABBs
