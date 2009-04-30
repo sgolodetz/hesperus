@@ -1606,10 +1606,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\io\util\IOUtil.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\io\util\LineIO.cpp"
 						>
 					</File>
