@@ -5,6 +5,8 @@
 
 #include "EntitiesSection.h"
 
+#include <sstream>
+
 #include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -83,6 +85,21 @@ void EntitiesSection::save(std::ostream& os, const EntityManager_Ptr& entityMana
 }
 
 //#################### LOADING SUPPORT METHODS ####################
+std::string EntitiesSection::intarray_to_string(const std::vector<int>& arr)
+{
+	std::ostringstream os;
+
+	os << '[';
+	for(size_t i=0, size=arr.size(); i<size; ++i)
+	{
+		os << arr[i];
+		if(i < size-1) os << ',';
+	}
+	os << ']';
+
+	return os.str();
+}
+
 Entity_Ptr EntitiesSection::load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const std::map<std::string,std::string>& propertyTypes,
 										const boost::filesystem::path& baseDir)
 {
@@ -144,22 +161,7 @@ void EntitiesSection::load_entity_properties(std::istream& is, Properties& prope
 			else if(type == "int")			properties.set_actual(name, lexical_cast<int,std::string>(value));
 			else if(type == "string")		properties.set_actual(name, value);
 			else if(type == "Vector3d")		properties.set_actual(name, lexical_cast<Vector3d,std::string>(value));
-			else if(type == "[int]")
-			{
-				typedef boost::char_separator<char> sep;
-				typedef boost::tokenizer<sep> tokenizer;
-
-				tokenizer tok(value.begin(), value.end(), sep("[,]"));
-				std::vector<std::string> tokens(tok.begin(), tok.end());
-
-				std::vector<int> arr;
-				for(size_t i=0, size=tokens.size(); i<size; ++i)
-				{
-					arr.push_back(lexical_cast<int,std::string>(tokens[i]));
-				}
-
-				properties.set_actual(name, arr);
-			}
+			else if(type == "[int]")		properties.set_actual(name, string_to_intarray(value));
 			else throw Exception("The type " + type + " is not currently supported");
 		}
 		catch(bad_lexical_cast&)
@@ -188,10 +190,28 @@ void EntitiesSection::save_entity(std::ostream& os, const Entity_Ptr& entity, co
 		else if(type == "int")		FieldIO::write_typed_field(os, name, properties.get_actual<int>(name));
 		else if(type == "string")	FieldIO::write_typed_field(os, name, properties.get_actual<std::string>(name));
 		else if(type == "Vector3d")	FieldIO::write_typed_field(os, name, properties.get_actual<Vector3d>(name));
-		else if(type == "[int]")	FieldIO::write_intarray_field(os, name, properties.get_actual<std::vector<int> >(name));
+		else if(type == "[int]")	FieldIO::write_typed_field(os, name, intarray_to_string(properties.get_actual<std::vector<int> >(name)));
+		else throw Exception("The type " + type + " is not currently supported");
 	}
 
 	os << "}\n";
+}
+
+std::vector<int> EntitiesSection::string_to_intarray(const std::string& s)
+{
+	typedef boost::char_separator<char> sep;
+	typedef boost::tokenizer<sep> tokenizer;
+
+	tokenizer tok(s.begin(), s.end(), sep("[,]"));
+	std::vector<std::string> tokens(tok.begin(), tok.end());
+
+	std::vector<int> arr;
+	for(size_t i=0, size=tokens.size(); i<size; ++i)
+	{
+		arr.push_back(lexical_cast<int,std::string>(tokens[i]));
+	}
+
+	return arr;
 }
 
 }

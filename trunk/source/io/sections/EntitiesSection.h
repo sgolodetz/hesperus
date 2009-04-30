@@ -26,12 +26,14 @@ public:
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
+	static std::string intarray_to_string(const std::vector<int>& arr);
 	static Entity_Ptr load_entity(std::istream& is, const ASXEngine_Ptr& aiEngine, const std::map<std::string,std::string>& propertyTypes, const boost::filesystem::path& baseDir);
 	static void load_entity_properties(std::istream& is, Properties& properties, const std::map<std::string,std::string>& propertyTypes);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
 	static void save_entity(std::ostream& os, const Entity_Ptr& entity, const std::map<std::string,std::string>& propertyTypes);
+	static std::vector<int> string_to_intarray(const std::string& s);
 };
 
 }

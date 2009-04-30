@@ -22,40 +22,6 @@ std::string FieldIO::read_field(std::istream& is, const std::string& expectedFie
 	return parse_field(field, expectedFieldName).second;
 }
 
-#if 0
-std::vector<int> FieldIO::read_intarray_field(std::istream& is, const std::string& expectedFieldName)
-{
-	std::vector<int> arr;
-
-	std::string fieldValue = read_field(is, expectedFieldName);
-
-	typedef boost::char_separator<char> sep;
-	typedef boost::tokenizer<sep> tokenizer;
-
-	tokenizer tok(fieldValue.begin(), fieldValue.end(), sep("[,]"));
-	std::vector<std::string> tokens(tok.begin(), tok.end());
-	for(size_t i=0, size=tokens.size(); i<size; ++i)
-	{
-		arr.push_back(lexical_cast<int,std::string>(tokens[i]));
-	}
-
-	return arr;
-}
-#endif
-
-//#################### WRITING METHODS ####################
-void FieldIO::write_intarray_field(std::ostream& os, const std::string& fieldName, const std::vector<int>& arr)
-{
-	os << fieldName << " = [";
-	int size = static_cast<int>(arr.size());
-	for(int i=0; i<size; ++i)
-	{
-		os << arr[i];
-		if(i < size-1) os << ',';
-	}
-	os << "]\n";
-}
-
 //#################### HELPER METHODS ####################
 std::pair<std::string,std::string> FieldIO::parse_field(const std::string& field, const std::string& expectedName)
 {
