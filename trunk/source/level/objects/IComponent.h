@@ -37,8 +37,8 @@ public:
 public:
 	virtual std::string type() const = 0;
 
-	//#################### PRIVATE METHODS ####################
-private:
+	//#################### PROTECTED METHODS ####################
+protected:
 	void set_object_id(const ObjectID& objectID);
 	void set_object_manager(ObjectManager *objectManager);
 };

@@ -10,7 +10,7 @@ namespace hesp {
 //#################### DESTRUCTOR ####################
 IComponent::~IComponent() {}
 
-//#################### PRIVATE METHODS ####################
+//#################### PROTECTED METHODS ####################
 void IComponent::set_object_id(const ObjectID& objectID)
 {
 	m_objectID = objectID;

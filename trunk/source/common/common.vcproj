@@ -1361,6 +1361,14 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\CmpMinimusScriptYoke.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\CmpOrientation.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\CmpPhysics.cpp"
 							>
 						</File>
@@ -1393,6 +1401,14 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\CmpMinimusScriptYoke.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\CmpOrientation.h"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\CmpPhysics.h"
 							>
 						</File>
@@ -1414,6 +1430,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\ICmpMeshMovement.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\ICmpOrientation.h"
 							>
 						</File>
 						<File
@@ -1480,6 +1500,10 @@
 							RelativePath="..\level\objects\CmdBipedMove.cpp"
 							>
 						</File>
+						<File
+							RelativePath="..\level\objects\CmdBipedTurn.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name=".h"
@@ -1494,6 +1518,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\CmdBipedMove.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\CmdBipedTurn.h"
 							>
 						</File>
 						<File
@@ -1526,6 +1554,46 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\VerticallyConstrainedNUVAxes.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="&lt;yokes&gt;"
+					>
+					<Filter
+						Name=".cpp"
+						>
+						<File
+							RelativePath="..\level\objects\YokeMinimusGotoPosition.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\YokeMinimusScript.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\YokeUserBiped.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name=".h"
+						>
+						<File
+							RelativePath="..\level\objects\IYoke.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\YokeMinimusGotoPosition.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\YokeMinimusScript.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\YokeUserBiped.h"
 							>
 						</File>
 					</Filter>
