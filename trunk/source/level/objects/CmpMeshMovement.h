@@ -33,10 +33,10 @@ public:
 public:
 	int cur_nav_poly_index() const;
 	Traversal_CPtr cur_traversal() const;
-	double run_speed() const = 0;
+	double run_speed() const;
 	void set_cur_nav_poly_index(int curNavPolyIndex);
 	void set_cur_traversal(const Traversal_Ptr& curTraversal);
-	double walk_speed() const = 0;
+	double walk_speed() const;
 };
 
 }

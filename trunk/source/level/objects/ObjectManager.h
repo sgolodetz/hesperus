@@ -26,8 +26,13 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	std::vector<AABB3d> m_aabbs;
 	IDAllocator m_idAllocator;
 	std::map<ObjectID,Object> m_objects;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	explicit ObjectManager(const std::vector<AABB3d>& aabbs);
 
 	//#################### PUBLIC METHODS ####################
 public:

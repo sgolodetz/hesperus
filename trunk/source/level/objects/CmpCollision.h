@@ -17,6 +17,10 @@ private:
 	std::vector<int> m_aabbIndices;
 	int m_pose;
 
+	//#################### CONSTRUCTORS ####################
+public:
+	CmpCollision(const std::vector<int>& aabbIndices, int pose);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<int>& aabb_indices() const;

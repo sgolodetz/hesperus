@@ -16,6 +16,10 @@ class CmpOrientation : public ICmpOrientation
 private:
 	NUVAxes_Ptr m_nuvAxes;
 
+	//#################### CONSTRUCTORS ####################
+public:
+	explicit CmpOrientation(const Vector3d& look);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	NUVAxes_Ptr nuv_axes() const;

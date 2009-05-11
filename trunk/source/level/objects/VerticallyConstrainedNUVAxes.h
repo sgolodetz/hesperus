@@ -14,7 +14,7 @@ class VerticallyConstrainedNUVAxes : public NUVAxes
 {
 	//#################### CONSTRUCTORS ####################
 public:
-	VerticallyConstrainedNUVAxes(const Vector3d& n);
+	explicit VerticallyConstrainedNUVAxes(const Vector3d& n);
 
 	//#################### PUBLIC METHODS ####################
 public:

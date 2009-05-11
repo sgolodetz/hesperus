@@ -9,11 +9,15 @@
 
 namespace hesp {
 
+//#################### CONSTRUCTORS ####################
+ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs)
+:	m_aabbs(aabbs)
+{}
+
 //#################### PUBLIC METHODS ####################
 const std::vector<AABB3d>& ObjectManager::aabbs() const
 {
-	// NYI
-	throw 23;
+	return m_aabbs;
 }
 
 void ObjectManager::broadcast_immediate_message(const Message_CPtr& msg)

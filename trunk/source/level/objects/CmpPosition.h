@@ -16,6 +16,10 @@ class CmpPosition : public ICmpPosition
 private:
 	Vector3d m_position;
 
+	//#################### CONSTRUCTORS ####################
+public:
+	explicit CmpPosition(const Vector3d& position);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	const Vector3d& position() const;

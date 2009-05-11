@@ -7,6 +7,11 @@
 
 namespace hesp {
 
+//#################### CONSTRUCTORS ####################
+CmpPosition::CmpPosition(const Vector3d& position)
+:	m_position(position)
+{}
+
 //#################### PUBLIC METHODS ####################
 const Vector3d& CmpPosition::position() const
 {

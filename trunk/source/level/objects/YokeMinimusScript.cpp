@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include <source/io/util/DirectoryFinder.h>
+#include "ICmpRender.h"
 #include "YokeMinimusGotoPosition.h"
 namespace bf = boost::filesystem;
 
@@ -94,8 +95,9 @@ void YokeMinimusScript::goto_position(double x, double y, double z)
 
 void YokeMinimusScript::request_animation(const std::string& name)
 {
-	// NYI
-	throw 23;
+	ICmpRender_Ptr cmpRender = m_objectManager->get_component(m_objectID, cmpRender);
+	AnimationController_Ptr animController = cmpRender->anim_controller();
+	animController->request_animation(name);
 }
 
 bool YokeMinimusScript::subyoke_active() const
