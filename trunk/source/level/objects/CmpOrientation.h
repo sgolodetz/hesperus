@@ -20,6 +20,10 @@ private:
 public:
 	explicit CmpOrientation(const Vector3d& look);
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties& properties);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	NUVAxes_Ptr nuv_axes() const;

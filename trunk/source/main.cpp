@@ -18,6 +18,11 @@
 #include <source/level/objects/CmpUserBipedYoke.h>
 #include <source/level/objects/ObjectManager.h>
 #endif
+#if 0
+#include <source/io/files/DefinitionsFile.h>
+#include <source/io/util/DirectoryFinder.h>
+#include <source/level/objects/ObjectsFile.h>
+#endif
 using namespace hesp;
 
 int main(int argc, char* argv[])
@@ -49,6 +54,26 @@ try
 	ICmpDirectMovement_Ptr d = om.get_component(id, d);
 	ICmpMeshMovement_Ptr m = om.get_component(id, m);
 	std::cout << m->cur_nav_poly_index() << std::endl;
+#endif
+#if 0
+	boost::filesystem::path baseDir = determine_base_directory_from_game();
+
+	std::string def = (determine_settings_directory(baseDir) / "testex-def.xml").file_string();
+	std::vector<AABB3d> aabbs;
+	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
+	DefinitionsFile::load_ex(def, aabbs, componentPropertyTypes);
+
+	for(std::map<std::string,std::map<std::string,std::string> >::const_iterator it=componentPropertyTypes.begin(), iend=componentPropertyTypes.end(); it!=iend; ++it)
+	{
+		std::cout << it->first << '\n';
+		for(std::map<std::string,std::string>::const_iterator jt=it->second.begin(), jend=it->second.end(); jt!=jend; ++jt)
+		{
+			std::cout << "    " << jt->first << ':' << jt->second << '\n';
+		}
+	}
+
+	std::string obs = (baseDir / "resources/levels/tricky/tricky.obs").file_string();
+	ObjectManager_Ptr objectManager = ObjectsFile::load(obs, aabbs, componentPropertyTypes, baseDir);
 #endif
 
 	Game game;

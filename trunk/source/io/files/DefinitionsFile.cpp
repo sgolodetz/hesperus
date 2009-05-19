@@ -105,6 +105,71 @@ std::vector<AABB3d> DefinitionsFile::load_aabbs_only(const std::string& filename
 	return aabbs;
 }
 
+#if 1
+/**
+TODO: Comment here.
+*/
+void DefinitionsFile::load_ex(const std::string& filename, std::vector<AABB3d>& aabbs, std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
+{
+	XMLLexer_Ptr lexer(new XMLLexer(filename));
+	XMLParser parser(lexer);
+	XMLElement_CPtr root = parser.parse();
+	XMLElement_CPtr definitionsElt = root->find_unique_child("definitions");
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Process the objects subtree.
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	{
+		XMLElement_CPtr objectsElt = definitionsElt->find_unique_child("objects");
+
+		// Load the object AABBs.
+		XMLElement_CPtr aabbsElt = objectsElt->find_unique_child("aabbs");
+		std::vector<XMLElement_CPtr> aabbElts = aabbsElt->find_children("aabb");
+
+		for(size_t i=0, size=aabbElts.size(); i<size; ++i)
+		{
+			const XMLElement_CPtr& aabbElt = aabbElts[i];
+			XMLElement_CPtr minsElt = aabbElt->find_unique_child("mins");
+			XMLElement_CPtr maxsElt = aabbElt->find_unique_child("maxs");
+			aabbs.push_back(AABB3d(extract_vector3d(minsElt), extract_vector3d(maxsElt)));
+		}
+
+		// Load the component property types.
+		XMLElement_CPtr componentsElt = objectsElt->find_unique_child("components");
+		std::vector<XMLElement_CPtr> componentElts = componentsElt->find_children("component");
+
+		for(size_t i=0, componentCount=componentElts.size(); i<componentCount; ++i)
+		{
+			const XMLElement_CPtr& componentElt = componentElts[i];
+			const std::string& componentName = componentElt->attribute("name");
+			std::map<std::string,std::string>& propertyTypes = componentPropertyTypes[componentName];
+
+			// Load the property types for component i.
+			std::vector<XMLElement_CPtr> propertyElts = componentElt->find_children("property");
+			for(size_t j=0, propertyCount=propertyElts.size(); j<propertyCount; ++j)
+			{
+				const XMLElement_CPtr& propertyElt = propertyElts[j];
+				const std::string& name = propertyElt->attribute("name");
+				std::string type = propertyElt->attribute("type");
+
+				// Treat an AABBid as an int within the game (the map editor needs to treat them specially though).
+				boost::algorithm::replace_all(type, "AABBid", "int");
+
+				// Treat enumerated types as strings within the game (the map editor needs to treat them specially though).
+				if(type.length() > 0 && type[0] == '{') type = "string";
+
+				propertyTypes.insert(std::make_pair(name, type));
+			}
+		}
+
+		// TODO: Process any other subtrees when it becomes necessary.
+	}
+
+	// TODO: Process any other subtrees when it becomes necessary.
+}
+#endif
+
 //#################### LOADING SUPPORT METHODS ####################
 Vector3d DefinitionsFile::extract_vector3d(const XMLElement_CPtr& elt)
 {

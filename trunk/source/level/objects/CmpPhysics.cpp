@@ -7,6 +7,12 @@
 
 namespace hesp {
 
+//#################### STATIC FACTORY METHODS ####################
+IComponent_Ptr CmpPhysics::create(const Properties&)
+{
+	return IComponent_Ptr(new CmpPhysics);
+}
+
 //#################### PUBLIC METHODS ####################
 void CmpPhysics::set_velocity(const Vector3d& velocity)
 {

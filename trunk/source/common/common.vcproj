@@ -1610,6 +1610,34 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="&lt;io&gt;"
+					>
+					<Filter
+						Name=".cpp"
+						>
+						<File
+							RelativePath="..\level\objects\ObjectsFile.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\ObjectsSection.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name=".h"
+						>
+						<File
+							RelativePath="..\level\objects\ObjectsFile.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\ObjectsSection.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

@@ -12,6 +12,12 @@ CmpRender::CmpRender(const std::string& modelName)
 :	m_modelName(modelName), m_animController(new AnimationController)
 {}
 
+//#################### STATIC FACTORY METHODS ####################
+IComponent_Ptr CmpRender::create(const Properties& properties)
+{
+	return IComponent_Ptr(new CmpRender(properties.get_actual<std::string>("ModelName")));
+}
+
 //#################### PUBLIC METHODS ####################
 AnimationController_Ptr CmpRender::anim_controller() const
 {

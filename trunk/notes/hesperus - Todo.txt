@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 30-04-09
+Last Updated: 18-05-09
 
 ----
 Easy
@@ -10,6 +10,7 @@ Easy
 
 * Walk/run etc. - sort out where the various different entity speeds are coming from (I'd suggest the definitions file).
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
+* Sort out the mess of functions in FieldIO.
 
 ------
 Medium

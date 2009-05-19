@@ -17,6 +17,10 @@ private:
 	// Records the details of recent times the entity would have crossed a wall into solid space (had we not stopped it)
 	std::list<OnionUtil::Transition_Ptr> m_recentTransitions;
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties&);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::list<OnionUtil::Transition_Ptr>& recent_transitions() const;

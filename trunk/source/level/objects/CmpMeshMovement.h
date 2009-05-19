@@ -29,6 +29,10 @@ private:
 public:
 	CmpMeshMovement();
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties&);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	int cur_nav_poly_index() const;

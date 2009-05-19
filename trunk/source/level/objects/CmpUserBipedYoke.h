@@ -16,6 +16,10 @@ class CmpUserBipedYoke : public ICmpYoke
 private:
 	IYoke_Ptr m_yoke;
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties&);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	std::vector<ObjectCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets);

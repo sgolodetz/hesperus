@@ -6,13 +6,22 @@
 #include "CmpMinimusScriptYoke.h"
 
 #include "YokeMinimusScript.h"
+namespace bf = boost::filesystem;
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpMinimusScriptYoke::CmpMinimusScriptYoke(const std::string& scriptName, const ASXEngine_Ptr& engine, const boost::filesystem::path& baseDir)
+CmpMinimusScriptYoke::CmpMinimusScriptYoke(const std::string& scriptName, const ASXEngine_Ptr& engine, const bf::path& baseDir)
 :	m_scriptName(scriptName), m_engine(engine), m_baseDir(baseDir)
 {}
+
+//#################### STATIC FACTORY METHODS ####################
+IComponent_Ptr CmpMinimusScriptYoke::create(const Properties& properties)
+{
+	return IComponent_Ptr(new CmpMinimusScriptYoke(properties.get_actual<std::string>("Script"),
+												   properties.get_actual<ASXEngine_Ptr>("AIEngine"),
+												   properties.get_actual<bf::path>("BaseDir")));
+}
 
 //#################### PUBLIC METHODS ####################
 std::vector<ObjectCommand_Ptr> CmpMinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,

@@ -12,6 +12,12 @@ CmpMeshMovement::CmpMeshMovement()
 :	m_curNavPolyIndex(-1)
 {}
 
+//#################### STATIC FACTORY METHODS ####################
+IComponent_Ptr CmpMeshMovement::create(const Properties&)
+{
+	return IComponent_Ptr(new CmpMeshMovement);
+}
+
 //#################### PUBLIC METHODS ####################
 int CmpMeshMovement::cur_nav_poly_index() const
 {

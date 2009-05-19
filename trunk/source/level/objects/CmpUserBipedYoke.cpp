@@ -9,6 +9,12 @@
 
 namespace hesp {
 
+//#################### STATIC FACTORY METHODS ####################
+IComponent_Ptr CmpUserBipedYoke::create(const Properties&)
+{
+	return IComponent_Ptr(new CmpUserBipedYoke);
+}
+
 //#################### PUBLIC METHODS ####################
 std::vector<ObjectCommand_Ptr> CmpUserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
 																   const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)

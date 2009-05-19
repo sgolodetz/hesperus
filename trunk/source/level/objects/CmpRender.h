@@ -21,6 +21,10 @@ private:
 public:
 	explicit CmpRender(const std::string& modelName);
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties& properties);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	AnimationController_Ptr anim_controller() const;

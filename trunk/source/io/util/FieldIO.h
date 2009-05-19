@@ -19,7 +19,9 @@ struct FieldIO
 {
 	//#################### READING METHODS ####################
 	static std::string read_field(std::istream& is, const std::string& expectedFieldName);
+	static std::string read_trimmed_field(std::istream& is, const std::string& expectedFieldName);
 	template <typename T> static T read_typed_field(std::istream& is, const std::string& expectedFieldName);
+	template <typename T> static T read_typed_trimmed_field(std::istream& is, const std::string& expectedFieldName);
 
 	//#################### WRITING METHODS ####################
 	template <typename T> static void write_typed_field(std::ostream& os, const std::string& fieldName, const T& value);

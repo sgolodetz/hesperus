@@ -22,6 +22,13 @@ std::string FieldIO::read_field(std::istream& is, const std::string& expectedFie
 	return parse_field(field, expectedFieldName).second;
 }
 
+std::string FieldIO::read_trimmed_field(std::istream& is, const std::string& expectedFieldName)
+{
+	std::string field;
+	LineIO::read_trimmed_line(is, field, expectedFieldName);
+	return parse_field(field, expectedFieldName).second;
+}
+
 //#################### HELPER METHODS ####################
 std::pair<std::string,std::string> FieldIO::parse_field(const std::string& field, const std::string& expectedName)
 {

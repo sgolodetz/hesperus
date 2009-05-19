@@ -6,7 +6,7 @@
 #ifndef H_HESP_XMLPARSER
 #define H_HESP_XMLPARSER
 
-#include <list>
+#include <vector>
 
 #include "XMLLexer.h"
 #include "XMLElement.h"
@@ -32,7 +32,7 @@ public:
 private:
 	void check_token_type(const XMLToken_Ptr& token, XMLTokenType expectedType);
 	XMLElement_Ptr parse_element();
-	std::list<XMLElement_Ptr> parse_elements();
+	std::vector<XMLElement_Ptr> parse_elements();
 	XMLToken_Ptr read_checked_token(XMLTokenType expectedType);
 	XMLToken_Ptr read_token();
 };

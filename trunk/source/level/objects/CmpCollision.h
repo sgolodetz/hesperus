@@ -21,6 +21,10 @@ private:
 public:
 	CmpCollision(const std::vector<int>& aabbIndices, int pose);
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties& properties);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<int>& aabb_indices() const;

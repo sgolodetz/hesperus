@@ -16,6 +16,10 @@ class CmpPhysics : public ICmpPhysics
 private:
 	Vector3d m_velocity;
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties&);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	void set_velocity(const Vector3d& velocity);

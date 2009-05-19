@@ -20,6 +20,10 @@ private:
 public:
 	explicit CmpPosition(const Vector3d& position);
 
+	//#################### STATIC FACTORY METHODS ####################
+public:
+	static IComponent_Ptr create(const Properties& properties);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	const Vector3d& position() const;

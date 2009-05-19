@@ -19,8 +19,8 @@ XMLElement_CPtr XMLParser::parse()
 {
 	XMLElement_Ptr root(new XMLElement("<root>"));
 
-	std::list<XMLElement_Ptr> children = parse_elements();
-	for(std::list<XMLElement_Ptr>::const_iterator it=children.begin(), iend=children.end(); it!=iend; ++it)
+	std::vector<XMLElement_Ptr> children = parse_elements();
+	for(std::vector<XMLElement_Ptr>::const_iterator it=children.begin(), iend=children.end(); it!=iend; ++it)
 	{
 		root->add_child(*it);
 	}
@@ -83,8 +83,8 @@ XMLElement_Ptr XMLParser::parse_element()
 		case XMLT_RBRACKET:
 		{
 			// This element has sub-elements, so parse them recursively and add them to the current element.
-			std::list<XMLElement_Ptr> children = parse_elements();
-			for(std::list<XMLElement_Ptr>::const_iterator it=children.begin(), iend=children.end(); it!=iend; ++it)
+			std::vector<XMLElement_Ptr> children = parse_elements();
+			for(std::vector<XMLElement_Ptr>::const_iterator it=children.begin(), iend=children.end(); it!=iend; ++it)
 			{
 				element->add_child(*it);
 			}
@@ -111,9 +111,9 @@ XMLElement_Ptr XMLParser::parse_element()
 	return element;
 }
 
-std::list<XMLElement_Ptr> XMLParser::parse_elements()
+std::vector<XMLElement_Ptr> XMLParser::parse_elements()
 {
-	std::list<XMLElement_Ptr> elements;
+	std::vector<XMLElement_Ptr> elements;
 
 	XMLElement_Ptr element;
 	while(element = parse_element())

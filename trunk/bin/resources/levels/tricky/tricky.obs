@@ -1,0 +1,53 @@
+Objects
+{
+	Count = 2
+	Object
+	{
+		Collision
+		{
+			AABBs = [0,1]
+			Pose = 0
+		}
+		MeshMovement;
+		Orientation
+		{
+			Look = ( 1 -0.5 0 )
+		}
+		Physics;
+		Position
+		{
+			Position = ( 6 24 6 )
+		}
+		Render
+		{
+			ModelName = Player
+		}
+		UserBipedYoke;
+	}
+	Object
+	{
+		Collision
+		{
+			AABBs = [0,1]
+			Pose = 0
+		}
+		MeshMovement;
+		MinimusScriptYoke
+		{
+			Script = guard-ai
+		}
+		Orientation
+		{
+			Look = ( -1 0 0 )
+		}
+		Physics;
+		Position
+		{
+			Position = ( 20 20 6 )
+		}
+		Render
+		{
+			ModelName = Guard
+		}
+	}
+}
