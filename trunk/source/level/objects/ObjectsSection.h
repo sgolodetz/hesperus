@@ -20,7 +20,9 @@ class ObjectsSection
 public:
 	static ObjectManager_Ptr load(std::istream& is, const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const boost::filesystem::path& baseDir);
 
-	// TODO
+	//#################### SAVING METHODS ####################
+public:
+	static void save(std::ostream& os, const ObjectManager_Ptr& objectManager);
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
@@ -28,14 +30,19 @@ private:
 	static std::string lookup_property_type(const std::string& componentName, const std::string& propertyName, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
 	static std::vector<int> string_to_intarray(const std::string& s);
 
-	//#################### COMPONENT CREATOR TYPEDEFS ####################
+	//#################### SAVING SUPPORT METHODS ####################
 private:
-	typedef IComponent_Ptr (*ComponentCreator)(const Properties&);
+	static std::string intarray_to_string(const std::vector<int>& arr);
+	static void save_object(std::ostream& os, const std::vector<IComponent_Ptr>& components, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
 
-	//#################### COMPONENT CREATOR METHODS ####################
+	//#################### COMPONENT LOADER TYPEDEFS ####################
 private:
-	static std::map<std::string,ComponentCreator>& component_creators();
-	static IComponent_Ptr invoke_component_creator(const std::string& componentName, const Properties& properties);
+	typedef IComponent_Ptr (*ComponentLoader)(const Properties&);
+
+	//#################### COMPONENT LOADER METHODS ####################
+private:
+	static std::map<std::string,ComponentLoader>& component_loaders();
+	static IComponent_Ptr invoke_component_loader(const std::string& componentName, const Properties& properties);
 };
 
 }

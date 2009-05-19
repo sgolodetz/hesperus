@@ -74,6 +74,9 @@ try
 
 	std::string obs = (baseDir / "resources/levels/tricky/tricky.obs").file_string();
 	ObjectManager_Ptr objectManager = ObjectsFile::load(obs, aabbs, componentPropertyTypes, baseDir);
+
+	std::string obsout = (baseDir / "resources/levels/tricky/tricky.obo").file_string();
+	ObjectsFile::save(obsout, objectManager);
 #endif
 
 	Game game;

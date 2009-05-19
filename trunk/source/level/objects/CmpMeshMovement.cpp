@@ -13,7 +13,7 @@ CmpMeshMovement::CmpMeshMovement()
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpMeshMovement::create(const Properties&)
+IComponent_Ptr CmpMeshMovement::load(const Properties&)
 {
 	return IComponent_Ptr(new CmpMeshMovement);
 }
@@ -33,6 +33,11 @@ double CmpMeshMovement::run_speed() const
 {
 	// FIXME: This should be loaded in.
 	return 10.0;	// in units/s
+}
+
+std::pair<std::string,Properties> CmpMeshMovement::save() const
+{
+	return std::make_pair("MeshMovement", Properties());
 }
 
 void CmpMeshMovement::set_cur_nav_poly_index(int curNavPolyIndex)

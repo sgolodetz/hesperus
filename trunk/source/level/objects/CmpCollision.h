@@ -23,12 +23,13 @@ public:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties& properties);
+	static IComponent_Ptr load(const Properties& properties);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<int>& aabb_indices() const;
 	int pose() const;
+	std::pair<std::string,Properties> save() const;
 	void set_pose(int pose);
 };
 

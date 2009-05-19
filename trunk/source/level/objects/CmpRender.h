@@ -23,12 +23,13 @@ public:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties& properties);
+	static IComponent_Ptr load(const Properties& properties);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	AnimationController_Ptr anim_controller() const;
 	const std::string& model_name() const;
+	std::pair<std::string,Properties> save() const;
 };
 
 }

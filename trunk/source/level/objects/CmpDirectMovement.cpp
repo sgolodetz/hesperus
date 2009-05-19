@@ -10,7 +10,7 @@
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpDirectMovement::create(const Properties&)
+IComponent_Ptr CmpDirectMovement::load(const Properties&)
 {
 	return IComponent_Ptr(new CmpDirectMovement);
 }
@@ -19,6 +19,11 @@ IComponent_Ptr CmpDirectMovement::create(const Properties&)
 const std::list<OnionUtil::Transition_Ptr>& CmpDirectMovement::recent_transitions() const
 {
 	return m_recentTransitions;
+}
+
+std::pair<std::string,Properties> CmpDirectMovement::save() const
+{
+	return std::make_pair("DirectMovement", Properties());
 }
 
 void CmpDirectMovement::update_recent_transitions(const OnionUtil::Transition_Ptr& transition)

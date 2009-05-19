@@ -16,7 +16,7 @@ CmpOrientation::CmpOrientation(const Vector3d& look)
 }
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpOrientation::create(const Properties& properties)
+IComponent_Ptr CmpOrientation::load(const Properties& properties)
 {
 	return IComponent_Ptr(new CmpOrientation(properties.get_actual<Vector3d>("Look")));
 }
@@ -25,6 +25,13 @@ IComponent_Ptr CmpOrientation::create(const Properties& properties)
 NUVAxes_Ptr CmpOrientation::nuv_axes() const
 {
 	return m_nuvAxes;
+}
+
+std::pair<std::string,Properties> CmpOrientation::save() const
+{
+	Properties properties;
+	properties.set_actual<Vector3d>("Look", m_nuvAxes->n());
+	return std::make_pair("Orientation", properties);
 }
 
 }

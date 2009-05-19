@@ -27,12 +27,13 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<AABB3d> m_aabbs;
+	std::map<std::string,std::map<std::string,std::string> > m_componentPropertyTypes;
 	IDAllocator m_idAllocator;
 	std::map<ObjectID,Object> m_objects;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit ObjectManager(const std::vector<AABB3d>& aabbs);
+	ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -41,9 +42,13 @@ public:
 	void broadcast_delayed_message(message)
 #endif
 	void broadcast_immediate_message(const Message_CPtr& msg);
+	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
+	void consolidate_object_ids();
 	ObjectID create_object(const std::vector<IComponent_Ptr>& components);
 	void destroy_object(const ObjectID& id);
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const shared_ptr<T>& = shared_ptr<T>());
+	std::vector<IComponent_Ptr> get_components(const ObjectID& id);
+	int object_count() const;
 #if 0
 	void post_delayed_message(const ObjectID& target, message)
 #endif

@@ -10,7 +10,7 @@
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpUserBipedYoke::create(const Properties&)
+IComponent_Ptr CmpUserBipedYoke::load(const Properties&)
 {
 	return IComponent_Ptr(new CmpUserBipedYoke);
 }
@@ -21,6 +21,11 @@ std::vector<ObjectCommand_Ptr> CmpUserBipedYoke::generate_commands(UserInput& in
 {
 	if(!m_yoke) m_yoke.reset(new YokeUserBiped(m_objectID, m_objectManager));
 	return m_yoke->generate_commands(input, polygons, tree, navDatasets);
+}
+
+std::pair<std::string,Properties> CmpUserBipedYoke::save() const
+{
+	return std::make_pair("UserBipedYoke", Properties());
 }
 
 }

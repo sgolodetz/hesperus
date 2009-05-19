@@ -30,11 +30,12 @@ public:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties& properties);
+	static IComponent_Ptr load(const Properties& properties);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	std::vector<ObjectCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
+	std::pair<std::string,Properties> save() const;
 };
 
 }

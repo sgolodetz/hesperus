@@ -229,7 +229,7 @@ void run_converter(const std::string& inputFilename, const std::string& brushesF
 	// FIXME: Write the proper specifier to disk once it can be extracted from the MEF.
 	DefinitionsSpecifierFile::save(definitionsSpecifierFilename, "test-def.xml");
 
-	// Write the entities to disk.
+	// Write the objects to disk.
 	// TODO
 
 	// Write the lights to disk.

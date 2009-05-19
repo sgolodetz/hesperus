@@ -22,11 +22,12 @@ public:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties& properties);
+	static IComponent_Ptr load(const Properties& properties);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	NUVAxes_Ptr nuv_axes() const;
+	std::pair<std::string,Properties> save() const;
 };
 
 }

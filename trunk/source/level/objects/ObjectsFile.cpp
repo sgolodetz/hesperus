@@ -25,8 +25,9 @@ ObjectManager_Ptr ObjectsFile::load(const std::string& filename, const std::vect
 //#################### SAVING METHODS ####################
 void ObjectsFile::save(const std::string& filename, const ObjectManager_Ptr& objectManager)
 {
-	// NYI
-	throw 23;
+	std::ofstream os(filename.c_str());
+	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
+	ObjectsSection::save(os, objectManager);
 }
 
 }

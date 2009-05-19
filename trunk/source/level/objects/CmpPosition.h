@@ -22,11 +22,12 @@ public:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties& properties);
+	static IComponent_Ptr load(const Properties& properties);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const Vector3d& position() const;
+	std::pair<std::string,Properties> save() const;
 	void set_position(const Vector3d& position);
 };
 

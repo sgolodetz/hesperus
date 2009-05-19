@@ -16,7 +16,7 @@ CmpMinimusScriptYoke::CmpMinimusScriptYoke(const std::string& scriptName, const 
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpMinimusScriptYoke::create(const Properties& properties)
+IComponent_Ptr CmpMinimusScriptYoke::load(const Properties& properties)
 {
 	return IComponent_Ptr(new CmpMinimusScriptYoke(properties.get_actual<std::string>("Script"),
 												   properties.get_actual<ASXEngine_Ptr>("AIEngine"),
@@ -29,6 +29,13 @@ std::vector<ObjectCommand_Ptr> CmpMinimusScriptYoke::generate_commands(UserInput
 {
 	if(!m_yoke) m_yoke.reset(new YokeMinimusScript(m_objectID, m_objectManager, m_scriptName, m_engine, m_baseDir));
 	return m_yoke->generate_commands(input, polygons, tree, navDatasets);
+}
+
+std::pair<std::string,Properties> CmpMinimusScriptYoke::save() const
+{
+	Properties properties;
+	properties.set_actual<std::string>("Script", m_scriptName);
+	return std::make_pair("MinimusScriptYoke", properties);
 }
 
 }

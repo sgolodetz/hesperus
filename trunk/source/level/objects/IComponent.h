@@ -36,6 +36,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual std::pair<std::string,Properties> save() const = 0;
 	virtual std::string type() const = 0;
 
 	//#################### PROTECTED METHODS ####################

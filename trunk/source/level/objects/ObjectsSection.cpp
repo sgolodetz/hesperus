@@ -36,7 +36,7 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const std::vector<AABB3
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	YokeMinimusScript::register_for_scripting(aiEngine);
 
-	ObjectManager_Ptr objectManager(new ObjectManager(aabbs));
+	ObjectManager_Ptr objectManager(new ObjectManager(aabbs, componentPropertyTypes));
 
 	LineIO::read_checked_line(is, "Objects");
 	LineIO::read_checked_line(is, "{");
@@ -51,6 +51,29 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const std::vector<AABB3
 	LineIO::read_checked_line(is, "}");
 
 	return objectManager;
+}
+
+//#################### SAVING METHODS ####################
+void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManager)
+{
+	objectManager->consolidate_object_ids();
+
+	os << "Objects\n";
+	os << "{\n";
+
+	os << '\t';
+	int objectCount = objectManager->object_count();
+	FieldIO::write_typed_field(os, "Count", objectCount);
+
+	// Note:	The objects with the specified IDs are guaranteed to exist because we called consolidate_object_ids() above.
+	//			This would not necessarily be the case otherwise, as the IDs of the objects may not form a contiguous series.
+	for(int i=0; i<objectCount; ++i)
+	{
+		std::vector<IComponent_Ptr> components = objectManager->get_components(ObjectID(i));
+		save_object(os, components, objectManager->component_property_types());
+	}
+
+	os << "}\n";
 }
 
 //#################### LOADING SUPPORT METHODS ####################
@@ -109,7 +132,7 @@ std::vector<IComponent_Ptr> ObjectsSection::load_object(std::istream& is, const 
 		properties.set_actual<ASXEngine_Ptr>("AIEngine", aiEngine);
 		properties.set_actual<bf::path>("BaseDir", baseDir);
 
-		components.push_back(invoke_component_creator(componentName, properties));
+		components.push_back(invoke_component_loader(componentName, properties));
 	}
 
 	return components;
@@ -144,37 +167,100 @@ std::vector<int> ObjectsSection::string_to_intarray(const std::string& s)
 	return arr;
 }
 
-//#################### COMPONENT CREATOR METHODS ####################
-#define ADD_CREATOR(c) componentCreators[#c] = &Cmp##c::create
-
-std::map<std::string,ObjectsSection::ComponentCreator>& ObjectsSection::component_creators()
+//#################### SAVING SUPPORT METHODS ####################
+std::string ObjectsSection::intarray_to_string(const std::vector<int>& arr)
 {
-	static std::map<std::string,ComponentCreator> componentCreators;
+	std::ostringstream os;
+
+	os << '[';
+	for(size_t i=0, size=arr.size(); i<size; ++i)
+	{
+		os << arr[i];
+		if(i < size-1) os << ',';
+	}
+	os << ']';
+
+	return os.str();
+}
+
+void ObjectsSection::save_object(std::ostream& os, const std::vector<IComponent_Ptr>& components,
+								 const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
+{
+	os << "\tObject\n";
+	os << "\t{\n";
+
+	for(size_t i=0, size=components.size(); i<size; ++i)
+	{
+		const IComponent_Ptr& component = components[i];
+		std::string componentName;
+		Properties properties;
+		boost::tie(componentName, properties) = component->save();
+
+		os << "\t\t" << componentName;
+
+		std::map<std::string,std::map<std::string,std::string> >::const_iterator jt = componentPropertyTypes.find(componentName);
+		if(jt == componentPropertyTypes.end()) throw Exception("Unknown component: " + componentName);
+		const std::map<std::string,std::string>& types = jt->second;
+
+		if(types.empty())
+		{
+			os << ";\n";
+		}
+		else
+		{
+			os << "\n\t\t{\n";
+			for(std::map<std::string,std::string>::const_iterator kt=types.begin(), kend=types.end(); kt!=kend; ++kt)
+			{
+				const std::string& name = kt->first;
+				const std::string& type = kt->second;
+
+				os << "\t\t\t";
+
+				if(type == "double")		FieldIO::write_typed_field(os, name, properties.get_actual<double>(name));
+				else if(type == "int")		FieldIO::write_typed_field(os, name, properties.get_actual<int>(name));
+				else if(type == "string")	FieldIO::write_typed_field(os, name, properties.get_actual<std::string>(name));
+				else if(type == "Vector3d")	FieldIO::write_typed_field(os, name, properties.get_actual<Vector3d>(name));
+				else if(type == "[int]")	FieldIO::write_typed_field(os, name, intarray_to_string(properties.get_actual<std::vector<int> >(name)));
+				else throw Exception("The type " + type + " is not currently supported");
+			}
+			os << "\t\t}\n";
+		}
+	}
+
+	os << "\t}\n";
+}
+
+//#################### COMPONENT CREATOR METHODS ####################
+#define ADD_LOADER(c) componentLoaders[#c] = &Cmp##c::load
+
+std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component_loaders()
+{
+	static std::map<std::string,ComponentLoader> componentLoaders;
 
 	static bool done = false;
 	if(!done)
 	{
-		ADD_CREATOR(Collision);
-		ADD_CREATOR(DirectMovement);
-		ADD_CREATOR(MeshMovement);
-		ADD_CREATOR(MinimusScriptYoke);
-		ADD_CREATOR(Orientation);
-		ADD_CREATOR(Physics);
-		ADD_CREATOR(Position);
-		ADD_CREATOR(Render);
-		ADD_CREATOR(UserBipedYoke);
+		ADD_LOADER(Collision);
+		ADD_LOADER(DirectMovement);
+		ADD_LOADER(MeshMovement);
+		ADD_LOADER(MinimusScriptYoke);
+		ADD_LOADER(Orientation);
+		ADD_LOADER(Physics);
+		ADD_LOADER(Position);
+		ADD_LOADER(Render);
+		ADD_LOADER(UserBipedYoke);
 		done = true;
 	}
 
-	return componentCreators;
+	return componentLoaders;
 }
 
-#undef ADD_CREATOR
+#undef ADD_LOADER
 
-IComponent_Ptr ObjectsSection::invoke_component_creator(const std::string& componentName, const Properties& properties)
+IComponent_Ptr ObjectsSection::invoke_component_loader(const std::string& componentName, const Properties& properties)
 {
-	std::map<std::string,ComponentCreator>& creators = component_creators();
-	std::map<std::string,ComponentCreator>::iterator it = creators.find(componentName);
+	std::map<std::string,ComponentLoader>& creators = component_loaders();
+	std::map<std::string,ComponentLoader>::iterator it = creators.find(componentName);
 	if(it != creators.end()) return (*(it->second))(properties);
 	else throw Exception("No creator registered for components of type " + componentName);
 }

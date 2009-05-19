@@ -19,11 +19,12 @@ private:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties&);
+	static IComponent_Ptr load(const Properties&);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::list<OnionUtil::Transition_Ptr>& recent_transitions() const;
+	std::pair<std::string,Properties> save() const;
 	void update_recent_transitions(const OnionUtil::Transition_Ptr& transition);
 };
 

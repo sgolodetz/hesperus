@@ -31,13 +31,14 @@ public:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties&);
+	static IComponent_Ptr load(const Properties&);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	int cur_nav_poly_index() const;
 	Traversal_CPtr cur_traversal() const;
 	double run_speed() const;
+	std::pair<std::string,Properties> save() const;
 	void set_cur_nav_poly_index(int curNavPolyIndex);
 	void set_cur_traversal(const Traversal_Ptr& curTraversal);
 	double walk_speed() const;

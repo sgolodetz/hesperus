@@ -13,7 +13,7 @@ CmpRender::CmpRender(const std::string& modelName)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpRender::create(const Properties& properties)
+IComponent_Ptr CmpRender::load(const Properties& properties)
 {
 	return IComponent_Ptr(new CmpRender(properties.get_actual<std::string>("ModelName")));
 }
@@ -27,6 +27,13 @@ AnimationController_Ptr CmpRender::anim_controller() const
 const std::string& CmpRender::model_name() const
 {
 	return m_modelName;
+}
+
+std::pair<std::string,Properties> CmpRender::save() const
+{
+	Properties properties;
+	properties.set_actual<std::string>("ModelName", m_modelName);
+	return std::make_pair("Render", properties);
 }
 
 }

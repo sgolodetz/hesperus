@@ -18,10 +18,11 @@ private:
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr create(const Properties&);
+	static IComponent_Ptr load(const Properties&);
 
 	//#################### PUBLIC METHODS ####################
 public:
+	std::pair<std::string,Properties> save() const;
 	void set_velocity(const Vector3d& velocity);
 	const Vector3d& velocity() const;
 };
