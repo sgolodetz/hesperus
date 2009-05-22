@@ -10,7 +10,7 @@
 
 #include <ASXEngine.h>
 
-#include "ObjectManager.h"
+#include <source/level/objects/ObjectManager.h>
 
 namespace hesp {
 

@@ -14,8 +14,7 @@ namespace bf = boost::filesystem;
 #include <source/io/sections/DefinitionsSpecifierSection.h>
 #include <source/io/sections/LightmapsSection.h>
 #include <source/io/sections/NavSection.h>
-#include <source/level/objects/ICmpRender.h>
-#include <source/level/objects/ObjectsSection.h>
+#include <source/io/sections/ObjectsSection.h>
 #include <source/io/sections/OnionTreeSection.h>
 #include <source/io/sections/PolygonsSection.h>
 #include <source/io/sections/TreeSection.h>
@@ -23,6 +22,7 @@ namespace bf = boost::filesystem;
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/LitGeometryRenderer.h>
 #include <source/level/UnlitGeometryRenderer.h>
+#include <source/level/objects/ICmpRender.h>
 
 namespace hesp {
 

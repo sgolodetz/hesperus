@@ -13,17 +13,17 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/FieldIO.h>
+#include <source/level/objects/CmpCollision.h>
+#include <source/level/objects/CmpDirectMovement.h>
+#include <source/level/objects/CmpMeshMovement.h>
+#include <source/level/objects/CmpMinimusScriptYoke.h>
+#include <source/level/objects/CmpOrientation.h>
+#include <source/level/objects/CmpPhysics.h>
+#include <source/level/objects/CmpPosition.h>
+#include <source/level/objects/CmpRender.h>
+#include <source/level/objects/CmpUserBipedYoke.h>
+#include <source/level/objects/MinimusScriptYoke.h>
 #include <source/util/Properties.h>
-#include "CmpCollision.h"
-#include "CmpDirectMovement.h"
-#include "CmpMeshMovement.h"
-#include "CmpMinimusScriptYoke.h"
-#include "CmpOrientation.h"
-#include "CmpPhysics.h"
-#include "CmpPosition.h"
-#include "CmpRender.h"
-#include "CmpUserBipedYoke.h"
-#include "MinimusScriptYoke.h"
 
 namespace hesp {
 

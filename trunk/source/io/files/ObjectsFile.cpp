@@ -8,7 +8,7 @@
 #include <fstream>
 
 #include <source/exceptions/Exception.h>
-#include "ObjectsSection.h"
+#include <source/io/sections/ObjectsSection.h>
 
 namespace hesp {
 

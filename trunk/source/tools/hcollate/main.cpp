@@ -20,7 +20,7 @@ using boost::lexical_cast;
 #include <source/io/files/LevelFile.h>
 #include <source/io/files/LitTreeFile.h>
 #include <source/io/files/NavFile.h>
-#include <source/level/objects/ObjectsFile.h>
+#include <source/io/files/ObjectsFile.h>
 #include <source/io/files/OnionPortalsFile.h>
 #include <source/io/files/OnionTreeFile.h>
 #include <source/io/files/PortalsFile.h>

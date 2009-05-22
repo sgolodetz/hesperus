@@ -1470,34 +1470,6 @@
 						</File>
 					</Filter>
 				</Filter>
-				<Filter
-					Name="&lt;io&gt;"
-					>
-					<Filter
-						Name=".cpp"
-						>
-						<File
-							RelativePath="..\level\objects\ObjectsFile.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ObjectsSection.cpp"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name=".h"
-						>
-						<File
-							RelativePath="..\level\objects\ObjectsFile.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ObjectsSection.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1598,6 +1570,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\io\files\ObjectsFile.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\io\files\OnionPortalsFile.cpp"
 						>
 					</File>
@@ -1647,6 +1623,10 @@
 					</File>
 					<File
 						RelativePath="..\io\files\NavFile.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\files\ObjectsFile.h"
 						>
 					</File>
 					<File
@@ -1722,6 +1702,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\io\sections\ObjectsSection.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\io\sections\OnionTreeSection.cpp"
 						>
 					</File>
@@ -1755,6 +1739,10 @@
 					</File>
 					<File
 						RelativePath="..\io\sections\NavSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\ObjectsSection.h"
 						>
 					</File>
 					<File
@@ -1884,30 +1872,6 @@
 				</File>
 				<File
 					RelativePath="..\game\GameState_Load.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="camera"
-			>
-			<Filter
-				Name=".cpp"
-				>
-				<File
-					RelativePath="..\camera\VariableCamera.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name=".h"
-				>
-				<File
-					RelativePath="..\camera\Camera.h"
-					>
-				</File>
-				<File
-					RelativePath="..\camera\VariableCamera.h"
 					>
 				</File>
 			</Filter>
