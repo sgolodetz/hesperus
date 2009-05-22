@@ -67,7 +67,7 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: mef2input <input MEF> <output brushes> <output definitions specifier> <output entities> <output lights>" << std::endl;
+	std::cout << "Usage: mef2input <input MEF> <output brushes> <output definitions specifier> <output objects> <output lights>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
@@ -192,7 +192,7 @@ void read_light_brush(std::istream& is, std::vector<Light>& lights)
 }
 
 void run_converter(const std::string& inputFilename, const std::string& brushesFilename, const std::string& definitionsSpecifierFilename,
-				   const std::string& entitiesFilename, const std::string& lightsFilename)
+				   const std::string& objectsFilename, const std::string& lightsFilename)
 {
 	std::vector<TexPolyhedralBrush_Ptr> brushes;
 	std::vector<Light> lights;

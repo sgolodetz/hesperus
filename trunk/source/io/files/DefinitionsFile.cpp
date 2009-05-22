@@ -99,9 +99,9 @@ std::vector<AABB3d> DefinitionsFile::load_aabbs_only(const std::string& filename
 	XMLParser parser(lexer);
 	XMLElement_CPtr root = parser.parse();
 	XMLElement_CPtr definitionsElt = root->find_unique_child("definitions");
-	XMLElement_CPtr entitiesElt = definitionsElt->find_unique_child("objects");
+	XMLElement_CPtr objectsElt = definitionsElt->find_unique_child("objects");
 
-	XMLElement_CPtr aabbsElt = entitiesElt->find_unique_child("aabbs");
+	XMLElement_CPtr aabbsElt = objectsElt->find_unique_child("aabbs");
 	std::vector<XMLElement_CPtr> aabbElts = aabbsElt->find_children("aabb");
 	int aabbCount = static_cast<int>(aabbElts.size());
 

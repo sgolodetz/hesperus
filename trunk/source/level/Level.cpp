@@ -208,7 +208,7 @@ void Level::render_objects() const
 		const ObjectID& animatable = animatables[i];
 		if(animatable != m_objectManager->viewer())
 		{
-			// FIXME: For performance reasons, we should only be rendering entities which are potentially visible.
+			// FIXME: For performance reasons, we should only be rendering objects which are potentially visible.
 			ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(animatable, cmpCollision);
 			ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(animatable, cmpOrientation);
 			ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(animatable, cmpPosition);

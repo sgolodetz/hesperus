@@ -920,146 +920,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="entities"
-				>
-				<Filter
-					Name=".h"
-					>
-					<File
-						RelativePath="..\level\entities\BipedChangePoseCommand.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\BipedJumpCommand.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\BipedMoveCommand.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\BipedTurnCommand.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Entity.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\EntityCommand.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\EntityManager.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\MovementFunctions.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Yoke.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".cpp"
-					>
-					<File
-						RelativePath="..\level\entities\BipedChangePoseCommand.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\BipedJumpCommand.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\BipedMoveCommand.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\BipedTurnCommand.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\Entity.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\EntityManager.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\entities\MovementFunctions.cpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="yokes"
-				>
-				<Filter
-					Name="user"
-					>
-					<Filter
-						Name=".cpp"
-						>
-						<File
-							RelativePath="..\level\yokes\user\UserBipedYoke.cpp"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name=".h"
-						>
-						<File
-							RelativePath="..\level\yokes\user\UserBipedYoke.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="null"
-					>
-					<Filter
-						Name=".h"
-						>
-						<File
-							RelativePath="..\level\yokes\null\NullYoke.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
-					Name="minimus"
-					>
-					<Filter
-						Name=".cpp"
-						>
-						<File
-							RelativePath="..\level\yokes\minimus\MinimusGotoPositionYoke.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\yokes\minimus\MinimusScriptYoke.cpp"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name=".h"
-						>
-						<File
-							RelativePath="..\level\yokes\minimus\MinimusGotoPositionYoke.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\yokes\minimus\MinimusScriptYoke.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-			</Filter>
-			<Filter
 				Name="models"
 				>
 				<Filter
@@ -1722,10 +1582,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\io\files\EntitiesFile.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\io\files\LevelFile.cpp"
 						>
 					</File>
@@ -1767,10 +1623,6 @@
 					</File>
 					<File
 						RelativePath="..\io\files\DefinitionsSpecifierFile.h"
-						>
-					</File>
-					<File
-						RelativePath="..\io\files\EntitiesFile.h"
 						>
 					</File>
 					<File
@@ -1854,10 +1706,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\io\sections\EntitiesSection.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\io\sections\LightmapPrefixSection.cpp"
 						>
 					</File>
@@ -1891,10 +1739,6 @@
 					>
 					<File
 						RelativePath="..\io\sections\DefinitionsSpecifierSection.h"
-						>
-					</File>
-					<File
-						RelativePath="..\io\sections\EntitiesSection.h"
 						>
 					</File>
 					<File
