@@ -29,7 +29,7 @@ public:
 						 const std::vector<OnionPortal_Ptr>& onionPortals,
 						 const std::vector<NavDataset_Ptr>& navDatasets,
 						 const std::string& definitionsFilename,
-						 const EntityManager_Ptr& entityManager);
+						 const ObjectManager_Ptr& objectManager);
 	static void save_unlit(const std::string& filename,
 						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
 						   const std::vector<Portal_Ptr>& portals,
@@ -38,12 +38,12 @@ public:
 						   const std::vector<OnionPortal_Ptr>& onionPortals,
 						   const std::vector<NavDataset_Ptr>& navDatasets,
 						   const std::string& definitionsFilename,
-						   const EntityManager_Ptr& entityManager);
+						   const ObjectManager_Ptr& objectManager);
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
 	static Level_Ptr load_lit(std::istream& is);
-	static ModelManager_Ptr load_models(const EntityManager_Ptr& entityManager);
+	static ModelManager_Ptr load_models(const ObjectManager_Ptr& objectManager);
 	static Level_Ptr load_unlit(std::istream& is);
 };
 

@@ -23,6 +23,10 @@ public:
 	std::string type() const			{ return "Yoke"; }
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<ICmpYoke> ICmpYoke_Ptr;
+typedef shared_ptr<const ICmpYoke> ICmpYoke_CPtr;
+
 }
 
 #endif

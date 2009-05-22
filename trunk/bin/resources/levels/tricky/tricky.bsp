@@ -879,31 +879,56 @@ DefinitionsSpecifier
 {
 test-def.xml
 }
-Entities
+Objects
 {
-2
-Entity
-{
-AABBs = [0,1]
-Archetype = Player
-GameModel = Player
-Health = 100
-Look = ( 0.894427 -0.447214 0 )
-Mass = 75
-Pose = 0
-Position = ( 6 24 6 )
-Yoke = User
-}
-Entity
-{
-AABBs = [0,1]
-Archetype = Guard
-GameModel = Guard
-Health = 75
-Look = ( -1 0 0 )
-Mass = 75
-Pose = 0
-Position = ( 20 20 6 )
-Yoke = Minimus guard-ai
-}
+	Count = 2
+	Object
+	{
+		Collision
+		{
+			AABBs = [0,1]
+			Pose = 0
+		}
+		MeshMovement;
+		Orientation
+		{
+			Look = ( 0.894427 -0.447214 0 )
+		}
+		Physics;
+		Position
+		{
+			Position = ( 6 24 6 )
+		}
+		Render
+		{
+			ModelName = Test-15
+		}
+		UserBipedYoke;
+	}
+	Object
+	{
+		Collision
+		{
+			AABBs = [0,1]
+			Pose = 0
+		}
+		MeshMovement;
+		Orientation
+		{
+			Look = ( -1 0 0 )
+		}
+		Physics;
+		Position
+		{
+			Position = ( 20 20 6 )
+		}
+		Render
+		{
+			ModelName = Test-15
+		}
+		MinimusScriptYoke
+		{
+			Script = guard-ai
+		}
+	}
 }

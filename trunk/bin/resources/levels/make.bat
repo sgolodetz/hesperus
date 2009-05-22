@@ -5,7 +5,7 @@ IF [%1]==[] GOTO Finished
 cd %1
 set PATH=%PATH%;..\..\..\tools
 
-mef2input %1.mef %1.bru %1.dsf %1.ent %1.lum
+mef2input %1.mef %1.bru %1.dsf %1.obs %1.lum
 hdivide %1.bru %1.rbr %1.cbr %1.dbr %1.hgm %1.sbr
 
 REM #################
@@ -52,7 +52,7 @@ REM #################
 REM Collation Section
 REM #################
 
-hcollate +L %1.lbt %1.rp2 %1.vis %1.ot %1.op %1.nav %1.dsf %1.ent %1.bsp
+hcollate +L %1.lbt %1.rp2 %1.vis %1.ot %1.op %1.nav %1.dsf %1.obs %1.bsp
 
 IF [%2]==[noclean] GOTO SkipCleanup
 

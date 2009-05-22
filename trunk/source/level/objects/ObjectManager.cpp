@@ -5,6 +5,9 @@
 
 #include "ObjectManager.h"
 
+#include "ICmpPhysics.h"
+#include "ICmpRender.h"
+#include "ICmpYoke.h"
 #include "MsgObjectDestroyed.h"
 
 namespace hesp {
@@ -12,7 +15,11 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 :	m_aabbs(aabbs), m_componentPropertyTypes(componentPropertyTypes)
-{}
+{
+	register_group("Animatables", is_animatable);
+	register_group("Simulables", is_simulable);
+	register_group("Yokeables", is_yokeable);
+}
 
 //#################### PUBLIC METHODS ####################
 const std::vector<AABB3d>& ObjectManager::aabbs() const
@@ -76,6 +83,23 @@ std::vector<IComponent_Ptr> ObjectManager::get_components(const ObjectID& id)
 	return components;
 }
 
+std::vector<ObjectID> ObjectManager::group(const std::string& name) const
+{
+	std::vector<ObjectID> ret;
+
+	std::map<std::string,GroupPredicate>::const_iterator gt = m_groupPredicates.find(name);
+	if(gt == m_groupPredicates.end()) throw Exception("No such object group: " + name);
+	const GroupPredicate& pred = gt->second;
+
+	for(std::map<ObjectID,Object>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+	{
+		const ObjectID& objectID = it->first;
+		if(pred(objectID, this)) ret.push_back(objectID);
+	}
+
+	return ret;
+}
+
 int ObjectManager::object_count() const
 {
 	return static_cast<int>(m_objects.size());
@@ -88,7 +112,33 @@ void ObjectManager::post_immediate_message(const ObjectID& target, const Message
 	post_message_to_object(it->second, msg);
 }
 
+void ObjectManager::register_group(const std::string& name, const GroupPredicate& pred)
+{
+	m_groupPredicates[name] = pred;
+}
+
+ObjectID ObjectManager::viewer() const
+{
+	// FIXME: The object ID of the viewer should be loaded in, not hard-coded like this.
+	return ObjectID(0);
+}
+
 //#################### PRIVATE METHODS ####################
+bool ObjectManager::is_animatable(const ObjectID& objectID, const ObjectManager *objectManager)
+{
+	return objectManager->get_component<ICmpRender>(objectID) != NULL;
+}
+
+bool ObjectManager::is_simulable(const ObjectID& objectID, const ObjectManager *objectManager)
+{
+	return objectManager->get_component<ICmpPhysics>(objectID) != NULL;
+}
+
+bool ObjectManager::is_yokeable(const ObjectID& objectID, const ObjectManager *objectManager)
+{
+	return objectManager->get_component<ICmpYoke>(objectID) != NULL;
+}
+
 void ObjectManager::post_message_to_object(Object& target, const Message_CPtr& msg)
 {
 	for(Object::iterator jt=target.begin(), jend=target.end(); jt!=jend; ++jt)

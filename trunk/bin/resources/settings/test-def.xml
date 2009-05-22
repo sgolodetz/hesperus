@@ -1,5 +1,5 @@
 <definitions>
-	<entities>
+	<objects>
 		<aabbs>
 			<aabb name="stand">
 				<mins x="-0.5" y="-0.5" z="-1"/>
@@ -10,109 +10,57 @@
 				<maxs x="0.5" y="0.5" z="0.5"/>
 			</aabb>
 		</aabbs>
-		<properties>
-			<property name="AABBs" type="[AABBid]"/>
-			<property name="AnimExtension" type="string"/>
-			<property name="Archetype" type="string"/>
-			<property name="CollectionRadius" type="double"/>
-			<property name="GameModel" type="string"/>
-			<property name="Health" type="int"/>
-			<property name="Icon" type="string"/>
-			<property name="Look" type="Vector3d"/>
-			<property name="Mass" type="double"/>
-			<property name="Pose" type="AABBid"/>
-			<property name="Position" type="Vector3d"/>
-			<property name="Script" type="string"/>
-			<property name="Yoke" type="{None|User|Minimus}"/>
-		</properties>
+		<components>
+			<component name="Collision">
+				<property name="AABBs" type="[AABBid]"/>
+				<property name="Pose" type="AABBid"/>
+			</component>
+			<component name="DirectMovement"/>
+			<component name="MeshMovement"/>
+			<component name="MinimusScriptYoke">
+				<property name="Script" type="string"/>
+			</component>
+			<component name="Orientation">
+				<property name="Look" type="Vector3d"/>
+			</component>
+			<component name="Physics"/>
+			<component name="Position">
+				<property name="Position" type="Vector3d"/>
+			</component>
+			<component name="Render">
+				<property name="ModelName" type="string"/>
+			</component>
+			<component name="UserBipedYoke"/>
+		</components>
 		<archetypes>
 			<archetype name="Guard">
-				<property name="AABBs" fixed="[stand,crouch]"/>
-				<property name="GameModel" default="Guard"/>
-				<property name="Health"/>
-				<property name="Look"/>
-				<property name="Mass" default="75"/>
-				<property name="Pose" default="stand"/>
-				<property name="Position"/>
-				<property name="Script"/>
-				<property name="Yoke" default="Minimus"/>
-			</archetype>
-			<archetype name="Knife_Usable">
-				<property name="AnimExtension" fixed="melee"/>
-				<property name="GameModel" fixed="Knife"/>
-				<property name="Icon" fixed="icon-knife.png"/>
-				<property name="Script" fixed="knife_usable.as"/>
-			</archetype>
-			<archetype name="Lockpick_Usable">
-				<property name="AnimExtension" fixed="melee"/>
-				<property name="GameModel" fixed="Lockpick"/>
-				<property name="Icon" fixed="icon-lockpick.png"/>
-				<property name="Script" fixed="lockpick_usable.as"/>
-			</archetype>
-			<archetype name="Medkit_Usable">
-				<property name="AnimExtension" fixed="melee"/>
-				<property name="GameModel" fixed="Medkit"/>
-				<property name="Icon" fixed="icon-medkit.png"/>
-				<property name="Script" fixed="medkit_usable.as"/>
-			</archetype>
-			<archetype name="Pistol_Usable">
-				<property name="AnimExtension" fixed="pistol"/>
-				<property name="GameModel" fixed="Pistol"/>
-				<property name="Icon" fixed="icon-pistol.png"/>
-				<property name="Script" fixed="pistol_usable.as"/>
-			</archetype>
-			<archetype name="PistolAmmo">
-				<property name="CollectionRadius" fixed="1.0"/>
-				<property name="GameModel" fixed="PistolAmmo"/>
-				<property name="Position"/>
-				<property name="Script" fixed="pistolammo.as"/>
+				<component name="Collision">
+					<property name="AABBs" fixed="[stand,crouch]"/>
+					<property name="Pose" default="stand"/>
+				</component>
+				<component name="MeshMovement"/>
+				<component name="MinimusScriptYoke"/>
+				<component name="Orientation"/>
+				<component name="Physics"/>
+				<component name="Position"/>
+				<component name="Render">
+					<property name="ModelName" default="Guard"/>
+				</component>
 			</archetype>
 			<archetype name="Player">
-				<property name="AABBs" fixed="[stand,crouch]"/>
-				<property name="GameModel" default="Player"/>
-				<property name="Health" default="100"/>
-				<property name="Look"/>
-				<property name="Mass" default="75"/>
-				<property name="Pose" default="stand"/>
-				<property name="Position"/>
-				<property name="Yoke" fixed="User"/>
-			</archetype>
-			<archetype name="Rifle_Usable">
-				<property name="AnimExtension" fixed="rifle"/>
-				<property name="GameModel" fixed="Rifle"/>
-				<property name="Icon" fixed="icon-pistol.png"/>
-				<property name="Script" fixed="rifle_usable.as"/>
-			</archetype>
-			<archetype name="RifleAmmo">
-				<property name="CollectionRadius" fixed="1.0"/>
-				<property name="GameModel" fixed="RifleAmmo"/>
-				<property name="Position"/>
-				<property name="Script" fixed="rifleammo.as"/>
-			</archetype>
-			<archetype name="Sword_Usable">
-				<property name="AnimExtension" fixed="melee"/>
-				<property name="GameModel" fixed="Sword"/>
-				<property name="Icon" fixed="icon-sword.png"/>
-				<property name="Script" fixed="sword.as"/>
+				<component name="Collision">
+					<property name="AABBs" fixed="[stand,crouch]"/>
+					<property name="Pose" default="stand"/>
+				</component>
+				<component name="MeshMovement"/>
+				<component name="Orientation"/>
+				<component name="Physics"/>
+				<component name="Position"/>
+				<component name="Render">
+					<property name="ModelName" default="Player"/>
+				</component>
+				<component name="UserBipedYoke"/>
 			</archetype>
 		</archetypes>
-	</entities>
-	<projectiles>
-		<projectile name="PistolBullet" type="Simple">
-			<property name="Mass" value="0.03"/>
-			<property name="Sprite" value="projectile-pistolbullet.png"/>
-		</projectile>
-		<projectile name="RifleBullet" type="Simple">
-			<property name="Mass" value="0.05"/>
-			<property name="Sprite" value="projectile-riflebullet.png"/>
-		</projectile>
-	</projectiles>
-	<slots>
-		<slot no="1" contents="Knife_Usable"/>
-		<slot no="2" contents="Sword_Usable"/>
-		<slot no="3" contents="Pistol_Usable"/>
-		<slot no="4" contents="Rifle_Usable"/>
-		<slot no="9" contents="Lockpick_Usable"/>
-		<slot no="0" contents="Medkit_Usable"/>
-	</slots>
+	</objects>
 </definitions>

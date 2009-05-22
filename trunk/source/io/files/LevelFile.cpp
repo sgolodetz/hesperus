@@ -12,9 +12,10 @@ namespace bf = boost::filesystem;
 
 #include <source/io/files/DefinitionsFile.h>
 #include <source/io/sections/DefinitionsSpecifierSection.h>
-#include <source/io/sections/EntitiesSection.h>
 #include <source/io/sections/LightmapsSection.h>
 #include <source/io/sections/NavSection.h>
+#include <source/level/objects/ICmpRender.h>
+#include <source/level/objects/ObjectsSection.h>
 #include <source/io/sections/OnionTreeSection.h>
 #include <source/io/sections/PolygonsSection.h>
 #include <source/io/sections/TreeSection.h>
@@ -60,7 +61,7 @@ Saves all the relevant pieces of information to the specified level file.
 @param onionPortals				The onion portals for the level
 @param navDatasets				The navigation datasets for the level
 @param definitionsFilename		The name of the definitions file for the level
-@param entityManager			The entity manager containing the entities for the level
+@param objectManager			The object manager containing the objects for the level
 */
 void LevelFile::save_lit(const std::string& filename,
 						 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
@@ -71,7 +72,7 @@ void LevelFile::save_lit(const std::string& filename,
 						 const std::vector<OnionPortal_Ptr>& onionPortals,
 						 const std::vector<NavDataset_Ptr>& navDatasets,
 						 const std::string& definitionsFilename,
-						 const EntityManager_Ptr& entityManager)
+						 const ObjectManager_Ptr& objectManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -87,7 +88,7 @@ void LevelFile::save_lit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navDatasets);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
-	EntitiesSection::save(os, entityManager);
+	ObjectsSection::save(os, objectManager);
 }
 
 /**
@@ -103,7 +104,7 @@ Saves all the relevant pieces of information to the specified level file.
 @param onionPortals				The onion portals for the level
 @param navDatasets				The navigation datasets for the level
 @param definitionsFilename		The name of the definitions file for the level
-@param entityManager			The entity manager containing the entities for the level
+@param objectManager			The object manager containing the objects for the level
 */
 void LevelFile::save_unlit(const std::string& filename,
 						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
@@ -113,7 +114,7 @@ void LevelFile::save_unlit(const std::string& filename,
 						   const std::vector<OnionPortal_Ptr>& onionPortals,
 						   const std::vector<NavDataset_Ptr>& navDatasets,
 						   const std::string& definitionsFilename,
-						   const EntityManager_Ptr& entityManager)
+						   const ObjectManager_Ptr& objectManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -128,7 +129,7 @@ void LevelFile::save_unlit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navDatasets);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
-	EntitiesSection::save(os, entityManager);
+	ObjectsSection::save(os, objectManager);
 }
 
 //#################### LOADING SUPPORT METHODS ####################
@@ -149,7 +150,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	std::vector<OnionPortal_Ptr> onionPortals;
 	std::vector<NavDataset_Ptr> navDatasets;
 	std::string definitionsFilename;
-	EntityManager_Ptr entityManager;
+	ObjectManager_Ptr objectManager;
 	ModelManager_Ptr modelManager;
 
 	// Load the level data.
@@ -167,33 +168,33 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
-	std::map<std::string,std::string> propertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
-	entityManager = EntitiesSection::load(is, aabbs, propertyTypes, baseDir);
+	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
+	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	objectManager = ObjectsSection::load(is, aabbs, componentPropertyTypes, baseDir);
 
 	// Load the models.
-	modelManager = load_models(entityManager);
+	modelManager = load_models(objectManager);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager, modelManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, objectManager, modelManager));
 }
 
 /**
-Loads the models necessary for the animatable entities in the specified entity manager.
+Loads the models necessary for the animatable objects in the specified object manager.
 
-@param entityManager	The entity manager
+@param objectManager	The object manager
 @return					A model manager containing the loaded models
 */
-ModelManager_Ptr LevelFile::load_models(const EntityManager_Ptr& entityManager)
+ModelManager_Ptr LevelFile::load_models(const ObjectManager_Ptr& objectManager)
 {
 	ModelManager_Ptr modelManager(new ModelManager);
 
-	const std::vector<Entity_Ptr>& animatables = entityManager->group("Animatables");
-	int animatableCount = static_cast<int>(animatables.size());
-	for(int i=0; i<animatableCount; ++i)
+	std::vector<ObjectID> animatables = objectManager->group("Animatables");
+	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
-		modelManager->register_model(animatables[i]->character_model());
+		ICmpRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		modelManager->register_model(cmpRender->model_name());
 	}
 
 	modelManager->load_all();
@@ -218,7 +219,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	std::vector<OnionPortal_Ptr> onionPortals;
 	std::vector<NavDataset_Ptr> navDatasets;
 	std::string definitionsFilename;
-	EntityManager_Ptr entityManager;
+	ObjectManager_Ptr objectManager;
 	ModelManager_Ptr modelManager;
 
 	// Load the level data.
@@ -235,16 +236,16 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
-	std::map<std::string,std::string> propertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
-	entityManager = EntitiesSection::load(is, aabbs, propertyTypes, baseDir);
+	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
+	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	objectManager = ObjectsSection::load(is, aabbs, componentPropertyTypes, baseDir);
 
 	// Load the models.
-	modelManager = load_models(entityManager);
+	modelManager = load_models(objectManager);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, entityManager, modelManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, objectManager, modelManager));
 }
 
 }

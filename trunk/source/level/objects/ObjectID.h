@@ -25,6 +25,7 @@ public:
 };
 
 //#################### GLOBAL OPERATORS ####################
+bool operator!=(const ObjectID& lhs, const ObjectID& rhs);
 bool operator<(const ObjectID& lhs, const ObjectID& rhs);
 
 }

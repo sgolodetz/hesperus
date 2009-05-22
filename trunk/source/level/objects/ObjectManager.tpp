@@ -13,14 +13,21 @@ namespace hesp {
 template <typename T>
 shared_ptr<T> ObjectManager::get_component(const ObjectID& id, const shared_ptr<T>&)
 {
-	std::map<ObjectID,Object>::iterator it = m_objects.find(id);
+	return boost::const_pointer_cast<T,const T>(const_cast<const ObjectManager *>(this)->get_component<const T>(id));
+}
+
+template <typename T>
+shared_ptr<const T> ObjectManager::get_component(const ObjectID& id, const shared_ptr<const T>&) const
+{
+	std::map<ObjectID,Object>::const_iterator it = m_objects.find(id);
 	if(it == m_objects.end()) throw Exception("Invalid object ID: " + boost::lexical_cast<std::string,int>(id.value()));
 
-	Object& object = it->second;
+	const Object& object = it->second;
 
-	Object::iterator jt = object.find(T::static_type());
-	if(jt == object.end()) return shared_ptr<T>();
+	Object::const_iterator jt = object.find(T::static_type());
+	if(jt == object.end()) return shared_ptr<const T>();
 
+	// Note that there's an implicit T -> const T conversion done when returning here.
 	return boost::dynamic_pointer_cast<T,IComponent>(jt->second);
 }
 

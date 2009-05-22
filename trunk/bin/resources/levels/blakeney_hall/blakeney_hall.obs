@@ -1,0 +1,27 @@
+Objects
+{
+	Count = 1
+	Object
+	{
+		Collision
+		{
+			AABBs = [0,1]
+			Pose = 0
+		}
+		MeshMovement;
+		Orientation
+		{
+			Look = ( 1 1 0 )
+		}
+		Physics;
+		Position
+		{
+			Position = ( 29 31 17 )
+		}
+		Render
+		{
+			ModelName = Test-15
+		}
+		UserBipedYoke;
+	}
+}

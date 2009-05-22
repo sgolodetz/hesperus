@@ -13,6 +13,10 @@
 
 #include <source/colours/Colour3d.h>
 #include <source/level/models/Model.h>
+#include <source/level/objects/ICmpCollision.h>
+#include <source/level/objects/ICmpOrientation.h>
+#include <source/level/objects/ICmpPosition.h>
+#include <source/level/objects/ICmpRender.h>
 #include <source/level/trees/TreeUtil.h>
 #include <source/math/vectors/Vector3.h>
 
@@ -23,10 +27,10 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 			 const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 			 const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
 			 const OnionPortalVector& onionPortals, const NavDatasetVector& navDatasets,
-			 const EntityManager_Ptr& entityManager, const ModelManager_Ptr& modelManager)
+			 const ObjectManager_Ptr& objectManager, const ModelManager_Ptr& modelManager)
 :	m_geomRenderer(geomRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis),
 	m_onionPolygons(onionPolygons), m_onionTree(onionTree), m_onionPortals(onionPortals),
-	m_navDatasets(navDatasets), m_entityManager(entityManager), m_modelManager(modelManager)
+	m_navDatasets(navDatasets), m_objectManager(objectManager), m_modelManager(modelManager)
 {
 	// Build the collision -> nav poly index lookups.
 	int datasetCount = static_cast<int>(m_navDatasets.size());
@@ -35,25 +39,25 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 		m_navDatasets[i]->nav_mesh()->build_collision_to_nav_lookup();
 	}
 
-	// Set the skeletons in the entity animation controllers.
-	const std::vector<Entity_Ptr>& animatables = m_entityManager->group("Animatables");
-	int animatableCount = static_cast<int>(animatables.size());
-	for(int i=0; i<animatableCount; ++i)
+	// Set the skeletons in the object animation controllers.
+	std::vector<ObjectID> animatables = m_objectManager->group("Animatables");
+	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
-		Skeleton_Ptr skeleton = m_modelManager->model(animatables[i]->character_model())->skeleton();
-		animatables[i]->character_anim_controller()->set_skeleton(skeleton);
+		ICmpRender_Ptr cmpRender = m_objectManager->get_component(animatables[i], cmpRender);
+		Skeleton_Ptr skeleton = m_modelManager->model(cmpRender->model_name())->skeleton();
+		cmpRender->anim_controller()->set_skeleton(skeleton);
 	}
 }
 
 //#################### PUBLIC METHODS ####################
-const EntityManager_Ptr& Level::entity_manager() const
-{
-	return m_entityManager;
-}
-
 const std::vector<NavDataset_Ptr>& Level::nav_datasets() const
 {
 	return m_navDatasets;
+}
+
+const ObjectManager_Ptr& Level::object_manager() const
+{
+	return m_objectManager;
 }
 
 const std::vector<CollisionPolygon_Ptr>& Level::onion_polygons() const
@@ -79,12 +83,17 @@ void Level::render() const
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	Entity_Ptr viewer = m_entityManager->viewer();
-	const Vector3d& pos = viewer->position();
-	const Vector3d& look = viewer->camera().n();
+	ObjectID viewer = m_objectManager->viewer();
+
+	ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(viewer, cmpCollision);
+	ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(viewer, cmpOrientation);
+	ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(viewer, cmpPosition);
+
+	const Vector3d& pos = cmpPosition->position();
+	const Vector3d& look = cmpOrientation->nuv_axes()->n();
 
 	// Calculate the viewer's eye position and where they're looking at.
-	const AABB3d& aabb = m_entityManager->aabbs()[viewer->pose()];
+	const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->aabb_indices()[cmpCollision->pose()]];
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 
@@ -119,8 +128,8 @@ void Level::render() const
 	std::cout << "Polygon Count " << polyIndices.size() << std::endl;
 #endif
 
-	// Render the visible entities.
-	render_entities();
+	// Render the visible objects.
+	render_objects();
 
 	// Render the navigation meshes.
 #if 1
@@ -137,104 +146,6 @@ void Level::render() const
 }
 
 //#################### PRIVATE METHODS ####################
-void Level::render_entities() const
-{
-	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
-
-	const std::vector<Entity_Ptr>& animatables = m_entityManager->group("Animatables");
-	int animatablesCount = static_cast<int>(animatables.size());
-	for(int i=0; i<animatablesCount; ++i)
-	{
-		const Entity_Ptr& entity = animatables[i];
-		if(entity != m_entityManager->viewer())
-		{
-			// FIXME: For performance reasons, we should only be rendering entities which are potentially visible.
-			const Camera& camera = entity->camera();
-			const AABB3d& aabb = m_entityManager->aabbs()[entity->aabb_indices()[entity->pose()]];
-			const Vector3d& p = camera.position();
-			const Vector3d& n = camera.n();
-			const Vector3d& u = camera.u();
-			const Vector3d& v = camera.v();
-
-			// Render the model.
-
-			// Project u and n into the horizontal plane (i.e. z = 0) to form uH and nH respectively.
-			// Note that the camera is prevented from ever pointing directly upwards/downwards, so
-			// renormalizing the resulting vectors isn't a problem.
-			Vector3d uH = u;	uH.z = 0;	uH.normalize();
-			Vector3d nH = n;	nH.z = 0;	nH.normalize();
-
-			// Note:	This matrix maps x -> uH, -y -> nH, z -> z, and translates by p. Since models are
-			//			built in Blender facing in the -y direction, this turns out to be exactly the
-			//			transformation required to render the models with the correct position and
-			//			orientation.
-			RBTMatrix_Ptr mat = RBTMatrix::zeros();
-			RBTMatrix& m = *mat;
-			m(0,0) = uH.x;		m(0,1) = -nH.x;		/*m(0,2) = 0;*/		m(0,3) = p.x;
-			m(1,0) = uH.y;		m(1,1) = -nH.y;		/*m(1,2) = 0;*/		m(1,3) = p.y;
-			/*m(2,0) = 0;*/		/*m(2,1) = 0;*/		m(2,2) = 1;			m(2,3) = p.z;
-
-			glPushMatrix();
-			glMultMatrixd(&m.rep()[0]);
-
-			Model_Ptr model = m_modelManager->model(entity->character_model());
-			model->render(entity->character_anim_controller());
-
-			glPopMatrix();
-
-			// Render the AABB.
-			AABB3d tAABB = aabb.translate(camera.position());
-			const Vector3d& mins = tAABB.minimum();
-			const Vector3d& maxs = tAABB.maximum();
-
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			glDisable(GL_CULL_FACE);
-			glColor3d(1,1,0);
-
-			glBegin(GL_QUADS);
-				// Front
-				glVertex3d(mins.x, mins.y, mins.z);
-				glVertex3d(maxs.x, mins.y, mins.z);
-				glVertex3d(maxs.x, mins.y, maxs.z);
-				glVertex3d(mins.x, mins.y, maxs.z);
-
-				// Right
-				glVertex3d(maxs.x, mins.y, mins.z);
-				glVertex3d(maxs.x, maxs.y, mins.z);
-				glVertex3d(maxs.x, maxs.y, maxs.z);
-				glVertex3d(maxs.x, mins.y, maxs.z);
-
-				// Back
-				glVertex3d(maxs.x, maxs.y, mins.z);
-				glVertex3d(mins.x, maxs.y, mins.z);
-				glVertex3d(mins.x, maxs.y, maxs.z);
-				glVertex3d(maxs.x, maxs.y, maxs.z);
-
-				// Left
-				glVertex3d(mins.x, maxs.y, mins.z);
-				glVertex3d(mins.x, mins.y, mins.z);
-				glVertex3d(mins.x, mins.y, maxs.z);
-				glVertex3d(mins.x, maxs.y, maxs.z);
-			glEnd();
-
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glEnable(GL_CULL_FACE);
-
-			// Render the entity camera axes.
-			Vector3d pn = p + n;
-			Vector3d pu = p + u;
-			Vector3d pv = p + v;
-			glBegin(GL_LINES);
-				glColor3d(1,0,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pn.x, pn.y, pn.z);
-				glColor3d(0,1,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pu.x, pu.y, pu.z);
-				glColor3d(0,0,1);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pv.x, pv.y, pv.z);
-			glEnd();
-		}
-	}
-
-	glPopAttrib();
-}
-
 void Level::render_navlinks() const
 {
 	int datasetCount = static_cast<int>(m_navDatasets.size());
@@ -279,6 +190,108 @@ void Level::render_navmeshes() const
 					const Vector3d& v = onionPoly->vertex(k);
 					glVertex3d(v.x, v.y, v.z);
 				}
+			glEnd();
+		}
+	}
+
+	glPopAttrib();
+}
+
+void Level::render_objects() const
+{
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+
+	std::vector<ObjectID> animatables = m_objectManager->group("Animatables");
+	int animatablesCount = static_cast<int>(animatables.size());
+	for(int i=0; i<animatablesCount; ++i)
+	{
+		const ObjectID& animatable = animatables[i];
+		if(animatable != m_objectManager->viewer())
+		{
+			// FIXME: For performance reasons, we should only be rendering entities which are potentially visible.
+			ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(animatable, cmpCollision);
+			ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(animatable, cmpOrientation);
+			ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(animatable, cmpPosition);
+			ICmpRender_Ptr cmpRender = m_objectManager->get_component(animatable, cmpRender);
+
+			const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->aabb_indices()[cmpCollision->pose()]];
+			const Vector3d& p = cmpPosition->position();
+			const Vector3d& n = cmpOrientation->nuv_axes()->n();
+			const Vector3d& u = cmpOrientation->nuv_axes()->u();
+			const Vector3d& v = cmpOrientation->nuv_axes()->v();
+
+			// Render the model.
+
+			// Project u and n into the horizontal plane (i.e. z = 0) to form uH and nH respectively.
+			// Note that the camera is prevented from ever pointing directly upwards/downwards, so
+			// renormalizing the resulting vectors isn't a problem.
+			Vector3d uH = u;	uH.z = 0;	uH.normalize();
+			Vector3d nH = n;	nH.z = 0;	nH.normalize();
+
+			// Note:	This matrix maps x -> uH, -y -> nH, z -> z, and translates by p. Since models are
+			//			built in Blender facing in the -y direction, this turns out to be exactly the
+			//			transformation required to render the models with the correct position and
+			//			orientation.
+			RBTMatrix_Ptr mat = RBTMatrix::zeros();
+			RBTMatrix& m = *mat;
+			m(0,0) = uH.x;		m(0,1) = -nH.x;		/*m(0,2) = 0;*/		m(0,3) = p.x;
+			m(1,0) = uH.y;		m(1,1) = -nH.y;		/*m(1,2) = 0;*/		m(1,3) = p.y;
+			/*m(2,0) = 0;*/		/*m(2,1) = 0;*/		m(2,2) = 1;			m(2,3) = p.z;
+
+			glPushMatrix();
+			glMultMatrixd(&m.rep()[0]);
+
+			Model_Ptr model = m_modelManager->model(cmpRender->model_name());
+			model->render(cmpRender->anim_controller());
+
+			glPopMatrix();
+
+			// Render the AABB.
+			AABB3d tAABB = aabb.translate(p);
+			const Vector3d& mins = tAABB.minimum();
+			const Vector3d& maxs = tAABB.maximum();
+
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glDisable(GL_CULL_FACE);
+			glColor3d(1,1,0);
+
+			glBegin(GL_QUADS);
+				// Front
+				glVertex3d(mins.x, mins.y, mins.z);
+				glVertex3d(maxs.x, mins.y, mins.z);
+				glVertex3d(maxs.x, mins.y, maxs.z);
+				glVertex3d(mins.x, mins.y, maxs.z);
+
+				// Right
+				glVertex3d(maxs.x, mins.y, mins.z);
+				glVertex3d(maxs.x, maxs.y, mins.z);
+				glVertex3d(maxs.x, maxs.y, maxs.z);
+				glVertex3d(maxs.x, mins.y, maxs.z);
+
+				// Back
+				glVertex3d(maxs.x, maxs.y, mins.z);
+				glVertex3d(mins.x, maxs.y, mins.z);
+				glVertex3d(mins.x, maxs.y, maxs.z);
+				glVertex3d(maxs.x, maxs.y, maxs.z);
+
+				// Left
+				glVertex3d(mins.x, maxs.y, mins.z);
+				glVertex3d(mins.x, mins.y, mins.z);
+				glVertex3d(mins.x, mins.y, maxs.z);
+				glVertex3d(mins.x, maxs.y, maxs.z);
+			glEnd();
+
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glEnable(GL_CULL_FACE);
+
+			// Render the entity camera axes.
+			Vector3d pn = p + n;
+			Vector3d pu = p + u;
+			Vector3d pv = p + v;
+			glBegin(GL_LINES);
+				glColor3d(1,0,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pn.x, pn.y, pn.z);
+				glColor3d(0,1,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pu.x, pu.y, pu.z);
+				glColor3d(0,0,1);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pv.x, pv.y, pv.z);
 			glEnd();
 		}
 	}

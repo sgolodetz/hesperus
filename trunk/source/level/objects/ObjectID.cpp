@@ -23,6 +23,11 @@ int ObjectID::value() const
 }
 
 //#################### GLOBAL OPERATORS ####################
+bool operator!=(const ObjectID& lhs, const ObjectID& rhs)
+{
+	return lhs.value() != rhs.value();
+}
+
 bool operator<(const ObjectID& lhs, const ObjectID& rhs)
 {
 	return lhs.value() < rhs.value();

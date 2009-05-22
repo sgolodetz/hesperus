@@ -9,9 +9,9 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/level/entities/EntityManager.h>
 #include <source/level/models/ModelManager.h>
 #include <source/level/nav/NavDataset.h>
+#include <source/level/objects/ObjectManager.h>
 #include <source/level/portals/OnionPortal.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/trees/BSPTree.h>
@@ -40,7 +40,7 @@ private:
 	OnionTree_Ptr m_onionTree;
 	OnionPortalVector m_onionPortals;
 	NavDatasetVector m_navDatasets;
-	EntityManager_Ptr m_entityManager;
+	ObjectManager_Ptr m_objectManager;
 	ModelManager_Ptr m_modelManager;
 
 	//#################### CONSTRUCTORS ####################
@@ -49,21 +49,21 @@ public:
 		  const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 		  const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
 		  const OnionPortalVector& onionPortals, const NavDatasetVector& navDatasets,
-		  const EntityManager_Ptr& entityManager, const ModelManager_Ptr& modelManager);
+		  const ObjectManager_Ptr& objectManager, const ModelManager_Ptr& modelManager);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const EntityManager_Ptr& entity_manager() const;
 	const std::vector<NavDataset_Ptr>& nav_datasets() const;
+	const ObjectManager_Ptr& object_manager() const;
 	const ColPolyVector& onion_polygons() const;
 	const OnionTree_Ptr& onion_tree() const;
 	void render() const;
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void render_entities() const;
 	void render_navlinks() const;
 	void render_navmeshes() const;
+	void render_objects() const;
 	void render_portals() const;
 };
 

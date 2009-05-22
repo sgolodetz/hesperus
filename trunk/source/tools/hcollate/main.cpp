@@ -17,10 +17,10 @@ using boost::lexical_cast;
 #include <source/images/PNGLoader.h>
 #include <source/io/files/DefinitionsFile.h>
 #include <source/io/files/DefinitionsSpecifierFile.h>
-#include <source/io/files/EntitiesFile.h>
 #include <source/io/files/LevelFile.h>
 #include <source/io/files/LitTreeFile.h>
 #include <source/io/files/NavFile.h>
+#include <source/level/objects/ObjectsFile.h>
 #include <source/io/files/OnionPortalsFile.h>
 #include <source/io/files/OnionTreeFile.h>
 #include <source/io/files/PortalsFile.h>
@@ -39,14 +39,14 @@ void quit_with_error(const std::string& error)
 
 void quit_with_usage()
 {
-	std::cout << "Usage: hcollate {+L <input lit tree> | -L <input tree>} <input portals> <input vis> <input onion tree> <input onion portals> <input nav data> <input definitions specifier file> <input entities> <output filename>" << std::endl;
+	std::cout << "Usage: hcollate {+L <input lit tree> | -L <input tree>} <input portals> <input vis> <input onion tree> <input onion portals> <input nav data> <input definitions specifier file> <input objects> <output filename>" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
 void collate_lit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename,
 				 const std::string& onionTreeFilename, const std::string& onionPortalsFilename,
 				 const std::string& navFilename, const std::string& definitionsSpecifierFilename,
-				 const std::string& entitiesFilename, const std::string& outputFilename)
+				 const std::string& objectsFilename, const std::string& outputFilename)
 try
 {
 	// Load the lit polygons, tree and lightmap prefix.
@@ -88,15 +88,15 @@ try
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Load the entity AABBs from the definitions file.
+	// Load the object AABBs and component property types from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
-	std::map<std::string,std::string> propertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
+	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
+	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
 
-	// Load the entities.
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, propertyTypes, baseDir);
+	// Load the objects.
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, aabbs, componentPropertyTypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_lit(outputFilename,
@@ -108,14 +108,14 @@ try
 						onionPortals,
 						navDatasets,
 						definitionsFilename,
-						entityManager);
+						objectManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 
 void collate_unlit(const std::string& treeFilename, const std::string& portalsFilename, const std::string& visFilename,
 				   const std::string& onionTreeFilename, const std::string& onionPortalsFilename,
 				   const std::string& navFilename, const std::string& definitionsSpecifierFilename,
-				   const std::string& entitiesFilename, const std::string& outputFilename)
+				   const std::string& objectsFilename, const std::string& outputFilename)
 try
 {
 	// Load the unlit polygons and tree.
@@ -147,15 +147,15 @@ try
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Load the entity AABBs from the definitions file.
+	// Load the object AABBs and component property types from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
-	std::map<std::string,std::string> propertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, propertyTypes);
+	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
+	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
 
-	// Load the entities.
-	EntityManager_Ptr entityManager = EntitiesFile::load(entitiesFilename, aabbs, propertyTypes, baseDir);
+	// Load the objects.
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, aabbs, componentPropertyTypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_unlit(outputFilename,
@@ -166,7 +166,7 @@ try
 						  onionPortals,
 						  navDatasets,
 						  definitionsFilename,
-						  entityManager);
+						  objectManager);
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
 

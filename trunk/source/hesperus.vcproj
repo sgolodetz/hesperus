@@ -206,10 +206,6 @@
 				RelativePath="..\bin\resources\settings\test-def.xml"
 				>
 			</File>
-			<File
-				RelativePath="..\bin\resources\settings\testex-def.xml"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

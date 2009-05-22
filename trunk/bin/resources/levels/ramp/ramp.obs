@@ -16,7 +16,7 @@ Objects
 		Physics;
 		Position
 		{
-			Position = ( 6 24 6 )
+			Position = ( 7 10 5 )
 		}
 		Render
 		{
@@ -32,10 +32,6 @@ Objects
 			Pose = 0
 		}
 		MeshMovement;
-		MinimusScriptYoke
-		{
-			Script = guard-ai
-		}
 		Orientation
 		{
 			Look = ( -1 0 0 )
@@ -43,7 +39,7 @@ Objects
 		Physics;
 		Position
 		{
-			Position = ( 20 20 6 )
+			Position = ( 20 15 9 )
 		}
 		Render
 		{

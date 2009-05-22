@@ -17,8 +17,12 @@
 #include <source/gui/Screen.h>
 #include <source/io/files/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
-#include <source/level/entities/MovementFunctions.h>
 #include <source/level/LevelViewer.h>
+#include <source/level/objects/ICmpPhysics.h>
+#include <source/level/objects/ICmpRender.h>
+#include <source/level/objects/ICmpYoke.h>
+#include <source/level/objects/MoveFunctions.h>
+#include <source/level/objects/ObjectCommand.h>
 namespace bf = boost::filesystem;
 
 namespace hesp {
@@ -55,7 +59,7 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 		else grab_input();
 	}
 
-	do_entities(milliseconds, input);
+	do_objects(milliseconds, input);
 	do_physics(milliseconds);
 	do_animations(milliseconds);
 
@@ -84,62 +88,59 @@ Component_Ptr GameState_Level::construct_display()
 void GameState_Level::do_animations(int milliseconds)
 {
 	// Update the model animations.
-	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<Entity_Ptr>& animatables = entityManager->group("Animatables");
-	int animatableCount = static_cast<int>(animatables.size());
-	for(int i=0; i<animatableCount; ++i)
+	const ObjectManager_Ptr& objectManager = m_level->object_manager();
+	std::vector<ObjectID> animatables = objectManager->group("Animatables");
+	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
-		animatables[i]->character_anim_controller()->update(milliseconds);
+		ICmpRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		cmpRender->anim_controller()->update(milliseconds);
 	}
 }
 
-void GameState_Level::do_entities(int milliseconds, UserInput& input)
+void GameState_Level::do_objects(int milliseconds, UserInput& input)
 {
-	// Step 1:	Generate the desired entity commands for the yokeable entities and add them to the queue.
-	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<Entity_Ptr>& yokeables = entityManager->group("Yokeables");
+	// Step 1:	Generate the desired object commands for the yokeable objects and add them to the queue.
+	const ObjectManager_Ptr& objectManager = m_level->object_manager();
+	std::vector<ObjectID> yokeables = objectManager->group("Yokeables");
 
-	std::list<EntityCommand_Ptr> cmdQueue;	// implement the queue as a list so that we can use back_inserter below
+	std::list<ObjectCommand_Ptr> cmdQueue;	// implement the queue as a list so that we can use back_inserter below
 
-	int yokeableCount = static_cast<int>(yokeables.size());
-	for(int i=0; i<yokeableCount; ++i)
+	for(size_t i=0, size=yokeables.size(); i<size; ++i)
 	{
-		const Yoke_Ptr& yoke = yokeables[i]->yoke();
-		if(yoke)
-		{
-			// Use the entity's yoke to generate entity commands.
-			std::vector<EntityCommand_Ptr> commands = yoke->generate_commands(input, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets());
+		ICmpYoke_Ptr cmpYoke = objectManager->get_component(yokeables[i], cmpYoke);
+		
+		// Use the object's yoke component to generate object commands.
+		std::vector<ObjectCommand_Ptr> commands = cmpYoke->generate_commands(input, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets());
 
-			// Append the entity commands to the queue.
-			std::copy(commands.begin(), commands.end(), std::back_inserter(cmdQueue));
-		}
+		// Append the object commands to the queue.
+		std::copy(commands.begin(), commands.end(), std::back_inserter(cmdQueue));
 	}
 
-	// Step 2:	Execute the entity commands.
-	for(std::list<EntityCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
+	// Step 2:	Execute the object commands.
+	for(std::list<ObjectCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
 	{
-		(*it)->execute(entityManager->aabbs(), m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
+		(*it)->execute(objectManager, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
 	}
 }
 
 void GameState_Level::do_physics(int milliseconds)
 {
-	// Apply gravity to simulable entities (i.e. those which have a physics component).
+	// Apply gravity to simulable objects (i.e. those which have a physics component).
 
 	// FIXME: Gravity strength should eventually be a level property.
 	const double GRAVITY_STRENGTH = 9.81;	// strength of gravity in Newtons
 
-	const EntityManager_Ptr& entityManager = m_level->entity_manager();
-	const std::vector<Entity_Ptr>& simulables = entityManager->group("Simulables");
-	int simulableCount = static_cast<int>(simulables.size());
-	for(int i=0; i<simulableCount; ++i)
+	const ObjectManager_Ptr& objectManager = m_level->object_manager();
+	std::vector<ObjectID> simulables = objectManager->group("Simulables");
+	for(size_t i=0, size=simulables.size(); i<size; ++i)
 	{
-		Vector3d velocity = simulables[i]->velocity();
-		simulables[i]->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
-		if(MovementFunctions::single_move_without_navmesh(simulables[i], simulables[i]->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
+		ICmpPhysics_Ptr cmpPhysics = objectManager->get_component(simulables[i], cmpPhysics);
+		Vector3d velocity = cmpPhysics->velocity();
+		cmpPhysics->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
+		if(MoveFunctions::single_move_without_navmesh(simulables[i], objectManager, cmpPhysics->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
 		{
 			// A collision occurred, so set the velocity back to zero.
-			simulables[i]->set_velocity(Vector3d(0,0,0));
+			cmpPhysics->set_velocity(Vector3d(0,0,0));
 		}
 	}
 }
