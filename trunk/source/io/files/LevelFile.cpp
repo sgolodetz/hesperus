@@ -169,7 +169,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
 	objectManager = ObjectsSection::load(is, aabbs, componentPropertyTypes, baseDir);
 
 	// Load the models.
@@ -237,7 +237,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
 	objectManager = ObjectsSection::load(is, aabbs, componentPropertyTypes, baseDir);
 
 	// Load the models.

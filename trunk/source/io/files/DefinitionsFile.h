@@ -19,12 +19,8 @@ class DefinitionsFile
 {
 	//#################### LOADING METHODS ####################
 public:
-	static void load(const std::string& filename, std::vector<AABB3d>& entityAABBs, std::map<std::string,std::string>& entityPropertyTypes);
+	static void load(const std::string& filename, std::vector<AABB3d>& aabbs, std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
 	static std::vector<AABB3d> load_aabbs_only(const std::string& filename);
-
-#if 1
-	static void load_ex(const std::string& filename, std::vector<AABB3d>& aabbs, std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
-#endif
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:

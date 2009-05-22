@@ -93,7 +93,7 @@ try
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
 
 	// Load the objects.
 	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, aabbs, componentPropertyTypes, baseDir);
@@ -152,7 +152,7 @@ try
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	std::vector<AABB3d> aabbs;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load_ex((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
 
 	// Load the objects.
 	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, aabbs, componentPropertyTypes, baseDir);
