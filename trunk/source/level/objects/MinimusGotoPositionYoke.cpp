@@ -1,9 +1,9 @@
 /***
- * hesperus: YokeMinimusGotoPosition.cpp
+ * hesperus: MinimusGotoPositionYoke.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "YokeMinimusGotoPosition.h"
+#include "MinimusGotoPositionYoke.h"
 
 #include <source/level/nav/GlobalPathfinder.h>
 #include "CmdBipedMove.h"
@@ -15,12 +15,12 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-YokeMinimusGotoPosition::YokeMinimusGotoPosition(const ObjectID& objectID, ObjectManager *objectManager, const Vector3d& dest)
+MinimusGotoPositionYoke::MinimusGotoPositionYoke(const ObjectID& objectID, ObjectManager *objectManager, const Vector3d& dest)
 :	m_objectID(objectID), m_objectManager(objectManager), m_dest(dest)
 {}
 
 	//#################### PUBLIC METHODS ####################
-std::vector<ObjectCommand_Ptr> YokeMinimusGotoPosition::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
+std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
 																		  const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	// Check to make sure the yoke's still active.

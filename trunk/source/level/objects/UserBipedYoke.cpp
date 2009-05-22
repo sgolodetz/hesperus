@@ -1,9 +1,9 @@
 /***
- * hesperus: YokeUserBiped.cpp
+ * hesperus: UserBipedYoke.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "YokeUserBiped.h"
+#include "UserBipedYoke.h"
 
 #include <source/math/Constants.h>
 #include "CmdBipedChangePose.h"
@@ -16,12 +16,12 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-YokeUserBiped::YokeUserBiped(const ObjectID& objectID, ObjectManager *objectManager)
+UserBipedYoke::UserBipedYoke(const ObjectID& objectID, ObjectManager *objectManager)
 :	m_objectID(objectID), m_objectManager(objectManager)
 {}
 
 //#################### PUBLIC METHODS ####################
-std::vector<ObjectCommand_Ptr> YokeUserBiped::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 																const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	// FIXME: The key mappings should be defined externally, not hard-coded like this.

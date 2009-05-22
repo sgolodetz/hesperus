@@ -23,7 +23,7 @@ namespace bf = boost::filesystem;
 #include "CmpPosition.h"
 #include "CmpRender.h"
 #include "CmpUserBipedYoke.h"
-#include "YokeMinimusScript.h"
+#include "MinimusScriptYoke.h"
 
 namespace hesp {
 
@@ -34,7 +34,7 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const std::vector<AABB3
 {
 	// Set up the shared scripting engine.
 	ASXEngine_Ptr aiEngine(new ASXEngine);
-	YokeMinimusScript::register_for_scripting(aiEngine);
+	MinimusScriptYoke::register_for_scripting(aiEngine);
 
 	ObjectManager_Ptr objectManager(new ObjectManager(aabbs, componentPropertyTypes));
 

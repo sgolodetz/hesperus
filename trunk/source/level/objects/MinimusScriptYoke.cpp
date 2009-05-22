@@ -1,21 +1,21 @@
 /***
- * hesperus: YokeMinimusScript.cpp
+ * hesperus: MinimusScriptYoke.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "YokeMinimusScript.h"
+#include "MinimusScriptYoke.h"
 
 #include <iostream>
 
 #include <source/io/util/DirectoryFinder.h>
 #include "ICmpRender.h"
-#include "YokeMinimusGotoPosition.h"
+#include "MinimusGotoPositionYoke.h"
 namespace bf = boost::filesystem;
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-YokeMinimusScript::YokeMinimusScript(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine,
+MinimusScriptYoke::MinimusScriptYoke(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine,
 									 const bf::path& baseDir)
 :	m_objectID(objectID), m_objectManager(objectManager), m_engine(engine), m_initialised(false)
 {
@@ -33,25 +33,25 @@ YokeMinimusScript::YokeMinimusScript(const ObjectID& objectID, ObjectManager *ob
 }
 
 //#################### PUBLIC METHODS ####################
-void YokeMinimusScript::add_ref()
+void MinimusScriptYoke::add_ref()
 {
 	++m_refCount;
 }
 
-std::vector<ObjectCommand_Ptr> YokeMinimusScript::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
+std::vector<ObjectCommand_Ptr> MinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
 																	const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	if(!m_initialised)
 	{
 		// Run the script init method.
-		ASXFunction<void(YokeMinimusScript*)> init = m_module->get_global_function("init", init);
+		ASXFunction<void(MinimusScriptYoke*)> init = m_module->get_global_function("init", init);
 		init(this);
 
 		m_initialised = true;
 	}
 
 	// Run the script process method.
-	ASXFunction<void(YokeMinimusScript*)> process = m_module->get_global_function("process", process);
+	ASXFunction<void(MinimusScriptYoke*)> process = m_module->get_global_function("process", process);
 	process(this);
 
 	if(m_subyoke && m_subyoke->state() == YOKE_ACTIVE)
@@ -61,9 +61,9 @@ std::vector<ObjectCommand_Ptr> YokeMinimusScript::generate_commands(UserInput& i
 	else return std::vector<ObjectCommand_Ptr>();
 }
 
-void YokeMinimusScript::register_for_scripting(const ASXEngine_Ptr& engine)
+void MinimusScriptYoke::register_for_scripting(const ASXEngine_Ptr& engine)
 {
-	engine->register_uninstantiable_ref_type<YokeMinimusScript>();
+	engine->register_uninstantiable_ref_type<MinimusScriptYoke>();
 	engine->register_object_method(&clear_subyoke, "clear_subyoke");
 	engine->register_object_method(&goto_position, "goto_position");
 	engine->register_object_method(&request_animation, "request_animation");
@@ -71,41 +71,41 @@ void YokeMinimusScript::register_for_scripting(const ASXEngine_Ptr& engine)
 	engine->register_object_method(&subyoke_exists, "subyoke_exists");
 }
 
-void YokeMinimusScript::release()
+void MinimusScriptYoke::release()
 {
 	if(--m_refCount == 0) delete this;
 }
 
-std::string YokeMinimusScript::type_string()
+std::string MinimusScriptYoke::type_string()
 {
-	// Note: This is the name that will be used to refer to YokeMinimusScript within scripts.
+	// Note: This is the name that will be used to refer to MinimusScriptYoke within scripts.
 	return "ScriptYoke";
 }
 
 //#################### SCRIPT INTERFACE ####################
-void YokeMinimusScript::clear_subyoke()
+void MinimusScriptYoke::clear_subyoke()
 {
 	m_subyoke.reset();
 }
 
-void YokeMinimusScript::goto_position(double x, double y, double z)
+void MinimusScriptYoke::goto_position(double x, double y, double z)
 {
-	m_subyoke.reset(new YokeMinimusGotoPosition(m_objectID, m_objectManager, Vector3d(x,y,z)));
+	m_subyoke.reset(new MinimusGotoPositionYoke(m_objectID, m_objectManager, Vector3d(x,y,z)));
 }
 
-void YokeMinimusScript::request_animation(const std::string& name)
+void MinimusScriptYoke::request_animation(const std::string& name)
 {
 	ICmpRender_Ptr cmpRender = m_objectManager->get_component(m_objectID, cmpRender);
 	AnimationController_Ptr animController = cmpRender->anim_controller();
 	animController->request_animation(name);
 }
 
-bool YokeMinimusScript::subyoke_active() const
+bool MinimusScriptYoke::subyoke_active() const
 {
 	return subyoke_exists() && m_subyoke->state() == YOKE_ACTIVE;
 }
 
-bool YokeMinimusScript::subyoke_exists() const
+bool MinimusScriptYoke::subyoke_exists() const
 {
 	return m_subyoke != NULL;
 }

@@ -1,10 +1,10 @@
 /***
- * hesperus: YokeMinimusScript.h
+ * hesperus: MinimusScriptYoke.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_YOKEMINIMUSSCRIPT
-#define H_HESP_YOKEMINIMUSSCRIPT
+#ifndef H_HESP_MINIMUSSCRIPTYOKE
+#define H_HESP_MINIMUSSCRIPTYOKE
 
 #include <boost/filesystem/operations.hpp>
 
@@ -15,7 +15,7 @@
 
 namespace hesp {
 
-class YokeMinimusScript : public IYoke, public ASXRefType<YokeMinimusScript>
+class MinimusScriptYoke : public IYoke, public ASXRefType<MinimusScriptYoke>
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -30,7 +30,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	YokeMinimusScript(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine, const boost::filesystem::path& baseDir);
+	MinimusScriptYoke(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine, const boost::filesystem::path& baseDir);
 
 	//#################### PUBLIC METHODS ####################
 public:

@@ -1437,15 +1437,15 @@
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\YokeMinimusGotoPosition.cpp"
+							RelativePath="..\level\objects\MinimusGotoPositionYoke.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\YokeMinimusScript.cpp"
+							RelativePath="..\level\objects\MinimusScriptYoke.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\YokeUserBiped.cpp"
+							RelativePath="..\level\objects\UserBipedYoke.cpp"
 							>
 						</File>
 					</Filter>
@@ -1457,15 +1457,15 @@
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\YokeMinimusGotoPosition.h"
+							RelativePath="..\level\objects\MinimusGotoPositionYoke.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\YokeMinimusScript.h"
+							RelativePath="..\level\objects\MinimusScriptYoke.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\YokeUserBiped.h"
+							RelativePath="..\level\objects\UserBipedYoke.h"
 							>
 						</File>
 					</Filter>
