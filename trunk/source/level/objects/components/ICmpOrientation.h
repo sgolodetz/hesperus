@@ -6,8 +6,8 @@
 #ifndef H_HESP_ICMPORIENTATION
 #define H_HESP_ICMPORIENTATION
 
-#include "IComponent.h"
-#include "NUVAxes.h"
+#include <source/level/objects/NUVAxes.h>
+#include <source/level/objects/base/IComponent.h>
 
 namespace hesp {
 

@@ -8,8 +8,8 @@
 
 #include <list>
 
+#include <source/level/objects/base/IComponent.h>
 #include <source/level/trees/OnionUtil.h>
-#include "IComponent.h"
 
 namespace hesp {
 

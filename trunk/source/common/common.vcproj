@@ -1158,19 +1158,15 @@
 					Name=".cpp"
 					>
 					<File
-						RelativePath="..\level\objects\IDAllocator.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\level\objects\MoveFunctions.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\level\objects\ObjectID.cpp"
+						RelativePath="..\level\objects\NUVAxes.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\level\objects\ObjectManager.cpp"
+						RelativePath="..\level\objects\VerticallyConstrainedNUVAxes.cpp"
 						>
 					</File>
 				</Filter>
@@ -1178,74 +1174,38 @@
 					Name=".h"
 					>
 					<File
-						RelativePath="..\level\objects\IDAllocator.h"
-						>
-					</File>
-					<File
 						RelativePath="..\level\objects\MoveFunctions.h"
 						>
 					</File>
 					<File
-						RelativePath="..\level\objects\ObjectID.h"
+						RelativePath="..\level\objects\NUVAxes.h"
 						>
 					</File>
 					<File
-						RelativePath="..\level\objects\ObjectManager.h"
+						RelativePath="..\level\objects\VerticallyConstrainedNUVAxes.h"
 						>
 					</File>
 				</Filter>
 				<Filter
-					Name=".tpp"
-					>
-					<File
-						RelativePath="..\level\objects\ObjectManager.tpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="&lt;components&gt;"
+					Name="base"
 					>
 					<Filter
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\CmpCollision.cpp"
+							RelativePath="..\level\objects\base\IComponent.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpDirectMovement.cpp"
+							RelativePath="..\level\objects\base\IDAllocator.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpMeshMovement.cpp"
+							RelativePath="..\level\objects\base\ObjectID.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpMinimusScriptYoke.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\CmpOrientation.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\CmpPhysics.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\CmpPosition.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\CmpRender.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\CmpUserBipedYoke.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\IComponent.cpp"
+							RelativePath="..\level\objects\base\ObjectManager.cpp"
 							>
 						</File>
 					</Filter>
@@ -1253,87 +1213,67 @@
 						Name=".h"
 						>
 						<File
-							RelativePath="..\level\objects\CmpCollision.h"
+							RelativePath="..\level\objects\base\IComponent.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpDirectMovement.h"
+							RelativePath="..\level\objects\base\IDAllocator.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpMeshMovement.h"
+							RelativePath="..\level\objects\base\IYoke.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpMinimusScriptYoke.h"
+							RelativePath="..\level\objects\base\Message.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpOrientation.h"
+							RelativePath="..\level\objects\base\MessageHandler.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpPhysics.h"
+							RelativePath="..\level\objects\base\ObjectCommand.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpPosition.h"
+							RelativePath="..\level\objects\base\ObjectID.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmpRender.h"
+							RelativePath="..\level\objects\base\ObjectManager.h"
 							>
 						</File>
+					</Filter>
+					<Filter
+						Name=".tpp"
+						>
 						<File
-							RelativePath="..\level\objects\CmpUserBipedYoke.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpCollision.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpDirectMovement.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpMeshMovement.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpOrientation.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpPhysics.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpPosition.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpRender.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\ICmpYoke.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\IComponent.h"
+							RelativePath="..\level\objects\base\ObjectManager.tpp"
 							>
 						</File>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="&lt;messages&gt;"
+					Name="commands"
 					>
 					<Filter
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\MsgObjectDestroyed.cpp"
+							RelativePath="..\level\objects\commands\CmdBipedChangePose.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdBipedJump.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdBipedMove.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdBipedTurn.cpp"
 							>
 						</File>
 					</Filter>
@@ -1341,39 +1281,63 @@
 						Name=".h"
 						>
 						<File
-							RelativePath="..\level\objects\Message.h"
+							RelativePath="..\level\objects\commands\CmdBipedChangePose.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\MessageHandler.h"
+							RelativePath="..\level\objects\commands\CmdBipedJump.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\MsgObjectDestroyed.h"
+							RelativePath="..\level\objects\commands\CmdBipedMove.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdBipedTurn.h"
 							>
 						</File>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="&lt;commands&gt;"
+					Name="components"
 					>
 					<Filter
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\CmdBipedChangePose.cpp"
+							RelativePath="..\level\objects\components\CmpCollision.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmdBipedJump.cpp"
+							RelativePath="..\level\objects\components\CmpDirectMovement.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmdBipedMove.cpp"
+							RelativePath="..\level\objects\components\CmpMeshMovement.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmdBipedTurn.cpp"
+							RelativePath="..\level\objects\components\CmpMinimusScriptYoke.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpOrientation.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpPhysics.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpPosition.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpRender.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpUserBipedYoke.cpp"
 							>
 						</File>
 					</Filter>
@@ -1381,39 +1345,83 @@
 						Name=".h"
 						>
 						<File
-							RelativePath="..\level\objects\CmdBipedChangePose.h"
+							RelativePath="..\level\objects\components\CmpCollision.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmdBipedJump.h"
+							RelativePath="..\level\objects\components\CmpDirectMovement.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmdBipedMove.h"
+							RelativePath="..\level\objects\components\CmpMeshMovement.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\CmdBipedTurn.h"
+							RelativePath="..\level\objects\components\CmpMinimusScriptYoke.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\ObjectCommand.h"
+							RelativePath="..\level\objects\components\CmpOrientation.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpPhysics.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpPosition.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpRender.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\CmpUserBipedYoke.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpCollision.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpDirectMovement.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpMeshMovement.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpOrientation.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpPhysics.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpPosition.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpRender.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpYoke.h"
 							>
 						</File>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="&lt;axes&gt;"
+					Name="messages"
 					>
 					<Filter
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\NUVAxes.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\VerticallyConstrainedNUVAxes.cpp"
+							RelativePath="..\level\objects\messages\MsgObjectDestroyed.cpp"
 							>
 						</File>
 					</Filter>
@@ -1421,53 +1429,61 @@
 						Name=".h"
 						>
 						<File
-							RelativePath="..\level\objects\NUVAxes.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\VerticallyConstrainedNUVAxes.h"
+							RelativePath="..\level\objects\messages\MsgObjectDestroyed.h"
 							>
 						</File>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="&lt;yokes&gt;"
+					Name="yokes"
 					>
 					<Filter
-						Name=".cpp"
+						Name="minimus"
 						>
-						<File
-							RelativePath="..\level\objects\MinimusGotoPositionYoke.cpp"
+						<Filter
+							Name=".cpp"
 							>
-						</File>
-						<File
-							RelativePath="..\level\objects\MinimusScriptYoke.cpp"
+							<File
+								RelativePath="..\level\objects\yokes\minimus\MinimusGotoPositionYoke.cpp"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\yokes\minimus\MinimusScriptYoke.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
 							>
-						</File>
-						<File
-							RelativePath="..\level\objects\UserBipedYoke.cpp"
-							>
-						</File>
+							<File
+								RelativePath="..\level\objects\yokes\minimus\MinimusGotoPositionYoke.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\yokes\minimus\MinimusScriptYoke.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
-						Name=".h"
+						Name="user"
 						>
-						<File
-							RelativePath="..\level\objects\IYoke.h"
+						<Filter
+							Name=".cpp"
 							>
-						</File>
-						<File
-							RelativePath="..\level\objects\MinimusGotoPositionYoke.h"
+							<File
+								RelativePath="..\level\objects\yokes\user\UserBipedYoke.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
 							>
-						</File>
-						<File
-							RelativePath="..\level\objects\MinimusScriptYoke.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\UserBipedYoke.h"
-							>
-						</File>
+							<File
+								RelativePath="..\level\objects\yokes\user\UserBipedYoke.h"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 			</Filter>

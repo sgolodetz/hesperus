@@ -8,7 +8,7 @@
 
 #include <boost/filesystem/operations.hpp>
 
-#include <source/level/objects/ObjectManager.h>
+#include <source/level/objects/base/ObjectManager.h>
 
 namespace hesp {
 

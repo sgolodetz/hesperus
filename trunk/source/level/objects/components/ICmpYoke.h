@@ -6,8 +6,8 @@
 #ifndef H_HESP_ICMPYOKE
 #define H_HESP_ICMPYOKE
 
-#include "IComponent.h"
-#include "IYoke.h"
+#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/IYoke.h>
 
 namespace hesp {
 

@@ -6,8 +6,8 @@
 #ifndef H_HESP_ICMPPOSITION
 #define H_HESP_ICMPPOSITION
 
+#include <source/level/objects/base/IComponent.h>
 #include <source/math/vectors/Vector3.h>
-#include "IComponent.h"
 
 namespace hesp {
 

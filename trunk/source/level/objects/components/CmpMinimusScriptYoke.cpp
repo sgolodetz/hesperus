@@ -5,7 +5,7 @@
 
 #include "CmpMinimusScriptYoke.h"
 
-#include "MinimusScriptYoke.h"
+#include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
 namespace bf = boost::filesystem;
 
 namespace hesp {

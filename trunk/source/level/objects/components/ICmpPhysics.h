@@ -6,8 +6,8 @@
 #ifndef H_HESP_ICMPPHYSICS
 #define H_HESP_ICMPPHYSICS
 
+#include <source/level/objects/base/IComponent.h>
 #include <source/math/vectors/Vector3.h>
-#include "IComponent.h"
 
 namespace hesp {
 

@@ -5,7 +5,7 @@
 
 #include "CmdBipedTurn.h"
 
-#include "ICmpOrientation.h"
+#include <source/level/objects/components/ICmpOrientation.h>
 
 namespace hesp {
 

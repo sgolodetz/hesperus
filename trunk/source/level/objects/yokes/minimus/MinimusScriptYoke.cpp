@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include <source/io/util/DirectoryFinder.h>
-#include "ICmpRender.h"
+#include <source/level/objects/components/ICmpRender.h>
 #include "MinimusGotoPositionYoke.h"
 namespace bf = boost::filesystem;
 

@@ -5,7 +5,7 @@
 
 #include "CmpOrientation.h"
 
-#include "VerticallyConstrainedNUVAxes.h"
+#include <source/level/objects/VerticallyConstrainedNUVAxes.h>
 
 namespace hesp {
 

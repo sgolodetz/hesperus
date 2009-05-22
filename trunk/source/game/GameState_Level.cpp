@@ -18,11 +18,11 @@
 #include <source/io/files/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/LevelViewer.h>
-#include <source/level/objects/ICmpPhysics.h>
-#include <source/level/objects/ICmpRender.h>
-#include <source/level/objects/ICmpYoke.h>
+#include <source/level/objects/base/ObjectCommand.h>
+#include <source/level/objects/components/ICmpPhysics.h>
+#include <source/level/objects/components/ICmpRender.h>
+#include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/MoveFunctions.h>
-#include <source/level/objects/ObjectCommand.h>
 namespace bf = boost::filesystem;
 
 namespace hesp {

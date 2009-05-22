@@ -5,9 +5,9 @@
 
 #include "CmdBipedJump.h"
 
-#include "ICmpCollision.h"
-#include "ICmpPhysics.h"
-#include "MoveFunctions.h"
+#include <source/level/objects/MoveFunctions.h>
+#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpPhysics.h>
 
 namespace hesp {
 

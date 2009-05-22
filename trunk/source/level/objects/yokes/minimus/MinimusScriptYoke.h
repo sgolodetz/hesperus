@@ -11,7 +11,7 @@
 #include <ASXEngine.h>
 #include <ASXRefType.h>
 
-#include "IYoke.h"
+#include <source/level/objects/base/IYoke.h>
 
 namespace hesp {
 

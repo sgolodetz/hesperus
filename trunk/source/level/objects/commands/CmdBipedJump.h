@@ -6,7 +6,7 @@
 #ifndef H_HESP_CMDBIPEDJUMP
 #define H_HESP_CMDBIPEDJUMP
 
-#include "ObjectCommand.h"
+#include <source/level/objects/base/ObjectCommand.h>
 
 namespace hesp {
 

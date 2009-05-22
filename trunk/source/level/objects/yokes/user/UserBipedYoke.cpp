@@ -5,13 +5,13 @@
 
 #include "UserBipedYoke.h"
 
+#include <source/level/objects/commands/CmdBipedChangePose.h>
+#include <source/level/objects/commands/CmdBipedJump.h>
+#include <source/level/objects/commands/CmdBipedMove.h>
+#include <source/level/objects/commands/CmdBipedTurn.h>
+#include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpOrientation.h>
 #include <source/math/Constants.h>
-#include "CmdBipedChangePose.h"
-#include "CmdBipedJump.h"
-#include "CmdBipedMove.h"
-#include "CmdBipedTurn.h"
-#include "ICmpMeshMovement.h"
-#include "ICmpOrientation.h"
 
 namespace hesp {
 

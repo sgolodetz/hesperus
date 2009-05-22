@@ -6,8 +6,8 @@
 #ifndef H_HESP_MSGOBJECTDESTROYED
 #define H_HESP_MSGOBJECTDESTROYED
 
-#include "Message.h"
-#include "ObjectID.h"
+#include <source/level/objects/base/Message.h>
+#include <source/level/objects/base/ObjectID.h>
 
 namespace hesp {
 

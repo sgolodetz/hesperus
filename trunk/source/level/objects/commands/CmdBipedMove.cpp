@@ -5,7 +5,7 @@
 
 #include "CmdBipedMove.h"
 
-#include "MoveFunctions.h"
+#include <source/level/objects/MoveFunctions.h>
 
 namespace hesp {
 

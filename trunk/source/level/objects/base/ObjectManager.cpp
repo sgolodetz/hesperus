@@ -5,10 +5,10 @@
 
 #include "ObjectManager.h"
 
-#include "ICmpPhysics.h"
-#include "ICmpRender.h"
-#include "ICmpYoke.h"
-#include "MsgObjectDestroyed.h"
+#include <source/level/objects/components/ICmpPhysics.h>
+#include <source/level/objects/components/ICmpRender.h>
+#include <source/level/objects/components/ICmpYoke.h>
+#include <source/level/objects/messages/MsgObjectDestroyed.h>
 
 namespace hesp {
 

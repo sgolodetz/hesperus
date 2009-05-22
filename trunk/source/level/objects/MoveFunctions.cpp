@@ -7,11 +7,11 @@
 
 #include <iostream>
 
+#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/trees/TreeUtil.h>
 #include <source/math/geom/GeomUtil.h>
-#include "ICmpCollision.h"
-#include "ICmpMeshMovement.h"
-#include "ICmpPosition.h"
 
 namespace hesp {
 

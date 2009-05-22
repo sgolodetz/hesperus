@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "IComponent.h"
+#include <source/level/objects/base/IComponent.h>
 
 namespace hesp {
 

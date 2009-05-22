@@ -11,7 +11,7 @@ using boost::shared_ptr;
 
 #include <source/level/models/ModelManager.h>
 #include <source/level/nav/NavDataset.h>
-#include <source/level/objects/ObjectManager.h>
+#include <source/level/objects/base/ObjectManager.h>
 #include <source/level/portals/OnionPortal.h>
 #include <source/level/portals/Portal.h>
 #include <source/level/trees/BSPTree.h>

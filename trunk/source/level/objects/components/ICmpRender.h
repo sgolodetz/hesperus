@@ -7,7 +7,7 @@
 #define H_HESP_ICMPRENDER
 
 #include <source/level/models/AnimationController.h>
-#include "IComponent.h"
+#include <source/level/objects/base/IComponent.h>
 
 namespace hesp {
 

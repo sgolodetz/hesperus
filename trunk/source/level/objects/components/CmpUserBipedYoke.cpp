@@ -5,7 +5,7 @@
 
 #include "CmpUserBipedYoke.h"
 
-#include "UserBipedYoke.h"
+#include <source/level/objects/yokes/user/UserBipedYoke.h>
 
 namespace hesp {
 

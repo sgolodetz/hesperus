@@ -7,9 +7,9 @@
 #define H_HESP_MOVEFUNCTIONS
 
 #include <source/level/nav/NavDataset.h>
+#include <source/level/objects/base/ObjectManager.h>
 #include <source/level/trees/OnionTree.h>
 #include <source/math/vectors/Vector3.h>
-#include "ObjectManager.h"
 
 namespace hesp {
 

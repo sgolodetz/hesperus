@@ -6,11 +6,11 @@
 #include "MinimusGotoPositionYoke.h"
 
 #include <source/level/nav/GlobalPathfinder.h>
-#include "CmdBipedMove.h"
-#include "ICmpCollision.h"
-#include "ICmpMeshMovement.h"
-#include "ICmpPosition.h"
-#include "MoveFunctions.h"
+#include <source/level/objects/MoveFunctions.h>
+#include <source/level/objects/commands/CmdBipedMove.h>
+#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpPosition.h>
 
 namespace hesp {
 
