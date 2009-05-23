@@ -14,7 +14,7 @@ class ICmpCollectible : public IComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	// TODO
+	virtual void collected_by(const ObjectID& collector) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

@@ -38,7 +38,7 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 
 	if(!m_path)
 	{
-		int mapIndex = cmpCollision->aabb_indices()[cmpCollision->pose()];
+		int mapIndex = cmpCollision->cur_aabb_index();
 		NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 		GlobalPathfinder pathfinder(navMesh, navDatasets[mapIndex]->adjacency_list(), navDatasets[mapIndex]->path_table());
 

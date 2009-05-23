@@ -17,6 +17,7 @@ class ICmpCollision : public IComponent
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual const std::vector<int>& aabb_indices() const = 0;
+	virtual int cur_aabb_index() const = 0;
 	virtual int pose() const = 0;
 	virtual void set_pose(int pose) = 0;
 

@@ -24,6 +24,11 @@ const std::vector<int>& CmpCollision::aabb_indices() const
 	return m_aabbIndices;
 }
 
+int CmpCollision::cur_aabb_index() const
+{
+	return m_aabbIndices[m_pose];
+}
+
 int CmpCollision::pose() const
 {
 	return m_pose;

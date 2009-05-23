@@ -109,7 +109,7 @@ void MoveFunctions::move_with_navmesh(const ObjectID& objectID, const ObjectMana
 
 	Move move;
 	move.dir = dir;
-	move.mapIndex = cmpCollision->aabb_indices()[cmpCollision->pose()];
+	move.mapIndex = cmpCollision->cur_aabb_index();
 	move.timeRemaining = milliseconds / 1000.0;
 
 	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
@@ -143,7 +143,7 @@ bool MoveFunctions::single_move_without_navmesh(const ObjectID& objectID, const 
 
 	Move move;
 	move.dir = dir;
-	move.mapIndex = cmpCollision->aabb_indices()[cmpCollision->pose()];
+	move.mapIndex = cmpCollision->cur_aabb_index();
 	move.timeRemaining = milliseconds / 1000.0;
 
 	return do_direct_move(objectID, objectManager, move, speed, tree);

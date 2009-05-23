@@ -238,7 +238,7 @@ void Level::render_objects() const
 			if(cmpCollision)
 			{
 				// Render the AABB.
-				const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->aabb_indices()[cmpCollision->pose()]];
+				const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->cur_aabb_index()];
 				AABB3d tAABB = aabb.translate(p);
 				const Vector3d& mins = tAABB.minimum();
 				const Vector3d& maxs = tAABB.maximum();

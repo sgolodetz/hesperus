@@ -23,7 +23,7 @@ void CmdBipedJump::execute(const ObjectManager_Ptr& objectManager, const std::ve
 	ICmpCollision_Ptr cmpCollision = objectManager->get_component(m_objectID, cmpCollision);	assert(cmpCollision != NULL);
 	ICmpPhysics_Ptr cmpPhysics = objectManager->get_component(m_objectID, cmpPhysics);			assert(cmpPhysics != NULL);
 
-	int mapIndex = cmpCollision->aabb_indices()[cmpCollision->pose()];
+	int mapIndex = cmpCollision->cur_aabb_index();
 	NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 
 	if(MoveFunctions::attempt_navmesh_acquisition(m_objectID, objectManager, polygons, tree, navMesh))

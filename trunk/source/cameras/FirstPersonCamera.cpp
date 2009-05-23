@@ -35,7 +35,7 @@ Vector3d FirstPersonCamera::set_view() const
 	const Vector3d& look = cmpOrientation->nuv_axes()->n();
 
 	// Calculate the viewer's eye position and where they're looking at.
-	const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->aabb_indices()[cmpCollision->pose()]];
+	const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->cur_aabb_index()];
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 

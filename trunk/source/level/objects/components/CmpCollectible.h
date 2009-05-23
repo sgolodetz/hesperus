@@ -26,6 +26,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void check_dependencies() const;
+	void collected_by(const ObjectID& collector);
 	std::pair<std::string,Properties> save() const;
 };
 
