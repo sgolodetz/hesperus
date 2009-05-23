@@ -1,25 +1,24 @@
 /***
- * hesperus: CmpRender.h
+ * hesperus: CmpCollectible.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMPRENDER
-#define H_HESP_CMPRENDER
+#ifndef H_HESP_CMPCOLLECTIBLE
+#define H_HESP_CMPCOLLECTIBLE
 
-#include "ICmpRender.h"
+#include "ICmpCollectible.h"
 
 namespace hesp {
 
-class CmpRender : public ICmpRender
+class CmpCollectible : public ICmpCollectible
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	AnimationController_Ptr m_animController;
-	std::string m_modelName;
+	std::string m_scriptName;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpRender(const std::string& modelName);
+	explicit CmpCollectible(const std::string& scriptName);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -27,9 +26,6 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	AnimationController_Ptr anim_controller() const;
-	void check_dependencies() const;
-	const std::string& model_name() const;
 	std::pair<std::string,Properties> save() const;
 };
 

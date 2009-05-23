@@ -27,7 +27,7 @@ const Vector3d& CmpPosition::position() const
 std::pair<std::string,Properties> CmpPosition::save() const
 {
 	Properties properties;
-	properties.set_actual<Vector3d>("Position", m_position);
+	properties.set_actual("Position", m_position);
 	return std::make_pair("Position", properties);
 }
 

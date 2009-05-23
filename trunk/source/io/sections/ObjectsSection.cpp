@@ -13,6 +13,7 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/FieldIO.h>
+#include <source/level/objects/components/CmpCollectible.h>
 #include <source/level/objects/components/CmpCollision.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpMeshMovement.h>
@@ -129,8 +130,8 @@ std::vector<IComponent_Ptr> ObjectsSection::load_object(std::istream& is, const 
 		}
 
 		// Add the AI engine and base directory as properties (they're needed by some of the components, e.g. yokes).
-		properties.set_actual<ASXEngine_Ptr>("AIEngine", aiEngine);
-		properties.set_actual<bf::path>("BaseDir", baseDir);
+		properties.set_actual("AIEngine", aiEngine);
+		properties.set_actual("BaseDir", baseDir);
 
 		components.push_back(invoke_component_loader(componentName, properties));
 	}
@@ -240,6 +241,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 	static bool done = false;
 	if(!done)
 	{
+		ADD_LOADER(Collectible);
 		ADD_LOADER(Collision);
 		ADD_LOADER(DirectMovement);
 		ADD_LOADER(MeshMovement);

@@ -881,7 +881,7 @@ test-def.xml
 }
 Objects
 {
-	Count = 2
+	Count = 3
 	Object
 	{
 		Collision
@@ -929,6 +929,25 @@ Objects
 		MinimusScriptYoke
 		{
 			Script = guard-ai
+		}
+	}
+	Object
+	{
+		Collectible
+		{
+			Script = medkit
+		}
+		Orientation
+		{
+			Look = ( 0 1 0 )
+		}
+		Position
+		{
+			Position = ( 8 15 6 )
+		}
+		Render
+		{
+			ModelName = Test-15
 		}
 	}
 }

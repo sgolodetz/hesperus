@@ -199,12 +199,10 @@ void Level::render_objects() const
 		if(animatable != m_objectManager->viewer() || !m_camera->is_inside_viewer())
 		{
 			// FIXME: For performance reasons, we should only be rendering objects which are potentially visible.
-			ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(animatable, cmpCollision);
 			ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(animatable, cmpOrientation);
 			ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(animatable, cmpPosition);
 			ICmpRender_Ptr cmpRender = m_objectManager->get_component(animatable, cmpRender);
 
-			const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->aabb_indices()[cmpCollision->pose()]];
 			const Vector3d& p = cmpPosition->position();
 			const Vector3d& n = cmpOrientation->nuv_axes()->n();
 			const Vector3d& u = cmpOrientation->nuv_axes()->u();
@@ -236,43 +234,48 @@ void Level::render_objects() const
 
 			glPopMatrix();
 
-			// Render the AABB.
-			AABB3d tAABB = aabb.translate(p);
-			const Vector3d& mins = tAABB.minimum();
-			const Vector3d& maxs = tAABB.maximum();
+			ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(animatable, cmpCollision);
+			if(cmpCollision)
+			{
+				// Render the AABB.
+				const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->aabb_indices()[cmpCollision->pose()]];
+				AABB3d tAABB = aabb.translate(p);
+				const Vector3d& mins = tAABB.minimum();
+				const Vector3d& maxs = tAABB.maximum();
 
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			glDisable(GL_CULL_FACE);
-			glColor3d(1,1,0);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				glDisable(GL_CULL_FACE);
+				glColor3d(1,1,0);
 
-			glBegin(GL_QUADS);
-				// Front
-				glVertex3d(mins.x, mins.y, mins.z);
-				glVertex3d(maxs.x, mins.y, mins.z);
-				glVertex3d(maxs.x, mins.y, maxs.z);
-				glVertex3d(mins.x, mins.y, maxs.z);
+				glBegin(GL_QUADS);
+					// Front
+					glVertex3d(mins.x, mins.y, mins.z);
+					glVertex3d(maxs.x, mins.y, mins.z);
+					glVertex3d(maxs.x, mins.y, maxs.z);
+					glVertex3d(mins.x, mins.y, maxs.z);
 
-				// Right
-				glVertex3d(maxs.x, mins.y, mins.z);
-				glVertex3d(maxs.x, maxs.y, mins.z);
-				glVertex3d(maxs.x, maxs.y, maxs.z);
-				glVertex3d(maxs.x, mins.y, maxs.z);
+					// Right
+					glVertex3d(maxs.x, mins.y, mins.z);
+					glVertex3d(maxs.x, maxs.y, mins.z);
+					glVertex3d(maxs.x, maxs.y, maxs.z);
+					glVertex3d(maxs.x, mins.y, maxs.z);
 
-				// Back
-				glVertex3d(maxs.x, maxs.y, mins.z);
-				glVertex3d(mins.x, maxs.y, mins.z);
-				glVertex3d(mins.x, maxs.y, maxs.z);
-				glVertex3d(maxs.x, maxs.y, maxs.z);
+					// Back
+					glVertex3d(maxs.x, maxs.y, mins.z);
+					glVertex3d(mins.x, maxs.y, mins.z);
+					glVertex3d(mins.x, maxs.y, maxs.z);
+					glVertex3d(maxs.x, maxs.y, maxs.z);
 
-				// Left
-				glVertex3d(mins.x, maxs.y, mins.z);
-				glVertex3d(mins.x, mins.y, mins.z);
-				glVertex3d(mins.x, mins.y, maxs.z);
-				glVertex3d(mins.x, maxs.y, maxs.z);
-			glEnd();
+					// Left
+					glVertex3d(mins.x, maxs.y, mins.z);
+					glVertex3d(mins.x, mins.y, mins.z);
+					glVertex3d(mins.x, mins.y, maxs.z);
+					glVertex3d(mins.x, maxs.y, maxs.z);
+				glEnd();
 
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glEnable(GL_CULL_FACE);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				glEnable(GL_CULL_FACE);
+			}
 
 			// Render the entity camera axes.
 			Vector3d pn = p + n;

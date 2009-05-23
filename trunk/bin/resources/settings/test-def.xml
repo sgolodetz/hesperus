@@ -11,6 +11,9 @@
 			</aabb>
 		</aabbs>
 		<components>
+			<component name="Collectible">
+				<property name="Script" type="string"/>
+			</component>
 			<component name="Collision">
 				<property name="AABBs" type="[AABBid]"/>
 				<property name="Pose" type="AABBid"/>

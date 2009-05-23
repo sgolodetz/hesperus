@@ -30,7 +30,7 @@ NUVAxes_Ptr CmpOrientation::nuv_axes() const
 std::pair<std::string,Properties> CmpOrientation::save() const
 {
 	Properties properties;
-	properties.set_actual<Vector3d>("Look", m_nuvAxes->n());
+	properties.set_actual("Look", m_nuvAxes->n());
 	return std::make_pair("Orientation", properties);
 }
 

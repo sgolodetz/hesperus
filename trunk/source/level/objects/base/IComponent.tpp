@@ -12,7 +12,7 @@ void IComponent::check_dependency() const
 {
 	if(!m_objectManager->get_component<C>(m_objectID))
 	{
-		throw Exception(own_type() + " (" + m_objectID.to_string() + "): Requires " + C::static_own_type() + " component");
+		throw Exception(own_type() + " (ObjectID " + m_objectID.to_string() + "): Requires " + C::static_own_type() + " component");
 	}
 }
 

@@ -5,6 +5,10 @@
 
 #include "CmpRender.h"
 
+#include <source/level/objects/base/ObjectManager.h>
+#include "ICmpOrientation.h"
+#include "ICmpPosition.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -24,6 +28,12 @@ AnimationController_Ptr CmpRender::anim_controller() const
 	return m_animController;
 }
 
+void CmpRender::check_dependencies() const
+{
+	check_dependency<ICmpOrientation>();
+	check_dependency<ICmpPosition>();
+}
+
 const std::string& CmpRender::model_name() const
 {
 	return m_modelName;
@@ -32,7 +42,7 @@ const std::string& CmpRender::model_name() const
 std::pair<std::string,Properties> CmpRender::save() const
 {
 	Properties properties;
-	properties.set_actual<std::string>("ModelName", m_modelName);
+	properties.set_actual("ModelName", m_modelName);
 	return std::make_pair("Render", properties);
 }
 

@@ -31,8 +31,8 @@ int CmpCollision::pose() const
 std::pair<std::string,Properties> CmpCollision::save() const
 {
 	Properties properties;
-	properties.set_actual<std::vector<int> >("AABBs", m_aabbIndices);
-	properties.set_actual<int>("Pose", m_pose);
+	properties.set_actual("AABBs", m_aabbIndices);
+	properties.set_actual("Pose", m_pose);
 	return std::make_pair("Collision", properties);
 }
 

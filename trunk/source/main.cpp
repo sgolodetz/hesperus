@@ -20,7 +20,7 @@ try
 }
 catch(Exception& e)
 {
-	std::cerr << e.cause() << std::endl;
+	std::cerr << "Error: " << e.cause() << std::endl;
 	return EXIT_FAILURE;
 }
 catch(...)
