@@ -5,6 +5,8 @@
 
 #include "ObjectID.h"
 
+#include <boost/lexical_cast.hpp>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -17,6 +19,12 @@ ObjectID::ObjectID(int id)
 {}
 
 //#################### PUBLIC METHODS ####################
+std::string ObjectID::to_string() const
+{
+	return boost::lexical_cast<std::string,int>(m_id);
+}
+
+//#################### PRIVATE METHODS ####################
 int ObjectID::value() const
 {
 	return m_id;

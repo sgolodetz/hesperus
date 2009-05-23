@@ -20,11 +20,11 @@ template <typename T>
 shared_ptr<const T> ObjectManager::get_component(const ObjectID& id, const shared_ptr<const T>&) const
 {
 	std::map<ObjectID,Object>::const_iterator it = m_objects.find(id);
-	if(it == m_objects.end()) throw Exception("Invalid object ID: " + boost::lexical_cast<std::string,int>(id.value()));
+	if(it == m_objects.end()) throw Exception("Invalid object ID: " + id.to_string());
 
 	const Object& object = it->second;
 
-	Object::const_iterator jt = object.find(T::static_type());
+	Object::const_iterator jt = object.find(T::static_group_type());
 	if(jt == object.end()) return shared_ptr<const T>();
 
 	// Note that there's an implicit T -> const T conversion done when returning here.
@@ -38,7 +38,7 @@ void ObjectManager::set_component(const ObjectID& id, const shared_ptr<T>& compo
 	if(it == m_objects.end()) throw Exception("Invalid object ID: " + boost::lexical_cast<std::string,int>(id.value()));
 
 	Object& object = it->second;
-	object[T::static_type()] = component;
+	object[T::static_group_type()] = component;
 }
 
 }

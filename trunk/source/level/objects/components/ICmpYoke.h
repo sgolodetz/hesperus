@@ -19,8 +19,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static std::string static_type()	{ return "Yoke"; }
-	std::string type() const			{ return "Yoke"; }
+	std::string group_type() const			{ return "Yoke"; }
+	static std::string static_group_type()	{ return "Yoke"; }
+
+	std::string own_type() const			{ return "Yoke"; }
+	static std::string static_own_type()	{ return "Yoke"; }
 };
 
 //#################### TYPEDEFS ####################

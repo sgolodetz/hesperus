@@ -22,8 +22,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static std::string static_type()	{ return "Movement"; }
-	std::string type() const			{ return "Movement"; }
+	std::string group_type() const			{ return "Movement"; }
+	static std::string static_group_type()	{ return "Movement"; }
+
+	std::string own_type() const			{ return "DirectMovement"; }
+	static std::string static_own_type()	{ return "DirectMovement"; }
 };
 
 //#################### TYPEDEFS ####################

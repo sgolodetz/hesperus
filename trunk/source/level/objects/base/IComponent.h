@@ -36,11 +36,17 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual std::string group_type() const = 0;
+	virtual std::string own_type() const = 0;
 	virtual std::pair<std::string,Properties> save() const = 0;
-	virtual std::string type() const = 0;
+
+	//#################### PUBLIC METHODS ####################
+public:
+	virtual void check_dependencies() const;
 
 	//#################### PROTECTED METHODS ####################
 protected:
+	template <typename C> void check_dependency() const;
 	void set_object_id(const ObjectID& objectID);
 	void set_object_manager(ObjectManager *objectManager);
 };
@@ -50,5 +56,7 @@ typedef shared_ptr<IComponent> IComponent_Ptr;
 typedef shared_ptr<const IComponent> IComponent_CPtr;
 
 }
+
+#include "IComponent.tpp"
 
 #endif

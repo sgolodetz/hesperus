@@ -19,8 +19,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static std::string static_type()	{ return "Orientation"; }
-	std::string type() const			{ return "Orientation"; }
+	std::string group_type() const			{ return "Orientation"; }
+	static std::string static_group_type()	{ return "Orientation"; }
+
+	std::string own_type() const			{ return "Orientation"; }
+	static std::string static_own_type()	{ return "Orientation"; }
 };
 
 //#################### TYPEDEFS ####################

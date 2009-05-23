@@ -20,8 +20,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static std::string static_type()	{ return "Render"; }
-	std::string type() const			{ return "Render"; }
+	std::string group_type() const			{ return "Render"; }
+	static std::string static_group_type()	{ return "Render"; }
+
+	std::string own_type() const			{ return "Render"; }
+	static std::string static_own_type()	{ return "Render"; }
 };
 
 //#################### TYPEDEFS ####################

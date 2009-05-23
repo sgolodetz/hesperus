@@ -19,7 +19,6 @@ Medium
 
 * Implement some AI yokes (it probably makes sense to have composite yokes so that we can switch between different yokes for different behaviours - could we have yoke trees corresponding to goal trees?).
 * View frustum culling.
-* Implement component dependency-checking.
 
 ----
 Hard
@@ -29,4 +28,5 @@ Hard
 * Implement AI scripting.
 * Implement collision handling between dynamic objects.
 * Reimplement hlight to allow dynamic lighting.
+* Implement items, inventories and item collection (including picking).
 * Implement weapons and projectiles.

@@ -38,6 +38,9 @@ public:
 	virtual void set_cur_nav_poly_index(int curNavPolyIndex) = 0;
 	virtual void set_cur_traversal(const Traversal_Ptr& curTraversal) = 0;
 	virtual double walk_speed() const = 0;
+
+	std::string own_type() const			{ return "MeshMovement"; }
+	static std::string static_own_type()	{ return "MeshMovement"; }
 };
 
 //#################### TYPEDEFS ####################

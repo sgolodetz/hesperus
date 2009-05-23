@@ -5,6 +5,12 @@
 
 #include "CmpUserBipedYoke.h"
 
+#include <source/exceptions/Exception.h>
+#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpOrientation.h>
+#include <source/level/objects/components/ICmpPhysics.h>
+#include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/yokes/user/UserBipedYoke.h>
 
 namespace hesp {
@@ -16,6 +22,15 @@ IComponent_Ptr CmpUserBipedYoke::load(const Properties&)
 }
 
 //#################### PUBLIC METHODS ####################
+void CmpUserBipedYoke::check_dependencies() const
+{
+	check_dependency<ICmpCollision>();
+	check_dependency<ICmpMeshMovement>();
+	check_dependency<ICmpOrientation>();
+	check_dependency<ICmpPhysics>();
+	check_dependency<ICmpPosition>();
+}
+
 std::vector<ObjectCommand_Ptr> CmpUserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
 																   const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {

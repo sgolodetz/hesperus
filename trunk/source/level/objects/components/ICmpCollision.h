@@ -22,8 +22,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static std::string static_type()	{ return "Collision"; }
-	std::string type() const			{ return "Collision"; }
+	std::string group_type() const			{ return "Collision"; }
+	static std::string static_group_type()	{ return "Collision"; }
+
+	std::string own_type() const			{ return "Collision"; }
+	static std::string static_own_type()	{ return "Collision"; }
 };
 
 //#################### TYPEDEFS ####################

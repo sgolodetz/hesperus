@@ -1233,6 +1233,10 @@
 						Name=".tpp"
 						>
 						<File
+							RelativePath="..\level\objects\base\IComponent.tpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\base\ObjectManager.tpp"
 							>
 						</File>

@@ -51,11 +51,18 @@ ObjectID ObjectManager::create_object(const std::vector<IComponent_Ptr>& compone
 	ObjectID id(m_idAllocator.allocate());
 	Object& object = m_objects[id];
 
+	// Add the components to the object manager.
 	for(size_t i=0, size=components.size(); i<size; ++i)
 	{
 		components[i]->set_object_id(id);
 		components[i]->set_object_manager(this);
-		object.insert(std::make_pair(components[i]->type(), components[i]));
+		object.insert(std::make_pair(components[i]->group_type(), components[i]));
+	}
+
+	// Check component dependencies (note that this must happen after all the components have been added above).
+	for(size_t i=0, size=components.size(); i<size; ++i)
+	{
+		components[i]->check_dependencies();
 	}
 
 	return id;
@@ -71,7 +78,7 @@ void ObjectManager::destroy_object(const ObjectID& id)
 std::vector<IComponent_Ptr> ObjectManager::get_components(const ObjectID& id)
 {
 	std::map<ObjectID,Object>::iterator it = m_objects.find(id);
-	if(it == m_objects.end()) throw Exception("Invalid object ID: " + boost::lexical_cast<std::string,int>(id.value()));
+	if(it == m_objects.end()) throw Exception("Invalid object ID: " + id.to_string());
 
 	Object& object = it->second;
 
@@ -108,7 +115,7 @@ int ObjectManager::object_count() const
 void ObjectManager::post_immediate_message(const ObjectID& target, const Message_CPtr& msg)
 {
 	std::map<ObjectID,Object>::iterator it = m_objects.find(target);
-	if(it == m_objects.end()) throw Exception("Invalid object ID: " + boost::lexical_cast<std::string,int>(target.value()));
+	if(it == m_objects.end()) throw Exception("Invalid object ID: " + target.to_string());
 	post_message_to_object(it->second, msg);
 }
 

@@ -6,6 +6,8 @@
 #ifndef H_HESP_OBJECTID
 #define H_HESP_OBJECTID
 
+#include <string>
+
 namespace hesp {
 
 class ObjectID
@@ -21,7 +23,16 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	std::string to_string() const;
+
+	//#################### PRIVATE METHODS ####################
+private:
 	int value() const;
+
+	//#################### FRIENDS ####################
+	friend class ObjectManager;
+	friend bool operator!=(const ObjectID& lhs, const ObjectID& rhs);
+	friend bool operator<(const ObjectID& lhs, const ObjectID& rhs);
 };
 
 //#################### GLOBAL OPERATORS ####################
