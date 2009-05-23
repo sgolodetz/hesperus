@@ -196,7 +196,7 @@ void Level::render_objects() const
 	for(int i=0; i<animatablesCount; ++i)
 	{
 		const ObjectID& animatable = animatables[i];
-		if(animatable != m_objectManager->viewer())
+		if(animatable != m_objectManager->viewer() || !m_camera->is_inside_viewer())
 		{
 			// FIXME: For performance reasons, we should only be rendering objects which are potentially visible.
 			ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(animatable, cmpCollision);

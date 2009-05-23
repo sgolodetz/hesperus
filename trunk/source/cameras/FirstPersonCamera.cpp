@@ -20,6 +20,11 @@ FirstPersonCamera::FirstPersonCamera(const ObjectID& viewer, const ObjectManager
 {}
 
 //#################### PUBLIC METHODS ####################
+bool FirstPersonCamera::is_inside_viewer() const
+{
+	return true;
+}
+
 Vector3d FirstPersonCamera::set_view() const
 {
 	ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(m_viewer, cmpCollision);

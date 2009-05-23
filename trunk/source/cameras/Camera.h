@@ -21,6 +21,8 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual bool is_inside_viewer() const = 0;
+
 	/**
 	@return	The calculated "eye" position of the camera
 	*/

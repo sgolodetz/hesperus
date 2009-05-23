@@ -1974,6 +1974,10 @@
 					RelativePath="..\cameras\FirstPersonCamera.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\cameras\FixedCamera.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
@@ -1984,6 +1988,10 @@
 				</File>
 				<File
 					RelativePath="..\cameras\FirstPersonCamera.h"
+					>
+				</File>
+				<File
+					RelativePath="..\cameras\FixedCamera.h"
 					>
 				</File>
 			</Filter>
