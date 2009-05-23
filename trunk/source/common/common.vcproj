@@ -1964,6 +1964,30 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="cameras"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\cameras\FirstPersonCamera.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\cameras\Camera.h"
+					>
+				</File>
+				<File
+					RelativePath="..\cameras\FirstPersonCamera.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

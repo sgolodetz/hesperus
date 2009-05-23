@@ -9,6 +9,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/cameras/Camera.h>
 #include <source/level/models/ModelManager.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/objects/base/ObjectManager.h>
@@ -42,6 +43,8 @@ private:
 	NavDatasetVector m_navDatasets;
 	ObjectManager_Ptr m_objectManager;
 	ModelManager_Ptr m_modelManager;
+
+	Camera_Ptr m_camera;
 
 	//#################### CONSTRUCTORS ####################
 public:

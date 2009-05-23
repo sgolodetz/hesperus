@@ -11,6 +11,7 @@
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
+#include <source/cameras/FirstPersonCamera.h>
 #include <source/colours/Colour3d.h>
 #include <source/level/models/Model.h>
 #include <source/level/objects/components/ICmpCollision.h>
@@ -47,6 +48,9 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 		Skeleton_Ptr skeleton = m_modelManager->model(cmpRender->model_name())->skeleton();
 		cmpRender->anim_controller()->set_skeleton(skeleton);
 	}
+
+	// Set up the camera.
+	m_camera.reset(new FirstPersonCamera(m_objectManager->viewer(), m_objectManager));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -83,22 +87,8 @@ void Level::render() const
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	ObjectID viewer = m_objectManager->viewer();
-
-	ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(viewer, cmpCollision);
-	ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(viewer, cmpOrientation);
-	ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(viewer, cmpPosition);
-
-	const Vector3d& pos = cmpPosition->position();
-	const Vector3d& look = cmpOrientation->nuv_axes()->n();
-
-	// Calculate the viewer's eye position and where they're looking at.
-	const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->aabb_indices()[cmpCollision->pose()]];
-	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
-	Vector3d at = eye + look;
-
-	// Set the camera accordingly.
-	gluLookAt(eye.x, eye.y, eye.z, at.x, at.y, at.z, 0, 0, 1);
+	// Set the view.
+	Vector3d eye = m_camera->set_view();
 
 	// Determine which leaves are potentially visible from the current viewer position.
 	bool renderAllLeaves = false;
