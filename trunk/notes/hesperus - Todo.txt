@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 22-05-09
+Last Updated: 23-05-09
 
 ----
 Easy
@@ -18,7 +18,6 @@ Medium
 ------
 
 * Implement some AI yokes (it probably makes sense to have composite yokes so that we can switch between different yokes for different behaviours - could we have yoke trees corresponding to goal trees?).
-* Separate viewers from entities: we shouldn't have to see through the eyes of an entity, we should be able to position the camera anywhere we like. (This involves implementing a new camera package.)
 * View frustum culling.
 * Implement component dependency-checking.
 

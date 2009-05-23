@@ -1161,28 +1161,12 @@
 						RelativePath="..\level\objects\MoveFunctions.cpp"
 						>
 					</File>
-					<File
-						RelativePath="..\level\objects\NUVAxes.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\objects\VerticallyConstrainedNUVAxes.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name=".h"
 					>
 					<File
 						RelativePath="..\level\objects\MoveFunctions.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\objects\NUVAxes.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\objects\VerticallyConstrainedNUVAxes.h"
 						>
 					</File>
 				</Filter>
@@ -1992,6 +1976,34 @@
 				</File>
 				<File
 					RelativePath="..\cameras\FixedCamera.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="axes"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\axes\NUVAxes.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\axes\VerticallyConstrainedNUVAxes.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\axes\NUVAxes.h"
+					>
+				</File>
+				<File
+					RelativePath="..\axes\VerticallyConstrainedNUVAxes.h"
 					>
 				</File>
 			</Filter>
