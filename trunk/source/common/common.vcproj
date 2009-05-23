@@ -1261,6 +1261,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\commands\CmdBipedSetLook.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\commands\CmdBipedTurn.cpp"
 							>
 						</File>
@@ -1278,6 +1282,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\commands\CmdBipedMove.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdBipedSetLook.h"
 							>
 						</File>
 						<File
