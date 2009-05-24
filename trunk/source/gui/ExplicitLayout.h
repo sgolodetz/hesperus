@@ -8,26 +8,26 @@
 
 #include <vector>
 
-#include "LaidOutComponent.h"
+#include "LaidOutGUIComponent.h"
 
 namespace hesp {
 
 /**
-This class allows a Container to be laid out explicitly by specifying
+This class allows a GUIContainer to be laid out explicitly by specifying
 explicit extents for each component added.
 */
 class ExplicitLayout
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<LaidOutComponent> m_components;
+	std::vector<LaidOutGUIComponent> m_components;
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void add(Component *component, const Extents& extents);
-	void add(const Component_Ptr& component, const Extents& extents);
+	void add(GUIComponent *component, const Extents& extents);
+	void add(const GUIComponent_Ptr& component, const Extents& extents);
 	void clear();
-	std::vector<LaidOutComponent> fit(const Extents& extents) const;
+	std::vector<LaidOutGUIComponent> fit(const Extents& extents) const;
 };
 
 }

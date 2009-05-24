@@ -6,7 +6,6 @@
 #include "GameState_Load.h"
 
 #include <source/exceptions/FileNotFoundException.h>
-#include <source/gui/Container.h>
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
@@ -45,9 +44,9 @@ GameState_Ptr GameState_Load::update(int milliseconds, UserInput& input)
 }
 
 //#################### PRIVATE METHODS ####################
-Component_Ptr GameState_Load::construct_display()
+GUIComponent_Ptr GameState_Load::construct_display()
 {
-	Container<ExplicitLayout> *display = new Container<ExplicitLayout>;
+	GUIContainer<ExplicitLayout> *display = new GUIContainer<ExplicitLayout>;
 
 	bf::path imagesDir = determine_images_directory(determine_base_directory_from_game());
 
@@ -68,7 +67,7 @@ Component_Ptr GameState_Load::construct_display()
 
 	display->layout().add(loadingPicture, Extents(50, width/8, width - 50, height - 50));
 
-	return Component_Ptr(display);
+	return GUIComponent_Ptr(display);
 }
 
 }

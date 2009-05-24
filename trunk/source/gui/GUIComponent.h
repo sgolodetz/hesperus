@@ -1,10 +1,10 @@
 /***
- * hesperus: Component.h
+ * hesperus: GUIComponent.h
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_COMPONENT
-#define H_HESP_COMPONENT
+#ifndef H_HESP_GUICOMPONENT
+#define H_HESP_GUICOMPONENT
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
@@ -13,20 +13,20 @@ using boost::shared_ptr;
 
 namespace hesp {
 
-class Component
+class GUIComponent
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:
 	Extents_Ptr m_extents;
-	Component *m_parent;
+	GUIComponent *m_parent;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Component() : m_parent(NULL) {}
+	GUIComponent() : m_parent(NULL) {}
 
 	//#################### DESTRUCTOR ####################
 public:
-	virtual ~Component() {}
+	virtual ~GUIComponent() {}
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
@@ -39,7 +39,7 @@ public:
 		return *m_extents;
 	}
 
-	virtual void fit(const Extents& extents, Component *parent)
+	virtual void fit(const Extents& extents, GUIComponent *parent)
 	{
 		m_extents = Extents_Ptr(new Extents(extents));
 		m_parent = parent;
@@ -47,8 +47,8 @@ public:
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<Component> Component_Ptr;
-typedef shared_ptr<const Component> Component_CPtr;
+typedef shared_ptr<GUIComponent> GUIComponent_Ptr;
+typedef shared_ptr<const GUIComponent> GUIComponent_CPtr;
 
 }
 

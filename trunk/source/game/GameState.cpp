@@ -13,7 +13,7 @@ namespace hesp {
 GameState::~GameState() {}
 
 //#################### PROTECTED METHODS ####################
-void GameState::set_display(const Component_Ptr& display)
+void GameState::set_display(const GUIComponent_Ptr& display)
 {
 	Screen& screen = Screen::instance();
 	screen.layout().clear();

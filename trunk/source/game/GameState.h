@@ -6,7 +6,7 @@
 #ifndef H_HESP_GAMESTATE
 #define H_HESP_GAMESTATE
 
-#include <source/gui/Component.h>
+#include <source/gui/GUIComponent.h>
 #include <source/util/UserInput.h>
 
 namespace hesp {
@@ -28,7 +28,7 @@ public:
 
 	//#################### PROTECTED METHODS ####################
 protected:
-	void set_display(const Component_Ptr& display);
+	void set_display(const GUIComponent_Ptr& display);
 };
 
 }

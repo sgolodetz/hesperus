@@ -8,12 +8,12 @@
 
 #include <string>
 
-#include "Component.h"
 #include <source/textures/Texture.h>
+#include "GUIComponent.h"
 
 namespace hesp {
 
-class Picture : public Component
+class Picture : public GUIComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -21,7 +21,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Picture(const std::string& filename);
+	explicit Picture(const std::string& filename);
 
 	//#################### PUBLIC METHODS ####################
 public:

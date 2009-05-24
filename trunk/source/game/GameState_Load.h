@@ -31,7 +31,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	Component_Ptr construct_display();
+	GUIComponent_Ptr construct_display();
 };
 
 }

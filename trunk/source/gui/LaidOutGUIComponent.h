@@ -1,23 +1,23 @@
 /***
- * hesperus: LaidOutComponent.h
+ * hesperus: LaidOutGUIComponent.h
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_LAIDOUTCOMPONENT
-#define H_HESP_LAIDOUTCOMPONENT
+#ifndef H_HESP_LAIDOUTGUICOMPONENT
+#define H_HESP_LAIDOUTGUICOMPONENT
 
-#include "Component.h"
+#include "GUIComponent.h"
 
 namespace hesp {
 
-struct LaidOutComponent
+struct LaidOutGUIComponent
 {
 	//#################### PUBLIC VARIABLES ####################
-	Component_Ptr component;
+	GUIComponent_Ptr component;
 	Extents extents;
 
 	//#################### CONSTRUCTORS ####################
-	LaidOutComponent(const Component_Ptr& component_, const Extents& extents_)
+	LaidOutGUIComponent(const GUIComponent_Ptr& component_, const Extents& extents_)
 	:	component(component_), extents(extents_)
 	{}
 };

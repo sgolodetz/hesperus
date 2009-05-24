@@ -6,12 +6,12 @@
 #ifndef H_HESP_LEVELVIEWER
 #define H_HESP_LEVELVIEWER
 
-#include <source/gui/Component.h>
+#include <source/gui/GUIComponent.h>
 #include "Level.h"
 
 namespace hesp {
 
-class LevelViewer : public Component
+class LevelViewer : public GUIComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:

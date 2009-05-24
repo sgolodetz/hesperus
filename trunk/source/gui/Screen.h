@@ -6,12 +6,12 @@
 #ifndef H_HESP_SCREEN
 #define H_HESP_SCREEN
 
-#include "Container.h"
 #include "ExplicitLayout.h"
+#include "GUIContainer.h"
 
 namespace hesp {
 
-class Screen : public Container<ExplicitLayout>
+class Screen : public GUIContainer<ExplicitLayout>
 {
 	//#################### SINGLETON IMPLEMENTATION ####################
 private:

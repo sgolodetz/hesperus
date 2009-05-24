@@ -1,34 +1,34 @@
 /***
- * hesperus: Container.h
+ * hesperus: GUIContainer.h
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#ifndef H_HESP_CONTAINER
-#define H_HESP_CONTAINER
+#ifndef H_HESP_GUICONTAINER
+#define H_HESP_GUICONTAINER
 
 #include <vector>
 
-#include "LaidOutComponent.h"
+#include "LaidOutGUIComponent.h"
 
 namespace hesp {
 
 template <typename Layout>
-class Container : public Component
+class GUIContainer : public GUIComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Layout m_layout;
-	std::vector<LaidOutComponent> m_components;
+	std::vector<LaidOutGUIComponent> m_components;
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void fit(const Extents& extents, Component *parent);
+	void fit(const Extents& extents, GUIComponent *parent);
 	Layout& layout();
 	void render() const;
 };
 
 }
 
-#include "Container.tpp"
+#include "GUIContainer.tpp"
 
 #endif

@@ -223,14 +223,6 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\gui\Component.h"
-					>
-				</File>
-				<File
-					RelativePath="..\gui\Container.h"
-					>
-				</File>
-				<File
 					RelativePath="..\gui\ExplicitLayout.h"
 					>
 				</File>
@@ -239,7 +231,15 @@
 					>
 				</File>
 				<File
-					RelativePath="..\gui\LaidOutComponent.h"
+					RelativePath="..\gui\GUIComponent.h"
+					>
+				</File>
+				<File
+					RelativePath="..\gui\GUIContainer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\gui\LaidOutGUIComponent.h"
 					>
 				</File>
 				<File
@@ -255,7 +255,7 @@
 				Name=".tpp"
 				>
 				<File
-					RelativePath="..\gui\Container.tpp"
+					RelativePath="..\gui\GUIContainer.tpp"
 					>
 				</File>
 			</Filter>

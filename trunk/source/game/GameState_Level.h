@@ -32,7 +32,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	Component_Ptr construct_display();
+	GUIComponent_Ptr construct_display();
 	void do_animations(int milliseconds);
 	void do_objects(int milliseconds, UserInput& input);
 	void do_physics(int milliseconds);
