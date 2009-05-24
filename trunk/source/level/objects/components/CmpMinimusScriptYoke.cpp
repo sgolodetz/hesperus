@@ -7,6 +7,7 @@
 
 #include <source/level/objects/components/ICmpCollision.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpPosition.h>
@@ -33,6 +34,7 @@ void CmpMinimusScriptYoke::check_dependencies() const
 {
 	check_dependency<ICmpCollision>();
 	check_dependency<ICmpMeshMovement>();
+	check_dependency<ICmpModelRender>();
 	check_dependency<ICmpOrientation>();
 	check_dependency<ICmpPhysics>();
 	check_dependency<ICmpPosition>();

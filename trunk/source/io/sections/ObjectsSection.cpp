@@ -18,10 +18,10 @@ namespace bf = boost::filesystem;
 #include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpMeshMovement.h>
 #include <source/level/objects/components/CmpMinimusScriptYoke.h>
+#include <source/level/objects/components/CmpModelRender.h>
 #include <source/level/objects/components/CmpOrientation.h>
 #include <source/level/objects/components/CmpPhysics.h>
 #include <source/level/objects/components/CmpPosition.h>
-#include <source/level/objects/components/CmpRender.h>
 #include <source/level/objects/components/CmpUserBipedYoke.h>
 #include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
 #include <source/util/Properties.h>
@@ -246,10 +246,10 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 		ADD_LOADER(DirectMovement);
 		ADD_LOADER(MeshMovement);
 		ADD_LOADER(MinimusScriptYoke);
+		ADD_LOADER(ModelRender);
 		ADD_LOADER(Orientation);
 		ADD_LOADER(Physics);
 		ADD_LOADER(Position);
-		ADD_LOADER(Render);
 		ADD_LOADER(UserBipedYoke);
 		done = true;
 	}

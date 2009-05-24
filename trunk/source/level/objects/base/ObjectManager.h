@@ -67,6 +67,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	static bool is_animatable(const ObjectID& objectID, const ObjectManager *objectManager);
+	static bool is_renderable(const ObjectID& objectID, const ObjectManager *objectManager);
 	static bool is_simulable(const ObjectID& objectID, const ObjectManager *objectManager);
 	static bool is_yokeable(const ObjectID& objectID, const ObjectManager *objectManager);
 	void post_message_to_object(Object& target, const Message_CPtr& msg);

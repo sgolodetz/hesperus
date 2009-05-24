@@ -1321,6 +1321,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\components\CmpModelRender.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\components\CmpOrientation.cpp"
 							>
 						</File>
@@ -1330,10 +1334,6 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\components\CmpPosition.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\components\CmpRender.cpp"
 							>
 						</File>
 						<File
@@ -1365,6 +1365,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\components\CmpModelRender.h"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\components\CmpOrientation.h"
 							>
 						</File>
@@ -1374,10 +1378,6 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\components\CmpPosition.h"
-							>
-						</File>
-						<File
-							RelativePath="..\level\objects\components\CmpRender.h"
 							>
 						</File>
 						<File
@@ -1398,6 +1398,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\components\ICmpMeshMovement.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\components\ICmpModelRender.h"
 							>
 						</File>
 						<File

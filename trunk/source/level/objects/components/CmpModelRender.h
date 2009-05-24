@@ -1,16 +1,16 @@
 /***
- * hesperus: CmpRender.h
+ * hesperus: CmpModelRender.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMPRENDER
-#define H_HESP_CMPRENDER
+#ifndef H_HESP_CMPMODELRENDER
+#define H_HESP_CMPMODELRENDER
 
-#include "ICmpRender.h"
+#include "ICmpModelRender.h"
 
 namespace hesp {
 
-class CmpRender : public ICmpRender
+class CmpModelRender : public ICmpModelRender
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -20,7 +20,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpRender(const std::string& modelName);
+	explicit CmpModelRender(const std::string& modelName);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

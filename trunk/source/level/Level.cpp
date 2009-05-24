@@ -182,15 +182,14 @@ void Level::render_objects() const
 {
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 
-	std::vector<ObjectID> animatables = m_objectManager->group("Animatables");
-	int animatablesCount = static_cast<int>(animatables.size());
-	for(int i=0; i<animatablesCount; ++i)
+	std::vector<ObjectID> renderables = m_objectManager->group("Renderables");
+	for(size_t i=0, size=renderables.size(); i<size; ++i)
 	{
-		const ObjectID& animatable = animatables[i];
-		if(animatable != m_objectManager->viewer() || !m_camera->is_inside_viewer())
+		const ObjectID& renderable = renderables[i];
+		if(renderable != m_objectManager->viewer() || !m_camera->is_inside_viewer())
 		{
 			// FIXME: For performance reasons, we should only be rendering objects which are potentially visible.
-			ICmpRender_Ptr cmpRender = m_objectManager->get_component(animatable, cmpRender);
+			ICmpRender_Ptr cmpRender = m_objectManager->get_component(renderable, cmpRender);
 			cmpRender->render();
 		}
 	}

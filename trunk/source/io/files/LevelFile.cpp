@@ -22,7 +22,7 @@ namespace bf = boost::filesystem;
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/LitGeometryRenderer.h>
 #include <source/level/UnlitGeometryRenderer.h>
-#include <source/level/objects/components/ICmpRender.h>
+#include <source/level/objects/components/ICmpModelRender.h>
 
 namespace hesp {
 
@@ -193,7 +193,7 @@ ModelManager_Ptr LevelFile::load_models(const ObjectManager_Ptr& objectManager)
 	std::vector<ObjectID> animatables = objectManager->group("Animatables");
 	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
-		ICmpRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
 
 		// Note: Setting the model manager automatically registers the model inside the component with it.
 		cmpRender->set_model_manager(modelManager);
@@ -204,7 +204,7 @@ ModelManager_Ptr LevelFile::load_models(const ObjectManager_Ptr& objectManager)
 	// Now that all the models have been loaded, set the skeletons for the animation controllers.
 	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
-		ICmpRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
 		cmpRender->set_skeleton();
 	}
 

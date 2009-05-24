@@ -5,8 +5,8 @@
 
 #include "ObjectManager.h"
 
+#include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpPhysics.h>
-#include <source/level/objects/components/ICmpRender.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
 
@@ -17,6 +17,7 @@ ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<st
 :	m_aabbs(aabbs), m_componentPropertyTypes(componentPropertyTypes)
 {
 	register_group("Animatables", is_animatable);
+	register_group("Renderables", is_renderable);
 	register_group("Simulables", is_simulable);
 	register_group("Yokeables", is_yokeable);
 }
@@ -132,6 +133,11 @@ ObjectID ObjectManager::viewer() const
 
 //#################### PRIVATE METHODS ####################
 bool ObjectManager::is_animatable(const ObjectID& objectID, const ObjectManager *objectManager)
+{
+	return objectManager->get_component<ICmpModelRender>(objectID) != NULL;
+}
+
+bool ObjectManager::is_renderable(const ObjectID& objectID, const ObjectManager *objectManager)
 {
 	return objectManager->get_component<ICmpRender>(objectID) != NULL;
 }

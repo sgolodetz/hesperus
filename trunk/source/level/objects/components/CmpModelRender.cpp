@@ -1,9 +1,9 @@
 /***
- * hesperus: CmpRender.cpp
+ * hesperus: CmpModelRender.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "CmpRender.h"
+#include "CmpModelRender.h"
 
 #include <source/level/objects/base/ObjectManager.h>
 #include "ICmpCollision.h"
@@ -13,29 +13,29 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpRender::CmpRender(const std::string& modelName)
+CmpModelRender::CmpModelRender(const std::string& modelName)
 :	m_modelName(modelName), m_animController(new AnimationController)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpRender::load(const Properties& properties)
+IComponent_Ptr CmpModelRender::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpRender(properties.get_actual<std::string>("ModelName")));
+	return IComponent_Ptr(new CmpModelRender(properties.get_actual<std::string>("ModelName")));
 }
 
 //#################### PUBLIC METHODS ####################
-AnimationController_Ptr CmpRender::anim_controller() const
+AnimationController_Ptr CmpModelRender::anim_controller() const
 {
 	return m_animController;
 }
 
-void CmpRender::check_dependencies() const
+void CmpModelRender::check_dependencies() const
 {
 	check_dependency<ICmpOrientation>();
 	check_dependency<ICmpPosition>();
 }
 
-void CmpRender::render() const
+void CmpModelRender::render() const
 {
 	ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(m_objectID, cmpOrientation);
 	ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(m_objectID, cmpPosition);
@@ -125,20 +125,20 @@ void CmpRender::render() const
 	glEnd();
 }
 
-std::pair<std::string,Properties> CmpRender::save() const
+std::pair<std::string,Properties> CmpModelRender::save() const
 {
 	Properties properties;
 	properties.set_actual("ModelName", m_modelName);
-	return std::make_pair("Render", properties);
+	return std::make_pair("ModelRender", properties);
 }
 
-void CmpRender::set_model_manager(const ModelManager_Ptr& modelManager)
+void CmpModelRender::set_model_manager(const ModelManager_Ptr& modelManager)
 {
 	m_modelManager = modelManager;
 	m_modelManager->register_model(m_modelName);
 }
 
-void CmpRender::set_skeleton()
+void CmpModelRender::set_skeleton()
 {
 	Skeleton_Ptr skeleton = m_modelManager->model(m_modelName)->skeleton();
 	m_animController->set_skeleton(skeleton);

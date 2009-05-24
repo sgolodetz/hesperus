@@ -899,7 +899,7 @@ Objects
 		{
 			Position = ( 6 24 6 )
 		}
-		Render
+		ModelRender
 		{
 			ModelName = Test-15
 		}
@@ -922,7 +922,7 @@ Objects
 		{
 			Position = ( 20 20 6 )
 		}
-		Render
+		ModelRender
 		{
 			ModelName = Test-15
 		}
@@ -950,7 +950,7 @@ Objects
 		{
 			Position = ( 8 15 6 )
 		}
-		Render
+		ModelRender
 		{
 			ModelName = Test-15
 		}

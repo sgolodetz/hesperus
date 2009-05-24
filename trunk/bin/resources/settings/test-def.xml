@@ -23,15 +23,15 @@
 			<component name="MinimusScriptYoke">
 				<property name="Script" type="string"/>
 			</component>
+			<component name="ModelRender">
+				<property name="ModelName" type="string"/>
+			</component>
 			<component name="Orientation">
 				<property name="Look" type="Vector3d"/>
 			</component>
 			<component name="Physics"/>
 			<component name="Position">
 				<property name="Position" type="Vector3d"/>
-			</component>
-			<component name="Render">
-				<property name="ModelName" type="string"/>
 			</component>
 			<component name="UserBipedYoke"/>
 		</components>
@@ -43,12 +43,12 @@
 				</component>
 				<component name="MeshMovement"/>
 				<component name="MinimusScriptYoke"/>
+				<component name="ModelRender">
+					<property name="ModelName" default="Guard"/>
+				</component>
 				<component name="Orientation"/>
 				<component name="Physics"/>
 				<component name="Position"/>
-				<component name="Render">
-					<property name="ModelName" default="Guard"/>
-				</component>
 			</archetype>
 			<archetype name="Player">
 				<component name="Collision">
@@ -56,12 +56,12 @@
 					<property name="Pose" default="stand"/>
 				</component>
 				<component name="MeshMovement"/>
+				<component name="ModelRender">
+					<property name="ModelName" default="Player"/>
+				</component>
 				<component name="Orientation"/>
 				<component name="Physics"/>
 				<component name="Position"/>
-				<component name="Render">
-					<property name="ModelName" default="Player"/>
-				</component>
 				<component name="UserBipedYoke"/>
 			</archetype>
 		</archetypes>

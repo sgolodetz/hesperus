@@ -9,6 +9,10 @@ Objects
 			Pose = 0
 		}
 		MeshMovement;
+		ModelRender
+		{
+			ModelName = Test-15
+		}
 		Orientation
 		{
 			Look = ( 1 1 0 )
@@ -17,10 +21,6 @@ Objects
 		Position
 		{
 			Position = ( 29 31 17 )
-		}
-		Render
-		{
-			ModelName = Test-15
 		}
 		UserBipedYoke;
 	}

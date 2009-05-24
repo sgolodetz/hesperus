@@ -19,8 +19,8 @@
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/LevelViewer.h>
 #include <source/level/objects/base/ObjectCommand.h>
+#include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpPhysics.h>
-#include <source/level/objects/components/ICmpRender.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/MoveFunctions.h>
 namespace bf = boost::filesystem;
@@ -92,7 +92,7 @@ void GameState_Level::do_animations(int milliseconds)
 	std::vector<ObjectID> animatables = objectManager->group("Animatables");
 	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
-		ICmpRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
 		cmpRender->anim_controller()->update(milliseconds);
 	}
 }
