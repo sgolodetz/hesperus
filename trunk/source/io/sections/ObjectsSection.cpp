@@ -13,7 +13,6 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/FieldIO.h>
-#include <source/level/objects/components/CmpCollectible.h>
 #include <source/level/objects/components/CmpCollision.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpMeshMovement.h>
@@ -22,6 +21,7 @@ namespace bf = boost::filesystem;
 #include <source/level/objects/components/CmpOrientation.h>
 #include <source/level/objects/components/CmpPhysics.h>
 #include <source/level/objects/components/CmpPosition.h>
+#include <source/level/objects/components/CmpScriptedActivatable.h>
 #include <source/level/objects/components/CmpUserBipedYoke.h>
 #include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
 #include <source/util/Properties.h>
@@ -241,7 +241,6 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 	static bool done = false;
 	if(!done)
 	{
-		ADD_LOADER(Collectible);
 		ADD_LOADER(Collision);
 		ADD_LOADER(DirectMovement);
 		ADD_LOADER(MeshMovement);
@@ -250,6 +249,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 		ADD_LOADER(Orientation);
 		ADD_LOADER(Physics);
 		ADD_LOADER(Position);
+		ADD_LOADER(ScriptedActivatable);
 		ADD_LOADER(UserBipedYoke);
 		done = true;
 	}

@@ -1,16 +1,16 @@
 /***
- * hesperus: CmpCollectible.h
+ * hesperus: CmpScriptedActivatable.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMPCOLLECTIBLE
-#define H_HESP_CMPCOLLECTIBLE
+#ifndef H_HESP_CMPSCRIPTEDACTIVATABLE
+#define H_HESP_CMPSCRIPTEDACTIVATABLE
 
-#include "ICmpCollectible.h"
+#include "ICmpActivatable.h"
 
 namespace hesp {
 
-class CmpCollectible : public ICmpCollectible
+class CmpScriptedActivatable : public ICmpActivatable
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -18,7 +18,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpCollectible(const std::string& scriptName);
+	explicit CmpScriptedActivatable(const std::string& scriptName);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -26,8 +26,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void activated_by(const ObjectID& activator);
 	void check_dependencies() const;
-	void collected_by(const ObjectID& collector);
 	std::pair<std::string,Properties> save() const;
 };
 

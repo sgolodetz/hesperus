@@ -52,10 +52,6 @@ Objects
 	}
 	Object
 	{
-		Collectible
-		{
-			Script = medkit
-		}
 		Collision
 		{
 			AABBs = [0,1]
@@ -72,6 +68,10 @@ Objects
 		Position
 		{
 			Position = ( 8 15 6 )
+		}
+		ScriptedActivatable
+		{
+			Script = medkit
 		}
 	}
 }

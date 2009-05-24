@@ -933,7 +933,7 @@ Objects
 	}
 	Object
 	{
-		Collectible
+		ScriptedActivatable
 		{
 			Script = medkit
 		}

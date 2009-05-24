@@ -1301,10 +1301,6 @@
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\components\CmpCollectible.cpp"
-							>
-						</File>
-						<File
 							RelativePath="..\level\objects\components\CmpCollision.cpp"
 							>
 						</File>
@@ -1337,6 +1333,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\components\CmpScriptedActivatable.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\components\CmpUserBipedYoke.cpp"
 							>
 						</File>
@@ -1344,10 +1344,6 @@
 					<Filter
 						Name=".h"
 						>
-						<File
-							RelativePath="..\level\objects\components\CmpCollectible.h"
-							>
-						</File>
 						<File
 							RelativePath="..\level\objects\components\CmpCollision.h"
 							>
@@ -1381,11 +1377,15 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\components\CmpScriptedActivatable.h"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\components\CmpUserBipedYoke.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\components\ICmpCollectible.h"
+							RelativePath="..\level\objects\components\ICmpActivatable.h"
 							>
 						</File>
 						<File

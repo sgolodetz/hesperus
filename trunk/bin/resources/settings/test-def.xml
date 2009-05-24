@@ -11,9 +11,6 @@
 			</aabb>
 		</aabbs>
 		<components>
-			<component name="Collectible">
-				<property name="Script" type="string"/>
-			</component>
 			<component name="Collision">
 				<property name="AABBs" type="[AABBid]"/>
 				<property name="Pose" type="AABBid"/>
@@ -32,6 +29,9 @@
 			<component name="Physics"/>
 			<component name="Position">
 				<property name="Position" type="Vector3d"/>
+			</component>
+			<component name="ScriptedActivatable">
+				<property name="Script" type="string"/>
 			</component>
 			<component name="UserBipedYoke"/>
 		</components>
