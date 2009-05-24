@@ -9,7 +9,7 @@
 #include <source/level/objects/MoveFunctions.h>
 #include <source/level/objects/commands/CmdBipedMove.h>
 #include <source/level/objects/commands/CmdBipedSetLook.h>
-#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>
 
@@ -30,7 +30,7 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		return std::vector<ObjectCommand_Ptr>();
 	}
 
-	ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(m_objectID, cmpCollision);		assert(cmpCollision != NULL);
+	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);			assert(cmpBounds != NULL);
 	ICmpMeshMovement_Ptr cmpMovement = m_objectManager->get_component(m_objectID, cmpMovement);		assert(cmpMovement != NULL);
 	ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(m_objectID, cmpPosition);			assert(cmpPosition != NULL);
 
@@ -38,7 +38,7 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 
 	if(!m_path)
 	{
-		int mapIndex = cmpCollision->cur_aabb_index();
+		int mapIndex = cmpBounds->cur_aabb_index();
 		NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 		GlobalPathfinder pathfinder(navMesh, navDatasets[mapIndex]->adjacency_list(), navDatasets[mapIndex]->path_table());
 

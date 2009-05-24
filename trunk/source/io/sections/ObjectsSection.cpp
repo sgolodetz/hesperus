@@ -13,7 +13,7 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/FieldIO.h>
-#include <source/level/objects/components/CmpCollision.h>
+#include <source/level/objects/components/CmpAABBBounds.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpMeshMovement.h>
 #include <source/level/objects/components/CmpMinimusScriptYoke.h>
@@ -241,7 +241,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 	static bool done = false;
 	if(!done)
 	{
-		ADD_LOADER(Collision);
+		ADD_LOADER(AABBBounds);
 		ADD_LOADER(DirectMovement);
 		ADD_LOADER(MeshMovement);
 		ADD_LOADER(MinimusScriptYoke);

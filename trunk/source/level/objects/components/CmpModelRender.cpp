@@ -6,7 +6,7 @@
 #include "CmpModelRender.h"
 
 #include <source/level/objects/base/ObjectManager.h>
-#include "ICmpCollision.h"
+#include "ICmpAABBBounds.h"
 #include "ICmpOrientation.h"
 #include "ICmpPosition.h"
 
@@ -72,10 +72,10 @@ void CmpModelRender::render() const
 	glPopMatrix();
 
 	// Render the object's AABB (if any).
-	ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(m_objectID, cmpCollision);
-	if(cmpCollision)
+	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);
+	if(cmpBounds)
 	{
-		const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->cur_aabb_index()];
+		const AABB3d& aabb = m_objectManager->aabbs()[cmpBounds->cur_aabb_index()];
 		AABB3d tAABB = aabb.translate(p);
 		const Vector3d& mins = tAABB.minimum();
 		const Vector3d& maxs = tAABB.maximum();

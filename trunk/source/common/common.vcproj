@@ -1322,13 +1322,13 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="&lt;Collision&gt;"
+						Name="&lt;Bounds&gt;"
 						>
 						<Filter
 							Name=".cpp"
 							>
 							<File
-								RelativePath="..\level\objects\components\CmpCollision.cpp"
+								RelativePath="..\level\objects\components\CmpAABBBounds.cpp"
 								>
 							</File>
 						</Filter>
@@ -1336,11 +1336,11 @@
 							Name=".h"
 							>
 							<File
-								RelativePath="..\level\objects\components\CmpCollision.h"
+								RelativePath="..\level\objects\components\CmpAABBBounds.h"
 								>
 							</File>
 							<File
-								RelativePath="..\level\objects\components\ICmpCollision.h"
+								RelativePath="..\level\objects\components\ICmpAABBBounds.h"
 								>
 							</File>
 						</Filter>

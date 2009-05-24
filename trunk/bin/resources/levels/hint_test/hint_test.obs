@@ -3,7 +3,7 @@ Objects
 	Count = 1
 	Object
 	{
-		Collision
+		AABBBounds
 		{
 			AABBs = [0,1]
 			Pose = 0

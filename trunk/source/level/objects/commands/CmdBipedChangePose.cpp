@@ -5,7 +5,7 @@
 
 #include "CmdBipedChangePose.h"
 
-#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/trees/TreeUtil.h>
@@ -23,7 +23,7 @@ void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const s
 {
 	// FIXME: Crouching is currently a "jolt" from one pose to another. It should really be a smooth transition.
 
-	ICmpCollision_Ptr cmpCollision = objectManager->get_component(m_objectID, cmpCollision);	assert(cmpCollision != NULL);
+	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);			assert(cmpBounds != NULL);
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(m_objectID, cmpMovement);	assert(cmpMovement != NULL);
 	ICmpPosition_Ptr cmpPosition = objectManager->get_component(m_objectID, cmpPosition);		assert(cmpPosition != NULL);
 
@@ -32,10 +32,10 @@ void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const s
 
 	Vector3d source = cmpPosition->position();
 
-	int curPose = cmpCollision->pose();
+	int curPose = cmpBounds->pose();
 	int newPose = 1 - curPose;
-	int curMapIndex = cmpCollision->aabb_indices()[curPose];
-	int newMapIndex = cmpCollision->aabb_indices()[newPose];
+	int curMapIndex = cmpBounds->aabb_indices()[curPose];
+	int newMapIndex = cmpBounds->aabb_indices()[newPose];
 	const AABB3d& curAABB = objectManager->aabbs()[curMapIndex];
 	const AABB3d& newAABB = objectManager->aabbs()[newMapIndex];
 
@@ -48,8 +48,8 @@ void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const s
 	const OnionLeaf *destLeaf = tree->leaf(destLeafIndex);
 	if(destLeaf->is_solid(newMapIndex)) return;
 
-	// If the pose change is ok, set the new pose and update the entity position to reflect the centre of the new AABB.
-	cmpCollision->set_pose(newPose);
+	// If the pose change is ok, set the new pose and update the object position to reflect the centre of the new AABB.
+	cmpBounds->set_pose(newPose);
 	cmpPosition->set_position(dest);
 	cmpMovement->set_cur_nav_poly_index(-1);
 }

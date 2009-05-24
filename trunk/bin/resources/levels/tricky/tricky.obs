@@ -3,7 +3,7 @@ Objects
 	Count = 3
 	Object
 	{
-		Collision
+		AABBBounds
 		{
 			AABBs = [0,1]
 			Pose = 0
@@ -26,7 +26,7 @@ Objects
 	}
 	Object
 	{
-		Collision
+		AABBBounds
 		{
 			AABBs = [0,1]
 			Pose = 0
@@ -52,7 +52,7 @@ Objects
 	}
 	Object
 	{
-		Collision
+		AABBBounds
 		{
 			AABBs = [0,1]
 			Pose = 0

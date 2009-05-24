@@ -1,16 +1,16 @@
 /***
- * hesperus: CmpCollision.h
+ * hesperus: CmpAABBBounds.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMPCOLLISION
-#define H_HESP_CMPCOLLISION
+#ifndef H_HESP_CMPAABBBOUNDS
+#define H_HESP_CMPAABBBOUNDS
 
-#include "ICmpCollision.h"
+#include "ICmpAABBBounds.h"
 
 namespace hesp {
 
-class CmpCollision : public ICmpCollision
+class CmpAABBBounds : public ICmpAABBBounds
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -19,7 +19,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpCollision(const std::vector<int>& aabbIndices, int pose);
+	CmpAABBBounds(const std::vector<int>& aabbIndices, int pose);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

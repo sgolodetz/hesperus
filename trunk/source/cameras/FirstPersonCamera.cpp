@@ -8,7 +8,7 @@
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
-#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPosition.h>
 
@@ -27,7 +27,7 @@ bool FirstPersonCamera::is_inside_viewer() const
 
 Vector3d FirstPersonCamera::set_view() const
 {
-	ICmpCollision_Ptr cmpCollision = m_objectManager->get_component(m_viewer, cmpCollision);
+	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_viewer, cmpBounds);
 	ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(m_viewer, cmpOrientation);
 	ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(m_viewer, cmpPosition);
 
@@ -35,7 +35,7 @@ Vector3d FirstPersonCamera::set_view() const
 	const Vector3d& look = cmpOrientation->nuv_axes()->n();
 
 	// Calculate the viewer's eye position and where they're looking at.
-	const AABB3d& aabb = m_objectManager->aabbs()[cmpCollision->cur_aabb_index()];
+	const AABB3d& aabb = m_objectManager->aabbs()[cmpBounds->cur_aabb_index()];
 	Vector3d eye = pos + Vector3d(0,0,aabb.maximum().z * 0.9);
 	Vector3d at = eye + look;
 

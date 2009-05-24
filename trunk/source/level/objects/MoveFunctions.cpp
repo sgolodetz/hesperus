@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/trees/TreeUtil.h>
@@ -104,12 +104,12 @@ void MoveFunctions::move_with_navmesh(const ObjectID& objectID, const ObjectMana
 									  const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets,
 									  int milliseconds)
 {
-	ICmpCollision_Ptr cmpCollision = objectManager->get_component(objectID, cmpCollision);		assert(cmpCollision != NULL);
+	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(objectID, cmpBounds);			assert(cmpBounds != NULL);
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
 
 	Move move;
 	move.dir = dir;
-	move.mapIndex = cmpCollision->cur_aabb_index();
+	move.mapIndex = cmpBounds->cur_aabb_index();
 	move.timeRemaining = milliseconds / 1000.0;
 
 	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
@@ -135,7 +135,7 @@ bool MoveFunctions::single_move_without_navmesh(const ObjectID& objectID, const 
 {
 	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
 
-	ICmpCollision_Ptr cmpCollision = objectManager->get_component(objectID, cmpCollision);		assert(cmpCollision != NULL);
+	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(objectID, cmpBounds);			assert(cmpBounds != NULL);
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
 
 	// Check to make sure we're not currently traversing a link: don't let the object be moved if we are.
@@ -143,7 +143,7 @@ bool MoveFunctions::single_move_without_navmesh(const ObjectID& objectID, const 
 
 	Move move;
 	move.dir = dir;
-	move.mapIndex = cmpCollision->cur_aabb_index();
+	move.mapIndex = cmpBounds->cur_aabb_index();
 	move.timeRemaining = milliseconds / 1000.0;
 
 	return do_direct_move(objectID, objectManager, move, speed, tree);

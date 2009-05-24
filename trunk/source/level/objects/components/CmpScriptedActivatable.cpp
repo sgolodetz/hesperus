@@ -6,7 +6,7 @@
 #include "CmpScriptedActivatable.h"
 
 #include <source/level/objects/base/ObjectManager.h>
-#include "ICmpCollision.h"
+#include "ICmpAABBBounds.h"
 
 namespace hesp {
 
@@ -31,7 +31,7 @@ void CmpScriptedActivatable::activated_by(const ObjectID& activator)
 
 void CmpScriptedActivatable::check_dependencies() const
 {
-	check_dependency<ICmpCollision>();	// need a bounding box against which to do picking
+	check_dependency<ICmpAABBBounds>();		// need bounds against which to do picking
 }
 
 std::pair<std::string,Properties> CmpScriptedActivatable::save() const

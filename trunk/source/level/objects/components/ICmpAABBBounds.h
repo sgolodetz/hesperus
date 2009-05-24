@@ -1,10 +1,10 @@
 /***
- * hesperus: ICmpCollision.h
+ * hesperus: ICmpAABBBounds.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_ICMPCOLLISION
-#define H_HESP_ICMPCOLLISION
+#ifndef H_HESP_ICMPAABBBOUNDS
+#define H_HESP_ICMPAABBBOUNDS
 
 #include <vector>
 
@@ -12,7 +12,7 @@
 
 namespace hesp {
 
-class ICmpCollision : public IComponent
+class ICmpAABBBounds : public IComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
@@ -23,16 +23,16 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	std::string group_type() const			{ return "Collision"; }
-	static std::string static_group_type()	{ return "Collision"; }
+	std::string group_type() const			{ return "Bounds"; }
+	static std::string static_group_type()	{ return "Bounds"; }
 
-	std::string own_type() const			{ return "Collision"; }
-	static std::string static_own_type()	{ return "Collision"; }
+	std::string own_type() const			{ return "AABBBounds"; }
+	static std::string static_own_type()	{ return "AABBBounds"; }
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<ICmpCollision> ICmpCollision_Ptr;
-typedef shared_ptr<const ICmpCollision> ICmpCollision_CPtr;
+typedef shared_ptr<ICmpAABBBounds> ICmpAABBBounds_Ptr;
+typedef shared_ptr<const ICmpAABBBounds> ICmpAABBBounds_CPtr;
 
 }
 

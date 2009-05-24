@@ -6,7 +6,7 @@
 #include "CmdBipedJump.h"
 
 #include <source/level/objects/MoveFunctions.h>
-#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpPhysics.h>
 
 namespace hesp {
@@ -20,10 +20,10 @@ CmdBipedJump::CmdBipedJump(const ObjectID& objectID, const Vector3d& dir)
 void CmdBipedJump::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 						   const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	ICmpCollision_Ptr cmpCollision = objectManager->get_component(m_objectID, cmpCollision);	assert(cmpCollision != NULL);
-	ICmpPhysics_Ptr cmpPhysics = objectManager->get_component(m_objectID, cmpPhysics);			assert(cmpPhysics != NULL);
+	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);		assert(cmpBounds != NULL);
+	ICmpPhysics_Ptr cmpPhysics = objectManager->get_component(m_objectID, cmpPhysics);		assert(cmpPhysics != NULL);
 
-	int mapIndex = cmpCollision->cur_aabb_index();
+	int mapIndex = cmpBounds->cur_aabb_index();
 	NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 
 	if(MoveFunctions::attempt_navmesh_acquisition(m_objectID, objectManager, polygons, tree, navMesh))

@@ -14,7 +14,7 @@
 #include <source/cameras/FirstPersonCamera.h>
 #include <source/colours/Colour3d.h>
 #include <source/level/models/Model.h>
-#include <source/level/objects/components/ICmpCollision.h>
+#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/components/ICmpRender.h>
