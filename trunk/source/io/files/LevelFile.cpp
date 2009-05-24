@@ -194,10 +194,19 @@ ModelManager_Ptr LevelFile::load_models(const ObjectManager_Ptr& objectManager)
 	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
 		ICmpRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
-		modelManager->register_model(cmpRender->model_name());
+
+		// Note: Setting the model manager automatically registers the model inside the component with it.
+		cmpRender->set_model_manager(modelManager);
 	}
 
 	modelManager->load_all();
+
+	// Now that all the models have been loaded, set the skeletons for the animation controllers.
+	for(size_t i=0, size=animatables.size(); i<size; ++i)
+	{
+		ICmpRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		cmpRender->set_skeleton();
+	}
 
 	return modelManager;
 }

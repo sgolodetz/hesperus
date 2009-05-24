@@ -15,6 +15,7 @@ class CmpRender : public ICmpRender
 	//#################### PRIVATE VARIABLES ####################
 private:
 	AnimationController_Ptr m_animController;
+	ModelManager_Ptr m_modelManager;
 	std::string m_modelName;
 
 	//#################### CONSTRUCTORS ####################
@@ -29,8 +30,10 @@ public:
 public:
 	AnimationController_Ptr anim_controller() const;
 	void check_dependencies() const;
-	const std::string& model_name() const;
+	void render() const;
 	std::pair<std::string,Properties> save() const;
+	void set_model_manager(const ModelManager_Ptr& modelManager);
+	void set_skeleton();
 };
 
 }

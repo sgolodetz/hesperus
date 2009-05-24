@@ -7,6 +7,7 @@
 #define H_HESP_ICMPRENDER
 
 #include <source/level/models/AnimationController.h>
+#include <source/level/models/ModelManager.h>
 #include <source/level/objects/base/IComponent.h>
 
 namespace hesp {
@@ -16,7 +17,9 @@ class ICmpRender : public IComponent
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual AnimationController_Ptr anim_controller() const = 0;
-	virtual const std::string& model_name() const = 0;
+	virtual void render() const = 0;
+	virtual void set_model_manager(const ModelManager_Ptr& modelManager) = 0;
+	virtual void set_skeleton() = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
