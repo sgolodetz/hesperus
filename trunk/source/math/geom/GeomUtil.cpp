@@ -58,6 +58,35 @@ PlaneClassifier classify_point_against_plane(const Vector3d& p, const Plane& pla
 }
 
 /**
+Given the half-ray r(t) = s + tv [t >= 0] and an axis-aligned bounding box aabb, finds the points at which
+the half-ray enters and leaves aabb (if any).
+
+@param s		The start point of the half-ray
+@param v		The direction vector of the half-ray
+@param aabb		The axis-aligned bounding box
+@return			The pair of (enter,leave) points, if they exist, or boost::none otherwise
+*/
+boost::optional<std::pair<Vector3d,Vector3d> > determine_halfray_intersection_with_aabb(const Vector3d& s, const Vector3d& v, const AABB3d& aabb)
+{
+	boost::optional<std::pair<double,double> > params = determine_ray_intersection_with_aabb_parameters(s, v, aabb);
+
+	if(params)
+	{
+		double t_E = std::max(params->first, 0.0);	// clamp the entry t value (t_E) to 0
+		double t_L = params->second;
+
+		// If there's still a bit of ray which intersects the AABB (even after clamping to the forward part of it),
+		// then calculate the intersection points and return them.
+		if(t_E < t_L)
+		{
+			return std::make_pair(s + t_E * v, s + t_L * v);
+		}
+	}
+
+	return boost::none;
+}
+
+/**
 Determines the point of intersection of a line segment with another (non-vertical) line segment, if any.
 
 @param segment		The first line segment (can be arbitrary)
@@ -86,6 +115,72 @@ Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(con
 	if(dLength > wLength) return Vector3d_Ptr();					// the intersection point's beyond nvSegment.e2
 
 	return Vector3d_Ptr(new Vector3d(p));
+}
+
+/**
+Given a ray r(t) = s + tv and an axis-aligned bounding box aabb, finds the non-empty interval [t_e,t_l]
+for which the ray is inside aabb (if any).
+
+@param s		A point on the ray
+@param v		The direction vector of the ray
+@param aabb		The axis-aligned bounding box
+@return			The non-empty interval for which the ray is inside aabb, if any, or boost::none otherwise
+*/
+boost::optional<std::pair<double,double> > determine_ray_intersection_with_aabb_parameters(const Vector3d& s, const Vector3d& v, const AABB3d& aabb)
+{
+	/*
+	An AABB is the intersection of three slabs (a slab is the infinite volume between two parallel planes).
+	Ignoring special cases, we calculate the entry and leaving t values for each slab, then pick the largest
+	entry t value and smallest exit value to define the t interval during which the ray is within the slab.
+	*/
+
+	const Vector3d& mins = aabb.minimum();
+	const Vector3d& maxs = aabb.maximum();
+
+	double t_E, t_L;
+
+	if(fabs(v.x) > EPSILON)
+	{
+		double t1 = (mins.x - s.x) / v.x;	// t when ray crosses the xmin plane
+		double t2 = (maxs.x - s.x) / v.x;	// t when ray crosses the xmax plane
+		if(t1 < t2)	{ t_E = t1; t_L = t2; }
+		else		{ t_E = t2; t_L = t1; }
+	}
+	else
+	{
+		// The ray is parallel to the x slab (i.e. it lies in the y-z plane). If the ray isn't strictly inside the slab, exit early.
+		if(s.x <= mins.x || s.x >= maxs.x) return boost::none;
+	}
+
+	if(fabs(v.y) > EPSILON)
+	{
+		double t1 = (mins.y - s.y) / v.y;	// t when ray crosses the ymin plane
+		double t2 = (maxs.y - s.y) / v.y;	// t when ray crosses the ymax plane
+		if(t1 < t2)	{ if(t1 > t_E) t_E = t1; if(t2 < t_L) t_L = t2; }
+		else		{ if(t2 > t_E) t_E = t2; if(t1 < t_L) t_L = t1; }
+	}
+	else
+	{
+		// The ray is parallel to the y slab. If the ray isn't strictly inside the slab, exit early.
+		if(s.y <= mins.y || s.y >= maxs.y) return boost::none;
+	}
+
+	if(fabs(v.z) > EPSILON)
+	{
+		double t1 = (mins.z - s.z) / v.z;	// t when ray crosses the zmin plane
+		double t2 = (maxs.z - s.z) / v.z;	// t when ray crosses the zmax plane
+		if(t1 < t2)	{ if(t1 > t_E) t_E = t1; if(t2 < t_L) t_L = t2; }
+		else		{ if(t2 > t_E) t_E = t2; if(t1 < t_L) t_L = t1; }
+	}
+	else
+	{
+		// The ray is parallel to the z slab. If the ray isn't strictly inside the slab, exit early.
+		if(s.z <= mins.z || s.z >= maxs.z) return boost::none;		
+	}
+
+	// If the t interval during which the ray is within the AABB is non-empty, return it. Otherwise, return boost::none.
+	if(t_E < t_L) return std::make_pair(t_E, t_L);
+	else return boost::none;
 }
 
 /**

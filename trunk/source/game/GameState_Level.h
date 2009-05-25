@@ -33,9 +33,10 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	GUIComponent_Ptr construct_display();
+	void do_activatables(UserInput& input);
 	void do_animations(int milliseconds);
-	void do_objects(int milliseconds, UserInput& input);
 	void do_physics(int milliseconds);
+	void do_yokes(int milliseconds, UserInput& input);
 	void grab_input();
 	void ungrab_input();
 };

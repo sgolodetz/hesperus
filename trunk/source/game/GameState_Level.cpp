@@ -58,9 +58,10 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 		else grab_input();
 	}
 
-	do_objects(milliseconds, input);
+	do_yokes(milliseconds, input);
 	do_physics(milliseconds);
 	do_animations(milliseconds);
+	do_activatables(input);
 
 	return GameState_Ptr();
 }
@@ -84,6 +85,22 @@ GUIComponent_Ptr GameState_Level::construct_display()
 	return GUIComponent_Ptr(display);
 }
 
+void GameState_Level::do_activatables(UserInput& input)
+{
+	// Step 1:	Set all activatable objects to be unhighlighted.
+	// TODO
+
+	// Step 2:	Find the half-ray representing the viewer's line of sight.
+	// TODO
+
+	// Step 3:	Check all activatable objects in leaves in the PVS of the viewer's leaf and find the nearest (if any)
+	//			whose AABB is intersected by the half-ray. (If there's no such object, return.)
+	// TODO
+
+	// Step 4:	If the user is trying to activate an object, activate the nearest object. Otherwise, set it to be highlighted.
+	// TODO
+}
+
 void GameState_Level::do_animations(int milliseconds)
 {
 	// Update the model animations.
@@ -93,32 +110,6 @@ void GameState_Level::do_animations(int milliseconds)
 	{
 		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
 		cmpRender->anim_controller()->update(milliseconds);
-	}
-}
-
-void GameState_Level::do_objects(int milliseconds, UserInput& input)
-{
-	// Step 1:	Generate the desired object commands for the yokeable objects and add them to the queue.
-	const ObjectManager_Ptr& objectManager = m_level->object_manager();
-	std::vector<ObjectID> yokeables = objectManager->group("Yokeables");
-
-	std::list<ObjectCommand_Ptr> cmdQueue;	// implement the queue as a list so that we can use back_inserter below
-
-	for(size_t i=0, size=yokeables.size(); i<size; ++i)
-	{
-		ICmpYoke_Ptr cmpYoke = objectManager->get_component(yokeables[i], cmpYoke);
-		
-		// Use the object's yoke component to generate object commands.
-		std::vector<ObjectCommand_Ptr> commands = cmpYoke->generate_commands(input, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets());
-
-		// Append the object commands to the queue.
-		std::copy(commands.begin(), commands.end(), std::back_inserter(cmdQueue));
-	}
-
-	// Step 2:	Execute the object commands.
-	for(std::list<ObjectCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
-	{
-		(*it)->execute(objectManager, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
 	}
 }
 
@@ -141,6 +132,32 @@ void GameState_Level::do_physics(int milliseconds)
 			// A collision occurred, so set the velocity back to zero.
 			cmpPhysics->set_velocity(Vector3d(0,0,0));
 		}
+	}
+}
+
+void GameState_Level::do_yokes(int milliseconds, UserInput& input)
+{
+	// Step 1:	Generate the desired object commands for the yokeable objects and add them to the queue.
+	const ObjectManager_Ptr& objectManager = m_level->object_manager();
+	std::vector<ObjectID> yokeables = objectManager->group("Yokeables");
+
+	std::list<ObjectCommand_Ptr> cmdQueue;	// implement the queue as a list so that we can use back_inserter below
+
+	for(size_t i=0, size=yokeables.size(); i<size; ++i)
+	{
+		ICmpYoke_Ptr cmpYoke = objectManager->get_component(yokeables[i], cmpYoke);
+		
+		// Use the object's yoke component to generate object commands.
+		std::vector<ObjectCommand_Ptr> commands = cmpYoke->generate_commands(input, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets());
+
+		// Append the object commands to the queue.
+		std::copy(commands.begin(), commands.end(), std::back_inserter(cmdQueue));
+	}
+
+	// Step 2:	Execute the object commands.
+	for(std::list<ObjectCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
+	{
+		(*it)->execute(objectManager, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
 	}
 }
 
