@@ -27,7 +27,6 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void activated_by(const ObjectID& activator);
-	void check_dependencies() const;
 	std::pair<std::string,Properties> save() const;
 };
 

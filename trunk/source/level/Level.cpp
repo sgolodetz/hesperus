@@ -45,6 +45,34 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 }
 
 //#################### PUBLIC METHODS ####################
+const Camera_Ptr& Level::camera() const
+{
+	return m_camera;
+}
+
+/**
+Determine which leaves are potentially visible from the specified eye position.
+*/
+std::vector<int> Level::find_visible_leaves(const Vector3d& eye) const
+{
+	bool allVisible = false;
+	int curLeaf = TreeUtil::find_leaf_index(eye, m_tree);
+	if(curLeaf >= m_tree->empty_leaf_count())
+	{
+		// If we're erroneously in a solid leaf, we assume all leaves are visible (the best we can do when rendering in this case is render the entire level).
+		allVisible = true;
+	}
+
+	std::vector<int> visibleLeaves;
+	for(int i=0, size=m_leafVis->size(); i<size; ++i)
+	{
+		// TODO: View frustum culling.
+		if(allVisible || (*m_leafVis)(curLeaf,i)) visibleLeaves.push_back(i);
+	}
+
+	return visibleLeaves;
+}
+
 const std::vector<NavDataset_Ptr>& Level::nav_datasets() const
 {
 	return m_navDatasets;
@@ -79,23 +107,12 @@ void Level::render() const
 	glEnable(GL_DEPTH_TEST);
 
 	// Set the view.
-	Vector3d eye = m_camera->set_view();
+	m_camera->update();
+	Vector3d eye = m_camera->eye(), at = m_camera->at(), up = m_camera->up();
+	gluLookAt(eye.x, eye.y, eye.z, at.x, at.y, at.z, up.x, up.y, up.z);
 
 	// Determine which leaves are potentially visible from the current viewer position.
-	bool renderAllLeaves = false;
-	int curLeaf = TreeUtil::find_leaf_index(eye, m_tree);
-	if(curLeaf >= m_tree->empty_leaf_count())
-	{
-		// If we're erroneously in a solid leaf, the best we can do is render the entire level.
-		renderAllLeaves = true;
-	}
-
-	std::vector<int> visibleLeaves;
-	for(int i=0, size=m_leafVis->size(); i<size; ++i)
-	{
-		// TODO: View frustum culling.
-		if(renderAllLeaves || (*m_leafVis)(curLeaf,i)) visibleLeaves.push_back(i);
-	}
+	std::vector<int> visibleLeaves = find_visible_leaves(eye);
 
 	// Make a list of all the polygons which need rendering and pass them to the renderer.
 	std::vector<int> polyIndices;

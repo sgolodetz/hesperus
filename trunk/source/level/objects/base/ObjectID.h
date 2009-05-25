@@ -24,6 +24,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	std::string to_string() const;
+	bool valid() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

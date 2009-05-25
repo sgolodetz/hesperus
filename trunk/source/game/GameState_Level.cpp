@@ -16,10 +16,13 @@
 #include <source/gui/Screen.h>
 #include <source/io/files/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
+#include <source/math/geom/GeomUtil.h>
 #include <source/level/LevelViewer.h>
 #include <source/level/objects/base/ObjectCommand.h>
+#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpPhysics.h>
+#include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/MoveFunctions.h>
 namespace bf = boost::filesystem;
@@ -87,18 +90,58 @@ GUIComponent_Ptr GameState_Level::construct_display()
 
 void GameState_Level::do_activatables(UserInput& input)
 {
-	// Step 1:	Set all activatable objects to be unhighlighted.
-	// TODO
+	// Step 1:	Set all activatable objects to be unhighlighted when rendered.
+	const ObjectManager_Ptr& objectManager = m_level->object_manager();
+	std::vector<ObjectID> activatables = objectManager->group("Activatables");
+	for(size_t i=0, size=activatables.size(); i<size; ++i)
+	{
+		ICmpModelRender_Ptr cmpRender = objectManager->get_component(activatables[i], cmpRender);
+		cmpRender->set_highlights(false);
+	}
 
 	// Step 2:	Find the half-ray representing the viewer's line of sight.
-	// TODO
+	Camera_Ptr camera = m_level->camera();
+	camera->update();
+	Vector3d eye = camera->eye(), look = camera->look();
 
-	// Step 3:	Check all activatable objects in leaves in the PVS of the viewer's leaf and find the nearest (if any)
+	// Step 3:	Check all activatable objects in leaves in the PVS of the viewer's leaf and find the nearest within range (if any)
 	//			whose AABB is intersected by the half-ray. (If there's no such object, return.)
-	// TODO
+	ObjectID nearestObject;
+	double nearestDistSquared = INT_MAX;
+
+	std::vector<int> visibleLeaves = m_level->find_visible_leaves(eye);
+	for(size_t i=0, size=activatables.size(); i<size; ++i)
+	{
+		// TODO: Determine whether the activatable is in a visible leaf and skip further testing if so.
+
+		ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(activatables[i], cmpBounds);
+		ICmpPosition_Ptr cmpPosition = objectManager->get_component(activatables[i], cmpPosition);
+
+		const AABB3d& aabb = objectManager->aabbs()[cmpBounds->cur_aabb_index()];
+		const Vector3d& position = cmpPosition->position();
+		AABB3d tAABB = aabb.translate(position);
+		boost::optional<std::pair<Vector3d,Vector3d> > result = determine_halfray_intersection_with_aabb(eye, look, tAABB);
+		if(result)
+		{
+			Vector3d hit = result->first;
+			double distSquared = eye.distance_squared(hit);
+			if(distSquared < nearestDistSquared)
+			{
+				nearestObject = activatables[i];
+				nearestDistSquared = distSquared;
+			}
+		}
+	}
+
+	const double RANGE = 3.0;
+	if(!nearestObject.valid() || nearestDistSquared > RANGE*RANGE) return;
 
 	// Step 4:	If the user is trying to activate an object, activate the nearest object. Otherwise, set it to be highlighted.
-	// TODO
+
+	// TODO: Check whether the user is trying to activate the object.
+
+	ICmpModelRender_Ptr cmpRender = objectManager->get_component(nearestObject, cmpRender);
+	cmpRender->set_highlights(true);
 }
 
 void GameState_Level::do_animations(int milliseconds)

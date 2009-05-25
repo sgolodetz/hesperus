@@ -18,14 +18,20 @@ private:
 	ObjectID m_viewer;
 	ObjectManager_Ptr m_objectManager;
 
+	Vector3d m_at, m_eye, m_look;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	FirstPersonCamera(const ObjectID& viewer, const ObjectManager_Ptr& objectManager);
 
 	//#################### PUBLIC METHODS ####################
 public:
+	Vector3d at() const;
+	Vector3d eye() const;
 	bool is_inside_viewer() const;
-	Vector3d set_view() const;
+	Vector3d look() const;
+	Vector3d up() const;
+	void update();
 };
 
 }

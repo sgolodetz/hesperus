@@ -18,6 +18,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void check_dependencies() const;
+
 	std::string group_type() const			{ return "Activatable"; }
 	static std::string static_group_type()	{ return "Activatable"; }
 

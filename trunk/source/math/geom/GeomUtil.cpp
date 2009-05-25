@@ -137,7 +137,7 @@ boost::optional<std::pair<double,double> > determine_ray_intersection_with_aabb_
 	const Vector3d& mins = aabb.minimum();
 	const Vector3d& maxs = aabb.maximum();
 
-	double t_E, t_L;
+	double t_E = INT_MIN, t_L = INT_MAX;
 
 	if(fabs(v.x) > EPSILON)
 	{

@@ -24,6 +24,11 @@ std::string ObjectID::to_string() const
 	return boost::lexical_cast<std::string,int>(m_id);
 }
 
+bool ObjectID::valid() const
+{
+	return m_id != -1;
+}
+
 //#################### PRIVATE METHODS ####################
 int ObjectID::value() const
 {

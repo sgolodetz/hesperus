@@ -1307,6 +1307,10 @@
 								RelativePath="..\level\objects\components\CmpScriptedActivatable.cpp"
 								>
 							</File>
+							<File
+								RelativePath="..\level\objects\components\ICmpActivatable.cpp"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name=".h"

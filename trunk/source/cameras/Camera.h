@@ -21,12 +21,12 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual Vector3d at() const = 0;
+	virtual Vector3d eye() const = 0;
 	virtual bool is_inside_viewer() const = 0;
-
-	/**
-	@return	The calculated "eye" position of the camera
-	*/
-	virtual Vector3d set_view() const = 0;
+	virtual Vector3d look() const = 0;
+	virtual Vector3d up() const = 0;
+	virtual void update() = 0;
 };
 
 //#################### TYPEDEFS ####################

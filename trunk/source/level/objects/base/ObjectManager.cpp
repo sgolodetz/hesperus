@@ -5,6 +5,7 @@
 
 #include "ObjectManager.h"
 
+#include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpYoke.h>
@@ -16,6 +17,7 @@ namespace hesp {
 ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 :	m_aabbs(aabbs), m_componentPropertyTypes(componentPropertyTypes)
 {
+	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
 	register_group("Renderables", is_renderable);
 	register_group("Simulables", is_simulable);
@@ -132,6 +134,11 @@ ObjectID ObjectManager::viewer() const
 }
 
 //#################### PRIVATE METHODS ####################
+bool ObjectManager::is_activatable(const ObjectID& objectID, const ObjectManager *objectManager)
+{
+	return objectManager->get_component<ICmpActivatable>(objectID) != NULL;
+}
+
 bool ObjectManager::is_animatable(const ObjectID& objectID, const ObjectManager *objectManager)
 {
 	return objectManager->get_component<ICmpModelRender>(objectID) != NULL;

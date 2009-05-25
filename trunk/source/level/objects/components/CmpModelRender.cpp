@@ -14,7 +14,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 CmpModelRender::CmpModelRender(const std::string& modelName)
-:	m_modelName(modelName), m_animController(new AnimationController)
+:	m_modelName(modelName), m_animController(new AnimationController), m_highlights(false)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
@@ -73,7 +73,7 @@ void CmpModelRender::render() const
 
 	// Render the object's AABB (if any).
 	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);
-	if(cmpBounds)
+	if(cmpBounds && m_highlights)
 	{
 		const AABB3d& aabb = m_objectManager->aabbs()[cmpBounds->cur_aabb_index()];
 		AABB3d tAABB = aabb.translate(p);
@@ -130,6 +130,11 @@ std::pair<std::string,Properties> CmpModelRender::save() const
 	Properties properties;
 	properties.set_actual("ModelName", m_modelName);
 	return std::make_pair("ModelRender", properties);
+}
+
+void CmpModelRender::set_highlights(bool enabled)
+{
+	m_highlights = enabled;
 }
 
 void CmpModelRender::set_model_manager(const ModelManager_Ptr& modelManager)
