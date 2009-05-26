@@ -20,6 +20,7 @@
 #include <source/level/LevelViewer.h>
 #include <source/level/objects/base/ObjectCommand.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
+#include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpPosition.h>
@@ -137,11 +138,16 @@ void GameState_Level::do_activatables(UserInput& input)
 	if(!nearestObject.valid() || nearestDistSquared > RANGE*RANGE) return;
 
 	// Step 4:	If the user is trying to activate an object, activate the nearest object. Otherwise, set it to be highlighted.
-
-	// TODO: Check whether the user is trying to activate the object.
-
-	ICmpModelRender_Ptr cmpRender = objectManager->get_component(nearestObject, cmpRender);
-	cmpRender->set_highlights(true);
+	if(input.mouse_button_down(UserInput::BUTTON_RIGHT))
+	{
+		ICmpActivatable_Ptr cmpActivatable = objectManager->get_component(nearestObject, cmpActivatable);
+		cmpActivatable->activated_by(objectManager->viewer());
+	}
+	else
+	{
+		ICmpModelRender_Ptr cmpRender = objectManager->get_component(nearestObject, cmpRender);
+		cmpRender->set_highlights(true);
+	}
 }
 
 void GameState_Level::do_animations(int milliseconds)

@@ -35,6 +35,8 @@ public:
 private:
 	void handle_key_down(const SDL_keysym& keysym);
 	void handle_key_up(const SDL_keysym& keysym);
+	void handle_mousebutton_down(const SDL_MouseButtonEvent& e);
+	void handle_mousebutton_up(const SDL_MouseButtonEvent& e);
 	void process_events();
 	void quit(int code);
 	void quit_with_error(const std::string& error);

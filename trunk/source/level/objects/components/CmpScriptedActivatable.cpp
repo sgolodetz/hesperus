@@ -5,6 +5,9 @@
 
 #include "CmpScriptedActivatable.h"
 
+// TEMPORARY
+#include <iostream>
+
 #include <source/level/objects/base/ObjectManager.h>
 
 namespace hesp {
@@ -25,7 +28,8 @@ IComponent_Ptr CmpScriptedActivatable::load(const Properties& properties)
 //#################### PUBLIC METHODS ####################
 void CmpScriptedActivatable::activated_by(const ObjectID& activator)
 {
-	// TODO
+	// TEMPORARY
+	std::cout << "Object " << m_objectID.to_string() << " activated by object " << activator.to_string() << std::endl;
 }
 
 std::pair<std::string,Properties> CmpScriptedActivatable::save() const

@@ -19,6 +19,11 @@ bool UserInput::key_down(SDLKey key) const
 	return m_keyDown[key];
 }
 
+bool UserInput::mouse_button_down(MouseButton button) const
+{
+	return m_mouseButtonDown[button];
+}
+
 int UserInput::mouse_motion_x() const
 {
 	return m_mouseMotionX;
@@ -34,14 +39,25 @@ void UserInput::press_key(SDLKey key)
 	m_keyDown[key] = true;
 }
 
+void UserInput::press_mouse_button(MouseButton button)
+{
+	m_mouseButtonDown[button] = true;
+}
+
 void UserInput::release_key(SDLKey key)
 {
 	m_keyDown[key] = false;
 }
 
+void UserInput::release_mouse_button(MouseButton button)
+{
+	m_mouseButtonDown[button] = false;
+}
+
 void UserInput::reset()
 {
 	m_keyDown = boost::dynamic_bitset<>(SDLK_LAST, false);
+	m_mouseButtonDown = boost::dynamic_bitset<>(BUTTON_LAST, false);
 	set_mouse_motion(0, 0);
 }
 

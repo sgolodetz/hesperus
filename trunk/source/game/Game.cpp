@@ -125,6 +125,42 @@ void Game::handle_key_up(const SDL_keysym& keysym)
 	m_input.release_key(keysym.sym);
 }
 
+void Game::handle_mousebutton_down(const SDL_MouseButtonEvent& e)
+{
+	switch(e.button)
+	{
+		case SDL_BUTTON_LEFT:
+			m_input.press_mouse_button(UserInput::BUTTON_LEFT);
+			break;
+		case SDL_BUTTON_MIDDLE:
+			m_input.press_mouse_button(UserInput::BUTTON_MIDDLE);
+			break;
+		case SDL_BUTTON_RIGHT:
+			m_input.press_mouse_button(UserInput::BUTTON_RIGHT);
+			break;
+		default:
+			break;
+	}
+}
+
+void Game::handle_mousebutton_up(const SDL_MouseButtonEvent& e)
+{
+	switch(e.button)
+	{
+		case SDL_BUTTON_LEFT:
+			m_input.release_mouse_button(UserInput::BUTTON_LEFT);
+			break;
+		case SDL_BUTTON_MIDDLE:
+			m_input.release_mouse_button(UserInput::BUTTON_MIDDLE);
+			break;
+		case SDL_BUTTON_RIGHT:
+			m_input.release_mouse_button(UserInput::BUTTON_RIGHT);
+			break;
+		default:
+			break;
+	}
+}
+
 void Game::process_events()
 {
 	SDL_Event event;
@@ -137,6 +173,12 @@ void Game::process_events()
 				break;
 			case SDL_KEYUP:
 				handle_key_up(event.key.keysym);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				handle_mousebutton_down(event.button);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				handle_mousebutton_up(event.button);
 				break;
 			case SDL_MOUSEMOTION:
 				m_input.set_mouse_motion(event.motion.xrel, event.motion.yrel);
