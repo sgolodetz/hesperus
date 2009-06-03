@@ -36,6 +36,11 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
+		Inventory
+		{
+			Consumables = []
+			Objects = []
+		}
 		MeshMovement;
 		MinimusScriptYoke
 		{

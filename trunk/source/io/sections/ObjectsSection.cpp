@@ -119,12 +119,12 @@ std::vector<IComponent_Ptr> ObjectsSection::load_object(std::istream& is, const 
 				// FIXME: It's better to parse the type and call an appropriate function here.
 				try
 				{
-					if(type == "double")				properties.set_actual(name, lexical_cast<double,std::string>(value));
-					else if(type == "int")				properties.set_actual(name, lexical_cast<int,std::string>(value));
-					else if(type == "string")			properties.set_actual(name, value);
-					else if(type == "Vector3d")			properties.set_actual(name, lexical_cast<Vector3d,std::string>(value));
-					else if(type == "[int]")			properties.set_actual(name, string_to_intarray(value));
-					else if(type == "->(string,int)")	properties.set_actual(name, string_to_stringintmap(value));
+					if(type == "double")				properties.set(name, lexical_cast<double,std::string>(value));
+					else if(type == "int")				properties.set(name, lexical_cast<int,std::string>(value));
+					else if(type == "string")			properties.set(name, value);
+					else if(type == "Vector3d")			properties.set(name, lexical_cast<Vector3d,std::string>(value));
+					else if(type == "[int]")			properties.set(name, string_to_intarray(value));
+					else if(type == "->(string,int)")	properties.set(name, string_to_stringintmap(value));
 					else throw Exception("The type " + type + " is not currently supported");
 				}
 				catch(bad_lexical_cast&)
@@ -135,8 +135,8 @@ std::vector<IComponent_Ptr> ObjectsSection::load_object(std::istream& is, const 
 		}
 
 		// Add the AI engine and base directory as properties (they're needed by some of the components, e.g. yokes).
-		properties.set_actual("AIEngine", aiEngine);
-		properties.set_actual("BaseDir", baseDir);
+		properties.set("AIEngine", aiEngine);
+		properties.set("BaseDir", baseDir);
 
 		components.push_back(invoke_component_loader(componentName, properties));
 	}
@@ -249,12 +249,12 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IComponent_
 				os << "\t\t\t";
 
 				// FIXME: It's better to parse the type and call an appropriate function here.
-				if(type == "double")				FieldIO::write_typed_field(os, name, properties.get_actual<double>(name));
-				else if(type == "int")				FieldIO::write_typed_field(os, name, properties.get_actual<int>(name));
-				else if(type == "string")			FieldIO::write_typed_field(os, name, properties.get_actual<std::string>(name));
-				else if(type == "Vector3d")			FieldIO::write_typed_field(os, name, properties.get_actual<Vector3d>(name));
-				else if(type == "[int]")			FieldIO::write_typed_field(os, name, intarray_to_string(properties.get_actual<std::vector<int> >(name)));
-				else if(type == "->(string,int)")	FieldIO::write_typed_field(os, name, stringintmap_to_string(properties.get_actual<std::map<std::string,int> >(name)));
+				if(type == "double")				FieldIO::write_typed_field(os, name, properties.get<double>(name));
+				else if(type == "int")				FieldIO::write_typed_field(os, name, properties.get<int>(name));
+				else if(type == "string")			FieldIO::write_typed_field(os, name, properties.get<std::string>(name));
+				else if(type == "Vector3d")			FieldIO::write_typed_field(os, name, properties.get<Vector3d>(name));
+				else if(type == "[int]")			FieldIO::write_typed_field(os, name, intarray_to_string(properties.get<std::vector<int> >(name)));
+				else if(type == "->(string,int)")	FieldIO::write_typed_field(os, name, stringintmap_to_string(properties.get<std::map<std::string,int> >(name)));
 				else throw Exception("The type " + type + " is not currently supported");
 			}
 			os << "\t\t}\n";

@@ -15,7 +15,7 @@ CmpPosition::CmpPosition(const Vector3d& position)
 //#################### STATIC FACTORY METHODS ####################
 IComponent_Ptr CmpPosition::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpPosition(properties.get_actual<Vector3d>("Position")));
+	return IComponent_Ptr(new CmpPosition(properties.get<Vector3d>("Position")));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -27,7 +27,7 @@ const Vector3d& CmpPosition::position() const
 std::pair<std::string,Properties> CmpPosition::save() const
 {
 	Properties properties;
-	properties.set_actual("Position", m_position);
+	properties.set("Position", m_position);
 	return std::make_pair("Position", properties);
 }
 

@@ -24,14 +24,14 @@ CmpInventory::CmpInventory(const std::set<ObjectID>& objects, const std::map<std
 IComponent_Ptr CmpInventory::load(const Properties& properties)
 {
 	// Convert the [int] of objects stored in the properties into a set of object IDs.
-	const std::vector<int>& propObjects = properties.get_actual<std::vector<int> >("Objects");
+	const std::vector<int>& propObjects = properties.get<std::vector<int> >("Objects");
 	std::set<ObjectID> objects;
 	for(std::vector<int>::const_iterator it=propObjects.begin(), iend=propObjects.end(); it!=iend; ++it)
 	{
 		objects.insert(ObjectID(*it));
 	}
 
-	return IComponent_Ptr(new CmpInventory(objects, properties.get_actual<std::map<std::string,int> >("Consumables")));
+	return IComponent_Ptr(new CmpInventory(objects, properties.get<std::map<std::string,int> >("Consumables")));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -94,8 +94,8 @@ std::pair<std::string,Properties> CmpInventory::save() const
 		propObjects.push_back(it->value());
 	}
 
-	properties.set_actual("Objects", propObjects);
-	properties.set_actual("Consumables", m_consumables);
+	properties.set("Objects", propObjects);
+	properties.set("Consumables", m_consumables);
 
 	return std::make_pair("Inventory", properties);
 }

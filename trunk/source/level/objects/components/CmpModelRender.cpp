@@ -20,7 +20,7 @@ CmpModelRender::CmpModelRender(const std::string& modelName)
 //#################### STATIC FACTORY METHODS ####################
 IComponent_Ptr CmpModelRender::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpModelRender(properties.get_actual<std::string>("ModelName")));
+	return IComponent_Ptr(new CmpModelRender(properties.get<std::string>("ModelName")));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -128,7 +128,7 @@ void CmpModelRender::render() const
 std::pair<std::string,Properties> CmpModelRender::save() const
 {
 	Properties properties;
-	properties.set_actual("ModelName", m_modelName);
+	properties.set("ModelName", m_modelName);
 	return std::make_pair("ModelRender", properties);
 }
 
