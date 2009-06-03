@@ -12,6 +12,7 @@ Easy
 * Add verbose modes for tools (particularly hvis, where it's helpful to see current progress).
 * Sort out the mess of functions in FieldIO.
 * Ensure the object ID of the viewer is loaded in from the objects file, rather than hard-coded.
+* Sort out the cyclic dependency between IComponent and ObjectManager.
 
 ------
 Medium

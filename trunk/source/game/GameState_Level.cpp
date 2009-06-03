@@ -100,7 +100,9 @@ void GameState_Level::do_activatables(UserInput& input)
 		cmpRender->set_highlights(false);
 	}
 
-	// Step 2:	Find the half-ray representing the viewer's line of sight.
+	// Step 2:	Find the half-ray representing the player's line of sight.
+
+	// FIXME: This only works when the camera is attached to the player.
 	Camera_Ptr camera = m_level->camera();
 	camera->update();
 	Vector3d eye = camera->eye(), look = camera->look();
@@ -137,11 +139,11 @@ void GameState_Level::do_activatables(UserInput& input)
 	const double RANGE = 3.0;
 	if(!nearestObject.valid() || nearestDistSquared > RANGE*RANGE) return;
 
-	// Step 4:	If the user is trying to activate an object, activate the nearest object. Otherwise, set it to be highlighted.
+	// Step 4:	If the player is trying to activate an object, activate the nearest object. Otherwise, set it to be highlighted.
 	if(input.mouse_button_down(UserInput::BUTTON_RIGHT))
 	{
 		ICmpActivatable_Ptr cmpActivatable = objectManager->get_component(nearestObject, cmpActivatable);
-		cmpActivatable->activated_by(objectManager->viewer());
+		cmpActivatable->activated_by(objectManager->player());
 	}
 	else
 	{

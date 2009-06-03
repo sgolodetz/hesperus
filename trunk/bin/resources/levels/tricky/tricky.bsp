@@ -889,6 +889,11 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
+		Inventory
+		{
+			Consumables = []
+			Objects = []
+		}
 		MeshMovement;
 		Orientation
 		{
@@ -933,10 +938,7 @@ Objects
 	}
 	Object
 	{
-		ScriptedActivatable
-		{
-			Script = medkit
-		}
+		ItemActivatable;
 		AABBBounds
 		{
 			AABBs = [0,1]
@@ -946,6 +948,10 @@ Objects
 		{
 			Look = ( 0 1 0 )
 		}
+		Ownable
+		{
+			Owner = -1
+		}
 		Position
 		{
 			Position = ( 8 15 6 )
@@ -953,6 +959,11 @@ Objects
 		ModelRender
 		{
 			ModelName = Test-15
+		}
+		Usable
+		{
+			Group = Pistol
+			Script = testweapon-use
 		}
 	}
 }

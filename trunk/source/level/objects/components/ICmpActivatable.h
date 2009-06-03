@@ -10,6 +10,9 @@
 
 namespace hesp {
 
+/**
+Objects with an ICmpActivatable component can be activated by other objects.
+*/
 class ICmpActivatable : public IComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################

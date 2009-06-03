@@ -8,6 +8,11 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
+		Inventory
+		{
+			Consumables = []
+			Objects = []
+		}
 		MeshMovement;
 		ModelRender
 		{
@@ -57,6 +62,7 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
+		ItemActivatable;
 		ModelRender
 		{
 			ModelName = Test-15
@@ -65,13 +71,18 @@ Objects
 		{
 			Look = ( 0 1 0 )
 		}
+		Ownable
+		{
+			Owner = -1
+		}
 		Position
 		{
 			Position = ( 8 15 6 )
 		}
-		ScriptedActivatable
+		Usable
 		{
-			Script = medkit
+			Group = Pistol
+			Script = testweapon-use
 		}
 	}
 }

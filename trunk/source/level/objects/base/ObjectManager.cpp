@@ -115,6 +115,12 @@ int ObjectManager::object_count() const
 	return static_cast<int>(m_objects.size());
 }
 
+ObjectID ObjectManager::player() const
+{
+	// FIXME: The object ID of the player should be loaded in, not hard-coded like this.
+	return ObjectID(0);
+}
+
 void ObjectManager::post_immediate_message(const ObjectID& target, const Message_CPtr& msg)
 {
 	std::map<ObjectID,Object>::iterator it = m_objects.find(target);
@@ -125,12 +131,6 @@ void ObjectManager::post_immediate_message(const ObjectID& target, const Message
 void ObjectManager::register_group(const std::string& name, const GroupPredicate& pred)
 {
 	m_groupPredicates[name] = pred;
-}
-
-ObjectID ObjectManager::viewer() const
-{
-	// FIXME: The object ID of the viewer should be loaded in, not hard-coded like this.
-	return ObjectID(0);
 }
 
 //#################### PRIVATE METHODS ####################

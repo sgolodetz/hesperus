@@ -23,7 +23,7 @@ public:
 public:
 	virtual Vector3d at() const = 0;
 	virtual Vector3d eye() const = 0;
-	virtual bool is_inside_viewer() const = 0;
+	virtual bool is_inside_player() const = 0;
 	virtual Vector3d look() const = 0;
 	virtual Vector3d up() const = 0;
 	virtual void update() = 0;

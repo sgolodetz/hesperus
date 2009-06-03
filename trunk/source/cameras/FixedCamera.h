@@ -24,7 +24,7 @@ public:
 public:
 	Vector3d at() const;
 	Vector3d eye() const;
-	bool is_inside_viewer() const;
+	bool is_inside_player() const;
 	Vector3d look() const;
 	Vector3d up() const;
 	void update();

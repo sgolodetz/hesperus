@@ -41,7 +41,7 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 	}
 
 	// Set up the camera.
-	m_camera.reset(new FirstPersonCamera(m_objectManager->viewer(), m_objectManager));
+	m_camera.reset(new FirstPersonCamera(m_objectManager->player(), m_objectManager));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -203,7 +203,7 @@ void Level::render_objects() const
 	for(size_t i=0, size=renderables.size(); i<size; ++i)
 	{
 		const ObjectID& renderable = renderables[i];
-		if(renderable != m_objectManager->viewer() || !m_camera->is_inside_viewer())
+		if(renderable != m_objectManager->player() || !m_camera->is_inside_player())
 		{
 			// FIXME: For performance reasons, we should only be rendering objects which are potentially visible.
 			ICmpRender_Ptr cmpRender = m_objectManager->get_component(renderable, cmpRender);

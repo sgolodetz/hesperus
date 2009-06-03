@@ -27,7 +27,7 @@ public:
 	//#################### PROTECTED METHODS ####################
 protected:
 	template <typename MessageType>
-	void dynamic_dispatch(MessageHandlerBase *handler, const MessageType *self) const
+	static void dynamic_dispatch(MessageHandlerBase *handler, const MessageType *self)
 	{
 		MessageHandler<MessageType> *msgHandler = dynamic_cast<MessageHandler<MessageType>*>(handler);
 		if(msgHandler) msgHandler->process_message(self);

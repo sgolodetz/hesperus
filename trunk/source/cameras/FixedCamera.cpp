@@ -23,7 +23,7 @@ Vector3d FixedCamera::eye() const
 	return m_eye;
 }
 
-bool FixedCamera::is_inside_viewer() const
+bool FixedCamera::is_inside_player() const
 {
 	return false;
 }

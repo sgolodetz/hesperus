@@ -16,6 +16,11 @@
 				<property name="Pose" type="int"/>
 			</component>
 			<component name="DirectMovement"/>
+			<component name="Inventory">
+				<property name="Consumables" type="->(string,int)"/>
+				<property name="Objects" type="[int]"/>
+			</component>
+			<component name="ItemActivatable"/>
 			<component name="MeshMovement"/>
 			<component name="MinimusScriptYoke">
 				<property name="Script" type="string"/>
@@ -26,11 +31,15 @@
 			<component name="Orientation">
 				<property name="Look" type="Vector3d"/>
 			</component>
+			<component name="Ownable">
+				<property name="Owner" type="int"/>
+			</component>
 			<component name="Physics"/>
 			<component name="Position">
 				<property name="Position" type="Vector3d"/>
 			</component>
-			<component name="ScriptedActivatable">
+			<component name="Usable">
+				<property name="Group" type="string"/>
 				<property name="Script" type="string"/>
 			</component>
 			<component name="UserBipedYoke"/>
@@ -40,6 +49,10 @@
 				<component name="AABBBounds">
 					<property name="AABBs" fixed="[stand,crouch]"/>
 					<property name="Pose" default="0"/>
+				</component>
+				<component name="Inventory">
+					<property name="Consumables" default="[]"/>
+					<property name="Objects" default="[]"/>
 				</component>
 				<component name="MeshMovement"/>
 				<component name="MinimusScriptYoke"/>
@@ -54,6 +67,10 @@
 				<component name="AABBBounds">
 					<property name="AABBs" fixed="[stand,crouch]"/>
 					<property name="Pose" default="0"/>
+				</component>
+				<component name="Inventory">
+					<property name="Consumables" default="[]"/>
+					<property name="Objects" default="[]"/>
 				</component>
 				<component name="MeshMovement"/>
 				<component name="ModelRender">

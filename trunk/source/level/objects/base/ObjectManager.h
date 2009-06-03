@@ -56,13 +56,13 @@ public:
 	std::vector<IComponent_Ptr> get_components(const ObjectID& id);
 	std::vector<ObjectID> group(const std::string& name) const;
 	int object_count() const;
+	ObjectID player() const;
 #if 0
 	void post_delayed_message(const ObjectID& target, message)
 #endif
 	void post_immediate_message(const ObjectID& target, const Message_CPtr& msg);
 	void register_group(const std::string& name, const GroupPredicate& pred);
 	template <typename T> void set_component(const ObjectID& id, const shared_ptr<T>& component);
-	ObjectID viewer() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

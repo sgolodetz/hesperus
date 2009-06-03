@@ -27,7 +27,7 @@ Vector3d FirstPersonCamera::eye() const
 	return m_eye;
 }
 
-bool FirstPersonCamera::is_inside_viewer() const
+bool FirstPersonCamera::is_inside_player() const
 {
 	return true;
 }

@@ -1304,7 +1304,7 @@
 							Name=".cpp"
 							>
 							<File
-								RelativePath="..\level\objects\components\CmpScriptedActivatable.cpp"
+								RelativePath="..\level\objects\components\CmpItemActivatable.cpp"
 								>
 							</File>
 							<File
@@ -1316,7 +1316,7 @@
 							Name=".h"
 							>
 							<File
-								RelativePath="..\level\objects\components\CmpScriptedActivatable.h"
+								RelativePath="..\level\objects\components\CmpItemActivatable.h"
 								>
 							</File>
 							<File
@@ -1513,6 +1513,78 @@
 							</File>
 							<File
 								RelativePath="..\level\objects\components\ICmpYoke.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="&lt;Ownable&gt;"
+						>
+						<Filter
+							Name=".cpp"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpOwnable.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpOwnable.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\ICmpOwnable.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="&lt;Inventory&gt;"
+						>
+						<Filter
+							Name=".cpp"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpInventory.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpInventory.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\ICmpInventory.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="&lt;Usable&gt;"
+						>
+						<Filter
+							Name=".cpp"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpUsable.cpp"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\CmpUsable.h"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
+							>
+							<File
+								RelativePath="..\level\objects\components\ICmpUsable.h"
 								>
 							</File>
 						</Filter>

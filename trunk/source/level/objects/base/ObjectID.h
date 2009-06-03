@@ -25,18 +25,11 @@ public:
 public:
 	std::string to_string() const;
 	bool valid() const;
-
-	//#################### PRIVATE METHODS ####################
-private:
 	int value() const;
-
-	//#################### FRIENDS ####################
-	friend class ObjectManager;
-	friend bool operator!=(const ObjectID& lhs, const ObjectID& rhs);
-	friend bool operator<(const ObjectID& lhs, const ObjectID& rhs);
 };
 
 //#################### GLOBAL OPERATORS ####################
+bool operator==(const ObjectID& lhs, const ObjectID& rhs);
 bool operator!=(const ObjectID& lhs, const ObjectID& rhs);
 bool operator<(const ObjectID& lhs, const ObjectID& rhs);
 
