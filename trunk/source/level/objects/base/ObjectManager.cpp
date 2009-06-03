@@ -7,6 +7,7 @@
 
 #include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpModelRender.h>
+#include <source/level/objects/components/ICmpOwnable.h>
 #include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
@@ -134,29 +135,35 @@ void ObjectManager::register_group(const std::string& name, const GroupPredicate
 }
 
 //#################### PRIVATE METHODS ####################
+bool ObjectManager::has_owner(const ObjectID& objectID, const ObjectManager *objectManager)
+{
+	ICmpOwnable_CPtr cmpOwnable = objectManager->get_component(objectID, cmpOwnable);
+	return cmpOwnable && cmpOwnable->owner().valid();
+}
+
 bool ObjectManager::is_activatable(const ObjectID& objectID, const ObjectManager *objectManager)
 {
-	return objectManager->get_component<ICmpActivatable>(objectID) != NULL;
+	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpActivatable>(objectID) != NULL;
 }
 
 bool ObjectManager::is_animatable(const ObjectID& objectID, const ObjectManager *objectManager)
 {
-	return objectManager->get_component<ICmpModelRender>(objectID) != NULL;
+	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpModelRender>(objectID) != NULL;
 }
 
 bool ObjectManager::is_renderable(const ObjectID& objectID, const ObjectManager *objectManager)
 {
-	return objectManager->get_component<ICmpRender>(objectID) != NULL;
+	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpRender>(objectID) != NULL;
 }
 
 bool ObjectManager::is_simulable(const ObjectID& objectID, const ObjectManager *objectManager)
 {
-	return objectManager->get_component<ICmpPhysics>(objectID) != NULL;
+	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpPhysics>(objectID) != NULL;
 }
 
 bool ObjectManager::is_yokeable(const ObjectID& objectID, const ObjectManager *objectManager)
 {
-	return objectManager->get_component<ICmpYoke>(objectID) != NULL;
+	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpYoke>(objectID) != NULL;
 }
 
 void ObjectManager::post_message_to_object(Object& target, const Message_CPtr& msg)

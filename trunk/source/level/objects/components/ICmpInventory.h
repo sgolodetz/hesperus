@@ -31,6 +31,10 @@ public:
 	static std::string static_own_type()	{ return "Inventory"; }
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<ICmpInventory> ICmpInventory_Ptr;
+typedef shared_ptr<const ICmpInventory> ICmpInventory_CPtr;
+
 }
 
 #endif

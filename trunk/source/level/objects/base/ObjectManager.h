@@ -66,6 +66,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	static bool has_owner(const ObjectID& objectID, const ObjectManager *objectManager);
 	static bool is_activatable(const ObjectID& objectID, const ObjectManager *objectManager);
 	static bool is_animatable(const ObjectID& objectID, const ObjectManager *objectManager);
 	static bool is_renderable(const ObjectID& objectID, const ObjectManager *objectManager);

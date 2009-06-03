@@ -30,6 +30,10 @@ public:
 	static std::string static_own_type()	{ return "Ownable"; }
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<ICmpOwnable> ICmpOwnable_Ptr;
+typedef shared_ptr<const ICmpOwnable> ICmpOwnable_CPtr;
+
 }
 
 #endif

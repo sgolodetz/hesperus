@@ -25,9 +25,6 @@ public:
 
 	std::string group_type() const			{ return "Activatable"; }
 	static std::string static_group_type()	{ return "Activatable"; }
-
-	std::string own_type() const			{ return "Activatable"; }
-	static std::string static_own_type()	{ return "Activatable"; }
 };
 
 //#################### TYPEDEFS ####################

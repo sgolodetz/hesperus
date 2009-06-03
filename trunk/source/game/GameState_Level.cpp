@@ -144,6 +144,7 @@ void GameState_Level::do_activatables(UserInput& input)
 	{
 		ICmpActivatable_Ptr cmpActivatable = objectManager->get_component(nearestObject, cmpActivatable);
 		cmpActivatable->activated_by(objectManager->player());
+		input.release_mouse_button(UserInput::BUTTON_RIGHT);
 	}
 	else
 	{
