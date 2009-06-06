@@ -1,10 +1,10 @@
 /***
- * hesperus: IComponent.h
+ * hesperus: IObjectComponent.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_ICOMPONENT
-#define H_HESP_ICOMPONENT
+#ifndef H_HESP_IOBJECTCOMPONENT
+#define H_HESP_IOBJECTCOMPONENT
 
 #include <string>
 
@@ -20,7 +20,7 @@ namespace hesp {
 //#################### FORWARD DECLARATIONS ####################
 class ObjectManager;
 
-class IComponent : public virtual MessageHandlerBase
+class IObjectComponent : public virtual MessageHandlerBase
 {
 	//#################### FRIENDS ####################
 	friend class ObjectManager;
@@ -32,7 +32,7 @@ protected:
 
 	//#################### DESTRUCTOR ####################
 public:
-	virtual ~IComponent();
+	virtual ~IObjectComponent();
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
@@ -51,8 +51,8 @@ protected:
 };
 
 //#################### TYPEDEFS ####################
-typedef shared_ptr<IComponent> IComponent_Ptr;
-typedef shared_ptr<const IComponent> IComponent_CPtr;
+typedef shared_ptr<IObjectComponent> IObjectComponent_Ptr;
+typedef shared_ptr<const IObjectComponent> IObjectComponent_CPtr;
 
 }
 

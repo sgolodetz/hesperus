@@ -20,7 +20,7 @@ CmpInventory::CmpInventory(const std::set<ObjectID>& objects, const std::map<std
 }
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpInventory::load(const Properties& properties)
+IObjectComponent_Ptr CmpInventory::load(const Properties& properties)
 {
 	// Convert the [int] of objects stored in the properties into a set of object IDs.
 	const std::vector<int>& propObjects = properties.get<std::vector<int> >("Objects");
@@ -30,7 +30,7 @@ IComponent_Ptr CmpInventory::load(const Properties& properties)
 		objects.insert(ObjectID(*it));
 	}
 
-	return IComponent_Ptr(new CmpInventory(objects, properties.get<std::map<std::string,int> >("Consumables")));
+	return IObjectComponent_Ptr(new CmpInventory(objects, properties.get<std::map<std::string,int> >("Consumables")));
 }
 
 //#################### PUBLIC METHODS ####################

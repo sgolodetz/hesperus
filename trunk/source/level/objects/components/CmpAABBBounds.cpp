@@ -13,9 +13,9 @@ CmpAABBBounds::CmpAABBBounds(const std::vector<int>& aabbIndices, int pose)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpAABBBounds::load(const Properties& properties)
+IObjectComponent_Ptr CmpAABBBounds::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpAABBBounds(properties.get<std::vector<int> >("AABBs"), properties.get<int>("Pose")));
+	return IObjectComponent_Ptr(new CmpAABBBounds(properties.get<std::vector<int> >("AABBs"), properties.get<int>("Pose")));
 }
 
 //#################### PUBLIC METHODS ####################

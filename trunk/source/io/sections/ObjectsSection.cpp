@@ -48,7 +48,7 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const std::vector<AABB3
 	int objectCount = FieldIO::read_typed_trimmed_field<int>(is, "Count");
 	for(int i=0; i<objectCount; ++i)
 	{
-		std::vector<IComponent_Ptr> components = load_object(is, componentPropertyTypes, aiEngine, baseDir);
+		std::vector<IObjectComponent_Ptr> components = load_object(is, componentPropertyTypes, aiEngine, baseDir);
 		objectManager->create_object(components);
 	}
 
@@ -73,7 +73,7 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 	//			This would not necessarily be the case otherwise, as the IDs of the objects may not form a contiguous series.
 	for(int i=0; i<objectCount; ++i)
 	{
-		std::vector<IComponent_Ptr> components = objectManager->get_components(ObjectID(i));
+		std::vector<IObjectComponent_Ptr> components = objectManager->get_components(ObjectID(i));
 		save_object(os, components, objectManager->component_property_types());
 	}
 
@@ -81,10 +81,10 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 }
 
 //#################### LOADING SUPPORT METHODS ####################
-std::vector<IComponent_Ptr> ObjectsSection::load_object(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
+std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
 														const ASXEngine_Ptr& aiEngine, const bf::path& baseDir)
 {
-	std::vector<IComponent_Ptr> components;
+	std::vector<IObjectComponent_Ptr> components;
 
 	LineIO::read_checked_trimmed_line(is, "Object");
 	LineIO::read_checked_trimmed_line(is, "{");
@@ -215,7 +215,7 @@ std::string ObjectsSection::intarray_to_string(const std::vector<int>& arr)
 	return os.str();
 }
 
-void ObjectsSection::save_object(std::ostream& os, const std::vector<IComponent_Ptr>& components,
+void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components,
 								 const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 {
 	os << "\tObject\n";
@@ -223,7 +223,7 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IComponent_
 
 	for(size_t i=0, size=components.size(); i<size; ++i)
 	{
-		const IComponent_Ptr& component = components[i];
+		const IObjectComponent_Ptr& component = components[i];
 		std::string componentName;
 		Properties properties;
 		boost::tie(componentName, properties) = component->save();
@@ -311,7 +311,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 
 #undef ADD_LOADER
 
-IComponent_Ptr ObjectsSection::invoke_component_loader(const std::string& componentName, const Properties& properties)
+IObjectComponent_Ptr ObjectsSection::invoke_component_loader(const std::string& componentName, const Properties& properties)
 {
 	std::map<std::string,ComponentLoader>& creators = component_loaders();
 	std::map<std::string,ComponentLoader>::iterator it = creators.find(componentName);

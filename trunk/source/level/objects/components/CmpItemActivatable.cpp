@@ -11,9 +11,9 @@
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpItemActivatable::load(const Properties&)
+IObjectComponent_Ptr CmpItemActivatable::load(const Properties&)
 {
-	return IComponent_Ptr(new CmpItemActivatable);
+	return IObjectComponent_Ptr(new CmpItemActivatable);
 }
 
 //#################### PUBLIC METHODS ####################

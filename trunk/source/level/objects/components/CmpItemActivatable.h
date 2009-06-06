@@ -14,7 +14,7 @@ class CmpItemActivatable : public ICmpActivatable
 {
 	//#################### STATIC FACTORY METHODS ####################
 public:
-	static IComponent_Ptr load(const Properties&);
+	static IObjectComponent_Ptr load(const Properties&);
 
 	//#################### PUBLIC METHODS ####################
 public:

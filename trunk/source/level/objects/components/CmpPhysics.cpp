@@ -8,9 +8,9 @@
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpPhysics::load(const Properties&)
+IObjectComponent_Ptr CmpPhysics::load(const Properties&)
 {
-	return IComponent_Ptr(new CmpPhysics);
+	return IObjectComponent_Ptr(new CmpPhysics);
 }
 
 //#################### PUBLIC METHODS ####################

@@ -10,9 +10,9 @@
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpDirectMovement::load(const Properties&)
+IObjectComponent_Ptr CmpDirectMovement::load(const Properties&)
 {
-	return IComponent_Ptr(new CmpDirectMovement);
+	return IObjectComponent_Ptr(new CmpDirectMovement);
 }
 
 //#################### PUBLIC METHODS ####################

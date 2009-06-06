@@ -22,11 +22,11 @@ CmpMinimusScriptYoke::CmpMinimusScriptYoke(const std::string& scriptName, const 
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpMinimusScriptYoke::load(const Properties& properties)
+IObjectComponent_Ptr CmpMinimusScriptYoke::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpMinimusScriptYoke(properties.get<std::string>("Script"),
-												   properties.get<ASXEngine_Ptr>("AIEngine"),
-												   properties.get<bf::path>("BaseDir")));
+	return IObjectComponent_Ptr(new CmpMinimusScriptYoke(properties.get<std::string>("Script"),
+														 properties.get<ASXEngine_Ptr>("AIEngine"),
+														 properties.get<bf::path>("BaseDir")));
 }
 
 //#################### PUBLIC METHODS ####################

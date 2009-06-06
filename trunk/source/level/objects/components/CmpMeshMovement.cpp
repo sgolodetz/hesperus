@@ -13,9 +13,9 @@ CmpMeshMovement::CmpMeshMovement()
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpMeshMovement::load(const Properties&)
+IObjectComponent_Ptr CmpMeshMovement::load(const Properties&)
 {
-	return IComponent_Ptr(new CmpMeshMovement);
+	return IObjectComponent_Ptr(new CmpMeshMovement);
 }
 
 //#################### PUBLIC METHODS ####################

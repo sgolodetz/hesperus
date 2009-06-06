@@ -50,7 +50,7 @@ void ObjectManager::consolidate_object_ids()
 	//			loaded in (e.g. as part of the level-making process), their IDs will already be contiguous.
 }
 
-ObjectID ObjectManager::create_object(const std::vector<IComponent_Ptr>& components)
+ObjectID ObjectManager::create_object(const std::vector<IObjectComponent_Ptr>& components)
 {
 	ObjectID id(m_idAllocator.allocate());
 	Object& object = m_objects[id];
@@ -79,14 +79,14 @@ void ObjectManager::destroy_object(const ObjectID& id)
 	broadcast_immediate_message(Message_CPtr(new MsgObjectDestroyed(id)));
 }
 
-std::vector<IComponent_Ptr> ObjectManager::get_components(const ObjectID& id)
+std::vector<IObjectComponent_Ptr> ObjectManager::get_components(const ObjectID& id)
 {
 	std::map<ObjectID,Object>::iterator it = m_objects.find(id);
 	if(it == m_objects.end()) throw Exception("Invalid object ID: " + id.to_string());
 
 	Object& object = it->second;
 
-	std::vector<IComponent_Ptr> components;
+	std::vector<IObjectComponent_Ptr> components;
 	for(Object::const_iterator jt=object.begin(), jend=object.end(); jt!=jend; ++jt)
 	{
 		components.push_back(jt->second);

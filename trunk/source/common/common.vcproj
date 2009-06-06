@@ -1177,11 +1177,11 @@
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\base\IComponent.cpp"
+							RelativePath="..\level\objects\base\IDAllocator.cpp"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\base\IDAllocator.cpp"
+							RelativePath="..\level\objects\base\IObjectComponent.cpp"
 							>
 						</File>
 						<File
@@ -1197,11 +1197,11 @@
 						Name=".h"
 						>
 						<File
-							RelativePath="..\level\objects\base\IComponent.h"
+							RelativePath="..\level\objects\base\IDAllocator.h"
 							>
 						</File>
 						<File
-							RelativePath="..\level\objects\base\IDAllocator.h"
+							RelativePath="..\level\objects\base\IObjectComponent.h"
 							>
 						</File>
 						<File

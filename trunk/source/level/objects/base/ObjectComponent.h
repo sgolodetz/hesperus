@@ -6,11 +6,11 @@
 #ifndef H_HESP_OBJECTCOMPONENT
 #define H_HESP_OBJECTCOMPONENT
 
-#include "IComponent.h"
+#include "IObjectComponent.h"
 
 namespace hesp {
 
-class ObjectComponent : public IComponent
+class ObjectComponent : public IObjectComponent
 {
 	//#################### PROTECTED METHODS ####################
 protected:

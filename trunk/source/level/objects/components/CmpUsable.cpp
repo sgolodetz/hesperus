@@ -15,9 +15,9 @@ CmpUsable::CmpUsable(const std::string& usableGroup, const std::string& scriptNa
 }
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpUsable::load(const Properties& properties)
+IObjectComponent_Ptr CmpUsable::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpUsable(properties.get<std::string>("Group"), properties.get<std::string>("Script")));
+	return IObjectComponent_Ptr(new CmpUsable(properties.get<std::string>("Group"), properties.get<std::string>("Script")));
 }
 
 //#################### PUBLIC METHODS ####################

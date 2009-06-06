@@ -13,9 +13,9 @@ CmpPosition::CmpPosition(const Vector3d& position)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpPosition::load(const Properties& properties)
+IObjectComponent_Ptr CmpPosition::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpPosition(properties.get<Vector3d>("Position")));
+	return IObjectComponent_Ptr(new CmpPosition(properties.get<Vector3d>("Position")));
 }
 
 //#################### PUBLIC METHODS ####################

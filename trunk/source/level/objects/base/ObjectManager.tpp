@@ -28,7 +28,7 @@ shared_ptr<const T> ObjectManager::get_component(const ObjectID& id, const share
 	if(jt == object.end()) return shared_ptr<const T>();
 
 	// Note that there's an implicit T -> const T conversion done when returning here.
-	return boost::dynamic_pointer_cast<T,IComponent>(jt->second);
+	return boost::dynamic_pointer_cast<T,IObjectComponent>(jt->second);
 }
 
 template <typename T>

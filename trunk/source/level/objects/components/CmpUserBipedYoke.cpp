@@ -16,9 +16,9 @@
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpUserBipedYoke::load(const Properties&)
+IObjectComponent_Ptr CmpUserBipedYoke::load(const Properties&)
 {
-	return IComponent_Ptr(new CmpUserBipedYoke);
+	return IObjectComponent_Ptr(new CmpUserBipedYoke);
 }
 
 //#################### PUBLIC METHODS ####################

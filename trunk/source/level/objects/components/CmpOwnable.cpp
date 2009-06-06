@@ -13,9 +13,9 @@ CmpOwnable::CmpOwnable(const ObjectID& owner)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpOwnable::load(const Properties& properties)
+IObjectComponent_Ptr CmpOwnable::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpOwnable(ObjectID(properties.get<int>("Owner"))));
+	return IObjectComponent_Ptr(new CmpOwnable(ObjectID(properties.get<int>("Owner"))));
 }
 
 //#################### PUBLIC METHODS ####################

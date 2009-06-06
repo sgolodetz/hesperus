@@ -13,8 +13,8 @@
 #include <boost/function.hpp>
 
 #include <source/math/geom/AABB.h>
-#include "IComponent.h"
 #include "IDAllocator.h"
+#include "IObjectComponent.h"
 #include "Message.h"
 #include "ObjectID.h"
 
@@ -26,7 +26,7 @@ class ObjectManager
 public:
 	typedef boost::function<bool (const ObjectID&,const ObjectManager*)> GroupPredicate;
 private:
-	typedef std::map<std::string,IComponent_Ptr> Object;
+	typedef std::map<std::string,IObjectComponent_Ptr> Object;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -49,11 +49,11 @@ public:
 	void broadcast_immediate_message(const Message_CPtr& msg);
 	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
 	void consolidate_object_ids();
-	ObjectID create_object(const std::vector<IComponent_Ptr>& components);
+	ObjectID create_object(const std::vector<IObjectComponent_Ptr>& components);
 	void destroy_object(const ObjectID& id);
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const shared_ptr<T>& = shared_ptr<T>());
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const shared_ptr<const T>& = shared_ptr<const T>()) const;
-	std::vector<IComponent_Ptr> get_components(const ObjectID& id);
+	std::vector<IObjectComponent_Ptr> get_components(const ObjectID& id);
 	std::vector<ObjectID> group(const std::string& name) const;
 	int object_count() const;
 	ObjectID player() const;

@@ -16,9 +16,9 @@ CmpOrientation::CmpOrientation(const Vector3d& look)
 }
 
 //#################### STATIC FACTORY METHODS ####################
-IComponent_Ptr CmpOrientation::load(const Properties& properties)
+IObjectComponent_Ptr CmpOrientation::load(const Properties& properties)
 {
-	return IComponent_Ptr(new CmpOrientation(properties.get<Vector3d>("Look")));
+	return IObjectComponent_Ptr(new CmpOrientation(properties.get<Vector3d>("Look")));
 }
 
 //#################### PUBLIC METHODS ####################
