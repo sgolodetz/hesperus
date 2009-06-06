@@ -6,12 +6,12 @@
 #ifndef H_HESP_ICMPPOSITION
 #define H_HESP_ICMPPOSITION
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 
-class ICmpPosition : public IComponent
+class ICmpPosition : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

@@ -6,14 +6,14 @@
 #ifndef H_HESP_ICMPACTIVATABLE
 #define H_HESP_ICMPACTIVATABLE
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
 /**
 Objects with an ICmpActivatable component can be activated by other objects.
 */
-class ICmpActivatable : public IComponent
+class ICmpActivatable : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

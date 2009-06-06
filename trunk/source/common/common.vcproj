@@ -1221,6 +1221,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\base\ObjectComponent.h"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\base\ObjectID.h"
 							>
 						</File>
@@ -1233,7 +1237,7 @@
 						Name=".tpp"
 						>
 						<File
-							RelativePath="..\level\objects\base\IComponent.tpp"
+							RelativePath="..\level\objects\base\ObjectComponent.tpp"
 							>
 						</File>
 						<File

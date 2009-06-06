@@ -6,14 +6,14 @@
 #ifndef H_HESP_ICMPOWNABLE
 #define H_HESP_ICMPOWNABLE
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
 /**
 Objects with an ICmpOwnable component can be owned by other objects.
 */
-class ICmpOwnable : public IComponent
+class ICmpOwnable : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

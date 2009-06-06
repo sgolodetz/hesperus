@@ -6,14 +6,14 @@
 #ifndef H_HESP_ICMPUSABLE
 #define H_HESP_ICMPUSABLE
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
 /**
 Objects with an ICmpUsable component can be used.
 */
-class ICmpUsable : public IComponent
+class ICmpUsable : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

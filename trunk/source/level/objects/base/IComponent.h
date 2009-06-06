@@ -25,7 +25,7 @@ class IComponent : public virtual MessageHandlerBase
 	//#################### FRIENDS ####################
 	friend class ObjectManager;
 
-	//#################### PRIVATE VARIABLES ####################
+	//#################### PROTECTED VARIABLES ####################
 protected:
 	ObjectID m_objectID;
 	ObjectManager *m_objectManager;
@@ -46,7 +46,6 @@ public:
 
 	//#################### PROTECTED METHODS ####################
 protected:
-	template <typename C> void check_dependency() const;
 	void set_object_id(const ObjectID& objectID);
 	void set_object_manager(ObjectManager *objectManager);
 };
@@ -56,7 +55,5 @@ typedef shared_ptr<IComponent> IComponent_Ptr;
 typedef shared_ptr<const IComponent> IComponent_CPtr;
 
 }
-
-#include "IComponent.tpp"
 
 #endif

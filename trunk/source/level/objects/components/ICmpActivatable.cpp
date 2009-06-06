@@ -5,7 +5,6 @@
 
 #include "ICmpActivatable.h"
 
-#include <source/level/objects/base/ObjectManager.h>
 #include "ICmpAABBBounds.h"
 #include "ICmpModelRender.h"
 #include "ICmpPosition.h"

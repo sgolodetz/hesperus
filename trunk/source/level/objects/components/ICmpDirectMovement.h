@@ -8,12 +8,12 @@
 
 #include <list>
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 #include <source/level/trees/OnionUtil.h>
 
 namespace hesp {
 
-class ICmpDirectMovement : public IComponent
+class ICmpDirectMovement : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

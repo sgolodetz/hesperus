@@ -6,12 +6,12 @@
 #ifndef H_HESP_ICMPPHYSICS
 #define H_HESP_ICMPPHYSICS
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 
-class ICmpPhysics : public IComponent
+class ICmpPhysics : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

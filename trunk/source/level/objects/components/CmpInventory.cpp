@@ -8,7 +8,6 @@
 #include <set>
 #include <vector>
 
-#include <source/level/objects/base/ObjectManager.h>
 #include "ICmpUsable.h"
 
 namespace hesp {

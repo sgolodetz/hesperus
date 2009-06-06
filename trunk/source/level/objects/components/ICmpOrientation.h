@@ -7,11 +7,11 @@
 #define H_HESP_ICMPORIENTATION
 
 #include <source/axes/NUVAxes.h>
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
-class ICmpOrientation : public IComponent
+class ICmpOrientation : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

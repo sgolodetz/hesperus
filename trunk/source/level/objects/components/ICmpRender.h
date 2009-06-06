@@ -6,11 +6,11 @@
 #ifndef H_HESP_ICMPRENDER
 #define H_HESP_ICMPRENDER
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
-class ICmpRender : public IComponent
+class ICmpRender : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

@@ -5,7 +5,6 @@
 
 #include "CmpModelRender.h"
 
-#include <source/level/objects/base/ObjectManager.h>
 #include "ICmpAABBBounds.h"
 #include "ICmpOrientation.h"
 #include "ICmpPosition.h"

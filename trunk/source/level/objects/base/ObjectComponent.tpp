@@ -1,14 +1,16 @@
 /***
- * hesperus: IComponent.tpp
+ * hesperus: ObjectComponent.tpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
 #include <source/exceptions/Exception.h>
+#include "ObjectManager.h"
 
 namespace hesp {
 
+//#################### PROTECTED METHODS ####################
 template <typename C>
-void IComponent::check_dependency() const
+void ObjectComponent::check_dependency() const
 {
 	if(!m_objectManager->get_component<C>(m_objectID))
 	{

@@ -8,11 +8,11 @@
 
 #include <vector>
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
-class ICmpAABBBounds : public IComponent
+class ICmpAABBBounds : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

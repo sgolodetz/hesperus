@@ -6,12 +6,12 @@
 #ifndef H_HESP_ICMPYOKE
 #define H_HESP_ICMPYOKE
 
-#include <source/level/objects/base/IComponent.h>
 #include <source/level/objects/base/IYoke.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
-class ICmpYoke : public IComponent
+class ICmpYoke : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:

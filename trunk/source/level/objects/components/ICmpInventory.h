@@ -6,14 +6,14 @@
 #ifndef H_HESP_ICMPINVENTORY
 #define H_HESP_ICMPINVENTORY
 
-#include <source/level/objects/base/IComponent.h>
+#include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
 
 /**
 Objects with an ICmpInventory component can own other objects.
 */
-class ICmpInventory : public IComponent
+class ICmpInventory : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
