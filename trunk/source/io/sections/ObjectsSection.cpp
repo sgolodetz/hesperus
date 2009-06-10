@@ -313,9 +313,9 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 
 IObjectComponent_Ptr ObjectsSection::invoke_component_loader(const std::string& componentName, const Properties& properties)
 {
-	std::map<std::string,ComponentLoader>& creators = component_loaders();
-	std::map<std::string,ComponentLoader>::iterator it = creators.find(componentName);
-	if(it != creators.end()) return (*(it->second))(properties);
+	std::map<std::string,ComponentLoader>& loaders = component_loaders();
+	std::map<std::string,ComponentLoader>::iterator it = loaders.find(componentName);
+	if(it != loaders.end()) return (*(it->second))(properties);
 	else throw Exception("No loader registered for components of type " + componentName);
 }
 
