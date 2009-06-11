@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -1989,6 +1989,14 @@
 						RelativePath="..\io\util\NavLinkFactory.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\io\util\PropFormatter.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\PropReader.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -2013,6 +2021,14 @@
 						RelativePath="..\io\util\NavLinkFactory.h"
 						>
 					</File>
+					<File
+						RelativePath="..\io\util\PropFormatter.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\PropReader.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".tpp"
@@ -2023,6 +2039,14 @@
 					</File>
 					<File
 						RelativePath="..\io\util\IOUtil.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\PropFormatter.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\PropReader.tpp"
 						>
 					</File>
 				</Filter>

@@ -11,7 +11,7 @@ Objects
 		MeshMovement;
 		ModelRender
 		{
-			ModelName = Test-15
+			ModelName = "Test-15"
 		}
 		Orientation
 		{

@@ -13,6 +13,8 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/FieldIO.h>
+#include <source/io/util/PropFormatter.h>
+#include <source/io/util/PropReader.h>
 #include <source/level/objects/components/CmpAABBBounds.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpInventory.h>
@@ -116,15 +118,15 @@ std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, 
 				std::string type = lookup_property_type(componentName, name, componentPropertyTypes);
 
 				// Convert the value to the correct type and add it to the properties map.
-				// FIXME: It's better to parse the type and call an appropriate function here.
+				// FIXME: Replace the long if block with a lookup.
 				try
 				{
-					if(type == "double")				properties.set(name, lexical_cast<double,std::string>(value));
-					else if(type == "int")				properties.set(name, lexical_cast<int,std::string>(value));
-					else if(type == "string")			properties.set(name, value);
-					else if(type == "Vector3d")			properties.set(name, lexical_cast<Vector3d,std::string>(value));
-					else if(type == "[int]")			properties.set(name, string_to_intarray(value));
-					else if(type == "->(string,int)")	properties.set(name, string_to_stringintmap(value));
+					if(type == "double")				properties.set(name, read_property<double>(value));
+					else if(type == "int")				properties.set(name, read_property<int>(value));
+					else if(type == "string")			properties.set(name, read_property<std::string>(value));
+					else if(type == "Vector3d")			properties.set(name, read_property<Vector3d>(value));
+					else if(type == "[int]")			properties.set(name, read_property<std::vector<int> >(value));
+					else if(type == "string -> int")	properties.set(name, read_property<std::map<std::string,int> >(value));
 					else throw Exception("The type " + type + " is not currently supported");
 				}
 				catch(bad_lexical_cast&)
@@ -156,65 +158,7 @@ std::string ObjectsSection::lookup_property_type(const std::string& componentNam
 	return jt->second;
 }
 
-std::vector<int> ObjectsSection::string_to_intarray(const std::string& s)
-{
-	typedef boost::char_separator<char> sep;
-	typedef boost::tokenizer<sep> tokenizer;
-
-	tokenizer tok(s.begin(), s.end(), sep("[,]"));
-	std::vector<std::string> tokens(tok.begin(), tok.end());
-
-	std::vector<int> arr;
-	for(size_t i=0, size=tokens.size(); i<size; ++i)
-	{
-		arr.push_back(lexical_cast<int,std::string>(tokens[i]));
-	}
-
-	return arr;
-}
-
-std::map<std::string,int> ObjectsSection::string_to_stringintmap(const std::string& s)
-{
-	// FIXME:	This parser only works as long as the map key strings don't contain the characters "[", "]", "," or ";".
-	//			It needs to be redone properly in the next refactoring.
-
-	std::map<std::string,int> ret;
-
-	typedef boost::char_separator<char> sep;
-	typedef boost::tokenizer<sep> tokenizer;
-
-	tokenizer outerTok(s.begin(), s.end(), sep("[;]"));
-	std::vector<std::string> outerTokens(outerTok.begin(), outerTok.end());
-
-	for(size_t i=0, size=outerTokens.size(); i<size; ++i)
-	{
-		tokenizer innerTok(outerTokens[i].begin(), outerTokens[i].end(), sep("(,)"));
-		std::vector<std::string> innerTokens(innerTok.begin(), innerTok.end());
-		if(innerTokens.size() != 2) throw bad_lexical_cast();
-		std::string key = innerTokens[0];
-		int value = lexical_cast<int,std::string>(innerTokens[1]);
-		ret[key] = value;
-	}
-
-	return ret;
-}
-
 //#################### SAVING SUPPORT METHODS ####################
-std::string ObjectsSection::intarray_to_string(const std::vector<int>& arr)
-{
-	std::ostringstream os;
-
-	os << '[';
-	for(size_t i=0, size=arr.size(); i<size; ++i)
-	{
-		os << arr[i];
-		if(i < size-1) os << ',';
-	}
-	os << ']';
-
-	return os.str();
-}
-
 void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components,
 								 const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 {
@@ -248,13 +192,13 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 
 				os << "\t\t\t";
 
-				// FIXME: It's better to parse the type and call an appropriate function here.
-				if(type == "double")				FieldIO::write_typed_field(os, name, properties.get<double>(name));
-				else if(type == "int")				FieldIO::write_typed_field(os, name, properties.get<int>(name));
-				else if(type == "string")			FieldIO::write_typed_field(os, name, properties.get<std::string>(name));
-				else if(type == "Vector3d")			FieldIO::write_typed_field(os, name, properties.get<Vector3d>(name));
-				else if(type == "[int]")			FieldIO::write_typed_field(os, name, intarray_to_string(properties.get<std::vector<int> >(name)));
-				else if(type == "->(string,int)")	FieldIO::write_typed_field(os, name, stringintmap_to_string(properties.get<std::map<std::string,int> >(name)));
+				// FIXME: Replace the long if block with a lookup.
+				if(type == "double")				FieldIO::write_typed_field(os, name, format_property(properties.get<double>(name)));
+				else if(type == "int")				FieldIO::write_typed_field(os, name, format_property(properties.get<int>(name)));
+				else if(type == "string")			FieldIO::write_typed_field(os, name, format_property(properties.get<std::string>(name)));
+				else if(type == "Vector3d")			FieldIO::write_typed_field(os, name, format_property(properties.get<Vector3d>(name)));
+				else if(type == "[int]")			FieldIO::write_typed_field(os, name, format_property(properties.get<std::vector<int> >(name)));
+				else if(type == "string -> int")	FieldIO::write_typed_field(os, name, format_property(properties.get<std::map<std::string,int> >(name)));
 				else throw Exception("The type " + type + " is not currently supported");
 			}
 			os << "\t\t}\n";
@@ -262,22 +206,6 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 	}
 
 	os << "\t}\n";
-}
-
-std::string ObjectsSection::stringintmap_to_string(const std::map<std::string,int>& m)
-{
-	std::ostringstream os;
-
-	os << '[';
-	for(std::map<std::string,int>::const_iterator it=m.begin(), iend=m.end(); it!=iend;)
-	{
-		os << '(' << it->first << ',' << it->second << ')';
-		++it;
-		if(it != iend) os << ';';
-	}
-	os << ']';
-
-	return os.str();
 }
 
 //#################### COMPONENT CREATOR METHODS ####################

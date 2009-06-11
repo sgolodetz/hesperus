@@ -10,13 +10,13 @@ Objects
 		}
 		Inventory
 		{
-			Consumables = []
+			Consumables = <("[Pistol]Bullet",23);("[Rifle]Bullet",9)>
 			Objects = []
 		}
 		MeshMovement;
 		ModelRender
 		{
-			ModelName = Test-15
+			ModelName = "Test-15"
 		}
 		Orientation
 		{
@@ -38,17 +38,17 @@ Objects
 		}
 		Inventory
 		{
-			Consumables = []
+			Consumables = <>
 			Objects = []
 		}
 		MeshMovement;
 		MinimusScriptYoke
 		{
-			Script = guard-ai
+			Script = "guard-ai"
 		}
 		ModelRender
 		{
-			ModelName = Test-15
+			ModelName = "Test-15"
 		}
 		Orientation
 		{
@@ -70,7 +70,7 @@ Objects
 		ItemActivatable;
 		ModelRender
 		{
-			ModelName = Test-15
+			ModelName = "Test-15"
 		}
 		Orientation
 		{
@@ -86,8 +86,8 @@ Objects
 		}
 		Usable
 		{
-			Group = Pistol
-			Script = testweapon-use
+			Group = "Pistol"
+			Script = "testweapon-use"
 		}
 	}
 }

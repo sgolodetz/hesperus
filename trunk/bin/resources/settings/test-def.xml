@@ -17,7 +17,7 @@
 			</component>
 			<component name="DirectMovement"/>
 			<component name="Inventory">
-				<property name="Consumables" type="->(string,int)"/>
+				<property name="Consumables" type="string -> int"/>
 				<property name="Objects" type="[int]"/>
 			</component>
 			<component name="ItemActivatable"/>

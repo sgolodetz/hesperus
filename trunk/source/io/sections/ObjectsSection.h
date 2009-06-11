@@ -28,14 +28,10 @@ public:
 private:
 	static std::vector<IObjectComponent_Ptr> load_object(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir);
 	static std::string lookup_property_type(const std::string& componentName, const std::string& propertyName, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
-	static std::vector<int> string_to_intarray(const std::string& s);
-	static std::map<std::string,int> string_to_stringintmap(const std::string& s);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
-	static std::string intarray_to_string(const std::vector<int>& arr);
 	static void save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
-	static std::string stringintmap_to_string(const std::map<std::string,int>& m);
 
 	//#################### COMPONENT LOADER TYPEDEFS ####################
 private:
