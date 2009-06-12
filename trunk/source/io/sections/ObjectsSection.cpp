@@ -12,9 +12,6 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
-#include <source/io/util/FieldIO.h>
-#include <source/io/util/PropFormatter.h>
-#include <source/io/util/PropReader.h>
 #include <source/level/objects/components/CmpAABBBounds.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpInventory.h>
@@ -86,6 +83,20 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
 														const ASXEngine_Ptr& aiEngine, const bf::path& baseDir)
 {
+	typedef void (*LoadFunc)(Properties&, const std::string&, const std::string&);
+	static std::map<std::string,LoadFunc> loadFuncs;
+	static bool done = false;
+	if(!done)
+	{
+		loadFuncs["double"] = load_property<double>;
+		loadFuncs["int"] = load_property<int>;
+		loadFuncs["string"] = load_property<std::string>;
+		loadFuncs["Vector3d"] = load_property<Vector3d>;
+		loadFuncs["[int]"] = load_property<std::vector<int> >;
+		loadFuncs["string -> int"] = load_property<std::map<std::string,int> >;
+		done = true;
+	}
+
 	std::vector<IObjectComponent_Ptr> components;
 
 	LineIO::read_checked_trimmed_line(is, "Object");
@@ -118,15 +129,10 @@ std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, 
 				std::string type = lookup_property_type(componentName, name, componentPropertyTypes);
 
 				// Convert the value to the correct type and add it to the properties map.
-				// FIXME: Replace the long if block with a lookup.
 				try
 				{
-					if(type == "double")				properties.set(name, read_property<double>(value));
-					else if(type == "int")				properties.set(name, read_property<int>(value));
-					else if(type == "string")			properties.set(name, read_property<std::string>(value));
-					else if(type == "Vector3d")			properties.set(name, read_property<Vector3d>(value));
-					else if(type == "[int]")			properties.set(name, read_property<std::vector<int> >(value));
-					else if(type == "string -> int")	properties.set(name, read_property<std::map<std::string,int> >(value));
+					std::map<std::string,LoadFunc>::iterator loadFunc = loadFuncs.find(type);
+					if(loadFunc != loadFuncs.end()) (*(loadFunc->second))(properties, name, value);
 					else throw Exception("The type " + type + " is not currently supported");
 				}
 				catch(bad_lexical_cast&)
@@ -162,6 +168,20 @@ std::string ObjectsSection::lookup_property_type(const std::string& componentNam
 void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components,
 								 const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 {
+	typedef void (*SaveFunc)(std::ostream&, const Properties&, const std::string&);
+	static std::map<std::string,SaveFunc> saveFuncs;
+	static bool done = false;
+	if(!done)
+	{
+		saveFuncs["double"] = save_property<double>;
+		saveFuncs["int"] = save_property<int>;
+		saveFuncs["string"] = save_property<std::string>;
+		saveFuncs["Vector3d"] = save_property<Vector3d>;
+		saveFuncs["[int]"] = save_property<std::vector<int> >;
+		saveFuncs["string -> int"] = save_property<std::map<std::string,int> >;
+		done = true;
+	}
+
 	os << "\tObject\n";
 	os << "\t{\n";
 
@@ -192,13 +212,8 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 
 				os << "\t\t\t";
 
-				// FIXME: Replace the long if block with a lookup.
-				if(type == "double")				FieldIO::write_typed_field(os, name, format_property(properties.get<double>(name)));
-				else if(type == "int")				FieldIO::write_typed_field(os, name, format_property(properties.get<int>(name)));
-				else if(type == "string")			FieldIO::write_typed_field(os, name, format_property(properties.get<std::string>(name)));
-				else if(type == "Vector3d")			FieldIO::write_typed_field(os, name, format_property(properties.get<Vector3d>(name)));
-				else if(type == "[int]")			FieldIO::write_typed_field(os, name, format_property(properties.get<std::vector<int> >(name)));
-				else if(type == "string -> int")	FieldIO::write_typed_field(os, name, format_property(properties.get<std::map<std::string,int> >(name)));
+				std::map<std::string,SaveFunc>::iterator saveFunc = saveFuncs.find(type);
+				if(saveFunc != saveFuncs.end()) (*(saveFunc->second))(os, properties, name);
 				else throw Exception("The type " + type + " is not currently supported");
 			}
 			os << "\t\t}\n";

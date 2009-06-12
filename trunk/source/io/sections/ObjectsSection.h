@@ -10,6 +10,7 @@
 
 #include <ASXEngine.h>
 
+#include <source/io/util/FieldIO.h>
 #include <source/level/objects/base/ObjectManager.h>
 
 namespace hesp {
@@ -27,11 +28,13 @@ public:
 	//#################### LOADING SUPPORT METHODS ####################
 private:
 	static std::vector<IObjectComponent_Ptr> load_object(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir);
+	template <typename T> static void load_property(Properties& properties, const std::string& name, const std::string& value);
 	static std::string lookup_property_type(const std::string& componentName, const std::string& propertyName, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
 	static void save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
+	template <typename T> static void save_property(std::ostream& os, const Properties& properties, const std::string& name);
 
 	//#################### COMPONENT LOADER TYPEDEFS ####################
 private:
@@ -44,5 +47,7 @@ private:
 };
 
 }
+
+#include "ObjectsSection.tpp"
 
 #endif

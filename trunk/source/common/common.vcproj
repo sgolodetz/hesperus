@@ -1962,6 +1962,10 @@
 					Name=".tpp"
 					>
 					<File
+						RelativePath="..\io\sections\ObjectsSection.tpp"
+						>
+					</File>
+					<File
 						RelativePath="..\io\sections\PolygonsSection.tpp"
 						>
 					</File>
