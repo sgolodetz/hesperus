@@ -6,6 +6,7 @@
 #ifndef H_HESP_OBJECTMANAGER
 #define H_HESP_OBJECTMANAGER
 
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
@@ -41,7 +42,7 @@ private:
 	DestructionQueue m_destructionQueue;
 
 	// Listener maps
-	std::map<ObjectID,std::vector<IObjectComponent*> > m_objListeners;
+	std::map<ObjectID,std::list<IObjectComponent*> > m_objListeners;
 
 	//#################### CONSTRUCTORS ####################
 public:

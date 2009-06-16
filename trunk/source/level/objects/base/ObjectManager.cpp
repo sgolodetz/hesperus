@@ -49,7 +49,7 @@ broadcasted messsages about the specified object.
 */
 void ObjectManager::add_obj_listener(IObjectComponent *listener, const ObjectID& id)
 {
-	std::vector<IObjectComponent*>& listeners = m_objListeners[id];
+	std::list<IObjectComponent*>& listeners = m_objListeners[id];
 	if(std::find(listeners.begin(), listeners.end(), listener) == listeners.end())
 	{
 		listeners.push_back(listener);
@@ -61,13 +61,13 @@ void ObjectManager::broadcast_message(const Message_CPtr& msg)
 	std::set<ObjectID> msgObjs = msg->referenced_objects();
 	for(std::set<ObjectID>::const_iterator it=msgObjs.begin(), iend=msgObjs.end(); it!=iend; ++it)
 	{
-		std::map<ObjectID,std::vector<IObjectComponent*> >::const_iterator jt = m_objListeners.find(*it);
+		std::map<ObjectID,std::list<IObjectComponent*> >::const_iterator jt = m_objListeners.find(*it);
 		if(jt != m_objListeners.end())
 		{
-			const std::vector<IObjectComponent*>& listeners = jt->second;
-			for(size_t k=0, size=listeners.size(); k<size; ++k)
+			const std::list<IObjectComponent*>& listeners = jt->second;
+			for(std::list<IObjectComponent*>::const_iterator kt=listeners.begin(), kend=listeners.end(); kt!=kend; ++kt)
 			{
-				msg->dispatch(listeners[k]);
+				msg->dispatch(*kt);
 			}
 		}
 	}
@@ -209,8 +209,8 @@ in receiving broadcasted messsages about the specified object.
 */
 void ObjectManager::remove_obj_listener(IObjectComponent *listener, const ObjectID& id)
 {
-	std::vector<IObjectComponent*>& listeners = m_objListeners[id];
-	listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
+	std::list<IObjectComponent*>& listeners = m_objListeners[id];
+	listeners.remove(listener);
 }
 
 //#################### PRIVATE METHODS ####################
