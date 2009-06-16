@@ -19,12 +19,13 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	MsgObjectDestroyed(const ObjectID& id);
+	explicit MsgObjectDestroyed(const ObjectID& id);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	void dispatch(MessageHandlerBase *handler) const;
 	const ObjectID& object_id() const;
+	std::set<ObjectID> referenced_objects() const;
 };
 
 }

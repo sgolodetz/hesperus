@@ -20,7 +20,7 @@ class MessageHandler : public virtual MessageHandlerBase
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void process_message(const MessageType *msg) = 0;
+	virtual void process_message(const MessageType& msg) = 0;
 };
 
 }

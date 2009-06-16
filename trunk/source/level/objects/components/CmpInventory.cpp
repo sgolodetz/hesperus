@@ -47,6 +47,7 @@ void CmpInventory::add_consumables(const std::string& type, int amount)
 void CmpInventory::add_object(const ObjectID& objectID)
 {
 	m_objects.insert(objectID);
+	m_objectManager->add_obj_listener(this, objectID);
 
 	if(!m_groupsDirty)
 	{
@@ -69,9 +70,18 @@ void CmpInventory::destroy_consumables(const std::string& type, int amount)
 	else throw Exception("Cannot destroy more consumables than are being held");
 }
 
+void CmpInventory::register_listening()
+{
+	for(std::set<ObjectID>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+	{
+		m_objectManager->add_obj_listener(this, *it);
+	}
+}
+
 void CmpInventory::remove_object(const ObjectID& objectID)
 {
 	m_objects.erase(objectID);
+	m_objectManager->remove_obj_listener(this, objectID);
 
 	if(!m_groupsDirty)
 	{

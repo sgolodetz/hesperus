@@ -36,6 +36,9 @@ private:
 	IDAllocator m_idAllocator;
 	std::map<ObjectID,Object> m_objects;
 
+	// Listener maps
+	std::map<ObjectID,std::vector<IObjectComponent*> > m_objListeners;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
@@ -43,36 +46,31 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<AABB3d>& aabbs() const;
-#if 0
-	void broadcast_delayed_message(message)
-#endif
-	void broadcast_immediate_message(const Message_CPtr& msg);
+	void add_obj_listener(IObjectComponent *listener, const ObjectID& id);
+	void broadcast_message(const Message_CPtr& msg);
 	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
 	void consolidate_object_ids();
 	ObjectID create_object(const std::vector<IObjectComponent_Ptr>& components);
-	void destroy_object(const ObjectID& id);
+#if 0
+	void flush_destruction_queue();
+#endif
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const shared_ptr<T>& = shared_ptr<T>());
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const shared_ptr<const T>& = shared_ptr<const T>()) const;
 	std::vector<IObjectComponent_Ptr> get_components(const ObjectID& id);
 	std::vector<ObjectID> group(const std::string& name) const;
 	int object_count() const;
 	ObjectID player() const;
+	void post_message(const ObjectID& target, const Message_CPtr& msg);
 #if 0
-	void post_delayed_message(const ObjectID& target, message)
+	void queue_for_destruction(const ObjectID& id);
 #endif
-	void post_immediate_message(const ObjectID& target, const Message_CPtr& msg);
 	void register_group(const std::string& name, const GroupPredicate& pred);
+	void remove_obj_listener(IObjectComponent *listener, const ObjectID& id);
 	template <typename T> void set_component(const ObjectID& id, const shared_ptr<T>& component);
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static bool has_owner(const ObjectID& objectID, const ObjectManager *objectManager);
-	static bool is_activatable(const ObjectID& objectID, const ObjectManager *objectManager);
-	static bool is_animatable(const ObjectID& objectID, const ObjectManager *objectManager);
-	static bool is_renderable(const ObjectID& objectID, const ObjectManager *objectManager);
-	static bool is_simulable(const ObjectID& objectID, const ObjectManager *objectManager);
-	static bool is_yokeable(const ObjectID& objectID, const ObjectManager *objectManager);
-	void post_message_to_object(Object& target, const Message_CPtr& msg);
+	void destroy_object(const ObjectID& id);
 };
 
 //#################### TYPEDEFS ####################

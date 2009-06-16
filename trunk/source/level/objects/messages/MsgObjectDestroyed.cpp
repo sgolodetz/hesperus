@@ -15,12 +15,19 @@ MsgObjectDestroyed::MsgObjectDestroyed(const ObjectID& id)
 //#################### PUBLIC METHODS ####################
 void MsgObjectDestroyed::dispatch(MessageHandlerBase *handler) const
 {
-	dynamic_dispatch(handler, this);
+	dynamic_dispatch(handler, *this);
 }
 
 const ObjectID& MsgObjectDestroyed::object_id() const
 {
 	return m_id;
+}
+
+std::set<ObjectID> MsgObjectDestroyed::referenced_objects() const
+{
+	std::set<ObjectID> ret;
+	ret.insert(m_id);
+	return ret;
 }
 
 }

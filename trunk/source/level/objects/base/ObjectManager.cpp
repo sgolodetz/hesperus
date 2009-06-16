@@ -14,6 +14,14 @@
 
 namespace hesp {
 
+//#################### LOCAL METHODS - DECLARATIONS ####################
+bool has_owner(const ObjectID& id, const ObjectManager *objectManager);
+bool is_activatable(const ObjectID& id, const ObjectManager *objectManager);
+bool is_animatable(const ObjectID& id, const ObjectManager *objectManager);
+bool is_renderable(const ObjectID& id, const ObjectManager *objectManager);
+bool is_simulable(const ObjectID& id, const ObjectManager *objectManager);
+bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
+
 //#################### CONSTRUCTORS ####################
 ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 :	m_aabbs(aabbs), m_componentPropertyTypes(componentPropertyTypes)
@@ -31,11 +39,36 @@ const std::vector<AABB3d>& ObjectManager::aabbs() const
 	return m_aabbs;
 }
 
-void ObjectManager::broadcast_immediate_message(const Message_CPtr& msg)
+/**
+Informs the object manager that the specified component is interested in receiving
+broadcasted messsages about the specified object.
+
+@param listener	The component which wants to receive object messages
+@param id		The ID of the object about which the component wants to receive messages
+*/
+void ObjectManager::add_obj_listener(IObjectComponent *listener, const ObjectID& id)
 {
-	for(std::map<ObjectID,Object>::iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+	std::vector<IObjectComponent*>& listeners = m_objListeners[id];
+	if(std::find(listeners.begin(), listeners.end(), listener) == listeners.end())
 	{
-		post_message_to_object(it->second, msg);
+		listeners.push_back(listener);
+	}
+}
+
+void ObjectManager::broadcast_message(const Message_CPtr& msg)
+{
+	std::set<ObjectID> msgObjs = msg->referenced_objects();
+	for(std::set<ObjectID>::const_iterator it=msgObjs.begin(), iend=msgObjs.end(); it!=iend; ++it)
+	{
+		std::map<ObjectID,std::vector<IObjectComponent*> >::const_iterator jt = m_objListeners.find(*it);
+		if(jt != m_objListeners.end())
+		{
+			const std::vector<IObjectComponent*>& listeners = jt->second;
+			for(size_t k=0, size=listeners.size(); k<size; ++k)
+			{
+				msg->dispatch(listeners[k]);
+			}
+		}
 	}
 }
 
@@ -63,21 +96,41 @@ ObjectID ObjectManager::create_object(const std::vector<IObjectComponent_Ptr>& c
 		object.insert(std::make_pair(components[i]->group_type(), components[i]));
 	}
 
-	// Check component dependencies (note that this must happen after all the components have been added above).
+	// Check component dependencies and register listening (note that these must happen
+	// after all the components have been added above).
 	for(size_t i=0, size=components.size(); i<size; ++i)
 	{
 		components[i]->check_dependencies();
+		components[i]->register_listening();
 	}
 
 	return id;
 }
 
-void ObjectManager::destroy_object(const ObjectID& id)
+#if 0
+void ObjectManager::flush_destruction_queue()
 {
-	m_idAllocator.deallocate(id.value());
-	m_objects.erase(id);
-	broadcast_immediate_message(Message_CPtr(new MsgObjectDestroyed(id)));
+	// NYI
+	throw 23;
+
+	/*
+	while(!q.empty())
+	{
+		obj = q.top();
+		if(obj.predestroySent)
+		{
+			q.pop();
+			destroy_object(obj);
+		}
+		else
+		{
+			broadcast_message(predestroy(obj));
+			obj.predestroySent = true;
+		}
+	}
+	*/
 }
+#endif
 
 std::vector<IObjectComponent_Ptr> ObjectManager::get_components(const ObjectID& id)
 {
@@ -122,56 +175,89 @@ ObjectID ObjectManager::player() const
 	return ObjectID(0);
 }
 
-void ObjectManager::post_immediate_message(const ObjectID& target, const Message_CPtr& msg)
+void ObjectManager::post_message(const ObjectID& target, const Message_CPtr& msg)
 {
 	std::map<ObjectID,Object>::iterator it = m_objects.find(target);
 	if(it == m_objects.end()) throw Exception("Invalid object ID: " + target.to_string());
-	post_message_to_object(it->second, msg);
+
+	Object& obj = it->second;
+	for(Object::iterator jt=obj.begin(), jend=obj.end(); jt!=jend; ++jt)
+	{
+		msg->dispatch(jt->second.get());
+	}
 }
+
+#if 0
+void ObjectManager::queue_for_destruction(const ObjectID& id)
+{
+	// NYI
+	throw 23;
+
+	/*
+	q.add(id, 0);	// add object with destruction priority 0
+	*/
+}
+#endif
 
 void ObjectManager::register_group(const std::string& name, const GroupPredicate& pred)
 {
 	m_groupPredicates[name] = pred;
 }
 
-//#################### PRIVATE METHODS ####################
-bool ObjectManager::has_owner(const ObjectID& objectID, const ObjectManager *objectManager)
+/**
+Informs the object manager that the specified component is no longer interested
+in receiving broadcasted messsages about the specified object.
+
+@param listener	The component which no longer wants to receive object messages
+@param id		The ID of the object about which the component no longer wants to receive messages
+*/
+void ObjectManager::remove_obj_listener(IObjectComponent *listener, const ObjectID& id)
 {
-	ICmpOwnable_CPtr cmpOwnable = objectManager->get_component(objectID, cmpOwnable);
+	std::vector<IObjectComponent*>& listeners = m_objListeners[id];
+	listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
+}
+
+//#################### PRIVATE METHODS ####################
+void ObjectManager::destroy_object(const ObjectID& id)
+{
+	m_idAllocator.deallocate(id.value());
+	m_objects.erase(id);
+	broadcast_message(Message_CPtr(new MsgObjectDestroyed(id)));
+
+	// Remove all the listeners referring to the object.
+	m_objListeners.erase(id);
+}
+
+//#################### LOCAL METHODS - DEFINITIONS ####################
+bool has_owner(const ObjectID& id, const ObjectManager *objectManager)
+{
+	ICmpOwnable_CPtr cmpOwnable = objectManager->get_component(id, cmpOwnable);
 	return cmpOwnable && cmpOwnable->owner().valid();
 }
 
-bool ObjectManager::is_activatable(const ObjectID& objectID, const ObjectManager *objectManager)
+bool is_activatable(const ObjectID& id, const ObjectManager *objectManager)
 {
-	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpActivatable>(objectID) != NULL;
+	return !has_owner(id, objectManager) && objectManager->get_component<ICmpActivatable>(id) != NULL;
 }
 
-bool ObjectManager::is_animatable(const ObjectID& objectID, const ObjectManager *objectManager)
+bool is_animatable(const ObjectID& id, const ObjectManager *objectManager)
 {
-	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpModelRender>(objectID) != NULL;
+	return !has_owner(id, objectManager) && objectManager->get_component<ICmpModelRender>(id) != NULL;
 }
 
-bool ObjectManager::is_renderable(const ObjectID& objectID, const ObjectManager *objectManager)
+bool is_renderable(const ObjectID& id, const ObjectManager *objectManager)
 {
-	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpRender>(objectID) != NULL;
+	return !has_owner(id, objectManager) && objectManager->get_component<ICmpRender>(id) != NULL;
 }
 
-bool ObjectManager::is_simulable(const ObjectID& objectID, const ObjectManager *objectManager)
+bool is_simulable(const ObjectID& id, const ObjectManager *objectManager)
 {
-	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpPhysics>(objectID) != NULL;
+	return !has_owner(id, objectManager) && objectManager->get_component<ICmpPhysics>(id) != NULL;
 }
 
-bool ObjectManager::is_yokeable(const ObjectID& objectID, const ObjectManager *objectManager)
+bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager)
 {
-	return !has_owner(objectID, objectManager) && objectManager->get_component<ICmpYoke>(objectID) != NULL;
-}
-
-void ObjectManager::post_message_to_object(Object& target, const Message_CPtr& msg)
-{
-	for(Object::iterator jt=target.begin(), jend=target.end(); jt!=jend; ++jt)
-	{
-		msg->dispatch(jt->second.get());
-	}
+	return !has_owner(id, objectManager) && objectManager->get_component<ICmpYoke>(id) != NULL;
 }
 
 }

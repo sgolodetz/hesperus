@@ -35,6 +35,7 @@ public:
 	void add_consumables(const std::string& type, int amount);
 	void add_object(const ObjectID& objectID);
 	void destroy_consumables(const std::string& type, int amount);
+	void register_listening();
 	void remove_object(const ObjectID& objectID);
 	std::pair<std::string,Properties> save() const;
 

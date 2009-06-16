@@ -17,6 +17,12 @@ void IObjectComponent::check_dependencies() const
 	//			to check aren't required to provide a stub implementation.
 }
 
+void IObjectComponent::register_listening()
+{
+	// Note:	A default implementation is provided so that components which don't need to listen
+	//			to any messages aren't required to provide a stub implementation.
+}
+
 //#################### PROTECTED METHODS ####################
 void IObjectComponent::set_object_id(const ObjectID& objectID)
 {
