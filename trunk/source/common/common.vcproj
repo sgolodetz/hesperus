@@ -1604,12 +1604,20 @@
 							RelativePath="..\level\objects\messages\MsgObjectDestroyed.cpp"
 							>
 						</File>
+						<File
+							RelativePath="..\level\objects\messages\MsgObjectPredestroyed.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name=".h"
 						>
 						<File
 							RelativePath="..\level\objects\messages\MsgObjectDestroyed.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\messages\MsgObjectPredestroyed.h"
 							>
 						</File>
 					</Filter>
@@ -2228,6 +2236,26 @@
 				</File>
 				<File
 					RelativePath="..\axes\VerticallyConstrainedNUVAxes.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="datastructures"
+			>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\datastructures\PriorityQueue.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".tpp"
+				>
+				<File
+					RelativePath="..\datastructures\PriorityQueue.tpp"
 					>
 				</File>
 			</Filter>

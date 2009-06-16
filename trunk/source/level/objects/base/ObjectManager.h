@@ -12,6 +12,7 @@
 
 #include <boost/function.hpp>
 
+#include <source/datastructures/PriorityQueue.h>
 #include <source/math/geom/AABB.h>
 #include "IDAllocator.h"
 #include "IObjectComponent.h"
@@ -26,6 +27,7 @@ class ObjectManager
 public:
 	typedef boost::function<bool (const ObjectID&,const ObjectManager*)> GroupPredicate;
 private:
+	typedef PriorityQueue<ObjectID,int,bool,std::greater<int> > DestructionQueue;
 	typedef std::map<std::string,IObjectComponent_Ptr> Object;
 
 	//#################### PRIVATE VARIABLES ####################
@@ -35,6 +37,8 @@ private:
 	std::map<std::string,GroupPredicate> m_groupPredicates;
 	IDAllocator m_idAllocator;
 	std::map<ObjectID,Object> m_objects;
+
+	DestructionQueue m_destructionQueue;
 
 	// Listener maps
 	std::map<ObjectID,std::vector<IObjectComponent*> > m_objListeners;
@@ -51,9 +55,7 @@ public:
 	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
 	void consolidate_object_ids();
 	ObjectID create_object(const std::vector<IObjectComponent_Ptr>& components);
-#if 0
 	void flush_destruction_queue();
-#endif
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const shared_ptr<T>& = shared_ptr<T>());
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const shared_ptr<const T>& = shared_ptr<const T>()) const;
 	std::vector<IObjectComponent_Ptr> get_components(const ObjectID& id);
@@ -61,9 +63,7 @@ public:
 	int object_count() const;
 	ObjectID player() const;
 	void post_message(const ObjectID& target, const Message_CPtr& msg);
-#if 0
 	void queue_for_destruction(const ObjectID& id);
-#endif
 	void register_group(const std::string& name, const GroupPredicate& pred);
 	void remove_obj_listener(IObjectComponent *listener, const ObjectID& id);
 	template <typename T> void set_component(const ObjectID& id, const shared_ptr<T>& component);

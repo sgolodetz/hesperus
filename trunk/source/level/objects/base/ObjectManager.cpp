@@ -11,6 +11,7 @@
 #include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
+#include <source/level/objects/messages/MsgObjectPredestroyed.h>
 
 namespace hesp {
 
@@ -107,30 +108,32 @@ ObjectID ObjectManager::create_object(const std::vector<IObjectComponent_Ptr>& c
 	return id;
 }
 
-#if 0
 void ObjectManager::flush_destruction_queue()
 {
-	// NYI
-	throw 23;
+	typedef DestructionQueue::Element Elt;
 
-	/*
+	DestructionQueue& q = m_destructionQueue;
+
 	while(!q.empty())
 	{
-		obj = q.top();
-		if(obj.predestroySent)
+		Elt& e = q.top();
+		ObjectID id = e.id();
+		bool& predestroyFlag = e.data();
+
+		if(predestroyFlag)
 		{
+			// The pre-destroy message has already been sent for this object.
+			destroy_object(id);
 			q.pop();
-			destroy_object(obj);
 		}
 		else
 		{
-			broadcast_message(predestroy(obj));
-			obj.predestroySent = true;
+			// Note: The flag must be set before sending the pre-destroy message, which may result in queue changes.
+			predestroyFlag = true;
+			broadcast_message(Message_CPtr(new MsgObjectPredestroyed(id)));
 		}
 	}
-	*/
 }
-#endif
 
 std::vector<IObjectComponent_Ptr> ObjectManager::get_components(const ObjectID& id)
 {
@@ -187,17 +190,10 @@ void ObjectManager::post_message(const ObjectID& target, const Message_CPtr& msg
 	}
 }
 
-#if 0
 void ObjectManager::queue_for_destruction(const ObjectID& id)
 {
-	// NYI
-	throw 23;
-
-	/*
-	q.add(id, 0);	// add object with destruction priority 0
-	*/
+	m_destructionQueue.insert(id, 0, false);
 }
-#endif
 
 void ObjectManager::register_group(const std::string& name, const GroupPredicate& pred)
 {
