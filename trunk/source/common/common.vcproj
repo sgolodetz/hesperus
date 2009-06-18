@@ -1185,6 +1185,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\base\ListenerTable.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\base\ObjectID.cpp"
 							>
 						</File>
@@ -1206,6 +1210,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\base\IYoke.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\base\ListenerTable.h"
 							>
 						</File>
 						<File

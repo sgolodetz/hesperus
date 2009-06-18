@@ -31,6 +31,7 @@ shared_ptr<const T> ObjectManager::get_component(const ObjectID& id, const share
 	return boost::dynamic_pointer_cast<T,IObjectComponent>(jt->second);
 }
 
+#if 0
 template <typename T>
 void ObjectManager::set_component(const ObjectID& id, const shared_ptr<T>& component)
 {
@@ -40,5 +41,6 @@ void ObjectManager::set_component(const ObjectID& id, const shared_ptr<T>& compo
 	Object& object = it->second;
 	object[T::static_group_type()] = component;
 }
+#endif
 
 }

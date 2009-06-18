@@ -67,7 +67,9 @@ public:
 	void queue_for_destruction(const ObjectID& id);
 	void register_group(const std::string& name, const GroupPredicate& pred);
 	void remove_obj_listener(IObjectComponent *listener, const ObjectID& id);
+#if 0
 	template <typename T> void set_component(const ObjectID& id, const shared_ptr<T>& component);
+#endif
 
 	//#################### PRIVATE METHODS ####################
 private:

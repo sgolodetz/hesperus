@@ -218,6 +218,10 @@ void ObjectManager::destroy_object(const ObjectID& id)
 {
 	m_idAllocator.deallocate(id.value());
 	m_objects.erase(id);
+
+	// FIXME: Need to remove all the listeners which are components of the object being deleted.
+	throw 23;
+
 	broadcast_message(Message_CPtr(new MsgObjectDestroyed(id)));
 
 	// Remove all the listeners referring to the object.
