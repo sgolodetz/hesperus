@@ -33,10 +33,10 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_consumables(const std::string& type, int amount);
-	void add_object(const ObjectID& objectID);
+	void add_object(const ObjectID& id);
 	void destroy_consumables(const std::string& type, int amount);
 	void register_listening();
-	void remove_object(const ObjectID& objectID);
+	void remove_object(const ObjectID& id);
 	std::pair<std::string,Properties> save() const;
 
 	//#################### PRIVATE METHODS ####################

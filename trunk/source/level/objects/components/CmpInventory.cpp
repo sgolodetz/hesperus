@@ -44,15 +44,15 @@ void CmpInventory::add_consumables(const std::string& type, int amount)
 	else m_consumables.insert(std::make_pair(type, amount));
 }
 
-void CmpInventory::add_object(const ObjectID& objectID)
+void CmpInventory::add_object(const ObjectID& id)
 {
-	m_objects.insert(objectID);
-	m_objectManager->add_obj_listener(this, objectID);
+	m_objects.insert(id);
+	m_objectManager->add_listener(this, id);
 
 	if(!m_groupsDirty)
 	{
-		ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(objectID, cmpUsable);
-		if(cmpUsable) m_groups[cmpUsable->usable_group()].insert(objectID);
+		ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(id, cmpUsable);
+		if(cmpUsable) m_groups[cmpUsable->usable_group()].insert(id);
 	}
 	else update_groups();
 }
@@ -74,19 +74,19 @@ void CmpInventory::register_listening()
 {
 	for(std::set<ObjectID>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
 	{
-		m_objectManager->add_obj_listener(this, *it);
+		m_objectManager->add_listener(this, *it);
 	}
 }
 
-void CmpInventory::remove_object(const ObjectID& objectID)
+void CmpInventory::remove_object(const ObjectID& id)
 {
-	m_objects.erase(objectID);
-	m_objectManager->remove_obj_listener(this, objectID);
+	m_objects.erase(id);
+	m_objectManager->remove_listener(this, id);
 
 	if(!m_groupsDirty)
 	{
-		ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(objectID, cmpUsable);
-		if(cmpUsable) m_groups[cmpUsable->usable_group()].erase(objectID);
+		ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(id, cmpUsable);
+		if(cmpUsable) m_groups[cmpUsable->usable_group()].erase(id);
 	}
 	else update_groups();
 }

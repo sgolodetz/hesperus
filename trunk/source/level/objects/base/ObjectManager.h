@@ -6,7 +6,6 @@
 #ifndef H_HESP_OBJECTMANAGER
 #define H_HESP_OBJECTMANAGER
 
-#include <list>
 #include <map>
 #include <string>
 #include <vector>
@@ -17,6 +16,7 @@
 #include <source/math/geom/AABB.h>
 #include "IDAllocator.h"
 #include "IObjectComponent.h"
+#include "ListenerTable.h"
 #include "Message.h"
 #include "ObjectID.h"
 
@@ -40,9 +40,7 @@ private:
 	std::map<ObjectID,Object> m_objects;
 
 	DestructionQueue m_destructionQueue;
-
-	// Listener maps
-	std::map<ObjectID,std::list<IObjectComponent*> > m_objListeners;
+	ListenerTable m_listenerTable;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -51,7 +49,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<AABB3d>& aabbs() const;
-	void add_obj_listener(IObjectComponent *listener, const ObjectID& id);
+	void add_listener(IObjectComponent *listener, const ObjectID& id);
 	void broadcast_message(const Message_CPtr& msg);
 	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
 	void consolidate_object_ids();
@@ -66,7 +64,7 @@ public:
 	void post_message(const ObjectID& target, const Message_CPtr& msg);
 	void queue_for_destruction(const ObjectID& id);
 	void register_group(const std::string& name, const GroupPredicate& pred);
-	void remove_obj_listener(IObjectComponent *listener, const ObjectID& id);
+	void remove_listener(IObjectComponent *listener, const ObjectID& id);
 #if 0
 	template <typename T> void set_component(const ObjectID& id, const shared_ptr<T>& component);
 #endif
@@ -74,6 +72,8 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	void destroy_object(const ObjectID& id);
+	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const std::string& group);
+	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const std::string& group) const;
 };
 
 //#################### TYPEDEFS ####################

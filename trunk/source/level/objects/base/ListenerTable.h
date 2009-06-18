@@ -64,8 +64,8 @@ public:
 	void add_listener(const ObjectID& sourceObject, const std::string& sourceComponent, const ObjectID& destObject);
 	std::vector<std::pair<ObjectID,std::string> > get_listeners(const ObjectID& destObject) const;
 	void remove_listener(const ObjectID& sourceObject, const std::string& sourceComponent, const ObjectID& destObject);
-	void remove_listeners_in(const ObjectID& sourceObject);
-	void remove_listeners_of(const ObjectID& destObject);
+	void remove_listeners_from(const ObjectID& sourceObject);
+	void remove_listeners_to(const ObjectID& destObject);
 };
 
 }

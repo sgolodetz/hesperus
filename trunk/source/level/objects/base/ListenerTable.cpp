@@ -35,7 +35,7 @@ void ListenerTable::remove_listener(const ObjectID& sourceObject, const std::str
 	m_table.erase(Entry(sourceObject, sourceComponent, destObject));
 }
 
-void ListenerTable::remove_listeners_in(const ObjectID& sourceObject)
+void ListenerTable::remove_listeners_from(const ObjectID& sourceObject)
 {
 	typedef Table::index<source>::type SourceTable;
 	typedef SourceTable::iterator SourceIter;
@@ -44,7 +44,7 @@ void ListenerTable::remove_listeners_in(const ObjectID& sourceObject)
 	sourceTable.erase(sourceObject);
 }
 
-void ListenerTable::remove_listeners_of(const ObjectID& destObject)
+void ListenerTable::remove_listeners_to(const ObjectID& destObject)
 {
 	typedef Table::index<dest>::type DestTable;
 	typedef DestTable::iterator DestIter;

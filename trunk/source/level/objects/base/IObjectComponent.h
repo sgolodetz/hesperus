@@ -43,6 +43,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	virtual void check_dependencies() const;
+	const ObjectID& object_id() const;
 	virtual void register_listening();
 
 	//#################### PROTECTED METHODS ####################

@@ -47,13 +47,9 @@ broadcasted messsages about the specified object.
 @param listener	The component which wants to receive object messages
 @param id		The ID of the object about which the component wants to receive messages
 */
-void ObjectManager::add_obj_listener(IObjectComponent *listener, const ObjectID& id)
+void ObjectManager::add_listener(IObjectComponent *listener, const ObjectID& id)
 {
-	std::list<IObjectComponent*>& listeners = m_objListeners[id];
-	if(std::find(listeners.begin(), listeners.end(), listener) == listeners.end())
-	{
-		listeners.push_back(listener);
-	}
+	m_listenerTable.add_listener(listener->object_id(), listener->group_type(), id);
 }
 
 void ObjectManager::broadcast_message(const Message_CPtr& msg)
@@ -61,14 +57,11 @@ void ObjectManager::broadcast_message(const Message_CPtr& msg)
 	std::set<ObjectID> msgObjs = msg->referenced_objects();
 	for(std::set<ObjectID>::const_iterator it=msgObjs.begin(), iend=msgObjs.end(); it!=iend; ++it)
 	{
-		std::map<ObjectID,std::list<IObjectComponent*> >::const_iterator jt = m_objListeners.find(*it);
-		if(jt != m_objListeners.end())
+		std::vector<std::pair<ObjectID,std::string> > listeners = m_listenerTable.get_listeners(*it);
+		for(size_t j=0, size=listeners.size(); j<size; ++j)
 		{
-			const std::list<IObjectComponent*>& listeners = jt->second;
-			for(std::list<IObjectComponent*>::const_iterator kt=listeners.begin(), kend=listeners.end(); kt!=kend; ++kt)
-			{
-				msg->dispatch(*kt);
-			}
+			IObjectComponent_Ptr listener = get_component<IObjectComponent>(listeners[j].first, listeners[j].second);
+			if(listener) msg->dispatch(listener.get());
 		}
 	}
 }
@@ -207,10 +200,9 @@ in receiving broadcasted messsages about the specified object.
 @param listener	The component which no longer wants to receive object messages
 @param id		The ID of the object about which the component no longer wants to receive messages
 */
-void ObjectManager::remove_obj_listener(IObjectComponent *listener, const ObjectID& id)
+void ObjectManager::remove_listener(IObjectComponent *listener, const ObjectID& id)
 {
-	std::list<IObjectComponent*>& listeners = m_objListeners[id];
-	listeners.remove(listener);
+	m_listenerTable.remove_listener(listener->object_id(), listener->group_type(), id);
 }
 
 //#################### PRIVATE METHODS ####################
@@ -219,13 +211,13 @@ void ObjectManager::destroy_object(const ObjectID& id)
 	m_idAllocator.deallocate(id.value());
 	m_objects.erase(id);
 
-	// FIXME: Need to remove all the listeners which are components of the object being deleted.
-	throw 23;
+	// Remove all the listeners which are components of the object being deleted.
+	m_listenerTable.remove_listeners_from(id);
 
 	broadcast_message(Message_CPtr(new MsgObjectDestroyed(id)));
 
 	// Remove all the listeners referring to the object.
-	m_objListeners.erase(id);
+	m_listenerTable.remove_listeners_to(id);
 }
 
 //#################### LOCAL METHODS - DEFINITIONS ####################
