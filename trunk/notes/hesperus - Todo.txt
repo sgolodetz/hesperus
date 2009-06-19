@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 12-06-09
+Last Updated: 19-06-09
 
 ----
 Easy
@@ -28,10 +28,4 @@ Hard
 * Implement AI scripting.
 * Implement collision handling between dynamic objects.
 * Reimplement hlight to allow dynamic lighting.
-* Implement items, inventories and item collection (including picking).
 * Implement weapons and projectiles.
-* Sort out the message handling system and how object destruction works.
-  - Components should be able to register their interest in messages about particular objects.
-  - Objects should be queued for destruction at the end of the frame.
-  - A 'pre-destroy' message should be sent to allow contained objects to be destroyed first.
-  - A 'destroy' message should then be sent to actually destroy the object.
