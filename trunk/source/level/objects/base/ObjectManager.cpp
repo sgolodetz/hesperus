@@ -183,6 +183,12 @@ void ObjectManager::post_message(const ObjectID& target, const Message_CPtr& msg
 	}
 }
 
+void ObjectManager::queue_child_for_destruction(const ObjectID& child, const ObjectID& parent)
+{
+	int parentPriority = m_destructionQueue.element(parent).key();
+	m_destructionQueue.insert(child, parentPriority+1, false);
+}
+
 void ObjectManager::queue_for_destruction(const ObjectID& id)
 {
 	m_destructionQueue.insert(id, 0, false);
@@ -208,9 +214,6 @@ void ObjectManager::remove_listener(IObjectComponent *listener, const ObjectID& 
 //#################### PRIVATE METHODS ####################
 void ObjectManager::destroy_object(const ObjectID& id)
 {
-	m_idAllocator.deallocate(id.value());
-	m_objects.erase(id);
-
 	// Remove all the listeners which are components of the object being deleted.
 	m_listenerTable.remove_listeners_from(id);
 
@@ -218,6 +221,9 @@ void ObjectManager::destroy_object(const ObjectID& id)
 
 	// Remove all the listeners referring to the object.
 	m_listenerTable.remove_listeners_to(id);
+
+	m_objects.erase(id);
+	m_idAllocator.deallocate(id.value());
 }
 
 //#################### LOCAL METHODS - DEFINITIONS ####################

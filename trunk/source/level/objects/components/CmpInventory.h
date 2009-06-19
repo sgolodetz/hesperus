@@ -12,7 +12,14 @@
 
 namespace hesp {
 
-class CmpInventory : public ICmpInventory
+//#################### FORWARD DECLARATIONS ####################
+class MsgObjectDestroyed;
+class MsgObjectPredestroyed;
+
+class CmpInventory
+:	public ICmpInventory,
+	public MessageHandler<MsgObjectDestroyed>,
+	public MessageHandler<MsgObjectPredestroyed>
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -35,6 +42,8 @@ public:
 	void add_consumables(const std::string& type, int amount);
 	void add_object(const ObjectID& id);
 	void destroy_consumables(const std::string& type, int amount);
+	void process_message(const MsgObjectDestroyed& msg);
+	void process_message(const MsgObjectPredestroyed& msg);
 	void register_listening();
 	void remove_object(const ObjectID& id);
 	std::pair<std::string,Properties> save() const;

@@ -8,6 +8,8 @@
 #include <set>
 #include <vector>
 
+#include <source/level/objects/messages/MsgObjectDestroyed.h>
+#include <source/level/objects/messages/MsgObjectPredestroyed.h>
 #include "ICmpUsable.h"
 
 namespace hesp {
@@ -70,8 +72,36 @@ void CmpInventory::destroy_consumables(const std::string& type, int amount)
 	else throw Exception("Cannot destroy more consumables than are being held");
 }
 
+void CmpInventory::process_message(const MsgObjectDestroyed& msg)
+{
+	if(m_objects.find(msg.object_id()) != m_objects.end())
+	{
+		// An object contained in the inventory has been destroyed: we need to remove it from the inventory.
+		// Note that the object still exists until after processing of destroyed messages has finished (see
+		// the implementation in ObjectManager), so there is no danger of accessing the object after it has
+		// already been physically destroyed.
+		remove_object(msg.object_id());
+	}
+}
+
+void CmpInventory::process_message(const MsgObjectPredestroyed& msg)
+{
+	if(msg.object_id() == m_objectID)
+	{
+		// The object whose inventory this is is about to be destroyed. All the objects in the inventory
+		// thus need to be queued up for prior destruction.
+		for(std::set<ObjectID>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+		{
+			m_objectManager->queue_child_for_destruction(*it, m_objectID);
+		}
+	}
+}
+
 void CmpInventory::register_listening()
 {
+	// Note: The inventory needs to receive predestroy messages for the object to which it belongs.
+	m_objectManager->add_listener(this, m_objectID);
+
 	for(std::set<ObjectID>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
 	{
 		m_objectManager->add_listener(this, *it);

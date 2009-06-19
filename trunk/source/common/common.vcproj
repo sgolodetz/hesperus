@@ -1316,6 +1316,10 @@
 							Name=".cpp"
 							>
 							<File
+								RelativePath="..\level\objects\components\CmpConsumeActivatable.cpp"
+								>
+							</File>
+							<File
 								RelativePath="..\level\objects\components\CmpItemActivatable.cpp"
 								>
 							</File>
@@ -1327,6 +1331,10 @@
 						<Filter
 							Name=".h"
 							>
+							<File
+								RelativePath="..\level\objects\components\CmpConsumeActivatable.h"
+								>
+							</File>
 							<File
 								RelativePath="..\level\objects\components\CmpItemActivatable.h"
 								>

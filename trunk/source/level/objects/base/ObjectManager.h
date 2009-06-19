@@ -62,6 +62,7 @@ public:
 	int object_count() const;
 	ObjectID player() const;
 	void post_message(const ObjectID& target, const Message_CPtr& msg);
+	void queue_child_for_destruction(const ObjectID& child, const ObjectID& parent);
 	void queue_for_destruction(const ObjectID& id);
 	void register_group(const std::string& name, const GroupPredicate& pred);
 	void remove_listener(IObjectComponent *listener, const ObjectID& id);

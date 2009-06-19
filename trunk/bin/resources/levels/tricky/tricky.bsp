@@ -891,7 +891,7 @@ Objects
 		}
 		Inventory
 		{
-			Consumables = <("[Pistol]Bullet",23);("[Rifle]Bullet",9)>
+			Consumables = <>
 			Objects = []
 		}
 		MeshMovement;

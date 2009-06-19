@@ -15,6 +15,10 @@
 				<property name="AABBs" type="[AABBid]"/>
 				<property name="Pose" type="int"/>
 			</component>
+			<component name="ConsumeActivatable">
+				<property name="Amount" type="int"/>
+				<property name="Type" type="string"/>
+			</component>
 			<component name="DirectMovement"/>
 			<component name="Inventory">
 				<property name="Consumables" type="string -> int"/>
