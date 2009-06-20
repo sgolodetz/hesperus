@@ -15,6 +15,7 @@ namespace bf = boost::filesystem;
 #include <source/level/objects/components/CmpAABBBounds.h>
 #include <source/level/objects/components/CmpConsumeActivatable.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
+#include <source/level/objects/components/CmpHealth.h>
 #include <source/level/objects/components/CmpInventory.h>
 #include <source/level/objects/components/CmpItemActivatable.h>
 #include <source/level/objects/components/CmpMeshMovement.h>
@@ -237,6 +238,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 		ADD_LOADER(AABBBounds);
 		ADD_LOADER(ConsumeActivatable);
 		ADD_LOADER(DirectMovement);
+		ADD_LOADER(Health);
 		ADD_LOADER(Inventory);
 		ADD_LOADER(ItemActivatable);
 		ADD_LOADER(MeshMovement);

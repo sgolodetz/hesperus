@@ -20,6 +20,10 @@
 				<property name="Type" type="string"/>
 			</component>
 			<component name="DirectMovement"/>
+			<component name="Health">
+				<property name="Health" type="int"/>
+				<property name="MaxHealth" type="int"/>
+			</component>
 			<component name="Inventory">
 				<property name="Consumables" type="string -> int"/>
 				<property name="Objects" type="[int]"/>
@@ -54,8 +58,12 @@
 					<property name="AABBs" fixed="[stand,crouch]"/>
 					<property name="Pose" default="0"/>
 				</component>
+				<component name="Health">
+					<property name="Health" default="100"/>
+					<property name="MaxHealth" default="100"/>
+				</component>
 				<component name="Inventory">
-					<property name="Consumables" default="[]"/>
+					<property name="Consumables" default="&lt;&gt;"/>
 					<property name="Objects" default="[]"/>
 				</component>
 				<component name="MeshMovement"/>
@@ -72,8 +80,12 @@
 					<property name="AABBs" fixed="[stand,crouch]"/>
 					<property name="Pose" default="0"/>
 				</component>
+				<component name="Health">
+					<property name="Health" default="100"/>
+					<property name="MaxHealth" default="100"/>
+				</component>
 				<component name="Inventory">
-					<property name="Consumables" default="[]"/>
+					<property name="Consumables" default="&lt;&gt;"/>
 					<property name="Objects" default="[]"/>
 				</component>
 				<component name="MeshMovement"/>

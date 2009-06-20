@@ -28,8 +28,8 @@ void LevelViewer::render() const
 	Screen::instance().set_ortho_viewport(*m_extents);
 	const int& x1 = m_extents->left(), y1 = m_extents->top(), x2 = m_extents->right(), y2 = m_extents->bottom();
 	const int w = x2 - x1, h = y2 - y1;
+	glColor3d(1,1,1);
 	glBegin(GL_LINE_LOOP);
-		glColor3d(1,1,1);
 		glVertex2i(0,0);
 		glVertex2i(w,0);
 		glVertex2i(w,h);

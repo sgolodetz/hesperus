@@ -8,6 +8,11 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
+		Health
+		{
+			Health = 100
+			MaxHealth = 100
+		}
 		MeshMovement;
 		ModelRender
 		{
@@ -30,6 +35,11 @@ Objects
 		{
 			AABBs = [0,1]
 			Pose = 0
+		}
+		Health
+		{
+			Health = 100
+			MaxHealth = 100
 		}
 		MeshMovement;
 		ModelRender

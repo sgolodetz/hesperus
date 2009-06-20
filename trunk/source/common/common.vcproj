@@ -703,6 +703,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\level\HUDViewer.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\level\Level.cpp"
 					>
 				</File>
@@ -724,6 +728,10 @@
 				>
 				<File
 					RelativePath="..\level\GeometryRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\level\HUDViewer.h"
 					>
 				</File>
 				<File
@@ -1605,6 +1613,30 @@
 							>
 							<File
 								RelativePath="..\level\objects\components\ICmpUsable.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="&lt;Health&gt;"
+						>
+						<Filter
+							Name=".cpp"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpHealth.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpHealth.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\ICmpHealth.h"
 								>
 							</File>
 						</Filter>

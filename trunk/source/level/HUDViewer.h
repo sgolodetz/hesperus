@@ -1,17 +1,17 @@
 /***
- * hesperus: LevelViewer.h
+ * hesperus: HUDViewer.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_LEVELVIEWER
-#define H_HESP_LEVELVIEWER
+#ifndef H_HESP_HUDVIEWER
+#define H_HESP_HUDVIEWER
 
 #include <source/gui/GUIComponent.h>
 #include "Level.h"
 
 namespace hesp {
 
-class LevelViewer : public GUIComponent
+class HUDViewer : public GUIComponent
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -19,11 +19,15 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit LevelViewer(const Level_Ptr& level);
+	explicit HUDViewer(const Level_Ptr& level);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	void render() const;
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void render_health_bar(int w, int h) const;
 };
 
 }

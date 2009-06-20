@@ -17,6 +17,7 @@
 #include <source/io/files/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/math/geom/GeomUtil.h>
+#include <source/level/HUDViewer.h>
 #include <source/level/LevelViewer.h>
 #include <source/level/objects/base/ObjectCommand.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
@@ -84,10 +85,9 @@ GUIComponent_Ptr GameState_Level::construct_display()
 	int width = screen.dimensions().width();
 	int height = screen.dimensions().height();
 	display->layout().add(new Picture((imagesDir / "title.png").file_string()), Extents(width/4, 0, width*3/4, width/8));
-	display->layout().add(new LevelViewer(m_level), Extents(50, 200, width - 50, height - 50));
-	GUIContainer<ExplicitLayout> *cont = new GUIContainer<ExplicitLayout>;
-	cont->layout().add(new Picture((imagesDir / "title.png").file_string()), Extents(500, 0, 700, 50));
-	display->layout().add(cont, Extents(100, 100, 200, 200));
+	Extents mainExtents(50, width/8, width - 50, height - 50);
+	display->layout().add(new LevelViewer(m_level), mainExtents);
+	display->layout().add(new HUDViewer(m_level), mainExtents);
 
 	return GUIComponent_Ptr(display);
 }
