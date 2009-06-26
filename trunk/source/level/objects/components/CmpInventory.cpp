@@ -31,11 +31,9 @@ CmpInventory::CmpInventory(const ObjectID& activeItem, const std::map<std::strin
 //#################### STATIC FACTORY METHODS ####################
 IObjectComponent_Ptr CmpInventory::load(const Properties& properties)
 {
-	// Convert the vector of object IDs stored in the properties into a set.
-	const std::vector<ObjectID>& propItems = properties.get<std::vector<ObjectID> >("Items");
-	std::set<ObjectID> items(propItems.begin(), propItems.end());
-
-	return IObjectComponent_Ptr(new CmpInventory(properties.get<ObjectID>("ActiveItem"), properties.get<std::map<std::string,int> >("Consumables"), items));
+	return IObjectComponent_Ptr(new CmpInventory(properties.get<ObjectID>("ActiveItem"),
+												 properties.get<std::map<std::string,int> >("Consumables"),
+												 properties.get<std::set<ObjectID> >("Items")));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -130,14 +128,9 @@ void CmpInventory::remove_item(const ObjectID& id)
 std::pair<std::string,Properties> CmpInventory::save() const
 {
 	Properties properties;
-
-	// Convert the set of IDs of items stored in the inventory into a vector.
-	std::vector<ObjectID> propItems(m_items.begin(), m_items.end());
-
 	properties.set("ActiveItem", m_activeItem);
 	properties.set("Consumables", m_consumables);
-	properties.set("Items", propItems);
-
+	properties.set("Items", m_items);
 	return std::make_pair("Inventory", properties);
 }
 

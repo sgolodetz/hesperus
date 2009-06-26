@@ -42,6 +42,20 @@ std::pair<T1,T2> PropReader<std::pair<T1,T2> >::read(std::string& input)
 }
 
 template <typename T>
+std::set<T> PropReader<std::set<T> >::read(std::string& input)
+{
+	std::set<T> ret;
+
+	std::string tok = PropReaderUtil::next_sized_token(input);
+	while(!tok.empty())
+	{
+		ret.insert(PropReader<T>::read(tok));
+	}
+
+	return ret;
+}
+
+template <typename T>
 std::vector<T> PropReader<std::vector<T> >::read(std::string& input)
 {
 	std::vector<T> ret;

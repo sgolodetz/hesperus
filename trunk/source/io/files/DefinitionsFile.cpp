@@ -74,9 +74,6 @@ void DefinitionsFile::load(const std::string& filename, std::vector<AABB3d>& aab
 				// Treat an AABBid as an int within the game (the map editor needs to treat them specially though).
 				boost::algorithm::replace_all(type, "AABBid", "int");
 
-				// Treat enumerated types as strings within the game (the map editor needs to treat them specially though).
-				if(type.length() > 0 && type[0] == '{') type = "string";
-
 				propertyTypes.insert(std::make_pair(name, type));
 			}
 		}

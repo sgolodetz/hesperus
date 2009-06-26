@@ -7,6 +7,7 @@
 #define H_HESP_PROPREADER
 
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -42,6 +43,11 @@ template <> struct PropReader<ObjectID>
 template <typename T1, typename T2> struct PropReader<std::pair<T1,T2> >
 {
 	static std::pair<T1,T2> read(std::string& input);
+};
+
+template <typename T> struct PropReader<std::set<T> >
+{
+	static std::set<T> read(std::string& input);
 };
 
 template <> struct PropReader<std::string>

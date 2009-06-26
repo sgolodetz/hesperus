@@ -27,7 +27,7 @@
 			<component name="Inventory">
 				<property name="ActiveItem" type="ObjectID"/>
 				<property name="Consumables" type="string -> int"/>
-				<property name="Items" type="[ObjectID]"/>
+				<property name="Items" type="{ObjectID}"/>
 			</component>
 			<component name="ItemActivatable"/>
 			<component name="MeshMovement"/>

@@ -36,6 +36,23 @@ std::string PropFormatter<std::map<K,V> >::format(const std::map<K,V>& input)
 }
 
 template <typename T>
+std::string PropFormatter<std::set<T> >::format(const std::set<T>& input)
+{
+	std::ostringstream os;
+
+	os << '[';
+	for(typename std::set<T>::const_iterator it=input.begin(), iend=input.end(); it!=iend;)
+	{
+		os << format_property(*it);
+		++it;
+		if(it != iend) os << ',';
+	}
+	os << ']';
+
+	return os.str();
+}
+
+template <typename T>
 std::string PropFormatter<std::vector<T> >::format(const std::vector<T>& input)
 {
 	std::ostringstream os;
