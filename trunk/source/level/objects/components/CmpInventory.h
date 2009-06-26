@@ -23,15 +23,17 @@ class CmpInventory
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::set<ObjectID> m_objects;
-	std::map<std::string,int> m_consumables;				// the amounts of various types of consumable (e.g. pistol bullets) currently being held
+	mutable bool m_initialised;
 
-	bool m_groupsDirty;										// do the usable groups need updating?
-	std::map<std::string,std::set<ObjectID> > m_groups;		// which usables of each group (e.g. pistols) are currently being held
+	ObjectID m_activeObject;										// the active object (e.g. the pistol in the entity's hand)
+	std::map<std::string,int> m_consumables;						// the amounts of various types of consumable (e.g. pistol bullets) currently being held
+	std::set<ObjectID> m_objects;
+
+	mutable std::map<std::string,std::set<ObjectID> > m_groups;		// which usables of each group (e.g. pistols) are currently being held
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpInventory(const std::set<ObjectID>& objects, const std::map<std::string,int>& consumables);
+	CmpInventory(const ObjectID& activeObject, const std::map<std::string,int>& consumables, const std::set<ObjectID>& objects);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -39,6 +41,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	ObjectID active_object() const;
 	void add_consumables(const std::string& type, int amount);
 	void add_object(const ObjectID& id);
 	void destroy_consumables(const std::string& type, int amount);
@@ -50,7 +53,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void update_groups();
+	void initialise_if_necessary() const;
 };
 
 }

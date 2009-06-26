@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include <source/level/objects/base/ObjectID.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -31,6 +32,11 @@ template <typename T> struct PropReader
 template <typename K, typename V> struct PropReader<std::map<K,V> >
 {
 	static std::map<K,V> read(std::string& input);
+};
+
+template <> struct PropReader<ObjectID>
+{
+	static ObjectID read(std::string& input);
 };
 
 template <typename T1, typename T2> struct PropReader<std::pair<T1,T2> >

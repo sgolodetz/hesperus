@@ -17,6 +17,7 @@ class ICmpInventory : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual ObjectID active_object() const = 0;
 	virtual void add_consumables(const std::string& type, int amount) = 0;
 	virtual void add_object(const ObjectID& objectID) = 0;
 	virtual void destroy_consumables(const std::string& type, int amount) = 0;

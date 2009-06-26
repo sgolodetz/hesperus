@@ -881,7 +881,7 @@ test-def.xml
 }
 Objects
 {
-	Count = 3
+	Count = 4
 	Object
 	{
 		AABBBounds
@@ -896,6 +896,7 @@ Objects
 		}
 		Inventory
 		{
+			ActiveObject = -1
 			Consumables = <>
 			Objects = []
 		}
@@ -929,8 +930,9 @@ Objects
 		}
 		Inventory
 		{
+			ActiveObject = 3
 			Consumables = <>
-			Objects = []
+			Objects = [3]
 		}
 		MeshMovement;
 		Orientation
@@ -965,6 +967,7 @@ Objects
 		}
 		Ownable
 		{
+			AttachPoint = "lower_arm.r"
 			Owner = -1
 		}
 		Position
@@ -979,6 +982,26 @@ Objects
 		{
 			Group = "Pistol"
 			Script = "testweapon-use"
+		}
+	}
+	Object
+	{
+		Orientation
+		{
+			Look = ( 0 -1 0 )
+		}
+		Ownable
+		{
+			AttachPoint = "lower_arm.r"
+			Owner = 1
+		}
+		Position
+		{
+			Position = ( 0 0 0 )
+		}
+		ModelRender
+		{
+			ModelName = "TestWeapon"
 		}
 	}
 }

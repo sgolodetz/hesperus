@@ -83,7 +83,7 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 
 //#################### LOADING SUPPORT METHODS ####################
 std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
-														const ASXEngine_Ptr& aiEngine, const bf::path& baseDir)
+															  const ASXEngine_Ptr& aiEngine, const bf::path& baseDir)
 {
 	typedef void (*LoadFunc)(Properties&, const std::string&, const std::string&);
 	static std::map<std::string,LoadFunc> loadFuncs;
@@ -92,9 +92,11 @@ std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, 
 	{
 		loadFuncs["double"] = load_property<double>;
 		loadFuncs["int"] = load_property<int>;
+		loadFuncs["ObjectID"] = load_property<ObjectID>;
 		loadFuncs["string"] = load_property<std::string>;
 		loadFuncs["Vector3d"] = load_property<Vector3d>;
 		loadFuncs["[int]"] = load_property<std::vector<int> >;
+		loadFuncs["[ObjectID]"] = load_property<std::vector<ObjectID> >;
 		loadFuncs["string -> int"] = load_property<std::map<std::string,int> >;
 		done = true;
 	}
@@ -177,9 +179,11 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 	{
 		saveFuncs["double"] = save_property<double>;
 		saveFuncs["int"] = save_property<int>;
+		saveFuncs["ObjectID"] = save_property<ObjectID>;
 		saveFuncs["string"] = save_property<std::string>;
 		saveFuncs["Vector3d"] = save_property<Vector3d>;
 		saveFuncs["[int]"] = save_property<std::vector<int> >;
+		saveFuncs["[ObjectID]"] = save_property<std::vector<ObjectID> >;
 		saveFuncs["string -> int"] = save_property<std::map<std::string,int> >;
 		done = true;
 	}

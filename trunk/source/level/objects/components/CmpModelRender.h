@@ -31,6 +31,7 @@ public:
 public:
 	AnimationController_Ptr anim_controller() const;
 	void check_dependencies() const;
+	const std::string& model_name() const;
 	void render() const;
 	std::pair<std::string,Properties> save() const;
 	void set_highlights(bool enabled);

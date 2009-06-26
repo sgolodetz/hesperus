@@ -32,6 +32,11 @@ std::string PropReaderUtil::next_token(std::string& input)
 }
 
 //#################### SPECIALIZATIONS ####################
+ObjectID PropReader<ObjectID>::read(std::string& input)
+{
+	return ObjectID(PropReader<int>::read(input));
+}
+
 std::string PropReader<std::string>::read(std::string& input)
 {
 	return PropReaderUtil::next_sized_token(input);

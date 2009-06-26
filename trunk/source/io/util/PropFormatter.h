@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include <source/level/objects/base/ObjectID.h>
+
 namespace hesp {
 
 //#################### MAIN TEMPLATE ####################
@@ -27,6 +29,11 @@ template <> struct PropFormatter<std::string>
 template <typename K, typename V> struct PropFormatter<std::map<K,V> >
 {
 	static std::string format(const std::map<K,V>& input);
+};
+
+template <> struct PropFormatter<ObjectID>
+{
+	static std::string format(const ObjectID& input);
 };
 
 template <typename T> struct PropFormatter<std::vector<T> >

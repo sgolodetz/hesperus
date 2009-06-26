@@ -181,7 +181,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 }
 
 /**
-Loads the models necessary for the animatable objects in the specified object manager.
+Loads the models necessary for the objects in the specified object manager.
 
 @param objectManager	The object manager
 @return					A model manager containing the loaded models
@@ -190,10 +190,10 @@ ModelManager_Ptr LevelFile::load_models(const ObjectManager_Ptr& objectManager)
 {
 	ModelManager_Ptr modelManager(new ModelManager);
 
-	std::vector<ObjectID> animatables = objectManager->group("Animatables");
-	for(size_t i=0, size=animatables.size(); i<size; ++i)
+	std::vector<ObjectID> modelContainers = objectManager->group("ModelContainers");
+	for(size_t i=0, size=modelContainers.size(); i<size; ++i)
 	{
-		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		ICmpModelRender_Ptr cmpRender = objectManager->get_component(modelContainers[i], cmpRender);
 
 		// Note: Setting the model manager automatically registers the model inside the component with it.
 		cmpRender->set_model_manager(modelManager);
@@ -202,9 +202,9 @@ ModelManager_Ptr LevelFile::load_models(const ObjectManager_Ptr& objectManager)
 	modelManager->load_all();
 
 	// Now that all the models have been loaded, set the skeletons for the animation controllers.
-	for(size_t i=0, size=animatables.size(); i<size; ++i)
+	for(size_t i=0, size=modelContainers.size(); i<size; ++i)
 	{
-		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
+		ICmpModelRender_Ptr cmpRender = objectManager->get_component(modelContainers[i], cmpRender);
 		cmpRender->set_skeleton();
 	}
 

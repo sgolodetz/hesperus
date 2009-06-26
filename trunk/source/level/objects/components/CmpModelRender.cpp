@@ -6,7 +6,9 @@
 #include "CmpModelRender.h"
 
 #include "ICmpAABBBounds.h"
+#include "ICmpInventory.h"
 #include "ICmpOrientation.h"
+#include "ICmpOwnable.h"
 #include "ICmpPosition.h"
 
 namespace hesp {
@@ -32,6 +34,11 @@ void CmpModelRender::check_dependencies() const
 {
 	check_dependency<ICmpOrientation>();
 	check_dependency<ICmpPosition>();
+}
+
+const std::string& CmpModelRender::model_name() const
+{
+	return m_modelName;
 }
 
 void CmpModelRender::render() const
@@ -67,6 +74,25 @@ void CmpModelRender::render() const
 
 	Model_Ptr model = m_modelManager->model(m_modelName);
 	model->render(m_animController);
+
+	// Render the active object (if any), e.g. the weapon being carried.
+	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);
+	if(cmpInventory)
+	{
+		ObjectID activeObject = cmpInventory->active_object();
+		if(activeObject.valid())
+		{
+			ICmpOwnable_Ptr cmpOwnableAO = m_objectManager->get_component(activeObject, cmpOwnableAO);
+			ICmpModelRender_Ptr cmpRenderAO = m_objectManager->get_component(activeObject, cmpRenderAO);
+			if(cmpOwnableAO && cmpRenderAO)
+			{
+				Model_Ptr modelAO = m_modelManager->model(cmpRenderAO->model_name());
+				modelAO->attach_to_parent(model, cmpOwnableAO->attach_point());
+				modelAO->render(cmpRenderAO->anim_controller());
+				modelAO->detach_from_parent();
+			}
+		}
+	}
 
 	glPopMatrix();
 

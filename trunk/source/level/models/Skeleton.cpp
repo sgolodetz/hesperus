@@ -79,19 +79,32 @@ void Skeleton::set_pose(const Pose_Ptr& pose)
 	int boneCount = m_boneConfiguration->bone_count();
 	for(int i=0; i<boneCount; ++i)
 	{
-		const RBTMatrix_Ptr& baseRot = m_boneConfiguration->bones(i)->base_rotation();
-		RBTMatrix_Ptr rot(new RBTMatrix(*boneMatrices[i]));
-		(*rot)(0,3) = (*rot)(1,3) = (*rot)(2,3) = 0;
+		Bone_Ptr bone = m_boneConfiguration->bones(i);
+		
+		if(bone->name() == "root" && bone->parent() != NULL)
+		{
+			// If this is the root bone of an attached model, its absolute matrix should be
+			// the same as the bone to which it's attached: to ensure this, we explicitly
+			// set its relative matrix to the identity matrix. Note that only the root bone
+			// of each model should be called "root", or this will cause problems.
+			bone->relative_matrix() = RBTMatrix::identity();
+		}
+		else
+		{
+			const RBTMatrix_Ptr& baseRot = bone->base_rotation();
+			RBTMatrix_Ptr rot(new RBTMatrix(*boneMatrices[i]));
+			(*rot)(0,3) = (*rot)(1,3) = (*rot)(2,3) = 0;
 
-		RBTMatrix_Ptr relMatrix = baseRot * rot;
+			RBTMatrix_Ptr relMatrix = baseRot * rot;
 
-		const Vector3d& basePos = m_boneConfiguration->bones(i)->base_position();
-		Vector3d trans((*boneMatrices[i])(0,3), (*boneMatrices[i])(1,3), (*boneMatrices[i])(2,3));
-		(*relMatrix)(0,3) = basePos.x + trans.x;
-		(*relMatrix)(1,3) = basePos.y + trans.y;
-		(*relMatrix)(2,3) = basePos.z + trans.z;
+			const Vector3d& basePos = bone->base_position();
+			Vector3d trans((*boneMatrices[i])(0,3), (*boneMatrices[i])(1,3), (*boneMatrices[i])(2,3));
+			(*relMatrix)(0,3) = basePos.x + trans.x;
+			(*relMatrix)(1,3) = basePos.y + trans.y;
+			(*relMatrix)(2,3) = basePos.z + trans.z;
 
-		m_boneConfiguration->bones(i)->relative_matrix() = relMatrix;
+			bone->relative_matrix() = relMatrix;
+		}
 	}
 	update_absolute_bone_matrices();
 }

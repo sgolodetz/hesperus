@@ -1,6 +1,6 @@
 Objects
 {
-	Count = 3
+	Count = 4
 	Object
 	{
 		AABBBounds
@@ -15,6 +15,7 @@ Objects
 		}
 		Inventory
 		{
+			ActiveObject = -1
 			Consumables = <>
 			Objects = []
 		}
@@ -48,8 +49,9 @@ Objects
 		}
 		Inventory
 		{
+			ActiveObject = 3
 			Consumables = <>
-			Objects = []
+			Objects = [3]
 		}
 		MeshMovement;
 		MinimusScriptYoke
@@ -88,6 +90,7 @@ Objects
 		}
 		Ownable
 		{
+			AttachPoint = "lower_arm.r"
 			Owner = -1
 		}
 		Position
@@ -98,6 +101,26 @@ Objects
 		{
 			Group = "Pistol"
 			Script = "testweapon-use"
+		}
+	}
+	Object
+	{
+		ModelRender
+		{
+			ModelName = "TestWeapon"
+		}
+		Orientation
+		{
+			Look = ( 0 -1 0 )
+		}
+		Ownable
+		{
+			AttachPoint = "lower_arm.r"
+			Owner = 1
+		}
+		Position
+		{
+			Position = ( 0 0 0 )
 		}
 	}
 }

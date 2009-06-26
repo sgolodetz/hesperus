@@ -19,6 +19,7 @@ namespace hesp {
 bool has_owner(const ObjectID& id, const ObjectManager *objectManager);
 bool is_activatable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_animatable(const ObjectID& id, const ObjectManager *objectManager);
+bool is_model_container(const ObjectID& id, const ObjectManager *objectManager);
 bool is_renderable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_simulable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
@@ -29,6 +30,7 @@ ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<st
 {
 	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
+	register_group("ModelContainers", is_model_container);
 	register_group("Renderables", is_renderable);
 	register_group("Simulables", is_simulable);
 	register_group("Yokeables", is_yokeable);
@@ -241,6 +243,11 @@ bool is_activatable(const ObjectID& id, const ObjectManager *objectManager)
 bool is_animatable(const ObjectID& id, const ObjectManager *objectManager)
 {
 	return !has_owner(id, objectManager) && objectManager->get_component<ICmpModelRender>(id) != NULL;
+}
+
+bool is_model_container(const ObjectID& id, const ObjectManager *objectManager)
+{
+	return objectManager->get_component<ICmpModelRender>(id) != NULL;
 }
 
 bool is_renderable(const ObjectID& id, const ObjectManager *objectManager)

@@ -68,7 +68,7 @@ void AnimationController::reset_controller()
 	m_state = AS_REST;
 	m_animationName = "";
 	m_animationTime = 0;
-	m_pose.reset();
+	set_pose(m_skeleton->get_rest_pose());
 	m_transitionStart.reset();
 }
 

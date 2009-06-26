@@ -15,10 +15,11 @@ class CmpOwnable : public ICmpOwnable
 	//#################### PRIVATE VARIABLES ####################
 private:
 	ObjectID m_owner;
+	std::string m_attachPoint;	// the bone to which the object should be attached for rendering purposes
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpOwnable(const ObjectID& owner = ObjectID());
+	CmpOwnable(const std::string& attachPoint, const ObjectID& owner = ObjectID());
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -26,6 +27,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const std::string& attach_point() const;
 	void clear_owner();
 	const ObjectID& owner() const;
 	std::pair<std::string,Properties> save() const;

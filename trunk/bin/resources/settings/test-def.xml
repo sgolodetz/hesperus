@@ -25,8 +25,9 @@
 				<property name="MaxHealth" type="int"/>
 			</component>
 			<component name="Inventory">
+				<property name="ActiveObject" type="ObjectID"/>
 				<property name="Consumables" type="string -> int"/>
-				<property name="Objects" type="[int]"/>
+				<property name="Objects" type="[ObjectID]"/>
 			</component>
 			<component name="ItemActivatable"/>
 			<component name="MeshMovement"/>
@@ -40,7 +41,8 @@
 				<property name="Look" type="Vector3d"/>
 			</component>
 			<component name="Ownable">
-				<property name="Owner" type="int"/>
+				<property name="AttachPoint" type="string"/>
+				<property name="Owner" type="ObjectID"/>
 			</component>
 			<component name="Physics"/>
 			<component name="Position">
@@ -63,6 +65,7 @@
 					<property name="MaxHealth" default="100"/>
 				</component>
 				<component name="Inventory">
+					<property name="ActiveObject" default="-1"/>
 					<property name="Consumables" default="&lt;&gt;"/>
 					<property name="Objects" default="[]"/>
 				</component>
@@ -85,6 +88,7 @@
 					<property name="MaxHealth" default="100"/>
 				</component>
 				<component name="Inventory">
+					<property name="ActiveObject" default="-1"/>
 					<property name="Consumables" default="&lt;&gt;"/>
 					<property name="Objects" default="[]"/>
 				</component>
