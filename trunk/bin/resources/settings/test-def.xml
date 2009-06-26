@@ -25,9 +25,9 @@
 				<property name="MaxHealth" type="int"/>
 			</component>
 			<component name="Inventory">
-				<property name="ActiveObject" type="ObjectID"/>
+				<property name="ActiveItem" type="ObjectID"/>
 				<property name="Consumables" type="string -> int"/>
-				<property name="Objects" type="[ObjectID]"/>
+				<property name="Items" type="[ObjectID]"/>
 			</component>
 			<component name="ItemActivatable"/>
 			<component name="MeshMovement"/>
@@ -65,9 +65,9 @@
 					<property name="MaxHealth" default="100"/>
 				</component>
 				<component name="Inventory">
-					<property name="ActiveObject" default="-1"/>
+					<property name="ActiveItem" default="-1"/>
 					<property name="Consumables" default="&lt;&gt;"/>
-					<property name="Objects" default="[]"/>
+					<property name="Items" default="[]"/>
 				</component>
 				<component name="MeshMovement"/>
 				<component name="MinimusScriptYoke"/>
@@ -88,9 +88,9 @@
 					<property name="MaxHealth" default="100"/>
 				</component>
 				<component name="Inventory">
-					<property name="ActiveObject" default="-1"/>
+					<property name="ActiveItem" default="-1"/>
 					<property name="Consumables" default="&lt;&gt;"/>
-					<property name="Objects" default="[]"/>
+					<property name="Items" default="[]"/>
 				</component>
 				<component name="MeshMovement"/>
 				<component name="ModelRender">

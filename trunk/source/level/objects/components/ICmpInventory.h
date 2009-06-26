@@ -17,11 +17,11 @@ class ICmpInventory : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual ObjectID active_object() const = 0;
+	virtual ObjectID active_item() const = 0;
 	virtual void add_consumables(const std::string& type, int amount) = 0;
-	virtual void add_object(const ObjectID& objectID) = 0;
+	virtual void add_item(const ObjectID& objectID) = 0;
 	virtual void destroy_consumables(const std::string& type, int amount) = 0;
-	virtual void remove_object(const ObjectID& objectID) = 0;
+	virtual void remove_item(const ObjectID& objectID) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

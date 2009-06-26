@@ -30,7 +30,7 @@ void CmpItemActivatable::activated_by(const ObjectID& activator)
 	if(cmpItemOwnable->owner().valid()) throw Exception("Cannot pick up an item which is already owned by another object");
 
 	cmpItemOwnable->set_owner(activator);
-	cmpActivatorInventory->add_object(m_objectID);
+	cmpActivatorInventory->add_item(m_objectID);
 }
 
 void CmpItemActivatable::check_dependencies() const

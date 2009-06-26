@@ -15,9 +15,9 @@ Objects
 		}
 		Inventory
 		{
-			ActiveObject = -1
+			ActiveItem = -1
 			Consumables = <>
-			Objects = []
+			Items = []
 		}
 		MeshMovement;
 		ModelRender
@@ -49,9 +49,9 @@ Objects
 		}
 		Inventory
 		{
-			ActiveObject = 3
+			ActiveItem = 3
 			Consumables = <>
-			Objects = [3]
+			Items = [3]
 		}
 		MeshMovement;
 		MinimusScriptYoke

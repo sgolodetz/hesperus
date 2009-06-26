@@ -15,16 +15,16 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpInventory::CmpInventory(const ObjectID& activeObject, const std::map<std::string,int>& consumables, const std::set<ObjectID>& objects)
-:	m_initialised(false), m_activeObject(activeObject), m_consumables(consumables), m_objects(objects)
+CmpInventory::CmpInventory(const ObjectID& activeItem, const std::map<std::string,int>& consumables, const std::set<ObjectID>& items)
+:	m_initialised(false), m_activeItem(activeItem), m_consumables(consumables), m_items(items)
 {
-	// Note:	We can't update the usable groups at this stage, because the objects we're holding generally haven't been created yet.
+	// Note:	We can't update the usable groups at this stage, because the items we're holding generally haven't been created yet.
 	//			Instead, they are initialised "on demand" later on.
 
-	// Check that the active object (if any) is actually one of the objects in the inventory.
-	if(activeObject.valid() && objects.find(activeObject) == objects.end())
+	// Check that the active item (if any) is actually one of the items in the inventory.
+	if(activeItem.valid() && items.find(activeItem) == items.end())
 	{
-		throw Exception("The active object must be in the inventory");
+		throw Exception("The active item must be in the inventory");
 	}
 }
 
@@ -32,17 +32,17 @@ CmpInventory::CmpInventory(const ObjectID& activeObject, const std::map<std::str
 IObjectComponent_Ptr CmpInventory::load(const Properties& properties)
 {
 	// Convert the vector of object IDs stored in the properties into a set.
-	const std::vector<ObjectID>& propObjects = properties.get<std::vector<ObjectID> >("Objects");
-	std::set<ObjectID> objects(propObjects.begin(), propObjects.end());
+	const std::vector<ObjectID>& propItems = properties.get<std::vector<ObjectID> >("Items");
+	std::set<ObjectID> items(propItems.begin(), propItems.end());
 
-	return IObjectComponent_Ptr(new CmpInventory(properties.get<ObjectID>("ActiveObject"), properties.get<std::map<std::string,int> >("Consumables"), objects));
+	return IObjectComponent_Ptr(new CmpInventory(properties.get<ObjectID>("ActiveItem"), properties.get<std::map<std::string,int> >("Consumables"), items));
 }
 
 //#################### PUBLIC METHODS ####################
-ObjectID CmpInventory::active_object() const
+ObjectID CmpInventory::active_item() const
 {
 	initialise_if_necessary();
-	return m_activeObject;
+	return m_activeItem;
 }
 
 void CmpInventory::add_consumables(const std::string& type, int amount)
@@ -55,11 +55,11 @@ void CmpInventory::add_consumables(const std::string& type, int amount)
 	else m_consumables.insert(std::make_pair(type, amount));
 }
 
-void CmpInventory::add_object(const ObjectID& id)
+void CmpInventory::add_item(const ObjectID& id)
 {
 	initialise_if_necessary();
 
-	m_objects.insert(id);
+	m_items.insert(id);
 	m_objectManager->add_listener(this, id);
 
 	ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(id, cmpUsable);
@@ -81,13 +81,13 @@ void CmpInventory::destroy_consumables(const std::string& type, int amount)
 
 void CmpInventory::process_message(const MsgObjectDestroyed& msg)
 {
-	if(m_objects.find(msg.object_id()) != m_objects.end())
+	if(m_items.find(msg.object_id()) != m_items.end())
 	{
-		// An object contained in the inventory has been destroyed: we need to remove it from the inventory.
-		// Note that the object still exists until after processing of destroyed messages has finished (see
-		// the implementation in ObjectManager), so there is no danger of accessing the object after it has
+		// An item contained in the inventory has been destroyed: we need to remove it from the inventory.
+		// Note that the item still exists until after processing of destroyed messages has finished (see
+		// the implementation in ObjectManager), so there is no danger of accessing the item after it has
 		// already been physically destroyed.
-		remove_object(msg.object_id());
+		remove_item(msg.object_id());
 	}
 }
 
@@ -95,9 +95,9 @@ void CmpInventory::process_message(const MsgObjectPredestroyed& msg)
 {
 	if(msg.object_id() == m_objectID)
 	{
-		// The object whose inventory this is is about to be destroyed. All the objects in the inventory
+		// The object whose inventory this is is about to be destroyed. All the items in the inventory
 		// thus need to be queued up for prior destruction.
-		for(std::set<ObjectID>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+		for(std::set<ObjectID>::const_iterator it=m_items.begin(), iend=m_items.end(); it!=iend; ++it)
 		{
 			m_objectManager->queue_child_for_destruction(*it, m_objectID);
 		}
@@ -109,19 +109,19 @@ void CmpInventory::register_listening()
 	// Note: The inventory needs to receive predestroy messages for the object to which it belongs.
 	m_objectManager->add_listener(this, m_objectID);
 
-	for(std::set<ObjectID>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+	for(std::set<ObjectID>::const_iterator it=m_items.begin(), iend=m_items.end(); it!=iend; ++it)
 	{
 		m_objectManager->add_listener(this, *it);
 	}
 }
 
-void CmpInventory::remove_object(const ObjectID& id)
+void CmpInventory::remove_item(const ObjectID& id)
 {
 	initialise_if_necessary();
 
-	m_objects.erase(id);
+	m_items.erase(id);
 	m_objectManager->remove_listener(this, id);
-	if(m_activeObject == id) m_activeObject = ObjectID();
+	if(m_activeItem == id) m_activeItem = ObjectID();
 
 	ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(id, cmpUsable);
 	if(cmpUsable) m_groups[cmpUsable->usable_group()].erase(id);
@@ -131,12 +131,12 @@ std::pair<std::string,Properties> CmpInventory::save() const
 {
 	Properties properties;
 
-	// Convert the set of IDs of objects stored in the inventory into a vector.
-	std::vector<ObjectID> propObjects(m_objects.begin(), m_objects.end());
+	// Convert the set of IDs of items stored in the inventory into a vector.
+	std::vector<ObjectID> propItems(m_items.begin(), m_items.end());
 
-	properties.set("ActiveObject", m_activeObject);
+	properties.set("ActiveItem", m_activeItem);
 	properties.set("Consumables", m_consumables);
-	properties.set("Objects", propObjects);
+	properties.set("Items", propItems);
 
 	return std::make_pair("Inventory", properties);
 }
@@ -146,7 +146,7 @@ void CmpInventory::initialise_if_necessary() const
 {
 	if(!m_initialised)
 	{
-		for(std::set<ObjectID>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+		for(std::set<ObjectID>::const_iterator it=m_items.begin(), iend=m_items.end(); it!=iend; ++it)
 		{
 			ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(*it, cmpUsable);
 			if(cmpUsable) m_groups[cmpUsable->usable_group()].insert(*it);

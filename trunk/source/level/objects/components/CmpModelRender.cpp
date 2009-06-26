@@ -75,21 +75,21 @@ void CmpModelRender::render() const
 	Model_Ptr model = m_modelManager->model(m_modelName);
 	model->render(m_animController);
 
-	// Render the active object (if any), e.g. the weapon being carried.
+	// Render the active item (if any), e.g. the weapon being carried.
 	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);
 	if(cmpInventory)
 	{
-		ObjectID activeObject = cmpInventory->active_object();
-		if(activeObject.valid())
+		ObjectID activeItem = cmpInventory->active_item();
+		if(activeItem.valid())
 		{
-			ICmpOwnable_Ptr cmpOwnableAO = m_objectManager->get_component(activeObject, cmpOwnableAO);
-			ICmpModelRender_Ptr cmpRenderAO = m_objectManager->get_component(activeObject, cmpRenderAO);
-			if(cmpOwnableAO && cmpRenderAO)
+			ICmpOwnable_Ptr cmpItemOwnable = m_objectManager->get_component(activeItem, cmpItemOwnable);
+			ICmpModelRender_Ptr cmpItemRender = m_objectManager->get_component(activeItem, cmpItemRender);
+			if(cmpItemOwnable && cmpItemRender)
 			{
-				Model_Ptr modelAO = m_modelManager->model(cmpRenderAO->model_name());
-				modelAO->attach_to_parent(model, cmpOwnableAO->attach_point());
-				modelAO->render(cmpRenderAO->anim_controller());
-				modelAO->detach_from_parent();
+				Model_Ptr itemModel = m_modelManager->model(cmpItemRender->model_name());
+				itemModel->attach_to_parent(model, cmpItemOwnable->attach_point());
+				itemModel->render(cmpItemRender->anim_controller());
+				itemModel->detach_from_parent();
 			}
 		}
 	}
