@@ -96,6 +96,7 @@ std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, 
 		loadFuncs["string"] = load_property<std::string>;
 		loadFuncs["Vector3d"] = load_property<Vector3d>;
 		loadFuncs["[int]"] = load_property<std::vector<int> >;
+		loadFuncs["[string]"] = load_property<std::vector<std::string> >;
 		loadFuncs["{ObjectID}"] = load_property<std::set<ObjectID> >;
 		loadFuncs["string -> int"] = load_property<std::map<std::string,int> >;
 		done = true;
@@ -183,6 +184,7 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 		saveFuncs["string"] = save_property<std::string>;
 		saveFuncs["Vector3d"] = save_property<Vector3d>;
 		saveFuncs["[int]"] = save_property<std::vector<int> >;
+		saveFuncs["[string]"] = save_property<std::vector<std::string> >;
 		saveFuncs["{ObjectID}"] = save_property<std::set<ObjectID> >;
 		saveFuncs["string -> int"] = save_property<std::map<std::string,int> >;
 		done = true;

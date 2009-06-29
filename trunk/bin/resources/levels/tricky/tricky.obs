@@ -90,17 +90,13 @@ Objects
 		}
 		Ownable
 		{
+			AnimExtension = "pistol"
 			AttachPoint = "lower_arm.r"
 			Owner = -1
 		}
 		Position
 		{
 			Position = ( 8 15 6 )
-		}
-		Usable
-		{
-			Group = "Pistol"
-			Script = "testweapon-use"
 		}
 	}
 	Object
@@ -115,12 +111,19 @@ Objects
 		}
 		Ownable
 		{
+			AnimExtension = "pistol"
 			AttachPoint = "lower_arm.r"
 			Owner = 1
 		}
 		Position
 		{
 			Position = ( 0 0 0 )
+		}
+		Usable
+		{
+			Group = "Pistol"
+			Hotspots = ["root"]
+			Script = "testweapon-use"
 		}
 	}
 }

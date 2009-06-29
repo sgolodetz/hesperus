@@ -14,12 +14,13 @@ class CmpOwnable : public ICmpOwnable
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
+	std::string m_animExtension;	// the extension to apply to the name of the animation currently playing (e.g. "pistol" means "walk" -> "walk_with_pistol")
+	std::string m_attachPoint;		// the bone to which the object should be attached for rendering purposes
 	ObjectID m_owner;
-	std::string m_attachPoint;	// the bone to which the object should be attached for rendering purposes
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpOwnable(const std::string& attachPoint, const ObjectID& owner = ObjectID());
+	CmpOwnable(const std::string& animExtension, const std::string& attachPoint, const ObjectID& owner = ObjectID());
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -27,6 +28,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const std::string& anim_extension() const;
 	const std::string& attach_point() const;
 	void clear_owner();
 	const ObjectID& owner() const;

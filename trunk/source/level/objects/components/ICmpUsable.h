@@ -18,6 +18,12 @@ class ICmpUsable : public ObjectComponent
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	/**
+	Returns the usable's hotspots (e.g. the muzzle opening of the pistol for creating projectiles, etc.).
+	Each hotspot is a string referring to a bone in the usable's skeleton.
+	*/
+	virtual const std::vector<std::string>& hotspots() const = 0;
+
+	/**
 	Returns the usable's group (e.g. sword, pistol, tool, etc.)
 	*/
 	virtual std::string usable_group() const = 0;

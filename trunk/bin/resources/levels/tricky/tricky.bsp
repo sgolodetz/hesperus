@@ -967,6 +967,7 @@ Objects
 		}
 		Ownable
 		{
+			AnimExtension = "pistol"
 			AttachPoint = "lower_arm.r"
 			Owner = -1
 		}
@@ -978,11 +979,6 @@ Objects
 		{
 			ModelName = "Test-15"
 		}
-		Usable
-		{
-			Group = "Pistol"
-			Script = "testweapon-use"
-		}
 	}
 	Object
 	{
@@ -992,6 +988,7 @@ Objects
 		}
 		Ownable
 		{
+			AnimExtension = "pistol"
 			AttachPoint = "lower_arm.r"
 			Owner = 1
 		}
@@ -1002,6 +999,12 @@ Objects
 		ModelRender
 		{
 			ModelName = "TestWeapon"
+		}
+		Usable
+		{
+			Group = "Pistol"
+			Hotspots = ["root"]
+			Script = "testweapon-use"
 		}
 	}
 }

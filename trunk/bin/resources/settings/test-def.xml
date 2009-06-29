@@ -41,6 +41,7 @@
 				<property name="Look" type="Vector3d"/>
 			</component>
 			<component name="Ownable">
+				<property name="AnimExtension" type="string"/>
 				<property name="AttachPoint" type="string"/>
 				<property name="Owner" type="ObjectID"/>
 			</component>
@@ -50,6 +51,7 @@
 			</component>
 			<component name="Usable">
 				<property name="Group" type="string"/>
+				<property name="Hotspots" type="[string]"/>
 				<property name="Script" type="string"/>
 			</component>
 			<component name="UserBipedYoke"/>
