@@ -40,7 +40,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	Vector3d apply(const Vector3d& p) const;
+	Vector3d apply_to_point(const Vector3d& p) const;
+	Vector3d apply_to_vector(const Vector3d& v) const;
 	RBTMatrix_Ptr inverse() const;
 	std::vector<double> rep() const;
 };

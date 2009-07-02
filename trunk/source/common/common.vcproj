@@ -1603,14 +1603,14 @@
 								RelativePath="..\level\objects\components\CmpUsable.cpp"
 								>
 							</File>
-							<File
-								RelativePath="..\level\objects\components\CmpUsable.h"
-								>
-							</File>
 						</Filter>
 						<Filter
 							Name=".h"
 							>
+							<File
+								RelativePath="..\level\objects\components\CmpUsable.h"
+								>
+							</File>
 							<File
 								RelativePath="..\level\objects\components\ICmpUsable.h"
 								>

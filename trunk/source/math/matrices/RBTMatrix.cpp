@@ -90,12 +90,27 @@ but 0 for a vector - this function is only suitable for the former).
 @param p	The point to which to apply the RBT
 @return		The transformed point
 */
-Vector3d RBTMatrix::apply(const Vector3d& p) const
+Vector3d RBTMatrix::apply_to_point(const Vector3d& p) const
 {
 	return Vector3d(
 		m[0][0] * p.x + m[0][1] * p.y + m[0][2] * p.z + m[0][3],
 		m[1][0] * p.x + m[1][1] * p.y + m[1][2] * p.z + m[1][3],
 		m[2][0] * p.x + m[2][1] * p.y + m[2][2] * p.z + m[2][3]
+	);
+}
+
+/**
+Applies the rigid-body transform matrix to a 3D *vector* (compare to apply_to_point above).
+
+@param v	The (free) vector to which to apply the RBT
+@return		The transformed vector
+*/
+Vector3d RBTMatrix::apply_to_vector(const Vector3d& v) const
+{
+	return Vector3d(
+		m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
+		m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z,
+		m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z
 	);
 }
 

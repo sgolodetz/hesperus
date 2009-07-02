@@ -6,6 +6,8 @@
 #ifndef H_HESP_ICMPUSABLE
 #define H_HESP_ICMPUSABLE
 
+#include <boost/optional.hpp>
+
 #include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
@@ -22,6 +24,26 @@ public:
 	Each hotspot is a string referring to a bone in the usable's skeleton.
 	*/
 	virtual const std::vector<std::string>& hotspots() const = 0;
+
+	/**
+	Returns the orientation of the specified hotspot, if it has been set yet.
+	*/
+	virtual boost::optional<Vector3d> hotspot_orientation(const std::string& name) const = 0;
+
+	/**
+	Returns the position of the specified hotspot, if it has been set yet.
+	*/
+	virtual boost::optional<Vector3d> hotspot_position(const std::string& name) const = 0;
+
+	/**
+	Sets the orientation of the specified hotspot.
+	*/
+	virtual void set_hotspot_orientation(const std::string& name, const Vector3d& orientation) = 0;
+
+	/**
+	Sets the position of the specified hotspot.
+	*/
+	virtual void set_hotspot_position(const std::string& name, const Vector3d& position) = 0;
 
 	/**
 	Returns the usable's group (e.g. sword, pistol, tool, etc.)

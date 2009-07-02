@@ -94,7 +94,7 @@ void Submesh::skin(const Skeleton_Ptr& skeleton)
 			}
 
 			// Note: This is effectively p = m*p0 (if we think of p0 as (p0.x, p0.y, p0.z, 1)).
-			p = m->apply(p0);
+			p = m->apply_to_point(p0);
 			p /= boneWeightSum;
 		}
 		else

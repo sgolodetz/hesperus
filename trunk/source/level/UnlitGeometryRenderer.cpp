@@ -29,7 +29,7 @@ UnlitGeometryRenderer::UnlitGeometryRenderer(const std::vector<TexturedPolygon_P
 //#################### PUBLIC METHODS ####################
 void UnlitGeometryRenderer::render(const std::vector<int>& polyIndices) const
 {
-	// TEMPORARY: This should be replaced with render_proper() once the proper version is ready.
+	// FIXME: This should be replaced with render_proper() once the proper version is ready.
 	render_simple(polyIndices);
 }
 

@@ -39,7 +39,7 @@ LitGeometryRenderer::LitGeometryRenderer(const TexLitPolyVector& polygons, const
 //#################### PUBLIC METHODS ####################
 void LitGeometryRenderer::render(const std::vector<int>& polyIndices) const
 {
-	// TEMPORARY: This should be replaced with render_proper() once the proper version is ready.
+	// FIXME: This should be replaced with render_proper() once the proper version is ready.
 	render_simple(polyIndices);
 }
 

@@ -10,6 +10,7 @@
 #include "ICmpOrientation.h"
 #include "ICmpOwnable.h"
 #include "ICmpPosition.h"
+#include "ICmpUsable.h"
 
 namespace hesp {
 
@@ -76,23 +77,7 @@ void CmpModelRender::render() const
 	model->render(m_animController);
 
 	// Render the active item (if any), e.g. the weapon being carried.
-	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);
-	if(cmpInventory)
-	{
-		ObjectID activeItem = cmpInventory->active_item();
-		if(activeItem.valid())
-		{
-			ICmpOwnable_Ptr cmpItemOwnable = m_objectManager->get_component(activeItem, cmpItemOwnable);
-			ICmpModelRender_Ptr cmpItemRender = m_objectManager->get_component(activeItem, cmpItemRender);
-			if(cmpItemOwnable && cmpItemRender)
-			{
-				Model_Ptr itemModel = m_modelManager->model(cmpItemRender->model_name());
-				itemModel->attach_to_parent(model, cmpItemOwnable->attach_point());
-				itemModel->render(cmpItemRender->anim_controller());
-				itemModel->detach_from_parent();
-			}
-		}
-	}
+	render_active_item(model, mat);
 
 	glPopMatrix();
 
@@ -172,6 +157,53 @@ void CmpModelRender::set_skeleton()
 {
 	Skeleton_Ptr skeleton = m_modelManager->model(m_modelName)->skeleton();
 	m_animController->set_skeleton(skeleton);
+}
+
+//#################### PRIVATE METHODS ####################
+void CmpModelRender::render_active_item(const Model_Ptr& characterModel, const RBTMatrix_Ptr& characterMatrix) const
+{
+	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);
+	if(cmpInventory)
+	{
+		ObjectID activeItem = cmpInventory->active_item();
+		if(activeItem.valid())
+		{
+			ICmpOwnable_Ptr cmpItemOwnable = m_objectManager->get_component(activeItem, cmpItemOwnable);	assert(cmpItemOwnable);
+			ICmpModelRender_Ptr cmpItemRender = m_objectManager->get_component(activeItem, cmpItemRender);
+			ICmpUsable_Ptr cmpItemUsable = m_objectManager->get_component(activeItem, cmpItemUsable);
+
+			if(cmpItemRender)
+			{
+				Model_Ptr itemModel = m_modelManager->model(cmpItemRender->model_name());
+				itemModel->attach_to_parent(characterModel, cmpItemOwnable->attach_point());
+				itemModel->render(cmpItemRender->anim_controller());
+
+				// If the item's a usable one (e.g. a weapon), update the positions and orientations of its hotspots.
+				// Note that this must happen here (i.e. during rendering) because that's the only time the positions
+				// and orientations of the bones are actually calculated.
+				if(cmpItemUsable)
+				{
+					Skeleton_CPtr itemSkeleton = itemModel->skeleton();
+
+					const std::vector<std::string>& hotspots = cmpItemUsable->hotspots();
+					for(size_t i=0, size=hotspots.size(); i<size; ++i)
+					{
+						const std::string& hotspot = hotspots[i];
+						Bone_CPtr bone = itemSkeleton->bone_configuration()->bones(hotspot);
+
+						// Calculate the hotspot position and orientation from those of the bone (in the model-local coordinate system).
+						Vector3d orientation = characterMatrix->apply_to_vector(bone->orientation());
+						Vector3d position = characterMatrix->apply_to_point(bone->position());
+
+						cmpItemUsable->set_hotspot_orientation(hotspot, orientation);
+						cmpItemUsable->set_hotspot_position(hotspot, position);
+					}
+				}
+
+				itemModel->detach_from_parent();
+			}
+		}
+	}
 }
 
 }

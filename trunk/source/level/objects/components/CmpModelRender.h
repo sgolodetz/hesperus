@@ -37,6 +37,10 @@ public:
 	void set_highlights(bool enabled);
 	void set_model_manager(const ModelManager_Ptr& modelManager);
 	void set_skeleton();
+
+	//#################### PRIVATE METHODS ####################
+private:
+	void render_active_item(const Model_Ptr& characterModel, const RBTMatrix_Ptr& characterMatrix) const;
 };
 
 }

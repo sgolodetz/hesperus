@@ -87,6 +87,9 @@ void Game::run()
 			std::cout << "Render " << frameTime - lastDraw << std::endl;
 #endif
 
+			screen.render();
+			lastDraw = frameTime;
+
 			// Note:	We clamp the elapsed time to 50ms to prevent things moving
 			//			too far between one frame and the next.
 			GameState_Ptr newState = m_state->update(std::min(timeElapsed, Uint32(50)), m_input);
@@ -99,9 +102,7 @@ void Game::run()
 				continue;
 			}
 
-			screen.render();
 			m_input.set_mouse_motion(0, 0);
-			lastDraw = frameTime;
 		}
 	}
 }
