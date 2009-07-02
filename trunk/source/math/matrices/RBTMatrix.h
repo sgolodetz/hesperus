@@ -40,6 +40,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void add_scaled(const RBTMatrix_Ptr& mat, double scale);
 	Vector3d apply_to_point(const Vector3d& p) const;
 	Vector3d apply_to_vector(const Vector3d& v) const;
 	RBTMatrix_Ptr inverse() const;

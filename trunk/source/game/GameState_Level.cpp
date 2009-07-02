@@ -118,7 +118,7 @@ void GameState_Level::do_activatables(UserInput& input)
 	std::vector<int> visibleLeaves = m_level->find_visible_leaves(eye);
 	for(size_t i=0, size=activatables.size(); i<size; ++i)
 	{
-		// TODO: Determine whether the activatable is in a visible leaf and skip further testing if so.
+		// TODO: Determine whether the activatable is in a visible leaf and skip further testing if not.
 
 		ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(activatables[i], cmpBounds);
 		ICmpPosition_Ptr cmpPosition = objectManager->get_component(activatables[i], cmpPosition);

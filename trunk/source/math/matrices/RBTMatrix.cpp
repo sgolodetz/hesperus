@@ -83,6 +83,15 @@ double RBTMatrix::operator()(int i, int j) const
 }
 
 //#################### PUBLIC METHODS ####################
+void RBTMatrix::add_scaled(const RBTMatrix_Ptr& mat, double scale)
+{
+	for(int i=0; i<3; ++i)
+		for(int j=0; j<4; ++j)
+		{
+			m[i][j] += (*mat)(i,j) * scale;
+		}
+}
+
 /**
 Applies the rigid-body transform matrix to a 3D *point* (note: w = 1 for a point,
 but 0 for a vector - this function is only suitable for the former).

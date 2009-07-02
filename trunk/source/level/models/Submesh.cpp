@@ -90,7 +90,7 @@ void Submesh::skin(const Skeleton_Ptr& skeleton)
 				int boneIndex = boneWeights[j].bone_index();
 				double boneWeight = boneWeights[j].weight();
 				boneWeightSum += boneWeight;
-				m += boneWeight * skinningMatrices[boneIndex];
+				m->add_scaled(skinningMatrices[boneIndex], boneWeight);
 			}
 
 			// Note: This is effectively p = m*p0 (if we think of p0 as (p0.x, p0.y, p0.z, 1)).
