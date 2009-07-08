@@ -9,6 +9,7 @@
 #include <source/level/objects/commands/CmdBipedJump.h>
 #include <source/level/objects/commands/CmdBipedMove.h>
 #include <source/level/objects/commands/CmdBipedTurn.h>
+#include <source/level/objects/commands/CmdUseActiveItem.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/math/Constants.h>
@@ -90,6 +91,15 @@ std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 	{
 		commands.push_back(ObjectCommand_Ptr(new CmdBipedJump(m_objectID, dir)));
 		input.release_key(SDLK_SPACE);
+	}
+
+	//~~~~~~~~~~~
+	// ITEM USAGE
+	//~~~~~~~~~~~
+
+	if(input.mouse_button_down(UserInput::BUTTON_LEFT))
+	{
+		commands.push_back(ObjectCommand_Ptr(new CmdUseActiveItem(m_objectID)));
 	}
 
 	return commands;

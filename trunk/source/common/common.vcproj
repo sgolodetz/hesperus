@@ -1288,6 +1288,10 @@
 							RelativePath="..\level\objects\commands\CmdBipedTurn.cpp"
 							>
 						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdUseActiveItem.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name=".h"
@@ -1310,6 +1314,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\commands\CmdBipedTurn.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdUseActiveItem.h"
 							>
 						</File>
 					</Filter>
