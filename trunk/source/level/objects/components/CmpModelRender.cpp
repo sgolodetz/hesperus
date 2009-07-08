@@ -87,6 +87,9 @@ void CmpModelRender::render_first_person() const
 			pr.itemModel->render();
 		glPopAttrib();
 		glPopMatrix();
+
+		// Render the crosshair.
+		render_crosshair();
 	}
 }
 
@@ -252,6 +255,27 @@ void CmpModelRender::render_aabb(const Vector3d& p) const
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glEnable(GL_CULL_FACE);
 	}
+}
+
+void CmpModelRender::render_crosshair()
+{
+	glPushMatrix();
+	glPushAttrib(GL_ENABLE_BIT);
+
+	glLoadIdentity();
+	glDisable(GL_DEPTH_TEST);		// disable z-buffer testing
+	glDisable(GL_DEPTH_WRITEMASK);	// disable z-buffer writing
+
+	const double Z_OFFSET = 20;
+
+	glColor3d(1,1,1);
+	glBegin(GL_LINES);
+		glVertex3d(-1,0,-Z_OFFSET);		glVertex3d(1,0,-Z_OFFSET);
+		glVertex3d(0,-1,-Z_OFFSET);		glVertex3d(0,1,-Z_OFFSET);
+	glEnd();
+
+	glPopAttrib();
+	glPopMatrix();
 }
 
 void CmpModelRender::render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v) const
