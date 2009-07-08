@@ -18,6 +18,7 @@ class ICmpModelRender : public ICmpRender
 public:
 	virtual AnimationController_Ptr anim_controller() const = 0;
 	virtual const std::string& model_name() const = 0;
+	virtual void render_first_person() const = 0;
 	virtual void set_highlights(bool enabled) = 0;
 	virtual void set_model_manager(const ModelManager_Ptr& modelManager) = 0;
 	virtual void set_skeleton() = 0;

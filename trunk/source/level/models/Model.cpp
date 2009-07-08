@@ -13,6 +13,11 @@ Model::Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton)
 {}
 
 //#################### PUBLIC METHODS ####################
+void Model::apply_pose_to_skeleton(const AnimationController_Ptr& animController)
+{
+	m_skeleton->set_pose(animController->get_pose());
+}
+
 void Model::attach_to_parent(const Model_Ptr& parent, const std::string& parentBoneName)
 {
 	Bone_Ptr childBone = m_skeleton->bone_configuration()->bones("root");
@@ -26,9 +31,8 @@ void Model::detach_from_parent()
 	childBone->set_parent(Bone_Ptr());
 }
 
-void Model::render(const AnimationController_Ptr& animController) const
+void Model::render() const
 {
-	m_skeleton->set_pose(animController->get_pose());
 	m_mesh->skin(m_skeleton);
 	m_mesh->render();
 }

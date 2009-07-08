@@ -1,6 +1,6 @@
 Objects
 {
-	Count = 4
+	Count = 5
 	Object
 	{
 		AABBBounds
@@ -15,9 +15,9 @@ Objects
 		}
 		Inventory
 		{
-			ActiveItem = -1
+			ActiveItem = 4
 			Consumables = <>
-			Items = []
+			Items = [4]
 		}
 		MeshMovement;
 		ModelRender
@@ -114,6 +114,33 @@ Objects
 			AnimExtension = "pistol"
 			AttachPoint = "lower_arm.r"
 			Owner = 1
+		}
+		Position
+		{
+			Position = ( 0 0 0 )
+		}
+		Usable
+		{
+			Group = "Pistol"
+			Hotspots = ["root"]
+			Script = "testweapon-use"
+		}
+	}
+	Object
+	{
+		ModelRender
+		{
+			ModelName = "TestWeapon"
+		}
+		Orientation
+		{
+			Look = ( 0 -1 0 )
+		}
+		Ownable
+		{
+			AnimExtension = "pistol"
+			AttachPoint = "lower_arm.r"
+			Owner = 0
 		}
 		Position
 		{
