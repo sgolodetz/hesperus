@@ -120,7 +120,7 @@ void CmpModelRender::set_skeleton()
 //#################### PRIVATE METHODS ####################
 RBTMatrix_CPtr CmpModelRender::construct_item_matrix()
 {
-	RBTMatrix_Ptr mat = RBTMatrix::identity();
+	RBTMatrix_Ptr mat = RBTMatrix::zeros();
 	RBTMatrix& m = *mat;
 
 	const int N_OFFSET = 3;		// the offset in the camera's n direction at which the item model will be rendered
@@ -131,9 +131,9 @@ RBTMatrix_CPtr CmpModelRender::construct_item_matrix()
 	//			in the -y direction, and since by default we're looking down the -z axis in
 	//			OpenGL with y being the up direction, this is an appropriate transformation to
 	//			get the item model to render with the correct position and orientation.
-	m(0,0) = 1;		m(0,1) = 0;		m(0,2) = 0;		m(0,3) = 1;
-	m(1,0) = 0;		m(1,1) = -1;	m(1,2) = 0;		m(1,3) = -1;
-	m(2,0) = 0;		m(2,1) = 0;		m(2,2) = -1;	m(2,3) = -N_OFFSET;
+	m(0,0) = 1;			/*m(0,1) = 0;*/		/*m(0,2) = 0;*/		m(0,3) = 1;
+	/*m(1,0) = 0;*/		m(1,1) = -1;		/*m(1,2) = 0;*/		m(1,3) = -1;
+	/*m(2,0) = 0;*/		/*m(2,1) = 0;*/		m(2,2) = -1;		m(2,3) = -N_OFFSET;
 
 	return mat;
 }
