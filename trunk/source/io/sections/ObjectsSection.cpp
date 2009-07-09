@@ -25,7 +25,7 @@ namespace bf = boost::filesystem;
 #include <source/level/objects/components/CmpOwnable.h>
 #include <source/level/objects/components/CmpPhysics.h>
 #include <source/level/objects/components/CmpPosition.h>
-#include <source/level/objects/components/CmpUsable.h>
+#include <source/level/objects/components/CmpScriptedUsable.h>
 #include <source/level/objects/components/CmpUserBipedYoke.h>
 #include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
 #include <source/util/Properties.h>
@@ -254,7 +254,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 		ADD_LOADER(Ownable);
 		ADD_LOADER(Physics);
 		ADD_LOADER(Position);
-		ADD_LOADER(Usable);
+		ADD_LOADER(ScriptedUsable);
 		ADD_LOADER(UserBipedYoke);
 		done = true;
 	}

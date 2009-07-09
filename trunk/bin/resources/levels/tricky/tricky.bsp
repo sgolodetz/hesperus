@@ -1000,7 +1000,7 @@ Objects
 		{
 			ModelName = "TestWeapon"
 		}
-		Usable
+		ScriptedUsable
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]
@@ -1027,7 +1027,7 @@ Objects
 		{
 			ModelName = "TestWeapon"
 		}
-		Usable
+		ScriptedUsable
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]

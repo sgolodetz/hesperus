@@ -1,16 +1,16 @@
 /***
- * hesperus: CmpUsable.h
+ * hesperus: CmpScriptedUsable.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMPUSABLE
-#define H_HESP_CMPUSABLE
+#ifndef H_HESP_CMPSCRIPTEDUSABLE
+#define H_HESP_CMPSCRIPTEDUSABLE
 
 #include "ICmpUsable.h"
 
 namespace hesp {
 
-class CmpUsable : public ICmpUsable
+class CmpScriptedUsable : public ICmpUsable
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -22,7 +22,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpUsable(const std::string& usableGroup, const std::vector<std::string>& hotspots, const std::string& scriptName);
+	CmpScriptedUsable(const std::string& usableGroup, const std::vector<std::string>& hotspots, const std::string& scriptName);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

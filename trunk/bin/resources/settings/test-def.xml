@@ -49,7 +49,7 @@
 			<component name="Position">
 				<property name="Position" type="Vector3d"/>
 			</component>
-			<component name="Usable">
+			<component name="ScriptedUsable">
 				<property name="Group" type="string"/>
 				<property name="Hotspots" type="[string]"/>
 				<property name="Script" type="string"/>

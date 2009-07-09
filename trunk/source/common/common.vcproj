@@ -1608,7 +1608,7 @@
 							Name=".cpp"
 							>
 							<File
-								RelativePath="..\level\objects\components\CmpUsable.cpp"
+								RelativePath="..\level\objects\components\CmpScriptedUsable.cpp"
 								>
 							</File>
 						</Filter>
@@ -1616,7 +1616,7 @@
 							Name=".h"
 							>
 							<File
-								RelativePath="..\level\objects\components\CmpUsable.h"
+								RelativePath="..\level\objects\components\CmpScriptedUsable.h"
 								>
 							</File>
 							<File
