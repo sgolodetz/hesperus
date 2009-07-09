@@ -1611,12 +1611,20 @@
 								RelativePath="..\level\objects\components\CmpScriptedUsable.cpp"
 								>
 							</File>
+							<File
+								RelativePath="..\level\objects\components\CmpUsable.cpp"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name=".h"
 							>
 							<File
 								RelativePath="..\level\objects\components\CmpScriptedUsable.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\CmpUsable.h"
 								>
 							</File>
 							<File

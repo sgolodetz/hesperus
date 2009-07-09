@@ -6,18 +6,14 @@
 #ifndef H_HESP_CMPSCRIPTEDUSABLE
 #define H_HESP_CMPSCRIPTEDUSABLE
 
-#include "ICmpUsable.h"
+#include "CmpUsable.h"
 
 namespace hesp {
 
-class CmpScriptedUsable : public ICmpUsable
+class CmpScriptedUsable : public CmpUsable
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::string m_usableGroup;
-	std::vector<std::string> m_hotspots;
-	std::map<std::string,Vector3d> m_hotspotOrientations;
-	std::map<std::string,Vector3d> m_hotspotPositions;
 	std::string m_scriptName;
 
 	//#################### CONSTRUCTORS ####################
@@ -30,19 +26,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void check_dependencies() const;
-	const std::vector<std::string>& hotspots() const;
-	boost::optional<Vector3d> hotspot_orientation(const std::string& name) const;
-	boost::optional<Vector3d> hotspot_position(const std::string& name) const;
-	void set_hotspot_orientation(const std::string& name, const Vector3d& orientation);
-	void set_hotspot_position(const std::string& name, const Vector3d& position);
 	std::pair<std::string,Properties> save() const;
-	std::string usable_group() const;
 	void use();
-
-	//#################### PRIVATE METHODS ####################
-private:
-	void verify_hotspot_name(const std::string& name) const;
 };
 
 }
