@@ -1000,11 +1000,11 @@ Objects
 		{
 			ModelName = "TestWeapon"
 		}
-		ScriptedUsable
+		ProjectileWeaponUsable
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]
-			Script = "testweapon-use"
+			ProjectileType = "PistolBullet"
 		}
 	}
 	Object
@@ -1027,11 +1027,11 @@ Objects
 		{
 			ModelName = "TestWeapon"
 		}
-		ScriptedUsable
+		ProjectileWeaponUsable
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]
-			Script = "testweapon-use"
+			ProjectileType = "PistolBullet"
 		}
 	}
 }

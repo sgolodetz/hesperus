@@ -12,8 +12,8 @@ namespace hesp {
 
 class CmpUsable : public ICmpUsable
 {
-	//#################### PROTECTED VARIABLES ####################
-protected:
+	//#################### PRIVATE VARIABLES ####################
+private:
 	std::string m_usableGroup;
 	std::vector<std::string> m_hotspots;
 	std::map<std::string,Vector3d> m_hotspotOrientations;
@@ -31,10 +31,13 @@ public:
 	void set_hotspot_position(const std::string& name, const Vector3d& position);
 	std::string usable_group() const;
 
-	//#################### PRIVATE METHODS ####################
-private:
+	//#################### PROTECTED METHODS ####################
+protected:
 	boost::optional<Vector3d> hotspot_orientation(const std::string& name) const;
 	boost::optional<Vector3d> hotspot_position(const std::string& name) const;
+
+	//#################### PRIVATE METHODS ####################
+private:
 	void verify_hotspot_name(const std::string& name) const;
 };
 

@@ -119,11 +119,11 @@ Objects
 		{
 			Position = ( 0 0 0 )
 		}
-		ScriptedUsable
+		ProjectileWeaponUsable
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]
-			Script = "testweapon-use"
+			ProjectileType = "PistolBullet"
 		}
 	}
 	Object
@@ -146,11 +146,11 @@ Objects
 		{
 			Position = ( 0 0 0 )
 		}
-		ScriptedUsable
+		ProjectileWeaponUsable
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]
-			Script = "testweapon-use"
+			ProjectileType = "PistolBullet"
 		}
 	}
 }

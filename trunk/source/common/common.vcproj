@@ -1608,6 +1608,10 @@
 							Name=".cpp"
 							>
 							<File
+								RelativePath="..\level\objects\components\CmpProjectileWeaponUsable.cpp"
+								>
+							</File>
+							<File
 								RelativePath="..\level\objects\components\CmpScriptedUsable.cpp"
 								>
 							</File>
@@ -1619,6 +1623,10 @@
 						<Filter
 							Name=".h"
 							>
+							<File
+								RelativePath="..\level\objects\components\CmpProjectileWeaponUsable.h"
+								>
+							</File>
 							<File
 								RelativePath="..\level\objects\components\CmpScriptedUsable.h"
 								>
