@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 08-07-09
+Last Updated: 26-07-09
 
 ----
 Easy
@@ -21,6 +21,7 @@ Medium
 * Implement some AI yokes (it probably makes sense to have composite yokes so that we can switch between different yokes for different behaviours - could we have yoke trees corresponding to goal trees?).
 * View frustum culling.
 * Move the item activation code into an object command.
+* Ensure that the crosshair and any carried item are rendered after the rest of the scene in first-person mode.
 
 ----
 Hard
