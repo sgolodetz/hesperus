@@ -838,6 +838,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\nav\NavMeshUtil.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\nav\NavPolygon.cpp"
 						>
 					</File>
@@ -895,6 +899,10 @@
 					</File>
 					<File
 						RelativePath="..\level\nav\NavMeshGenerator.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\NavMeshUtil.h"
 						>
 					</File>
 					<File

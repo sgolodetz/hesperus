@@ -6,7 +6,7 @@
 #include "MinimusGotoPositionYoke.h"
 
 #include <source/level/nav/GlobalPathfinder.h>
-#include <source/level/objects/MoveFunctions.h>
+#include <source/level/nav/NavMeshUtil.h>
 #include <source/level/objects/commands/CmdBipedMove.h>
 #include <source/level/objects/commands/CmdBipedSetLook.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
@@ -43,9 +43,9 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		GlobalPathfinder pathfinder(navMesh, navDatasets[mapIndex]->adjacency_list(), navDatasets[mapIndex]->path_table());
 
 		int suggestedSourcePoly = cmpMovement->cur_nav_poly_index();
-		int sourcePoly = MoveFunctions::find_nav_polygon(source, suggestedSourcePoly, polygons, tree, navMesh);
+		int sourcePoly = NavMeshUtil::find_nav_polygon(source, suggestedSourcePoly, polygons, tree, navMesh);
 		if(sourcePoly == -1)	{ m_state = YOKE_FAILED; return std::vector<ObjectCommand_Ptr>(); }
-		int destPoly = MoveFunctions::find_nav_polygon(m_dest, -1, polygons, tree, navMesh);
+		int destPoly = NavMeshUtil::find_nav_polygon(m_dest, -1, polygons, tree, navMesh);
 		if(destPoly == -1)		{ m_state = YOKE_FAILED; return std::vector<ObjectCommand_Ptr>(); }
 
 		// FIXME: It's wasteful to copy the array of links each time (even though it's an array of pointers).
