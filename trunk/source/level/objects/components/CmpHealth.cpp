@@ -37,4 +37,11 @@ std::pair<std::string,Properties> CmpHealth::save() const
 	return std::make_pair("Health", properties);
 }
 
+CmpHealth::HealthStatus CmpHealth::status() const
+{
+	if(m_health > 0)		return ALIVE;
+	else if(m_health == 0)	return DYING;
+	else					return DEAD;
+}
+
 }

@@ -7,7 +7,6 @@
 
 #include <source/level/objects/MoveFunctions.h>
 #include "ICmpAABBBounds.h"
-#include "ICmpHealth.h"
 #include "ICmpInventory.h"
 #include "ICmpMeshMovement.h"
 #include "ICmpOwnable.h"
@@ -39,62 +38,23 @@ void CmpBipedAnimChooser::check_dependencies() const
 std::string CmpBipedAnimChooser::choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
 												  const std::vector<NavDataset_Ptr>& navDatasets)
 {
-	// FIXME: Split this function into sub-functions.
+	// Determine the biped's alive/dying/dead status. If dead, early-out.
+	ICmpHealth::HealthStatus healthStatus = determine_health_status();
+	if(healthStatus == ICmpHealth::DEAD) return "dead";
 
-	enum MovementType
-	{
-		UNKNOWN,
-		AIR,
-		IDLE,
-		RUN,
-		WALK,
-	};
+	// If the biped's not yet dead, determine its movement type.
+	MovementType movementType = determine_movement_type(polygons, tree, navDatasets);
 
-	// Step 1:	Determine the biped's alive/dying/dead status. If dead, early-out.
-	// FIXME: The health component should be augmented with a function which returns the status. This is messy at the moment.
-	ICmpHealth_Ptr cmpHealth = m_objectManager->get_component(m_objectID, cmpHealth);		assert(cmpHealth != NULL);
-	int health = cmpHealth->health();
-	if(health == -1) return "dead";
-	bool dying = health == 0;
+	// Determine whether or not the biped is crouching.
+	bool crouching = determine_crouching();
 
-	// Step 2:	If the biped's not yet dead, determine its movement type.
-	MovementType movementType = UNKNOWN;
+	// Lookup the current animation extension (if any).
+	std::string animExtension = determine_anim_extension();
 
-	// Determine whether or not the biped's in the air.
-	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);	assert(cmpBounds != NULL);
-	if(!MoveFunctions::attempt_navmesh_acquisition(m_objectID, m_objectManager, polygons, tree, navDatasets[cmpBounds->cur_aabb_index()]->nav_mesh()))
-	{
-		movementType = AIR;
-	}
-	else
-	{
-		// If it's not in the air, work out its actual movement type from the flags.
-		if(m_runFlag)		movementType = RUN;
-		else if(m_walkFlag)	movementType = WALK;
-		else				movementType = IDLE;
-	}
-
-	// Step 3:	Determine whether or not the biped is crouching.
-	// FIXME: This only works for bipeds using AABBs 0 and 1.
-	bool crouching = cmpBounds->pose() == 1;
-
-	// Step 4:	Lookup the current animation extension (if any).
-	std::string animExtension;
-	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);
-	if(cmpInventory)
-	{
-		ObjectID activeItem = cmpInventory->active_item();
-		if(activeItem.valid())
-		{
-			ICmpOwnable_Ptr cmpItemOwnable = m_objectManager->get_component(activeItem, cmpItemOwnable);	assert(cmpItemOwnable);
-			animExtension = cmpItemOwnable->anim_extension();
-		}
-	}
-
-	// Step 5:	Choose the animation based on movement type, health status, crouch status and animation extension.
+	// Choose the animation based on movement type, health status, crouch status and animation extension.
 	std::string animationName;
 
-	if(!dying)
+	if(healthStatus == ICmpHealth::ALIVE)
 	{
 		switch(movementType)
 		{
@@ -136,6 +96,58 @@ void CmpBipedAnimChooser::set_walk_flag()
 }
 
 //#################### PRIVATE METHODS ####################
+std::string CmpBipedAnimChooser::determine_anim_extension() const
+{
+	std::string animExtension;
+	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);
+	if(cmpInventory)
+	{
+		ObjectID activeItem = cmpInventory->active_item();
+		if(activeItem.valid())
+		{
+			ICmpOwnable_Ptr cmpItemOwnable = m_objectManager->get_component(activeItem, cmpItemOwnable);	assert(cmpItemOwnable);
+			animExtension = cmpItemOwnable->anim_extension();
+		}
+	}
+	return animExtension;
+}
+
+bool CmpBipedAnimChooser::determine_crouching() const
+{
+	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);	assert(cmpBounds != NULL);
+
+	// FIXME: This only works for bipeds using AABBs 0 and 1.
+	return cmpBounds->pose() == 1;
+}
+
+ICmpHealth::HealthStatus CmpBipedAnimChooser::determine_health_status() const
+{
+	ICmpHealth_Ptr cmpHealth = m_objectManager->get_component(m_objectID, cmpHealth);		assert(cmpHealth != NULL);
+	return cmpHealth->status();
+}
+
+CmpBipedAnimChooser::MovementType CmpBipedAnimChooser::determine_movement_type(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+																			   const std::vector<NavDataset_Ptr>& navDatasets)
+{
+	MovementType movementType = UNKNOWN;
+
+	// Determine whether or not the biped's in the air.
+	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);	assert(cmpBounds != NULL);
+	if(!MoveFunctions::attempt_navmesh_acquisition(m_objectID, m_objectManager, polygons, tree, navDatasets[cmpBounds->cur_aabb_index()]->nav_mesh()))
+	{
+		movementType = AIR;
+	}
+	else
+	{
+		// If it's not in the air, work out its actual movement type from the flags.
+		if(m_runFlag)		movementType = RUN;
+		else if(m_walkFlag)	movementType = WALK;
+		else				movementType = IDLE;
+	}
+
+	return movementType;
+}
+
 void CmpBipedAnimChooser::reset_flags()
 {
 	m_runFlag = m_walkFlag = false;

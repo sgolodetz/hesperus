@@ -30,6 +30,7 @@ public:
 	int health() const;
 	int max_health() const;
 	std::pair<std::string,Properties> save() const;
+	HealthStatus status() const;
 };
 
 }

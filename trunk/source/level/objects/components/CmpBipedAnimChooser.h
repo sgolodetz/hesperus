@@ -7,11 +7,23 @@
 #define H_HESP_CMPBIPEDANIMCHOOSER
 
 #include "ICmpBipedAnimChooser.h"
+#include "ICmpHealth.h"
 
 namespace hesp {
 
 class CmpBipedAnimChooser : public ICmpBipedAnimChooser
 {
+	//#################### ENUMERATIONS ####################
+private:
+	enum MovementType
+	{
+		UNKNOWN,
+		AIR,
+		IDLE,
+		RUN,
+		WALK,
+	};
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	bool m_runFlag;
@@ -35,6 +47,10 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	std::string determine_anim_extension() const;
+	bool determine_crouching() const;
+	ICmpHealth::HealthStatus determine_health_status() const;
+	MovementType determine_movement_type(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 	void reset_flags();
 };
 

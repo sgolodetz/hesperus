@@ -12,10 +12,20 @@ namespace hesp {
 
 class ICmpHealth : public ObjectComponent
 {
+	//#################### ENUMERATIONS ####################
+public:
+	enum HealthStatus
+	{
+		ALIVE,
+		DEAD,
+		DYING
+	};
+
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual int health() const = 0;
 	virtual int max_health() const = 0;
+	virtual HealthStatus status() const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
