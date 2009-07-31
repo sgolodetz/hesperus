@@ -31,6 +31,7 @@ public:
 	const Animation_Ptr& animation(const std::string& name) const;
 	const BoneConfiguration_Ptr& bone_configuration() const;
 	Pose_Ptr get_rest_pose() const;
+	bool has_animation(const std::string& name) const;
 	void render_bones() const;
 	void set_pose(const Pose_Ptr& pose);
 	const RBTMatrix_Ptr& to_bone_matrix(int i) const;

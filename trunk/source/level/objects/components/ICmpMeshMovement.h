@@ -39,6 +39,8 @@ public:
 	virtual void set_cur_traversal(const Traversal_Ptr& curTraversal) = 0;
 	virtual double walk_speed() const = 0;
 
+	//#################### PUBLIC METHODS ####################
+public:
 	std::string own_type() const			{ return "MeshMovement"; }
 	static std::string static_own_type()	{ return "MeshMovement"; }
 };

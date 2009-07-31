@@ -13,6 +13,7 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/level/objects/components/CmpAABBBounds.h>
+#include <source/level/objects/components/CmpBipedAnimChooser.h>
 #include <source/level/objects/components/CmpConsumeActivatable.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpHealth.h>
@@ -243,6 +244,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 	if(!done)
 	{
 		ADD_LOADER(AABBBounds);
+		ADD_LOADER(BipedAnimChooser);
 		ADD_LOADER(ConsumeActivatable);
 		ADD_LOADER(DirectMovement);
 		ADD_LOADER(Health);

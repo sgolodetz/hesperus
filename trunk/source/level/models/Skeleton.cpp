@@ -41,6 +41,11 @@ Pose_Ptr Skeleton::get_rest_pose() const
 	return Pose_Ptr(new Pose(boneMatrices));
 }
 
+bool Skeleton::has_animation(const std::string& name) const
+{
+	return m_animations.find(name) != m_animations.end();
+}
+
 void Skeleton::render_bones() const
 {
 	int boneCount = m_boneConfiguration->bone_count();

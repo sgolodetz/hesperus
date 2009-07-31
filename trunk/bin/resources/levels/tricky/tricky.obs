@@ -8,6 +8,7 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
+		BipedAnimChooser;
 		Health
 		{
 			Health = 100
@@ -42,6 +43,7 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
+		BipedAnimChooser;
 		Health
 		{
 			Health = 100
@@ -90,7 +92,7 @@ Objects
 		}
 		Ownable
 		{
-			AnimExtension = "pistol"
+			AnimExtension = "with_onehanded"
 			AttachPoint = "lower_arm.r"
 			Owner = -1
 		}
@@ -111,7 +113,7 @@ Objects
 		}
 		Ownable
 		{
-			AnimExtension = "pistol"
+			AnimExtension = "with_onehanded"
 			AttachPoint = "lower_arm.r"
 			Owner = 1
 		}
@@ -138,7 +140,7 @@ Objects
 		}
 		Ownable
 		{
-			AnimExtension = "pistol"
+			AnimExtension = "with_onehanded"
 			AttachPoint = "lower_arm.r"
 			Owner = 0
 		}

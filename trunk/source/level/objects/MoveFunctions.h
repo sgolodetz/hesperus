@@ -26,7 +26,7 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static bool attempt_navmesh_acquisition(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh);
+	static bool attempt_navmesh_acquisition(const ObjectID& objectID, ObjectManager *objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh);
 	static void move_with_navmesh(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, const Vector3d& dir, double speed, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds);
 	static bool single_move_without_navmesh(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, const Vector3d& dir, double speed, const OnionTree_Ptr& tree, int milliseconds);
 

@@ -26,7 +26,7 @@ void CmdBipedJump::execute(const ObjectManager_Ptr& objectManager, const std::ve
 	int mapIndex = cmpBounds->cur_aabb_index();
 	NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 
-	if(MoveFunctions::attempt_navmesh_acquisition(m_objectID, objectManager, polygons, tree, navMesh))
+	if(MoveFunctions::attempt_navmesh_acquisition(m_objectID, objectManager.get(), polygons, tree, navMesh))
 	{
 		// FIXME: The jump strength should eventually be a property of the entity.
 		const double JUMP_STRENGTH = 3;		// force of jump in Newtons

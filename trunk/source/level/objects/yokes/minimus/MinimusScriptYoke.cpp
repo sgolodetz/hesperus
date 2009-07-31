@@ -66,7 +66,6 @@ void MinimusScriptYoke::register_for_scripting(const ASXEngine_Ptr& engine)
 	engine->register_uninstantiable_ref_type<MinimusScriptYoke>();
 	engine->register_object_method(&clear_subyoke, "clear_subyoke");
 	engine->register_object_method(&goto_position, "goto_position");
-	engine->register_object_method(&request_animation, "request_animation");
 	engine->register_object_method(&subyoke_active, "subyoke_active");
 	engine->register_object_method(&subyoke_exists, "subyoke_exists");
 }
@@ -91,13 +90,6 @@ void MinimusScriptYoke::clear_subyoke()
 void MinimusScriptYoke::goto_position(double x, double y, double z)
 {
 	m_subyoke.reset(new MinimusGotoPositionYoke(m_objectID, m_objectManager, Vector3d(x,y,z)));
-}
-
-void MinimusScriptYoke::request_animation(const std::string& name)
-{
-	ICmpModelRender_Ptr cmpRender = m_objectManager->get_component(m_objectID, cmpRender);
-	AnimationController_Ptr animController = cmpRender->anim_controller();
-	animController->request_animation(name);
 }
 
 bool MinimusScriptYoke::subyoke_active() const

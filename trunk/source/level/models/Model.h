@@ -29,7 +29,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void apply_pose_to_skeleton(const AnimationController_Ptr& animController);
+	void apply_pose_to_skeleton(const AnimationController_CPtr& animController);
 	void attach_to_parent(const Model_Ptr& parent, const std::string& parentBoneName);
 	void detach_from_parent();
 	void render() const;

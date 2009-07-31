@@ -6,6 +6,7 @@
 #include "AnimationController.h"
 
 #include <cmath>
+#include <iostream>
 
 namespace {
 
@@ -21,7 +22,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 AnimationController::AnimationController(bool interpolateKeyframes)
-:	m_interpolateKeyframes(interpolateKeyframes), m_state(AS_REST), m_animationTime(0)
+:	m_interpolateKeyframes(interpolateKeyframes), m_state(AS_REST), m_animationName("<rest>"), m_animationTime(0)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -35,7 +36,8 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 	// If we're already playing this animation, ignore the request.
 	if(m_animationName == newAnimationName) return;
 
-	// Note: If we're already transitioning, we keep transitioning, just towards a new target.
+	// Set up a transition towards the new pose. Note that if we're already in a transition, we
+	// keep transitioning, just towards the new target.
 	if(m_state == AS_REST)
 	{
 		m_state = AS_TRANSITION;
@@ -49,6 +51,15 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 
 	m_animationName = newAnimationName;
 	m_animationTime = 0;
+
+	// If we tried to request a non-existent animation, replace it with the rest animation.
+	if(!m_skeleton->has_animation(newAnimationName))
+	{
+#if 0
+		std::cerr << "Non-existent animation " << newAnimationName << ", defaulting to rest animation\n";
+#endif
+		m_animationName = "<rest>";
+	}
 }
 
 void AnimationController::set_skeleton(const Skeleton_Ptr& skeleton)
@@ -66,7 +77,7 @@ void AnimationController::update(int milliseconds)
 void AnimationController::reset_controller()
 {
 	m_state = AS_REST;
-	m_animationName = "";
+	m_animationName = "<rest>";
 	m_animationTime = 0;
 	set_pose(m_skeleton->get_rest_pose());
 	m_transitionStart.reset();

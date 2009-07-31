@@ -164,7 +164,7 @@ void GameState_Level::do_animations(int milliseconds)
 	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
 		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
-		cmpRender->anim_controller()->update(milliseconds);
+		cmpRender->update_animation(milliseconds, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets());
 	}
 }
 

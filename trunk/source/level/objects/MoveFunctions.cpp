@@ -17,7 +17,7 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
-bool MoveFunctions::attempt_navmesh_acquisition(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons,
+bool MoveFunctions::attempt_navmesh_acquisition(const ObjectID& objectID, ObjectManager *objectManager, const std::vector<CollisionPolygon_Ptr>& polygons,
 												const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
 {
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
@@ -54,7 +54,7 @@ void MoveFunctions::move_with_navmesh(const ObjectID& objectID, const ObjectMana
 		if(cmpMovement->cur_traversal()) do_traverse_move(objectID, objectManager, move, speed /* FIXME: Select the appropriate speed here */, polygons, navMesh);
 		if(move.timeRemaining == 0) break;
 
-		if(attempt_navmesh_acquisition(objectID, objectManager, polygons, tree, navMesh)) do_navmesh_move(objectID, objectManager, move, speed, polygons, tree, navMesh);
+		if(attempt_navmesh_acquisition(objectID, objectManager.get(), polygons, tree, navMesh)) do_navmesh_move(objectID, objectManager, move, speed, polygons, tree, navMesh);
 		else do_direct_move(objectID, objectManager, move, speed, tree);
 	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }

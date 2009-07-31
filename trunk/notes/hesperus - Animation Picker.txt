@@ -29,7 +29,8 @@ return anim;
 
 ***
 
-- Movement type is cleared at the beginning of each frame and determined by what commands are executed.
+- Movement type is cleared at the beginning of each frame and partly determined by what commands are executed.
+  - But "jump" is determined by whether the player's in the air or not.
 - Pose type can be extracted from the bounds component (at present).
 - Status type can be extracted from the health component.
 - Modifier can be extracted from the inventory component.

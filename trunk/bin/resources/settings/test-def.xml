@@ -15,6 +15,7 @@
 				<property name="AABBs" type="[AABBid]"/>
 				<property name="Pose" type="int"/>
 			</component>
+			<component name="BipedAnimChooser"/>
 			<component name="ConsumeActivatable">
 				<property name="Amount" type="int"/>
 				<property name="Type" type="string"/>
@@ -67,6 +68,7 @@
 					<property name="AABBs" fixed="[stand,crouch]"/>
 					<property name="Pose" default="0"/>
 				</component>
+				<component name="BipedAnimChooser"/>
 				<component name="Health">
 					<property name="Health" default="100"/>
 					<property name="MaxHealth" default="100"/>
@@ -90,6 +92,7 @@
 					<property name="AABBs" fixed="[stand,crouch]"/>
 					<property name="Pose" default="0"/>
 				</component>
+				<component name="BipedAnimChooser"/>
 				<component name="Health">
 					<property name="Health" default="100"/>
 					<property name="MaxHealth" default="100"/>

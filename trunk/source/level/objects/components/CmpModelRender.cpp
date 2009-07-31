@@ -6,6 +6,7 @@
 #include "CmpModelRender.h"
 
 #include "ICmpAABBBounds.h"
+#include "ICmpAnimChooser.h"
 #include "ICmpInventory.h"
 #include "ICmpOrientation.h"
 #include "ICmpOwnable.h"
@@ -26,7 +27,7 @@ IObjectComponent_Ptr CmpModelRender::load(const Properties& properties)
 }
 
 //#################### PUBLIC METHODS ####################
-AnimationController_Ptr CmpModelRender::anim_controller() const
+AnimationController_CPtr CmpModelRender::anim_controller() const
 {
 	return m_animController;
 }
@@ -115,6 +116,14 @@ void CmpModelRender::set_skeleton()
 {
 	Skeleton_Ptr skeleton = m_modelManager->model(m_modelName)->skeleton();
 	m_animController->set_skeleton(skeleton);
+}
+
+void CmpModelRender::update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+{
+	ICmpAnimChooser_Ptr cmpAnimChooser = m_objectManager->get_component(m_objectID, cmpAnimChooser);
+	if(cmpAnimChooser) m_animController->request_animation(cmpAnimChooser->choose_animation(polygons, tree, navDatasets));
+
+	m_animController->update(milliseconds);
 }
 
 //#################### PRIVATE METHODS ####################

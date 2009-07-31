@@ -44,7 +44,6 @@ public:
 private:
 	void clear_subyoke();
 	void goto_position(double x, double y, double z);
-	void request_animation(const std::string& name);
 	bool subyoke_active() const;
 	bool subyoke_exists() const;
 };
