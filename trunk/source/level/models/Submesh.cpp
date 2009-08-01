@@ -71,6 +71,8 @@ void Submesh::skin(const Skeleton_Ptr& skeleton)
 	}
 
 	// Build the vertex array.
+	RBTMatrix_Ptr m = RBTMatrix::zeros();		// used as an accumulator for \sum_i w_i * M_i * M_{0,i}^{-1}
+
 	int vertCount = static_cast<int>(m_vertices.size());
 	for(int i=0, offset=0; i<vertCount; ++i, offset+=3)
 	{
@@ -83,8 +85,6 @@ void Submesh::skin(const Skeleton_Ptr& skeleton)
 		{
 			double boneWeightSum = 0;
 
-			RBTMatrix_Ptr m = RBTMatrix::zeros();		// used as an accumulator for \sum_i w_i * M_i * M_{0,i}^{-1}
-
 			for(int j=0; j<boneWeightCount; ++j)
 			{
 				int boneIndex = boneWeights[j].bone_index();
@@ -96,6 +96,9 @@ void Submesh::skin(const Skeleton_Ptr& skeleton)
 			// Note: This is effectively p = m*p0 (if we think of p0 as (p0.x, p0.y, p0.z, 1)).
 			p = m->apply_to_point(p0);
 			p /= boneWeightSum;
+
+			// Reset the accumulator matrix ready for the next vertex.
+			m->reset_to_zeros();
 		}
 		else
 		{

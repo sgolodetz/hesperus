@@ -16,9 +16,7 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 RBTMatrix::RBTMatrix()
 {
-	for(int i=0; i<3; ++i)
-		for(int j=0; j<4; ++j)
-			m[i][j] = 0;
+	reset_to_zeros();
 }
 
 //#################### STATIC FACTORY METHODS ####################
@@ -175,6 +173,13 @@ std::vector<double> RBTMatrix::rep() const
 	vec[8] = m[0][2];	vec[9] = m[1][2];	vec[10] = m[2][2];	vec[11] = 0;
 	vec[12] = m[0][3];	vec[13] = m[1][3];	vec[14] = m[2][3];	vec[15] = 1;
 	return vec;
+}
+
+void RBTMatrix::reset_to_zeros()
+{
+	for(int i=0; i<3; ++i)
+		for(int j=0; j<4; ++j)
+			m[i][j] = 0;
 }
 
 //#################### GLOBAL OPERATORS ####################

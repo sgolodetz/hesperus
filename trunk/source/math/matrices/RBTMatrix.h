@@ -45,6 +45,7 @@ public:
 	Vector3d apply_to_vector(const Vector3d& v) const;
 	RBTMatrix_Ptr inverse() const;
 	std::vector<double> rep() const;
+	void reset_to_zeros();
 };
 
 //#################### GLOBAL OPERATORS ####################
