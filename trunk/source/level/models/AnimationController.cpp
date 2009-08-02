@@ -31,9 +31,18 @@ const Pose_Ptr& AnimationController::get_pose() const
 	return m_pose;
 }
 
-void AnimationController::request_animation(const std::string& newAnimationName)
+void AnimationController::request_animation(std::string newAnimationName)
 {
-	// If we're already playing this animation, ignore the request.
+	// If we're trying to request a non-existent animation, replace it with the rest animation.
+	if(!m_skeleton->has_animation(newAnimationName))
+	{
+#if 0
+		std::cerr << "Non-existent animation " << newAnimationName << ", defaulting to rest animation\n";
+#endif
+		newAnimationName = "<rest>";
+	}
+
+	// If we're already playing the requested animation, ignore the request.
 	if(m_animationName == newAnimationName) return;
 
 	// Set up a transition towards the new pose. Note that if we're already in a transition, we
@@ -51,15 +60,6 @@ void AnimationController::request_animation(const std::string& newAnimationName)
 
 	m_animationName = newAnimationName;
 	m_animationTime = 0;
-
-	// If we tried to request a non-existent animation, replace it with the rest animation.
-	if(!m_skeleton->has_animation(newAnimationName))
-	{
-#if 0
-		std::cerr << "Non-existent animation " << newAnimationName << ", defaulting to rest animation\n";
-#endif
-		m_animationName = "<rest>";
-	}
 }
 
 void AnimationController::set_skeleton(const Skeleton_Ptr& skeleton)

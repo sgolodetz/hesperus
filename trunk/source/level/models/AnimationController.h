@@ -39,7 +39,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const Pose_Ptr& get_pose() const;
-	void request_animation(const std::string& newAnimationName);
+	void request_animation(std::string newAnimationName);
 	void set_skeleton(const Skeleton_Ptr& skeleton);
 	void update(int milliseconds);
 
