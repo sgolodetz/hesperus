@@ -15,7 +15,7 @@ Model::Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton)
 //#################### PUBLIC METHODS ####################
 void Model::apply_pose_to_skeleton(const AnimationController_CPtr& animController)
 {
-	m_skeleton->set_pose(animController->get_pose());
+	m_skeleton->set_pose(animController->get_pose(), animController->get_pose_modifiers());
 }
 
 void Model::attach_to_parent(const Model_Ptr& parent, const std::string& parentBoneName)

@@ -8,6 +8,7 @@
 
 #include "Animation.h"
 #include "BoneConfiguration.h"
+#include "PoseModifier.h"
 
 namespace hesp {
 
@@ -33,14 +34,14 @@ public:
 	Pose_Ptr get_rest_pose() const;
 	bool has_animation(const std::string& name) const;
 	void render_bones() const;
-	void set_pose(const Pose_Ptr& pose);
+	void set_pose(const Pose_CPtr& pose, const std::map<std::string,PoseModifier>& modifiers = std::map<std::string,PoseModifier>());
 	const RBTMatrix_Ptr& to_bone_matrix(int i) const;
 
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_to_bone_matrices();
-	void calculate_absolute_bone_matrix(const Bone_Ptr& bone);
-	void update_absolute_bone_matrices();
+	void calculate_absolute_bone_matrix(const Bone_Ptr& bone, const std::map<std::string,PoseModifier>& modifiers);
+	void update_absolute_bone_matrices(const std::map<std::string,PoseModifier>& modifiers);
 };
 
 //#################### TYPEDEFS ####################

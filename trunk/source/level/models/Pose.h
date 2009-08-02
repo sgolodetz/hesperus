@@ -29,10 +29,16 @@ private:
 public:
 	Pose(const std::vector<RBTMatrix_Ptr>& boneMatrices);
 
+	//#################### COPY CONSTRUCTOR & ASSIGNMENT OPERATOR ####################
+private:
+	Pose(const Pose&);
+	Pose& operator=(const Pose&);
+
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::vector<RBTMatrix_Ptr>& bone_matrices() const;
-	static Pose_Ptr interpolate(const Pose_Ptr& lhs, const Pose_Ptr& rhs, double t);
+	static Pose_Ptr copy(const Pose_CPtr& rhs);
+	static Pose_Ptr interpolate(const Pose_CPtr& lhs, const Pose_CPtr& rhs, double t);
 };
 
 }

@@ -26,7 +26,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	int keyframe_count() const;
-	const Pose_Ptr& keyframe(int i) const;
+	Pose_CPtr keyframe(int i) const;
 	double length() const;
 };
 

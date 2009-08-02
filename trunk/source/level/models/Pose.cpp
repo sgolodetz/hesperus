@@ -20,7 +20,21 @@ const std::vector<RBTMatrix_Ptr>& Pose::bone_matrices() const
 	return m_boneMatrices;
 }
 
-Pose_Ptr Pose::interpolate(const Pose_Ptr& lhs, const Pose_Ptr& rhs, double t)
+Pose_Ptr Pose::copy(const Pose_CPtr& rhs)
+{
+	const std::vector<RBTMatrix_Ptr>& boneMatrices = rhs->bone_matrices();
+	size_t boneCount = boneMatrices.size();
+
+	std::vector<RBTMatrix_Ptr> newBoneMatrices(boneCount);
+	for(size_t i=0; i<boneCount; ++i)
+	{
+		newBoneMatrices[i] = RBTMatrix::copy(boneMatrices[i]);
+	}
+
+	return Pose_Ptr(new Pose(newBoneMatrices));
+}
+
+Pose_Ptr Pose::interpolate(const Pose_CPtr& lhs, const Pose_CPtr& rhs, double t)
 {
 	const std::vector<RBTMatrix_Ptr>& lhsBoneMatrices = lhs->bone_matrices();
 	const std::vector<RBTMatrix_Ptr>& rhsBoneMatrices = rhs->bone_matrices();

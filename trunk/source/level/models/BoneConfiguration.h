@@ -31,10 +31,7 @@ public:
 	Bone_CPtr bones(int i) const;
 	Bone_Ptr bones(const std::string& name);
 	Bone_CPtr bones(const std::string& name) const;
-
-	//#################### PRIVATE METHODS ####################
-private:
-	Bone_Ptr find_bone(const std::string& name) const;
+	int find_bone(const std::string& name) const;
 };
 
 //#################### TYPEDEFS ####################

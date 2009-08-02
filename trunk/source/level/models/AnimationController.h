@@ -6,6 +6,7 @@
 #ifndef H_HESP_ANIMATIONCONTROLLER
 #define H_HESP_ANIMATIONCONTROLLER
 
+#include "PoseModifier.h"
 #include "Skeleton.h"
 
 namespace hesp {
@@ -29,8 +30,10 @@ private:
 	State m_state;
 	std::string m_animationName;	// the name of the current animation
 	int m_animationTime;			// the number of ms for which the current animation (or transition) has been playing
-	Pose_Ptr m_pose;				// the current pose
-	Pose_Ptr m_transitionStart;		// the pose at the start of the transition
+	Pose_CPtr m_pose;				// the current pose
+	Pose_CPtr m_transitionStart;	// the pose at the start of the transition
+
+	std::map<std::string,PoseModifier> m_poseModifiers;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -38,15 +41,18 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Pose_Ptr& get_pose() const;
+	const Pose_CPtr& get_pose() const;
+	const std::map<std::string,PoseModifier>& get_pose_modifiers() const;
+	void remove_pose_modifier(const std::string& boneName);
 	void request_animation(std::string newAnimationName);
+	void set_pose_modifier(const std::string& boneName, const PoseModifier& modifier);
 	void set_skeleton(const Skeleton_Ptr& skeleton);
 	void update(int milliseconds);
 
 	//#################### PRIVATE METHODS ####################
 private:
 	void reset_controller();
-	void set_pose(const Pose_Ptr& pose);
+	void set_pose(const Pose_CPtr& pose);
 	void update_pose(int milliseconds);
 };
 

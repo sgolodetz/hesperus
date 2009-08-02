@@ -180,6 +180,10 @@ CmpModelRender::ProcessResults CmpModelRender::process() const
 
 	RBTMatrix_CPtr mat = construct_model_matrix(p, n, u, v);
 
+#if 0
+	const double PI = 3.141592654;
+	m_animController->set_pose_modifier("shoulder.r", PoseModifier(Vector3d(1,0,0), -45*PI/180));
+#endif
 	Model_Ptr model = m_modelManager->model(m_modelName);
 	model->apply_pose_to_skeleton(m_animController);
 

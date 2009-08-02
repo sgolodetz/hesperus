@@ -26,9 +26,19 @@ AnimationController::AnimationController(bool interpolateKeyframes)
 {}
 
 //#################### PUBLIC METHODS ####################
-const Pose_Ptr& AnimationController::get_pose() const
+const Pose_CPtr& AnimationController::get_pose() const
 {
 	return m_pose;
+}
+
+const std::map<std::string,PoseModifier>& AnimationController::get_pose_modifiers() const
+{
+	return m_poseModifiers;
+}
+
+void AnimationController::remove_pose_modifier(const std::string& boneName)
+{
+	m_poseModifiers.erase(boneName);
 }
 
 void AnimationController::request_animation(std::string newAnimationName)
@@ -62,6 +72,12 @@ void AnimationController::request_animation(std::string newAnimationName)
 	m_animationTime = 0;
 }
 
+void AnimationController::set_pose_modifier(const std::string& boneName, const PoseModifier& modifier)
+{
+	remove_pose_modifier(boneName);
+	m_poseModifiers.insert(std::make_pair(boneName, modifier));
+}
+
 void AnimationController::set_skeleton(const Skeleton_Ptr& skeleton)
 {
 	m_skeleton = skeleton;
@@ -83,7 +99,7 @@ void AnimationController::reset_controller()
 	m_transitionStart.reset();
 }
 
-void AnimationController::set_pose(const Pose_Ptr& pose)
+void AnimationController::set_pose(const Pose_CPtr& pose)
 {
 	m_pose = pose;
 }
@@ -118,11 +134,11 @@ void AnimationController::update_pose(int milliseconds)
 			// Clamp the keyframe index to be safe.
 			keyframeIndex = std::min(keyframeIndex, lastKeyframe);
 
-			Pose_Ptr newPose = animation->keyframe(keyframeIndex);
+			Pose_CPtr newPose = animation->keyframe(keyframeIndex);
 			if(m_interpolateKeyframes)
 			{
 				int oldKeyframeIndex = (keyframeIndex + lastKeyframe) % animation->keyframe_count();
-				Pose_Ptr oldPose = animation->keyframe(oldKeyframeIndex);
+				Pose_CPtr oldPose = animation->keyframe(oldKeyframeIndex);
 				set_pose(Pose::interpolate(oldPose, newPose, t));
 			}
 			else
@@ -133,7 +149,7 @@ void AnimationController::update_pose(int milliseconds)
 		}
 		case AS_TRANSITION:
 		{
-			Pose_Ptr newPose;
+			Pose_CPtr newPose;
 
 			if(m_animationName != "<rest>")
 			{

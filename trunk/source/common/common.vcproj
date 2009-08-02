@@ -1034,6 +1034,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\models\PoseModifier.h"
+						>
+					</File>
+					<File
 						RelativePath="..\level\models\Skeleton.h"
 						>
 					</File>

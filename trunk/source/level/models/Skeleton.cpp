@@ -78,7 +78,7 @@ void Skeleton::render_bones() const
 	}
 }
 
-void Skeleton::set_pose(const Pose_Ptr& pose)
+void Skeleton::set_pose(const Pose_CPtr& pose, const std::map<std::string,PoseModifier>& modifiers)
 {
 	const std::vector<RBTMatrix_Ptr>& boneMatrices = pose->bone_matrices();
 	int boneCount = m_boneConfiguration->bone_count();
@@ -111,7 +111,7 @@ void Skeleton::set_pose(const Pose_Ptr& pose)
 			bone->relative_matrix() = relMatrix;
 		}
 	}
-	update_absolute_bone_matrices();
+	update_absolute_bone_matrices(modifiers);
 }
 
 const RBTMatrix_Ptr& Skeleton::to_bone_matrix(int i) const
@@ -132,21 +132,38 @@ void Skeleton::build_to_bone_matrices()
 	}
 }
 
-void Skeleton::calculate_absolute_bone_matrix(const Bone_Ptr& bone)
+void Skeleton::calculate_absolute_bone_matrix(const Bone_Ptr& bone, const std::map<std::string,PoseModifier>& modifiers)
 {
 	Bone_Ptr parent = bone->parent();
 	if(parent)
 	{
-		if(!parent->absolute_matrix()) calculate_absolute_bone_matrix(parent);
+		if(!parent->absolute_matrix()) calculate_absolute_bone_matrix(parent, modifiers);
 		bone->absolute_matrix() = parent->absolute_matrix() * bone->relative_matrix();
 	}
 	else
 	{
-		bone->absolute_matrix() = bone->relative_matrix();
+		bone->absolute_matrix() = RBTMatrix::copy(bone->relative_matrix());
+	}
+
+	// Handle any pose modifiers applied to this bone.
+	std::map<std::string,PoseModifier>::const_iterator it = modifiers.find(bone->name());
+	if(it != modifiers.end())
+	{
+		// This bone has a pose modifier applied to it, so update the absolute matrix accordingly.
+		const PoseModifier& modifier = it->second;
+
+		// Calculate the required rotation axis in the frame of the bone.
+		Vector3d transformedAxis = bone->absolute_matrix()->inverse()->apply_to_vector(modifier.axis);
+
+		// Construct an appropriate rotation matrix and use it to post-multiply the bone's absolute matrix.
+		// Note that if we needed the relative matrix again, we'd need to post-multiply that as well, but
+		// in practice this isn't necessary.
+		RBTMatrix_Ptr rot = RBTMatrix::from_axis_angle_translation(transformedAxis, modifier.angle, Vector3d(0,0,0));
+		bone->absolute_matrix() *= rot;
 	}
 }
 
-void Skeleton::update_absolute_bone_matrices()
+void Skeleton::update_absolute_bone_matrices(const std::map<std::string,PoseModifier>& modifiers)
 {
 	int boneCount = m_boneConfiguration->bone_count();
 
@@ -159,7 +176,7 @@ void Skeleton::update_absolute_bone_matrices()
 	// Step 2: Calculate the new absolute bone matrices.
 	for(int i=0; i<boneCount; ++i)
 	{
-		calculate_absolute_bone_matrix(m_boneConfiguration->bones(i));
+		calculate_absolute_bone_matrix(m_boneConfiguration->bones(i), modifiers);
 	}
 }
 

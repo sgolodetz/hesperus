@@ -121,6 +121,11 @@ Vector3d RBTMatrix::apply_to_vector(const Vector3d& v) const
 	);
 }
 
+RBTMatrix_Ptr RBTMatrix::copy(const RBTMatrix_Ptr& rhs)
+{
+	return RBTMatrix_Ptr(new RBTMatrix(*rhs));
+}
+
 RBTMatrix_Ptr RBTMatrix::inverse() const
 {
 	/*
@@ -191,6 +196,13 @@ RBTMatrix_Ptr& operator+=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs)
 			(*lhs)(i,j) += (*rhs)(i,j);
 		}
 
+	return lhs;
+}
+
+RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs)
+{
+	// FIXME: It should be possible to optimize this.
+	lhs = lhs * rhs;
 	return lhs;
 }
 
