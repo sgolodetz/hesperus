@@ -26,6 +26,11 @@ AnimationController::AnimationController(bool interpolateKeyframes)
 {}
 
 //#################### PUBLIC METHODS ####################
+void AnimationController::clear_pose_modifiers()
+{
+	m_poseModifiers.clear();
+}
+
 const Pose_CPtr& AnimationController::get_pose() const
 {
 	return m_pose;
@@ -121,11 +126,12 @@ void AnimationController::update_pose(int milliseconds)
 			m_animationTime += milliseconds;
 
 			// Loop if we've gone past the end of the animation.
-			m_animationTime %= animationLength;
+			if(animationLength > 0) m_animationTime %= animationLength;
+			else m_animationTime = 0;
 
 			// Calculate the keyframe index and interpolation parameter.
 			int lastKeyframe = animation->keyframe_count() - 1;
-			double animationFraction = (double)m_animationTime / animationLength;
+			double animationFraction = animationLength > 0 ? (double)m_animationTime / animationLength : 0;
 			double keyframePos = animationFraction * lastKeyframe;
 			int keyframeIndex = static_cast<int>(ceil(keyframePos));
 			double dummy;

@@ -41,6 +41,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void clear_pose_modifiers();
 	const Pose_CPtr& get_pose() const;
 	const std::map<std::string,PoseModifier>& get_pose_modifiers() const;
 	void remove_pose_modifier(const std::string& boneName);
