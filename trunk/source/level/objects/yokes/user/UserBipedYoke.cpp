@@ -7,8 +7,9 @@
 
 #include <source/level/objects/commands/CmdBipedChangePose.h>
 #include <source/level/objects/commands/CmdBipedJump.h>
-#include <source/level/objects/commands/CmdBipedMove.h>
+#include <source/level/objects/commands/CmdBipedRun.h>
 #include <source/level/objects/commands/CmdBipedTurn.h>
+#include <source/level/objects/commands/CmdBipedWalk.h>
 #include <source/level/objects/commands/CmdUseActiveItem.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpOrientation.h>
@@ -58,10 +59,9 @@ std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 		// Prevent faster movement when strafing.
 		dir.normalize();
 
-		// Decide whether to run or walk.
-		double speed = input.key_down(SDLK_LSHIFT) ? cmpMovement->walk_speed() : cmpMovement->run_speed();
-
-		commands.push_back(ObjectCommand_Ptr(new CmdBipedMove(m_objectID, dir, speed)));
+		// Either run or walk, depending on the input.
+		if(input.key_down(SDLK_LSHIFT)) commands.push_back(ObjectCommand_Ptr(new CmdBipedWalk(m_objectID, dir)));
+		else							commands.push_back(ObjectCommand_Ptr(new CmdBipedRun(m_objectID, dir)));
 	}
 
 	//~~~~~~~~~~~

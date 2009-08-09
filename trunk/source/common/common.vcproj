@@ -1293,11 +1293,19 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\commands\CmdBipedRun.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\commands\CmdBipedSetLook.cpp"
 							>
 						</File>
 						<File
 							RelativePath="..\level\objects\commands\CmdBipedTurn.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdBipedWalk.cpp"
 							>
 						</File>
 						<File
@@ -1321,11 +1329,19 @@
 							>
 						</File>
 						<File
+							RelativePath="..\level\objects\commands\CmdBipedRun.h"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\commands\CmdBipedSetLook.h"
 							>
 						</File>
 						<File
 							RelativePath="..\level\objects\commands\CmdBipedTurn.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\commands\CmdBipedWalk.h"
 							>
 						</File>
 						<File

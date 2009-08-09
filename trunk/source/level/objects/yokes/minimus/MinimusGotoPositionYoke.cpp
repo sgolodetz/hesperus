@@ -7,8 +7,8 @@
 
 #include <source/level/nav/GlobalPathfinder.h>
 #include <source/level/nav/NavMeshUtil.h>
-#include <source/level/objects/commands/CmdBipedMove.h>
 #include <source/level/objects/commands/CmdBipedSetLook.h>
+#include <source/level/objects/commands/CmdBipedWalk.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>
@@ -80,7 +80,7 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 	if(!m_path->empty())
 	{
 		std::vector<ObjectCommand_Ptr> commands;
-		commands.push_back(ObjectCommand_Ptr(new CmdBipedMove(m_objectID, dir, cmpMovement->walk_speed())));
+		commands.push_back(ObjectCommand_Ptr(new CmdBipedWalk(m_objectID, dir)));
 		commands.push_back(ObjectCommand_Ptr(new CmdBipedSetLook(m_objectID, dir)));
 		return commands;
 	}
@@ -92,7 +92,7 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		dir.normalize();
 
 		std::vector<ObjectCommand_Ptr> commands;
-		commands.push_back(ObjectCommand_Ptr(new CmdBipedMove(m_objectID, dir, cmpMovement->walk_speed())));
+		commands.push_back(ObjectCommand_Ptr(new CmdBipedWalk(m_objectID, dir)));
 		commands.push_back(ObjectCommand_Ptr(new CmdBipedSetLook(m_objectID, dir)));
 		return commands;
 	}

@@ -7,6 +7,8 @@
 #define H_HESP_CMDBIPEDMOVE
 
 #include <source/level/objects/base/ObjectCommand.h>
+#include <source/level/objects/components/ICmpBipedAnimChooser.h>
+#include <source/level/objects/components/ICmpMeshMovement.h>
 
 namespace hesp {
 
@@ -16,11 +18,15 @@ class CmdBipedMove : public ObjectCommand
 private:
 	ObjectID m_objectID;
 	Vector3d m_dir;
-	double m_speed;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmdBipedMove(const ObjectID& objectID, const Vector3d& dir, double speed);
+	CmdBipedMove(const ObjectID& objectID, const Vector3d& dir);
+
+	//#################### PRIVATE ABSTRACT METHODS ####################
+private:
+	virtual double lookup_speed(const ICmpMeshMovement_Ptr& cmpMovement) const = 0;
+	virtual void set_anim_flag(const ICmpBipedAnimChooser_Ptr& cmpAnimChooser) const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
