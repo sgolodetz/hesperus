@@ -60,8 +60,8 @@ void CmpInventory::add_item(const ObjectID& id)
 	m_items.insert(id);
 	m_objectManager->add_listener(this, id);
 
-	ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(id, cmpUsable);
-	if(cmpUsable) m_groups[cmpUsable->usable_group()].insert(id);
+	ICmpUsable_Ptr cmpItemUsable = m_objectManager->get_component(id, cmpItemUsable);
+	if(cmpItemUsable) m_groups[cmpItemUsable->usable_group()].insert(id);
 }
 
 void CmpInventory::destroy_consumables(const std::string& type, int amount)
@@ -121,8 +121,8 @@ void CmpInventory::remove_item(const ObjectID& id)
 	m_objectManager->remove_listener(this, id);
 	if(m_activeItem == id) m_activeItem = ObjectID();
 
-	ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(id, cmpUsable);
-	if(cmpUsable) m_groups[cmpUsable->usable_group()].erase(id);
+	ICmpUsable_Ptr cmpItemUsable = m_objectManager->get_component(id, cmpItemUsable);
+	if(cmpItemUsable) m_groups[cmpItemUsable->usable_group()].erase(id);
 }
 
 std::pair<std::string,Properties> CmpInventory::save() const
@@ -141,8 +141,8 @@ void CmpInventory::initialise_if_necessary() const
 	{
 		for(std::set<ObjectID>::const_iterator it=m_items.begin(), iend=m_items.end(); it!=iend; ++it)
 		{
-			ICmpUsable_Ptr cmpUsable = m_objectManager->get_component(*it, cmpUsable);
-			if(cmpUsable) m_groups[cmpUsable->usable_group()].insert(*it);
+			ICmpUsable_Ptr cmpItemUsable = m_objectManager->get_component(*it, cmpItemUsable);
+			if(cmpItemUsable) m_groups[cmpItemUsable->usable_group()].insert(*it);
 		}
 
 		m_initialised = true;
