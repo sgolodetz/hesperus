@@ -16,14 +16,17 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpCharacterModelRender::CmpCharacterModelRender(const std::string& modelName)
-:	m_modelName(modelName), m_animController(new AnimationController), m_highlights(false)
+CmpCharacterModelRender::CmpCharacterModelRender(const BoneModifierMap& inclineBones, const std::string& modelName)
+:	m_inclineBones(inclineBones), m_modelName(modelName), m_animController(new AnimationController), m_highlights(false)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
 IObjectComponent_Ptr CmpCharacterModelRender::load(const Properties& properties)
 {
-	return IObjectComponent_Ptr(new CmpCharacterModelRender(properties.get<std::string>("ModelName")));
+	return IObjectComponent_Ptr(new CmpCharacterModelRender(
+		properties.get<BoneModifierMap>("InclineBones"),
+		properties.get<std::string>("ModelName")
+	));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -100,6 +103,7 @@ void CmpCharacterModelRender::render_first_person() const
 std::pair<std::string,Properties> CmpCharacterModelRender::save() const
 {
 	Properties properties;
+	properties.set("InclineBones", m_inclineBones);
 	properties.set("ModelName", m_modelName);
 	return std::make_pair("CharacterModelRender", properties);
 }
@@ -189,17 +193,41 @@ CmpCharacterModelRender::ProcessResults CmpCharacterModelRender::process() const
 
 	RBTMatrix_CPtr mat = construct_model_matrix(p, n, u, v);
 
-#if 0
-	const double PI = 3.141592654;
-	m_animController->set_pose_modifier("shoulder.r", PoseModifier(Vector3d(1,0,0), -45*PI/180));
-#endif
+	// Clear any existing pose modifiers.
+	m_animController->clear_pose_modifiers();
+
+	// Determine the animation extension of any carried item in order to determine which bones need to be inclined.
+	std::string animExtension = "";		// the explicit initialisation is to make it clear that "" is the default
+
+	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);	assert(cmpInventory);
+	ObjectID activeItem = cmpInventory->active_item();
+	if(activeItem.valid())
+	{
+		ICmpOwnable_Ptr cmpItemOwnable = m_objectManager->get_component(activeItem, cmpItemOwnable);	assert(cmpItemOwnable);
+		animExtension = cmpItemOwnable->anim_extension();
+	}
+
+	// Calculate the inclination of the object's coordinate system and apply pose modifiers to the relevant bones.
+	BoneModifierMap::const_iterator it = m_inclineBones.find(animExtension);
+	if(it != m_inclineBones.end())
+	{
+		double sinInclination = n.z / n.length();
+		if(sinInclination < -1) sinInclination = -1;
+		if(sinInclination > 1) sinInclination = 1;
+		double inclination = asin(sinInclination);
+
+		for(std::map<std::string,Vector3d>::const_iterator jt=it->second.begin(), jend=it->second.end(); jt!=jend; ++jt)
+		{
+			m_animController->set_pose_modifier(jt->first, PoseModifier(jt->second, -inclination));
+		}
+	}
+
+	// Apply the modified pose to the skeleton.
 	Model_Ptr model = m_modelManager->model(m_modelName);
 	model->apply_pose_to_skeleton(m_animController);
 
 	// Process the active item (if any), e.g. the weapon being carried.
 	Model_Ptr itemModel;
-	ICmpInventory_Ptr cmpInventory = m_objectManager->get_component(m_objectID, cmpInventory);	assert(cmpInventory);
-	ObjectID activeItem = cmpInventory->active_item();
 	if(activeItem.valid())
 	{
 		itemModel = process_active_item(activeItem, model, mat);

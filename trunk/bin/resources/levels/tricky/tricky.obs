@@ -11,6 +11,7 @@ Objects
 		BipedAnimChooser;
 		CharacterModelRender
 		{
+			InclineBones = < ("",<("head",( 1 0 0 ))>) ; ("with_onehanded",<("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))>) >
 			ModelName = "Percy"
 		}
 		Health
@@ -46,6 +47,7 @@ Objects
 		BipedAnimChooser;
 		CharacterModelRender
 		{
+			InclineBones = < ("",<("head",( 1 0 0 ))>) ; ("with_onehanded",<("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))>) >
 			ModelName = "Percy"
 		}
 		Health

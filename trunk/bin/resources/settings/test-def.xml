@@ -17,6 +17,7 @@
 			</component>
 			<component name="BipedAnimChooser"/>
 			<component name="CharacterModelRender">
+				<property name="InclineBones" type="string -> (string -> Vector3d)"/>
 				<property name="ModelName" type="string"/>
 			</component>
 			<component name="ConsumeActivatable">
@@ -73,6 +74,7 @@
 				</component>
 				<component name="BipedAnimChooser"/>
 				<component name="CharacterModelRender">
+					<property name="InclineBones" default='&lt; ("",&lt;("head",( 1 0 0 ))&gt;) ; ("with_onehanded",&lt;("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))&gt;) &gt;'/>
 					<property name="ModelName" default="Guard"/>
 				</component>
 				<component name="Health">
@@ -97,7 +99,8 @@
 				</component>
 				<component name="BipedAnimChooser"/>
 				<component name="CharacterModelRender">
-					<property name="ModelName" default="Player"/>
+					<property name="InclineBones" default='&lt; ("",&lt;("head",( 1 0 0 ))&gt;) ; ("with_onehanded",&lt;("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))&gt;) &gt;'/>
+					<property name="ModelName" default="Percy"/>
 				</component>
 				<component name="Health">
 					<property name="Health" default="100"/>

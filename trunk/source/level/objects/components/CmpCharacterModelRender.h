@@ -28,16 +28,21 @@ private:
 		{}
 	};
 
+	//#################### TYPEDEFS ####################
+private:
+	typedef std::map<std::string, std::map<std::string,Vector3d> > BoneModifierMap;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	AnimationController_Ptr m_animController;
 	bool m_highlights;
+	BoneModifierMap m_inclineBones;
 	ModelManager_Ptr m_modelManager;
 	std::string m_modelName;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpCharacterModelRender(const std::string& modelName);
+	explicit CmpCharacterModelRender(const BoneModifierMap& inclineBones, const std::string& modelName);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

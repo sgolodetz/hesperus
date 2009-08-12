@@ -2,7 +2,7 @@
 hesperus - Todo
 ===============
 
-Last Updated: 09-08-09
+Last Updated: 12-08-09
 
 ----
 Easy
@@ -23,9 +23,8 @@ Medium
 * Implement some AI yokes (it probably makes sense to have composite yokes so that we can switch between different yokes for different behaviours - could we have yoke trees corresponding to goal trees?).
 * View frustum culling.
 * Move the item activation code into an object command.
-* Ensure that the crosshair and any carried item are rendered after the rest of the scene in first-person mode.
 * Sort out how crouching can be properly determined in CmpBipedAnimChooser::choose_animation().
-* Rework CmpModelRender into CmpCharacterModelRender (which depends on ICmpInventory), and write a new, simpler CmpModelRender in its place.
+* Refactor render_aabb() and render_nuv_axes() in the model render components (they're duplicated at the moment).
 
 ----
 Hard

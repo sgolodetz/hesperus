@@ -34,7 +34,8 @@ XMLToken_Ptr XMLLexer::next_token()
 				if(m_eof)													{ m_state = LEX_EOF; }
 				else if(c == '=')											{ m_state = LEX_EQUALS; }
 				else if(c == '/')											{ m_state = LEX_HALF_RSLASH; }
-				else if(c == '"')											{ m_state = LEX_HALF_VALUE; }
+				else if(c == '"')											{ m_state = LEX_HALF_VALUE_D; }
+				else if(c == '\'')											{ m_state = LEX_HALF_VALUE_S; }
 				else if(c == '<')											{ m_state = LEX_LBRACKET; }
 				else if(c == '>')											{ m_state = LEX_RBRACKET; }
 				else if(isalpha(c) || isdigit(c) || c == '.')				{ m_state = LEX_IDENT; value += c; }
@@ -56,11 +57,19 @@ XMLToken_Ptr XMLLexer::next_token()
 				else														{ m_state = LEX_BAD; value = ">"; }
 				break;
 			}
-			case LEX_HALF_VALUE:
+			case LEX_HALF_VALUE_D:
 			{
 				unsigned char c = next_char();
 				if(m_eof)													{ m_state = LEX_BAD; value = "\""; }
 				else if(c == '"')											{ m_state = LEX_VALUE; }
+				else														{ value += c; }
+				break;
+			}
+			case LEX_HALF_VALUE_S:
+			{
+				unsigned char c = next_char();
+				if(m_eof)													{ m_state = LEX_BAD; value = "\""; }
+				else if(c == '\'')											{ m_state = LEX_VALUE; }
 				else														{ value += c; }
 				break;
 			}
