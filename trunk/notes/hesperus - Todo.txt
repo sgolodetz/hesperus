@@ -24,7 +24,6 @@ Medium
 * View frustum culling.
 * Move the item activation code into an object command.
 * Sort out how crouching can be properly determined in CmpBipedAnimChooser::choose_animation().
-* Refactor render_aabb() and render_nuv_axes() in the model render components (they're duplicated at the moment).
 
 ----
 Hard

@@ -258,52 +258,6 @@ Model_Ptr CmpCharacterModelRender::process_active_item(const ObjectID& activeIte
 	return itemModel;
 }
 
-
-void CmpCharacterModelRender::render_aabb(const Vector3d& p) const
-{
-	// FIXME:	This is essentially identical to CmpModelRender::render_aabb().
-	//			They should be refactored into one function elsewhere.
-	ICmpAABBBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);	assert(cmpBounds);
-
-	const AABB3d& aabb = m_objectManager->aabbs()[cmpBounds->cur_aabb_index()];
-	AABB3d tAABB = aabb.translate(p);
-	const Vector3d& mins = tAABB.minimum();
-	const Vector3d& maxs = tAABB.maximum();
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDisable(GL_CULL_FACE);
-	glColor3d(1,1,0);
-
-	glBegin(GL_QUADS);
-		// Front
-		glVertex3d(mins.x, mins.y, mins.z);
-		glVertex3d(maxs.x, mins.y, mins.z);
-		glVertex3d(maxs.x, mins.y, maxs.z);
-		glVertex3d(mins.x, mins.y, maxs.z);
-
-		// Right
-		glVertex3d(maxs.x, mins.y, mins.z);
-		glVertex3d(maxs.x, maxs.y, mins.z);
-		glVertex3d(maxs.x, maxs.y, maxs.z);
-		glVertex3d(maxs.x, mins.y, maxs.z);
-
-		// Back
-		glVertex3d(maxs.x, maxs.y, mins.z);
-		glVertex3d(mins.x, maxs.y, mins.z);
-		glVertex3d(mins.x, maxs.y, maxs.z);
-		glVertex3d(maxs.x, maxs.y, maxs.z);
-
-		// Left
-		glVertex3d(mins.x, maxs.y, mins.z);
-		glVertex3d(mins.x, mins.y, mins.z);
-		glVertex3d(mins.x, mins.y, maxs.z);
-		glVertex3d(mins.x, maxs.y, maxs.z);
-	glEnd();
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glEnable(GL_CULL_FACE);
-}
-
 void CmpCharacterModelRender::render_crosshair()
 {
 	glPushMatrix();

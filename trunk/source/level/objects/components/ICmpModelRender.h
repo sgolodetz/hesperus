@@ -32,6 +32,7 @@ public:
 
 	//#################### PROTECTED METHODS ####################
 protected:
+	void render_aabb(const Vector3d& p) const;
 	static void render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v);
 };
 
