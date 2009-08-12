@@ -16,6 +16,9 @@
 				<property name="Pose" type="int"/>
 			</component>
 			<component name="BipedAnimChooser"/>
+			<component name="CharacterModelRender">
+				<property name="ModelName" type="string"/>
+			</component>
 			<component name="ConsumeActivatable">
 				<property name="Amount" type="int"/>
 				<property name="Type" type="string"/>
@@ -69,6 +72,9 @@
 					<property name="Pose" default="0"/>
 				</component>
 				<component name="BipedAnimChooser"/>
+				<component name="CharacterModelRender">
+					<property name="ModelName" default="Guard"/>
+				</component>
 				<component name="Health">
 					<property name="Health" default="100"/>
 					<property name="MaxHealth" default="100"/>
@@ -80,9 +86,6 @@
 				</component>
 				<component name="MeshMovement"/>
 				<component name="MinimusScriptYoke"/>
-				<component name="ModelRender">
-					<property name="ModelName" default="Guard"/>
-				</component>
 				<component name="Orientation"/>
 				<component name="Physics"/>
 				<component name="Position"/>
@@ -93,6 +96,9 @@
 					<property name="Pose" default="0"/>
 				</component>
 				<component name="BipedAnimChooser"/>
+				<component name="CharacterModelRender">
+					<property name="ModelName" default="Player"/>
+				</component>
 				<component name="Health">
 					<property name="Health" default="100"/>
 					<property name="MaxHealth" default="100"/>
@@ -103,9 +109,6 @@
 					<property name="Items" default="[]"/>
 				</component>
 				<component name="MeshMovement"/>
-				<component name="ModelRender">
-					<property name="ModelName" default="Player"/>
-				</component>
 				<component name="Orientation"/>
 				<component name="Physics"/>
 				<component name="Position"/>

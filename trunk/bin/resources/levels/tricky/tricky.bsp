@@ -911,9 +911,9 @@ Objects
 		{
 			Position = ( 6 24 6 )
 		}
-		ModelRender
+		CharacterModelRender
 		{
-			ModelName = "Test-15"
+			ModelName = "Percy"
 		}
 		UserBipedYoke;
 	}
@@ -946,9 +946,9 @@ Objects
 		{
 			Position = ( 20 20 6 )
 		}
-		ModelRender
+		CharacterModelRender
 		{
-			ModelName = "Test-15"
+			ModelName = "Percy"
 		}
 		MinimusScriptYoke
 		{
@@ -970,7 +970,7 @@ Objects
 		Ownable
 		{
 			AnimExtension = "with_onehanded"
-			AttachPoint = "lower_arm.r"
+			AttachPoint = "tag_item.r"
 			Owner = -1
 		}
 		Position
@@ -991,7 +991,7 @@ Objects
 		Ownable
 		{
 			AnimExtension = "with_onehanded"
-			AttachPoint = "lower_arm.r"
+			AttachPoint = "tag_item.r"
 			Owner = 1
 		}
 		Position
@@ -1018,7 +1018,7 @@ Objects
 		Ownable
 		{
 			AnimExtension = "with_onehanded"
-			AttachPoint = "lower_arm.r"
+			AttachPoint = "tag_item.r"
 			Owner = 0
 		}
 		Position

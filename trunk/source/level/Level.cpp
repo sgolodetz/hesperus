@@ -15,7 +15,7 @@
 #include <source/colours/Colour3d.h>
 #include <source/level/models/Model.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
-#include <source/level/objects/components/ICmpModelRender.h>
+#include <source/level/objects/components/ICmpCharacterModelRender.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/components/ICmpRender.h>
@@ -212,8 +212,8 @@ void Level::render_objects() const
 		}
 		else
 		{
-			ICmpModelRender_Ptr cmpRender = m_objectManager->get_component(renderable, cmpRender);
-			if(!cmpRender) throw Exception("If the player is renderable, it must have a ModelRender component");
+			ICmpCharacterModelRender_Ptr cmpRender = m_objectManager->get_component(renderable, cmpRender);
+			if(!cmpRender) throw Exception("If the player is renderable, it must have a CharacterModelRender component");
 
 			// Note: First-person rendering means rendering the active item (e.g. the weapon held by the player) but not the actual player model.
 			cmpRender->render_first_person();

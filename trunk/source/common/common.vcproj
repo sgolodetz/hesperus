@@ -1528,6 +1528,10 @@
 							Name=".cpp"
 							>
 							<File
+								RelativePath="..\level\objects\components\CmpCharacterModelRender.cpp"
+								>
+							</File>
+							<File
 								RelativePath="..\level\objects\components\CmpModelRender.cpp"
 								>
 							</File>
@@ -1536,7 +1540,15 @@
 							Name=".h"
 							>
 							<File
+								RelativePath="..\level\objects\components\CmpCharacterModelRender.h"
+								>
+							</File>
+							<File
 								RelativePath="..\level\objects\components\CmpModelRender.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\ICmpCharacterModelRender.h"
 								>
 							</File>
 							<File

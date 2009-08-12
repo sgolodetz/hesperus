@@ -13,6 +13,8 @@ Easy
 * Sort out the mess of functions in FieldIO.
 * Ensure the object ID of the viewer is loaded in from the objects file, rather than hard-coded.
 * Fix the untidy initialisation in CmpInventory.
+* Rename the various yokes.
+  - MinimusScriptYoke -> BipedScriptedYoke, UserBipedYoke -> BipedUserYoke, MinimusGotoPositionYoke -> BipedGotoPositionYoke.
 
 ------
 Medium
@@ -23,6 +25,7 @@ Medium
 * Move the item activation code into an object command.
 * Ensure that the crosshair and any carried item are rendered after the rest of the scene in first-person mode.
 * Sort out how crouching can be properly determined in CmpBipedAnimChooser::choose_animation().
+* Rework CmpModelRender into CmpCharacterModelRender (which depends on ICmpInventory), and write a new, simpler CmpModelRender in its place.
 
 ----
 Hard
@@ -33,3 +36,8 @@ Hard
 * Implement collision handling between dynamic objects.
 * Reimplement hlight to allow dynamic lighting.
 * Implement weapons and projectiles.
+* Refactor the movement functionality from MoveFunctions into the relevant movement components.
+  - DirectMovement should be parameterised on a collision response "strategy", e.g. sliding, bouncing, sticking, exploding
+  - MeshMovement should be derived from DirectMovement, and use a sliding collision response strategy
+  - Refactor the physics functionality into the movement components.
+* Sort out the bounds functionality.

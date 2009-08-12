@@ -23,6 +23,9 @@ public:
 public:
 	std::string group_type() const			{ return "AnimChooser"; }
 	static std::string static_group_type()	{ return "AnimChooser"; }
+
+	std::string own_type() const			{ return "AnimChooser"; }
+	static std::string static_own_type()	{ return "AnimChooser"; }
 };
 
 //#################### TYPEDEFS ####################
