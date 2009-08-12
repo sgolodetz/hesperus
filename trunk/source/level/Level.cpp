@@ -127,11 +127,8 @@ void Level::render() const
 	std::cout << "Polygon Count " << polyIndices.size() << std::endl;
 #endif
 
-	// Render the visible objects.
-	render_objects();
-
 	// Render the navigation meshes.
-#if 1
+#if 0
 	render_navmeshes();
 	render_navlinks();
 #endif
@@ -140,6 +137,11 @@ void Level::render() const
 #if 0
 	render_portals();
 #endif
+
+	// Render the visible objects. (These must be done after everything else to ensure that
+	// things like the crosshair and active item are not obscured by the rest of the scene
+	// when rendering in first-person.)
+	render_objects();
 
 	glPopAttrib();
 }
@@ -198,27 +200,30 @@ void Level::render_navmeshes() const
 
 void Level::render_objects() const
 {
+	// FIXME: For performance reasons, we should only be rendering objects which are potentially visible.
+
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 
 	std::vector<ObjectID> renderables = m_objectManager->group("Renderables");
+	ICmpCharacterModelRender_Ptr cmpFirstPersonRender;
 	for(size_t i=0, size=renderables.size(); i<size; ++i)
 	{
 		const ObjectID& renderable = renderables[i];
 		if(renderable != m_objectManager->player() || !m_camera->is_inside_player())
 		{
-			// FIXME: For performance reasons, we should only be rendering objects which are potentially visible.
 			ICmpRender_Ptr cmpRender = m_objectManager->get_component(renderable, cmpRender);
 			cmpRender->render();
 		}
 		else
 		{
-			ICmpCharacterModelRender_Ptr cmpRender = m_objectManager->get_component(renderable, cmpRender);
-			if(!cmpRender) throw Exception("If the player is renderable, it must have a CharacterModelRender component");
-
-			// Note: First-person rendering means rendering the active item (e.g. the weapon held by the player) but not the actual player model.
-			cmpRender->render_first_person();
+			cmpFirstPersonRender = m_objectManager->get_component(renderable, cmpFirstPersonRender);
+			if(!cmpFirstPersonRender) throw Exception("For the player to be renderable in first-person, it must have a CharacterModelRender component");
 		}
 	}
+
+	// Note:	First-person rendering means rendering the active item (e.g. the weapon held by the player) but
+	//			not the actual player model.
+	if(cmpFirstPersonRender) cmpFirstPersonRender->render_first_person();
 
 	glPopAttrib();
 }
