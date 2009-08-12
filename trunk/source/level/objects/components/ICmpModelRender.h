@@ -29,6 +29,10 @@ public:
 public:
 	std::string own_type() const			{ return "ModelRender"; }
 	static std::string static_own_type()	{ return "ModelRender"; }
+
+	//#################### PROTECTED METHODS ####################
+protected:
+	static void render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v);
 };
 
 //#################### TYPEDEFS ####################

@@ -69,7 +69,6 @@ private:
 	Model_Ptr process_active_item(const ObjectID& activeItem, const Model_Ptr& characterModel, const RBTMatrix_CPtr& characterMatrix) const;
 	void render_aabb(const Vector3d& p) const;
 	static void render_crosshair();
-	void render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v) const;
 	void update_active_item_hotspots(const ICmpUsable_Ptr& cmpItemUsable, const Skeleton_CPtr& itemSkeleton, const RBTMatrix_CPtr& characterMatrix) const;
 };
 

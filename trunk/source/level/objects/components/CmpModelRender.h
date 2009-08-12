@@ -43,7 +43,6 @@ public:
 private:
 	static RBTMatrix_CPtr construct_model_matrix(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v);
 	void render_aabb(const Vector3d& p) const;
-	void render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v) const;
 };
 
 }

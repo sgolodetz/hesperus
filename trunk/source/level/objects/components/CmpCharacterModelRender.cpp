@@ -325,20 +325,6 @@ void CmpCharacterModelRender::render_crosshair()
 	glPopMatrix();
 }
 
-void CmpCharacterModelRender::render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v) const
-{
-	// FIXME:	This is essentially identical to CmpModelRender::render_nuv_axes().
-	//			They should be refactored into one function elsewhere.
-	Vector3d pn = p + n;
-	Vector3d pu = p + u;
-	Vector3d pv = p + v;
-	glBegin(GL_LINES);
-		glColor3d(1,0,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pn.x, pn.y, pn.z);
-		glColor3d(0,1,0);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pu.x, pu.y, pu.z);
-		glColor3d(0,0,1);	glVertex3d(p.x, p.y, p.z);	glVertex3d(pv.x, pv.y, pv.z);
-	glEnd();
-}
-
 void CmpCharacterModelRender::update_active_item_hotspots(const ICmpUsable_Ptr& cmpItemUsable, const Skeleton_CPtr& itemSkeleton, const RBTMatrix_CPtr& characterMatrix) const
 {
 	const std::vector<std::string>& hotspots = cmpItemUsable->hotspots();

@@ -1535,6 +1535,10 @@
 								RelativePath="..\level\objects\components\CmpModelRender.cpp"
 								>
 							</File>
+							<File
+								RelativePath="..\level\objects\components\ICmpModelRender.cpp"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name=".h"
