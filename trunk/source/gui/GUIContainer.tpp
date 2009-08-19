@@ -22,6 +22,15 @@ void GUIContainer_THIS::fit(const Extents& extents, GUIComponent *parent)
 }
 
 GUIContainer_HEADER
+void GUIContainer_THIS::handle_input(UserInput& input)
+{
+	for(std::vector<LaidOutGUIComponent>::const_iterator it=m_components.begin(), iend=m_components.end(); it!=iend; ++it)
+	{
+		it->component->handle_input(input);
+	}
+}
+
+GUIContainer_HEADER
 Layout& GUIContainer_THIS::layout()
 {
 	return m_layout;

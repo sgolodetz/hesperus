@@ -14,7 +14,7 @@
 #include <source/exceptions/Exception.h>
 #include <source/gui/Screen.h>
 #include <source/io/util/DirectoryFinder.h>
-#include "GameState_Load.h"
+#include "GameState_Menu.h"
 namespace bf = boost::filesystem;
 
 namespace hesp {
@@ -63,7 +63,7 @@ try
 	// Set the initial game state.
 	bf::path levelsDir = determine_levels_directory(baseDir);
 	std::string relativeLevelPath = levelName + "/" + levelName + ".bsp";
-	m_state.reset(new GameState_Load((levelsDir / relativeLevelPath).file_string()));
+	m_state.reset(new GameState_Menu("Main", (levelsDir / relativeLevelPath).file_string()));
 	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }
@@ -76,10 +76,11 @@ void Game::run()
 	Uint32 lastDraw = SDL_GetTicks();
 	for(;;)
 	{
+		if(m_state->quit_requested()) quit(0);
+
 		process_events();
 
 		Uint32 frameTime = SDL_GetTicks();
-
 		Uint32 timeElapsed = frameTime - lastDraw;
 		if(timeElapsed >= 16)	// aim for 62.5 frames per second
 		{
@@ -110,15 +111,7 @@ void Game::run()
 //#################### PRIVATE METHODS ####################
 void Game::handle_key_down(const SDL_keysym& keysym)
 {
-	switch(keysym.sym)
-	{
-		case SDLK_ESCAPE:
-			quit(0);
-			break;
-		default:
-			m_input.press_key(keysym.sym);
-			break;
-	}
+	m_input.press_key(keysym.sym);
 }
 
 void Game::handle_key_up(const SDL_keysym& keysym)
@@ -131,13 +124,13 @@ void Game::handle_mousebutton_down(const SDL_MouseButtonEvent& e)
 	switch(e.button)
 	{
 		case SDL_BUTTON_LEFT:
-			m_input.press_mouse_button(UserInput::BUTTON_LEFT);
+			m_input.press_mouse_button(UserInput::BUTTON_LEFT, e.x, e.y);
 			break;
 		case SDL_BUTTON_MIDDLE:
-			m_input.press_mouse_button(UserInput::BUTTON_MIDDLE);
+			m_input.press_mouse_button(UserInput::BUTTON_MIDDLE, e.x, e.y);
 			break;
 		case SDL_BUTTON_RIGHT:
-			m_input.press_mouse_button(UserInput::BUTTON_RIGHT);
+			m_input.press_mouse_button(UserInput::BUTTON_RIGHT, e.x, e.y);
 			break;
 		default:
 			break;
@@ -183,6 +176,7 @@ void Game::process_events()
 				break;
 			case SDL_MOUSEMOTION:
 				m_input.set_mouse_motion(event.motion.xrel, event.motion.yrel);
+				m_input.set_mouse_position(event.motion.x, event.motion.y);
 				break;
 			case SDL_QUIT:
 				quit(0);

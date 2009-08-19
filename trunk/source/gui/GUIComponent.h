@@ -9,6 +9,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/util/UserInput.h>
 #include "Extents.h"
 
 namespace hesp {
@@ -22,11 +23,11 @@ protected:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	GUIComponent() : m_parent(NULL) {}
+	GUIComponent();
 
 	//#################### DESTRUCTOR ####################
 public:
-	virtual ~GUIComponent() {}
+	virtual ~GUIComponent();
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
@@ -34,16 +35,13 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Extents& extents() const
-	{
-		return *m_extents;
-	}
+	const Extents& extents() const;
+	virtual void fit(const Extents& extents, GUIComponent *parent);
+	virtual void handle_input(UserInput& input);
 
-	virtual void fit(const Extents& extents, GUIComponent *parent)
-	{
-		m_extents = Extents_Ptr(new Extents(extents));
-		m_parent = parent;
-	}
+	//#################### PROTECTED METHODS ####################
+protected:
+	void render_extents() const;
 };
 
 //#################### TYPEDEFS ####################

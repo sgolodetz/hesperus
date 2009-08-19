@@ -55,6 +55,12 @@ void GameState_Level::leave()
 
 GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 {
+	if(input.key_down(SDLK_ESCAPE))
+	{
+		set_quit_flag();
+		return GameState_Ptr();
+	}
+
 	// TEMPORARY: Allow quick toggling of the input grab using the 'g' key (for debugging purposes).
 	if(input.key_down(SDLK_g))
 	{

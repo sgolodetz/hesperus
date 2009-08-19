@@ -17,7 +17,7 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 Picture::Picture(const std::string& filename)
 {
-	m_texture = TextureFactory::create_texture24(ImageLoader::load_image24(filename));
+	m_texture = TextureFactory::create_texture24(ImageLoader::load_image24(filename), true);
 }
 
 //#################### PUBLIC METHODS ####################

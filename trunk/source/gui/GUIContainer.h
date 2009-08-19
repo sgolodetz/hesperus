@@ -23,6 +23,7 @@ private:
 	//#################### PUBLIC METHODS ####################
 public:
 	void fit(const Extents& extents, GUIComponent *parent);
+	void handle_input(UserInput& input);
 	Layout& layout();
 	void render() const;
 };

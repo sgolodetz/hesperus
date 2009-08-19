@@ -207,7 +207,15 @@
 				Name=".cpp"
 				>
 				<File
+					RelativePath="..\gui\Button.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\gui\ExplicitLayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gui\GUIComponent.cpp"
 					>
 				</File>
 				<File
@@ -222,6 +230,10 @@
 			<Filter
 				Name=".h"
 				>
+				<File
+					RelativePath="..\gui\Button.h"
+					>
+				</File>
 				<File
 					RelativePath="..\gui\ExplicitLayout.h"
 					>
@@ -2230,6 +2242,10 @@
 					RelativePath="..\game\GameState_Load.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\game\GameState_Menu.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name=".h"
@@ -2248,6 +2264,10 @@
 				</File>
 				<File
 					RelativePath="..\game\GameState_Load.h"
+					>
+				</File>
+				<File
+					RelativePath="..\game\GameState_Menu.h"
 					>
 				</File>
 			</Filter>

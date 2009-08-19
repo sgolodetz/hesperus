@@ -27,6 +27,12 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	int bottom() const	{ return m_bottom; }
+
+	bool contains(int x, int y) const
+	{
+		return m_left <= x && x <= m_right && m_top <= y && y <= m_bottom;
+	}
+
 	int height() const	{ return m_bottom - m_top; }
 	int left() const	{ return m_left; }
 	int right() const	{ return m_right; }

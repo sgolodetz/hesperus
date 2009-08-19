@@ -16,6 +16,14 @@ typedef shared_ptr<class GameState> GameState_Ptr;
 
 class GameState
 {
+	//#################### PRIVATE VARIABLES ####################
+private:
+	bool m_quitFlag;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	GameState();
+
 	//#################### DESTRUCTOR ####################
 public:
 	virtual ~GameState();
@@ -26,9 +34,14 @@ public:
 	virtual void leave() = 0;
 	virtual GameState_Ptr update(int milliseconds, UserInput& input) = 0;
 
+	//#################### PUBLIC METHODS ####################
+public:
+	bool quit_requested() const;
+
 	//#################### PROTECTED METHODS ####################
 protected:
 	void set_display(const GUIComponent_Ptr& display);
+	void set_quit_flag();
 };
 
 }
