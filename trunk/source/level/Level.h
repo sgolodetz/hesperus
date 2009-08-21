@@ -9,7 +9,6 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/cameras/Camera.h>
 #include <source/level/models/ModelManager.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/objects/base/ObjectManager.h>
@@ -44,8 +43,6 @@ private:
 	ObjectManager_Ptr m_objectManager;
 	ModelManager_Ptr m_modelManager;
 
-	Camera_Ptr m_camera;
-
 	//#################### CONSTRUCTORS ####################
 public:
 	Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
@@ -56,20 +53,14 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Camera_Ptr& camera() const;
+	BSPTree_CPtr bsp_tree() const;
 	std::vector<int> find_visible_leaves(const Vector3d& eye) const;
+	GeometryRenderer_CPtr geom_renderer() const;
 	const std::vector<NavDataset_Ptr>& nav_datasets() const;
 	const ObjectManager_Ptr& object_manager() const;
 	const ColPolyVector& onion_polygons() const;
 	const OnionTree_Ptr& onion_tree() const;
-	void render() const;
-
-	//#################### PRIVATE METHODS ####################
-private:
-	void render_navlinks() const;
-	void render_navmeshes() const;
-	void render_objects() const;
-	void render_portals() const;
+	const PortalVector& portals() const;
 };
 
 //#################### TYPEDEFS ####################

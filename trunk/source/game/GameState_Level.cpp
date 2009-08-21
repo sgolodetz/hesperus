@@ -11,6 +11,8 @@
 
 #include <SDL.h>
 
+#include <source/cameras/FirstPersonCamera.h>
+#include <source/cameras/FixedCamera.h>
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
@@ -23,6 +25,7 @@
 #include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpModelRender.h>
+#include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/components/ICmpYoke.h>
@@ -91,8 +94,12 @@ GUIComponent_Ptr GameState_Level::construct_display()
 	int width = screen.dimensions().width();
 	int height = screen.dimensions().height();
 	display->layout().add(new Picture((imagesDir / "title.png").file_string()), Extents(width/4, 0, width*3/4, width/8));
+
 	Extents mainExtents(50, width/8, width - 50, height - 50);
-	display->layout().add(new LevelViewer(m_level), mainExtents);
+
+	Camera_Ptr camera(new FirstPersonCamera(m_level->object_manager()->player(), m_level->object_manager()));
+	display->layout().add(new LevelViewer(m_level, camera), mainExtents);
+
 	display->layout().add(new HUDViewer(m_level), mainExtents);
 
 	return GUIComponent_Ptr(display);
@@ -110,11 +117,10 @@ void GameState_Level::do_activatables(UserInput& input)
 	}
 
 	// Step 2:	Find the half-ray representing the player's line of sight.
-
-	// FIXME: This only works when the camera is attached to the player.
-	Camera_Ptr camera = m_level->camera();
-	camera->update();
-	Vector3d eye = camera->eye(), look = camera->look();
+	ICmpOrientation_Ptr cmpPlayerOrientation = objectManager->get_component(objectManager->player(), cmpPlayerOrientation);
+	ICmpPosition_Ptr cmpPlayerPosition = objectManager->get_component(objectManager->player(), cmpPlayerPosition);
+	Vector3d eye = cmpPlayerPosition->position();
+	Vector3d look = cmpPlayerOrientation->nuv_axes()->n();
 
 	// Step 3:	Check all activatable objects in leaves in the PVS of the viewer's leaf and find the nearest within range (if any)
 	//			whose AABB is intersected by the half-ray. (If there's no such object, return.)

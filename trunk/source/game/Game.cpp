@@ -85,7 +85,7 @@ void Game::run()
 		if(timeElapsed >= 16)	// aim for 62.5 frames per second
 		{
 #if 0
-			std::cout << "Render " << frameTime - lastDraw << std::endl;
+			std::cout << "Render " << timeElapsed << std::endl;
 #endif
 
 			screen.render();
