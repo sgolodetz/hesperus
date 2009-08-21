@@ -57,23 +57,41 @@ GUIComponent_Ptr GameState_Menu::construct_buttons_menu(const std::vector<Button
 	display->layout().add(new Picture((imagesDir / "title.png").file_string()), Extents(width/4, 0, width*3/4, width/8));
 
 	// Add the backdrop image.
-	const int BUTTON_HEIGHT = 100;
-	const int BUTTON_SPACING = 50;								// space between adjacent buttons
+	const int BUTTON_HEIGHT = height/7;
+	const int BUTTON_SPACING = height/14;						// space between adjacent buttons
 	const int BUTTON_STRIDE = BUTTON_HEIGHT + BUTTON_SPACING;	// vertical distance between the centres of adjacent buttons
 	int buttonsLeft = width*3/10;
 	int buttonsRight = width*7/10;
-	int buttonsTop = width/8 + 50;
+	int buttonsTop = width/8 + 2*BUTTON_SPACING;
 
 	int buttonCount = static_cast<int>(menuButtons.size());
 	Extents backdropExtents(buttonsLeft - BUTTON_SPACING, buttonsTop - BUTTON_SPACING,
 							buttonsRight + BUTTON_SPACING, buttonsTop + buttonCount * BUTTON_STRIDE);
 	display->layout().add(new Picture((imagesDir / "menu-backdrop.png").file_string()), backdropExtents);
 
+	// Add the right-facing Percy image.
+	int prLeft = BUTTON_SPACING;
+	int prRight = buttonsLeft - 2*BUTTON_SPACING;
+	int percyTop = buttonsTop - BUTTON_SPACING;
+	int percyBottom = percyTop + 2*(prRight-prLeft);
+	Extents prExtents(prLeft, percyTop, prRight, percyBottom);
+	display->layout().add(new Picture((imagesDir / "menu-percyright.png").file_string()), prExtents);
+
+	// Add the left-facing Percy image.
+	int plRight = width - BUTTON_SPACING;
+	int plLeft = buttonsRight + 2*BUTTON_SPACING;
+	Extents plExtents(plLeft, percyTop, plRight, percyBottom);
+	display->layout().add(new Picture((imagesDir / "menu-percyleft.png").file_string()), plExtents);
+
+	// Add the pimpernel images.
+	display->layout().add(new Picture((imagesDir / "menu-pimpernel.png").file_string()), Extents(width/16, 0, 3*width/16, width/8));
+	display->layout().add(new Picture((imagesDir / "menu-pimpernel.png").file_string()), Extents(13*width/16, 0, 15*width/16, width/8));
+
 	// Add the buttons.
 	for(int i=0; i<buttonCount; ++i)
 	{
 		int buttonTop = buttonsTop + i*BUTTON_STRIDE;
-		display->layout().add(menuButtons[i], Extents(buttonsLeft, buttonTop, buttonsRight, buttonTop+100));
+		display->layout().add(menuButtons[i], Extents(buttonsLeft, buttonTop, buttonsRight, buttonTop+BUTTON_HEIGHT));
 	}
 
 	return GUIComponent_Ptr(display);
