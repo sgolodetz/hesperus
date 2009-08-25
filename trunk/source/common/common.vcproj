@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\FMOD-4.27.06\api\inc&quot;;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\FMOD-4.27.06\api\inc&quot;;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -1209,10 +1209,6 @@
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\base\IDAllocator.cpp"
-							>
-						</File>
-						<File
 							RelativePath="..\level\objects\base\IObjectComponent.cpp"
 							>
 						</File>
@@ -1232,10 +1228,6 @@
 					<Filter
 						Name=".h"
 						>
-						<File
-							RelativePath="..\level\objects\base\IDAllocator.h"
-							>
-						</File>
 						<File
 							RelativePath="..\level\objects\base\IObjectComponent.h"
 							>
@@ -1839,6 +1831,10 @@
 				Name=".cpp"
 				>
 				<File
+					RelativePath="..\util\IDAllocator.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\util\PolygonTypes.cpp"
 					>
 				</File>
@@ -1854,6 +1850,10 @@
 			<Filter
 				Name=".h"
 				>
+				<File
+					RelativePath="..\util\IDAllocator.h"
+					>
+				</File>
 				<File
 					RelativePath="..\util\PolygonTypes.h"
 					>
@@ -2420,6 +2420,50 @@
 				>
 				<File
 					RelativePath="..\datastructures\PriorityQueue.tpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="audio"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\audio\SoundInstance.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\audio\SoundInstanceUpdater.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\audio\SoundListenerUpdater.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\audio\SoundSystem.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\audio\SoundInstance.h"
+					>
+				</File>
+				<File
+					RelativePath="..\audio\SoundInstanceUpdater.h"
+					>
+				</File>
+				<File
+					RelativePath="..\audio\SoundListenerUpdater.h"
+					>
+				</File>
+				<File
+					RelativePath="..\audio\SoundSystem.h"
 					>
 				</File>
 			</Filter>

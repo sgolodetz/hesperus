@@ -267,7 +267,7 @@ void CmpCharacterModelRender::render_crosshair()
 	glDisable(GL_DEPTH_TEST);		// disable z-buffer testing
 	glDisable(GL_DEPTH_WRITEMASK);	// disable z-buffer writing
 
-	const double Z_OFFSET = 20;
+	const double Z_OFFSET = 30;
 
 	glColor3d(1,1,1);
 	glBegin(GL_LINES);

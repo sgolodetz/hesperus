@@ -21,6 +21,7 @@ private:
 public:
 	int allocate();
 	void deallocate(int n);
+	void reset();
 
 	//#################### PRIVATE METHODS ####################
 private:

@@ -37,7 +37,7 @@ Checks that the proposed dimensions of the texture are valid.
 */
 void TextureFactory::check_dimensions(int width, int height)
 {
-	if(width < 2 || width > 512 || height < 2 || height > 512) throw InvalidParameterException("Image dimensions out of range");
+	if(width < 2 || width > 1024 || height < 2 || height > 1024) throw InvalidParameterException("Image dimensions out of range");
 	if(!is_power_of_two(width) || !is_power_of_two(height)) throw InvalidParameterException("Image dimensions are not powers of two");
 }
 

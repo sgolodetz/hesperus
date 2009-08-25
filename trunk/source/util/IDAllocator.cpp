@@ -50,6 +50,12 @@ void IDAllocator::deallocate(int n)
 	}
 }
 
+void IDAllocator::reset()
+{
+	m_free.clear();
+	m_used.clear();
+}
+
 //#################### PRIVATE METHODS ####################
 int IDAllocator::max_used() const
 {

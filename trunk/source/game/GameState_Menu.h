@@ -6,6 +6,7 @@
 #ifndef H_HESP_GAMESTATE_MENU
 #define H_HESP_GAMESTATE_MENU
 
+#include <source/audio/SoundSystem.h>
 #include "GameState.h"
 
 namespace hesp {
@@ -19,13 +20,14 @@ class GameState_Menu : public GameState
 private:
 	std::string m_menu;
 	GameState_Ptr m_newState;
+	SoundSystem& m_soundSystem;
 
 	// TODO: This should ultimately be removed in favour of loading the game levels in order.
 	std::string m_initialLevelFilename;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit GameState_Menu(const std::string& menu, const std::string& initialLevelFilename);
+	explicit GameState_Menu(const std::string& menu, const std::string& initialLevelFilename, SoundSystem& soundSystem);
 
 	//#################### PUBLIC METHODS ####################
 public:

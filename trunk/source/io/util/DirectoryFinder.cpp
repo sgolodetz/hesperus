@@ -12,6 +12,11 @@ namespace bf = boost::filesystem;
 
 namespace hesp {
 
+bf::path determine_audio_directory(const bf::path& baseDir)
+{
+	return baseDir / "resources/audio/";
+}
+
 bf::path determine_base_directory_from_game()
 {
 	bf::path exePath = determine_executable_location();		// hesperus/bin/?.exe

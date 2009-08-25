@@ -63,7 +63,7 @@ try
 	// Set the initial game state.
 	bf::path levelsDir = determine_levels_directory(baseDir);
 	std::string relativeLevelPath = levelName + "/" + levelName + ".bsp";
-	m_state.reset(new GameState_Menu("Main", (levelsDir / relativeLevelPath).file_string()));
+	m_state.reset(new GameState_Menu("Main", (levelsDir / relativeLevelPath).file_string(), m_soundSystem));
 	m_state->enter();
 }
 catch(Exception& e) { quit_with_error(e.cause()); }

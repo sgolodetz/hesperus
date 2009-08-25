@@ -19,8 +19,8 @@ namespace bf = boost::filesystem;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-GameState_Menu::GameState_Menu(const std::string& menu, const std::string& initialLevelFilename)
-:	m_menu(menu), m_initialLevelFilename(initialLevelFilename)
+GameState_Menu::GameState_Menu(const std::string& menu, const std::string& initialLevelFilename, SoundSystem& soundSystem)
+:	m_menu(menu), m_initialLevelFilename(initialLevelFilename), m_soundSystem(soundSystem)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -28,11 +28,15 @@ void GameState_Menu::enter()
 {
 	// TODO: Construct the appropriate menu based on the parameter to the constructor.
 	set_display(construct_buttons_menu(menu_buttons_main()));
+
+	bf::path audioDir = determine_audio_directory(determine_base_directory_from_game());
+	m_soundSystem.create_sound("menu", (audioDir / "menu.mid").file_string(), SF_STREAM | SF_2D | SF_LOOP);
+	m_soundSystem.play_sound("menu");
 }
 
 void GameState_Menu::leave()
 {
-	// Nothing to do
+	m_soundSystem.destroy_sound("menu");
 }
 
 GameState_Ptr GameState_Menu::update(int milliseconds, UserInput& input)
@@ -57,16 +61,17 @@ GUIComponent_Ptr GameState_Menu::construct_buttons_menu(const std::vector<Button
 	display->layout().add(new Picture((imagesDir / "title.png").file_string()), Extents(width/4, 0, width*3/4, width/8));
 
 	// Add the backdrop image.
+	int buttonCount = static_cast<int>(menuButtons.size());
 	const int BUTTON_HEIGHT = height/7;
 	const int BUTTON_SPACING = height/14;						// space between adjacent buttons
 	const int BUTTON_STRIDE = BUTTON_HEIGHT + BUTTON_SPACING;	// vertical distance between the centres of adjacent buttons
 	int buttonsLeft = width*3/10;
 	int buttonsRight = width*7/10;
 	int buttonsTop = width/8 + 2*BUTTON_SPACING;
+	int buttonsBottom = buttonsTop + buttonCount * BUTTON_STRIDE - BUTTON_SPACING;
 
-	int buttonCount = static_cast<int>(menuButtons.size());
 	Extents backdropExtents(buttonsLeft - BUTTON_SPACING, buttonsTop - BUTTON_SPACING,
-							buttonsRight + BUTTON_SPACING, buttonsTop + buttonCount * BUTTON_STRIDE);
+							buttonsRight + BUTTON_SPACING, buttonsBottom + BUTTON_SPACING);
 	display->layout().add(new Picture((imagesDir / "menu-backdrop.png").file_string()), backdropExtents);
 
 	// Add the right-facing Percy image.
@@ -86,6 +91,9 @@ GUIComponent_Ptr GameState_Menu::construct_buttons_menu(const std::vector<Button
 	// Add the pimpernel images.
 	display->layout().add(new Picture((imagesDir / "menu-pimpernel.png").file_string()), Extents(width/16, 0, 3*width/16, width/8));
 	display->layout().add(new Picture((imagesDir / "menu-pimpernel.png").file_string()), Extents(13*width/16, 0, 15*width/16, width/8));
+
+	// Add the FMOD copyright notice.
+	display->layout().add(new Picture((imagesDir / "fmod-copyright.png").file_string()), Extents(0, height-width/16, width, height));
 
 	// Add the buttons.
 	for(int i=0; i<buttonCount; ++i)

@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 
+#include <source/audio/SoundSystem.h>
 #include <source/util/UserInput.h>
 #include "GameState.h"
 
@@ -22,6 +23,7 @@ class Game
 private:
 	GameState_Ptr m_state;
 	UserInput m_input;
+	SoundSystem m_soundSystem;
 
 	//#################### CONSTRUCTORS ####################
 public:

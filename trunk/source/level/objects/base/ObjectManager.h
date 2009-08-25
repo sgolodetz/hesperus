@@ -14,7 +14,7 @@
 
 #include <source/datastructures/PriorityQueue.h>
 #include <source/math/geom/AABB.h>
-#include "IDAllocator.h"
+#include <source/util/IDAllocator.h>
 #include "IObjectComponent.h"
 #include "ListenerTable.h"
 #include "Message.h"
