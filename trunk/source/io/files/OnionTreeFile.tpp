@@ -38,7 +38,7 @@ Saves the polygons and onion tree to the specified onion tree file.
 @param tree			The onion tree
 */
 template <typename Poly>
-void OnionTreeFile::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons, const OnionTree_Ptr& tree)
+void OnionTreeFile::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons, const OnionTree_CPtr& tree)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

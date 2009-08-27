@@ -16,7 +16,7 @@ struct TreeSection
 	static BSPTree_Ptr load(std::istream& is);
 
 	//#################### SAVING METHODS ####################
-	static void save(std::ostream& os, const BSPTree_Ptr& tree);
+	static void save(std::ostream& os, const BSPTree_CPtr& tree);
 };
 
 }

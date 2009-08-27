@@ -41,7 +41,7 @@ void CmpMinimusScriptYoke::check_dependencies() const
 }
 
 std::vector<ObjectCommand_Ptr> CmpMinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
-																	   const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+																	   const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	if(!m_yoke) m_yoke.reset(new MinimusScriptYoke(m_objectID, m_objectManager, m_scriptName, m_engine, m_baseDir));
 	return m_yoke->generate_commands(input, polygons, tree, navDatasets);

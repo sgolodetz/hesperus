@@ -24,6 +24,7 @@ class Image
 	//#################### TYPEDEFS ####################
 protected:
 	typedef shared_ptr<Image> Image_Ptr;
+	typedef shared_ptr<const Image> Image_CPtr;
 public:
 	typedef Pixel Pixel;
 

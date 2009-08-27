@@ -25,12 +25,12 @@ public:
 
 	//#################### PRIVATE ABSTRACT METHODS ####################
 private:
-	virtual double lookup_speed(const ICmpMeshMovement_Ptr& cmpMovement) const = 0;
+	virtual double lookup_speed(const ICmpMeshMovement_CPtr& cmpMovement) const = 0;
 	virtual void set_anim_flag(const ICmpBipedAnimChooser_Ptr& cmpAnimChooser) const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds);
+	void execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds);
 };
 
 }

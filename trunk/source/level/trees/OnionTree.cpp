@@ -137,10 +137,8 @@ void OnionTree::output_postorder_text(std::ostream& os) const
 	root()->output_postorder_text(os);
 }
 
-OnionNode_Ptr OnionTree::root() const
-{
-	return m_nodes.back();
-}
+OnionNode_Ptr OnionTree::root()			{ return m_nodes.back(); }
+OnionNode_CPtr OnionTree::root() const	{ return m_nodes.back(); }
 
 //#################### PRIVATE METHODS ####################
 void OnionTree::index_leaves()
@@ -159,7 +157,7 @@ void OnionTree::index_leaves_sub(const OnionNode_Ptr& node)
 	}
 	else
 	{
-		const OnionBranch *branch = node->as_branch();
+		OnionBranch *branch = node->as_branch();
 		index_leaves_sub(branch->left());
 		index_leaves_sub(branch->right());
 	}

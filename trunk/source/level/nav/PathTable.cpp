@@ -39,10 +39,10 @@ std::list<int> PathTable::construct_path(int i, int j) const
 	return path;
 }
 
-float& PathTable::cost(int i, int j)			{ return m_table[i][j].cost; }
-float PathTable::cost(int i, int j) const		{ return m_table[i][j].cost; }
-int& PathTable::next_node(int i, int j)			{ return m_table[i][j].nextNode; }
-int PathTable::next_node(int i, int j) const	{ return m_table[i][j].nextNode; }
-int PathTable::size() const						{ return m_size; }
+float& PathTable::cost(int i, int j)					{ return m_table[i][j].cost; }
+const float& PathTable::cost(int i, int j) const		{ return m_table[i][j].cost; }
+int& PathTable::next_node(int i, int j)					{ return m_table[i][j].nextNode; }
+const int& PathTable::next_node(int i, int j) const		{ return m_table[i][j].nextNode; }
+int PathTable::size() const								{ return m_size; }
 
 }

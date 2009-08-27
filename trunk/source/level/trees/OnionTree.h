@@ -39,7 +39,8 @@ public:
 	static OnionTree_Ptr load_postorder_text(std::istream& is);
 	int map_count() const;
 	void output_postorder_text(std::ostream& os) const;
-	OnionNode_Ptr root() const;
+	OnionNode_Ptr root();
+	OnionNode_CPtr root() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

@@ -39,7 +39,7 @@ void MinimusScriptYoke::add_ref()
 }
 
 std::vector<ObjectCommand_Ptr> MinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
-																	const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+																	const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	if(!m_initialised)
 	{

@@ -40,22 +40,22 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void add_scaled(const RBTMatrix_Ptr& mat, double scale);
+	void add_scaled(const RBTMatrix_CPtr& mat, double scale);
 	Vector3d apply_to_point(const Vector3d& p) const;
 	Vector3d apply_to_vector(const Vector3d& v) const;
-	static RBTMatrix_Ptr copy(const RBTMatrix_Ptr& rhs);
+	static RBTMatrix_Ptr copy(const RBTMatrix_CPtr& rhs);
 	RBTMatrix_Ptr inverse() const;
 	std::vector<double> rep() const;
 	void reset_to_zeros();
 };
 
 //#################### GLOBAL OPERATORS ####################
-RBTMatrix_Ptr& operator+=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs);
-RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs);
+RBTMatrix_Ptr& operator+=(RBTMatrix_Ptr& lhs, const RBTMatrix_CPtr& rhs);
+RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, const RBTMatrix_CPtr& rhs);
 RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, double scale);
-RBTMatrix_Ptr operator*(const RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs);
-RBTMatrix_Ptr operator*(const RBTMatrix_Ptr& lhs, double scale);
-RBTMatrix_Ptr operator*(double scale, const RBTMatrix_Ptr& rhs);
+RBTMatrix_Ptr operator*(const RBTMatrix_CPtr& lhs, const RBTMatrix_CPtr& rhs);
+RBTMatrix_Ptr operator*(const RBTMatrix_CPtr& lhs, double scale);
+RBTMatrix_Ptr operator*(double scale, const RBTMatrix_CPtr& rhs);
 
 }
 

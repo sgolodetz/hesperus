@@ -33,7 +33,7 @@ public:
 	void attach_to_parent(const Model_Ptr& parent, const std::string& parentBoneName);
 	void detach_from_parent();
 	void render() const;
-	const Skeleton_Ptr& skeleton() const;
+	const Skeleton_Ptr& skeleton();
 };
 
 }

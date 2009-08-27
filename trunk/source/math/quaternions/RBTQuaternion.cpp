@@ -34,7 +34,7 @@ Vector3d RBTQuaternion::apply(const Vector3d& p) const
 	return m_rotation.apply_unit_rotation(p) + m_translation;
 }
 
-RBTQuaternion_Ptr RBTQuaternion::interpolate(const RBTQuaternion_Ptr& lhs, const RBTQuaternion_Ptr& rhs, double t)
+RBTQuaternion_Ptr RBTQuaternion::interpolate(const RBTQuaternion_CPtr& lhs, const RBTQuaternion_CPtr& rhs, double t)
 {
 	Quaternion newRot = Quaternion::slerp(lhs->rotation(), rhs->rotation(), t);
 	Vector3d newTrans = (1-t)*lhs->translation() + t*rhs->translation();

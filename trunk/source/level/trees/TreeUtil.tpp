@@ -9,6 +9,16 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 /**
+This is needed to allow a pointer to a non-const tree to be passed in to
+the function below: without it, the compiler generates an error.
+*/
+template <typename Tree>
+int TreeUtil::find_leaf_index(const Vector3d& p, shared_ptr<Tree> tree)
+{
+	return find_leaf_index<const Tree>(p, tree);
+}
+
+/**
 Finds the index of the leaf in the specified tree in which the specified point resides.
 
 @param p		The point
@@ -16,13 +26,13 @@ Finds the index of the leaf in the specified tree in which the specified point r
 @return			The leaf index
 */
 template <typename Tree>
-int TreeUtil::find_leaf_index(const Vector3d& p, shared_ptr<Tree> tree)
+int TreeUtil::find_leaf_index(const Vector3d& p, shared_ptr<const Tree> tree)
 {
 	typedef typename Tree::Branch Branch;
 	typedef typename Tree::Leaf Leaf;
 	typedef typename Tree::Node Node;
 
-	shared_ptr<Node> cur = tree->root();
+	shared_ptr<const Node> cur = tree->root();
 	while(!cur->is_leaf())
 	{
 		const Branch *branch = cur->as_branch();
@@ -45,15 +55,25 @@ int TreeUtil::find_leaf_index(const Vector3d& p, shared_ptr<Tree> tree)
 	return leaf->leaf_index();
 }
 
+/**
+This is needed to allow a pointer to a non-const tree to be passed in to
+the function below: without it, the compiler generates an error.
+*/
 template <typename Tree>
 std::list<Plane_CPtr> TreeUtil::split_planes(shared_ptr<Tree> tree)
+{
+	return split_planes<const Tree>(tree);
+}
+
+template <typename Tree>
+std::list<Plane_CPtr> TreeUtil::split_planes(shared_ptr<const Tree> tree)
 {
 	return split_planes_sub<Tree>(tree->root());
 }
 
 //#################### PRIVATE METHODS ####################
 template <typename Tree>
-std::list<Plane_CPtr> TreeUtil::split_planes_sub(shared_ptr<typename Tree::Node> node)
+std::list<Plane_CPtr> TreeUtil::split_planes_sub(shared_ptr<const typename Tree::Node> node)
 {
 	std::list<Plane_CPtr> ret;
 

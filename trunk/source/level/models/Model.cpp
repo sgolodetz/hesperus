@@ -37,7 +37,7 @@ void Model::render() const
 	m_mesh->render();
 }
 
-const Skeleton_Ptr& Model::skeleton() const
+const Skeleton_Ptr& Model::skeleton()
 {
 	return m_skeleton;
 }

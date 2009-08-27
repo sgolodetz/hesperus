@@ -48,7 +48,7 @@ void Submesh::render() const
 	glPopClientAttrib();
 }
 
-void Submesh::skin(const Skeleton_Ptr& skeleton)
+void Submesh::skin(const Skeleton_CPtr& skeleton)
 {
 	/*
 	Linear Blend Skinning Algorithm:
@@ -60,7 +60,7 @@ void Submesh::skin(const Skeleton_Ptr& skeleton)
 	I refer to these in the code as the 'skinning matrices'.
 	*/
 
-	BoneConfiguration_Ptr boneConfiguration = skeleton->bone_configuration();
+	BoneConfiguration_CPtr boneConfiguration = skeleton->bone_configuration();
 	int boneCount = boneConfiguration->bone_count();
 
 	// Construct the skinning matrices.

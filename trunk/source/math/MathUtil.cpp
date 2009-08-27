@@ -12,7 +12,7 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
-RBTQuaternion_Ptr MathUtil::rbt_matrix_to_quaternion(const RBTMatrix_Ptr& mat)
+RBTQuaternion_Ptr MathUtil::rbt_matrix_to_quaternion(const RBTMatrix_CPtr& mat)
 {
 	// For an explanation of how this works, see either of the following links:
 	//
@@ -129,7 +129,7 @@ RBTQuaternion_Ptr MathUtil::rbt_matrix_to_quaternion(const RBTMatrix_Ptr& mat)
 	return RBTQuaternion_Ptr(new RBTQuaternion(rot, trans));
 }
 
-RBTMatrix_Ptr MathUtil::rbt_quaternion_to_matrix(const RBTQuaternion_Ptr& q)
+RBTMatrix_Ptr MathUtil::rbt_quaternion_to_matrix(const RBTQuaternion_CPtr& q)
 {
 	// FIXME: Optimize this as per www.gamasutra.com/features/19980703/quaternions_01.htm.
 	RBTMatrix_Ptr ret = RBTMatrix::zeros();

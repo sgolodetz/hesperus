@@ -16,7 +16,7 @@ std::list<int> BSPUtil::find_leaf_indices(const Polygon<Vert,AuxData>& poly, con
 
 //#################### PRIVATE METHODS ####################
 template <typename Vert, typename AuxData>
-std::list<int> BSPUtil::find_leaf_indices_sub(const Polygon<Vert,AuxData>& poly, const BSPNode_Ptr& node)
+std::list<int> BSPUtil::find_leaf_indices_sub(const Polygon<Vert,AuxData>& poly, const BSPNode_CPtr& node)
 {
 	if(node->is_leaf())
 	{

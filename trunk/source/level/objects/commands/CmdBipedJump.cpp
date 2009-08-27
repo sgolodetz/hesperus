@@ -17,7 +17,7 @@ CmdBipedJump::CmdBipedJump(const ObjectID& objectID, const Vector3d& dir)
 {}
 
 //#################### PUBLIC METHODS ####################
-void CmdBipedJump::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+void CmdBipedJump::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 						   const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);		assert(cmpBounds != NULL);

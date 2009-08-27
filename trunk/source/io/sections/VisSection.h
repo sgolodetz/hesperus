@@ -16,7 +16,7 @@ struct VisSection
 	static LeafVisTable_Ptr load(std::istream& is);
 
 	//#################### SAVING METHODS ####################
-	static void save(std::ostream& os, const LeafVisTable_Ptr& leafVis);
+	static void save(std::ostream& os, const LeafVisTable_CPtr& leafVis);
 };
 
 }

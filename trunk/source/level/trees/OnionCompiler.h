@@ -34,7 +34,7 @@ private:
 		{}
 	};
 
-	typedef shared_ptr<PolyIndex> PolyIndex_Ptr;
+	typedef shared_ptr<const PolyIndex> PolyIndex_CPtr;
 
 	struct NullAuxData {};
 
@@ -65,7 +65,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	OnionNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<OnionNode_Ptr>& nodes, std::vector<Plane_Ptr>& ancestorPlanes);
-	PolyIndex_Ptr choose_split_poly(const std::vector<PolyIndex>& polyIndices) const;
+	PolyIndex_CPtr choose_split_poly(const std::vector<PolyIndex>& polyIndices) const;
 	boost::dynamic_bitset<> determine_leaf_solidity(const std::vector<Plane_Ptr>& ancestorPlanes) const;
 	static Vector3d find_arbitrary_leaf_point(const std::vector<Plane_Ptr>& ancestorPlanes);
 };

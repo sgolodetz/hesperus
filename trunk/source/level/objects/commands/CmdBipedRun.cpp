@@ -13,7 +13,7 @@ CmdBipedRun::CmdBipedRun(const ObjectID& objectID, const Vector3d& dir)
 {}
 
 //#################### PRIVATE METHODS ####################
-double CmdBipedRun::lookup_speed(const ICmpMeshMovement_Ptr& cmpMovement) const
+double CmdBipedRun::lookup_speed(const ICmpMeshMovement_CPtr& cmpMovement) const
 {
 	return cmpMovement->run_speed();
 }

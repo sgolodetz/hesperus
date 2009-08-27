@@ -54,7 +54,7 @@ a more useful version of what would be the copy constructor).
 @param rhs	The image to copy
 */
 template <typename Pixel>
-SimpleImage<Pixel>::SimpleImage(const Image_Ptr& rhs)
+SimpleImage<Pixel>::SimpleImage(const Image_CPtr& rhs)
 :	Image(rhs->width(), rhs->height())
 {
 	int size = m_width * m_height;

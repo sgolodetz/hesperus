@@ -19,7 +19,7 @@ Skeleton::Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::ma
 }
 
 //#################### PUBLIC METHODS ####################
-const Animation_Ptr& Skeleton::animation(const std::string& name) const
+Animation_CPtr Skeleton::animation(const std::string& name) const
 {
 	std::map<std::string,Animation_Ptr>::const_iterator it = m_animations.find(name);
 	if(it != m_animations.end())
@@ -29,7 +29,12 @@ const Animation_Ptr& Skeleton::animation(const std::string& name) const
 	else throw Exception("There is no animation named " + name);
 }
 
-const BoneConfiguration_Ptr& Skeleton::bone_configuration() const
+const BoneConfiguration_Ptr& Skeleton::bone_configuration()
+{
+	return m_boneConfiguration;
+}
+
+BoneConfiguration_CPtr Skeleton::bone_configuration() const
 {
 	return m_boneConfiguration;
 }
@@ -96,7 +101,7 @@ void Skeleton::set_pose(const Pose_CPtr& pose, const std::map<std::string,PoseMo
 		}
 		else
 		{
-			const RBTMatrix_Ptr& baseRot = bone->base_rotation();
+			RBTMatrix_CPtr baseRot = bone->base_rotation();
 			RBTMatrix_Ptr rot(new RBTMatrix(*boneMatrices[i]));
 			(*rot)(0,3) = (*rot)(1,3) = (*rot)(2,3) = 0;
 
@@ -114,7 +119,7 @@ void Skeleton::set_pose(const Pose_CPtr& pose, const std::map<std::string,PoseMo
 	update_absolute_bone_matrices(modifiers);
 }
 
-const RBTMatrix_Ptr& Skeleton::to_bone_matrix(int i) const
+RBTMatrix_CPtr Skeleton::to_bone_matrix(int i) const
 {
 	return m_toBoneMatrices[i];
 }

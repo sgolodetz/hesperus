@@ -125,7 +125,7 @@ void CmpCharacterModelRender::set_skeleton()
 	m_animController->set_skeleton(skeleton);
 }
 
-void CmpCharacterModelRender::update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+void CmpCharacterModelRender::update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	ICmpAnimChooser_Ptr cmpAnimChooser = m_objectManager->get_component(m_objectID, cmpAnimChooser);	assert(cmpAnimChooser);
 	m_animController->request_animation(cmpAnimChooser->choose_animation(polygons, tree, navDatasets));

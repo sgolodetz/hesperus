@@ -21,7 +21,7 @@ Clips a list of polygons to a tree.
 */
 CSGUtil_HEADER
 typename CSGUtil_THIS::PolyList
-CSGUtil_THIS::clip_polygons_to_tree(const PolyList& polys, const BSPTree_Ptr& tree, bool coplanarFlag)
+CSGUtil_THIS::clip_polygons_to_tree(const PolyList& polys, const BSPTree_CPtr& tree, bool coplanarFlag)
 {
 	PolyList ret;
 	for(PolyList::const_iterator it=polys.begin(), iend=polys.end(); it!=iend; ++it)
@@ -128,11 +128,11 @@ Clips a polygon to a subtree.
 */
 CSGUtil_HEADER
 std::pair<typename CSGUtil_THIS::PolyList, bool>
-CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_Ptr& node, bool coplanarFlag)
+CSGUtil_THIS::clip_polygon_to_subtree(const Poly_Ptr& poly, const BSPNode_CPtr& node, bool coplanarFlag)
 {
 	if(node->is_leaf())
 	{
-		BSPLeaf *leaf = node->as_leaf();
+		const BSPLeaf *leaf = node->as_leaf();
 
 		PolyList ret;
 		if(leaf->is_solid())

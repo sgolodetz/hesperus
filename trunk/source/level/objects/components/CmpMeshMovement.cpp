@@ -45,7 +45,7 @@ void CmpMeshMovement::set_cur_nav_poly_index(int curNavPolyIndex)
 	m_curNavPolyIndex = curNavPolyIndex;
 }
 
-void CmpMeshMovement::set_cur_traversal(const Traversal_Ptr& curTraversal)
+void CmpMeshMovement::set_cur_traversal(const Traversal_CPtr& curTraversal)
 {
 	m_curTraversal = curTraversal;
 }

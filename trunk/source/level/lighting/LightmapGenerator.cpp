@@ -34,7 +34,7 @@ Returns the array of calculated lightmaps (the generator should have been run fi
 
 @return	As stated
 */
-LightmapGenerator::LightmapVector_Ptr LightmapGenerator::lightmaps() const
+LightmapGenerator::LightmapVector_CPtr LightmapGenerator::lightmaps() const
 {
 	return m_lightmaps;
 }
@@ -44,7 +44,7 @@ Returns the array of lit polygons (the generator should have been run first).
 
 @return	As stated
 */
-LightmapGenerator::TexLitPolyVector_Ptr LightmapGenerator::lit_polygons() const
+LightmapGenerator::TexLitPolyVector_CPtr LightmapGenerator::lit_polygons() const
 {
 	return m_outputPolygons;
 }

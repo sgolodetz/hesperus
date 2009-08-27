@@ -21,11 +21,11 @@ private:
 	typedef shared_ptr<PortalT> PortalT_Ptr;
 	typedef std::list<PortalT_Ptr> PortalTList;
 	typedef shared_ptr<PortalTList> PortalTList_Ptr;
-	typedef shared_ptr<TreeT> TreeT_Ptr;
+	typedef shared_ptr<const TreeT> TreeT_CPtr;
 	typedef typename TreeT::Branch BranchT;
 	typedef typename TreeT::Leaf LeafT;
 	typedef typename TreeT::Node NodeT;
-	typedef shared_ptr<NodeT> NodeT_Ptr;
+	typedef shared_ptr<const NodeT> NodeT_CPtr;
 
 	//#################### PRIVATE ABSTRACT METHODS ####################
 private:
@@ -37,13 +37,13 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	PortalTList_Ptr generate_portals(const TreeT_Ptr& tree) const;
+	PortalTList_Ptr generate_portals(const TreeT_CPtr& tree) const;
 
 	//#################### PRIVATE METHODS ####################
 private:
-	PortalTList clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_Ptr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE) const;
+	PortalTList clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_CPtr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE) const;
 
-	PortalTList clip_portal_to_tree(const PortalT_Ptr& portal, const TreeT_Ptr& tree) const;
+	PortalTList clip_portal_to_tree(const PortalT_Ptr& portal, const TreeT_CPtr& tree) const;
 
 	PortalT_Ptr make_initial_portal(const Plane& plane) const;
 };

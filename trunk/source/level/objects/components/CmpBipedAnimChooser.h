@@ -40,7 +40,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void check_dependencies() const;
-	std::string choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
+	std::string choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 	std::pair<std::string,Properties> save() const;
 	void set_run_flag();
 	void set_walk_flag();
@@ -50,7 +50,7 @@ private:
 	std::string determine_anim_extension() const;
 	bool determine_crouching() const;
 	ICmpHealth::HealthStatus determine_health_status() const;
-	MovementType determine_movement_type(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
+	MovementType determine_movement_type(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 	void reset_flags();
 };
 

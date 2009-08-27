@@ -49,6 +49,7 @@ std::istream& operator>>(std::istream& is, PortalInfo& rhs);
 //#################### TYPEDEFS ####################
 typedef Polygon<Vector3d,PortalInfo> Portal;
 typedef shared_ptr<Portal> Portal_Ptr;
+typedef shared_ptr<const Portal> Portal_CPtr;
 
 }
 

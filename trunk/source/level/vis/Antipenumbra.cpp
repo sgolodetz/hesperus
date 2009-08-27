@@ -37,7 +37,7 @@ specifies on which side of the generated planes portal 'from' should lie.
 @param to						The to portal
 @param desiredFromClassifier	The side of the planes on which portal from should lie
 */
-void Antipenumbra::add_clip_planes(const Portal_Ptr& from, const Portal_Ptr& to, PlaneClassifier desiredFromClassifier)
+void Antipenumbra::add_clip_planes(const Portal_CPtr& from, const Portal_CPtr& to, PlaneClassifier desiredFromClassifier)
 {
 	int fromCount = from->vertex_count();
 	int toCount = to->vertex_count();

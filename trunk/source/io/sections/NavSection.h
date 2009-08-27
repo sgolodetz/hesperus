@@ -28,9 +28,9 @@ private:
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
-	static void write_adjacency_list(std::ostream& os, const AdjacencyList_Ptr& adjList);
-	static void write_navmesh(std::ostream& os, const NavMesh_Ptr& mesh);
-	static void write_path_table(std::ostream& os, const PathTable_Ptr& pathTable);
+	static void write_adjacency_list(std::ostream& os, const AdjacencyList_CPtr& adjList);
+	static void write_navmesh(std::ostream& os, const NavMesh_CPtr& mesh);
+	static void write_path_table(std::ostream& os, const PathTable_CPtr& pathTable);
 };
 
 }

@@ -21,7 +21,7 @@ void Mesh::render() const
 	}
 }
 
-void Mesh::skin(const Skeleton_Ptr& skeleton)
+void Mesh::skin(const Skeleton_CPtr& skeleton)
 {
 	for(size_t i=0, size=m_submeshes.size(); i<size; ++i)
 	{

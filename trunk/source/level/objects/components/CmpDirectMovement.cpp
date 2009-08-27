@@ -16,7 +16,7 @@ IObjectComponent_Ptr CmpDirectMovement::load(const Properties&)
 }
 
 //#################### PUBLIC METHODS ####################
-const std::list<OnionUtil::Transition_Ptr>& CmpDirectMovement::recent_transitions() const
+const std::list<OnionUtil::Transition_CPtr>& CmpDirectMovement::recent_transitions() const
 {
 	return m_recentTransitions;
 }
@@ -26,13 +26,13 @@ std::pair<std::string,Properties> CmpDirectMovement::save() const
 	return std::make_pair("DirectMovement", Properties());
 }
 
-void CmpDirectMovement::update_recent_transitions(const OnionUtil::Transition_Ptr& transition)
+void CmpDirectMovement::update_recent_transitions(const OnionUtil::Transition_CPtr& transition)
 {
 	assert(transition && transition->location != NULL);
 
 	// Remove any recent transition planes which the entity's no longer on.
 	const Vector3d& location = *transition->location;
-	for(std::list<OnionUtil::Transition_Ptr>::iterator it=m_recentTransitions.begin(), iend=m_recentTransitions.end(); it!=iend;)
+	for(std::list<OnionUtil::Transition_CPtr>::iterator it=m_recentTransitions.begin(), iend=m_recentTransitions.end(); it!=iend;)
 	{
 		if(classify_point_against_plane(location, *(*it)->plane) == CP_COPLANAR) ++it;
 		else it = m_recentTransitions.erase(it);

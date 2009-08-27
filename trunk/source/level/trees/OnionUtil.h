@@ -38,6 +38,7 @@ public:
 	};
 
 	typedef shared_ptr<Transition> Transition_Ptr;
+	typedef shared_ptr<const Transition> Transition_CPtr;
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -45,7 +46,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static Transition find_first_transition_sub(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionNode_Ptr& node);
+	static Transition find_first_transition_sub(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionNode_CPtr& node);
 };
 
 }

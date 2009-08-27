@@ -37,7 +37,7 @@ public:
 	void set_highlights(bool enabled);
 	void set_model_manager(const ModelManager_Ptr& modelManager);
 	void set_skeleton();
-	void update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
+	void update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 
 	//#################### PRIVATE METHODS ####################
 private:

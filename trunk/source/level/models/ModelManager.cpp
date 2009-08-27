@@ -18,7 +18,7 @@ Returns the model with the specified name, if any.
 @return				The model, if it exists
 @throw Exception	If the model doesn't exist
 */
-const Model_Ptr& ModelManager::model(const std::string& modelName) const
+const Model_Ptr& ModelManager::model(const std::string& modelName)
 {
 	std::map<std::string,Model_Ptr>::const_iterator it = m_models.find(modelName);
 	if(it != m_models.end()) return it->second;

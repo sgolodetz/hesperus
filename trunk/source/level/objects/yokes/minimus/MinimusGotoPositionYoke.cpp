@@ -22,7 +22,7 @@ MinimusGotoPositionYoke::MinimusGotoPositionYoke(const ObjectID& objectID, Objec
 
 	//#################### PUBLIC METHODS ####################
 std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
-																		  const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+																		  const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	// Check to make sure the yoke's still active.
 	if(m_state != YOKE_ACTIVE)

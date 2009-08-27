@@ -64,11 +64,11 @@ Saves all the relevant pieces of information to the specified level file.
 @param objectManager			The object manager containing the objects for the level
 */
 void LevelFile::save_lit(const std::string& filename,
-						 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+						 const std::vector<TexturedLitPolygon_Ptr>& polygons, const BSPTree_CPtr& tree,
 						 const std::vector<Portal_Ptr>& portals,
-						 const LeafVisTable_Ptr& leafVis,
+						 const LeafVisTable_CPtr& leafVis,
 						 const std::vector<Image24_Ptr>& lightmaps,
-						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_CPtr& onionTree,
 						 const std::vector<OnionPortal_Ptr>& onionPortals,
 						 const std::vector<NavDataset_Ptr>& navDatasets,
 						 const std::string& definitionsFilename,
@@ -107,10 +107,10 @@ Saves all the relevant pieces of information to the specified level file.
 @param objectManager			The object manager containing the objects for the level
 */
 void LevelFile::save_unlit(const std::string& filename,
-						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_Ptr& tree,
+						   const std::vector<TexturedPolygon_Ptr>& polygons, const BSPTree_CPtr& tree,
 						   const std::vector<Portal_Ptr>& portals,
-						   const LeafVisTable_Ptr& leafVis,
-						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_Ptr& onionTree,
+						   const LeafVisTable_CPtr& leafVis,
+						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_CPtr& onionTree,
 						   const std::vector<OnionPortal_Ptr>& onionPortals,
 						   const std::vector<NavDataset_Ptr>& navDatasets,
 						   const std::string& definitionsFilename,

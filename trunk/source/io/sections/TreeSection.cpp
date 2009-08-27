@@ -33,7 +33,7 @@ Saves a BSP tree to the specified std::ostream.
 @param os		The std::ostream
 @param tree		The BSP tree
 */
-void TreeSection::save(std::ostream& os, const BSPTree_Ptr& tree)
+void TreeSection::save(std::ostream& os, const BSPTree_CPtr& tree)
 {
 	os << "BSPTree\n";
 	os << "{\n";

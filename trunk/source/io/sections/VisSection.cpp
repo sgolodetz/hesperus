@@ -65,7 +65,7 @@ Saves a leaf visibility table to a std::ostream.
 @param os		The std::ostream
 @param leafVis	The leaf visibility table
 */
-void VisSection::save(std::ostream& os, const LeafVisTable_Ptr& leafVis)
+void VisSection::save(std::ostream& os, const LeafVisTable_CPtr& leafVis)
 {
 	const LeafVisTable& table = *leafVis;
 

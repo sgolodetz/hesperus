@@ -36,7 +36,7 @@ Saves the polygons and BSP tree to the specified tree file.
 @param tree			The tree
 */
 template <typename Poly>
-void TreeFile::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons, const BSPTree_Ptr& tree)
+void TreeFile::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons, const BSPTree_CPtr& tree)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

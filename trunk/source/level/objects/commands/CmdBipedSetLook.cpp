@@ -15,7 +15,7 @@ CmdBipedSetLook::CmdBipedSetLook(const ObjectID& objectID, const Vector3d& look)
 {}
 
 //#################### PUBLIC METHODS ####################
-void CmdBipedSetLook::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+void CmdBipedSetLook::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 							  const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	ICmpOrientation_Ptr cmpOrientation = objectManager->get_component(m_objectID, cmpOrientation);

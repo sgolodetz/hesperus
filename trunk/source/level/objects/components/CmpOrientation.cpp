@@ -22,7 +22,12 @@ IObjectComponent_Ptr CmpOrientation::load(const Properties& properties)
 }
 
 //#################### PUBLIC METHODS ####################
-NUVAxes_Ptr CmpOrientation::nuv_axes() const
+NUVAxes_Ptr CmpOrientation::nuv_axes()
+{
+	return m_nuvAxes;
+}
+
+NUVAxes_CPtr CmpOrientation::nuv_axes() const
 {
 	return m_nuvAxes;
 }

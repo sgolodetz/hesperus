@@ -32,7 +32,7 @@ Saves an onion tree to the specified std::ostream.
 @param os		The std::ostream
 @param tree		The onion tree
 */
-void OnionTreeSection::save(std::ostream& os, const OnionTree_Ptr& tree)
+void OnionTreeSection::save(std::ostream& os, const OnionTree_CPtr& tree)
 {
 	os << "OnionTree\n";
 	os << "{\n";

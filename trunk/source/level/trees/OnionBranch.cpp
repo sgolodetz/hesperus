@@ -8,7 +8,7 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-OnionBranch::OnionBranch(int index, const Plane_Ptr& splitter, const OnionNode_Ptr& left, const OnionNode_Ptr& right)
+OnionBranch::OnionBranch(int index, const Plane_CPtr& splitter, const OnionNode_Ptr& left, const OnionNode_Ptr& right)
 :	OnionNode(index), m_splitter(splitter), m_left(left), m_right(right)
 {
 	left->set_parent(this);
@@ -21,7 +21,8 @@ const OnionBranch *OnionBranch::as_branch() const	{ return this; }
 OnionLeaf *OnionBranch::as_leaf()					{ return NULL; }
 const OnionLeaf *OnionBranch::as_leaf() const		{ return NULL; }
 bool OnionBranch::is_leaf() const					{ return false; }
-const OnionNode_Ptr& OnionBranch::left() const		{ return m_left; }
+const OnionNode_Ptr& OnionBranch::left()			{ return m_left; }
+OnionNode_CPtr OnionBranch::left() const			{ return m_left; }
 
 void OnionBranch::output_postorder_text(std::ostream& os) const
 {
@@ -38,7 +39,8 @@ void OnionBranch::output_postorder_text(std::ostream& os) const
 	os << '\n';
 }
 
-const OnionNode_Ptr& OnionBranch::right() const		{ return m_right; }
+const OnionNode_Ptr& OnionBranch::right()			{ return m_right; }
+OnionNode_CPtr OnionBranch::right() const			{ return m_right; }
 Plane_CPtr OnionBranch::splitter() const			{ return m_splitter; }
 
 }

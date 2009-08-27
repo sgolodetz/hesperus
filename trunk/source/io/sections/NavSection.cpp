@@ -277,7 +277,7 @@ PathTable_Ptr NavSection::read_path_table(std::istream& is)
 /**
 Writes an adjacency list to the specified std::ostream.
 */
-void NavSection::write_adjacency_list(std::ostream& os, const AdjacencyList_Ptr& adjList)
+void NavSection::write_adjacency_list(std::ostream& os, const AdjacencyList_CPtr& adjList)
 {
 	os << "AdjacencyList\n";
 	os << "{\n";
@@ -303,7 +303,7 @@ void NavSection::write_adjacency_list(std::ostream& os, const AdjacencyList_Ptr&
 /**
 Writes a navigation mesh to the specified std::ostream.
 */
-void NavSection::write_navmesh(std::ostream& os, const NavMesh_Ptr& mesh)
+void NavSection::write_navmesh(std::ostream& os, const NavMesh_CPtr& mesh)
 {
 	os << "Mesh\n";
 	os << "{\n";
@@ -352,7 +352,7 @@ void NavSection::write_navmesh(std::ostream& os, const NavMesh_Ptr& mesh)
 /**
 Writes a path table to the specified std::ostream in binary format.
 */
-void NavSection::write_path_table(std::ostream& os, const PathTable_Ptr& pathTable)
+void NavSection::write_path_table(std::ostream& os, const PathTable_CPtr& pathTable)
 {
 	os << "PathTable\n";
 	os << "{\n";

@@ -17,11 +17,11 @@ class BSPBranch : public BSPNode
 private:
 	BSPNode_Ptr m_left;
 	BSPNode_Ptr m_right;
-	Plane_Ptr m_splitter;
+	Plane_CPtr m_splitter;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BSPBranch(int index, const Plane_Ptr& splitter, const BSPNode_Ptr& left, const BSPNode_Ptr& right);
+	BSPBranch(int index, const Plane_CPtr& splitter, const BSPNode_Ptr& left, const BSPNode_Ptr& right);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -30,9 +30,11 @@ public:
 	BSPLeaf *as_leaf();
 	const BSPLeaf *as_leaf() const;
 	bool is_leaf() const;
-	const BSPNode_Ptr& left() const;
+	const BSPNode_Ptr& left();
+	BSPNode_CPtr left() const;
 	void output_postorder_text(std::ostream& os) const;
-	const BSPNode_Ptr& right() const;
+	const BSPNode_Ptr& right();
+	BSPNode_CPtr right() const;
 	Plane_CPtr splitter() const;
 };
 

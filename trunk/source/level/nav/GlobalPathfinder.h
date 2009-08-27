@@ -40,12 +40,12 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	NavMesh_CPtr m_navMesh;
-	AdjacencyList_Ptr m_adjList;
+	AdjacencyList_CPtr m_adjList;
 	PathTable_CPtr m_pathTable;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	GlobalPathfinder(const NavMesh_Ptr& navMesh, const AdjacencyList_Ptr& adjList, const PathTable_Ptr& pathTable);
+	GlobalPathfinder(const NavMesh_CPtr& navMesh, const AdjacencyList_CPtr& adjList, const PathTable_CPtr& pathTable);
 
 	//#################### PUBLIC METHODS ####################
 public:

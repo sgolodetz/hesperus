@@ -17,8 +17,8 @@ class ICmpDirectMovement : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual const std::list<OnionUtil::Transition_Ptr>& recent_transitions() const = 0;
-	virtual void update_recent_transitions(const OnionUtil::Transition_Ptr& transition) = 0;
+	virtual const std::list<OnionUtil::Transition_CPtr>& recent_transitions() const = 0;
+	virtual void update_recent_transitions(const OnionUtil::Transition_CPtr& transition) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

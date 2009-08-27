@@ -31,9 +31,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const AdjacencyList_Ptr& adjacency_list() const		{ return m_adjList; }
-	const NavMesh_Ptr& nav_mesh() const					{ return m_navMesh; }
-	const PathTable_Ptr& path_table() const				{ return m_pathTable; }
+	const AdjacencyList_Ptr& adjacency_list()	{ return m_adjList; }
+	const NavMesh_Ptr& nav_mesh()				{ return m_navMesh; }
+	const PathTable_Ptr& path_table()			{ return m_pathTable; }
 };
 
 //#################### TYPEDEFS ####################

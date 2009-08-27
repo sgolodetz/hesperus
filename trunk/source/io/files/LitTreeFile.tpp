@@ -43,7 +43,7 @@ Saves the polygons, tree and lightmap prefix to the specified lit tree file.
 */
 template <typename Poly>
 void LitTreeFile::save(const std::string& filename, const std::vector<shared_ptr<Poly> >& polygons,
-					   const BSPTree_Ptr& tree, const std::string& lightmapPrefix)
+					   const BSPTree_CPtr& tree, const std::string& lightmapPrefix)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

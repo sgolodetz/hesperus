@@ -10,8 +10,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-GlobalPathfinder::GlobalPathfinder(const NavMesh_Ptr& navMesh, const AdjacencyList_Ptr& adjList,
-								   const PathTable_Ptr& pathTable)
+GlobalPathfinder::GlobalPathfinder(const NavMesh_CPtr& navMesh, const AdjacencyList_CPtr& adjList,
+								   const PathTable_CPtr& pathTable)
 :	m_navMesh(navMesh), m_adjList(adjList), m_pathTable(pathTable)
 {}
 

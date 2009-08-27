@@ -21,7 +21,7 @@ whenever the original brush touches the AABB.
 @param mapIndex		The index of the map the expanded brush will be in (i.e. the index of this AABB in the AABB array)
 @return				The expanded brush
 */
-BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_Ptr& brush, const AABB3d& aabb, int mapIndex)
+BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_CPtr& brush, const AABB3d& aabb, int mapIndex)
 {
 	// Determine which planes need expanding (these are the face planes + any bevel planes).
 	BrushPlaneSet_Ptr brushPlanes = determine_brush_planes(brush);
@@ -110,7 +110,7 @@ Classifies the brush against a plane.
 @param plane	The plane
 @return			The brush classification against the plane
 */
-PlaneClassifier BrushExpander::classify_brush_against_plane(const ColPolyBrush_Ptr& brush, const Plane& plane)
+PlaneClassifier BrushExpander::classify_brush_against_plane(const ColPolyBrush_CPtr& brush, const Plane& plane)
 {
 	bool backFlag = false, frontFlag = false;
 
@@ -146,7 +146,7 @@ Determines which planes are necessary for building the expanded brush (including
 @param brush	The initial brush
 @return			The necessary brush planes
 */
-BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const ColPolyBrush_Ptr& brush)
+BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const ColPolyBrush_CPtr& brush)
 {
 	BrushPlaneSet_Ptr brushPlanes(new BrushPlaneSet);
 
@@ -272,7 +272,7 @@ Expands the set of brush planes against the AABB.
 @param aabb			The AABB
 */
 BrushExpander::BrushPlaneSet_Ptr
-BrushExpander::expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const AABB3d& aabb)
+BrushExpander::expand_brush_planes(const BrushPlaneSet_CPtr& brushPlanes, const AABB3d& aabb)
 {
 	BrushPlaneSet_Ptr expandedBrushPlanes(new BrushPlaneSet);
 	for(BrushPlaneSet::const_iterator it=brushPlanes->begin(), iend=brushPlanes->end(); it!=iend; ++it)

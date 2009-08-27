@@ -40,7 +40,8 @@ public:
 	const BSPLeaf *leaf(int n) const;
 	static BSPTree_Ptr load_postorder_text(std::istream& is);
 	void output_postorder_text(std::ostream& os) const;
-	BSPNode_Ptr root() const;
+	BSPNode_Ptr root();
+	BSPNode_CPtr root() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

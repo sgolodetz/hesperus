@@ -36,7 +36,7 @@ public:
 	virtual Traversal_CPtr cur_traversal() const = 0;
 	virtual double run_speed() const = 0;
 	virtual void set_cur_nav_poly_index(int curNavPolyIndex) = 0;
-	virtual void set_cur_traversal(const Traversal_Ptr& curTraversal) = 0;
+	virtual void set_cur_traversal(const Traversal_CPtr& curTraversal) = 0;
 	virtual double walk_speed() const = 0;
 
 	//#################### PUBLIC METHODS ####################

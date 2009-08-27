@@ -28,7 +28,7 @@ public:
 	SimpleImage(int width, int height);
 	SimpleImage(Pixel *pixels, int width, int height);
 	SimpleImage(const shared_array<Pixel>& pixels, int width, int height);
-	explicit SimpleImage(const Image_Ptr& rhs);
+	explicit SimpleImage(const Image_CPtr& rhs);
 
 	//#################### COPY CONSTRUCTOR & ASSIGNMENT OPERATOR ####################
 private:

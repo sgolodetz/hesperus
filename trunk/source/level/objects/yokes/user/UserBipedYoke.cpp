@@ -23,7 +23,7 @@ UserBipedYoke::UserBipedYoke(const ObjectID& objectID, ObjectManager *objectMana
 {}
 
 //#################### PUBLIC METHODS ####################
-std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 																const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	// FIXME: The key mappings should be defined externally, not hard-coded like this.
@@ -33,7 +33,7 @@ std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 	ICmpMeshMovement_Ptr cmpMovement = m_objectManager->get_component(m_objectID, cmpMovement);			assert(cmpMovement != NULL);
 	ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(m_objectID, cmpOrientation);	assert(cmpOrientation != NULL);
 
-	NUVAxes_Ptr nuvAxes = cmpOrientation->nuv_axes();
+	NUVAxes_CPtr nuvAxes = cmpOrientation->nuv_axes();
 
 	//~~~~~~~~~~~~~~~~
 	// NORMAL MOVEMENT

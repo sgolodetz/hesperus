@@ -83,7 +83,7 @@ void AnimationController::set_pose_modifier(const std::string& boneName, const P
 	m_poseModifiers.insert(std::make_pair(boneName, modifier));
 }
 
-void AnimationController::set_skeleton(const Skeleton_Ptr& skeleton)
+void AnimationController::set_skeleton(const Skeleton_CPtr& skeleton)
 {
 	m_skeleton = skeleton;
 	reset_controller();
@@ -120,7 +120,7 @@ void AnimationController::update_pose(int milliseconds)
 		}
 		case AS_PLAY:
 		{
-			Animation_Ptr animation = m_skeleton->animation(m_animationName);
+			Animation_CPtr animation = m_skeleton->animation(m_animationName);
 			int animationLength = static_cast<int>(animation->length() * 1000);
 
 			m_animationTime += milliseconds;

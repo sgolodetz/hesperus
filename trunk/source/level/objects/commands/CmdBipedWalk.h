@@ -18,7 +18,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	double lookup_speed(const ICmpMeshMovement_Ptr& cmpMovement) const;
+	double lookup_speed(const ICmpMeshMovement_CPtr& cmpMovement) const;
 	void set_anim_flag(const ICmpBipedAnimChooser_Ptr& cmpAnimChooser) const;
 };
 

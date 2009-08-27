@@ -29,13 +29,14 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Animation_Ptr& animation(const std::string& name) const;
-	const BoneConfiguration_Ptr& bone_configuration() const;
+	Animation_CPtr animation(const std::string& name) const;
+	const BoneConfiguration_Ptr& bone_configuration();
+	BoneConfiguration_CPtr bone_configuration() const;
 	Pose_Ptr get_rest_pose() const;
 	bool has_animation(const std::string& name) const;
 	void render_bones() const;
 	void set_pose(const Pose_CPtr& pose, const std::map<std::string,PoseModifier>& modifiers = std::map<std::string,PoseModifier>());
-	const RBTMatrix_Ptr& to_bone_matrix(int i) const;
+	RBTMatrix_CPtr to_bone_matrix(int i) const;
 
 	//#################### PRIVATE METHODS ####################
 private:

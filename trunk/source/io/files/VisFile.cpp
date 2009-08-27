@@ -33,7 +33,7 @@ Saves a vis table file.
 @param filename	The name of the file to which to save the visibility table
 @param leafVis	The visibility table
 */
-void VisFile::save(const std::string& filename, const LeafVisTable_Ptr& leafVis)
+void VisFile::save(const std::string& filename, const LeafVisTable_CPtr& leafVis)
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");

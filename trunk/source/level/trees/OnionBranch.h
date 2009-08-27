@@ -17,11 +17,11 @@ class OnionBranch : public OnionNode
 private:
 	OnionNode_Ptr m_left;
 	OnionNode_Ptr m_right;
-	Plane_Ptr m_splitter;
+	Plane_CPtr m_splitter;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	OnionBranch(int index, const Plane_Ptr& splitter, const OnionNode_Ptr& left, const OnionNode_Ptr& right);
+	OnionBranch(int index, const Plane_CPtr& splitter, const OnionNode_Ptr& left, const OnionNode_Ptr& right);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -30,9 +30,11 @@ public:
 	OnionLeaf *as_leaf();
 	const OnionLeaf *as_leaf() const;
 	bool is_leaf() const;
-	const OnionNode_Ptr& left() const;
+	const OnionNode_Ptr& left();
+	OnionNode_CPtr left() const;
 	void output_postorder_text(std::ostream& os) const;
-	const OnionNode_Ptr& right() const;
+	const OnionNode_Ptr& right();
+	OnionNode_CPtr right() const;
 	Plane_CPtr splitter() const;
 };
 

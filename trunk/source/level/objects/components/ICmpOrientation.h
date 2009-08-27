@@ -15,7 +15,8 @@ class ICmpOrientation : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual NUVAxes_Ptr nuv_axes() const = 0;
+	virtual NUVAxes_Ptr nuv_axes() = 0;
+	virtual NUVAxes_CPtr nuv_axes() const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

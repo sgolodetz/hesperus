@@ -67,7 +67,7 @@ const std::vector<NavDataset_Ptr>& Level::nav_datasets() const
 	return m_navDatasets;
 }
 
-const ObjectManager_Ptr& Level::object_manager() const
+const ObjectManager_Ptr& Level::object_manager()
 {
 	return m_objectManager;
 }
@@ -77,7 +77,7 @@ const std::vector<CollisionPolygon_Ptr>& Level::onion_polygons() const
 	return m_onionPolygons;
 }
 
-const OnionTree_Ptr& Level::onion_tree() const
+OnionTree_CPtr Level::onion_tree() const
 {
 	return m_onionTree;
 }

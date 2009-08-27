@@ -34,7 +34,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void add_clip_planes(const Portal_Ptr& from, const Portal_Ptr& to, PlaneClassifier desiredFromClassifier);
+	void add_clip_planes(const Portal_CPtr& from, const Portal_CPtr& to, PlaneClassifier desiredFromClassifier);
 	static Plane_Ptr construct_clip_plane(const Vector3d& a, const Vector3d& b, const Vector3d& c);
 };
 

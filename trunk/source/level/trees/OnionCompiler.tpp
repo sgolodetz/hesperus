@@ -59,7 +59,7 @@ OnionNode_Ptr OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& p
 	typedef typename Poly::Vert Vert;
 	typedef typename Poly::AuxData AuxData;
 
-	PolyIndex_Ptr splitPoly = choose_split_poly(polyIndices);
+	PolyIndex_CPtr splitPoly = choose_split_poly(polyIndices);
 
 	// If there were no suitable split candidates, we must have ended up in a leaf.
 	if(!splitPoly)
@@ -129,10 +129,10 @@ OnionNode_Ptr OnionCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& p
 }
 
 template <typename Poly>
-typename OnionCompiler<Poly>::PolyIndex_Ptr
+typename OnionCompiler<Poly>::PolyIndex_CPtr
 OnionCompiler<Poly>::choose_split_poly(const std::vector<PolyIndex>& polyIndices) const
 {
-	PolyIndex_Ptr bestPolyIndex;
+	PolyIndex_CPtr bestPolyIndex;
 	double bestMetric = INT_MAX;
 
 	int indexCount = static_cast<int>(polyIndices.size());

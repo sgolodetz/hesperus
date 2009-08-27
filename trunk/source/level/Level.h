@@ -57,9 +57,9 @@ public:
 	std::vector<int> find_visible_leaves(const Vector3d& eye) const;
 	GeometryRenderer_CPtr geom_renderer() const;
 	const std::vector<NavDataset_Ptr>& nav_datasets() const;
-	const ObjectManager_Ptr& object_manager() const;
+	const ObjectManager_Ptr& object_manager();
 	const ColPolyVector& onion_polygons() const;
-	const OnionTree_Ptr& onion_tree() const;
+	OnionTree_CPtr onion_tree() const;
 	const PortalVector& portals() const;
 };
 

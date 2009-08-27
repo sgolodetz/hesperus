@@ -54,12 +54,12 @@ try		// <--- Note the "function try" syntax (this is a rarely-used C++ construct
 	lg.generate_lightmaps();
 
 	typedef std::vector<Lightmap_Ptr> LightmapVector;
-	typedef shared_ptr<LightmapVector> LightmapVector_Ptr;
+	typedef shared_ptr<const LightmapVector> LightmapVector_CPtr;
 	typedef std::vector<TexturedLitPolygon_Ptr> TexLitPolyVector;
-	typedef shared_ptr<TexLitPolyVector> TexLitPolyVector_Ptr;
+	typedef shared_ptr<const TexLitPolyVector> TexLitPolyVector_CPtr;
 
-	TexLitPolyVector_Ptr litPolygons = lg.lit_polygons();
-	LightmapVector_Ptr lightmaps = lg.lightmaps();
+	TexLitPolyVector_CPtr litPolygons = lg.lit_polygons();
+	LightmapVector_CPtr lightmaps = lg.lightmaps();
 
 	// Write the lit polygons, tree and lightmap prefix to the output file.
 	LitTreeFile::save(outputFilename, *litPolygons, tree, lightmapPrefix);

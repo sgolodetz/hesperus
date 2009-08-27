@@ -16,7 +16,7 @@ struct OnionTreeSection
 	static OnionTree_Ptr load(std::istream& is);
 
 	//#################### SAVING METHODS ####################
-	static void save(std::ostream& os, const OnionTree_Ptr& tree);
+	static void save(std::ostream& os, const OnionTree_CPtr& tree);
 };
 
 }

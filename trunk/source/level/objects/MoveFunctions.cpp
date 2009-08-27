@@ -18,7 +18,7 @@ namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 bool MoveFunctions::attempt_navmesh_acquisition(const ObjectID& objectID, ObjectManager *objectManager, const std::vector<CollisionPolygon_Ptr>& polygons,
-												const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
+												const OnionTree_CPtr& tree, const NavMesh_CPtr& navMesh)
 {
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
 	ICmpPosition_Ptr cmpPosition = objectManager->get_component(objectID, cmpPosition);			assert(cmpPosition != NULL);
@@ -33,7 +33,7 @@ bool MoveFunctions::attempt_navmesh_acquisition(const ObjectID& objectID, Object
 }
 
 void MoveFunctions::move_with_navmesh(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, const Vector3d& dir, double speed,
-									  const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets,
+									  const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets,
 									  int milliseconds)
 {
 	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(objectID, cmpBounds);			assert(cmpBounds != NULL);
@@ -63,7 +63,7 @@ void MoveFunctions::move_with_navmesh(const ObjectID& objectID, const ObjectMana
 @return	true, if a collision occurred, or false otherwise
 */
 bool MoveFunctions::single_move_without_navmesh(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, const Vector3d& dir, double speed,
-												const OnionTree_Ptr& tree, int milliseconds)
+												const OnionTree_CPtr& tree, int milliseconds)
 {
 	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
 
@@ -85,7 +85,7 @@ bool MoveFunctions::single_move_without_navmesh(const ObjectID& objectID, const 
 /**
 @return	true, if a collision occurred, or false otherwise
 */
-bool MoveFunctions::do_direct_move(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, Move& move, double speed, const OnionTree_Ptr& tree)
+bool MoveFunctions::do_direct_move(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, Move& move, double speed, const OnionTree_CPtr& tree)
 {
 	bool collisionOccurred = false;
 
@@ -145,7 +145,7 @@ bool MoveFunctions::do_direct_move(const ObjectID& objectID, const ObjectManager
 }
 
 void MoveFunctions::do_navmesh_move(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, Move& move, double speed,
-									const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const NavMesh_Ptr& navMesh)
+									const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavMesh_CPtr& navMesh)
 {
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
 	ICmpPosition_Ptr cmpPosition = objectManager->get_component(objectID, cmpPosition);			assert(cmpPosition != NULL);
@@ -223,7 +223,7 @@ void MoveFunctions::do_navmesh_move(const ObjectID& objectID, const ObjectManage
 }
 
 void MoveFunctions::do_traverse_move(const ObjectID& objectID, const ObjectManager_Ptr& objectManager, Move& move, double speed,
-									 const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_Ptr& navMesh)
+									 const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_CPtr& navMesh)
 {
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
 	ICmpPosition_Ptr cmpPosition = objectManager->get_component(objectID, cmpPosition);			assert(cmpPosition != NULL);
@@ -287,8 +287,8 @@ void MoveFunctions::update_move_direction_for_sliding(const ObjectID& objectID, 
 	
 	const Vector3d& source = cmpPosition->position();
 	Vector3d dummyDest = source + move.dir;
-	const std::list<OnionUtil::Transition_Ptr>& recentTransitions = cmpMovement->recent_transitions();
-	for(std::list<OnionUtil::Transition_Ptr>::const_iterator it=recentTransitions.begin(), iend=recentTransitions.end(); it!=iend; ++it)
+	const std::list<OnionUtil::Transition_CPtr>& recentTransitions = cmpMovement->recent_transitions();
+	for(std::list<OnionUtil::Transition_CPtr>::const_iterator it=recentTransitions.begin(), iend=recentTransitions.end(); it!=iend; ++it)
 	{
 		if(classify_point_against_plane(dummyDest, *(*it)->plane) == CP_BACK)
 		{

@@ -26,9 +26,9 @@ namespace hesp {
 Saves a 24-bit bitmap to a file.
 
 @param filename		The name of the file to which to save the image
-@param image		An Image24_Ptr holding the representation of the image
+@param image		An Image24_CPtr holding the representation of the image
 */
-void BitmapSaver::save_image24(const std::string& filename, const Image24_Ptr& image)
+void BitmapSaver::save_image24(const std::string& filename, const Image24_CPtr& image)
 {
 	std::ofstream fs(filename.c_str(), std::ios_base::binary);
 	if(fs.fail()) throw Exception("Could not open " + filename + " for writing");
@@ -39,9 +39,9 @@ void BitmapSaver::save_image24(const std::string& filename, const Image24_Ptr& i
 Saves a 24-bit bitmap to a std::ostream.
 
 @param os		The std::ostream to which to save the image
-@param image	An Image24_Ptr holding the representation of the image
+@param image	An Image24_CPtr holding the representation of the image
 */
-void BitmapSaver::save_streamed_image24(std::ostream& os, const Image24_Ptr& image)
+void BitmapSaver::save_streamed_image24(std::ostream& os, const Image24_CPtr& image)
 {
 	const int w = image->width();
 	const int h = image->height();

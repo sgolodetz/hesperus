@@ -49,7 +49,7 @@ BSPNode_Ptr BSPCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyI
 	typedef typename Poly::Vert Vert;
 	typedef typename Poly::AuxData AuxData;
 
-	PolyIndex_Ptr splitPoly = choose_split_poly(polyIndices);
+	PolyIndex_CPtr splitPoly = choose_split_poly(polyIndices);
 
 	// Don't allow hint polygons to split solid leaves.
 	if(solidityDescriptor == SD_SOLID && splitPoly && splitPoly->hint) splitPoly.reset();
@@ -140,9 +140,9 @@ BSPNode_Ptr BSPCompiler<Poly>::build_subtree(const std::vector<PolyIndex>& polyI
 }
 
 template <typename Poly>
-typename BSPCompiler<Poly>::PolyIndex_Ptr BSPCompiler<Poly>::choose_split_poly(const std::vector<PolyIndex>& polyIndices) const
+typename BSPCompiler<Poly>::PolyIndex_CPtr BSPCompiler<Poly>::choose_split_poly(const std::vector<PolyIndex>& polyIndices) const
 {
-	PolyIndex_Ptr bestPolyIndex;
+	PolyIndex_CPtr bestPolyIndex;
 	double bestMetric = INT_MAX;
 
 	int indexCount = static_cast<int>(polyIndices.size());

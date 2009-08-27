@@ -22,7 +22,7 @@ bool BSPUtil::line_of_sight(const Vector3d& p1, const Vector3d& p2, const BSPTre
 }
 
 //#################### PRIVATE METHODS ####################
-bool BSPUtil::line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_Ptr& node)
+bool BSPUtil::line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_CPtr& node)
 {
 	if(node->is_leaf())
 	{

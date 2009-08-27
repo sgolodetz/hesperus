@@ -20,8 +20,8 @@ Finds the nav polygon in which the specified point resides in the nav mesh, if a
 @param navMesh				The nav mesh in which to find the nav polygon
 @return						The index of the nav polygon in which the specified point resides, if any, or -1 otherwise
 */
-int NavMeshUtil::find_nav_polygon(const Vector3d& p, int suggestedNavPoly, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
-								  const NavMesh_Ptr& navMesh)
+int NavMeshUtil::find_nav_polygon(const Vector3d& p, int suggestedNavPoly, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
+								  const NavMesh_CPtr& navMesh)
 {
 	// It's good to be paranoid and do a range check: we might no longer be on the same navigation mesh, for instance.
 	if(suggestedNavPoly >= static_cast<int>(navMesh->polygons().size())) suggestedNavPoly = -1;

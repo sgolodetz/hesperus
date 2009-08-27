@@ -81,7 +81,7 @@ double RBTMatrix::operator()(int i, int j) const
 }
 
 //#################### PUBLIC METHODS ####################
-void RBTMatrix::add_scaled(const RBTMatrix_Ptr& mat, double scale)
+void RBTMatrix::add_scaled(const RBTMatrix_CPtr& mat, double scale)
 {
 	for(int i=0; i<3; ++i)
 		for(int j=0; j<4; ++j)
@@ -121,7 +121,7 @@ Vector3d RBTMatrix::apply_to_vector(const Vector3d& v) const
 	);
 }
 
-RBTMatrix_Ptr RBTMatrix::copy(const RBTMatrix_Ptr& rhs)
+RBTMatrix_Ptr RBTMatrix::copy(const RBTMatrix_CPtr& rhs)
 {
 	return RBTMatrix_Ptr(new RBTMatrix(*rhs));
 }
@@ -188,7 +188,7 @@ void RBTMatrix::reset_to_zeros()
 }
 
 //#################### GLOBAL OPERATORS ####################
-RBTMatrix_Ptr& operator+=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs)
+RBTMatrix_Ptr& operator+=(RBTMatrix_Ptr& lhs, const RBTMatrix_CPtr& rhs)
 {
 	for(int i=0; i<3; ++i)
 		for(int j=0; j<4; ++j)
@@ -199,7 +199,7 @@ RBTMatrix_Ptr& operator+=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs)
 	return lhs;
 }
 
-RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs)
+RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, const RBTMatrix_CPtr& rhs)
 {
 	// FIXME: It should be possible to optimize this.
 	lhs = lhs * rhs;
@@ -217,12 +217,12 @@ RBTMatrix_Ptr& operator*=(RBTMatrix_Ptr& lhs, double scale)
 	return lhs;
 }
 
-RBTMatrix_Ptr operator*(const RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs)
+RBTMatrix_Ptr operator*(const RBTMatrix_CPtr& lhs, const RBTMatrix_CPtr& rhs)
 {
 	RBTMatrix_Ptr ret = RBTMatrix::zeros();
 
-	RBTMatrix& lmat = *lhs;
-	RBTMatrix& rmat = *rhs;
+	const RBTMatrix& lmat = *lhs;
+	const RBTMatrix& rmat = *rhs;
 	RBTMatrix& mat = *ret;
 
 	for(int i=0; i<3; ++i)
@@ -240,14 +240,14 @@ RBTMatrix_Ptr operator*(const RBTMatrix_Ptr& lhs, const RBTMatrix_Ptr& rhs)
 	return ret;
 }
 
-RBTMatrix_Ptr operator*(const RBTMatrix_Ptr& lhs, double scale)
+RBTMatrix_Ptr operator*(const RBTMatrix_CPtr& lhs, double scale)
 {
 	RBTMatrix_Ptr copy(new RBTMatrix(*lhs));
 	copy *= scale;
 	return copy;
 }
 
-RBTMatrix_Ptr operator*(double scale, const RBTMatrix_Ptr& rhs)
+RBTMatrix_Ptr operator*(double scale, const RBTMatrix_CPtr& rhs)
 {
 	RBTMatrix_Ptr copy(new RBTMatrix(*rhs));
 	copy *= scale;

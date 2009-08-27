@@ -15,7 +15,7 @@ CmdBipedMove::CmdBipedMove(const ObjectID& objectID, const Vector3d& dir)
 {}
 
 //#################### PUBLIC METHODS ####################
-void CmdBipedMove::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+void CmdBipedMove::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 						   const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	// Lookup the appropriate speed with which to move.

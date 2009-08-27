@@ -47,7 +47,7 @@ public:
 	void remove_pose_modifier(const std::string& boneName);
 	void request_animation(std::string newAnimationName);
 	void set_pose_modifier(const std::string& boneName, const PoseModifier& modifier);
-	void set_skeleton(const Skeleton_Ptr& skeleton);
+	void set_skeleton(const Skeleton_CPtr& skeleton);
 	void update(int milliseconds);
 
 	//#################### PRIVATE METHODS ####################

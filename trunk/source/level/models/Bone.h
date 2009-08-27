@@ -38,15 +38,15 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	RBTMatrix_Ptr& absolute_matrix();
-	const RBTMatrix_Ptr& absolute_matrix() const;
+	const RBTMatrix_CPtr absolute_matrix() const;
 	const Vector3d& base_position() const;
-	const RBTMatrix_Ptr& base_rotation() const;
+	const RBTMatrix_CPtr base_rotation() const;
 	const std::string& name() const;
 	Vector3d orientation() const;
-	const Bone_Ptr& parent() const;
+	Bone_Ptr parent();
 	Vector3d position() const;
 	RBTMatrix_Ptr& relative_matrix();
-	const RBTMatrix_Ptr& relative_matrix() const;
+	const RBTMatrix_CPtr relative_matrix() const;
 	void set_parent(const Bone_Ptr& parent);
 };
 

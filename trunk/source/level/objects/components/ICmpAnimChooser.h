@@ -17,7 +17,7 @@ class ICmpAnimChooser : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual std::string choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
+	virtual std::string choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

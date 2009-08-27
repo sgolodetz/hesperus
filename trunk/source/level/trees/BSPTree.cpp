@@ -147,10 +147,8 @@ void BSPTree::output_postorder_text(std::ostream& os) const
 	root()->output_postorder_text(os);
 }
 
-BSPNode_Ptr BSPTree::root() const
-{
-	return m_nodes.back();
-}
+BSPNode_Ptr BSPTree::root()			{ return m_nodes.back(); }
+BSPNode_CPtr BSPTree::root() const	{ return m_nodes.back(); }
 
 //#################### PRIVATE METHODS ####################
 void BSPTree::index_leaves()
@@ -174,7 +172,7 @@ void BSPTree::index_specific_leaves(const BSPNode_Ptr& node, bool solidFlag)
 	}
 	else
 	{
-		const BSPBranch *branch = node->as_branch();
+		BSPBranch *branch = node->as_branch();
 		index_specific_leaves(branch->left(), solidFlag);
 		index_specific_leaves(branch->right(), solidFlag);
 	}

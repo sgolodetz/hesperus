@@ -54,6 +54,7 @@ public:
 //#################### TYPEDEFS ####################
 typedef VisTable<LeafVisState> LeafVisTable;
 typedef shared_ptr<LeafVisTable> LeafVisTable_Ptr;
+typedef shared_ptr<const LeafVisTable> LeafVisTable_CPtr;
 
 }
 

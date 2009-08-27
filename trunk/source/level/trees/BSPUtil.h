@@ -23,8 +23,8 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	template <typename Vert, typename AuxData> static std::list<int> find_leaf_indices_sub(const Polygon<Vert,AuxData>& poly, const BSPNode_Ptr& node);
-	static bool line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_Ptr& node);
+	template <typename Vert, typename AuxData> static std::list<int> find_leaf_indices_sub(const Polygon<Vert,AuxData>& poly, const BSPNode_CPtr& node);
+	static bool line_of_sight_sub(const Vector3d& p1, const Vector3d& p2, const BSPNode_CPtr& node);
 };
 
 }

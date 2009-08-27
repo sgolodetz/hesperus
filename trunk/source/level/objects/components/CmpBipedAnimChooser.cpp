@@ -35,7 +35,7 @@ void CmpBipedAnimChooser::check_dependencies() const
 	check_dependency<ICmpPosition>();
 }
 
-std::string CmpBipedAnimChooser::choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+std::string CmpBipedAnimChooser::choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 												  const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	// Determine the biped's alive/dying/dead status. If dead, early-out.
@@ -126,7 +126,7 @@ ICmpHealth::HealthStatus CmpBipedAnimChooser::determine_health_status() const
 	return cmpHealth->status();
 }
 
-CmpBipedAnimChooser::MovementType CmpBipedAnimChooser::determine_movement_type(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+CmpBipedAnimChooser::MovementType CmpBipedAnimChooser::determine_movement_type(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 																			   const std::vector<NavDataset_Ptr>& navDatasets)
 {
 	MovementType movementType = UNKNOWN;

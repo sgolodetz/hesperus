@@ -15,7 +15,7 @@ class CmpDirectMovement : public virtual ICmpDirectMovement
 	//#################### PRIVATE VARIABLES ####################
 private:
 	// Records the details of recent times the entity would have crossed a wall into solid space (had we not stopped it)
-	std::list<OnionUtil::Transition_Ptr> m_recentTransitions;
+	std::list<OnionUtil::Transition_CPtr> m_recentTransitions;
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -23,9 +23,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const std::list<OnionUtil::Transition_Ptr>& recent_transitions() const;
+	const std::list<OnionUtil::Transition_CPtr>& recent_transitions() const;
 	std::pair<std::string,Properties> save() const;
-	void update_recent_transitions(const OnionUtil::Transition_Ptr& transition);
+	void update_recent_transitions(const OnionUtil::Transition_CPtr& transition);
 };
 
 }

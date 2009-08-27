@@ -24,9 +24,11 @@ private:
 	typedef std::vector<LightmapGrid_Ptr> LightmapGridVector;
 	typedef std::vector<Lightmap_Ptr> LightmapVector;
 	typedef shared_ptr<LightmapVector> LightmapVector_Ptr;
+	typedef shared_ptr<const LightmapVector> LightmapVector_CPtr;
 	typedef std::vector<TexturedPolygon_Ptr> TexPolyVector;
 	typedef std::vector<TexturedLitPolygon_Ptr> TexLitPolyVector;
 	typedef shared_ptr<TexLitPolyVector> TexLitPolyVector_Ptr;
+	typedef shared_ptr<const TexLitPolyVector> TexLitPolyVector_CPtr;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -50,8 +52,8 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void generate_lightmaps();
-	LightmapVector_Ptr lightmaps() const;
-	TexLitPolyVector_Ptr lit_polygons() const;
+	LightmapVector_CPtr lightmaps() const;
+	TexLitPolyVector_CPtr lit_polygons() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

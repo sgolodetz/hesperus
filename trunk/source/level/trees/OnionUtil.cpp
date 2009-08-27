@@ -18,7 +18,7 @@ OnionUtil::find_first_transition(int mapIndex, const Vector3d& source, const Vec
 
 //#################### PRIVATE METHODS ####################
 OnionUtil::Transition
-OnionUtil::find_first_transition_sub(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionNode_Ptr& node)
+OnionUtil::find_first_transition_sub(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionNode_CPtr& node)
 {
 	if(node->is_leaf())
 	{
@@ -28,8 +28,8 @@ OnionUtil::find_first_transition_sub(int mapIndex, const Vector3d& source, const
 	}
 
 	const OnionBranch *branch = node->as_branch();
-	const OnionNode_Ptr& left = branch->left();
-	const OnionNode_Ptr& right = branch->right();
+	OnionNode_CPtr left = branch->left();
+	OnionNode_CPtr right = branch->right();
 
 	Plane_CPtr splitter = branch->splitter();
 	PlaneClassifier cpSource, cpDest;
@@ -81,7 +81,7 @@ OnionUtil::find_first_transition_sub(int mapIndex, const Vector3d& source, const
 		default:	// case CP_STRADDLE
 		{
 			Vector3d mid = determine_linesegment_intersection_with_plane(source, dest, *splitter).first;
-			OnionNode_Ptr near, far;
+			OnionNode_CPtr near, far;
 			if(cpSource == CP_FRONT)
 			{
 				near = left;

@@ -21,7 +21,7 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Model_Ptr& model(const std::string& modelName) const;
+	const Model_Ptr& model(const std::string& modelName);
 	void load_all();
 	void register_model(const std::string& modelName);
 };

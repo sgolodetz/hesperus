@@ -19,7 +19,7 @@ struct VisFile
 	static LeafVisTable_Ptr load(const std::string& filename);
 
 	//#################### SAVING METHODS ####################
-	static void save(const std::string& filename, const LeafVisTable_Ptr& leafVis);
+	static void save(const std::string& filename, const LeafVisTable_CPtr& leafVis);
 };
 
 }

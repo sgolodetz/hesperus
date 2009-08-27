@@ -39,9 +39,9 @@ public:
 public:
 	std::list<int> construct_path(int i, int j) const;
 	float& cost(int i, int j);
-	float cost(int i, int j) const;
+	const float& cost(int i, int j) const;
 	int& next_node(int i, int j);
-	int next_node(int i, int j) const;
+	const int& next_node(int i, int j) const;
 	int size() const;
 };
 

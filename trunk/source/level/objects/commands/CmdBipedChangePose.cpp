@@ -18,7 +18,7 @@ CmdBipedChangePose::CmdBipedChangePose(const ObjectID& objectID)
 {}
 
 //#################### PUBLIC METHODS ####################
-void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_Ptr& tree,
+void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 								 const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
 	// FIXME: Crouching is currently a "jolt" from one pose to another. It should really be a smooth transition.

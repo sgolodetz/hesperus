@@ -26,7 +26,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	NUVAxes_Ptr nuv_axes() const;
+	NUVAxes_Ptr nuv_axes();
+	NUVAxes_CPtr nuv_axes() const;
 	std::pair<std::string,Properties> save() const;
 };
 

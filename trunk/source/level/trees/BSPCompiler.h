@@ -42,7 +42,7 @@ private:
 private:
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
-	typedef shared_ptr<PolyIndex> PolyIndex_Ptr;
+	typedef shared_ptr<const PolyIndex> PolyIndex_CPtr;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -69,7 +69,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	BSPNode_Ptr build_subtree(const std::vector<PolyIndex>& polyIndices, std::vector<BSPNode_Ptr>& nodes, SolidityDescriptor solidityDescriptor);
-	PolyIndex_Ptr choose_split_poly(const std::vector<PolyIndex>& polyIndices) const;
+	PolyIndex_CPtr choose_split_poly(const std::vector<PolyIndex>& polyIndices) const;
 };
 
 }

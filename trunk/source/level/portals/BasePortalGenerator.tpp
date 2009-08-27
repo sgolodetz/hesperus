@@ -19,7 +19,7 @@ Generates a list of portals for a 3D world.
 */
 BPG_HEADER
 typename BPG_THIS::PortalTList_Ptr
-BPG_THIS::generate_portals(const TreeT_Ptr& tree) const
+BPG_THIS::generate_portals(const TreeT_CPtr& tree) const
 {
 	PortalTList_Ptr portals(new PortalTList);
 	std::list<Plane_CPtr> planes = find_unique_planes(TreeUtil::split_planes(tree));
@@ -58,7 +58,7 @@ Clips the portal to the subtree and returns a list of portal fragments which sur
 */
 BPG_HEADER
 typename BPG_THIS::PortalTList
-BPG_THIS::clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_Ptr& subtreeRoot, PlaneClassifier relativeToPortal) const
+BPG_THIS::clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_CPtr& subtreeRoot, PlaneClassifier relativeToPortal) const
 {
 	if(subtreeRoot->is_leaf())
 	{
@@ -75,8 +75,8 @@ BPG_THIS::clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_Ptr& sub
 			}
 			case CP_COPLANAR:
 			{
-				NodeT_Ptr fromSubtree;
-				NodeT_Ptr toSubtree;
+				NodeT_CPtr fromSubtree;
+				NodeT_CPtr toSubtree;
 				if(branch->splitter()->normal().dot(portal->normal()) > 0)
 				{
 					fromSubtree = branch->right();
@@ -131,7 +131,7 @@ Clips the portal to the tree and returns a list of portal fragments which surviv
 */
 BPG_HEADER
 typename BPG_THIS::PortalTList
-BPG_THIS::clip_portal_to_tree(const PortalT_Ptr& portal, const TreeT_Ptr& tree) const
+BPG_THIS::clip_portal_to_tree(const PortalT_Ptr& portal, const TreeT_CPtr& tree) const
 {
 	return clip_portal_to_subtree(portal, tree->root());
 }

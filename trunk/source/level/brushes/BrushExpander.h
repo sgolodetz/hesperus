@@ -48,20 +48,22 @@ private:
 private:
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;
 	typedef shared_ptr<ColPolyBrush> ColPolyBrush_Ptr;
+	typedef shared_ptr<const ColPolyBrush> ColPolyBrush_CPtr;
 
 	typedef std::set<BrushPlane> BrushPlaneSet;
 	typedef shared_ptr<BrushPlaneSet> BrushPlaneSet_Ptr;
+	typedef shared_ptr<const BrushPlaneSet> BrushPlaneSet_CPtr;
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static ColPolyBrush_Ptr expand_brush(const ColPolyBrush_Ptr& brush, const AABB3d& aabb, int mapIndex);
+	static ColPolyBrush_Ptr expand_brush(const ColPolyBrush_CPtr& brush, const AABB3d& aabb, int mapIndex);
 
 	//#################### PRIVATE METHODS ####################
 private:
-	static PlaneClassifier classify_brush_against_plane(const ColPolyBrush_Ptr& brush, const Plane& plane);
-	static BrushPlaneSet_Ptr determine_brush_planes(const ColPolyBrush_Ptr& brush);
+	static PlaneClassifier classify_brush_against_plane(const ColPolyBrush_CPtr& brush, const Plane& plane);
+	static BrushPlaneSet_Ptr determine_brush_planes(const ColPolyBrush_CPtr& brush);
 	static BrushPlane expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb);
-	static BrushPlaneSet_Ptr expand_brush_planes(const BrushPlaneSet_Ptr& brushPlanes, const AABB3d& aabb);
+	static BrushPlaneSet_Ptr expand_brush_planes(const BrushPlaneSet_CPtr& brushPlanes, const AABB3d& aabb);
 };
 
 }

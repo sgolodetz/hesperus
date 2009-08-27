@@ -14,9 +14,9 @@ namespace hesp {
 Saves a 24-bit PNG to a file.
 
 @param filename		The name of the file to which to save the image
-@param image		An Image24_Ptr holding the representation of the image
+@param image		An Image24_CPtr holding the representation of the image
 */
-void PNGSaver::save_image24(const std::string& filename, const Image24_Ptr& image)
+void PNGSaver::save_image24(const std::string& filename, const Image24_CPtr& image)
 {
 	std::vector<unsigned char> buffer;
 	encode_png(image, buffer);
@@ -27,9 +27,9 @@ void PNGSaver::save_image24(const std::string& filename, const Image24_Ptr& imag
 Saves a 24-bit PNG to a std::ostream.
 
 @param os		The std::ostream to which to save the image
-@param image	An Image24_Ptr holding the representation of the image
+@param image	An Image24_CPtr holding the representation of the image
 */
-void PNGSaver::save_streamed_image24(std::ostream& os, const Image24_Ptr& image)
+void PNGSaver::save_streamed_image24(std::ostream& os, const Image24_CPtr& image)
 {
 	std::vector<unsigned char> buffer;
 	encode_png(image, buffer);
@@ -48,7 +48,7 @@ Encodes a 24-bit image into PNG format.
 @param image	The image
 @param buffer	The buffer into which to store the result
 */
-void PNGSaver::encode_png(const Image24_Ptr& image, std::vector<unsigned char>& buffer)
+void PNGSaver::encode_png(const Image24_CPtr& image, std::vector<unsigned char>& buffer)
 {
 	int width = image->width();
 	int height = image->height();
