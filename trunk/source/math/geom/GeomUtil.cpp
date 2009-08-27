@@ -91,18 +91,18 @@ Determines the point of intersection of a line segment with another (non-vertica
 
 @param segment		The first line segment (can be arbitrary)
 @param nvSegment	The second line segment (must be non-vertical)
-@return				The point of intersection, if any, or NULL otherwise
+@return				The point of intersection, if any, or boost::none otherwise
 */
-Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment)
+boost::optional<Vector3d> determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment)
 {
 	Plane plane = *make_axial_plane(nvSegment.e1, nvSegment.e2, Vector3d(0,0,1));
 
 	// Make sure we don't try and determine the intersection if the segment's parallel to the plane.
 	Vector3d v = segment.e2 - segment.e1;
-	if(fabs(v.dot(plane.normal())) < EPSILON) return Vector3d_Ptr();
+	if(fabs(v.dot(plane.normal())) < EPSILON) return boost::none;
 
 	std::pair<Vector3d,bool> hit = determine_linesegment_intersection_with_plane(segment.e1, segment.e2, plane, false);
-	if(!hit.second) return Vector3d_Ptr();
+	if(!hit.second) return boost::none;
 
 	// We need to check that the point's within the non-vertical edge.
 	const Vector3d& p = hit.first;
@@ -111,10 +111,10 @@ Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(con
 	double dotProd = d.dot(w);	// == |d||w| cos angle
 	double dLength = d.length(), wLength = w.length();
 	double cosAngle = dotProd / (dLength * wLength);
-	if(fabs(cosAngle - 1) > SMALL_EPSILON) return Vector3d_Ptr();	// d and w aren't pointing in the same direction
-	if(dLength > wLength) return Vector3d_Ptr();					// the intersection point's beyond nvSegment.e2
+	if(fabs(cosAngle - 1) > SMALL_EPSILON) return boost::none;	// d and w aren't pointing in the same direction
+	if(dLength > wLength) return boost::none;					// the intersection point's beyond nvSegment.e2
 
-	return Vector3d_Ptr(new Vector3d(p));
+	return p;
 }
 
 /**

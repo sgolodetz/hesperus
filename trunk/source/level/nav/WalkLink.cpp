@@ -28,7 +28,7 @@ Vector3d WalkLink::dest_position() const
 	return (m_edge.e1 + m_edge.e2) / 2;
 }
 
-Vector3d_Ptr WalkLink::hit_test(const Vector3d& s, const Vector3d& d) const
+boost::optional<Vector3d> WalkLink::hit_test(const Vector3d& s, const Vector3d& d) const
 {
 	return determine_linesegment_intersection_with_nonvertical_linesegment(LineSegment3d(s,d), m_edge);
 }

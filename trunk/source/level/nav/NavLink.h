@@ -8,6 +8,7 @@
 
 #include <ostream>
 
+#include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
@@ -34,7 +35,7 @@ public:
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual Vector3d dest_position() const = 0;
-	virtual Vector3d_Ptr hit_test(const Vector3d& s, const Vector3d& d) const = 0;
+	virtual boost::optional<Vector3d> hit_test(const Vector3d& s, const Vector3d& d) const = 0;
 	virtual void output(std::ostream& os) const = 0;
 	virtual void render() const = 0;
 	virtual Vector3d source_position() const = 0;

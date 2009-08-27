@@ -165,7 +165,7 @@ void MoveFunctions::do_navmesh_move(const ObjectID& objectID, const ObjectManage
 	Vector3d source = cmpPosition->position();
 	Vector3d dest = source + move.dir * speed * move.timeRemaining;
 
-	Vector3d_Ptr hit;
+	boost::optional<Vector3d> hit;
 	int hitNavlink = -1;
 	const std::vector<int>& links = navPoly.out_links();
 	for(std::vector<int>::const_iterator it=links.begin(), iend=links.end(); it!=iend; ++it)

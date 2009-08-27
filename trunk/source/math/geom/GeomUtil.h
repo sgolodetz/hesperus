@@ -44,7 +44,7 @@ AABB3d construct_bounding_box(const std::vector<shared_ptr<Polygon<Vert,AuxData>
 
 boost::optional<std::pair<Vector3d,Vector3d> > determine_halfray_intersection_with_aabb(const Vector3d& s, const Vector3d& v, const AABB3d& aabb);
 
-Vector3d_Ptr determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment);
+boost::optional<Vector3d> determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment);
 
 template <typename Vec>
 std::pair<Vec,double> determine_line_intersection_with_plane(const Vec& s, const Vec& v, const Plane& plane);

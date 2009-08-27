@@ -24,7 +24,7 @@ Vector3d StepLink::dest_position() const
 	return (m_destEdge.e1 + m_destEdge.e2) / 2;
 }
 
-Vector3d_Ptr StepLink::hit_test(const Vector3d& s, const Vector3d& d) const
+boost::optional<Vector3d> StepLink::hit_test(const Vector3d& s, const Vector3d& d) const
 {
 	return determine_linesegment_intersection_with_nonvertical_linesegment(LineSegment3d(s,d), m_sourceEdge);
 }
