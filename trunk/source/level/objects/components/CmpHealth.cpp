@@ -29,12 +29,12 @@ int CmpHealth::max_health() const
 	return m_maxHealth;
 }
 
-std::pair<std::string,Properties> CmpHealth::save() const
+Properties CmpHealth::save() const
 {
 	Properties properties;
 	properties.set("Health", m_health);
 	properties.set("MaxHealth", m_maxHealth);
-	return std::make_pair("Health", properties);
+	return properties;
 }
 
 CmpHealth::HealthStatus CmpHealth::status() const

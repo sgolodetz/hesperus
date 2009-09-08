@@ -125,13 +125,13 @@ void CmpInventory::remove_item(const ObjectID& id)
 	if(cmpItemUsable) m_groups[cmpItemUsable->usable_group()].erase(id);
 }
 
-std::pair<std::string,Properties> CmpInventory::save() const
+Properties CmpInventory::save() const
 {
 	Properties properties;
 	properties.set("ActiveItem", m_activeItem);
 	properties.set("Consumables", m_consumables);
 	properties.set("Items", m_items);
-	return std::make_pair("Inventory", properties);
+	return properties;
 }
 
 //#################### PRIVATE METHODS ####################

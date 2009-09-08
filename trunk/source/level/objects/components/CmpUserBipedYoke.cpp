@@ -38,9 +38,9 @@ std::vector<ObjectCommand_Ptr> CmpUserBipedYoke::generate_commands(UserInput& in
 	return m_yoke->generate_commands(input, polygons, tree, navDatasets);
 }
 
-std::pair<std::string,Properties> CmpUserBipedYoke::save() const
+Properties CmpUserBipedYoke::save() const
 {
-	return std::make_pair("UserBipedYoke", Properties());
+	return Properties();
 }
 
 }

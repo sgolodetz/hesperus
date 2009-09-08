@@ -33,12 +33,12 @@ int CmpAABBBounds::pose() const
 {
 	return m_pose;
 }
-std::pair<std::string,Properties> CmpAABBBounds::save() const
+Properties CmpAABBBounds::save() const
 {
 	Properties properties;
 	properties.set("AABBs", m_aabbIndices);
 	properties.set("Pose", m_pose);
-	return std::make_pair("AABBBounds", properties);
+	return properties;
 }
 
 void CmpAABBBounds::set_pose(int pose)

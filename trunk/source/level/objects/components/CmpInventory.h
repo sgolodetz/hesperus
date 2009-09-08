@@ -49,7 +49,7 @@ public:
 	void process_message(const MsgObjectPredestroyed& msg);
 	void register_listening();
 	void remove_item(const ObjectID& id);
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

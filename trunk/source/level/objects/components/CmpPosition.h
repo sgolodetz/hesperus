@@ -27,7 +27,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const Vector3d& position() const;
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void set_position(const Vector3d& position);
 };
 

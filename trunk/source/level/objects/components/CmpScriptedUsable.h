@@ -26,8 +26,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void use();
+
+	std::string own_type() const			{ return "ScriptedUsable"; }
+	static std::string static_own_type()	{ return "ScriptedUsable"; }
 };
 
 }

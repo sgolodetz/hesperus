@@ -35,12 +35,12 @@ void CmpConsumeActivatable::activated_by(const ObjectID& activator)
 	m_objectManager->queue_for_destruction(m_objectID);
 }
 
-std::pair<std::string,Properties> CmpConsumeActivatable::save() const
+Properties CmpConsumeActivatable::save() const
 {
 	Properties properties;
 	properties.set("Type", m_type);
 	properties.set("Amount", m_amount);
-	return std::make_pair("ConsumeActivatable", properties);
+	return properties;
 }
 
 }

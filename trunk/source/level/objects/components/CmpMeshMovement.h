@@ -38,7 +38,7 @@ public:
 	int cur_nav_poly_index() const;
 	Traversal_CPtr cur_traversal() const;
 	double run_speed() const;
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void set_cur_nav_poly_index(int curNavPolyIndex);
 	void set_cur_traversal(const Traversal_CPtr& curTraversal);
 	double walk_speed() const;

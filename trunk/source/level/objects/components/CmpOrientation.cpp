@@ -32,11 +32,11 @@ NUVAxes_CPtr CmpOrientation::nuv_axes() const
 	return m_nuvAxes;
 }
 
-std::pair<std::string,Properties> CmpOrientation::save() const
+Properties CmpOrientation::save() const
 {
 	Properties properties;
 	properties.set("Look", m_nuvAxes->n());
-	return std::make_pair("Orientation", properties);
+	return properties;
 }
 
 }

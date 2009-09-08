@@ -38,9 +38,9 @@ void CmpItemActivatable::check_dependencies() const
 	check_dependency<ICmpOwnable>();
 }
 
-std::pair<std::string,Properties> CmpItemActivatable::save() const
+Properties CmpItemActivatable::save() const
 {
-	return std::make_pair("ItemActivatable", Properties());
+	return Properties();
 }
 
 }

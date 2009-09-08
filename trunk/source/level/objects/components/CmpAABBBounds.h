@@ -30,7 +30,7 @@ public:
 	const std::vector<int>& aabb_indices() const;
 	int cur_aabb_index() const;
 	int pose() const;
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void set_pose(int pose);
 };
 

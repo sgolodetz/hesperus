@@ -35,9 +35,9 @@ double CmpMeshMovement::run_speed() const
 	return 10.0;	// in units/s
 }
 
-std::pair<std::string,Properties> CmpMeshMovement::save() const
+Properties CmpMeshMovement::save() const
 {
-	return std::make_pair("MeshMovement", Properties());
+	return Properties();
 }
 
 void CmpMeshMovement::set_cur_nav_poly_index(int curNavPolyIndex)

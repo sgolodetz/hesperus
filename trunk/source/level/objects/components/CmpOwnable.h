@@ -32,7 +32,7 @@ public:
 	const std::string& attach_point() const;
 	void clear_owner();
 	const ObjectID& owner() const;
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void set_owner(const ObjectID& owner);
 };
 

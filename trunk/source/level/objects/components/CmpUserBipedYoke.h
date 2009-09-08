@@ -24,7 +24,10 @@ public:
 public:
 	void check_dependencies() const;
 	std::vector<ObjectCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
+
+	std::string own_type() const			{ return "UserBipedYoke"; }
+	static std::string static_own_type()	{ return "UserBipedYoke"; }
 };
 
 }

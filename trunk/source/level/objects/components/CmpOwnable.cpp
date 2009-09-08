@@ -41,13 +41,13 @@ const ObjectID& CmpOwnable::owner() const
 	return m_owner;
 }
 
-std::pair<std::string,Properties> CmpOwnable::save() const
+Properties CmpOwnable::save() const
 {
 	Properties properties;
 	properties.set("AnimExtension", m_animExtension);
 	properties.set("AttachPoint", m_attachPoint);
 	properties.set("Owner", m_owner);
-	return std::make_pair("Ownable", properties);
+	return properties;
 }
 
 void CmpOwnable::set_owner(const ObjectID& owner)

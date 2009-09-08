@@ -24,7 +24,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const std::list<OnionUtil::Transition_CPtr>& recent_transitions() const;
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void update_recent_transitions(const OnionUtil::Transition_CPtr& transition);
 };
 

@@ -21,9 +21,9 @@ const std::list<OnionUtil::Transition_CPtr>& CmpDirectMovement::recent_transitio
 	return m_recentTransitions;
 }
 
-std::pair<std::string,Properties> CmpDirectMovement::save() const
+Properties CmpDirectMovement::save() const
 {
-	return std::make_pair("DirectMovement", Properties());
+	return Properties();
 }
 
 void CmpDirectMovement::update_recent_transitions(const OnionUtil::Transition_CPtr& transition)

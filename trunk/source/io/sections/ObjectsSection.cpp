@@ -201,9 +201,8 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 	for(size_t i=0, size=components.size(); i<size; ++i)
 	{
 		const IObjectComponent_Ptr& component = components[i];
-		std::string componentName;
-		Properties properties;
-		boost::tie(componentName, properties) = component->save();
+		std::string componentName = component->own_type();
+		Properties properties = component->save();
 
 		os << "\t\t" << componentName;
 

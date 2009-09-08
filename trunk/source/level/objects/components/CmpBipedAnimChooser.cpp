@@ -80,9 +80,9 @@ std::string CmpBipedAnimChooser::choose_animation(const std::vector<CollisionPol
 	return animationName;
 }
 
-std::pair<std::string,Properties> CmpBipedAnimChooser::save() const
+Properties CmpBipedAnimChooser::save() const
 {
-	return std::make_pair("BipedAnimChooser", Properties());
+	return Properties();
 }
 
 void CmpBipedAnimChooser::set_run_flag()

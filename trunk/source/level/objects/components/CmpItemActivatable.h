@@ -20,7 +20,7 @@ public:
 public:
 	void activated_by(const ObjectID& activator);
 	void check_dependencies() const;
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 
 	std::string own_type() const			{ return "ItemActivatable"; }
 	static std::string static_own_type()	{ return "ItemActivatable"; }

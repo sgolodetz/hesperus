@@ -47,11 +47,11 @@ std::vector<ObjectCommand_Ptr> CmpMinimusScriptYoke::generate_commands(UserInput
 	return m_yoke->generate_commands(input, polygons, tree, navDatasets);
 }
 
-std::pair<std::string,Properties> CmpMinimusScriptYoke::save() const
+Properties CmpMinimusScriptYoke::save() const
 {
 	Properties properties;
 	properties.set("Script", m_scriptName);
-	return std::make_pair("MinimusScriptYoke", properties);
+	return properties;
 }
 
 }

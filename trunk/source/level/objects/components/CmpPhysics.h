@@ -22,7 +22,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void set_velocity(const Vector3d& velocity);
 	const Vector3d& velocity() const;
 };

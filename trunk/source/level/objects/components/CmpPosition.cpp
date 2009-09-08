@@ -24,11 +24,11 @@ const Vector3d& CmpPosition::position() const
 	return m_position;
 }
 
-std::pair<std::string,Properties> CmpPosition::save() const
+Properties CmpPosition::save() const
 {
 	Properties properties;
 	properties.set("Position", m_position);
-	return std::make_pair("Position", properties);
+	return properties;
 }
 
 void CmpPosition::set_position(const Vector3d& position)

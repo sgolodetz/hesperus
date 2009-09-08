@@ -38,7 +38,7 @@ public:
 public:
 	virtual std::string group_type() const = 0;
 	virtual std::string own_type() const = 0;
-	virtual std::pair<std::string,Properties> save() const = 0;
+	virtual Properties save() const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

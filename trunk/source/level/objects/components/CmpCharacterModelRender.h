@@ -33,7 +33,7 @@ public:
 	void check_dependencies() const;
 	void render() const;
 	void render_first_person() const;
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 
 	std::string own_type() const			{ return "CharacterModelRender"; }

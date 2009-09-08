@@ -97,12 +97,12 @@ void CmpCharacterModelRender::render_first_person() const
 	render_crosshair();
 }
 
-std::pair<std::string,Properties> CmpCharacterModelRender::save() const
+Properties CmpCharacterModelRender::save() const
 {
 	Properties properties;
 	properties.set("InclineBones", m_inclineBones);
 	properties.set("ModelName", m_modelName);
-	return std::make_pair("CharacterModelRender", properties);
+	return properties;
 }
 
 void CmpCharacterModelRender::update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons,

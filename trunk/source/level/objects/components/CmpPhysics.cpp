@@ -14,9 +14,9 @@ IObjectComponent_Ptr CmpPhysics::load(const Properties&)
 }
 
 //#################### PUBLIC METHODS ####################
-std::pair<std::string,Properties> CmpPhysics::save() const
+Properties CmpPhysics::save() const
 {
-	return std::make_pair("Physics", Properties());
+	return Properties();
 }
 
 void CmpPhysics::set_velocity(const Vector3d& velocity)

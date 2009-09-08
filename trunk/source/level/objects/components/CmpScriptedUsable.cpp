@@ -23,13 +23,13 @@ IObjectComponent_Ptr CmpScriptedUsable::load(const Properties& properties)
 }
 
 //#################### PUBLIC METHODS ####################
-std::pair<std::string,Properties> CmpScriptedUsable::save() const
+Properties CmpScriptedUsable::save() const
 {
 	Properties properties;
 	properties.set("Group", usable_group());
 	properties.set("Hotspots", hotspots());
 	properties.set("Script", m_scriptName);
-	return std::make_pair("ScriptedUsable", properties);
+	return properties;
 }
 
 void CmpScriptedUsable::use()

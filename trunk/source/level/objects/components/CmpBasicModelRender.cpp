@@ -86,11 +86,11 @@ void CmpBasicModelRender::render_first_person() const
 	glPopMatrix();
 }
 
-std::pair<std::string,Properties> CmpBasicModelRender::save() const
+Properties CmpBasicModelRender::save() const
 {
 	Properties properties;
 	properties.set("ModelName", m_modelName);
-	return std::make_pair("BasicModelRender", properties);
+	return properties;
 }
 
 void CmpBasicModelRender::update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons,

@@ -26,13 +26,13 @@ IObjectComponent_Ptr CmpProjectileWeaponUsable::load(const Properties& propertie
 }
 
 //#################### PUBLIC METHODS ####################
-std::pair<std::string,Properties> CmpProjectileWeaponUsable::save() const
+Properties CmpProjectileWeaponUsable::save() const
 {
 	Properties properties;
 	properties.set("Group", usable_group());
 	properties.set("Hotspots", hotspots());
 	properties.set("ProjectileType", m_projectileType);
-	return std::make_pair("ProjectileWeaponUsable", properties);
+	return properties;
 }
 
 void CmpProjectileWeaponUsable::use()

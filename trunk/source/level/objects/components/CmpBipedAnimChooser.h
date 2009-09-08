@@ -41,7 +41,7 @@ public:
 public:
 	void check_dependencies() const;
 	std::string choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 	void set_run_flag();
 	void set_walk_flag();
 

@@ -28,7 +28,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void activated_by(const ObjectID& activator);
-	std::pair<std::string,Properties> save() const;
+	Properties save() const;
 
 	std::string own_type() const			{ return "ConsumeActivatable"; }
 	static std::string static_own_type()	{ return "ConsumeActivatable"; }
