@@ -246,16 +246,12 @@ bool is_animatable(const ObjectID& id, const ObjectManager *objectManager)
 	if(objectManager->get_component<ICmpModelRender>(id))
 	{
 		ICmpOwnable_CPtr cmpOwnable = objectManager->get_component(id, cmpOwnable);
-		if(cmpOwnable && cmpOwnable->owner().valid())
-		{
-			ICmpInventory_CPtr cmpOwnerInventory = objectManager->get_component(cmpOwnable->owner(), cmpOwnerInventory);
 
-			// Even if the object is owned by another object, it still needs animating if it's the currently active item.
-			return cmpOwnerInventory->active_item() == id;
-		}
-		else return true;		// the object has a ModelRender component, and is either not ownable, or not currently owned
+		// Objects with a ModelRender component are animatable provided they are either not ownable,
+		// or not currently owned.
+		return !cmpOwnable || !cmpOwnable->owner().valid();
 	}
-	else return false;			// animatable objects must have a ModelRender component
+	else return false;	// animatable objects must have a ModelRender component
 }
 
 bool is_model_container(const ObjectID& id, const ObjectManager *objectManager)

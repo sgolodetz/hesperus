@@ -18,7 +18,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Mesh(const std::vector<Submesh_Ptr>& submeshes);
+	explicit Mesh(const std::vector<Submesh_Ptr>& submeshes);
 
 	//#################### PUBLIC METHODS ####################
 public:

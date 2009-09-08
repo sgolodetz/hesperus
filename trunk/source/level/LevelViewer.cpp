@@ -9,7 +9,7 @@
 
 #include <source/colours/Colour3d.h>
 #include <source/gui/Screen.h>
-#include <source/level/objects/components/ICmpCharacterModelRender.h>
+#include <source/level/objects/components/ICmpModelRender.h>
 
 namespace hesp {
 
@@ -148,7 +148,7 @@ void LevelViewer::render_objects() const
 
 	ObjectManager_Ptr objectManager = m_level->object_manager();
 	std::vector<ObjectID> renderables = objectManager->group("Renderables");
-	ICmpCharacterModelRender_Ptr cmpFirstPersonRender;
+	ICmpModelRender_Ptr cmpFirstPersonRender;
 	for(size_t i=0, size=renderables.size(); i<size; ++i)
 	{
 		const ObjectID& renderable = renderables[i];
@@ -160,7 +160,7 @@ void LevelViewer::render_objects() const
 		else
 		{
 			cmpFirstPersonRender = objectManager->get_component(renderable, cmpFirstPersonRender);
-			if(!cmpFirstPersonRender) throw Exception("For the player to be renderable in first-person, it must have a CharacterModelRender component");
+			if(!cmpFirstPersonRender) throw Exception("For the player to be renderable in first-person, it must have a ModelRender component");
 		}
 	}
 

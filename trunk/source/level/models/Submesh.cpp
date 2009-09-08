@@ -8,7 +8,8 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Submesh::Submesh(const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices, const Material_Ptr& material, const std::vector<TexCoords>& texCoords)
+Submesh::Submesh(const std::vector<unsigned int>& vertIndices, const std::vector<ModelVertex>& vertices,
+				 const Material_Ptr& material, const std::vector<TexCoords>& texCoords)
 :	m_vertIndices(vertIndices), m_vertices(vertices), m_vertArray(vertices.size() * 3), m_material(material)
 {
 	if(m_material->uses_texcoords())
@@ -60,14 +61,15 @@ void Submesh::skin(const Skeleton_CPtr& skeleton)
 	I refer to these in the code as the 'skinning matrices'.
 	*/
 
-	BoneConfiguration_CPtr boneConfiguration = skeleton->bone_configuration();
-	int boneCount = boneConfiguration->bone_count();
+	BoneHierarchy_CPtr boneHierarchy = skeleton->bone_hierarchy();
+	ConfiguredPose_CPtr pose = skeleton->get_pose();
+	int boneCount = boneHierarchy->bone_count();
 
 	// Construct the skinning matrices.
-	std::vector<RBTMatrix_Ptr> skinningMatrices(boneCount);
+	std::vector<RBTMatrix_CPtr> skinningMatrices(boneCount);
 	for(int i=0; i<boneCount; ++i)
 	{
-		skinningMatrices[i] = boneConfiguration->bones(i)->absolute_matrix() * skeleton->to_bone_matrix(i);
+		skinningMatrices[i] = pose->bones(i)->absolute_matrix() * skeleton->to_bone_matrix(i);
 	}
 
 	// Build the vertex array.

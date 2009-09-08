@@ -1,28 +1,22 @@
 /***
- * hesperus: CmpCharacterModelRender.h
+ * hesperus: CmpBasicModelRender.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMPCHARACTERMODELRENDER
-#define H_HESP_CMPCHARACTERMODELRENDER
+#ifndef H_HESP_CMPBASICMODELRENDER
+#define H_HESP_CMPBASICMODELRENDER
 
 #include "CmpModelRender.h"
+#include "ICmpBasicModelRender.h"
+#include "ICmpUsable.h"
 
 namespace hesp {
 
-class CmpCharacterModelRender : public CmpModelRender
+class CmpBasicModelRender : public ICmpBasicModelRender, public CmpModelRender
 {
-	//#################### TYPEDEFS ####################
-private:
-	typedef std::map<std::string, std::map<std::string,Vector3d> > BoneModifierMap;
-
-	//#################### PRIVATE VARIABLES ####################
-private:
-	BoneModifierMap m_inclineBones;
-
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpCharacterModelRender(const BoneModifierMap& inclineBones, const std::string& modelName);
+	explicit CmpBasicModelRender(const std::string& modelName);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -32,17 +26,17 @@ public:
 public:
 	void check_dependencies() const;
 	void render() const;
+	void render_child() const;
 	void render_first_person() const;
 	std::pair<std::string,Properties> save() const;
 	void update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
-
-	std::string own_type() const			{ return "CharacterModelRender"; }
-	static std::string static_own_type()	{ return "CharacterModelRender"; }
+	void update_child_animation(int milliseconds, const BoneHierarchy_Ptr& parent, const std::string& parentBoneName, const RBTMatrix_CPtr& parentMatrix, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 
 	//#################### PRIVATE METHODS ####################
 private:
+	static RBTMatrix_CPtr construct_first_person_matrix();
 	static RBTMatrix_CPtr construct_model_matrix(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v);
-	static void render_crosshair();
+	void update_hotspots(const ICmpUsable_Ptr& cmpItemUsable, const RBTMatrix_CPtr& parentMatrix) const;
 };
 
 }

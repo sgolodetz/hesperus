@@ -244,10 +244,10 @@ try
 		bones[id].reset(new Bone(name, position, rotationAxis, rotationAngle));
 	}
 
-	// Construct the bone configuration.
-	BoneConfiguration_Ptr boneConfiguration(new BoneConfiguration(bones));
+	// Construct the bone hierarchy.
+	BoneHierarchy_Ptr boneHierarchy(new BoneHierarchy(bones));
 
-	// Load in the bone hierarchy.
+	// Load in the bone parents.
 	XMLElement_CPtr bonehierarchyElt = skeletonElt->find_unique_child("bonehierarchy");
 	std::vector<XMLElement_CPtr> boneparentElts = bonehierarchyElt->find_children("boneparent");
 	int boneparentCount = static_cast<int>(boneparentElts.size());
@@ -256,13 +256,13 @@ try
 		const XMLElement_CPtr& boneparentElt = boneparentElts[i];
 		std::string childName = boneparentElt->attribute("bone");
 		std::string parentName = boneparentElt->attribute("parent");
-		Bone_Ptr child = boneConfiguration->bones(childName);
-		Bone_Ptr parent = boneConfiguration->bones(parentName);
+		Bone_Ptr child = boneHierarchy->bones(childName);
+		Bone_Ptr parent = boneHierarchy->bones(parentName);
 		child->set_parent(parent);
 	}
 
 	// Load in the animations (if any).
-	std::map<std::string,Animation_Ptr> animations;
+	std::map<std::string,Animation_CPtr> animations;
 
 	if(skeletonElt->has_child("animations"))
 	{
@@ -322,13 +322,13 @@ try
 			}
 
 			// Use the tracks to create the *model* keyframes (note: these are distinct from the bone keyframes!).
-			std::vector<Pose_Ptr> keyframes(keyframeCount);
+			std::vector<Pose_CPtr> keyframes(keyframeCount);
 			for(int j=0; j<keyframeCount; ++j)
 			{
-				std::vector<RBTMatrix_Ptr> boneMatrices(boneCount);
+				std::vector<RBTMatrix_CPtr> boneMatrices(boneCount);
 				for(int k=0; k<boneCount; ++k)
 				{
-					Bone_CPtr bone = boneConfiguration->bones(k);
+					Bone_CPtr bone = boneHierarchy->bones(k);
 					std::map<std::string,Track>::const_iterator kt = tracks.find(bone->name());
 					if(kt != tracks.end())
 					{
@@ -348,12 +348,12 @@ try
 
 			std::string name = animationElt->attribute("name");
 			double length = lexical_cast<double,std::string>(animationElt->attribute("length"));
-			Animation_Ptr animation(new Animation(length, keyframes));
+			Animation_CPtr animation(new Animation(length, keyframes));
 			animations.insert(std::make_pair(name, animation));
 		}
 	}
 
-	return Skeleton_Ptr(new Skeleton(boneConfiguration, animations));
+	return Skeleton_Ptr(new Skeleton(boneHierarchy, animations));
 }
 catch(bad_lexical_cast&)
 {

@@ -13,6 +13,7 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/level/objects/components/CmpAABBBounds.h>
+#include <source/level/objects/components/CmpBasicModelRender.h>
 #include <source/level/objects/components/CmpBipedAnimChooser.h>
 #include <source/level/objects/components/CmpCharacterModelRender.h>
 #include <source/level/objects/components/CmpConsumeActivatable.h>
@@ -22,7 +23,6 @@ namespace bf = boost::filesystem;
 #include <source/level/objects/components/CmpItemActivatable.h>
 #include <source/level/objects/components/CmpMeshMovement.h>
 #include <source/level/objects/components/CmpMinimusScriptYoke.h>
-#include <source/level/objects/components/CmpModelRender.h>
 #include <source/level/objects/components/CmpOrientation.h>
 #include <source/level/objects/components/CmpOwnable.h>
 #include <source/level/objects/components/CmpPhysics.h>
@@ -247,6 +247,7 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 	if(!done)
 	{
 		ADD_LOADER(AABBBounds);
+		ADD_LOADER(BasicModelRender);
 		ADD_LOADER(BipedAnimChooser);
 		ADD_LOADER(CharacterModelRender);
 		ADD_LOADER(ConsumeActivatable);
@@ -256,7 +257,6 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 		ADD_LOADER(ItemActivatable);
 		ADD_LOADER(MeshMovement);
 		ADD_LOADER(MinimusScriptYoke);
-		ADD_LOADER(ModelRender);
 		ADD_LOADER(Orientation);
 		ADD_LOADER(Ownable);
 		ADD_LOADER(Physics);

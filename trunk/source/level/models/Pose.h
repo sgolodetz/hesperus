@@ -23,11 +23,11 @@ class Pose
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<RBTMatrix_Ptr> m_boneMatrices;
+	std::vector<RBTMatrix_CPtr> m_relativeBoneMatrices;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Pose(const std::vector<RBTMatrix_Ptr>& boneMatrices);
+	explicit Pose(const std::vector<RBTMatrix_CPtr>& relativeBoneMatrices);
 
 	//#################### COPY CONSTRUCTOR & ASSIGNMENT OPERATOR ####################
 private:
@@ -36,9 +36,8 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const std::vector<RBTMatrix_Ptr>& bone_matrices() const;
-	static Pose_Ptr copy(const Pose_CPtr& rhs);
 	static Pose_Ptr interpolate(const Pose_CPtr& lhs, const Pose_CPtr& rhs, double t);
+	const std::vector<RBTMatrix_CPtr>& relative_bone_matrices() const;
 };
 
 }

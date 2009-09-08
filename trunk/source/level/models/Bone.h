@@ -8,9 +8,6 @@
 
 #include <string>
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
-
 #include <source/math/matrices/RBTMatrix.h>
 #include <source/math/vectors/Vector3.h>
 
@@ -27,9 +24,10 @@ private:
 	std::string m_name;
 	Vector3d m_basePosition;
 	RBTMatrix_Ptr m_baseRotation;
-	RBTMatrix_Ptr m_absoluteMatrix;
-	RBTMatrix_Ptr m_relativeMatrix;
 	Bone_Ptr m_parent;
+
+	RBTMatrix_Ptr m_absoluteMatrix;		// a temporary matrix for use by BoneHierarchy when configuring poses
+	RBTMatrix_Ptr m_relativeMatrix;		// ditto
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -38,15 +36,12 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	RBTMatrix_Ptr& absolute_matrix();
-	const RBTMatrix_CPtr absolute_matrix() const;
 	const Vector3d& base_position() const;
 	const RBTMatrix_CPtr base_rotation() const;
 	const std::string& name() const;
-	Vector3d orientation() const;
 	Bone_Ptr parent();
-	Vector3d position() const;
+	Bone_CPtr parent() const;
 	RBTMatrix_Ptr& relative_matrix();
-	const RBTMatrix_CPtr relative_matrix() const;
 	void set_parent(const Bone_Ptr& parent);
 };
 

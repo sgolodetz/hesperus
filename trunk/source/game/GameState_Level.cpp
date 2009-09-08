@@ -1,6 +1,6 @@
 /***
  * hesperus: GameState_Level.cpp
- * Copyright Stuart Golodetz, 2008. All rights reserved.
+ * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
 #include "GameState_Level.h"

@@ -7,8 +7,7 @@
 #define H_HESP_SKELETON
 
 #include "Animation.h"
-#include "BoneConfiguration.h"
-#include "PoseModifier.h"
+#include "BoneHierarchy.h"
 
 namespace hesp {
 
@@ -16,8 +15,9 @@ class Skeleton
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	BoneConfiguration_Ptr m_boneConfiguration;
-	std::map<std::string,Animation_Ptr> m_animations;
+	std::map<std::string,Animation_CPtr> m_animations;
+	BoneHierarchy_Ptr m_boneHierarchy;
+	ConfiguredPose_CPtr m_pose;
 
 	// In order to do mesh skinning, we need to be able to move points into the
 	// (rest) coordinate frame of each bone. These matrices fulfil that role.
@@ -25,24 +25,23 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	Skeleton(const BoneConfiguration_Ptr& boneConfiguration, const std::map<std::string,Animation_Ptr>& animations);
+	Skeleton(const BoneHierarchy_Ptr& boneHierarchy, const std::map<std::string,Animation_CPtr>& animations);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	Animation_CPtr animation(const std::string& name) const;
-	const BoneConfiguration_Ptr& bone_configuration();
-	BoneConfiguration_CPtr bone_configuration() const;
-	Pose_Ptr get_rest_pose() const;
+	const BoneHierarchy_Ptr& bone_hierarchy();
+	BoneHierarchy_CPtr bone_hierarchy() const;
+	const ConfiguredPose_CPtr& get_pose() const;
 	bool has_animation(const std::string& name) const;
+	Pose_Ptr make_rest_pose() const;
 	void render_bones() const;
-	void set_pose(const Pose_CPtr& pose, const std::map<std::string,PoseModifier>& modifiers = std::map<std::string,PoseModifier>());
+	void set_pose(const ConfiguredPose_CPtr& pose);
 	RBTMatrix_CPtr to_bone_matrix(int i) const;
 
 	//#################### PRIVATE METHODS ####################
 private:
 	void build_to_bone_matrices();
-	void calculate_absolute_bone_matrix(const Bone_Ptr& bone, const std::map<std::string,PoseModifier>& modifiers);
-	void update_absolute_bone_matrices(const std::map<std::string,PoseModifier>& modifiers);
 };
 
 //#################### TYPEDEFS ####################

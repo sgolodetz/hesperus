@@ -14,7 +14,7 @@ using boost::lexical_cast;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Animation::Animation(double length, const std::vector<Pose_Ptr>& keyframes)
+Animation::Animation(double length, const std::vector<Pose_CPtr>& keyframes)
 :	m_length(length), m_keyframes(keyframes)
 {}
 

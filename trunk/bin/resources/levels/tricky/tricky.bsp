@@ -979,7 +979,7 @@ Objects
 		{
 			Position = ( 8 15 6 )
 		}
-		ModelRender
+		BasicModelRender
 		{
 			ModelName = "Test-15"
 		}
@@ -1000,7 +1000,7 @@ Objects
 		{
 			Position = ( 0 0 0 )
 		}
-		ModelRender
+		BasicModelRender
 		{
 			ModelName = "TestWeapon"
 		}
@@ -1027,7 +1027,7 @@ Objects
 		{
 			Position = ( 0 0 0 )
 		}
-		ModelRender
+		BasicModelRender
 		{
 			ModelName = "TestWeapon"
 		}

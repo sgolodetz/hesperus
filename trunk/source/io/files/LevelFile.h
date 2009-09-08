@@ -8,7 +8,6 @@
 
 #include <source/images/Image.h>
 #include <source/level/Level.h>
-#include <source/util/PolygonTypes.h>
 
 namespace hesp {
 

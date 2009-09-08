@@ -1,6 +1,6 @@
 /***
  * hesperus: GameState_Level.h
- * Copyright Stuart Golodetz, 2008. All rights reserved.
+ * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
 #ifndef H_HESP_GAMESTATE_LEVEL
@@ -22,7 +22,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	GameState_Level(const std::string& levelFilename);
+	explicit GameState_Level(const std::string& levelFilename);
 
 	//#################### PUBLIC METHODS ####################
 public:

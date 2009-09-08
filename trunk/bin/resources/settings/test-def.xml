@@ -15,6 +15,9 @@
 				<property name="AABBs" type="[AABBid]"/>
 				<property name="Pose" type="int"/>
 			</component>
+			<component name="BasicModelRender">
+				<property name="ModelName" type="string"/>
+			</component>
 			<component name="BipedAnimChooser"/>
 			<component name="CharacterModelRender">
 				<property name="InclineBones" type="string -> (string -> Vector3d)"/>
@@ -38,9 +41,6 @@
 			<component name="MeshMovement"/>
 			<component name="MinimusScriptYoke">
 				<property name="Script" type="string"/>
-			</component>
-			<component name="ModelRender">
-				<property name="ModelName" type="string"/>
 			</component>
 			<component name="Orientation">
 				<property name="Look" type="Vector3d"/>

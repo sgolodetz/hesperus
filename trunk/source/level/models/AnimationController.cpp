@@ -65,7 +65,7 @@ void AnimationController::request_animation(std::string newAnimationName)
 	if(m_state == AS_REST)
 	{
 		m_state = AS_TRANSITION;
-		m_transitionStart = m_skeleton->get_rest_pose();
+		m_transitionStart = m_skeleton->make_rest_pose();
 	}
 	else if(m_state == AS_PLAY)
 	{
@@ -100,7 +100,7 @@ void AnimationController::reset_controller()
 	m_state = AS_REST;
 	m_animationName = "<rest>";
 	m_animationTime = 0;
-	set_pose(m_skeleton->get_rest_pose());
+	set_pose(m_skeleton->make_rest_pose());
 	m_transitionStart.reset();
 }
 
@@ -115,7 +115,7 @@ void AnimationController::update_pose(int milliseconds)
 	{
 		case AS_REST:
 		{
-			set_pose(m_skeleton->get_rest_pose());
+			set_pose(m_skeleton->make_rest_pose());
 			break;
 		}
 		case AS_PLAY:
@@ -164,7 +164,7 @@ void AnimationController::update_pose(int milliseconds)
 			}
 			else
 			{
-				newPose = m_skeleton->get_rest_pose();
+				newPose = m_skeleton->make_rest_pose();
 			}
 
 			m_animationTime += milliseconds;

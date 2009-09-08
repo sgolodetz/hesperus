@@ -13,31 +13,24 @@ Model::Model(const Mesh_Ptr& mesh, const Skeleton_Ptr& skeleton)
 {}
 
 //#################### PUBLIC METHODS ####################
-void Model::apply_pose_to_skeleton(const AnimationController_CPtr& animController)
+ConfiguredPose_Ptr Model::configure_pose(const AnimationController_CPtr& animController) const
 {
-	m_skeleton->set_pose(animController->get_pose(), animController->get_pose_modifiers());
+	return m_skeleton->bone_hierarchy()->configure_pose(animController->get_pose(), animController->get_pose_modifiers());
 }
 
-void Model::attach_to_parent(const Model_Ptr& parent, const std::string& parentBoneName)
+void Model::render(const ConfiguredPose_CPtr& pose) const
 {
-	Bone_Ptr childBone = m_skeleton->bone_configuration()->bones("root");
-	Bone_Ptr parentBone = parent->skeleton()->bone_configuration()->bones(parentBoneName);
-	childBone->set_parent(parentBone);
-}
-
-void Model::detach_from_parent()
-{
-	Bone_Ptr childBone = m_skeleton->bone_configuration()->bones("root");
-	childBone->set_parent(Bone_Ptr());
-}
-
-void Model::render() const
-{
+	m_skeleton->set_pose(pose);
 	m_mesh->skin(m_skeleton);
 	m_mesh->render();
 }
 
 const Skeleton_Ptr& Model::skeleton()
+{
+	return m_skeleton;
+}
+
+Skeleton_CPtr Model::skeleton() const
 {
 	return m_skeleton;
 }

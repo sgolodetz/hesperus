@@ -83,11 +83,11 @@ Objects
 			AABBs = [0,1]
 			Pose = 0
 		}
-		ItemActivatable;
-		ModelRender
+		BasicModelRender
 		{
 			ModelName = "Test-15"
 		}
+		ItemActivatable;
 		Orientation
 		{
 			Look = ( 0 1 0 )
@@ -105,7 +105,7 @@ Objects
 	}
 	Object
 	{
-		ModelRender
+		BasicModelRender
 		{
 			ModelName = "TestWeapon"
 		}
@@ -132,7 +132,7 @@ Objects
 	}
 	Object
 	{
-		ModelRender
+		BasicModelRender
 		{
 			ModelName = "TestWeapon"
 		}

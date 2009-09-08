@@ -12,7 +12,6 @@
 #include <source/math/vectors/TexCoords.h>
 #include <source/ogl/WrappedGL.h>
 #include <source/textures/Texture.h>
-
 #include "ModelVertex.h"
 #include "Skeleton.h"
 

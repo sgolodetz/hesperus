@@ -39,6 +39,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/wd4250"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\FMOD-4.27.06\api\inc&quot;;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
@@ -104,6 +105,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/wd4250"
 				AdditionalIncludeDirectories="..\..;&quot;..\..\..\hesperus_libraries\asx-2.16.0\include&quot;;..\..\..\hesperus_libraries\boost_1_37_0;&quot;..\..\..\hesperus_libraries\FMOD-4.27.06\api\inc&quot;;&quot;..\..\..\hesperus_libraries\glew-1.5.1\include&quot;;&quot;..\..\..\hesperus_libraries\lodepng-20080927\include&quot;;..\..\..\hesperus_libraries\propparser\include;&quot;..\..\..\hesperus_libraries\SDL-1.2.13\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
@@ -966,11 +968,19 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\models\BoneConfiguration.cpp"
+						RelativePath="..\level\models\BoneHierarchy.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\level\models\BoneWeight.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\ConfiguredBone.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\ConfiguredPose.cpp"
 						>
 					</File>
 					<File
@@ -1018,11 +1028,19 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\models\BoneConfiguration.h"
+						RelativePath="..\level\models\BoneHierarchy.h"
 						>
 					</File>
 					<File
 						RelativePath="..\level\models\BoneWeight.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\ConfiguredBone.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\models\ConfiguredPose.h"
 						>
 					</File>
 					<File
@@ -1532,6 +1550,10 @@
 							Name=".cpp"
 							>
 							<File
+								RelativePath="..\level\objects\components\CmpBasicModelRender.cpp"
+								>
+							</File>
+							<File
 								RelativePath="..\level\objects\components\CmpCharacterModelRender.cpp"
 								>
 							</File>
@@ -1539,14 +1561,14 @@
 								RelativePath="..\level\objects\components\CmpModelRender.cpp"
 								>
 							</File>
-							<File
-								RelativePath="..\level\objects\components\ICmpModelRender.cpp"
-								>
-							</File>
 						</Filter>
 						<Filter
 							Name=".h"
 							>
+							<File
+								RelativePath="..\level\objects\components\CmpBasicModelRender.h"
+								>
+							</File>
 							<File
 								RelativePath="..\level\objects\components\CmpCharacterModelRender.h"
 								>
@@ -1556,7 +1578,7 @@
 								>
 							</File>
 							<File
-								RelativePath="..\level\objects\components\ICmpCharacterModelRender.h"
+								RelativePath="..\level\objects\components\ICmpBasicModelRender.h"
 								>
 							</File>
 							<File

@@ -8,7 +8,6 @@
 #include <iostream>
 
 #include <source/io/util/DirectoryFinder.h>
-#include <source/level/objects/components/ICmpModelRender.h>
 #include "MinimusGotoPositionYoke.h"
 namespace bf = boost::filesystem;
 

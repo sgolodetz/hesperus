@@ -10,44 +10,25 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Pose::Pose(const std::vector<RBTMatrix_Ptr>& boneMatrices)
-:	m_boneMatrices(boneMatrices)
+Pose::Pose(const std::vector<RBTMatrix_CPtr>& relativeBoneMatrices)
+:	m_relativeBoneMatrices(relativeBoneMatrices)
 {}
 
 //#################### PUBLIC METHODS ####################
-const std::vector<RBTMatrix_Ptr>& Pose::bone_matrices() const
-{
-	return m_boneMatrices;
-}
-
-Pose_Ptr Pose::copy(const Pose_CPtr& rhs)
-{
-	const std::vector<RBTMatrix_Ptr>& boneMatrices = rhs->bone_matrices();
-	size_t boneCount = boneMatrices.size();
-
-	std::vector<RBTMatrix_Ptr> newBoneMatrices(boneCount);
-	for(size_t i=0; i<boneCount; ++i)
-	{
-		newBoneMatrices[i] = RBTMatrix::copy(boneMatrices[i]);
-	}
-
-	return Pose_Ptr(new Pose(newBoneMatrices));
-}
-
 Pose_Ptr Pose::interpolate(const Pose_CPtr& lhs, const Pose_CPtr& rhs, double t)
 {
-	const std::vector<RBTMatrix_Ptr>& lhsBoneMatrices = lhs->bone_matrices();
-	const std::vector<RBTMatrix_Ptr>& rhsBoneMatrices = rhs->bone_matrices();
+	const std::vector<RBTMatrix_CPtr>& lhsBoneMatrices = lhs->relative_bone_matrices();
+	const std::vector<RBTMatrix_CPtr>& rhsBoneMatrices = rhs->relative_bone_matrices();
 
 	assert(lhsBoneMatrices.size() == rhsBoneMatrices.size());
 
 	int boneCount = static_cast<int>(lhsBoneMatrices.size());
-	std::vector<RBTMatrix_Ptr> boneMatrices(boneCount);
+	std::vector<RBTMatrix_CPtr> boneMatrices(boneCount);
 
 	for(int i=0; i<boneCount; ++i)
 	{
-		const RBTMatrix_Ptr& m1 = lhsBoneMatrices[i];
-		const RBTMatrix_Ptr& m2 = rhsBoneMatrices[i];
+		const RBTMatrix_CPtr& m1 = lhsBoneMatrices[i];
+		const RBTMatrix_CPtr& m2 = rhsBoneMatrices[i];
 		RBTQuaternion_Ptr q1 = MathUtil::rbt_matrix_to_quaternion(m1);
 		RBTQuaternion_Ptr q2 = MathUtil::rbt_matrix_to_quaternion(m2);
 		RBTQuaternion_Ptr inter = RBTQuaternion::interpolate(q1, q2, t);
@@ -55,6 +36,11 @@ Pose_Ptr Pose::interpolate(const Pose_CPtr& lhs, const Pose_CPtr& rhs, double t)
 	}
 
 	return Pose_Ptr(new Pose(boneMatrices));
+}
+
+const std::vector<RBTMatrix_CPtr>& Pose::relative_bone_matrices() const
+{
+	return m_relativeBoneMatrices;
 }
 
 }
