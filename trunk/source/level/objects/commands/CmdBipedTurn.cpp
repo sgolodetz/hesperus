@@ -5,6 +5,7 @@
 
 #include "CmdBipedTurn.h"
 
+#include <source/axes/NUVAxes.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 
 namespace hesp {

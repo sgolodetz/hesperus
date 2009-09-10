@@ -6,9 +6,21 @@
 #ifndef H_HESP_NAVSECTION
 #define H_HESP_NAVSECTION
 
-#include <source/level/nav/NavDataset.h>
+#include <vector>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class AdjacencyList> AdjacencyList_Ptr;
+typedef shared_ptr<const class AdjacencyList> AdjacencyList_CPtr;
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<class NavMesh> NavMesh_Ptr;
+typedef shared_ptr<const class NavMesh> NavMesh_CPtr;
+typedef shared_ptr<class PathTable> PathTable_Ptr;
+typedef shared_ptr<const class PathTable> PathTable_CPtr;
 
 class NavSection
 {

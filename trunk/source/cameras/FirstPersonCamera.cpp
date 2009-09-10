@@ -5,6 +5,7 @@
 
 #include "FirstPersonCamera.h"
 
+#include <source/axes/NUVAxes.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPosition.h>

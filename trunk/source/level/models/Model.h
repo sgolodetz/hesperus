@@ -6,11 +6,18 @@
 #ifndef H_HESP_MODEL
 #define H_HESP_MODEL
 
-#include "AnimationController.h"
-#include "Mesh.h"
-#include "Skeleton.h"
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class AnimationController> AnimationController_CPtr;
+typedef shared_ptr<class ConfiguredPose> ConfiguredPose_Ptr;
+typedef shared_ptr<const class ConfiguredPose> ConfiguredPose_CPtr;
+typedef shared_ptr<class Mesh> Mesh_Ptr;
+typedef shared_ptr<class Skeleton> Skeleton_Ptr;
+typedef shared_ptr<const class Skeleton> Skeleton_CPtr;
 
 class Model
 {

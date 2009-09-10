@@ -8,14 +8,16 @@
 
 #include <vector>
 
-#include <source/materials/Material.h>
-#include <source/math/vectors/TexCoords.h>
 #include <source/ogl/WrappedGL.h>
-#include <source/textures/Texture.h>
+
+#include <source/math/vectors/TexCoords.h>
 #include "ModelVertex.h"
-#include "Skeleton.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Material> Material_Ptr;
+typedef shared_ptr<const class Skeleton> Skeleton_CPtr;
 
 class Submesh
 {

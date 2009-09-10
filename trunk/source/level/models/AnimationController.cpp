@@ -8,6 +8,10 @@
 #include <cmath>
 #include <iostream>
 
+#include "Animation.h"
+#include "Pose.h"
+#include "Skeleton.h"
+
 namespace {
 
 //#################### CONSTANTS ####################

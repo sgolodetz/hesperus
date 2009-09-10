@@ -6,9 +6,16 @@
 #ifndef H_HESP_MESH
 #define H_HESP_MESH
 
-#include "Submesh.h"
+#include <vector>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class Skeleton> Skeleton_CPtr;
+typedef shared_ptr<class Submesh> Submesh_Ptr;
 
 class Mesh
 {

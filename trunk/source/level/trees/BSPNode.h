@@ -6,8 +6,7 @@
 #ifndef H_HESP_BSPNODE
 #define H_HESP_BSPNODE
 
-#include <map>
-#include <vector>
+#include <iosfwd>
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;

@@ -6,9 +6,14 @@
 #ifndef H_HESP_ONIONTREESECTION
 #define H_HESP_ONIONTREESECTION
 
-#include <source/level/trees/OnionTree.h>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class OnionTree> OnionTree_Ptr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 struct OnionTreeSection
 {

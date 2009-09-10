@@ -6,6 +6,7 @@
 #include "CmpOrientation.h"
 
 #include <source/axes/VerticallyConstrainedNUVAxes.h>
+#include <source/util/Properties.h>
 
 namespace hesp {
 

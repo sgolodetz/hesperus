@@ -6,10 +6,16 @@
 #ifndef H_HESP_ICMPYOKE
 #define H_HESP_ICMPYOKE
 
-#include <source/level/objects/base/IYoke.h>
 #include <source/level/objects/base/ObjectComponent.h>
+#include <source/util/PolygonTypes.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<class ObjectCommand> ObjectCommand_Ptr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
+class UserInput;
 
 class ICmpYoke : public ObjectComponent
 {

@@ -5,11 +5,15 @@
 
 #include "NavMeshUtil.h"
 
+#include <source/level/trees/OnionTree.h>
 #include <source/level/trees/TreeUtil.h>
 #include <source/math/geom/GeomUtil.h>
+#include "NavMesh.h"
+#include "NavPolygon.h"
 
 namespace hesp {
 
+//#################### PUBLIC METHODS ####################
 /**
 Finds the nav polygon in which the specified point resides in the nav mesh, if any.
 

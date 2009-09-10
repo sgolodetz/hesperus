@@ -10,6 +10,9 @@
 
 namespace hesp {
 
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class IYoke> IYoke_Ptr;
+
 class CmpUserBipedYoke : public ICmpYoke
 {
 	//#################### PRIVATE VARIABLES ####################

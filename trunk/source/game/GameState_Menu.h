@@ -6,13 +6,15 @@
 #ifndef H_HESP_GAMESTATE_MENU
 #define H_HESP_GAMESTATE_MENU
 
-#include <source/audio/SoundSystem.h>
+#include <vector>
+
 #include "GameState.h"
 
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 class Button;
+class SoundSystem;
 
 class GameState_Menu : public GameState
 {

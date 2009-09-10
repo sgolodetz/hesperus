@@ -6,6 +6,10 @@
 #include "AdjacencyList.h"
 
 #include <source/exceptions/Exception.h>
+#include "NavLink.h"
+#include "NavMesh.h"
+#include "NavPolygon.h"
+
 
 namespace hesp {
 

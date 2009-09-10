@@ -6,12 +6,15 @@
 #ifndef H_HESP_CONFIGUREDPOSE
 #define H_HESP_CONFIGUREDPOSE
 
+#include <vector>
+
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include "ConfiguredBone.h"
-
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class ConfiguredBone> ConfiguredBone_CPtr;
 
 class ConfiguredPose
 {

@@ -7,6 +7,7 @@
 
 #include <boost/bind.hpp>
 
+#include <source/audio/SoundSystem.h>
 #include <source/gui/Button.h>
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>

@@ -6,6 +6,8 @@
 #include "CmdBipedMove.h"
 
 #include <source/level/objects/MoveFunctions.h>
+#include <source/level/objects/components/ICmpBipedAnimChooser.h>
+#include <source/level/objects/components/ICmpMeshMovement.h>
 
 namespace hesp {
 

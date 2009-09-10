@@ -5,6 +5,14 @@
 
 #include "CmpCharacterModelRender.h"
 
+#include <source/ogl/WrappedGL.h>
+
+#include <source/axes/NUVAxes.h>
+#include <source/level/models/AnimationController.h>
+#include <source/level/models/Model.h>
+#include <source/level/models/Skeleton.h>
+#include <source/math/matrices/RBTMatrix.h>
+#include <source/util/Properties.h>
 #include "ICmpAABBBounds.h"
 #include "ICmpAnimChooser.h"
 #include "ICmpBasicModelRender.h"

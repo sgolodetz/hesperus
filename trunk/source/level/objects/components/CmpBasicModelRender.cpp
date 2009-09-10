@@ -5,10 +5,22 @@
 
 #include "CmpBasicModelRender.h"
 
+#include <source/ogl/WrappedGL.h>
+
+#include <source/axes/NUVAxes.h>
+#include <source/level/models/AnimationController.h>
+#include <source/level/models/BoneHierarchy.h>
+#include <source/level/models/ConfiguredBone.h>
+#include <source/level/models/ConfiguredPose.h>
+#include <source/level/models/Model.h>
+#include <source/level/models/Skeleton.h>
+#include <source/math/matrices/RBTMatrix.h>
+#include <source/util/Properties.h>
 #include "ICmpAABBBounds.h"
 #include "ICmpAnimChooser.h"
 #include "ICmpOrientation.h"
 #include "ICmpPosition.h"
+#include "ICmpUsable.h"
 
 namespace hesp {
 

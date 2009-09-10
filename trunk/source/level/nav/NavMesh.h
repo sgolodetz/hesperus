@@ -7,10 +7,16 @@
 #define H_HESP_NAVMESH
 
 #include <map>
+#include <vector>
 
-#include "NavPolygon.h"
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavLink> NavLink_Ptr;
+typedef shared_ptr<class NavPolygon> NavPolygon_Ptr;
 
 class NavMesh
 {

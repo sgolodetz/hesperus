@@ -6,7 +6,7 @@
 #ifndef H_HESP_NAVLINK
 #define H_HESP_NAVLINK
 
-#include <ostream>
+#include <iosfwd>
 
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>

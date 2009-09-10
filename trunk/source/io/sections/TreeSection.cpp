@@ -6,6 +6,7 @@
 #include "TreeSection.h"
 
 #include <source/io/util/LineIO.h>
+#include <source/level/trees/BSPTree.h>
 
 namespace hesp {
 

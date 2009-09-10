@@ -9,10 +9,20 @@
 #include <map>
 #include <string>
 
-#include <source/level/models/Model.h>
-#include <source/xml/XMLParser.h>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
+#include <source/math/vectors/TexCoords.h>
+#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Material> Material_Ptr;
+typedef shared_ptr<class Mesh> Mesh_Ptr;
+typedef shared_ptr<class Model> Model_Ptr;
+typedef shared_ptr<class Skeleton> Skeleton_Ptr;
+typedef shared_ptr<const class XMLElement> XMLElement_CPtr;
 
 class ModelFiles
 {

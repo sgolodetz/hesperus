@@ -5,6 +5,8 @@
 
 #include "NavMesh.h"
 
+#include "NavPolygon.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

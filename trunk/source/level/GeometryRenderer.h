@@ -14,9 +14,10 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/textures/Texture.h>
-
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Texture> Texture_Ptr;
 
 class GeometryRenderer
 {

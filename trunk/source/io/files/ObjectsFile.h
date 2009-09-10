@@ -6,11 +6,19 @@
 #ifndef H_HESP_OBJECTSFILE
 #define H_HESP_OBJECTSFILE
 
-#include <boost/filesystem/operations.hpp>
+#include <map>
+#include <vector>
 
-#include <source/level/objects/base/ObjectManager.h>
+#include <boost/shared_ptr.hpp>
+#include <boost/filesystem/operations.hpp>
+using boost::shared_ptr;
+
+#include <source/math/geom/AABB.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
 
 struct ObjectsFile
 {

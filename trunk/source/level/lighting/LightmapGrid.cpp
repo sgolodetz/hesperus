@@ -6,6 +6,8 @@
 #include "LightmapGrid.h"
 
 #include <source/level/trees/BSPUtil.h>
+#include "Light.h"
+#include "Lightmap.h"
 
 namespace hesp {
 

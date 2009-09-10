@@ -6,6 +6,8 @@
 #ifndef H_HESP_BSPLEAF
 #define H_HESP_BSPLEAF
 
+#include <vector>
+
 #include "BSPNode.h"
 
 namespace hesp {

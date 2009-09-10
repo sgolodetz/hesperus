@@ -5,7 +5,9 @@
 
 #include "CmpBipedAnimChooser.h"
 
+#include <source/level/nav/NavDataset.h>
 #include <source/level/objects/MoveFunctions.h>
+#include <source/util/Properties.h>
 #include "ICmpAABBBounds.h"
 #include "ICmpInventory.h"
 #include "ICmpMeshMovement.h"

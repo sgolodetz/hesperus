@@ -11,7 +11,6 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/util/Properties.h>
 #include "MessageHandler.h"
 #include "ObjectID.h"
 
@@ -19,6 +18,7 @@ namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 class ObjectManager;
+class Properties;
 
 class IObjectComponent : public virtual MessageHandlerBase
 {

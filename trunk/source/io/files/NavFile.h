@@ -7,10 +7,15 @@
 #define H_HESP_NAVFILE
 
 #include <string>
+#include <vector>
 
-#include <source/level/nav/NavDataset.h>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
 
 struct NavFile
 {

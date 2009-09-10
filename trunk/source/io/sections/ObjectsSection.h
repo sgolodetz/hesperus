@@ -6,14 +6,21 @@
 #ifndef H_HESP_OBJECTSSECTION
 #define H_HESP_OBJECTSSECTION
 
+#include <map>
+
 #include <boost/filesystem/operations.hpp>
 
 #include <ASXEngine.h>
 
 #include <source/io/util/FieldIO.h>
-#include <source/level/objects/base/ObjectManager.h>
+#include <source/math/geom/AABB.h>
+#include <source/util/Properties.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
+typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
 
 class ObjectsSection
 {

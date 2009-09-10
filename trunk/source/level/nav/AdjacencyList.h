@@ -12,9 +12,10 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include "NavMesh.h"
-
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavMesh> NavMesh_Ptr;
 
 /**
 This class provides an adjacency list representation of a +ve-weighted,

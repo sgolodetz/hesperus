@@ -7,10 +7,12 @@
 #define H_HESP_CMDBIPEDMOVE
 
 #include <source/level/objects/base/ObjectCommand.h>
-#include <source/level/objects/components/ICmpBipedAnimChooser.h>
-#include <source/level/objects/components/ICmpMeshMovement.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class ICmpBipedAnimChooser> ICmpBipedAnimChooser_Ptr;
+typedef shared_ptr<const class ICmpMeshMovement> ICmpMeshMovement_CPtr;
 
 class CmdBipedMove : public ObjectCommand
 {

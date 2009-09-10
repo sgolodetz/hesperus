@@ -11,14 +11,17 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/level/trees/BSPTree.h>
 #include <source/math/geom/Polygon.h>
+#include <source/math/geom/Plane.h>
 #include <source/math/vectors/TexCoords.h>
 #include <source/math/vectors/Vector2d.h>
-#include "Light.h"
-#include "Lightmap.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class BSPTree> BSPTree_Ptr;
+struct Light;
+typedef shared_ptr<class Lightmap> Lightmap_Ptr;
 
 class LightmapGrid
 {

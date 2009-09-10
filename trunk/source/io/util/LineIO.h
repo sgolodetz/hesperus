@@ -6,7 +6,7 @@
 #ifndef H_HESP_LINEIO
 #define H_HESP_LINEIO
 
-#include <istream>
+#include <iosfwd>
 #include <string>
 
 namespace hesp {

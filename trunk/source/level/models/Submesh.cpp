@@ -5,6 +5,13 @@
 
 #include "Submesh.h"
 
+#include <source/materials/Material.h>
+#include <source/math/matrices/RBTMatrix.h>
+#include "BoneHierarchy.h"
+#include "ConfiguredBone.h"
+#include "ConfiguredPose.h"
+#include "Skeleton.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

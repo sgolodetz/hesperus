@@ -6,6 +6,9 @@
 #ifndef H_HESP_EXTENTS
 #define H_HESP_EXTENTS
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
 namespace hesp {
 
 /**

@@ -7,6 +7,8 @@
 
 #include <lodepng.h>
 
+#include "PixelTypes.h"
+
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################

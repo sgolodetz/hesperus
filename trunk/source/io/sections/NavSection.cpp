@@ -10,8 +10,15 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/exceptions/Exception.h>
 #include <source/io/util/LineIO.h>
 #include <source/io/util/NavLinkFactory.h>
+#include <source/level/nav/AdjacencyList.h>
+#include <source/level/nav/NavDataset.h>
+#include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavMesh.h>
+#include <source/level/nav/NavPolygon.h>
+#include <source/level/nav/PathTable.h>
 
 namespace hesp {
 

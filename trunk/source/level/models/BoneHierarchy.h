@@ -9,12 +9,16 @@
 #include <map>
 #include <vector>
 
-#include "Bone.h"
-#include "ConfiguredPose.h"
-#include "Pose.h"
 #include "PoseModifier.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Bone> Bone_Ptr;
+typedef shared_ptr<const class Bone> Bone_CPtr;
+typedef shared_ptr<class ConfiguredPose> ConfiguredPose_Ptr;
+typedef shared_ptr<const class Pose> Pose_CPtr;
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
 
 //#################### TYPEDEFS ####################
 typedef shared_ptr<class BoneHierarchy> BoneHierarchy_Ptr;

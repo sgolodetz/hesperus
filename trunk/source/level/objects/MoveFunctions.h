@@ -6,12 +6,17 @@
 #ifndef H_HESP_MOVEFUNCTIONS
 #define H_HESP_MOVEFUNCTIONS
 
-#include <source/level/nav/NavDataset.h>
-#include <source/level/objects/base/ObjectManager.h>
-#include <source/level/trees/OnionTree.h>
 #include <source/math/vectors/Vector3.h>
+#include <source/util/PolygonTypes.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<const class NavMesh> NavMesh_CPtr;
+class ObjectID;
+typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 class MoveFunctions
 {

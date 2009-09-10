@@ -8,8 +8,9 @@
 
 #include <vector>
 
-#include "XMLLexer.h"
 #include "XMLElement.h"
+#include "XMLLexer.h"
+#include "XMLToken.h"
 
 namespace hesp {
 

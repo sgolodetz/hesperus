@@ -7,6 +7,7 @@
 
 #include "LitGeometryRenderer.h"
 
+#include <source/textures/Texture.h>
 #include <source/textures/TextureFactory.h>
 
 namespace hesp {

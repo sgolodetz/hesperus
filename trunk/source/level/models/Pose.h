@@ -11,9 +11,10 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/math/matrices/RBTMatrix.h>
-
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
 
 //#################### TYPEDEFS ####################
 typedef shared_ptr<class Pose> Pose_Ptr;

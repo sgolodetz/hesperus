@@ -6,10 +6,15 @@
 #ifndef H_HESP_ANIMATIONCONTROLLER
 #define H_HESP_ANIMATIONCONTROLLER
 
+#include <map>
+
 #include "PoseModifier.h"
-#include "Skeleton.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class Pose> Pose_CPtr;
+typedef shared_ptr<const class Skeleton> Skeleton_CPtr;
 
 class AnimationController
 {

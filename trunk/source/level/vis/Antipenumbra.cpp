@@ -5,6 +5,8 @@
 
 #include "Antipenumbra.h"
 
+#include <source/math/geom/GeomUtil.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

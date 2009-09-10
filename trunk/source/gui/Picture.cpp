@@ -9,6 +9,7 @@
 #include <gl/glu.h>
 
 #include <source/images/ImageLoader.h>
+#include <source/textures/Texture.h>
 #include <source/textures/TextureFactory.h>
 #include "Screen.h"
 

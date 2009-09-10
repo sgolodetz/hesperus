@@ -5,6 +5,9 @@
 
 #include "AdjacencyTable.h"
 
+#include <source/exceptions/Exception.h>
+#include "AdjacencyList.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

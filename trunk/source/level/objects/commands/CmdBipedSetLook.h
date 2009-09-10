@@ -7,7 +7,6 @@
 #define H_HESP_CMDBIPEDSETLOOK
 
 #include <source/level/objects/base/ObjectCommand.h>
-#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 

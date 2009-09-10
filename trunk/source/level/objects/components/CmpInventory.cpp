@@ -10,6 +10,7 @@
 
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
 #include <source/level/objects/messages/MsgObjectPredestroyed.h>
+#include <source/util/Properties.h>
 #include "ICmpUsable.h"
 
 namespace hesp {

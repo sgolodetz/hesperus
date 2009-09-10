@@ -5,11 +5,14 @@
 
 #include "NavMeshGenerator.h"
 
-#include <source/level/nav/StepDownLink.h>
-#include <source/level/nav/StepUpLink.h>
-#include <source/level/nav/WalkLink.h>
 #include <source/math/Constants.h>
+#include <source/math/Interval.h>
 #include <source/math/geom/GeomUtil.h>
+#include "NavMesh.h"
+#include "NavPolygon.h"
+#include "StepDownLink.h"
+#include "StepUpLink.h"
+#include "WalkLink.h"
 
 namespace hesp {
 

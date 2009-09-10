@@ -20,6 +20,7 @@ namespace bf = boost::filesystem;
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/LitGeometryRenderer.h>
 #include <source/level/UnlitGeometryRenderer.h>
+#include <source/level/models/ModelManager.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 
 namespace hesp {

@@ -5,8 +5,10 @@
 
 #include "Level.h"
 
+#include <source/level/nav/NavDataset.h>
+#include <source/level/nav/NavMesh.h>
+#include <source/level/trees/BSPTree.h>
 #include <source/level/trees/TreeUtil.h>
-#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 

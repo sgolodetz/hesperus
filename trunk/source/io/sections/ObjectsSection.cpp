@@ -12,6 +12,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
+#include <source/io/util/LineIO.h>
 #include <source/level/objects/components/CmpAABBBounds.h>
 #include <source/level/objects/components/CmpBasicModelRender.h>
 #include <source/level/objects/components/CmpBipedAnimChooser.h>
@@ -31,7 +32,6 @@ namespace bf = boost::filesystem;
 #include <source/level/objects/components/CmpScriptedUsable.h>
 #include <source/level/objects/components/CmpUserBipedYoke.h>
 #include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
-#include <source/util/Properties.h>
 
 namespace hesp {
 

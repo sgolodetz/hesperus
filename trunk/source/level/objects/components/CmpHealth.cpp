@@ -5,6 +5,8 @@
 
 #include "CmpHealth.h"
 
+#include <source/util/Properties.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

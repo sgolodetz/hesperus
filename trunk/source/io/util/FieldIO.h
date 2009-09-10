@@ -6,12 +6,10 @@
 #ifndef H_HESP_FIELDIO
 #define H_HESP_FIELDIO
 
-#include <iostream>
+#include <iosfwd>
 #include <string>
 #include <utility>
 #include <vector>
-
-#include "LineIO.h"
 
 namespace hesp {
 

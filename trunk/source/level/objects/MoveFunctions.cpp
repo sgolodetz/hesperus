@@ -7,7 +7,11 @@
 
 #include <iostream>
 
+#include <source/level/nav/NavDataset.h>
+#include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavMeshUtil.h>
+#include <source/level/nav/NavPolygon.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>

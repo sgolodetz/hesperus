@@ -8,14 +8,18 @@
 
 #include <map>
 
-#include <source/level/trees/OnionTree.h>
-#include <source/math/Interval.h>
 #include <source/math/geom/LineSegment.h>
 #include <source/math/geom/UniquePlanePred.h>
 #include <source/math/vectors/Vector2d.h>
-#include "NavMesh.h"
+#include <source/util/PolygonTypes.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+class Interval;
+typedef shared_ptr<class NavLink> NavLink_Ptr;
+typedef shared_ptr<class NavMesh> NavMesh_Ptr;
+typedef shared_ptr<class NavPolygon> NavPolygon_Ptr;
 
 class NavMeshGenerator
 {

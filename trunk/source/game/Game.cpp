@@ -5,6 +5,8 @@
 
 #include "Game.h"
 
+#include <iostream>
+
 #include <gl/glew.h>
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>

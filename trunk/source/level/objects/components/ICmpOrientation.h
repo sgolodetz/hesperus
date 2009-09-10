@@ -6,10 +6,13 @@
 #ifndef H_HESP_ICMPORIENTATION
 #define H_HESP_ICMPORIENTATION
 
-#include <source/axes/NUVAxes.h>
 #include <source/level/objects/base/ObjectComponent.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NUVAxes> NUVAxes_Ptr;
+typedef shared_ptr<const class NUVAxes> NUVAxes_CPtr;
 
 class ICmpOrientation : public ObjectComponent
 {

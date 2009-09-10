@@ -6,7 +6,6 @@
 #ifndef H_HESP_DEFINITIONSSPECIFIERFILE
 #define H_HESP_DEFINITIONSSPECIFIERFILE
 
-#include <iosfwd>
 #include <string>
 
 namespace hesp {

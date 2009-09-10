@@ -8,10 +8,13 @@
 
 #include <string>
 
-#include <source/math/matrices/RBTMatrix.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class RBTMatrix> RBTMatrix_Ptr;
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
 
 //#################### TYPEDEFS ####################
 typedef shared_ptr<class Bone> Bone_Ptr;

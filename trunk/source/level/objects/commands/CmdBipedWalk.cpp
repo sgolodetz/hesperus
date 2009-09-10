@@ -5,6 +5,9 @@
 
 #include "CmdBipedWalk.h"
 
+#include <source/level/objects/components/ICmpBipedAnimChooser.h>
+#include <source/level/objects/components/ICmpMeshMovement.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

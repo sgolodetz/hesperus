@@ -8,10 +8,12 @@
 
 #include <string>
 
-#include <source/level/Level.h>
 #include "GameState.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Level> Level_Ptr;
 
 class GameState_Level : public GameState
 {

@@ -8,10 +8,12 @@
 
 #include <string>
 
-#include <source/textures/Texture.h>
 #include "GUIComponent.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Texture> Texture_Ptr;
 
 class Picture : public GUIComponent
 {

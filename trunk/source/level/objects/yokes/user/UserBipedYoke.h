@@ -7,8 +7,12 @@
 #define H_HESP_USERBIPEDYOKE
 
 #include <source/level/objects/base/IYoke.h>
+#include <source/level/objects/base/ObjectID.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+class ObjectManager;
 
 /**
 This class represents a yoke that allows the user to control a biped.

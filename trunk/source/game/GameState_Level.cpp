@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 
+#include <source/axes/NUVAxes.h>
 #include <source/cameras/FirstPersonCamera.h>
 #include <source/cameras/FixedCamera.h>
 #include <source/gui/ExplicitLayout.h>
@@ -30,6 +31,7 @@
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/MoveFunctions.h>
+#include <source/util/UserInput.h>
 namespace bf = boost::filesystem;
 
 namespace hesp {

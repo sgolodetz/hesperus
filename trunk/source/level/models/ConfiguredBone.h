@@ -6,9 +6,15 @@
 #ifndef H_HESP_CONFIGUREDBONE
 #define H_HESP_CONFIGUREDBONE
 
-#include <source/math/matrices/RBTMatrix.h>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
+#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
 
 class ConfiguredBone
 {

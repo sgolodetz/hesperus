@@ -5,6 +5,8 @@
 
 #include "CmpOwnable.h"
 
+#include <source/util/Properties.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

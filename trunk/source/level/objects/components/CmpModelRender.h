@@ -10,6 +10,14 @@
 
 namespace hesp {
 
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class AnimationController> AnimationController_Ptr;
+typedef shared_ptr<const class ConfiguredPose> ConfiguredPose_CPtr;
+typedef shared_ptr<class Model> Model_Ptr;
+typedef shared_ptr<const class Model> Model_CPtr;
+typedef shared_ptr<class Skeleton> Skeleton_Ptr;
+typedef shared_ptr<const class Skeleton> Skeleton_CPtr;
+
 class CmpModelRender : public virtual ICmpModelRender
 {
 	//#################### PROTECTED VARIABLES ####################

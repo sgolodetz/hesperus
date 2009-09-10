@@ -1,16 +1,20 @@
 /***
- * hesperus: NavDataSet.h
+ * hesperus: NavDataset.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
 #ifndef H_HESP_NAVDATASET
 #define H_HESP_NAVDATASET
 
-#include "AdjacencyList.h"
-#include "NavMesh.h"
-#include "PathTable.h"
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class AdjacencyList> AdjacencyList_Ptr;
+typedef shared_ptr<class NavMesh> NavMesh_Ptr;
+typedef shared_ptr<class PathTable> PathTable_Ptr;
 
 /**
 An instance of this class stores all the necessary nav data for a particular AABB map.

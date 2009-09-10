@@ -11,18 +11,23 @@
 
 #include <boost/function.hpp>
 #include <boost/optional.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+using boost::shared_ptr;
 using boost::weak_ptr;
 
 #include <fmod.hpp>
 
 #include <source/util/IDAllocator.h>
-#include "SoundInstance.h"
-#include "SoundInstanceUpdater.h"
-#include "SoundListenerUpdater.h"
 
 namespace hesp {
 
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class SoundInstance> SoundInstance_Ptr;
+class SoundInstanceUpdater;
+class SoundListenerUpdater;
+
+//#################### HELPERS ####################
 enum SoundFlags
 {
 	SF_CACHE	= 0,

@@ -5,6 +5,8 @@
 
 #include "CmdBipedJump.h"
 
+#include <source/level/nav/NavDataset.h>
+#include <source/level/nav/NavMesh.h>
 #include <source/level/objects/MoveFunctions.h>
 #include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpPhysics.h>

@@ -8,6 +8,7 @@
 #include <source/ogl/WrappedGL.h>
 
 #include <source/colours/Colour3d.h>
+#include <source/textures/Texture.h>
 
 namespace hesp {
 

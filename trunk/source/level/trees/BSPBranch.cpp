@@ -5,6 +5,8 @@
 
 #include "BSPBranch.h"
 
+#include <source/math/geom/Plane.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

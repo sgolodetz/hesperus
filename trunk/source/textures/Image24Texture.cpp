@@ -8,6 +8,8 @@
 #include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
+#include <source/images/PixelTypes.h>
+
 #define GL_CLAMP_TO_EDGE 0x812F		// this wrapping mode is only defined in OpenGL 1.2, so it's not in the normal header (unfortunately)
 
 namespace hesp {

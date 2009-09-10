@@ -10,6 +10,8 @@
 #include <iostream>
 #endif
 
+#include <source/util/Properties.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

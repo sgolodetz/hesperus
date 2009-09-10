@@ -42,9 +42,7 @@ public:
 	//#################### PRIVATE METHODS ####################
 private:
 	PortalTList clip_portal_to_subtree(const PortalT_Ptr& portal, const NodeT_CPtr& subtreeRoot, PlaneClassifier relativeToPortal = CP_STRADDLE) const;
-
 	PortalTList clip_portal_to_tree(const PortalT_Ptr& portal, const TreeT_CPtr& tree) const;
-
 	PortalT_Ptr make_initial_portal(const Plane& plane) const;
 };
 

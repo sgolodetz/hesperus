@@ -10,6 +10,10 @@
 
 namespace hesp {
 
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class BoneHierarchy> BoneHierarchy_Ptr;
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
+
 class ICmpBasicModelRender : public virtual ICmpModelRender
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################

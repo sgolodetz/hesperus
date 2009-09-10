@@ -5,6 +5,8 @@
 
 #include "TextureMaterial.h"
 
+#include <source/textures/Texture.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

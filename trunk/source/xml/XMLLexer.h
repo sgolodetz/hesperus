@@ -13,9 +13,10 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include "XMLToken.h"
-
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class XMLToken> XMLToken_Ptr;
 
 class XMLLexer
 {

@@ -6,12 +6,14 @@
 #ifndef H_HESP_ICMPANIMCHOOSER
 #define H_HESP_ICMPANIMCHOOSER
 
-#include <source/level/nav/NavDataset.h>
 #include <source/level/objects/base/ObjectComponent.h>
-#include <source/level/trees/OnionTree.h>
-
+#include <source/util/PolygonTypes.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 class ICmpAnimChooser : public ObjectComponent
 {

@@ -6,6 +6,7 @@
 #include "OnionTreeSection.h"
 
 #include <source/io/util/LineIO.h>
+#include <source/level/trees/OnionTree.h>
 
 namespace hesp {
 

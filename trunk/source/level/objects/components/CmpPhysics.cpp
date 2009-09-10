@@ -5,6 +5,8 @@
 
 #include "CmpPhysics.h"
 
+#include <source/util/Properties.h>
+
 namespace hesp {
 
 //#################### STATIC FACTORY METHODS ####################

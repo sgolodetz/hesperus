@@ -6,6 +6,7 @@
 #include "CmpDirectMovement.h"
 
 #include <source/math/geom/GeomUtil.h>
+#include <source/util/Properties.h>
 
 namespace hesp {
 

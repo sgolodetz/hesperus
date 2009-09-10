@@ -5,6 +5,8 @@
 
 #include "ExplicitLayout.h"
 
+#include "GUIComponent.h"
+
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################

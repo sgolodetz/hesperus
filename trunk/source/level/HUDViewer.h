@@ -7,9 +7,11 @@
 #define H_HESP_HUDVIEWER
 
 #include <source/gui/GUIComponent.h>
-#include "Level.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Level> Level_Ptr;
 
 class HUDViewer : public GUIComponent
 {

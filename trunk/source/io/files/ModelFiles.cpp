@@ -15,9 +15,19 @@ using boost::lexical_cast;
 #include <source/images/ImageLoader.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/io/util/LineIO.h>
+#include <source/level/models/Animation.h>
+#include <source/level/models/Bone.h>
+#include <source/level/models/BoneHierarchy.h>
+#include <source/level/models/Mesh.h>
+#include <source/level/models/Model.h>
+#include <source/level/models/Pose.h>
+#include <source/level/models/Skeleton.h>
+#include <source/level/models/Submesh.h>
 #include <source/materials/BasicMaterial.h>
 #include <source/materials/TextureMaterial.h>
+#include <source/math/matrices/RBTMatrix.h>
 #include <source/textures/TextureFactory.h>
+#include <source/xml/XMLParser.h>
 namespace bf = boost::filesystem;
 
 namespace {

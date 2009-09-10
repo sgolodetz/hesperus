@@ -6,10 +6,12 @@
 #ifndef H_HESP_BSPBRANCH
 #define H_HESP_BSPBRANCH
 
-#include <source/math/geom/Plane.h>
 #include "BSPNode.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class Plane> Plane_CPtr;
 
 class BSPBranch : public BSPNode
 {

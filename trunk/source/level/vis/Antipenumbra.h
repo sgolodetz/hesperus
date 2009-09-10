@@ -8,11 +8,8 @@
 
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
-
 #include <source/level/portals/Portal.h>
-#include <source/math/geom/GeomUtil.h>
+#include <source/math/geom/Plane.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {

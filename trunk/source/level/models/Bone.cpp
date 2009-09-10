@@ -5,6 +5,8 @@
 
 #include "Bone.h"
 
+#include <source/math/matrices/RBTMatrix.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

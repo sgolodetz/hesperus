@@ -6,6 +6,7 @@
 #include "GUIComponent.h"
 
 #include <source/ogl/WrappedGL.h>
+#include "Extents.h"
 
 namespace hesp {
 

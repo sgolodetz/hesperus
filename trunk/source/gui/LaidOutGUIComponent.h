@@ -6,9 +6,12 @@
 #ifndef H_HESP_LAIDOUTGUICOMPONENT
 #define H_HESP_LAIDOUTGUICOMPONENT
 
-#include "GUIComponent.h"
+#include "Extents.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class GUIComponent> GUIComponent_Ptr;
 
 struct LaidOutGUIComponent
 {
@@ -17,9 +20,7 @@ struct LaidOutGUIComponent
 	Extents extents;
 
 	//#################### CONSTRUCTORS ####################
-	LaidOutGUIComponent(const GUIComponent_Ptr& component_, const Extents& extents_)
-	:	component(component_), extents(extents_)
-	{}
+	LaidOutGUIComponent(const GUIComponent_Ptr& component_, const Extents& extents_);
 };
 
 }

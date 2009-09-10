@@ -17,6 +17,7 @@ using boost::lexical_cast;
 #include <source/io/files/LitTreeFile.h>
 #include <source/io/files/TreeFile.h>
 #include <source/io/files/VisFile.h>
+#include <source/level/lighting/Lightmap.h>
 #include <source/level/lighting/LightmapGenerator.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;

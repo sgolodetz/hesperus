@@ -6,10 +6,12 @@
 #ifndef H_HESP_TEXTUREMATERIAL
 #define H_HESP_TEXTUREMATERIAL
 
-#include <source/textures/Texture.h>
 #include "Material.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Texture> Texture_Ptr;
 
 class TextureMaterial : public Material
 {
@@ -19,7 +21,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	TextureMaterial(const Texture_Ptr& texture);
+	explicit TextureMaterial(const Texture_Ptr& texture);
 
 	//#################### PUBLIC METHODS ####################
 public:

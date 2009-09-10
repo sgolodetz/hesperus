@@ -11,9 +11,11 @@
 #include <vector>
 
 #include <source/math/geom/AABB.h>
-#include <source/xml/XMLElement.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class XMLElement> XMLElement_CPtr;
 
 class DefinitionsFile
 {

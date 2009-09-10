@@ -16,6 +16,7 @@ namespace bf = boost::filesystem;
 #include <source/io/files/NavFile.h>
 #include <source/io/files/OnionTreeFile.h>
 #include <source/io/util/DirectoryFinder.h>
+#include <source/level/nav/AdjacencyList.h>
 #include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavMeshGenerator.h>

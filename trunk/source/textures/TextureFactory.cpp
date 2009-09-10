@@ -5,6 +5,7 @@
 
 #include "TextureFactory.h"
 
+#include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
 #include <source/exceptions/InvalidParameterException.h>

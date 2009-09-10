@@ -12,6 +12,7 @@
 #include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/yokes/user/UserBipedYoke.h>
+#include <source/util/Properties.h>
 
 namespace hesp {
 

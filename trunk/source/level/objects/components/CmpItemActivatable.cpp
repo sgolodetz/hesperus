@@ -5,6 +5,7 @@
 
 #include "CmpItemActivatable.h"
 
+#include <source/util/Properties.h>
 #include "ICmpInventory.h"
 #include "ICmpOwnable.h"
 

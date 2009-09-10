@@ -9,9 +9,6 @@
 #include <iosfwd>
 #include <set>
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
-
 #include <source/math/geom/Polygon.h>
 
 namespace hesp {

@@ -8,9 +8,13 @@
 
 #include <vector>
 
-#include "Pose.h"
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class Pose> Pose_CPtr;
 
 class Animation
 {

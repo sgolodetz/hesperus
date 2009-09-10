@@ -11,6 +11,7 @@ using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include "LineIO.h"
 
 namespace hesp {
 

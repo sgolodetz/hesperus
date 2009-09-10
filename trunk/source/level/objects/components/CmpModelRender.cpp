@@ -5,6 +5,11 @@
 
 #include "CmpModelRender.h"
 
+#include <source/ogl/WrappedGL.h>
+
+#include <source/level/models/AnimationController.h>
+#include <source/level/models/Model.h>
+#include <source/level/models/ModelManager.h>
 #include "ICmpAABBBounds.h"
 
 namespace hesp {

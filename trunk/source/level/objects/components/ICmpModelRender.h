@@ -6,12 +6,15 @@
 #ifndef H_HESP_ICMPMODELRENDER
 #define H_HESP_ICMPMODELRENDER
 
-#include <source/level/models/ModelManager.h>
-#include <source/level/nav/NavDataset.h>
-#include <source/level/trees/OnionTree.h>
+#include <source/util/PolygonTypes.h>
 #include "ICmpRender.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class ModelManager> ModelManager_Ptr;
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 class ICmpModelRender : public ICmpRender
 {

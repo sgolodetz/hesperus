@@ -10,6 +10,7 @@
 #include <lodepng.h>
 
 #include <source/exceptions/FileNotFoundException.h>
+#include "PixelTypes.h"
 #include "SimpleImage.h"
 
 namespace hesp {

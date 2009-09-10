@@ -10,6 +10,7 @@
 
 #include <source/gui/Screen.h>
 #include <source/level/objects/components/ICmpHealth.h>
+#include "Level.h"
 
 namespace hesp {
 

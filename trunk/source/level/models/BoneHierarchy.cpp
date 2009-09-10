@@ -6,6 +6,11 @@
 #include "BoneHierarchy.h"
 
 #include <source/exceptions/Exception.h>
+#include <source/math/matrices/RBTMatrix.h>
+#include "Bone.h"
+#include "ConfiguredBone.h"
+#include "ConfiguredPose.h"
+#include "Pose.h"
 
 namespace hesp {
 

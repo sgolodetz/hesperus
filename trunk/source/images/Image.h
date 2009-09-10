@@ -9,8 +9,6 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include "PixelTypes.h"
-
 namespace hesp {
 
 /**
@@ -64,8 +62,8 @@ public:
 };
 
 //#################### TYPEDEFS ####################
-typedef Image<Pixel8> Image8;
-typedef Image<Pixel24> Image24;
+typedef Image<class Pixel8> Image8;
+typedef Image<class Pixel24> Image24;
 
 typedef shared_ptr<Image8> Image8_Ptr;
 typedef shared_ptr<const Image8> Image8_CPtr;

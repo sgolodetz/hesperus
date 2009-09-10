@@ -5,7 +5,10 @@
 
 #include "LightmapGenerator.h"
 
+#include <source/level/trees/BSPTree.h>
 #include <source/level/trees/TreeUtil.h>
+#include "Lightmap.h"
+#include "LightmapGrid.h"
 
 namespace hesp {
 

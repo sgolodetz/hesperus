@@ -6,11 +6,17 @@
 #ifndef H_HESP_CMPBASICMODELRENDER
 #define H_HESP_CMPBASICMODELRENDER
 
+#ifdef _MSC_VER
+	#pragma warning(disable:4250)	// Disable the spurious VC++ warning about inheritance via the dominance rule: that's what I intend here
+#endif
+
 #include "CmpModelRender.h"
 #include "ICmpBasicModelRender.h"
-#include "ICmpUsable.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class ICmpUsable> ICmpUsable_Ptr;
 
 class CmpBasicModelRender : public ICmpBasicModelRender, public CmpModelRender
 {

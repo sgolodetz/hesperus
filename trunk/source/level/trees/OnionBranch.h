@@ -6,10 +6,12 @@
 #ifndef H_HESP_ONIONBRANCH
 #define H_HESP_ONIONBRANCH
 
-#include <source/math/geom/Plane.h>
 #include "OnionNode.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class Plane> Plane_CPtr;
 
 class OnionBranch : public OnionNode
 {

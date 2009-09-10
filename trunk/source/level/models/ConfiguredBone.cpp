@@ -6,6 +6,7 @@
 #include "ConfiguredBone.h"
 
 #include <source/exceptions/Exception.h>
+#include <source/math/matrices/RBTMatrix.h>
 
 namespace hesp {
 

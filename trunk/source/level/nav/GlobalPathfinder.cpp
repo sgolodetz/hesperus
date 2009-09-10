@@ -7,6 +7,11 @@
 
 #include <queue>
 
+#include "NavLink.h"
+#include "NavMesh.h"
+#include "NavPolygon.h"
+#include "PathTable.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

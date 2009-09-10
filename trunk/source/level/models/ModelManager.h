@@ -9,9 +9,13 @@
 #include <map>
 #include <string>
 
-#include "Model.h"
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Model> Model_Ptr;
 
 class ModelManager
 {

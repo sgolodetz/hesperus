@@ -6,10 +6,16 @@
 #ifndef H_HESP_MATHUTIL
 #define H_HESP_MATHUTIL
 
-#include <source/math/matrices/RBTMatrix.h>
-#include <source/math/quaternions/RBTQuaternion.h>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class RBTMatrix> RBTMatrix_Ptr;
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
+typedef shared_ptr<class RBTQuaternion> RBTQuaternion_Ptr;
+typedef shared_ptr<const class RBTQuaternion> RBTQuaternion_CPtr;
 
 struct MathUtil
 {

@@ -8,14 +8,16 @@
 
 #include <vector>
 
-#include <source/level/trees/BSPTree.h>
 #include <source/level/vis/VisTable.h>
 #include <source/util/PolygonTypes.h>
 #include "Light.h"
-#include "Lightmap.h"
-#include "LightmapGrid.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class BSPTree> BSPTree_Ptr;
+typedef shared_ptr<class Lightmap> Lightmap_Ptr;
+typedef shared_ptr<class LightmapGrid> LightmapGrid_Ptr;
 
 class LightmapGenerator
 {

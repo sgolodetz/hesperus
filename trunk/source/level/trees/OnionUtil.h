@@ -6,11 +6,14 @@
 #ifndef H_HESP_ONIONUTIL
 #define H_HESP_ONIONUTIL
 
-#include <source/math/geom/Plane.h>
 #include <source/math/vectors/Vector3.h>
-#include "OnionTree.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class OnionNode> OnionNode_CPtr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
+typedef shared_ptr<const class Plane> Plane_CPtr;
 
 class OnionUtil
 {

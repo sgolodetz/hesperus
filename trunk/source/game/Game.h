@@ -6,16 +6,17 @@
 #ifndef H_HESP_GAME
 #define H_HESP_GAME
 
-#include <iostream>
 #include <string>
 
 #include <SDL.h>
 
 #include <source/audio/SoundSystem.h>
 #include <source/util/UserInput.h>
-#include "GameState.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class GameState> GameState_Ptr;
 
 class Game
 {

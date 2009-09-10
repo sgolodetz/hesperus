@@ -9,17 +9,23 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/level/models/ModelManager.h>
-#include <source/level/nav/NavDataset.h>
-#include <source/level/objects/base/ObjectManager.h>
 #include <source/level/portals/OnionPortal.h>
 #include <source/level/portals/Portal.h>
-#include <source/level/trees/BSPTree.h>
-#include <source/level/trees/OnionTree.h>
 #include <source/level/vis/VisTable.h>
-#include "GeometryRenderer.h"
+#include <source/util/PolygonTypes.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class BSPTree> BSPTree_Ptr;
+typedef shared_ptr<const class BSPTree> BSPTree_CPtr;
+typedef shared_ptr<class GeometryRenderer> GeometryRenderer_Ptr;
+typedef shared_ptr<const class GeometryRenderer> GeometryRenderer_CPtr;
+typedef shared_ptr<class ModelManager> ModelManager_Ptr;
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
+typedef shared_ptr<class OnionTree> OnionTree_Ptr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 class Level
 {

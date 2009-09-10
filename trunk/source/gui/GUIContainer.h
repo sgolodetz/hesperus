@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "GUIComponent.h"
 #include "LaidOutGUIComponent.h"
 
 namespace hesp {

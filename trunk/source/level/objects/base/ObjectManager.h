@@ -15,12 +15,14 @@
 #include <source/datastructures/PriorityQueue.h>
 #include <source/math/geom/AABB.h>
 #include <source/util/IDAllocator.h>
-#include "IObjectComponent.h"
 #include "ListenerTable.h"
-#include "Message.h"
 #include "ObjectID.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
+typedef shared_ptr<const class Message> Message_CPtr;
 
 class ObjectManager
 {

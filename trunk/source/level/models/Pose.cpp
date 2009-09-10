@@ -6,6 +6,7 @@
 #include "Pose.h"
 
 #include <source/math/MathUtil.h>
+#include <source/math/quaternions/RBTQuaternion.h>
 
 namespace hesp {
 

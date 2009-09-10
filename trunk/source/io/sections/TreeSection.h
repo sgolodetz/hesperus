@@ -6,9 +6,14 @@
 #ifndef H_HESP_TREESECTION
 #define H_HESP_TREESECTION
 
-#include <source/level/trees/BSPTree.h>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class BSPTree> BSPTree_Ptr;
+typedef shared_ptr<const class BSPTree> BSPTree_CPtr;
 
 struct TreeSection
 {

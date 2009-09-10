@@ -8,12 +8,15 @@
 
 #include <vector>
 
-#include <source/level/nav/NavDataset.h>
-#include <source/level/trees/OnionTree.h>
-#include <source/util/UserInput.h>
-#include "ObjectCommand.h"
+#include <source/util/PolygonTypes.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<class ObjectCommand> ObjectCommand_Ptr;
+typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
+class UserInput;
 
 class IYoke
 {

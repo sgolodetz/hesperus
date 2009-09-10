@@ -8,9 +8,10 @@
 
 #include <vector>
 
-#include "AdjacencyList.h"
-
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+class AdjacencyList;
 
 /**
 This class provides an adjacency table representation of a +ve-weighted,

@@ -5,11 +5,19 @@
 
 #include "LevelViewer.h"
 
+#include <source/ogl/WrappedGL.h>
 #include <gl/glu.h>
 
+#include <source/cameras/Camera.h>
 #include <source/colours/Colour3d.h>
 #include <source/gui/Screen.h>
+#include <source/level/nav/NavDataset.h>
+#include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavMesh.h>
+#include <source/level/nav/NavPolygon.h>
 #include <source/level/objects/components/ICmpModelRender.h>
+#include <source/level/trees/BSPTree.h>
+#include "GeometryRenderer.h"
 
 namespace hesp {
 

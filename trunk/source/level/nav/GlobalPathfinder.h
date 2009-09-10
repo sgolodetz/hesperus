@@ -6,10 +6,16 @@
 #ifndef H_HESP_GLOBALPATHFINDER
 #define H_HESP_GLOBALPATHFINDER
 
-#include "AdjacencyList.h"
-#include "PathTable.h"
+#include <list>
+
+#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class AdjacencyList> AdjacencyList_CPtr;
+typedef shared_ptr<const class NavMesh> NavMesh_CPtr;
+typedef shared_ptr<const class PathTable> PathTable_CPtr;
 
 /**
 This class provides global (high-level) pathfinding, i.e.

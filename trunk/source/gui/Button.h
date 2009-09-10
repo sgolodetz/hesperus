@@ -11,10 +11,12 @@
 #include <boost/function.hpp>
 #include <boost/optional.hpp>
 
-#include <source/textures/Texture.h>
 #include "GUIComponent.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Texture> Texture_Ptr;
 
 class Button : public GUIComponent
 {

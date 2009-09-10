@@ -12,8 +12,12 @@
 #include <ASXRefType.h>
 
 #include <source/level/objects/base/IYoke.h>
+#include <source/level/objects/base/ObjectID.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+class ObjectManager;
 
 class MinimusScriptYoke : public IYoke, public ASXRefType<MinimusScriptYoke>
 {

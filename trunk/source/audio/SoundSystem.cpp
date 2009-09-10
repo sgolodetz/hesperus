@@ -11,6 +11,9 @@ using boost::shared_ptr;
 #include <fmod_errors.h>
 
 #include <source/exceptions/Exception.h>
+#include "SoundInstance.h"
+#include "SoundInstanceUpdater.h"
+#include "SoundListenerUpdater.h"
 
 namespace hesp {
 

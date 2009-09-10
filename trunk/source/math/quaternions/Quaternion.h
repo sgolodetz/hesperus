@@ -6,7 +6,7 @@
 #ifndef H_HESP_QUATERNION
 #define H_HESP_QUATERNION
 
-#include <ostream>
+#include <iosfwd>
 
 #include <source/math/vectors/Vector3.h>
 

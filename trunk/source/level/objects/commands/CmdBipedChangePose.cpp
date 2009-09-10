@@ -8,6 +8,7 @@
 #include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>
+#include <source/level/trees/OnionTree.h>
 #include <source/level/trees/TreeUtil.h>
 
 namespace hesp {

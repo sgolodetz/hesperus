@@ -3,8 +3,6 @@
  * Copyright Stuart Golodetz, 2008. All rights reserved.
  ***/
 
-#include <cmath>
-
 #include <source/math/geom/GeomUtil.h>
 
 namespace hesp {

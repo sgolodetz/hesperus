@@ -6,10 +6,14 @@
 #ifndef H_HESP_GAMESTATE
 #define H_HESP_GAMESTATE
 
-#include <source/gui/GUIComponent.h>
-#include <source/util/UserInput.h>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class GUIComponent> GUIComponent_Ptr;
+class UserInput;
 
 //#################### TYPEDEFS ####################
 typedef shared_ptr<class GameState> GameState_Ptr;

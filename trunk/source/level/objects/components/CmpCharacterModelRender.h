@@ -10,6 +10,9 @@
 
 namespace hesp {
 
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
+
 class CmpCharacterModelRender : public CmpModelRender
 {
 	//#################### TYPEDEFS ####################

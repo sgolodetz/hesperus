@@ -7,9 +7,11 @@
 #define H_HESP_TEXTUREFACTORY
 
 #include <source/images/Image.h>
-#include "Texture.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Texture> Texture_Ptr;
 
 class TextureFactory
 {

@@ -5,6 +5,11 @@
 
 #include "Model.h"
 
+#include "AnimationController.h"
+#include "BoneHierarchy.h"
+#include "Mesh.h"
+#include "Skeleton.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

@@ -14,6 +14,9 @@
 
 namespace hesp {
 
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class IYoke> IYoke_Ptr;
+
 class CmpMinimusScriptYoke : public ICmpYoke
 {
 	//#################### PRIVATE VARIABLES ####################

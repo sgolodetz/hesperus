@@ -5,6 +5,8 @@
 
 #include "Mesh.h"
 
+#include "Submesh.h"
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################

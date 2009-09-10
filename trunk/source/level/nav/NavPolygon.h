@@ -9,7 +9,6 @@
 #include <vector>
 
 #include <source/util/PolygonTypes.h>
-#include "NavLink.h"
 
 namespace hesp {
 

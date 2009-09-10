@@ -6,6 +6,7 @@
 #include "XMLLexer.h"
 
 #include <source/exceptions/Exception.h>
+#include "XMLToken.h"
 
 namespace hesp {
 

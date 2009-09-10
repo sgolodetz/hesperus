@@ -6,11 +6,7 @@
 #ifndef H_HESP_PORTAL
 #define H_HESP_PORTAL
 
-#include <ostream>
-#include <sstream>
-
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
+#include <iosfwd>
 
 #include <source/math/geom/Polygon.h>
 

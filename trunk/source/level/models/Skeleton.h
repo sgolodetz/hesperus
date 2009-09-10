@@ -6,10 +6,21 @@
 #ifndef H_HESP_SKELETON
 #define H_HESP_SKELETON
 
-#include "Animation.h"
-#include "BoneHierarchy.h"
+#include <map>
+#include <vector>
+
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class Animation> Animation_CPtr;
+typedef shared_ptr<class BoneHierarchy> BoneHierarchy_Ptr;
+typedef shared_ptr<const class BoneHierarchy> BoneHierarchy_CPtr;
+typedef shared_ptr<const class ConfiguredPose> ConfiguredPose_CPtr;
+typedef shared_ptr<class Pose> Pose_Ptr;
+typedef shared_ptr<const class RBTMatrix> RBTMatrix_CPtr;
 
 class Skeleton
 {
@@ -21,7 +32,7 @@ private:
 
 	// In order to do mesh skinning, we need to be able to move points into the
 	// (rest) coordinate frame of each bone. These matrices fulfil that role.
-	std::vector<RBTMatrix_Ptr> m_toBoneMatrices;
+	std::vector<RBTMatrix_CPtr> m_toBoneMatrices;
 
 	//#################### CONSTRUCTORS ####################
 public:

@@ -6,6 +6,7 @@
 #include "OnionUtil.h"
 
 #include <source/math/geom/GeomUtil.h>
+#include "OnionTree.h"
 
 namespace hesp {
 

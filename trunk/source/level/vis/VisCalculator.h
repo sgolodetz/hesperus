@@ -12,6 +12,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/math/geom/Plane.h>
 #include <source/level/portals/Portal.h>
 #include "VisTable.h"
 

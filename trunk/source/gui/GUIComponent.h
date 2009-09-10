@@ -9,10 +9,11 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include <source/util/UserInput.h>
-#include "Extents.h"
-
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<struct Extents> Extents_Ptr;
+class UserInput;
 
 class GUIComponent
 {

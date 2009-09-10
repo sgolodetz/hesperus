@@ -17,7 +17,7 @@
 
 #include <source/exceptions/FileNotFoundException.h>
 #include <source/images/SimpleImage.h>
-using namespace hesp;
+#include "PixelTypes.h"
 
 namespace hesp {
 

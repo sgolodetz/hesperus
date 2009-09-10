@@ -7,6 +7,8 @@
 
 #include <cmath>
 
+#include <source/math/matrices/RBTMatrix.h>
+#include <source/math/quaternions/RBTQuaternion.h>
 #include "Constants.h"
 
 namespace hesp {

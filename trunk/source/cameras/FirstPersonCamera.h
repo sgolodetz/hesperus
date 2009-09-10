@@ -6,10 +6,13 @@
 #ifndef H_HESP_FIRSTPERSONCAMERA
 #define H_HESP_FIRSTPERSONCAMERA
 
-#include <source/level/objects/base/ObjectManager.h>
+#include <source/level/objects/base/ObjectID.h>
 #include "Camera.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
 
 class FirstPersonCamera : public Camera
 {

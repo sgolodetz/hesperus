@@ -6,6 +6,9 @@
 #include "MinimusGotoPositionYoke.h"
 
 #include <source/level/nav/GlobalPathfinder.h>
+#include <source/level/nav/NavDataset.h>
+#include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavMeshUtil.h>
 #include <source/level/objects/commands/CmdBipedSetLook.h>
 #include <source/level/objects/commands/CmdBipedWalk.h>

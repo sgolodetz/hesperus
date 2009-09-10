@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
-#include "Plane.h"
+#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 

@@ -6,9 +6,16 @@
 #ifndef H_HESP_MINIMUSGOTOPOSITIONYOKE
 #define H_HESP_MINIMUSGOTOPOSITIONYOKE
 
+#include <list>
+
 #include <source/level/objects/base/IYoke.h>
+#include <source/level/objects/base/ObjectID.h>
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class NavLink> NavLink_Ptr;
+class ObjectManager;
 
 /**
 This class represents a goto position yoke for the Minimus bot.

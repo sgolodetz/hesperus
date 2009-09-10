@@ -5,6 +5,7 @@
 
 #include "CmpConsumeActivatable.h"
 
+#include <source/util/Properties.h>
 #include "ICmpInventory.h"
 
 namespace hesp {

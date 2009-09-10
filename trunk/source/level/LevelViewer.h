@@ -6,11 +6,13 @@
 #ifndef H_HESP_LEVELVIEWER
 #define H_HESP_LEVELVIEWER
 
-#include <source/cameras/Camera.h>
 #include <source/gui/GUIComponent.h>
 #include "Level.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Camera> Camera_Ptr;
 
 class LevelViewer : public GUIComponent
 {

@@ -6,6 +6,7 @@
 #include "Lightmap.h"
 
 #include <source/exceptions/InvalidParameterException.h>
+#include <source/images/PixelTypes.h>
 #include <source/images/SimpleImage.h>
 
 namespace hesp {
