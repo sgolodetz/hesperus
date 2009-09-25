@@ -166,10 +166,10 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs;
+	BoundsManager_Ptr boundsManager;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
-	objectManager = ObjectsSection::load(is, aabbs, componentPropertyTypes, baseDir);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, baseDir);
 
 	// Load the models.
 	modelManager = load_models(objectManager);
@@ -243,10 +243,10 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs;
+	BoundsManager_Ptr boundsManager;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
-	objectManager = ObjectsSection::load(is, aabbs, componentPropertyTypes, baseDir);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, baseDir);
 
 	// Load the models.
 	modelManager = load_models(objectManager);

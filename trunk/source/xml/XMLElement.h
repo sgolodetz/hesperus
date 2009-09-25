@@ -21,11 +21,15 @@ typedef shared_ptr<const class XMLElement> XMLElement_CPtr;
 
 class XMLElement
 {
+	//#################### TYPEDEFS ####################
+public:
+	typedef std::map<std::string,std::vector<XMLElement_CPtr> > ChildMap;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::string m_name;
 	std::map<std::string,std::string> m_attributes;
-	std::map<std::string,std::vector<XMLElement_CPtr> > m_children;
+	ChildMap m_children;
 
 	//#################### CONSTRUCTORS ####################
 public:

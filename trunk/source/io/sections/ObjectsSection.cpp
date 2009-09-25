@@ -13,9 +13,9 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/LineIO.h>
-#include <source/level/objects/components/CmpAABBBounds.h>
 #include <source/level/objects/components/CmpBasicModelRender.h>
 #include <source/level/objects/components/CmpBipedAnimChooser.h>
+#include <source/level/objects/components/CmpBounds.h>
 #include <source/level/objects/components/CmpCharacterModelRender.h>
 #include <source/level/objects/components/CmpConsumeActivatable.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
@@ -36,7 +36,7 @@ namespace bf = boost::filesystem;
 namespace hesp {
 
 //#################### LOADING METHODS ####################
-ObjectManager_Ptr ObjectsSection::load(std::istream& is, const std::vector<AABB3d>& aabbs,
+ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPtr& boundsManager,
 									   const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
 									   const boost::filesystem::path& baseDir)
 {
@@ -44,7 +44,7 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const std::vector<AABB3
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	MinimusScriptYoke::register_for_scripting(aiEngine);
 
-	ObjectManager_Ptr objectManager(new ObjectManager(aabbs, componentPropertyTypes));
+	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes));
 
 	LineIO::read_checked_line(is, "Objects");
 	LineIO::read_checked_line(is, "{");
@@ -245,9 +245,9 @@ std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component
 	static bool done = false;
 	if(!done)
 	{
-		ADD_LOADER(AABBBounds);
 		ADD_LOADER(BasicModelRender);
 		ADD_LOADER(BipedAnimChooser);
+		ADD_LOADER(Bounds);
 		ADD_LOADER(CharacterModelRender);
 		ADD_LOADER(ConsumeActivatable);
 		ADD_LOADER(DirectMovement);

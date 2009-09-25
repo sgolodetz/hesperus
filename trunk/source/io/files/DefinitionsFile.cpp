@@ -5,16 +5,15 @@
 
 #include "DefinitionsFile.h"
 
-#include <fstream>
-
-// FIXME: These are only necessary because of extract_vector3d() - they can be removed when it's refactored.
-#include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
-#include <source/io/util/LineIO.h>
+#include <source/level/collisions/AABBBounds.h>
+#include <source/level/collisions/BoundsManager.h>
+#include <source/level/collisions/PointBounds.h>
+#include <source/level/collisions/SphereBounds.h>
 #include <source/xml/XMLParser.h>
 
 namespace hesp {
@@ -24,10 +23,11 @@ namespace hesp {
 Loads the specified definitions file.
 
 @param filename					The name of the file
-@param aabbs					Used to return the AABBs used for objects
+@param boundsManager			Used to return the various bounds for objects
 @param componentPropertyTypes	Used to return the types of the properties in the various object components
 */
-void DefinitionsFile::load(const std::string& filename, std::vector<AABB3d>& aabbs, std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
+void DefinitionsFile::load(const std::string& filename, BoundsManager_Ptr& boundsManager,
+						   std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 {
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
 	XMLParser parser(lexer);
@@ -41,17 +41,9 @@ void DefinitionsFile::load(const std::string& filename, std::vector<AABB3d>& aab
 	{
 		XMLElement_CPtr objectsElt = definitionsElt->find_unique_child("objects");
 
-		// Load the object AABBs.
-		XMLElement_CPtr aabbsElt = objectsElt->find_unique_child("aabbs");
-		std::vector<XMLElement_CPtr> aabbElts = aabbsElt->find_children("aabb");
-
-		for(size_t i=0, size=aabbElts.size(); i<size; ++i)
-		{
-			const XMLElement_CPtr& aabbElt = aabbElts[i];
-			XMLElement_CPtr minsElt = aabbElt->find_unique_child("mins");
-			XMLElement_CPtr maxsElt = aabbElt->find_unique_child("maxs");
-			aabbs.push_back(AABB3d(extract_vector3d(minsElt), extract_vector3d(maxsElt)));
-		}
+		// Load the object bounds.
+		XMLElement_CPtr boundsElt = objectsElt->find_unique_child("bounds");
+		boundsManager = load_bounds(boundsElt);
 
 		// Load the component property types.
 		XMLElement_CPtr componentsElt = objectsElt->find_unique_child("components");
@@ -70,10 +62,6 @@ void DefinitionsFile::load(const std::string& filename, std::vector<AABB3d>& aab
 				const XMLElement_CPtr& propertyElt = propertyElts[j];
 				const std::string& name = propertyElt->attribute("name");
 				std::string type = propertyElt->attribute("type");
-
-				// Treat an AABBid as an int within the game (the map editor needs to treat them specially though).
-				boost::algorithm::replace_all(type, "AABBid", "int");
-
 				propertyTypes.insert(std::make_pair(name, type));
 			}
 		}
@@ -85,42 +73,92 @@ void DefinitionsFile::load(const std::string& filename, std::vector<AABB3d>& aab
 }
 
 /**
-Loads an array of AABBs from the specified definitions file.
+Loads the bounds from the specified definitions file.
 
-@param filename	The name of the file from which to load the AABBs
-@return			The AABBs
+@param filename	The name of the file from which to load the bounds
+@return			The bounds
 */
-std::vector<AABB3d> DefinitionsFile::load_aabbs_only(const std::string& filename)
+BoundsManager_Ptr DefinitionsFile::load_bounds_only(const std::string& filename)
 {
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
 	XMLParser parser(lexer);
 	XMLElement_CPtr root = parser.parse();
 	XMLElement_CPtr definitionsElt = root->find_unique_child("definitions");
 	XMLElement_CPtr objectsElt = definitionsElt->find_unique_child("objects");
-
-	XMLElement_CPtr aabbsElt = objectsElt->find_unique_child("aabbs");
-	std::vector<XMLElement_CPtr> aabbElts = aabbsElt->find_children("aabb");
-	int aabbCount = static_cast<int>(aabbElts.size());
-
-	std::vector<AABB3d> aabbs;
-	for(int i=0; i<aabbCount; ++i)
-	{
-		const XMLElement_CPtr& aabbElt = aabbElts[i];
-		XMLElement_CPtr minsElt = aabbElt->find_unique_child("mins");
-		XMLElement_CPtr maxsElt = aabbElt->find_unique_child("maxs");
-		aabbs.push_back(AABB3d(extract_vector3d(minsElt), extract_vector3d(maxsElt)));
-	}
-	return aabbs;
+	XMLElement_CPtr boundsElt = objectsElt->find_unique_child("bounds");
+	return load_bounds(boundsElt);
 }
 
 //#################### LOADING SUPPORT METHODS ####################
-Vector3d DefinitionsFile::extract_vector3d(const XMLElement_CPtr& elt)
+Bounds_Ptr DefinitionsFile::load_aabb_bounds(const XMLElement_CPtr& elt)
 {
-	// FIXME: This is the same as the method in ModelFiles. Both should be extracted into a single function elsewhere.
-	double x = lexical_cast<double,std::string>(elt->attribute("x"));
-	double y = lexical_cast<double,std::string>(elt->attribute("y"));
-	double z = lexical_cast<double,std::string>(elt->attribute("z"));
-	return Vector3d(x,y,z);
+	double sx = lexical_cast<double,std::string>(elt->attribute("sx"));
+	double sy = lexical_cast<double,std::string>(elt->attribute("sy"));
+	double sz = lexical_cast<double,std::string>(elt->attribute("sz"));
+	return Bounds_Ptr(new AABBBounds(Vector3d(sx,sy,sz)));
+}
+
+BoundsManager_Ptr DefinitionsFile::load_bounds(const XMLElement_CPtr& boundsElt)
+{
+	typedef BoundsManager::BoundsGroup BoundsGroup;
+	std::vector<Bounds_CPtr> bounds;
+	std::map<std::string,int> boundsLookup;
+	std::map<std::string,BoundsGroup> boundsGroups;
+
+	// Load the bounds.
+	typedef Bounds_Ptr(*BoundsLoader)(const XMLElement_CPtr&);
+	typedef std::map<std::string,BoundsLoader> BoundsLoaders;
+	BoundsLoaders boundsLoaders;
+	boundsLoaders["aabb"]	= load_aabb_bounds;
+	boundsLoaders["point"]	= load_point_bounds;
+	boundsLoaders["sphere"]	= load_sphere_bounds;
+
+	std::vector<XMLElement_CPtr> boundElts = boundsElt->find_children("bound");
+	for(size_t i=0, size=boundElts.size(); i<size; ++i)
+	{
+		const XMLElement_CPtr& boundElt = boundElts[i];
+		const std::string& boundName = boundElt->attribute("name");
+		const std::string& boundType = boundElt->attribute("type");
+
+		BoundsLoaders::const_iterator jt = boundsLoaders.find(boundType);
+		if(jt != boundsLoaders.end())
+		{
+			BoundsLoader loader = jt->second;
+			boundsLookup.insert(std::make_pair(boundName, static_cast<int>(bounds.size())));
+			bounds.push_back(loader(boundElt));
+		}
+		else throw Exception("No such bounds type: " + boundType);
+	}
+
+	// Load the groups.
+	std::vector<XMLElement_CPtr> groupElts = boundsElt->find_children("group");
+	for(size_t i=0, groupCount=groupElts.size(); i<groupCount; ++i)
+	{
+		const XMLElement_CPtr& groupElt = groupElts[i];
+		const std::string& groupName = groupElt->attribute("name");
+
+		std::vector<XMLElement_CPtr> postureElts = groupElt->find_children("posture");
+		for(size_t j=0, postureCount=postureElts.size(); j<postureCount; ++j)
+		{
+			const XMLElement_CPtr& postureElt = postureElts[j];
+			const std::string& postureName = postureElt->attribute("name");
+			const std::string& postureBound = postureElt->attribute("bound");
+			boundsGroups[groupName].insert(std::make_pair(postureName, postureBound));
+		}
+	}
+
+	return BoundsManager_Ptr(new BoundsManager(bounds, boundsLookup, boundsGroups));
+}
+
+Bounds_Ptr DefinitionsFile::load_point_bounds(const XMLElement_CPtr&)
+{
+	return Bounds_Ptr(new PointBounds);
+}
+
+Bounds_Ptr DefinitionsFile::load_sphere_bounds(const XMLElement_CPtr& elt)
+{
+	double radius = lexical_cast<double,std::string>(elt->attribute("radius"));
+	return Bounds_Ptr(new SphereBounds(radius));
 }
 
 }

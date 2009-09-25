@@ -13,13 +13,13 @@
 namespace hesp {
 
 //#################### LOADING METHODS ####################
-ObjectManager_Ptr ObjectsFile::load(const std::string& filename, const std::vector<AABB3d>& aabbs,
+ObjectManager_Ptr ObjectsFile::load(const std::string& filename, const BoundsManager_CPtr& boundsManager,
 									const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
 									const boost::filesystem::path& baseDir)
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	return ObjectsSection::load(is, aabbs, componentPropertyTypes, baseDir);
+	return ObjectsSection::load(is, boundsManager, componentPropertyTypes, baseDir);
 }
 
 //#################### SAVING METHODS ####################

@@ -16,7 +16,6 @@
 #include <source/level/models/Skeleton.h>
 #include <source/math/matrices/RBTMatrix.h>
 #include <source/util/Properties.h>
-#include "ICmpAABBBounds.h"
 #include "ICmpAnimChooser.h"
 #include "ICmpOrientation.h"
 #include "ICmpPosition.h"
@@ -64,8 +63,8 @@ void CmpBasicModelRender::render() const
 
 	if(m_highlights)
 	{
-		// If the object should be highlighted, render the object's AABB.
-		render_aabb(p);
+		// If the object should be highlighted, render the object's bounds.
+		render_bounds(p);
 	}
 
 	// Render the object's NUV axes.

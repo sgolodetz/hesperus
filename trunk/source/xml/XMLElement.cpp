@@ -29,14 +29,14 @@ const std::string& XMLElement::attribute(const std::string& name) const
 
 std::vector<XMLElement_CPtr> XMLElement::find_children(const std::string& name) const
 {
-	std::map<std::string,std::vector<XMLElement_CPtr> >::const_iterator it = m_children.find(name);
+	ChildMap::const_iterator it = m_children.find(name);
 	if(it != m_children.end()) return it->second;
 	else return std::vector<XMLElement_CPtr>();
 }
 
 XMLElement_CPtr XMLElement::find_unique_child(const std::string& name) const
 {
-	std::map<std::string,std::vector<XMLElement_CPtr> >::const_iterator it = m_children.find(name);
+	ChildMap::const_iterator it = m_children.find(name);
 	if(it != m_children.end())
 	{
 		const std::vector<XMLElement_CPtr>& children = it->second;

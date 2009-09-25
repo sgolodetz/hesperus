@@ -7,27 +7,27 @@
 
 #include <iostream>
 
-#include <source/math/geom/GeomUtil.h>
+#include <source/level/collisions/Bounds.h>
 
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 /**
-Expand the brush in such a way that the expanded brush touches the AABB centre
-whenever the original brush touches the AABB.
+Expand the brush in such a way that the expanded brush touches the bounds centre
+whenever the original brush touches the bounds.
 
 @param brush		The brush
-@param aabb			The AABB
-@param mapIndex		The index of the map the expanded brush will be in (i.e. the index of this AABB in the AABB array)
+@param bounds		The bounds
+@param mapIndex		The index of the map the expanded brush will be in (i.e. the index of this bounds in the bounds array)
 @return				The expanded brush
 */
-BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_CPtr& brush, const AABB3d& aabb, int mapIndex)
+BrushExpander::ColPolyBrush_Ptr BrushExpander::expand_brush(const ColPolyBrush_CPtr& brush, const Bounds& bounds, int mapIndex)
 {
 	// Determine which planes need expanding (these are the face planes + any bevel planes).
 	BrushPlaneSet_Ptr brushPlanes = determine_brush_planes(brush);
 
-	// Expand the brush planes against the AABB.
-	brushPlanes = expand_brush_planes(brushPlanes, aabb);
+	// Expand the brush planes against the bounds.
+	brushPlanes = expand_brush_planes(brushPlanes, bounds);
 
 	std::vector<CollisionPolygon_Ptr> expandedFaces;
 
@@ -225,59 +225,33 @@ BrushExpander::BrushPlaneSet_Ptr BrushExpander::determine_brush_planes(const Col
 }
 
 /**
-Moves a brush plane along its normal so that the "expanded" plane will touch
-the centre of the AABB precisely when the original plane would touch the AABB.
+Moves a brush plane along its normal so that the "expanded" plane will touch the centre
+of the bounds precisely when the original plane would touch the bounds itself.
 
 @param brushPlane	The original plane
-@param aabb			The AABB
+@param bounds		The bounds
 @return				The expanded plane
 */
-BrushExpander::BrushPlane
-BrushExpander::expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb)
+BrushExpander::BrushPlane BrushExpander::expand_brush_plane(const BrushPlane& brushPlane, const Bounds& bounds)
 {
 	const Vector3d& n = brushPlane.plane.normal();
 	const double d = brushPlane.plane.distance_value();
-
-	const double minX = aabb.minimum().x, minY = aabb.minimum().y, minZ = aabb.minimum().z;
-	const double maxX = aabb.maximum().x, maxY = aabb.maximum().y, maxZ = aabb.maximum().z;
-
-	Vector3d v;		// a vector from the AABB origin to an AABB vertex which would first hit the brush plane
-	int xCode = n.x > 0 ? 4 : 0;
-	int yCode = n.y > 0 ? 2 : 0;
-	int zCode = n.z > 0 ? 1 : 0;
-	int fullCode = xCode + yCode + zCode;
-
-	switch(fullCode)
-	{
-		case 0: v = Vector3d(maxX, maxY, maxZ); break; // n: x-, y-, z-
-		case 1: v = Vector3d(maxX, maxY, minZ); break; // n: x-, y-, z+
-		case 2: v = Vector3d(maxX, minY, maxZ); break; // n: x-, y+, z-
-		case 3: v = Vector3d(maxX, minY, minZ); break; // n: x-, y+, z+
-		case 4: v = Vector3d(minX, maxY, maxZ); break; // n: x+, y-, z-
-		case 5: v = Vector3d(minX, maxY, minZ); break; // n: x+, y-, z+
-		case 6: v = Vector3d(minX, minY, maxZ); break; // n: x+, y+, z-
-		default: v = Vector3d(minX, minY, minZ); break; // n: x+, y+, z+ (case 7)
-	}
-
-	// v . -n = |v| cos theta (see p.26 of J.M.P. van Waveren's thesis on the Q3 bot for a diagram)
-	double expansionDistance = v.dot(-n);
-
+	double expansionDistance = bounds.brush_expansion_distance(n);
 	return BrushPlane(Plane(n, d+expansionDistance), brushPlane.auxData);
 }
 
 /**
-Expands the set of brush planes against the AABB.
+Expands the set of brush planes against the bounds.
 
 @param brushPlanes	The brush planes
-@param aabb			The AABB
+@param bounds		The bounds
 */
-BrushExpander::BrushPlaneSet_Ptr
-BrushExpander::expand_brush_planes(const BrushPlaneSet_CPtr& brushPlanes, const AABB3d& aabb)
+BrushExpander::BrushPlaneSet_Ptr BrushExpander::expand_brush_planes(const BrushPlaneSet_CPtr& brushPlanes, const Bounds& bounds)
 {
 	BrushPlaneSet_Ptr expandedBrushPlanes(new BrushPlaneSet);
 	for(BrushPlaneSet::const_iterator it=brushPlanes->begin(), iend=brushPlanes->end(); it!=iend; ++it)
 	{
-		expandedBrushPlanes->insert(expand_brush_plane(*it, aabb));
+		expandedBrushPlanes->insert(expand_brush_plane(*it, bounds));
 	}
 	return expandedBrushPlanes;
 }

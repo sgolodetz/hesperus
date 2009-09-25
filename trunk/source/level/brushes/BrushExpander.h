@@ -8,13 +8,14 @@
 
 #include <set>
 
-#include <source/math/geom/AABB.h>
-#include <source/math/geom/Plane.h>
 #include <source/math/geom/UniquePlanePred.h>
 #include <source/util/PolygonTypes.h>
 #include "PolyhedralBrush.h"
 
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+class Bounds;
 
 class BrushExpander
 {
@@ -56,14 +57,14 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	static ColPolyBrush_Ptr expand_brush(const ColPolyBrush_CPtr& brush, const AABB3d& aabb, int mapIndex);
+	static ColPolyBrush_Ptr expand_brush(const ColPolyBrush_CPtr& brush, const Bounds& bounds, int mapIndex);
 
 	//#################### PRIVATE METHODS ####################
 private:
 	static PlaneClassifier classify_brush_against_plane(const ColPolyBrush_CPtr& brush, const Plane& plane);
 	static BrushPlaneSet_Ptr determine_brush_planes(const ColPolyBrush_CPtr& brush);
-	static BrushPlane expand_brush_plane(const BrushPlane& brushPlane, const AABB3d& aabb);
-	static BrushPlaneSet_Ptr expand_brush_planes(const BrushPlaneSet_CPtr& brushPlanes, const AABB3d& aabb);
+	static BrushPlane expand_brush_plane(const BrushPlane& brushPlane, const Bounds& bounds);
+	static BrushPlaneSet_Ptr expand_brush_planes(const BrushPlaneSet_CPtr& brushPlanes, const Bounds& bounds);
 };
 
 }

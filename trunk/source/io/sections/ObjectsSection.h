@@ -13,12 +13,12 @@
 #include <ASXEngine.h>
 
 #include <source/io/util/FieldIO.h>
-#include <source/math/geom/AABB.h>
 #include <source/util/Properties.h>
 
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
 typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
 
@@ -26,7 +26,7 @@ class ObjectsSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static ObjectManager_Ptr load(std::istream& is, const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const boost::filesystem::path& baseDir);
+	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING METHODS ####################
 public:

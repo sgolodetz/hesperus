@@ -1,25 +1,25 @@
 /***
- * hesperus: CmpAABBBounds.h
+ * hesperus: CmpBounds.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMPAABBBOUNDS
-#define H_HESP_CMPAABBBOUNDS
+#ifndef H_HESP_CMPBOUNDS
+#define H_HESP_CMPBOUNDS
 
-#include "ICmpAABBBounds.h"
+#include "ICmpBounds.h"
 
 namespace hesp {
 
-class CmpAABBBounds : public ICmpAABBBounds
+class CmpBounds : public ICmpBounds
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<int> m_aabbIndices;
-	int m_pose;
+	std::string m_boundsGroup;
+	std::string m_posture;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpAABBBounds(const std::vector<int>& aabbIndices, int pose);
+	CmpBounds(const std::string& boundsGroup, const std::string& posture);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -27,11 +27,10 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const std::vector<int>& aabb_indices() const;
-	int cur_aabb_index() const;
-	int pose() const;
+	const std::string& bounds_group() const;
+	const std::string& posture() const;
 	Properties save() const;
-	void set_pose(int pose);
+	void set_posture(const std::string& posture);
 };
 
 }

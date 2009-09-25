@@ -16,6 +16,8 @@ namespace bf = boost::filesystem;
 #include <source/io/files/NavFile.h>
 #include <source/io/files/OnionTreeFile.h>
 #include <source/io/util/DirectoryFinder.h>
+#include <source/level/collisions/Bounds.h>
+#include <source/level/collisions/BoundsManager.h>
 #include <source/level/nav/AdjacencyList.h>
 #include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavDataset.h>
@@ -44,20 +46,20 @@ void run(const std::string& definitionsSpecifierFilename, const std::string& tre
 	// Read in the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Read in the entity AABBs.
+	// Read in the bounds.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+	BoundsManager_Ptr boundsManager = DefinitionsFile::load_bounds_only((settingsDir / definitionsFilename).file_string());
 
 	// Read in the polygons and onion tree.
 	ColPolyVector polygons;
 	OnionTree_Ptr tree;
 	OnionTreeFile::load(treeFilename, polygons, tree);
 
-	// Check that the number of AABBs and the number of maps in the tree match up.
-	int aabbCount = static_cast<int>(aabbs.size());
+	// Check that the number of bounds and the number of maps in the tree match up.
+	int boundsCount = boundsManager->bounds_count();
 	int mapCount = tree->map_count();
-	if(aabbCount != mapCount) throw Exception("There must be exactly one AABB per map in the onion tree");
+	if(boundsCount != mapCount) throw Exception("There must be exactly one bounds per map in the onion tree");
 
 	std::vector<NavDataset_Ptr> datasets;
 
@@ -76,7 +78,7 @@ void run(const std::string& definitionsSpecifierFilename, const std::string& tre
 		}
 
 		// Generate the navigation mesh.
-		double maxHeightDifference = (aabbs[i].maximum().z - aabbs[i].minimum().z) / 2;
+		double maxHeightDifference = boundsManager->bounds(i)->height() / 2;
 		NavMeshGenerator generator(mapPolygons, maxHeightDifference);
 		NavMesh_Ptr mesh = generator.generate_mesh();
 

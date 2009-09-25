@@ -22,9 +22,11 @@
 #include <source/math/geom/GeomUtil.h>
 #include <source/level/HUDViewer.h>
 #include <source/level/LevelViewer.h>
+#include <source/level/collisions/Bounds.h>
+#include <source/level/collisions/BoundsManager.h>
 #include <source/level/objects/base/ObjectCommand.h>
-#include <source/level/objects/components/ICmpAABBBounds.h>
 #include <source/level/objects/components/ICmpActivatable.h>
+#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPhysics.h>
@@ -134,17 +136,17 @@ void GameState_Level::do_activatables(UserInput& input)
 	{
 		// TODO: Determine whether the activatable is in a visible leaf and skip further testing if not.
 
-		ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(activatables[i], cmpBounds);
+		ICmpBounds_Ptr cmpBounds = objectManager->get_component(activatables[i], cmpBounds);
 		ICmpPosition_Ptr cmpPosition = objectManager->get_component(activatables[i], cmpPosition);
 
-		const AABB3d& aabb = objectManager->aabbs()[cmpBounds->cur_aabb_index()];
+		const Bounds_CPtr& bounds = objectManager->bounds_manager()->bounds(cmpBounds->bounds_group(), cmpBounds->posture());
 		const Vector3d& position = cmpPosition->position();
-		AABB3d tAABB = aabb.translate(position);
-		boost::optional<std::pair<Vector3d,Vector3d> > result = determine_halfray_intersection_with_aabb(eye, look, tAABB);
+		Vector3d localEye = eye - position;		// the eye location in local model coordinates
+		boost::optional<std::pair<Vector3d,Vector3d> > result = bounds->determine_halfray_intersection(localEye, look);
 		if(result)
 		{
-			Vector3d hit = result->first;
-			double distSquared = eye.distance_squared(hit);
+			Vector3d hit = result->first;		// the location of the hit (in local model coordinates)
+			double distSquared = localEye.distance_squared(hit);
 			if(distSquared < nearestDistSquared)
 			{
 				nearestObject = activatables[i];

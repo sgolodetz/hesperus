@@ -13,9 +13,9 @@
 #include <source/level/models/Skeleton.h>
 #include <source/math/matrices/RBTMatrix.h>
 #include <source/util/Properties.h>
-#include "ICmpAABBBounds.h"
 #include "ICmpAnimChooser.h"
 #include "ICmpBasicModelRender.h"
+#include "ICmpBounds.h"
 #include "ICmpInventory.h"
 #include "ICmpOrientation.h"
 #include "ICmpOwnable.h"
@@ -40,8 +40,8 @@ IObjectComponent_Ptr CmpCharacterModelRender::load(const Properties& properties)
 //#################### PUBLIC METHODS ####################
 void CmpCharacterModelRender::check_dependencies() const
 {
-	check_dependency<ICmpAABBBounds>();
 	check_dependency<ICmpAnimChooser>();
+	check_dependency<ICmpBounds>();
 	check_dependency<ICmpInventory>();
 	check_dependency<ICmpOrientation>();
 	check_dependency<ICmpPosition>();
@@ -82,8 +82,8 @@ void CmpCharacterModelRender::render() const
 
 	if(m_highlights)
 	{
-		// If the object should be highlighted, render the object's AABB.
-		render_aabb(p);
+		// If the object should be highlighted, render the object's bounds.
+		render_bounds(p);
 	}
 
 	// Render the object's NUV axes.

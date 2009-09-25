@@ -5,10 +5,11 @@
 
 #include "CmdBipedJump.h"
 
+#include <source/level/collisions/BoundsManager.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavMesh.h>
 #include <source/level/objects/MoveFunctions.h>
-#include <source/level/objects/components/ICmpAABBBounds.h>
+#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpPhysics.h>
 
 namespace hesp {
@@ -22,10 +23,10 @@ CmdBipedJump::CmdBipedJump(const ObjectID& objectID, const Vector3d& dir)
 void CmdBipedJump::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 						   const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);		assert(cmpBounds != NULL);
+	ICmpBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);			assert(cmpBounds != NULL);
 	ICmpPhysics_Ptr cmpPhysics = objectManager->get_component(m_objectID, cmpPhysics);		assert(cmpPhysics != NULL);
 
-	int mapIndex = cmpBounds->cur_aabb_index();
+	int mapIndex = objectManager->bounds_manager()->lookup_bounds_index(cmpBounds->bounds_group(), cmpBounds->posture());
 	NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 
 	if(MoveFunctions::attempt_navmesh_acquisition(m_objectID, objectManager.get(), polygons, tree, navMesh))

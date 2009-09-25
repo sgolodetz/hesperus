@@ -88,15 +88,15 @@ try
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Load the object AABBs and component property types from the definitions file.
+	// Load the object bounds and component property types from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs;
+	BoundsManager_Ptr boundsManager;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
 
 	// Load the objects.
-	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, aabbs, componentPropertyTypes, baseDir);
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_lit(outputFilename,
@@ -147,15 +147,15 @@ try
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Load the object AABBs and component property types from the definitions file.
+	// Load the object bounds and component property types from the definitions file.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs;
+	BoundsManager_Ptr boundsManager;
 	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), aabbs, componentPropertyTypes);
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
 
 	// Load the objects.
-	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, aabbs, componentPropertyTypes, baseDir);
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_unlit(outputFilename,

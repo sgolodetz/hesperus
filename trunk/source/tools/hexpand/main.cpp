@@ -20,7 +20,7 @@ using boost::lexical_cast;
 #include <source/io/files/DefinitionsSpecifierFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/level/brushes/BrushExpander.h>
-#include <source/math/geom/AABB.h>
+#include <source/level/collisions/BoundsManager.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
@@ -42,10 +42,10 @@ void run_expander(const std::string& definitionsSpecifierFilename, const std::st
 	// Read in the input definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
-	// Read in the entity AABBs.
+	// Read in the bounds.
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
-	std::vector<AABB3d> aabbs = DefinitionsFile::load_aabbs_only((settingsDir / definitionsFilename).file_string());
+	BoundsManager_Ptr boundsManager = DefinitionsFile::load_bounds_only((settingsDir / definitionsFilename).file_string());
 
 	// Read in the input brushes.
 	typedef PolyhedralBrush<CollisionPolygon> ColPolyBrush;
@@ -61,16 +61,16 @@ void run_expander(const std::string& definitionsSpecifierFilename, const std::st
 
 	const std::string outputExtension = ".ebr";
 
-	// For each AABB, expand the brushes and write the expanded brushes to file.
-	int aabbCount = static_cast<int>(aabbs.size());
+	// For each bounds, expand the brushes and write the expanded brushes to file.
+	int boundsCount = boundsManager->bounds_count();
 	int brushCount = static_cast<int>(inputBrushes.size());
-	for(int i=0; i<aabbCount; ++i)
+	for(int i=0; i<boundsCount; ++i)
 	{
 		// Expand the brushes.
 		ColPolyBrushVector expandedBrushes(brushCount);
 		for(int j=0; j<brushCount; ++j)
 		{
-			expandedBrushes[j] = BrushExpander::expand_brush(inputBrushes[j], aabbs[i], i);
+			expandedBrushes[j] = BrushExpander::expand_brush(inputBrushes[j], *boundsManager->bounds(i), i);
 		}
 
 		// Write the expanded brushes to file.

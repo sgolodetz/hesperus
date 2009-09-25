@@ -5,7 +5,9 @@
 
 #include "CmdBipedChangePose.h"
 
-#include <source/level/objects/components/ICmpAABBBounds.h>
+#include <source/level/collisions/Bounds.h>
+#include <source/level/collisions/BoundsManager.h>
+#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/trees/OnionTree.h>
@@ -22,9 +24,11 @@ CmdBipedChangePose::CmdBipedChangePose(const ObjectID& objectID)
 void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 								 const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
+	// FIXME: CmdBipedChangePose needs renaming to CmdBipedChangePosture
+
 	// FIXME: Crouching is currently a "jolt" from one pose to another. It should really be a smooth transition.
 
-	ICmpAABBBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);			assert(cmpBounds != NULL);
+	ICmpBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);				assert(cmpBounds != NULL);
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(m_objectID, cmpMovement);	assert(cmpMovement != NULL);
 	ICmpPosition_Ptr cmpPosition = objectManager->get_component(m_objectID, cmpPosition);		assert(cmpPosition != NULL);
 
@@ -33,14 +37,15 @@ void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const s
 
 	Vector3d source = cmpPosition->position();
 
-	int curPose = cmpBounds->pose();
-	int newPose = 1 - curPose;
-	int curMapIndex = cmpBounds->aabb_indices()[curPose];
-	int newMapIndex = cmpBounds->aabb_indices()[newPose];
-	const AABB3d& curAABB = objectManager->aabbs()[curMapIndex];
-	const AABB3d& newAABB = objectManager->aabbs()[newMapIndex];
+	const std::string& curPosture = cmpBounds->posture();
+	std::string newPosture = curPosture == "stand" ? "crouch" : "stand";
+	BoundsManager_CPtr boundsManager = objectManager->bounds_manager();
+	int curMapIndex = boundsManager->lookup_bounds_index(cmpBounds->bounds_group(), curPosture);
+	int newMapIndex = boundsManager->lookup_bounds_index(cmpBounds->bounds_group(), newPosture);
+	const Bounds_CPtr& curBounds = boundsManager->bounds(curMapIndex);
+	const Bounds_CPtr& newBounds = boundsManager->bounds(newMapIndex);
 
-	double deltaZ = newAABB.maximum().z - curAABB.maximum().z;
+	double deltaZ = (newBounds->height() - curBounds->height()) / 2;
 
 	Vector3d dest = source + Vector3d(0,0,deltaZ);
 
@@ -49,8 +54,8 @@ void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const s
 	const OnionLeaf *destLeaf = tree->leaf(destLeafIndex);
 	if(destLeaf->is_solid(newMapIndex)) return;
 
-	// If the pose change is ok, set the new pose and update the object position to reflect the centre of the new AABB.
-	cmpBounds->set_pose(newPose);
+	// If the posture change is ok, set the new posture and update the object position to reflect the centre of the new bounds.
+	cmpBounds->set_posture(newPosture);
 	cmpPosition->set_position(dest);
 	cmpMovement->set_cur_nav_poly_index(-1);
 }

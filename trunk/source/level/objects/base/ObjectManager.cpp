@@ -26,8 +26,8 @@ bool is_simulable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
 
 //#################### CONSTRUCTORS ####################
-ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
-:	m_aabbs(aabbs), m_componentPropertyTypes(componentPropertyTypes)
+ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
+:	m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes)
 {
 	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
@@ -38,11 +38,6 @@ ObjectManager::ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<st
 }
 
 //#################### PUBLIC METHODS ####################
-const std::vector<AABB3d>& ObjectManager::aabbs() const
-{
-	return m_aabbs;
-}
-
 /**
 Informs the object manager that the specified component is interested in receiving
 broadcasted messsages about the specified object.
@@ -53,6 +48,11 @@ broadcasted messsages about the specified object.
 void ObjectManager::add_listener(IObjectComponent *listener, const ObjectID& id)
 {
 	m_listenerTable.add_listener(listener->object_id(), listener->group_type(), id);
+}
+
+const BoundsManager_CPtr& ObjectManager::bounds_manager() const
+{
+	return m_boundsManager;
 }
 
 void ObjectManager::broadcast_message(const Message_CPtr& msg)

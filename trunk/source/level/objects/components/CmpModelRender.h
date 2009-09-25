@@ -42,7 +42,7 @@ public:
 protected:
 	const Model_Ptr& model();
 	Model_CPtr model() const;
-	void render_aabb(const Vector3d& p) const;
+	void render_bounds(const Vector3d& p) const;
 	static void render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v);
 	const Skeleton_Ptr& skeleton();
 	Skeleton_CPtr skeleton() const;

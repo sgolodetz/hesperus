@@ -3,12 +3,12 @@ Objects
 	Count = 5
 	Object
 	{
-		AABBBounds
-		{
-			AABBs = [0,1]
-			Pose = 0
-		}
 		BipedAnimChooser;
+		Bounds
+		{
+			Group = "biped"
+			Posture = "stand"
+		}
 		CharacterModelRender
 		{
 			InclineBones = < ("",<("head",( 1 0 0 ))>) ; ("with_onehanded",<("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))>) >
@@ -39,12 +39,12 @@ Objects
 	}
 	Object
 	{
-		AABBBounds
-		{
-			AABBs = [0,1]
-			Pose = 0
-		}
 		BipedAnimChooser;
+		Bounds
+		{
+			Group = "biped"
+			Posture = "stand"
+		}
 		CharacterModelRender
 		{
 			InclineBones = < ("",<("head",( 1 0 0 ))>) ; ("with_onehanded",<("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))>) >
@@ -78,14 +78,14 @@ Objects
 	}
 	Object
 	{
-		AABBBounds
-		{
-			AABBs = [0,1]
-			Pose = 0
-		}
 		BasicModelRender
 		{
 			ModelName = "Test-15"
+		}
+		Bounds
+		{
+			Group = "biped"
+			Posture = "stand"
 		}
 		ItemActivatable;
 		Orientation

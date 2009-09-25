@@ -21,6 +21,7 @@
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
 typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<const class Message> Message_CPtr;
 
@@ -35,7 +36,7 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::vector<AABB3d> m_aabbs;
+	BoundsManager_CPtr m_boundsManager;
 	std::map<std::string,std::map<std::string,std::string> > m_componentPropertyTypes;
 	std::map<std::string,GroupPredicate> m_groupPredicates;
 	IDAllocator m_idAllocator;
@@ -46,12 +47,12 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	ObjectManager(const std::vector<AABB3d>& aabbs, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
+	ObjectManager(const BoundsManager_CPtr& boundsManager, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const std::vector<AABB3d>& aabbs() const;
 	void add_listener(IObjectComponent *listener, const ObjectID& id);
+	const BoundsManager_CPtr& bounds_manager() const;
 	void broadcast_message(const Message_CPtr& msg);
 	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
 	void consolidate_object_ids();
