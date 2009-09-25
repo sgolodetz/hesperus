@@ -6,7 +6,7 @@
 #include "UserBipedYoke.h"
 
 #include <source/axes/NUVAxes.h>
-#include <source/level/objects/commands/CmdBipedChangePose.h>
+#include <source/level/objects/commands/CmdBipedChangePosture.h>
 #include <source/level/objects/commands/CmdBipedJump.h>
 #include <source/level/objects/commands/CmdBipedRun.h>
 #include <source/level/objects/commands/CmdBipedTurn.h>
@@ -81,7 +81,7 @@ std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 
 	if(input.key_down(SDLK_c))
 	{
-		commands.push_back(ObjectCommand_Ptr(new CmdBipedChangePose(m_objectID)));
+		commands.push_back(ObjectCommand_Ptr(new CmdBipedChangePosture(m_objectID)));
 		input.release_key(SDLK_c);
 	}
 

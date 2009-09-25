@@ -1,9 +1,9 @@
 /***
- * hesperus: CmdBipedChangePose.cpp
+ * hesperus: CmdBipedChangePosture.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "CmdBipedChangePose.h"
+#include "CmdBipedChangePosture.h"
 
 #include <source/level/collisions/Bounds.h>
 #include <source/level/collisions/BoundsManager.h>
@@ -16,16 +16,14 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmdBipedChangePose::CmdBipedChangePose(const ObjectID& objectID)
+CmdBipedChangePosture::CmdBipedChangePosture(const ObjectID& objectID)
 :	m_objectID(objectID)
 {}
 
 //#################### PUBLIC METHODS ####################
-void CmdBipedChangePose::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
-								 const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
+void CmdBipedChangePosture::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
+									const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
-	// FIXME: CmdBipedChangePose needs renaming to CmdBipedChangePosture
-
 	// FIXME: Crouching is currently a "jolt" from one pose to another. It should really be a smooth transition.
 
 	ICmpBounds_Ptr cmpBounds = objectManager->get_component(m_objectID, cmpBounds);				assert(cmpBounds != NULL);

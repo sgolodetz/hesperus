@@ -1309,7 +1309,7 @@
 						Name=".cpp"
 						>
 						<File
-							RelativePath="..\level\objects\commands\CmdBipedChangePose.cpp"
+							RelativePath="..\level\objects\commands\CmdBipedChangePosture.cpp"
 							>
 						</File>
 						<File
@@ -1345,7 +1345,7 @@
 						Name=".h"
 						>
 						<File
-							RelativePath="..\level\objects\commands\CmdBipedChangePose.h"
+							RelativePath="..\level\objects\commands\CmdBipedChangePosture.h"
 							>
 						</File>
 						<File

@@ -1,16 +1,16 @@
 /***
- * hesperus: CmdBipedChangePose.h
+ * hesperus: CmdBipedChangePosture.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_CMDBIPEDCHANGEPOSE
-#define H_HESP_CMDBIPEDCHANGEPOSE
+#ifndef H_HESP_CMDBIPEDCHANGEPOSTURE
+#define H_HESP_CMDBIPEDCHANGEPOSTURE
 
 #include <source/level/objects/base/ObjectCommand.h>
 
 namespace hesp {
 
-class CmdBipedChangePose : public ObjectCommand
+class CmdBipedChangePosture : public ObjectCommand
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -18,7 +18,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmdBipedChangePose(const ObjectID& objectID);
+	CmdBipedChangePosture(const ObjectID& objectID);
 
 	//#################### PUBLIC METHODS ####################
 public:
