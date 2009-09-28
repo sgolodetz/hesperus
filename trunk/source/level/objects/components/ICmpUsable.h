@@ -9,6 +9,7 @@
 #include <boost/optional.hpp>
 
 #include <source/level/objects/base/ObjectComponent.h>
+#include <source/math/vectors/Vector3.h>
 
 namespace hesp {
 

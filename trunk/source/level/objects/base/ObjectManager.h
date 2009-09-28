@@ -11,9 +11,10 @@
 #include <vector>
 
 #include <boost/function.hpp>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
 
 #include <source/datastructures/PriorityQueue.h>
-#include <source/math/geom/AABB.h>
 #include <source/util/IDAllocator.h>
 #include "ListenerTable.h"
 #include "ObjectID.h"

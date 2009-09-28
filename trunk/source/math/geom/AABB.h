@@ -29,7 +29,6 @@ public:
 public:
 	const Vec& maximum() const;
 	const Vec& minimum() const;
-	AABB translate(const Vec& offset) const;
 	static bool within_range(const AABB& lhs, const AABB& rhs, double tolerance);
 
 	//#################### PRIVATE METHODS ####################

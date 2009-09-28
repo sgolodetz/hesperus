@@ -90,6 +90,36 @@ AABB3d construct_bounding_box(const std::vector<shared_ptr<Polygon<Vert,AuxData>
 }
 
 /**
+Given the half-ray r(t) = s + tv [t >= 0] and a shape, finds the points at which
+the half-ray enters and leaves the shape (if any).
+
+@param s		The start point of the half-ray
+@param v		The direction vector of the half-ray
+@param shape	The shape
+@return			The pair of (enter,leave) points, if they exist, or boost::none otherwise
+*/
+template <typename T>
+boost::optional<std::pair<Vector3d,Vector3d> > determine_halfray_intersection_with_shape(const Vector3d& s, const Vector3d& v, const T& shape)
+{
+	boost::optional<std::pair<double,double> > params = determine_ray_intersection_parameters(s, v, shape);
+
+	if(params)
+	{
+		double t_E = std::max(params->first, 0.0);	// clamp the entry t value (t_E) to 0
+		double t_L = params->second;
+
+		// If there's still a bit of ray which intersects the shape (even after clamping to the forward part of it),
+		// then calculate the intersection points and return them.
+		if(t_E < t_L)
+		{
+			return std::make_pair(s + t_E * v, s + t_L * v);
+		}
+	}
+
+	return boost::none;
+}
+
+/**
 Determines the point at which the line r = s + tv intersects the specified plane.
 
 <p><b>Preconditions:</b>

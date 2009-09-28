@@ -46,7 +46,7 @@ double AABBBounds::brush_expansion_distance(const Vector3d& n) const
 boost::optional<std::pair<Vector3d,Vector3d> > AABBBounds::determine_halfray_intersection(const Vector3d& s, const Vector3d& v) const
 {
 	AABB3d aabb(-m_scale, m_scale);
-	return determine_halfray_intersection_with_aabb(s, v, aabb);
+	return determine_halfray_intersection_with_shape(s, v, aabb);
 }
 
 double AABBBounds::height() const
@@ -58,6 +58,7 @@ void AABBBounds::render(const Vector3d& pos) const
 {
 	Vector3d mins = pos - m_scale, maxs = pos + m_scale;
 
+	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDisable(GL_CULL_FACE);
 	glColor3d(1,1,0);
@@ -88,8 +89,7 @@ void AABBBounds::render(const Vector3d& pos) const
 		glVertex3d(mins.x, maxs.y, maxs.z);
 	glEnd();
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glEnable(GL_CULL_FACE);
+	glPopAttrib();
 }
 
 }

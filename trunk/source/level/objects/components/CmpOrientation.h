@@ -6,6 +6,7 @@
 #ifndef H_HESP_CMPORIENTATION
 #define H_HESP_CMPORIENTATION
 
+#include <source/math/vectors/Vector3.h>
 #include "ICmpOrientation.h"
 
 namespace hesp {

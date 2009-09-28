@@ -7,6 +7,7 @@
 
 #include <set>
 
+#include "Sphere.h"
 #include "UniquePlanePred.h"
 
 namespace hesp {
@@ -58,35 +59,6 @@ PlaneClassifier classify_point_against_plane(const Vector3d& p, const Plane& pla
 }
 
 /**
-Given the half-ray r(t) = s + tv [t >= 0] and an axis-aligned bounding box aabb, finds the points at which
-the half-ray enters and leaves aabb (if any).
-
-@param s		The start point of the half-ray
-@param v		The direction vector of the half-ray
-@param aabb		The axis-aligned bounding box
-@return			The pair of (enter,leave) points, if they exist, or boost::none otherwise
-*/
-boost::optional<std::pair<Vector3d,Vector3d> > determine_halfray_intersection_with_aabb(const Vector3d& s, const Vector3d& v, const AABB3d& aabb)
-{
-	boost::optional<std::pair<double,double> > params = determine_ray_intersection_with_aabb_parameters(s, v, aabb);
-
-	if(params)
-	{
-		double t_E = std::max(params->first, 0.0);	// clamp the entry t value (t_E) to 0
-		double t_L = params->second;
-
-		// If there's still a bit of ray which intersects the AABB (even after clamping to the forward part of it),
-		// then calculate the intersection points and return them.
-		if(t_E < t_L)
-		{
-			return std::make_pair(s + t_E * v, s + t_L * v);
-		}
-	}
-
-	return boost::none;
-}
-
-/**
 Determines the point of intersection of a line segment with another (non-vertical) line segment, if any.
 
 @param segment		The first line segment (can be arbitrary)
@@ -126,7 +98,7 @@ for which the ray is inside aabb (if any).
 @param aabb		The axis-aligned bounding box
 @return			The non-empty interval for which the ray is inside aabb, if any, or boost::none otherwise
 */
-boost::optional<std::pair<double,double> > determine_ray_intersection_with_aabb_parameters(const Vector3d& s, const Vector3d& v, const AABB3d& aabb)
+boost::optional<std::pair<double,double> > determine_ray_intersection_parameters(const Vector3d& s, const Vector3d& v, const AABB3d& aabb)
 {
 	/*
 	An AABB is the intersection of three slabs (a slab is the infinite volume between two parallel planes).
@@ -181,6 +153,52 @@ boost::optional<std::pair<double,double> > determine_ray_intersection_with_aabb_
 	// If the t interval during which the ray is within the AABB is non-empty, return it. Otherwise, return boost::none.
 	if(t_E < t_L) return std::make_pair(t_E, t_L);
 	else return boost::none;
+}
+
+/**
+Given a ray r(t) = s + tv and a sphere, finds the non-empty interval [t_e,t_l]
+for which the ray is inside the sphere (if any).
+
+@param s		A point on the ray
+@param v		The direction vector of the ray
+@param sphere	The sphere
+@return			The non-empty interval for which the ray is inside the sphere, if any, or boost::none otherwise
+*/
+boost::optional<std::pair<double,double> > determine_ray_intersection_parameters(const Vector3d& s, const Vector3d& v, const Sphere& sphere)
+{
+	/*
+	Letting C be the centre of the sphere, and R be its radius, we need to solve (for t) the quadratic equation:
+
+	|r(t) - C|^2 - R^2 = 0
+
+	Letting k = s - C, and working through the maths:
+
+	|s + tv - C|^2 - R^2 = 0
+	|k + tv|^2 - R^2 = 0
+	(kx + t.vx)^2 + (ky + t.vy)^2 + (kz + t.vz)^2 - R^2 = 0
+	t^2(vx^2 + vy^2 + vz^2) + t(2kx.vx + 2ky.vy + 2kz.vz) + (kx^2 + ky^2 + kz^2 - R^2) = 0
+	t^2(v.v) + t(2k.v) + (k.k - R^2) = 0
+	*/
+
+	Vector3d k = s - sphere.centre();
+	double R = sphere.radius();
+
+	double a = v.dot(v);
+	double b = 2*k.dot(v);
+	double c = k.dot(k) - R*R;
+
+	double discrim = b*b - 4*a*c;
+
+	// If the ray doesn't strictly intersect the sphere, exit early.
+	if(discrim <= 0) return boost::none;
+
+	double denom = 2*a;
+	double sqrtDiscrim = sqrt(discrim);
+	double tE = (-b - sqrtDiscrim) / denom, tL = (-b + sqrtDiscrim) / denom;
+
+	assert(tE < tL);
+
+	return std::make_pair(tE, tL);
 }
 
 /**

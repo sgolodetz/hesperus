@@ -25,8 +25,7 @@ double PointBounds::height() const
 
 void PointBounds::render(const Vector3d& pos) const
 {
-	// NYI
-	throw 23;
+	// No-op
 }
 
 }

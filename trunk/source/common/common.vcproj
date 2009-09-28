@@ -478,6 +478,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\math\geom\Sphere.h"
+						>
+					</File>
+					<File
 						RelativePath="..\math\geom\UniquePlanePred.h"
 						>
 					</File>
@@ -507,6 +511,10 @@
 					</File>
 					<File
 						RelativePath="..\math\geom\Plane.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\math\geom\Sphere.cpp"
 						>
 					</File>
 					<File

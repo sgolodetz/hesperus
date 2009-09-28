@@ -18,6 +18,9 @@
 
 namespace hesp {
 
+//#################### FORWARD DECLARATIONS ####################
+class Sphere;
+
 //#################### CLASSES ####################
 template <typename Vert, typename AuxData>
 struct SplitResults
@@ -42,7 +45,8 @@ PlaneClassifier classify_polygon_against_plane(const Polygon<Vert,AuxData>& poly
 template <typename Vert, typename AuxData>
 AABB3d construct_bounding_box(const std::vector<shared_ptr<Polygon<Vert,AuxData> > >& polys);
 
-boost::optional<std::pair<Vector3d,Vector3d> > determine_halfray_intersection_with_aabb(const Vector3d& s, const Vector3d& v, const AABB3d& aabb);
+template <typename T>
+boost::optional<std::pair<Vector3d,Vector3d> > determine_halfray_intersection_with_shape(const Vector3d& s, const Vector3d& v, const T& shape);
 
 boost::optional<Vector3d> determine_linesegment_intersection_with_nonvertical_linesegment(const LineSegment3d& segment, const LineSegment3d& nvSegment);
 
@@ -52,7 +56,9 @@ std::pair<Vec,double> determine_line_intersection_with_plane(const Vec& s, const
 template <typename Vec>
 std::pair<Vec,bool> determine_linesegment_intersection_with_plane(const Vec& p1, const Vec& p2, const Plane& plane, bool strict = true);
 
-boost::optional<std::pair<double,double> > determine_ray_intersection_with_aabb_parameters(const Vector3d& s, const Vector3d& v, const AABB3d& aabb);
+boost::optional<std::pair<double,double> > determine_ray_intersection_parameters(const Vector3d& s, const Vector3d& v, const AABB3d& aabb);
+
+boost::optional<std::pair<double,double> > determine_ray_intersection_parameters(const Vector3d& s, const Vector3d& v, const Sphere& sphere);
 
 double displacement_from_plane(const Vector3d& p, const Plane& plane);
 
