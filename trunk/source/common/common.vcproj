@@ -1256,6 +1256,10 @@
 							RelativePath="..\level\objects\base\ObjectManager.cpp"
 							>
 						</File>
+						<File
+							RelativePath="..\level\objects\base\ObjectSpecification.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name=".h"
@@ -1294,6 +1298,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\base\ObjectManager.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\base\ObjectSpecification.h"
 							>
 						</File>
 					</Filter>

@@ -13,25 +13,10 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/LineIO.h>
-#include <source/level/objects/components/CmpBasicModelRender.h>
-#include <source/level/objects/components/CmpBipedAnimChooser.h>
-#include <source/level/objects/components/CmpBounds.h>
-#include <source/level/objects/components/CmpCharacterModelRender.h>
-#include <source/level/objects/components/CmpConsumeActivatable.h>
-#include <source/level/objects/components/CmpDirectMovement.h>
-#include <source/level/objects/components/CmpHealth.h>
-#include <source/level/objects/components/CmpInventory.h>
-#include <source/level/objects/components/CmpItemActivatable.h>
-#include <source/level/objects/components/CmpMeshMovement.h>
-#include <source/level/objects/components/CmpMinimusScriptYoke.h>
-#include <source/level/objects/components/CmpOrientation.h>
-#include <source/level/objects/components/CmpOwnable.h>
-#include <source/level/objects/components/CmpPhysics.h>
-#include <source/level/objects/components/CmpPosition.h>
-#include <source/level/objects/components/CmpProjectileWeaponUsable.h>
-#include <source/level/objects/components/CmpScriptedUsable.h>
-#include <source/level/objects/components/CmpUserBipedYoke.h>
+#include <source/level/objects/base/IObjectComponent.h>
+#include <source/level/objects/base/ObjectManager.h>
 #include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
+#include <source/util/Properties.h>
 
 namespace hesp {
 
@@ -52,8 +37,8 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPt
 	int objectCount = FieldIO::read_typed_trimmed_field<int>(is, "Count");
 	for(int i=0; i<objectCount; ++i)
 	{
-		std::vector<IObjectComponent_Ptr> components = load_object(is, componentPropertyTypes, aiEngine, baseDir);
-		objectManager->create_object(components);
+		ObjectSpecification specification = load_object_specification(is, componentPropertyTypes, aiEngine, baseDir);
+		objectManager->create_object(specification);
 	}
 
 	LineIO::read_checked_line(is, "}");
@@ -85,8 +70,8 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 }
 
 //#################### LOADING SUPPORT METHODS ####################
-std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
-															  const ASXEngine_Ptr& aiEngine, const bf::path& baseDir)
+ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
+															  const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir)
 {
 	typedef void (*LoadFunc)(Properties&, const std::string&, const std::string&);
 	static std::map<std::string,LoadFunc> loadFuncs;
@@ -106,7 +91,7 @@ std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, 
 		done = true;
 	}
 
-	std::vector<IObjectComponent_Ptr> components;
+	ObjectSpecification specification;
 
 	LineIO::read_checked_trimmed_line(is, "Object");
 	LineIO::read_checked_trimmed_line(is, "{");
@@ -155,10 +140,10 @@ std::vector<IObjectComponent_Ptr> ObjectsSection::load_object(std::istream& is, 
 		properties.set("AIEngine", aiEngine);
 		properties.set("BaseDir", baseDir);
 
-		components.push_back(invoke_component_loader(componentName, properties));
+		specification.add_component(componentName, properties);
 	}
 
-	return components;
+	return specification;
 }
 
 std::string ObjectsSection::lookup_property_type(const std::string& componentName, const std::string& propertyName,
@@ -233,50 +218,6 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 	}
 
 	os << "\t}\n";
-}
-
-//#################### COMPONENT CREATOR METHODS ####################
-#define ADD_LOADER(c) componentLoaders[#c] = &Cmp##c::load
-
-std::map<std::string,ObjectsSection::ComponentLoader>& ObjectsSection::component_loaders()
-{
-	static std::map<std::string,ComponentLoader> componentLoaders;
-
-	static bool done = false;
-	if(!done)
-	{
-		ADD_LOADER(BasicModelRender);
-		ADD_LOADER(BipedAnimChooser);
-		ADD_LOADER(Bounds);
-		ADD_LOADER(CharacterModelRender);
-		ADD_LOADER(ConsumeActivatable);
-		ADD_LOADER(DirectMovement);
-		ADD_LOADER(Health);
-		ADD_LOADER(Inventory);
-		ADD_LOADER(ItemActivatable);
-		ADD_LOADER(MeshMovement);
-		ADD_LOADER(MinimusScriptYoke);
-		ADD_LOADER(Orientation);
-		ADD_LOADER(Ownable);
-		ADD_LOADER(Physics);
-		ADD_LOADER(Position);
-		ADD_LOADER(ProjectileWeaponUsable);
-		ADD_LOADER(ScriptedUsable);
-		ADD_LOADER(UserBipedYoke);
-		done = true;
-	}
-
-	return componentLoaders;
-}
-
-#undef ADD_LOADER
-
-IObjectComponent_Ptr ObjectsSection::invoke_component_loader(const std::string& componentName, const Properties& properties)
-{
-	std::map<std::string,ComponentLoader>& loaders = component_loaders();
-	std::map<std::string,ComponentLoader>::iterator it = loaders.find(componentName);
-	if(it != loaders.end()) return (*(it->second))(properties);
-	else throw Exception("No loader registered for components of type " + componentName);
 }
 
 }

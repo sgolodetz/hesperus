@@ -25,6 +25,7 @@ namespace hesp {
 typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
 typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<const class Message> Message_CPtr;
+class ObjectSpecification;
 
 class ObjectManager
 {
@@ -57,7 +58,7 @@ public:
 	void broadcast_message(const Message_CPtr& msg);
 	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
 	void consolidate_object_ids();
-	ObjectID create_object(const std::vector<IObjectComponent_Ptr>& components);
+	ObjectID create_object(const ObjectSpecification& specification);
 	void flush_destruction_queue();
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const shared_ptr<T>& = shared_ptr<T>());
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const shared_ptr<const T>& = shared_ptr<const T>()) const;

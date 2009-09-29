@@ -13,6 +13,7 @@
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
 #include <source/level/objects/messages/MsgObjectPredestroyed.h>
+#include "ObjectSpecification.h"
 
 namespace hesp {
 
@@ -80,8 +81,10 @@ void ObjectManager::consolidate_object_ids()
 	//			loaded in (e.g. as part of the level-making process), their IDs will already be contiguous.
 }
 
-ObjectID ObjectManager::create_object(const std::vector<IObjectComponent_Ptr>& components)
+ObjectID ObjectManager::create_object(const ObjectSpecification& specification)
 {
+	std::vector<IObjectComponent_Ptr> components = specification.instantiate_components();
+
 	ObjectID id(m_idAllocator.allocate());
 	Object& object = m_objects[id];
 
