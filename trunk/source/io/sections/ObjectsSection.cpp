@@ -13,6 +13,7 @@ using boost::lexical_cast;
 namespace bf = boost::filesystem;
 
 #include <source/io/util/LineIO.h>
+#include <source/io/util/PropertyIO.h>
 #include <source/level/objects/base/IObjectComponent.h>
 #include <source/level/objects/base/ObjectManager.h>
 #include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
@@ -73,24 +74,6 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
 															  const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir)
 {
-	typedef void (*LoadFunc)(Properties&, const std::string&, const std::string&);
-	static std::map<std::string,LoadFunc> loadFuncs;
-	static bool done = false;
-	if(!done)
-	{
-		loadFuncs["double"] = load_property<double>;
-		loadFuncs["int"] = load_property<int>;
-		loadFuncs["ObjectID"] = load_property<ObjectID>;
-		loadFuncs["string"] = load_property<std::string>;
-		loadFuncs["Vector3d"] = load_property<Vector3d>;
-		loadFuncs["[int]"] = load_property<std::vector<int> >;
-		loadFuncs["[string]"] = load_property<std::vector<std::string> >;
-		loadFuncs["{ObjectID}"] = load_property<std::set<ObjectID> >;
-		loadFuncs["string -> int"] = load_property<std::map<std::string,int> >;
-		loadFuncs["string -> (string -> Vector3d)"] = load_property<std::map<std::string,std::map<std::string,Vector3d> > >;
-		done = true;
-	}
-
 	ObjectSpecification specification;
 
 	LineIO::read_checked_trimmed_line(is, "Object");
@@ -123,16 +106,7 @@ ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, 
 				std::string type = lookup_property_type(componentName, name, componentPropertyTypes);
 
 				// Convert the value to the correct type and add it to the properties map.
-				try
-				{
-					std::map<std::string,LoadFunc>::iterator loadFunc = loadFuncs.find(type);
-					if(loadFunc != loadFuncs.end()) (*(loadFunc->second))(properties, name, value);
-					else throw Exception("The type " + type + " is not currently supported");
-				}
-				catch(bad_lexical_cast&)
-				{
-					throw Exception("The value " + value + " for " + name + " was not of the right type");
-				}
+				PropertyIO::load_property(properties, name, type, value);
 			}
 		}
 
@@ -162,24 +136,6 @@ std::string ObjectsSection::lookup_property_type(const std::string& componentNam
 void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components,
 								 const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
 {
-	typedef void (*SaveFunc)(std::ostream&, const Properties&, const std::string&);
-	static std::map<std::string,SaveFunc> saveFuncs;
-	static bool done = false;
-	if(!done)
-	{
-		saveFuncs["double"] = save_property<double>;
-		saveFuncs["int"] = save_property<int>;
-		saveFuncs["ObjectID"] = save_property<ObjectID>;
-		saveFuncs["string"] = save_property<std::string>;
-		saveFuncs["Vector3d"] = save_property<Vector3d>;
-		saveFuncs["[int]"] = save_property<std::vector<int> >;
-		saveFuncs["[string]"] = save_property<std::vector<std::string> >;
-		saveFuncs["{ObjectID}"] = save_property<std::set<ObjectID> >;
-		saveFuncs["string -> int"] = save_property<std::map<std::string,int> >;
-		saveFuncs["string -> (string -> Vector3d)"] = save_property<std::map<std::string,std::map<std::string,Vector3d> > >;
-		done = true;
-	}
-
 	os << "\tObject\n";
 	os << "\t{\n";
 
@@ -209,9 +165,7 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 
 				os << "\t\t\t";
 
-				std::map<std::string,SaveFunc>::iterator saveFunc = saveFuncs.find(type);
-				if(saveFunc != saveFuncs.end()) (*(saveFunc->second))(os, properties, name);
-				else throw Exception("The type " + type + " is not currently supported");
+				PropertyIO::save_property(os, properties, name, type);
 			}
 			os << "\t\t}\n";
 		}

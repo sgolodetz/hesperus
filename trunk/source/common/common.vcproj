@@ -2218,10 +2218,6 @@
 					Name=".tpp"
 					>
 					<File
-						RelativePath="..\io\sections\ObjectsSection.tpp"
-						>
-					</File>
-					<File
 						RelativePath="..\io\sections\PolygonsSection.tpp"
 						>
 					</File>
@@ -2247,6 +2243,10 @@
 					</File>
 					<File
 						RelativePath="..\io\util\NavLinkFactory.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\PropertyIO.cpp"
 						>
 					</File>
 					<File
@@ -2282,6 +2282,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\io\util\PropertyIO.h"
+						>
+					</File>
+					<File
 						RelativePath="..\io\util\PropFormatter.h"
 						>
 					</File>
@@ -2299,6 +2303,10 @@
 					</File>
 					<File
 						RelativePath="..\io\util\IOUtil.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\util\PropertyIO.tpp"
 						>
 					</File>
 					<File
