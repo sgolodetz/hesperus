@@ -16,6 +16,7 @@ using boost::shared_ptr;
 
 #include <source/datastructures/PriorityQueue.h>
 #include <source/util/IDAllocator.h>
+#include "ComponentPropertyTypeMap.h"
 #include "ListenerTable.h"
 #include "ObjectID.h"
 
@@ -38,8 +39,9 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	std::map<std::string,ObjectSpecification> m_archetypes;
 	BoundsManager_CPtr m_boundsManager;
-	std::map<std::string,std::map<std::string,std::string> > m_componentPropertyTypes;
+	ComponentPropertyTypeMap m_componentPropertyTypes;
 	std::map<std::string,GroupPredicate> m_groupPredicates;
 	IDAllocator m_idAllocator;
 	std::map<ObjectID,Object> m_objects;
@@ -49,17 +51,18 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	ObjectManager(const BoundsManager_CPtr& boundsManager, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
+	ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_listener(IObjectComponent *listener, const ObjectID& id);
 	const BoundsManager_CPtr& bounds_manager() const;
 	void broadcast_message(const Message_CPtr& msg);
-	const std::map<std::string,std::map<std::string,std::string> >& component_property_types() const;
+	const ComponentPropertyTypeMap& component_property_types() const;
 	void consolidate_object_ids();
 	ObjectID create_object(const ObjectSpecification& specification);
 	void flush_destruction_queue();
+	const ObjectSpecification& get_archetype(const std::string& archetypeName) const;
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const shared_ptr<T>& = shared_ptr<T>());
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const shared_ptr<const T>& = shared_ptr<const T>()) const;
 	std::vector<IObjectComponent_Ptr> get_components(const ObjectID& id);

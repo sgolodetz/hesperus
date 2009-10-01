@@ -17,12 +17,14 @@ namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
+class ComponentPropertyTypeMap;
 typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
+class ObjectSpecification;
 
 struct ObjectsFile
 {
 	//#################### LOADING METHODS ####################
-	static ObjectManager_Ptr load(const std::string& filename, const BoundsManager_CPtr& boundsManager, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const boost::filesystem::path& baseDir);
+	static ObjectManager_Ptr load(const std::string& filename, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING METHODS ####################
 	static void save(const std::string& filename, const ObjectManager_Ptr& objectManager);

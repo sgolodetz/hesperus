@@ -1241,6 +1241,10 @@
 						Name=".cpp"
 						>
 						<File
+							RelativePath="..\level\objects\base\ComponentPropertyTypeMap.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\level\objects\base\IObjectComponent.cpp"
 							>
 						</File>
@@ -1264,6 +1268,10 @@
 					<Filter
 						Name=".h"
 						>
+						<File
+							RelativePath="..\level\objects\base\ComponentPropertyTypeMap.h"
+							>
+						</File>
 						<File
 							RelativePath="..\level\objects\base\IObjectComponent.h"
 							>

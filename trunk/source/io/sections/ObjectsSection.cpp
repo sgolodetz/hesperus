@@ -23,14 +23,15 @@ namespace hesp {
 
 //#################### LOADING METHODS ####################
 ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPtr& boundsManager,
-									   const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
+									   const ComponentPropertyTypeMap& componentPropertyTypes,
+									   const std::map<std::string,ObjectSpecification>& archetypes,
 									   const boost::filesystem::path& baseDir)
 {
 	// Set up the shared scripting engine.
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	MinimusScriptYoke::register_for_scripting(aiEngine);
 
-	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes));
+	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes, archetypes));
 
 	LineIO::read_checked_line(is, "Objects");
 	LineIO::read_checked_line(is, "{");
@@ -71,7 +72,7 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 }
 
 //#################### LOADING SUPPORT METHODS ####################
-ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes,
+ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes,
 															  const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir)
 {
 	ObjectSpecification specification;
@@ -103,7 +104,7 @@ ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, 
 				boost::tie(name, value) = FieldIO::parse_field(line);
 
 				// Lookup the type of the property.
-				std::string type = lookup_property_type(componentName, name, componentPropertyTypes);
+				std::string type = componentPropertyTypes.lookup(componentName, name);
 
 				// Convert the value to the correct type and add it to the properties map.
 				PropertyIO::load_property(properties, name, type, value);
@@ -120,21 +121,9 @@ ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, 
 	return specification;
 }
 
-std::string ObjectsSection::lookup_property_type(const std::string& componentName, const std::string& propertyName,
-												 const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
-{
-	std::map<std::string,std::map<std::string,std::string> >::const_iterator it = componentPropertyTypes.find(componentName);
-	if(it == componentPropertyTypes.end()) throw Exception("Unknown component: " + componentName);
-
-	std::map<std::string,std::string>::const_iterator jt = it->second.find(propertyName);
-	if(jt == it->second.end()) throw Exception("Unknown property (in component " + componentName + "): " + propertyName);
-
-	return jt->second;
-}
-
 //#################### SAVING SUPPORT METHODS ####################
 void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components,
-								 const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
+								 const ComponentPropertyTypeMap& componentPropertyTypes)
 {
 	os << "\tObject\n";
 	os << "\t{\n";
@@ -147,9 +136,7 @@ void ObjectsSection::save_object(std::ostream& os, const std::vector<IObjectComp
 
 		os << "\t\t" << componentName;
 
-		std::map<std::string,std::map<std::string,std::string> >::const_iterator jt = componentPropertyTypes.find(componentName);
-		if(jt == componentPropertyTypes.end()) throw Exception("Unknown component: " + componentName);
-		const std::map<std::string,std::string>& types = jt->second;
+		const std::map<std::string,std::string>& types = componentPropertyTypes.property_types(componentName);
 
 		if(types.empty())
 		{

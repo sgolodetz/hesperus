@@ -167,9 +167,10 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
-	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, baseDir);
+	ComponentPropertyTypeMap componentPropertyTypes;
+	std::map<std::string,ObjectSpecification> archetypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, baseDir);
 
 	// Load the models.
 	modelManager = load_models(objectManager);
@@ -244,9 +245,10 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	bf::path baseDir = determine_base_directory_from_game();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
-	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, baseDir);
+	ComponentPropertyTypeMap componentPropertyTypes;
+	std::map<std::string,ObjectSpecification> archetypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, baseDir);
 
 	// Load the models.
 	modelManager = load_models(objectManager);

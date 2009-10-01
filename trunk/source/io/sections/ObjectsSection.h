@@ -19,6 +19,7 @@ namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
+class ComponentPropertyTypeMap;
 typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
 class Properties;
@@ -27,7 +28,7 @@ class ObjectsSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const boost::filesystem::path& baseDir);
+	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING METHODS ####################
 public:
@@ -35,12 +36,11 @@ public:
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
-	static ObjectSpecification load_object_specification(std::istream& is, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir);
-	static std::string lookup_property_type(const std::string& componentName, const std::string& propertyName, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
+	static ObjectSpecification load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:
-	static void save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes);
+	static void save_object(std::ostream& os, const std::vector<IObjectComponent_Ptr>& components, const ComponentPropertyTypeMap& componentPropertyTypes);
 };
 
 }

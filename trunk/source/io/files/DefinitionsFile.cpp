@@ -5,15 +5,19 @@
 
 #include "DefinitionsFile.h"
 
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
+#include <source/io/util/PropertyIO.h>
 #include <source/level/collisions/AABBBounds.h>
 #include <source/level/collisions/BoundsManager.h>
 #include <source/level/collisions/PointBounds.h>
 #include <source/level/collisions/SphereBounds.h>
+#include <source/level/objects/base/ComponentPropertyTypeMap.h>
+#include <source/level/objects/base/ObjectSpecification.h>
 #include <source/xml/XMLParser.h>
 
 namespace hesp {
@@ -25,9 +29,10 @@ Loads the specified definitions file.
 @param filename					The name of the file
 @param boundsManager			Used to return the various bounds for objects
 @param componentPropertyTypes	Used to return the types of the properties in the various object components
+@param archetypes				Used to return the object archetypes
 */
-void DefinitionsFile::load(const std::string& filename, BoundsManager_Ptr& boundsManager,
-						   std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
+void DefinitionsFile::load(const std::string& filename, BoundsManager_Ptr& boundsManager, ComponentPropertyTypeMap& componentPropertyTypes,
+						   std::map<std::string,ObjectSpecification>& archetypes)
 {
 	XMLLexer_Ptr lexer(new XMLLexer(filename));
 	XMLParser parser(lexer);
@@ -47,24 +52,11 @@ void DefinitionsFile::load(const std::string& filename, BoundsManager_Ptr& bound
 
 		// Load the component property types.
 		XMLElement_CPtr componentsElt = objectsElt->find_unique_child("components");
-		std::vector<XMLElement_CPtr> componentElts = componentsElt->find_children("component");
+		load_component_property_types(componentsElt, componentPropertyTypes);
 
-		for(size_t i=0, componentCount=componentElts.size(); i<componentCount; ++i)
-		{
-			const XMLElement_CPtr& componentElt = componentElts[i];
-			const std::string& componentName = componentElt->attribute("name");
-			std::map<std::string,std::string>& propertyTypes = componentPropertyTypes[componentName];
-
-			// Load the property types for component i.
-			std::vector<XMLElement_CPtr> propertyElts = componentElt->find_children("property");
-			for(size_t j=0, propertyCount=propertyElts.size(); j<propertyCount; ++j)
-			{
-				const XMLElement_CPtr& propertyElt = propertyElts[j];
-				const std::string& name = propertyElt->attribute("name");
-				std::string type = propertyElt->attribute("type");
-				propertyTypes.insert(std::make_pair(name, type));
-			}
-		}
+		// Load the object archetypes.
+		XMLElement_CPtr archetypesElt = objectsElt->find_unique_child("archetypes");
+		load_archetypes(archetypesElt, archetypes, componentPropertyTypes);
 
 		// TODO: Process any other subtrees when it becomes necessary.
 	}
@@ -96,6 +88,51 @@ Bounds_Ptr DefinitionsFile::load_aabb_bounds(const XMLElement_CPtr& elt)
 	double sy = lexical_cast<double,std::string>(elt->attribute("sy"));
 	double sz = lexical_cast<double,std::string>(elt->attribute("sz"));
 	return Bounds_Ptr(new AABBBounds(Vector3d(sx,sy,sz)));
+}
+
+void DefinitionsFile::load_archetypes(const XMLElement_CPtr& archetypesElt, std::map<std::string,ObjectSpecification>& archetypes,
+									  const ComponentPropertyTypeMap& componentPropertyTypes)
+{
+	std::vector<XMLElement_CPtr> archetypeElts = archetypesElt->find_children("archetype");
+	for(size_t i=0, sizeI=archetypeElts.size(); i<sizeI; ++i)
+	{
+		const XMLElement_CPtr& archetypeElt = archetypeElts[i];
+		const std::string& archetypeName = archetypeElt->attribute("name");
+		ObjectSpecification specification;
+
+		std::vector<XMLElement_CPtr> componentElts = archetypeElt->find_children("component");
+		for(size_t j=0, sizeJ=componentElts.size(); j<sizeJ; ++j)
+		{
+			const XMLElement_CPtr& componentElt = componentElts[j];
+			const std::string& componentName = componentElt->attribute("name");
+			Properties properties;
+
+			std::vector<XMLElement_CPtr> propertyElts = componentElt->find_children("property");
+			for(size_t k=0, sizeK=propertyElts.size(); k<sizeK; ++k)
+			{
+				const XMLElement_CPtr& propertyElt = propertyElts[k];
+				const std::string& propertyName = propertyElt->attribute("name");
+
+				std::string value;
+				if(propertyElt->has_attribute("default")) value = propertyElt->attribute("default");
+				else if(propertyElt->has_attribute("fixed")) value = propertyElt->attribute("fixed");
+				else continue;
+
+				// Process the value to replace XML special characters with the actual characters they specify.
+				replace_xml_specials(value);
+
+				// Look up the property's type.
+				std::string type = componentPropertyTypes.lookup(componentName, propertyName);
+
+				// Parse the value and store the property.
+				PropertyIO::load_property(properties, propertyName, type, value);
+			}
+
+			specification.add_component(componentName, properties);
+		}
+
+		archetypes.insert(std::make_pair(archetypeName, specification));
+	}
 }
 
 BoundsManager_Ptr DefinitionsFile::load_bounds(const XMLElement_CPtr& boundsElt)
@@ -150,6 +187,27 @@ BoundsManager_Ptr DefinitionsFile::load_bounds(const XMLElement_CPtr& boundsElt)
 	return BoundsManager_Ptr(new BoundsManager(bounds, boundsLookup, boundsGroups));
 }
 
+void DefinitionsFile::load_component_property_types(const XMLElement_CPtr& componentsElt, ComponentPropertyTypeMap& componentPropertyTypes)
+{
+	std::vector<XMLElement_CPtr> componentElts = componentsElt->find_children("component");
+
+	for(size_t i=0, componentCount=componentElts.size(); i<componentCount; ++i)
+	{
+		const XMLElement_CPtr& componentElt = componentElts[i];
+		const std::string& componentName = componentElt->attribute("name");
+
+		// Load the property types for component i.
+		std::vector<XMLElement_CPtr> propertyElts = componentElt->find_children("property");
+		for(size_t j=0, propertyCount=propertyElts.size(); j<propertyCount; ++j)
+		{
+			const XMLElement_CPtr& propertyElt = propertyElts[j];
+			const std::string& name = propertyElt->attribute("name");
+			std::string type = propertyElt->attribute("type");
+			componentPropertyTypes.insert(componentName, name, type);
+		}
+	}
+}
+
 Bounds_Ptr DefinitionsFile::load_point_bounds(const XMLElement_CPtr&)
 {
 	return Bounds_Ptr(new PointBounds);
@@ -159,6 +217,12 @@ Bounds_Ptr DefinitionsFile::load_sphere_bounds(const XMLElement_CPtr& elt)
 {
 	double radius = lexical_cast<double,std::string>(elt->attribute("radius"));
 	return Bounds_Ptr(new SphereBounds(radius));
+}
+
+void DefinitionsFile::replace_xml_specials(std::string& s)
+{
+	boost::replace_all(s, "&lt;", "<");
+	boost::replace_all(s, "&gt;", ">");
 }
 
 }

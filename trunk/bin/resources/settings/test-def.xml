@@ -71,21 +71,21 @@
 			<archetype name="Guard">
 				<component name="BipedAnimChooser"/>
 				<component name="Bounds">
-					<property name="Group" fixed="biped"/>
-					<property name="Posture" default="stand"/>
+					<property name="Group" fixed='"biped"'/>
+					<property name="Posture" default='"stand"'/>
 				</component>
 				<component name="CharacterModelRender">
 					<property name="InclineBones" default='&lt; ("",&lt;("head",( 1 0 0 ))&gt;) ; ("with_onehanded",&lt;("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))&gt;) &gt;'/>
-					<property name="ModelName" default="Guard"/>
+					<property name="ModelName" default='"Guard"'/>
 				</component>
 				<component name="Health">
-					<property name="Health" default="100"/>
-					<property name="MaxHealth" default="100"/>
+					<property name="Health" default='100'/>
+					<property name="MaxHealth" default='100'/>
 				</component>
 				<component name="Inventory">
-					<property name="ActiveItem" default="-1"/>
-					<property name="Consumables" default="&lt;&gt;"/>
-					<property name="Items" default="[]"/>
+					<property name="ActiveItem" default='-1'/>
+					<property name="Consumables" default='&lt;&gt;'/>
+					<property name="Items" default='[]'/>
 				</component>
 				<component name="MeshMovement"/>
 				<component name="MinimusScriptYoke"/>
@@ -96,21 +96,21 @@
 			<archetype name="Player">
 				<component name="BipedAnimChooser"/>
 				<component name="Bounds">
-					<property name="Group" fixed="biped"/>
-					<property name="Posture" default="stand"/>
+					<property name="Group" fixed='"biped"'/>
+					<property name="Posture" default='"stand"'/>
 				</component>
 				<component name="CharacterModelRender">
 					<property name="InclineBones" default='&lt; ("",&lt;("head",( 1 0 0 ))&gt;) ; ("with_onehanded",&lt;("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))&gt;) &gt;'/>
-					<property name="ModelName" default="Percy"/>
+					<property name="ModelName" default='"Percy"'/>
 				</component>
 				<component name="Health">
-					<property name="Health" default="100"/>
-					<property name="MaxHealth" default="100"/>
+					<property name="Health" default='100'/>
+					<property name="MaxHealth" default='100'/>
 				</component>
 				<component name="Inventory">
-					<property name="ActiveItem" default="-1"/>
-					<property name="Consumables" default="&lt;&gt;"/>
-					<property name="Items" default="[]"/>
+					<property name="ActiveItem" default='-1'/>
+					<property name="Consumables" default='&lt;&gt;'/>
+					<property name="Items" default='[]'/>
 				</component>
 				<component name="MeshMovement"/>
 				<component name="Orientation"/>

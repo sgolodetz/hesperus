@@ -27,6 +27,8 @@ using boost::lexical_cast;
 #include <source/io/files/TreeFile.h>
 #include <source/io/files/VisFile.h>
 #include <source/io/util/DirectoryFinder.h>
+#include <source/level/objects/base/ComponentPropertyTypeMap.h>
+#include <source/level/objects/base/ObjectSpecification.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
@@ -92,11 +94,12 @@ try
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
-	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
+	ComponentPropertyTypeMap componentPropertyTypes;
+	std::map<std::string,ObjectSpecification> archetypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
 
 	// Load the objects.
-	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, baseDir);
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, archetypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_lit(outputFilename,
@@ -151,11 +154,12 @@ try
 	bf::path baseDir = determine_base_directory_from_tool();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
-	std::map<std::string,std::map<std::string,std::string> > componentPropertyTypes;
-	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes);
+	ComponentPropertyTypeMap componentPropertyTypes;
+	std::map<std::string,ObjectSpecification> archetypes;
+	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
 
 	// Load the objects.
-	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, baseDir);
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, archetypes, baseDir);
 
 	// Write everything to the output file.
 	LevelFile::save_unlit(outputFilename,

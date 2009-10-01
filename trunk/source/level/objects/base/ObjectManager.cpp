@@ -27,8 +27,9 @@ bool is_simulable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
 
 //#################### CONSTRUCTORS ####################
-ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const std::map<std::string,std::map<std::string,std::string> >& componentPropertyTypes)
-:	m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes)
+ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes,
+							 const std::map<std::string,ObjectSpecification>& archetypes)
+:	m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes), m_archetypes(archetypes)
 {
 	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
@@ -70,7 +71,7 @@ void ObjectManager::broadcast_message(const Message_CPtr& msg)
 	}
 }
 
-const std::map<std::string,std::map<std::string,std::string> >& ObjectManager::component_property_types() const
+const ComponentPropertyTypeMap& ObjectManager::component_property_types() const
 {
 	return m_componentPropertyTypes;
 }
@@ -132,6 +133,13 @@ void ObjectManager::flush_destruction_queue()
 			broadcast_message(Message_CPtr(new MsgObjectPredestroyed(id)));
 		}
 	}
+}
+
+const ObjectSpecification& ObjectManager::get_archetype(const std::string& archetypeName) const
+{
+	std::map<std::string,ObjectSpecification>::const_iterator it = m_archetypes.find(archetypeName);
+	if(it != m_archetypes.end()) return it->second;
+	else throw Exception("No such archetype: " + archetypeName);
 }
 
 std::vector<IObjectComponent_Ptr> ObjectManager::get_components(const ObjectID& id)

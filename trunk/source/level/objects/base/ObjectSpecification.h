@@ -13,11 +13,12 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/util/Properties.h>
+
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
-class Properties;
 
 class ObjectSpecification
 {
