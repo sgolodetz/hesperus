@@ -8,8 +8,6 @@
 
 #include <boost/filesystem/operations.hpp>
 
-#include <ASXEngine.h>
-
 #include "ICmpYoke.h"
 
 namespace hesp {
@@ -24,12 +22,11 @@ private:
 	IYoke_Ptr m_yoke;
 
 	std::string m_scriptName;
-	ASXEngine_Ptr m_engine;
 	boost::filesystem::path m_baseDir;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpMinimusScriptYoke(const std::string& scriptName, const ASXEngine_Ptr& engine, const boost::filesystem::path& baseDir);
+	CmpMinimusScriptYoke(const std::string& scriptName, const boost::filesystem::path& baseDir);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

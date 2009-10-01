@@ -18,16 +18,14 @@ namespace bf = boost::filesystem;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpMinimusScriptYoke::CmpMinimusScriptYoke(const std::string& scriptName, const ASXEngine_Ptr& engine, const bf::path& baseDir)
-:	m_scriptName(scriptName), m_engine(engine), m_baseDir(baseDir)
+CmpMinimusScriptYoke::CmpMinimusScriptYoke(const std::string& scriptName, const bf::path& baseDir)
+:	m_scriptName(scriptName), m_baseDir(baseDir)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
 IObjectComponent_Ptr CmpMinimusScriptYoke::load(const Properties& properties)
 {
-	return IObjectComponent_Ptr(new CmpMinimusScriptYoke(properties.get<std::string>("Script"),
-														 properties.get<ASXEngine_Ptr>("AIEngine"),
-														 properties.get<bf::path>("BaseDir")));
+	return IObjectComponent_Ptr(new CmpMinimusScriptYoke(properties.get<std::string>("Script"), properties.get<bf::path>("BaseDir")));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -44,7 +42,7 @@ void CmpMinimusScriptYoke::check_dependencies() const
 std::vector<ObjectCommand_Ptr> CmpMinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
 																	   const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
 {
-	if(!m_yoke) m_yoke.reset(new MinimusScriptYoke(m_objectID, m_objectManager, m_scriptName, m_engine, m_baseDir));
+	if(!m_yoke) m_yoke.reset(new MinimusScriptYoke(m_objectID, m_objectManager, m_scriptName, m_objectManager->ai_engine(), m_baseDir));
 	return m_yoke->generate_commands(input, polygons, tree, navDatasets);
 }
 

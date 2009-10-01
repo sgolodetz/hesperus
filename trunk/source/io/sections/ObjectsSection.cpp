@@ -31,7 +31,7 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPt
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	MinimusScriptYoke::register_for_scripting(aiEngine);
 
-	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes, archetypes));
+	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes, archetypes, aiEngine));
 
 	LineIO::read_checked_line(is, "Objects");
 	LineIO::read_checked_line(is, "{");
@@ -39,7 +39,7 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPt
 	int objectCount = FieldIO::read_typed_trimmed_field<int>(is, "Count");
 	for(int i=0; i<objectCount; ++i)
 	{
-		ObjectSpecification specification = load_object_specification(is, componentPropertyTypes, aiEngine, baseDir);
+		ObjectSpecification specification = load_object_specification(is, componentPropertyTypes, baseDir);
 		objectManager->create_object(specification);
 	}
 
@@ -73,7 +73,7 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 
 //#################### LOADING SUPPORT METHODS ####################
 ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes,
-															  const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir)
+															  const boost::filesystem::path& baseDir)
 {
 	ObjectSpecification specification;
 
@@ -111,8 +111,7 @@ ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, 
 			}
 		}
 
-		// Add the AI engine and base directory as properties (they're needed by some of the components, e.g. yokes).
-		properties.set("AIEngine", aiEngine);
+		// Add the base directory as a property (it's needed by some of the components, e.g. yokes).
 		properties.set("BaseDir", baseDir);
 
 		specification.add_component(componentName, properties);

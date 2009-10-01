@@ -10,8 +10,6 @@
 
 #include <boost/filesystem/operations.hpp>
 
-#include <ASXEngine.h>
-
 #include <source/io/util/FieldIO.h>
 #include <source/level/objects/base/ObjectSpecification.h>
 
@@ -36,7 +34,7 @@ public:
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
-	static ObjectSpecification load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes, const ASXEngine_Ptr& aiEngine, const boost::filesystem::path& baseDir);
+	static ObjectSpecification load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes, const boost::filesystem::path& baseDir);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:

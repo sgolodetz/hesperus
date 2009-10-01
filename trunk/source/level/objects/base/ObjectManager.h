@@ -14,6 +14,8 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <ASXEngine.h>
+
 #include <source/datastructures/PriorityQueue.h>
 #include <source/util/IDAllocator.h>
 #include "ComponentPropertyTypeMap.h"
@@ -39,6 +41,7 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	ASXEngine_Ptr m_aiEngine;
 	std::map<std::string,ObjectSpecification> m_archetypes;
 	BoundsManager_CPtr m_boundsManager;
 	ComponentPropertyTypeMap m_componentPropertyTypes;
@@ -51,11 +54,12 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes);
+	ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_listener(IObjectComponent *listener, const ObjectID& id);
+	const ASXEngine_Ptr& ai_engine();
 	const BoundsManager_CPtr& bounds_manager() const;
 	void broadcast_message(const Message_CPtr& msg);
 	const ComponentPropertyTypeMap& component_property_types() const;

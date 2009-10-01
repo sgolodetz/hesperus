@@ -28,8 +28,8 @@ bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
 
 //#################### CONSTRUCTORS ####################
 ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes,
-							 const std::map<std::string,ObjectSpecification>& archetypes)
-:	m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes), m_archetypes(archetypes)
+							 const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine)
+:	m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes), m_archetypes(archetypes), m_aiEngine(aiEngine)
 {
 	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
@@ -50,6 +50,11 @@ broadcasted messsages about the specified object.
 void ObjectManager::add_listener(IObjectComponent *listener, const ObjectID& id)
 {
 	m_listenerTable.add_listener(listener->object_id(), listener->group_type(), id);
+}
+
+const ASXEngine_Ptr& ObjectManager::ai_engine()
+{
+	return m_aiEngine;
 }
 
 const BoundsManager_CPtr& ObjectManager::bounds_manager() const
