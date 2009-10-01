@@ -1324,6 +1324,10 @@
 							RelativePath="..\level\objects\base\ObjectManager.tpp"
 							>
 						</File>
+						<File
+							RelativePath="..\level\objects\base\ObjectSpecification.tpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter

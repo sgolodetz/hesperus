@@ -34,6 +34,7 @@ private:
 public:
 	void add_component(const std::string& componentName, const Properties& properties);
 	std::vector<IObjectComponent_Ptr> instantiate_components() const;
+	template <typename T> void set_component_property(const std::string& componentName, const std::string& propertyName, const T& value);
 
 	//#################### COMPONENT LOADER TYPEDEFS ####################
 private:
@@ -46,5 +47,7 @@ private:
 };
 
 }
+
+#include "ObjectSpecification.tpp"
 
 #endif
