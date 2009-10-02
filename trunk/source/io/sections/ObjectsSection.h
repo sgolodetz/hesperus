@@ -8,8 +8,6 @@
 
 #include <map>
 
-#include <boost/filesystem/operations.hpp>
-
 #include <source/io/util/FieldIO.h>
 #include <source/level/objects/base/ObjectSpecification.h>
 
@@ -26,7 +24,7 @@ class ObjectsSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const boost::filesystem::path& baseDir);
+	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes);
 
 	//#################### SAVING METHODS ####################
 public:
@@ -34,7 +32,7 @@ public:
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
-	static ObjectSpecification load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes, const boost::filesystem::path& baseDir);
+	static ObjectSpecification load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes);
 
 	//#################### SAVING SUPPORT METHODS ####################
 private:

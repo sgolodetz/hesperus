@@ -100,15 +100,14 @@ try
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
 	// Load the object bounds and component property types from the definitions file.
-	bf::path baseDir = determine_base_directory();
-	bf::path settingsDir = determine_settings_directory(baseDir);
+	bf::path settingsDir = determine_settings_directory();
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
 
 	// Load the objects.
-	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, archetypes, baseDir);
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, archetypes);
 
 	// Write everything to the output file.
 	LevelFile::save_lit(outputFilename,
@@ -160,15 +159,14 @@ try
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
 	// Load the object bounds and component property types from the definitions file.
-	bf::path baseDir = determine_base_directory();
-	bf::path settingsDir = determine_settings_directory(baseDir);
+	bf::path settingsDir = determine_settings_directory();
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
 
 	// Load the objects.
-	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, archetypes, baseDir);
+	ObjectManager_Ptr objectManager = ObjectsFile::load(objectsFilename, boundsManager, componentPropertyTypes, archetypes);
 
 	// Write everything to the output file.
 	LevelFile::save_unlit(outputFilename,

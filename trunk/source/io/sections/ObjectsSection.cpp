@@ -10,7 +10,6 @@
 #include <boost/tuple/tuple.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
-namespace bf = boost::filesystem;
 
 #include <source/io/util/LineIO.h>
 #include <source/io/util/PropertyIO.h>
@@ -24,8 +23,7 @@ namespace hesp {
 //#################### LOADING METHODS ####################
 ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPtr& boundsManager,
 									   const ComponentPropertyTypeMap& componentPropertyTypes,
-									   const std::map<std::string,ObjectSpecification>& archetypes,
-									   const boost::filesystem::path& baseDir)
+									   const std::map<std::string,ObjectSpecification>& archetypes)
 {
 	// Set up the shared scripting engine.
 	ASXEngine_Ptr aiEngine(new ASXEngine);
@@ -39,7 +37,7 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPt
 	int objectCount = FieldIO::read_typed_trimmed_field<int>(is, "Count");
 	for(int i=0; i<objectCount; ++i)
 	{
-		ObjectSpecification specification = load_object_specification(is, componentPropertyTypes, baseDir);
+		ObjectSpecification specification = load_object_specification(is, componentPropertyTypes);
 		objectManager->create_object(specification);
 	}
 
@@ -72,8 +70,7 @@ void ObjectsSection::save(std::ostream& os, const ObjectManager_Ptr& objectManag
 }
 
 //#################### LOADING SUPPORT METHODS ####################
-ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes,
-															  const boost::filesystem::path& baseDir)
+ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, const ComponentPropertyTypeMap& componentPropertyTypes)
 {
 	ObjectSpecification specification;
 
@@ -110,9 +107,6 @@ ObjectSpecification ObjectsSection::load_object_specification(std::istream& is, 
 				PropertyIO::load_property(properties, name, type, value);
 			}
 		}
-
-		// Add the base directory as a property (it's needed by some of the components, e.g. yokes).
-		properties.set("BaseDir", baseDir);
 
 		specification.add_component(componentName, properties);
 	}

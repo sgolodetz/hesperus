@@ -52,8 +52,7 @@ void run_expander(const std::string& definitionsSpecifierFilename, const std::st
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
 	// Read in the bounds.
-	bf::path baseDir = determine_base_directory();
-	bf::path settingsDir = determine_settings_directory(baseDir);
+	bf::path settingsDir = determine_settings_directory();
 	BoundsManager_Ptr boundsManager = DefinitionsFile::load_bounds_only((settingsDir / definitionsFilename).file_string());
 
 	// Read in the input brushes.

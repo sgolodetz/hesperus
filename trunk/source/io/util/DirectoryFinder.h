@@ -18,16 +18,16 @@ within each project to call the appropriate location determination function.
 */
 boost::filesystem::path determine_base_directory();
 
-boost::filesystem::path determine_audio_directory(const boost::filesystem::path& baseDir);
+boost::filesystem::path determine_audio_directory();
 boost::filesystem::path determine_base_directory_from_game();
 boost::filesystem::path determine_base_directory_from_tool();
 boost::filesystem::path determine_executable_location();
-boost::filesystem::path determine_images_directory(const boost::filesystem::path& baseDir);
-boost::filesystem::path determine_levels_directory(const boost::filesystem::path& baseDir);
-boost::filesystem::path determine_models_directory(const boost::filesystem::path& baseDir);
-boost::filesystem::path determine_scripts_directory(const boost::filesystem::path& baseDir);
-boost::filesystem::path determine_settings_directory(const boost::filesystem::path& baseDir);
-boost::filesystem::path determine_textures_directory(const boost::filesystem::path& baseDir);
+boost::filesystem::path determine_images_directory();
+boost::filesystem::path determine_levels_directory();
+boost::filesystem::path determine_models_directory();
+boost::filesystem::path determine_scripts_directory();
+boost::filesystem::path determine_settings_directory();
+boost::filesystem::path determine_textures_directory();
 
 }
 

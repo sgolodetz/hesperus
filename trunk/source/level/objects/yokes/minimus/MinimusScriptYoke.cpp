@@ -14,11 +14,10 @@ namespace bf = boost::filesystem;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-MinimusScriptYoke::MinimusScriptYoke(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine,
-									 const bf::path& baseDir)
+MinimusScriptYoke::MinimusScriptYoke(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine)
 :	m_objectID(objectID), m_objectManager(objectManager), m_engine(engine), m_initialised(false)
 {
-	bf::path scriptsDir = determine_scripts_directory(baseDir);
+	bf::path scriptsDir = determine_scripts_directory();
 	std::string scriptFilename = (scriptsDir / (scriptName + ".as")).file_string();
 
 	m_engine->clear_messages();

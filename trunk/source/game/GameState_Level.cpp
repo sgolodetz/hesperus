@@ -92,7 +92,7 @@ GUIComponent_Ptr GameState_Level::construct_display()
 {
 	GUIContainer<ExplicitLayout> *display = new GUIContainer<ExplicitLayout>;
 
-	bf::path imagesDir = determine_images_directory(determine_base_directory());
+	bf::path imagesDir = determine_images_directory();
 
 	const Screen& screen = Screen::instance();
 	int width = screen.dimensions().width();

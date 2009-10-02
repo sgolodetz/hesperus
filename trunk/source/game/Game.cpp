@@ -27,8 +27,7 @@ try
 {
 	// Read in the configuration options.
 	ASXEngine configEngine;
-	bf::path baseDir = determine_base_directory();
-	bf::path scriptsDir = determine_scripts_directory(baseDir);
+	bf::path scriptsDir = determine_scripts_directory();
 	if(!configEngine.load_and_build_script((scriptsDir / "config.as").file_string(), "config"))
 	{
 		configEngine.output_messages(std::cout);
@@ -63,7 +62,7 @@ try
 	if(!glewGetExtension("GL_ARB_multitexture")) quit_with_error("Multitexturing not supported");
 
 	// Set the initial game state.
-	bf::path levelsDir = determine_levels_directory(baseDir);
+	bf::path levelsDir = determine_levels_directory();
 	std::string relativeLevelPath = levelName + "/" + levelName + ".bsp";
 	m_state.reset(new GameState_Menu("Main", (levelsDir / relativeLevelPath).file_string(), m_soundSystem));
 	m_state->enter();

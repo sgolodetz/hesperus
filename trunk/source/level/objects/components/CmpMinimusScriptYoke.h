@@ -22,11 +22,10 @@ private:
 	IYoke_Ptr m_yoke;
 
 	std::string m_scriptName;
-	boost::filesystem::path m_baseDir;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpMinimusScriptYoke(const std::string& scriptName, const boost::filesystem::path& baseDir);
+	explicit CmpMinimusScriptYoke(const std::string& scriptName);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

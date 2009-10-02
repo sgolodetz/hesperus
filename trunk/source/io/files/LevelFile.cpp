@@ -164,13 +164,12 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	navDatasets = NavSection::load(is);
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
-	bf::path baseDir = determine_base_directory();
-	bf::path settingsDir = determine_settings_directory(baseDir);
+	bf::path settingsDir = determine_settings_directory();
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, baseDir);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes);
 
 	// Load the models.
 	modelManager = load_models(objectManager);
@@ -242,13 +241,12 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	navDatasets = NavSection::load(is);
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
-	bf::path baseDir = determine_base_directory();
-	bf::path settingsDir = determine_settings_directory(baseDir);
+	bf::path settingsDir = determine_settings_directory();
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, baseDir);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes);
 
 	// Load the models.
 	modelManager = load_models(objectManager);

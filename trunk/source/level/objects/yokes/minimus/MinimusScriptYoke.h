@@ -6,8 +6,6 @@
 #ifndef H_HESP_MINIMUSSCRIPTYOKE
 #define H_HESP_MINIMUSSCRIPTYOKE
 
-#include <boost/filesystem/operations.hpp>
-
 #include <ASXEngine.h>
 #include <ASXRefType.h>
 
@@ -34,7 +32,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	MinimusScriptYoke(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine, const boost::filesystem::path& baseDir);
+	MinimusScriptYoke(const ObjectID& objectID, ObjectManager *objectManager, const std::string& scriptName, const ASXEngine_Ptr& engine);
 
 	//#################### PUBLIC METHODS ####################
 public:

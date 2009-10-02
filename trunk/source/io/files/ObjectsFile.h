@@ -10,7 +10,6 @@
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/filesystem/operations.hpp>
 using boost::shared_ptr;
 
 namespace hesp {
@@ -24,7 +23,7 @@ class ObjectSpecification;
 struct ObjectsFile
 {
 	//#################### LOADING METHODS ####################
-	static ObjectManager_Ptr load(const std::string& filename, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const boost::filesystem::path& baseDir);
+	static ObjectManager_Ptr load(const std::string& filename, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes);
 
 	//#################### SAVING METHODS ####################
 	static void save(const std::string& filename, const ObjectManager_Ptr& objectManager);

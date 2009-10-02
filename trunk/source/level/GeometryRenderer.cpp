@@ -15,7 +15,7 @@ namespace hesp {
 //#################### PROTECTED METHODS ####################
 void GeometryRenderer::load_textures(const std::set<std::string>& textureNames)
 {
-	bf::path texturesDir = determine_textures_directory(determine_base_directory());
+	bf::path texturesDir = determine_textures_directory();
 
 	for(std::set<std::string>::const_iterator it=textureNames.begin(), iend=textureNames.end(); it!=iend; ++it)
 	{

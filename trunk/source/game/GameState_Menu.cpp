@@ -30,7 +30,7 @@ void GameState_Menu::enter()
 	// TODO: Construct the appropriate menu based on the parameter to the constructor.
 	set_display(construct_buttons_menu(menu_buttons_main()));
 
-	bf::path audioDir = determine_audio_directory(determine_base_directory());
+	bf::path audioDir = determine_audio_directory();
 	m_soundSystem.create_sound("menu", (audioDir / "menu.mid").file_string(), SF_STREAM | SF_2D | SF_LOOP);
 	m_soundSystem.play_sound("menu");
 }
@@ -52,7 +52,7 @@ GUIComponent_Ptr GameState_Menu::construct_buttons_menu(const std::vector<Button
 {
 	GUIContainer<ExplicitLayout> *display = new GUIContainer<ExplicitLayout>;
 
-	bf::path imagesDir = determine_images_directory(determine_base_directory());
+	bf::path imagesDir = determine_images_directory();
 
 	const Screen& screen = Screen::instance();
 	int width = screen.dimensions().width();
@@ -109,7 +109,7 @@ GUIComponent_Ptr GameState_Menu::construct_buttons_menu(const std::vector<Button
 std::vector<Button*> GameState_Menu::menu_buttons_main()
 {
 	std::vector<Button*> ret;
-	bf::path imagesDir = determine_images_directory(determine_base_directory());
+	bf::path imagesDir = determine_images_directory();
 
 	ret.push_back(new Button((imagesDir / "buttons-newgame-inactive.png").file_string(),
 							 (imagesDir / "buttons-newgame-active.png").file_string(),
