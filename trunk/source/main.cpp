@@ -8,7 +8,17 @@
 
 #include <source/exceptions/Exception.h>
 #include <source/game/Game.h>
+#include <source/io/util/DirectoryFinder.h>
 using namespace hesp;
+
+namespace hesp {
+
+boost::filesystem::path determine_base_directory()
+{
+	return determine_base_directory_from_game();
+}
+
+}
 
 int main(int argc, char* argv[])
 try

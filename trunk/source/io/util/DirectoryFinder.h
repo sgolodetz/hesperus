@@ -10,6 +10,14 @@
 
 namespace hesp {
 
+/**
+Determines the location of the game's base directory. Note that how this is done
+varies depending on whether we're trying to determine the location from within
+the game or from within one of its tools. It should thus be implemented separately
+within each project to call the appropriate location determination function.
+*/
+boost::filesystem::path determine_base_directory();
+
 boost::filesystem::path determine_audio_directory(const boost::filesystem::path& baseDir);
 boost::filesystem::path determine_base_directory_from_game();
 boost::filesystem::path determine_base_directory_from_tool();

@@ -199,7 +199,7 @@ Loads the model with the specified name.
 */
 Model_Ptr ModelFiles::load_model(const std::string& name)
 {
-	bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
+	bf::path modelsDir = determine_models_directory(determine_base_directory());
 	bf::path materialsPath = modelsDir / (name + ".material");
 	bf::path meshPath = modelsDir / (name + ".mesh.xml");
 	bf::path skeletonPath = modelsDir / (name + ".skeleton.xml");
@@ -505,7 +505,7 @@ Material_Ptr ModelFiles::read_pass(std::istream& is)
 
 	if(useTexture)
 	{
-		bf::path modelsDir = determine_models_directory(determine_base_directory_from_game());
+		bf::path modelsDir = determine_models_directory(determine_base_directory());
 		Texture_Ptr texture = TextureFactory::create_texture24(ImageLoader::load_image24((modelsDir / textureFilename).file_string()));
 		ret.reset(new TextureMaterial(texture));
 	}

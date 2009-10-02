@@ -10,10 +10,10 @@
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
-void ComponentPropertyTypeMap::insert(const std::string& componentName, const std::string& propertyName, const std::string& type)
+void ComponentPropertyTypeMap::add_component(const std::string& componentName)
 {
-	std::map<std::string,std::string>& propertyTypes = m_componentPropertyTypes[componentName];
-	propertyTypes.insert(std::make_pair(propertyName, type));
+	// Note: This has the effect of inserting componentName into the map if it isn't there already.
+	m_componentPropertyTypes[componentName];
 }
 
 const std::string& ComponentPropertyTypeMap::lookup(const std::string& componentName, const std::string& propertyName) const
@@ -32,6 +32,12 @@ const std::map<std::string,std::string>& ComponentPropertyTypeMap::property_type
 	std::map<std::string,std::map<std::string,std::string> >::const_iterator it = m_componentPropertyTypes.find(componentName);
 	if(it != m_componentPropertyTypes.end()) return it->second;
 	else throw Exception("Unknown component: " + componentName);
+}
+
+void ComponentPropertyTypeMap::set_property_type(const std::string& componentName, const std::string& propertyName, const std::string& type)
+{
+	std::map<std::string,std::string>& propertyTypes = m_componentPropertyTypes[componentName];
+	propertyTypes.insert(std::make_pair(propertyName, type));
 }
 
 }

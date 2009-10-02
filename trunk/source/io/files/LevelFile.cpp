@@ -164,7 +164,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	navDatasets = NavSection::load(is);
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
-	bf::path baseDir = determine_base_directory_from_game();
+	bf::path baseDir = determine_base_directory();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;
@@ -242,7 +242,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	navDatasets = NavSection::load(is);
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
-	bf::path baseDir = determine_base_directory_from_game();
+	bf::path baseDir = determine_base_directory();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;

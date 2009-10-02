@@ -195,6 +195,7 @@ void DefinitionsFile::load_component_property_types(const XMLElement_CPtr& compo
 	{
 		const XMLElement_CPtr& componentElt = componentElts[i];
 		const std::string& componentName = componentElt->attribute("name");
+		componentPropertyTypes.add_component(componentName);
 
 		// Load the property types for component i.
 		std::vector<XMLElement_CPtr> propertyElts = componentElt->find_children("property");
@@ -203,7 +204,7 @@ void DefinitionsFile::load_component_property_types(const XMLElement_CPtr& compo
 			const XMLElement_CPtr& propertyElt = propertyElts[j];
 			const std::string& name = propertyElt->attribute("name");
 			std::string type = propertyElt->attribute("type");
-			componentPropertyTypes.insert(componentName, name, type);
+			componentPropertyTypes.set_property_type(componentName, name, type);
 		}
 	}
 }

@@ -27,7 +27,7 @@ try
 {
 	// Read in the configuration options.
 	ASXEngine configEngine;
-	bf::path baseDir = determine_base_directory_from_game();
+	bf::path baseDir = determine_base_directory();
 	bf::path scriptsDir = determine_scripts_directory(baseDir);
 	if(!configEngine.load_and_build_script((scriptsDir / "config.as").file_string(), "config"))
 	{

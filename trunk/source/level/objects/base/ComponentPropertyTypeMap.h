@@ -19,9 +19,10 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void insert(const std::string& componentName, const std::string& propertyName, const std::string& type);
+	void add_component(const std::string& componentName);
 	const std::string& lookup(const std::string& componentName, const std::string& propertyName) const;
 	const std::map<std::string,std::string>& property_types(const std::string& componentName) const;
+	void set_property_type(const std::string& componentName, const std::string& propertyName, const std::string& type);
 };
 
 }

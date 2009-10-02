@@ -32,6 +32,15 @@ using boost::lexical_cast;
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 
+namespace hesp {
+
+boost::filesystem::path determine_base_directory()
+{
+	return determine_base_directory_from_tool();
+}
+
+}
+
 //#################### FUNCTIONS ####################
 void quit_with_error(const std::string& error)
 {
@@ -91,7 +100,7 @@ try
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
 	// Load the object bounds and component property types from the definitions file.
-	bf::path baseDir = determine_base_directory_from_tool();
+	bf::path baseDir = determine_base_directory();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;
@@ -151,7 +160,7 @@ try
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
 
 	// Load the object bounds and component property types from the definitions file.
-	bf::path baseDir = determine_base_directory_from_tool();
+	bf::path baseDir = determine_base_directory();
 	bf::path settingsDir = determine_settings_directory(baseDir);
 	BoundsManager_Ptr boundsManager;
 	ComponentPropertyTypeMap componentPropertyTypes;
