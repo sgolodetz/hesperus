@@ -34,7 +34,10 @@ try
 		quit_with_error("Could not load configuration options - check the config.as script for problems");
 	}
 	ASXModule_Ptr configModule = configEngine.get_module("config");
-	const std::string& levelName = configModule->get_global_variable<std::string>("levelName");
+	int width						= configModule->get_global_variable<int>("width");
+	int height						= configModule->get_global_variable<int>("height");
+	bool fullScreen					= configModule->get_global_variable<bool>("fullScreen");
+	const std::string& levelName	= configModule->get_global_variable<std::string>("levelName");
 
 	// Set up the window.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);
@@ -47,10 +50,9 @@ try
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	int width = 1024;
-	int height = 768;
 	int bpp = 32;
-	int flags = SDL_OPENGL;// | SDL_FULLSCREEN;
+	int flags = SDL_OPENGL;
+	if(fullScreen) flags |= SDL_FULLSCREEN;
 
 	if(SDL_SetVideoMode(width, height, bpp, flags) == 0) quit(EXIT_FAILURE);
 
