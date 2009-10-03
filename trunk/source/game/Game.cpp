@@ -24,6 +24,7 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 Game::Game()
 try
+:	m_mouseMotionSinceStateChange(false)
 {
 	// Read in the configuration options.
 	ASXEngine configEngine;
@@ -97,16 +98,17 @@ void Game::run()
 			// Note:	We clamp the elapsed time to 50ms to prevent things moving
 			//			too far between one frame and the next.
 			GameState_Ptr newState = m_state->update(std::min(timeElapsed, Uint32(50)), m_input);
+			m_input.set_mouse_motion(0, 0);
+
 			if(newState)
 			{
 				m_state->leave();
 				m_state = newState;
 				m_state->enter();
 				lastDraw = SDL_GetTicks();
+				m_mouseMotionSinceStateChange = false;
 				continue;
 			}
-
-			m_input.set_mouse_motion(0, 0);
 		}
 	}
 }
@@ -178,8 +180,9 @@ void Game::process_events()
 				handle_mousebutton_up(event.button);
 				break;
 			case SDL_MOUSEMOTION:
-				m_input.set_mouse_motion(event.motion.xrel, event.motion.yrel);
 				m_input.set_mouse_position(event.motion.x, event.motion.y);
+				if(m_mouseMotionSinceStateChange) m_input.set_mouse_motion(event.motion.xrel, event.motion.yrel);
+				else m_mouseMotionSinceStateChange = true;
 				break;
 			case SDL_QUIT:
 				quit(0);

@@ -26,6 +26,8 @@ private:
 	UserInput m_input;
 	SoundSystem m_soundSystem;
 
+	bool m_mouseMotionSinceStateChange;		// whether or not the mouse has been moved since the last state change
+
 	//#################### CONSTRUCTORS ####################
 public:
 	Game();
