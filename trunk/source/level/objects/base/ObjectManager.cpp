@@ -87,57 +87,13 @@ void ObjectManager::consolidate_object_ids()
 	//			loaded in (e.g. as part of the level-making process), their IDs will already be contiguous.
 }
 
-ObjectID ObjectManager::create_object(const ObjectSpecification& specification)
+void ObjectManager::flush_queues()
 {
-	std::vector<IObjectComponent_Ptr> components = specification.instantiate_components();
-
-	ObjectID id(m_idAllocator.allocate());
-	Object& object = m_objects[id];
-
-	// Add the components to the object manager.
-	for(size_t i=0, size=components.size(); i<size; ++i)
-	{
-		components[i]->set_object_id(id);
-		components[i]->set_object_manager(this);
-		object.insert(std::make_pair(components[i]->group_type(), components[i]));
-	}
-
-	// Check component dependencies and register listening (note that these must happen
-	// after all the components have been added above).
-	for(size_t i=0, size=components.size(); i<size; ++i)
-	{
-		components[i]->check_dependencies();
-		components[i]->register_listening();
-	}
-
-	return id;
-}
-
-void ObjectManager::flush_destruction_queue()
-{
-	typedef DestructionQueue::Element Elt;
-
-	DestructionQueue& q = m_destructionQueue;
-
-	while(!q.empty())
-	{
-		Elt& e = q.top();
-		ObjectID id = e.id();
-		bool& predestroyFlag = e.data();
-
-		if(predestroyFlag)
-		{
-			// The pre-destroy message has already been sent for this object.
-			destroy_object(id);
-			q.pop();
-		}
-		else
-		{
-			// Note: The flag must be set before sending the pre-destroy message, which may result in queue changes.
-			predestroyFlag = true;
-			broadcast_message(Message_CPtr(new MsgObjectPredestroyed(id)));
-		}
-	}
+	// Note:	The destruction queue must be flushed second, since some of the
+	//			newly-created objects may refer to objects which are about to be
+	//			destroyed (and they need to be warned of this).
+	flush_construction_queue();
+	flush_destruction_queue();
 }
 
 const ObjectSpecification& ObjectManager::get_archetype(const std::string& archetypeName) const
@@ -218,6 +174,11 @@ void ObjectManager::queue_child_for_destruction(const ObjectID& child, const Obj
 	m_destructionQueue.insert(child, parentPriority+1, false);
 }
 
+void ObjectManager::queue_for_construction(const ObjectSpecification& specification)
+{
+	m_constructionQueue.push(specification);
+}
+
 void ObjectManager::queue_for_destruction(const ObjectID& id)
 {
 	m_destructionQueue.insert(id, 0, false);
@@ -241,6 +202,32 @@ void ObjectManager::remove_listener(IObjectComponent *listener, const ObjectID& 
 }
 
 //#################### PRIVATE METHODS ####################
+ObjectID ObjectManager::create_object(const ObjectSpecification& specification)
+{
+	std::vector<IObjectComponent_Ptr> components = specification.instantiate_components();
+
+	ObjectID id(m_idAllocator.allocate());
+	Object& object = m_objects[id];
+
+	// Add the components to the object manager.
+	for(size_t i=0, size=components.size(); i<size; ++i)
+	{
+		components[i]->set_object_id(id);
+		components[i]->set_object_manager(this);
+		object.insert(std::make_pair(components[i]->group_type(), components[i]));
+	}
+
+	// Check component dependencies and register listening (note that these must happen
+	// after all the components have been added above).
+	for(size_t i=0, size=components.size(); i<size; ++i)
+	{
+		components[i]->check_dependencies();
+		components[i]->register_listening();
+	}
+
+	return id;
+}
+
 void ObjectManager::destroy_object(const ObjectID& id)
 {
 	// Remove all the listeners which are components of the object being deleted.
@@ -253,6 +240,42 @@ void ObjectManager::destroy_object(const ObjectID& id)
 
 	m_objects.erase(id);
 	m_idAllocator.deallocate(id.value());
+}
+
+void ObjectManager::flush_construction_queue()
+{
+	while(!m_constructionQueue.empty())
+	{
+		create_object(m_constructionQueue.front());
+		m_constructionQueue.pop();
+	}
+}
+
+void ObjectManager::flush_destruction_queue()
+{
+	typedef DestructionQueue::Element Elt;
+
+	DestructionQueue& q = m_destructionQueue;
+
+	while(!q.empty())
+	{
+		Elt& e = q.top();
+		ObjectID id = e.id();
+		bool& predestroyFlag = e.data();
+
+		if(predestroyFlag)
+		{
+			// The pre-destroy message has already been sent for this object.
+			destroy_object(id);
+			q.pop();
+		}
+		else
+		{
+			// Note: The flag must be set before sending the pre-destroy message, which may result in queue changes.
+			predestroyFlag = true;
+			broadcast_message(Message_CPtr(new MsgObjectPredestroyed(id)));
+		}
+	}
 }
 
 //#################### LOCAL METHODS - DEFINITIONS ####################

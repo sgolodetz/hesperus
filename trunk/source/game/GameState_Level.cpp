@@ -81,8 +81,9 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 	do_animations(milliseconds);
 	do_activatables(input);
 
-	// Safely destroy any objects which were queued up for destruction.
-	m_level->object_manager()->flush_destruction_queue();
+	// Safely create any new objects which were spawned during this update,
+	// and destroy any objects which were queued up for destruction.
+	m_level->object_manager()->flush_queues();
 
 	return GameState_Ptr();
 }

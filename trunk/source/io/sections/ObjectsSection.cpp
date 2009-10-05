@@ -40,8 +40,11 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const ModelManager_Ptr&
 	for(int i=0; i<objectCount; ++i)
 	{
 		ObjectSpecification specification = load_object_specification(is, componentPropertyTypes);
-		objectManager->create_object(specification);
+		objectManager->queue_for_construction(specification);
 	}
+
+	// Create all the objects whose specifications we just added to the construction queue.
+	objectManager->flush_queues();
 
 	LineIO::read_checked_line(is, "}");
 

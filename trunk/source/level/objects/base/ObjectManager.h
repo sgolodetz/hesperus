@@ -7,6 +7,7 @@
 #define H_HESP_OBJECTMANAGER
 
 #include <map>
+#include <queue>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,7 @@ using boost::shared_ptr;
 #include "ComponentPropertyTypeMap.h"
 #include "ListenerTable.h"
 #include "ObjectID.h"
+#include "ObjectSpecification.h"
 
 namespace hesp {
 
@@ -30,7 +32,6 @@ typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<const class Message> Message_CPtr;
 typedef shared_ptr<class ModelManager> ModelManager_Ptr;
 typedef shared_ptr<const class ModelManager> ModelManager_CPtr;
-class ObjectSpecification;
 
 class ObjectManager
 {
@@ -38,6 +39,7 @@ class ObjectManager
 public:
 	typedef boost::function<bool (const ObjectID&,const ObjectManager*)> GroupPredicate;
 private:
+	typedef std::queue<ObjectSpecification> ConstructionQueue;
 	typedef PriorityQueue<ObjectID,int,bool,std::greater<int> > DestructionQueue;
 	typedef std::map<std::string,IObjectComponent_Ptr> Object;
 
@@ -52,6 +54,7 @@ private:
 	ModelManager_Ptr m_modelManager;
 	std::map<ObjectID,Object> m_objects;
 
+	ConstructionQueue m_constructionQueue;
 	DestructionQueue m_destructionQueue;
 	ListenerTable m_listenerTable;
 
@@ -67,8 +70,7 @@ public:
 	void broadcast_message(const Message_CPtr& msg);
 	const ComponentPropertyTypeMap& component_property_types() const;
 	void consolidate_object_ids();
-	ObjectID create_object(const ObjectSpecification& specification);
-	void flush_destruction_queue();
+	void flush_queues();
 	const ObjectSpecification& get_archetype(const std::string& archetypeName) const;
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const shared_ptr<T>& = shared_ptr<T>());
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const shared_ptr<const T>& = shared_ptr<const T>()) const;
@@ -80,6 +82,7 @@ public:
 	ObjectID player() const;
 	void post_message(const ObjectID& target, const Message_CPtr& msg);
 	void queue_child_for_destruction(const ObjectID& child, const ObjectID& parent);
+	void queue_for_construction(const ObjectSpecification& specification);
 	void queue_for_destruction(const ObjectID& id);
 	void register_group(const std::string& name, const GroupPredicate& pred);
 	void remove_listener(IObjectComponent *listener, const ObjectID& id);
@@ -89,7 +92,10 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	ObjectID create_object(const ObjectSpecification& specification);
 	void destroy_object(const ObjectID& id);
+	void flush_construction_queue();
+	void flush_destruction_queue();
 	template <typename T> shared_ptr<T> get_component(const ObjectID& id, const std::string& group);
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const std::string& group) const;
 };
