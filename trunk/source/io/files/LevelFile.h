@@ -42,7 +42,6 @@ public:
 	//#################### LOADING SUPPORT METHODS ####################
 private:
 	static Level_Ptr load_lit(std::istream& is);
-	static ModelManager_Ptr load_models(const ObjectManager_Ptr& objectManager);
 	static Level_Ptr load_unlit(std::istream& is);
 };
 

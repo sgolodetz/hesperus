@@ -21,19 +21,19 @@ namespace hesp {
 bool has_owner(const ObjectID& id, const ObjectManager *objectManager);
 bool is_activatable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_animatable(const ObjectID& id, const ObjectManager *objectManager);
-bool is_model_container(const ObjectID& id, const ObjectManager *objectManager);
 bool is_renderable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_simulable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
 
 //#################### CONSTRUCTORS ####################
-ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes,
+ObjectManager::ObjectManager(const ModelManager_Ptr& modelManager, const BoundsManager_CPtr& boundsManager,
+							 const ComponentPropertyTypeMap& componentPropertyTypes,
 							 const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine)
-:	m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes), m_archetypes(archetypes), m_aiEngine(aiEngine)
+:	m_modelManager(modelManager), m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes),
+	m_archetypes(archetypes), m_aiEngine(aiEngine)
 {
 	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
-	register_group("ModelContainers", is_model_container);
 	register_group("Renderables", is_renderable);
 	register_group("Simulables", is_simulable);
 	register_group("Yokeables", is_yokeable);
@@ -179,6 +179,16 @@ std::vector<ObjectID> ObjectManager::group(const std::string& name) const
 	return ret;
 }
 
+const ModelManager_Ptr& ObjectManager::model_manager()
+{
+	return m_modelManager;
+}
+
+ModelManager_CPtr ObjectManager::model_manager() const
+{
+	return m_modelManager;
+}
+
 int ObjectManager::object_count() const
 {
 	return static_cast<int>(m_objects.size());
@@ -268,11 +278,6 @@ bool is_animatable(const ObjectID& id, const ObjectManager *objectManager)
 		return !cmpOwnable || !cmpOwnable->owner().valid();
 	}
 	else return false;	// animatable objects must have a ModelRender component
-}
-
-bool is_model_container(const ObjectID& id, const ObjectManager *objectManager)
-{
-	return objectManager->get_component<ICmpModelRender>(id) != NULL;
 }
 
 bool is_renderable(const ObjectID& id, const ObjectManager *objectManager)

@@ -28,6 +28,8 @@ namespace hesp {
 typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
 typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<const class Message> Message_CPtr;
+typedef shared_ptr<class ModelManager> ModelManager_Ptr;
+typedef shared_ptr<const class ModelManager> ModelManager_CPtr;
 class ObjectSpecification;
 
 class ObjectManager
@@ -47,6 +49,7 @@ private:
 	ComponentPropertyTypeMap m_componentPropertyTypes;
 	std::map<std::string,GroupPredicate> m_groupPredicates;
 	IDAllocator m_idAllocator;
+	ModelManager_Ptr m_modelManager;
 	std::map<ObjectID,Object> m_objects;
 
 	DestructionQueue m_destructionQueue;
@@ -54,7 +57,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine);
+	ObjectManager(const ModelManager_Ptr& modelManager, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -71,6 +74,8 @@ public:
 	template <typename T> shared_ptr<const T> get_component(const ObjectID& id, const shared_ptr<const T>& = shared_ptr<const T>()) const;
 	std::vector<IObjectComponent_Ptr> get_components(const ObjectID& id);
 	std::vector<ObjectID> group(const std::string& name) const;
+	const ModelManager_Ptr& model_manager();
+	ModelManager_CPtr model_manager() const;
 	int object_count() const;
 	ObjectID player() const;
 	void post_message(const ObjectID& target, const Message_CPtr& msg);

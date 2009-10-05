@@ -11,6 +11,7 @@ namespace bf = boost::filesystem;
 #include <source/io/files/DefinitionsFile.h>
 #include <source/io/sections/DefinitionsSpecifierSection.h>
 #include <source/io/sections/LightmapsSection.h>
+#include <source/io/sections/ModelNamesSection.h>
 #include <source/io/sections/NavSection.h>
 #include <source/io/sections/ObjectsSection.h>
 #include <source/io/sections/OnionTreeSection.h>
@@ -87,6 +88,7 @@ void LevelFile::save_lit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navDatasets);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
+	ModelNamesSection::save(os, objectManager->model_manager());
 	ObjectsSection::save(os, objectManager);
 }
 
@@ -128,6 +130,7 @@ void LevelFile::save_unlit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navDatasets);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
+	ModelNamesSection::save(os, objectManager->model_manager());
 	ObjectsSection::save(os, objectManager);
 }
 
@@ -169,45 +172,15 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	ComponentPropertyTypeMap componentPropertyTypes;
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes);
 
-	// Load the models.
-	modelManager = load_models(objectManager);
+	modelManager = ModelNamesSection::load(is);
+	modelManager->load_all();
+
+	objectManager = ObjectsSection::load(is, modelManager, boundsManager, componentPropertyTypes, archetypes);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
 	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, objectManager, modelManager));
-}
-
-/**
-Loads the models necessary for the objects in the specified object manager.
-
-@param objectManager	The object manager
-@return					A model manager containing the loaded models
-*/
-ModelManager_Ptr LevelFile::load_models(const ObjectManager_Ptr& objectManager)
-{
-	ModelManager_Ptr modelManager(new ModelManager);
-
-	std::vector<ObjectID> modelContainers = objectManager->group("ModelContainers");
-	for(size_t i=0, size=modelContainers.size(); i<size; ++i)
-	{
-		ICmpModelRender_Ptr cmpRender = objectManager->get_component(modelContainers[i], cmpRender);
-
-		// Note: Setting the model manager automatically registers the model inside the component with it.
-		cmpRender->set_model_manager(modelManager);
-	}
-
-	modelManager->load_all();
-
-	// Now that all the models have been loaded, set the skeletons for the animation controllers.
-	for(size_t i=0, size=modelContainers.size(); i<size; ++i)
-	{
-		ICmpModelRender_Ptr cmpRender = objectManager->get_component(modelContainers[i], cmpRender);
-		cmpRender->set_skeleton();
-	}
-
-	return modelManager;
 }
 
 /**
@@ -246,10 +219,11 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	ComponentPropertyTypeMap componentPropertyTypes;
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes);
 
-	// Load the models.
-	modelManager = load_models(objectManager);
+	modelManager = ModelNamesSection::load(is);
+	modelManager->load_all();
+
+	objectManager = ObjectsSection::load(is, modelManager, boundsManager, componentPropertyTypes, archetypes);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));

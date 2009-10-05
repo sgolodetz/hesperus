@@ -12,7 +12,6 @@
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
-typedef shared_ptr<class ModelManager> ModelManager_Ptr;
 typedef shared_ptr<class NavDataset> NavDataset_Ptr;
 typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
@@ -22,8 +21,6 @@ class ICmpModelRender : public ICmpRender
 public:
 	virtual void render_first_person() const = 0;
 	virtual void set_highlights(bool enabled) = 0;
-	virtual void set_model_manager(const ModelManager_Ptr& modelManager) = 0;
-	virtual void set_skeleton() = 0;
 	virtual void update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
 
 	//#################### PUBLIC METHODS ####################

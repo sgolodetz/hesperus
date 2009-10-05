@@ -1,3 +1,9 @@
+ModelNames
+{
+	Percy
+	Test-15
+	TestWeapon
+}
 Objects
 {
 	Count = 5

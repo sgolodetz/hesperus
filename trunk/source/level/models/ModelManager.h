@@ -7,6 +7,7 @@
 #define H_HESP_MODELMANAGER
 
 #include <map>
+#include <set>
 #include <string>
 
 #include <boost/shared_ptr.hpp>
@@ -25,8 +26,9 @@ private:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Model_Ptr& model(const std::string& modelName);
 	void load_all();
+	const Model_Ptr& model(const std::string& modelName);
+	std::set<std::string> model_names() const;
 	void register_model(const std::string& modelName);
 };
 

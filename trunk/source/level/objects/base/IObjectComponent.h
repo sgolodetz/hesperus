@@ -49,7 +49,7 @@ public:
 	//#################### PROTECTED METHODS ####################
 protected:
 	void set_object_id(const ObjectID& objectID);
-	void set_object_manager(ObjectManager *objectManager);
+	virtual void set_object_manager(ObjectManager *objectManager);
 };
 
 //#################### TYPEDEFS ####################

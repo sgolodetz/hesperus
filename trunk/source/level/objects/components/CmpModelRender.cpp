@@ -27,20 +27,9 @@ void CmpModelRender::set_highlights(bool enabled)
 	m_highlights = enabled;
 }
 
-void CmpModelRender::set_model_manager(const ModelManager_Ptr& modelManager)
-{
-	m_modelManager = modelManager;
-	m_modelManager->register_model(m_modelName);
-}
-
-void CmpModelRender::set_skeleton()
-{
-	m_animController->set_skeleton(skeleton());
-}
-
 //#################### PROTECTED METHODS ####################
-const Model_Ptr& CmpModelRender::model()	{ return m_modelManager->model(m_modelName); }
-Model_CPtr CmpModelRender::model() const	{ return m_modelManager->model(m_modelName); }
+const Model_Ptr& CmpModelRender::model()	{ return m_objectManager->model_manager()->model(m_modelName); }
+Model_CPtr CmpModelRender::model() const	{ return m_objectManager->model_manager()->model(m_modelName); }
 
 void CmpModelRender::render_bounds(const Vector3d& p) const
 {
@@ -64,7 +53,17 @@ void CmpModelRender::render_nuv_axes(const Vector3d& p, const Vector3d& n, const
 	glEnd();
 }
 
-const Skeleton_Ptr& CmpModelRender::skeleton()	{ return m_modelManager->model(m_modelName)->skeleton(); }
-Skeleton_CPtr CmpModelRender::skeleton() const	{ return m_modelManager->model(m_modelName)->skeleton(); }
+void CmpModelRender::set_object_manager(ObjectManager *objectManager)
+{
+	IObjectComponent::set_object_manager(objectManager);
+
+	// The skeleton for the animation controller can only be set after
+	// we have a handle to the model manager, so it must happen after
+	// the object manager pointer has been set.
+	m_animController->set_skeleton(skeleton());
+}
+
+const Skeleton_Ptr& CmpModelRender::skeleton()	{ return m_objectManager->model_manager()->model(m_modelName)->skeleton(); }
+Skeleton_CPtr CmpModelRender::skeleton() const	{ return m_objectManager->model_manager()->model(m_modelName)->skeleton(); }
 
 }

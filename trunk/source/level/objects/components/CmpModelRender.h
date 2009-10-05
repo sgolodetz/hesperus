@@ -24,7 +24,6 @@ class CmpModelRender : public virtual ICmpModelRender
 protected:
 	AnimationController_Ptr m_animController;
 	bool m_highlights;
-	ModelManager_Ptr m_modelManager;
 	std::string m_modelName;
 	ConfiguredPose_CPtr m_modelPose;
 
@@ -35,8 +34,6 @@ protected:
 	//#################### PUBLIC METHODS ####################
 public:
 	void set_highlights(bool enabled);
-	void set_model_manager(const ModelManager_Ptr& modelManager);
-	void set_skeleton();
 
 	//#################### PROTECTED METHODS ####################
 protected:
@@ -44,6 +41,7 @@ protected:
 	Model_CPtr model() const;
 	void render_bounds(const Vector3d& p) const;
 	static void render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v);
+	void set_object_manager(ObjectManager *objectManager);
 	const Skeleton_Ptr& skeleton();
 	Skeleton_CPtr skeleton() const;
 };

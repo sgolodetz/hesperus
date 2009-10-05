@@ -21,7 +21,8 @@ using boost::lexical_cast;
 namespace hesp {
 
 //#################### LOADING METHODS ####################
-ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPtr& boundsManager,
+ObjectManager_Ptr ObjectsSection::load(std::istream& is, const ModelManager_Ptr& modelManager,
+									   const BoundsManager_CPtr& boundsManager,
 									   const ComponentPropertyTypeMap& componentPropertyTypes,
 									   const std::map<std::string,ObjectSpecification>& archetypes)
 {
@@ -29,7 +30,8 @@ ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPt
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	MinimusScriptYoke::register_for_scripting(aiEngine);
 
-	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes, archetypes, aiEngine));
+	ObjectManager_Ptr objectManager(new ObjectManager(modelManager, boundsManager, componentPropertyTypes,
+													  archetypes, aiEngine));
 
 	LineIO::read_checked_line(is, "Objects");
 	LineIO::read_checked_line(is, "{");

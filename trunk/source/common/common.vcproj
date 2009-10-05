@@ -2162,6 +2162,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\io\sections\ModelNamesSection.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\io\sections\NavSection.cpp"
 						>
 					</File>
@@ -2199,6 +2203,10 @@
 					</File>
 					<File
 						RelativePath="..\io\sections\LightsSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\ModelNamesSection.h"
 						>
 					</File>
 					<File

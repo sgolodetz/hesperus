@@ -8,7 +8,9 @@
 #include <fstream>
 
 #include <source/exceptions/Exception.h>
+#include <source/io/sections/ModelNamesSection.h>
 #include <source/io/sections/ObjectsSection.h>
+#include <source/level/objects/base/ObjectManager.h>
 
 namespace hesp {
 
@@ -19,7 +21,8 @@ ObjectManager_Ptr ObjectsFile::load(const std::string& filename, const BoundsMan
 {
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
-	return ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes);
+	ModelManager_Ptr modelManager = ModelNamesSection::load(is);
+	return ObjectsSection::load(is, modelManager, boundsManager, componentPropertyTypes, archetypes);
 }
 
 //#################### SAVING METHODS ####################
@@ -27,6 +30,7 @@ void ObjectsFile::save(const std::string& filename, const ObjectManager_Ptr& obj
 {
 	std::ofstream os(filename.c_str());
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
+	ModelNamesSection::save(os, objectManager->model_manager());
 	ObjectsSection::save(os, objectManager);
 }
 

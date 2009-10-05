@@ -879,6 +879,12 @@ DefinitionsSpecifier
 {
 test-def.xml
 }
+ModelNames
+{
+	Percy
+	Test-15
+	TestWeapon
+}
 Objects
 {
 	Count = 5
