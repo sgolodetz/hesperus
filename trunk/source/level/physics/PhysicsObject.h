@@ -1,0 +1,65 @@
+/***
+ * hesperus: PhysicsObject.h
+ * Copyright Stuart Golodetz, 2009. All rights reserved.
+ ***/
+
+#ifndef H_HESP_PHYSICSOBJECT
+#define H_HESP_PHYSICSOBJECT
+
+#include <boost/optional.hpp>
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
+#include <source/math/vectors/Vector3.h>
+#include "PhysicsMaterial.h"
+
+namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class Bounds> Bounds_CPtr;
+typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
+
+class PhysicsObject
+{
+	//#################### PRIVATE VARIABLES ####################
+private:
+	Vector3d m_accumulatedForce;
+	double m_inverseMass;
+	PhysicsMaterial m_material;
+	Vector3d m_position;
+	boost::optional<Vector3d> m_previousPosition;
+	bool m_sleeping;
+	Vector3d m_velocity;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	PhysicsObject(double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity);
+
+	//#################### DESTRUCTOR ####################
+public:
+	virtual ~PhysicsObject();
+
+	//#################### PUBLIC ABSTRACT METHODS ####################
+public:
+	virtual Bounds_CPtr bounds(const BoundsManager_CPtr& boundsManager) const = 0;
+	virtual void update(int milliseconds) = 0;
+
+	//#################### PUBLIC METHODS ####################
+public:
+	const Vector3d& accumulated_force() const;
+	void apply_force(const Vector3d& force);
+	void clear_accumulated_force();
+	double inverse_mass() const;
+	bool is_sleeping() const;
+	PhysicsMaterial material() const;
+	const Vector3d& position() const;
+	const boost::optional<Vector3d>& previous_position() const;
+	void set_position(const Vector3d& position);
+	void set_sleeping(bool sleeping);
+	void set_velocity(const Vector3d& velocity);
+	const Vector3d& velocity() const;
+};
+
+}
+
+#endif

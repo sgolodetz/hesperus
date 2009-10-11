@@ -45,6 +45,10 @@ private:
 	int lookup_bounds_index(const std::string& name) const;
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<BoundsManager> BoundsManager_Ptr;
+typedef shared_ptr<const BoundsManager> BoundsManager_CPtr;
+
 }
 
 #endif
