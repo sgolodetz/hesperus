@@ -28,4 +28,9 @@ void PointBounds::render(const Vector3d& pos) const
 	// No-op
 }
 
+Vector3d PointBounds::support_point(const Vector3d& n) const
+{
+	return Vector3d(0,0,0);
+}
+
 }

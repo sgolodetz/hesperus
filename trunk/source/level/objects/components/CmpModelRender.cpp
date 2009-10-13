@@ -59,11 +59,25 @@ void CmpModelRender::set_object_manager(ObjectManager *objectManager)
 
 	// The skeleton for the animation controller can only be set after
 	// we have a handle to the model manager, so it must happen after
-	// the object manager pointer has been set.
-	m_animController->set_skeleton(skeleton());
+	// the object manager pointer has been set. Note that during level
+	// building the full models aren't actually loaded in, so it's
+	// important to check that the skeleton's valid here.
+	Skeleton_CPtr s = skeleton();
+	if(s) m_animController->set_skeleton(s);
 }
 
-const Skeleton_Ptr& CmpModelRender::skeleton()	{ return m_objectManager->model_manager()->model(m_modelName)->skeleton(); }
-Skeleton_CPtr CmpModelRender::skeleton() const	{ return m_objectManager->model_manager()->model(m_modelName)->skeleton(); }
+Skeleton_Ptr CmpModelRender::skeleton()
+{
+	const Model_Ptr& model = m_objectManager->model_manager()->model(m_modelName);
+	if(model) return model->skeleton();
+	else return Skeleton_Ptr();
+}
+
+Skeleton_CPtr CmpModelRender::skeleton() const
+{
+	Model_CPtr model = m_objectManager->model_manager()->model(m_modelName);
+	if(model) return model->skeleton();
+	else return Skeleton_CPtr();
+}
 
 }

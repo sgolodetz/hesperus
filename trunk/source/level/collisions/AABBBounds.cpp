@@ -19,25 +19,7 @@ AABBBounds::AABBBounds(const Vector3d& scale)
 //#################### PUBLIC METHODS ####################
 double AABBBounds::brush_expansion_distance(const Vector3d& n) const
 {
-	double sx = m_scale.x, sy = m_scale.y, sz = m_scale.z;
-
-	Vector3d v;		// a vector from the AABB origin to an AABB vertex which would first hit the brush plane
-	int xCode = n.x > 0 ? 4 : 0;
-	int yCode = n.y > 0 ? 2 : 0;
-	int zCode = n.z > 0 ? 1 : 0;
-	int fullCode = xCode + yCode + zCode;
-
-	switch(fullCode)
-	{
-		case 0:		v = Vector3d(sx, sy, sz);		break;	// n: x-, y-, z-
-		case 1:		v = Vector3d(sx, sy, -sz);		break;	// n: x-, y-, z+
-		case 2:		v = Vector3d(sx, -sy, sz);		break;	// n: x-, y+, z-
-		case 3:		v = Vector3d(sx, -sy, -sz);		break;	// n: x-, y+, z+
-		case 4:		v = Vector3d(-sx, sy, sz);		break;	// n: x+, y-, z-
-		case 5:		v = Vector3d(-sx, sy, -sz);		break;	// n: x+, y-, z+
-		case 6:		v = Vector3d(-sx, -sy, sz);		break;	// n: x+, y+, z-
-		default:	v = Vector3d(-sx, -sy, -sz);	break;	// n: x+, y+, z+ (case 7)
-	}
+	Vector3d v = support_point(-n);
 
 	// v . -n = |v| cos theta (see p.26 of J.M.P. van Waveren's thesis on the Q3 bot for a diagram)
 	return v.dot(-n);
@@ -90,6 +72,30 @@ void AABBBounds::render(const Vector3d& pos) const
 	glEnd();
 
 	glPopAttrib();
+}
+
+Vector3d AABBBounds::support_point(const Vector3d& n) const
+{
+	double sx = m_scale.x, sy = m_scale.y, sz = m_scale.z;
+
+	int xCode = n.x > 0 ? 4 : 0;
+	int yCode = n.y > 0 ? 2 : 0;
+	int zCode = n.z > 0 ? 1 : 0;
+	int fullCode = xCode + yCode + zCode;
+
+	Vector3d v;
+	switch(fullCode)
+	{
+		case 0:		v = Vector3d(-sx, -sy, -sz);	break;	// n: x-, y-, z-
+		case 1:		v = Vector3d(-sx, -sy, sz);		break;	// n: x-, y-, z+
+		case 2:		v = Vector3d(-sx, sy, -sz);		break;	// n: x-, y+, z-
+		case 3:		v = Vector3d(-sx, sy, sz);		break;	// n: x-, y+, z+
+		case 4:		v = Vector3d(sx, -sy, -sz);		break;	// n: x+, y-, z-
+		case 5:		v = Vector3d(sx, -sy, sz);		break;	// n: x+, y-, z+
+		case 6:		v = Vector3d(sx, sy, -sz);		break;	// n: x+, y+, z-
+		default:	v = Vector3d(sx, sy, sz);		break;	// n: x+, y+, z+ (case 7)
+	}
+	return v;
 }
 
 }

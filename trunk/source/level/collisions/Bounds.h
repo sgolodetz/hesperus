@@ -26,6 +26,7 @@ public:
 	virtual boost::optional<std::pair<Vector3d,Vector3d> > determine_halfray_intersection(const Vector3d& s, const Vector3d& v) const = 0;
 	virtual double height() const = 0;
 	virtual void render(const Vector3d& pos) const = 0;
+	virtual Vector3d support_point(const Vector3d& n) const = 0;
 };
 
 //#################### TYPEDEFS ####################

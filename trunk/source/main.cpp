@@ -45,14 +45,40 @@ try
 	BoundsManager_Ptr boundsManager(new BoundsManager(bounds, boundsLookup, boundsGroups));
 
 	// Set up the physics objects.
-	NormalPhysicsObject objectA("G", "A", 1.0, PM_CHARACTER, Vector3d(1,1,1));	// (0,0,0) - (2,2,2)
+	/*NormalPhysicsObject objectA("G", "A", 1.0, PM_CHARACTER, Vector3d(1,1,1));	// (0,0,0) - (2,2,2)
 	NormalPhysicsObject objectB("G", "B", 1.0, PM_CHARACTER, Vector3d(4,1,1));	// (3,0,0) - (5,2,2)
+	objectA.cache_previous_position();
 	objectA.set_position(Vector3d(2,1,1));	// (1,0,0) - (3,2,2)
-	objectB.set_position(Vector3d(3,1,1));	// (2,0,0) - (4,2,2)
+	objectB.cache_previous_position();
+	objectB.set_position(Vector3d(3,1,1));	// (2,0,0) - (4,2,2)*/
+
+	/*NormalPhysicsObject objectA("G", "A", 1.0, PM_CHARACTER, Vector3d(1,1,1));	// (0,0,0) - (2,2,2)
+	NormalPhysicsObject objectB("G", "B", 1.0, PM_CHARACTER, Vector3d(4,2,1));	// (3,1,0) - (5,3,2)
+	objectA.cache_previous_position();
+	objectA.set_position(Vector3d(2,1,1));	// (1,0,0) - (3,2,2)
+	objectB.cache_previous_position();
+	objectB.set_position(Vector3d(3,2,1));	// (2,1,0) - (4,3,2)*/
+
+	/*NormalPhysicsObject objectA("G", "A", 1.0, PM_CHARACTER, Vector3d(0,0,0));	// (-1,-1,-1) - (1,1,1)
+	NormalPhysicsObject objectB("G", "B", 1.0, PM_CHARACTER, Vector3d(2,2,2));	// (1,1,1) - (3,3,3)
+	objectB.cache_previous_position();
+	objectB.set_position(Vector3d(1,1,1));	// (0,0,0) - (2,2,2)*/
+
+	NormalPhysicsObject objectA("G", "A", 1.0, PM_CHARACTER, Vector3d(0,0,0));
+	NormalPhysicsObject objectB("G", "B", 1.0, PM_CHARACTER, Vector3d(0.6,0.8,0));
+
+	/*NormalPhysicsObject objectA("G", "A", 1.0, PM_CHARACTER, Vector3d(0,0,0));
+	NormalPhysicsObject objectB("G", "B", 1.0, PM_CHARACTER, Vector3d(0,0,0));*/
 
 	// Try the collision detector.
 	NarrowPhaseCollisionDetector cd(boundsManager);
 	boost::optional<Contact> contact = cd.object_vs_object(objectA, objectB);
+	if(contact)
+	{
+		const Contact& c = *contact;
+		int x;
+		x = 23;
+	}
 #endif
 
 	Game game;

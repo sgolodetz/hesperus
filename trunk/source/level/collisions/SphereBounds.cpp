@@ -57,4 +57,10 @@ void SphereBounds::render(const Vector3d& pos) const
 	glPopAttrib();
 }
 
+Vector3d SphereBounds::support_point(const Vector3d& n) const
+{
+	assert(fabs(n.length_squared() - 1) < EPSILON);
+	return m_radius * n;
+}
+
 }

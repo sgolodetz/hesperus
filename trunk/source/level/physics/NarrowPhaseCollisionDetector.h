@@ -20,14 +20,6 @@ typedef shared_ptr<const class SupportMapping> SupportMapping_CPtr;
 
 class NarrowPhaseCollisionDetector
 {
-	//#################### NESTED CLASSES ####################
-private:
-	struct MinkPortal
-	{
-		Vector3d v1, v2, v3;	// the three points that make up the triangular portal
-		Plane_CPtr plane;		// a plane through the three points, facing away from the interior point in XenoCollide
-	};
-
 	//#################### PRIVATE VARIABLES ####################
 private:
 	BoundsManager_CPtr m_boundsManager;
@@ -43,9 +35,10 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	std::pair<SupportMapping_CPtr,Vector3d> construct_support_mapping(PhysicsObject& objectA, PhysicsObject& objectB) const;
-	boost::optional<Contact> convert_to_world_contact(const boost::optional<Contact>& relativeContact, PhysicsObject& objectA, PhysicsObject& objectB) const;
-	static boost::optional<Contact> xeno_collide(const SupportMapping_CPtr& mapping, const Vector3d& v0);
+	void construct_support_mappings(const PhysicsObject& objectA, const PhysicsObject& objectB, SupportMapping_CPtr& mapping, SupportMapping_CPtr& mappingA, SupportMapping_CPtr& mappingS, Vector3d& interiorPoint, double& distanceMoved) const;
+	boost::optional<Contact> convert_to_world_contact(const boost::optional<Contact>& relativeContact) const;
+	static Contact make_contact(const Vector3d& v0, const SupportMapping_CPtr& mappingA, const SupportMapping_CPtr& mappingS, double distanceMoved, PhysicsObject& objectA, PhysicsObject& objectB);
+	static boost::optional<Contact> xeno_collide(PhysicsObject& objectA, PhysicsObject& objectB, const SupportMapping_CPtr& mapping, const SupportMapping_CPtr& mappingA, const SupportMapping_CPtr& mappingS, const Vector3d& v0, double distanceMoved);
 };
 
 }

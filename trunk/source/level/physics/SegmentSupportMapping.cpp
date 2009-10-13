@@ -15,8 +15,10 @@ SegmentSupportMapping::SegmentSupportMapping(const Vector3d& endpoint0, const Ve
 //#################### PUBLIC OPERATORS ####################
 Vector3d SegmentSupportMapping::operator()(const Vector3d& n) const
 {
-	// NYI
-	throw 23;
+	Vector3d dir = m_endpoint1 - m_endpoint0;
+	double dotProd = dir.dot(n);
+	if(dotProd >= 0) return m_endpoint1;
+	else return m_endpoint0;
 }
 
 }

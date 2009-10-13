@@ -42,7 +42,7 @@ protected:
 	void render_bounds(const Vector3d& p) const;
 	static void render_nuv_axes(const Vector3d& p, const Vector3d& n, const Vector3d& u, const Vector3d& v);
 	void set_object_manager(ObjectManager *objectManager);
-	const Skeleton_Ptr& skeleton();
+	Skeleton_Ptr skeleton();
 	Skeleton_CPtr skeleton() const;
 };
 

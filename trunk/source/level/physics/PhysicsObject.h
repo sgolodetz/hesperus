@@ -48,6 +48,7 @@ public:
 public:
 	const Vector3d& accumulated_force() const;
 	void apply_force(const Vector3d& force);
+	void cache_previous_position();
 	void clear_accumulated_force();
 	double inverse_mass() const;
 	bool is_sleeping() const;

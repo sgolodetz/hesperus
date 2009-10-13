@@ -5,6 +5,8 @@
 
 #include "BoundsSupportMapping.h"
 
+#include <source/level/collisions/Bounds.h>
+
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -15,8 +17,7 @@ BoundsSupportMapping::BoundsSupportMapping(const Bounds_CPtr& bounds)
 //#################### PUBLIC OPERATORS ####################
 Vector3d BoundsSupportMapping::operator()(const Vector3d& n) const
 {
-	// NYI
-	throw 23;
+	return m_bounds->support_point(n);
 }
 
 }
