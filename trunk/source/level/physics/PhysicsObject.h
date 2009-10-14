@@ -21,9 +21,13 @@ typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
 
 class PhysicsObject
 {
+	//#################### FRIENDS ####################
+	friend class PhysicsSystem;
+
 	//#################### PRIVATE VARIABLES ####################
 private:
 	Vector3d m_accumulatedForce;
+	int m_id;
 	double m_inverseMass;
 	PhysicsMaterial m_material;
 	Vector3d m_position;
@@ -59,6 +63,11 @@ public:
 	void set_sleeping(bool sleeping);
 	void set_velocity(const Vector3d& velocity);
 	const Vector3d& velocity() const;
+
+	//#################### PRIVATE METHODS ####################
+private:
+	int id() const;
+	void set_id(int id);
 };
 
 }

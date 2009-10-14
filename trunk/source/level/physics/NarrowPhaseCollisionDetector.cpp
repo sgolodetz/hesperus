@@ -149,8 +149,8 @@ NarrowPhaseCollisionDetector::convert_to_world_contact(const boost::optional<Con
 {
 	if(!relativeContact) return boost::none;
 	const Contact& rc = *relativeContact;
-	return Contact(rc.point() + rc.object1().position(), rc.normal(), rc.penetration_depth(), rc.time(),
-				   rc.object1(), rc.object2());
+	return Contact(rc.point() + rc.objectA().position(), rc.normal(), rc.penetration_depth(), rc.time(),
+				   rc.objectA(), rc.objectB());
 }
 
 Contact NarrowPhaseCollisionDetector::make_contact(const Vector3d& v0, const SupportMapping_CPtr& mappingA,

@@ -80,7 +80,7 @@ Destroys every sound instance (of every sound in the system).
 void SoundSystem::destroy_all_instances()
 {
 	m_instances.clear();
-	m_allocator.reset();
+	m_idAllocator.reset();
 }
 
 /**
@@ -244,7 +244,7 @@ SoundSystem::InstanceMap::iterator SoundSystem::destroy_instance(InstanceMap::it
 {
 	int id = it->first;
 	it = m_instances.erase(it);
-	m_allocator.deallocate(id);
+	m_idAllocator.deallocate(id);
 	return it;
 }
 
@@ -261,7 +261,7 @@ SoundSystem::play_sound_sub(const std::string& name, const boost::optional<Insta
 
 	SoundInstance_Ptr instance(new SoundInstance(channel));
 	if(updateFunc) (*updateFunc)(SoundInstanceUpdater(*instance));
-	shared_ptr<int> id(new int(m_allocator.allocate()));
+	shared_ptr<int> id(new int(m_idAllocator.allocate()));
 	m_instances.insert(std::make_pair(*id, InstanceData(id, instance, name, updateFunc)));
 
 	result = channel->setPaused(false);

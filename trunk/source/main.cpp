@@ -19,6 +19,13 @@ using namespace hesp;
 #include <source/level/physics/NormalPhysicsObject.h>
 #endif
 
+//#define PS_TEST
+#ifdef PS_TEST
+#include <source/level/physics/ForceGenerator.h>
+#include <source/level/physics/NormalPhysicsObject.h>
+#include <source/level/physics/PhysicsSystem.h>
+#endif
+
 namespace hesp {
 
 boost::filesystem::path determine_base_directory()
@@ -79,6 +86,29 @@ try
 		int x;
 		x = 23;
 	}
+#endif
+
+#ifdef PS_TEST
+	struct FixedForceGenerator : public ForceGenerator
+	{
+		Vector3d m_force;
+		explicit FixedForceGenerator(const Vector3d& force) : m_force(force) {}
+		void update_force(PhysicsObject& object, int milliseconds) const { object.apply_force(m_force); }
+	};
+
+	BoundsManager_CPtr boundsManager;
+	OnionTree_CPtr tree;
+	PhysicsSystem ps(boundsManager, tree);
+
+	PhysicsObject_Ptr objectA(new NormalPhysicsObject("G", "A", 1.0, PM_CHARACTER, Vector3d(0,0,0)));
+	PhysicsObject_Ptr objectB(new NormalPhysicsObject("G", "B", 1.0, PM_CHARACTER, Vector3d(3,0,0)));
+	PhysicsObjectHandle handleA = ps.register_object(objectA);
+	PhysicsObjectHandle handleB = ps.register_object(objectB);
+
+	ps.set_force_generator(handleA, "fA", ForceGenerator_CPtr(new FixedForceGenerator(Vector3d(2,0,0))));
+	ps.set_force_generator(handleB, "fB", ForceGenerator_CPtr(new FixedForceGenerator(Vector3d(-2,0,0))));
+
+	ps.update(1000);
 #endif
 
 	Game game;

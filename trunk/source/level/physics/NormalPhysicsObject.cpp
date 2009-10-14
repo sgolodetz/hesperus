@@ -38,8 +38,11 @@ void NormalPhysicsObject::set_posture(const std::string& posture)
 
 void NormalPhysicsObject::update(int milliseconds)
 {
-	// NYI
-	throw 23;
+	double t = milliseconds / 1000.0;
+	Vector3d acceleration = inverse_mass() * accumulated_force();
+	cache_previous_position();
+	set_position(position() + velocity() * t + 0.5 * acceleration * t * t);
+	set_velocity(velocity() + acceleration * t);
 }
 
 }

@@ -84,7 +84,7 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	mutable IDAllocator m_allocator;
+	mutable IDAllocator m_idAllocator;
 	mutable InstanceMap m_instances;
 	boost::optional<ListenerUpdateFunc> m_listenerUpdateFunc;
 	SoundMap m_sounds;

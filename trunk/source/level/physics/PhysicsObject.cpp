@@ -10,7 +10,7 @@ namespace hesp {
 //#################### CONSTRUCTORS ####################
 PhysicsObject::PhysicsObject(double inverseMass, PhysicsMaterial material, const Vector3d& position,
 							 const Vector3d& velocity)
-:	m_inverseMass(inverseMass), m_material(material), m_position(position), m_velocity(velocity), m_sleeping(false)
+:	m_id(-1), m_inverseMass(inverseMass), m_material(material), m_position(position), m_velocity(velocity), m_sleeping(false)
 {}
 
 //#################### DESTRUCTOR ####################
@@ -30,5 +30,9 @@ void PhysicsObject::set_position(const Vector3d& position)					{ m_position = po
 void PhysicsObject::set_sleeping(bool sleeping)								{ m_sleeping = sleeping; }
 void PhysicsObject::set_velocity(const Vector3d& velocity)					{ m_velocity = velocity; }
 const Vector3d& PhysicsObject::velocity() const								{ return m_velocity; }
+
+//#################### PRIVATE METHODS ####################
+int PhysicsObject::id() const												{ return m_id; }
+void PhysicsObject::set_id(int id)											{ m_id = id; }
 
 }

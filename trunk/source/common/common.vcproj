@@ -1938,7 +1938,15 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\physics\BroadPhaseCollisionDetector.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\physics\Contact.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\physics\ForceGeneratorRegistry.cpp"
 						>
 					</File>
 					<File
@@ -1979,6 +1987,10 @@
 					>
 					<File
 						RelativePath="..\level\physics\BoundsSupportMapping.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\physics\BroadPhaseCollisionDetector.h"
 						>
 					</File>
 					<File

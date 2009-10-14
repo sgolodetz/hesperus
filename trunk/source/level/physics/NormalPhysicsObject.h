@@ -30,6 +30,10 @@ public:
 	void update(int milliseconds);
 };
 
+//#################### TYPEDEFS ####################
+typedef shared_ptr<NormalPhysicsObject> NormalPhysicsObject_Ptr;
+typedef shared_ptr<const NormalPhysicsObject> NormalPhysicsObject_CPtr;
+
 }
 
 #endif
