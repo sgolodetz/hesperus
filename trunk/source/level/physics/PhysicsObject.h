@@ -22,6 +22,7 @@ typedef shared_ptr<const class BoundsManager> BoundsManager_CPtr;
 class PhysicsObject
 {
 	//#################### FRIENDS ####################
+	friend class BroadPhaseCollisionDetector;
 	friend class PhysicsSystem;
 
 	//#################### PRIVATE VARIABLES ####################

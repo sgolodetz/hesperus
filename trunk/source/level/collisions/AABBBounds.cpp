@@ -31,6 +31,11 @@ boost::optional<std::pair<Vector3d,Vector3d> > AABBBounds::determine_halfray_int
 	return determine_halfray_intersection_with_shape(s, v, aabb);
 }
 
+Vector3d AABBBounds::half_dimensions() const
+{
+	return m_scale;
+}
+
 double AABBBounds::height() const
 {
 	return m_scale.z * 2;

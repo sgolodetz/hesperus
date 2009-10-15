@@ -18,6 +18,11 @@ boost::optional<std::pair<Vector3d,Vector3d> > PointBounds::determine_halfray_in
 	return boost::none;
 }
 
+Vector3d PointBounds::half_dimensions() const
+{
+	return Vector3d(0,0,0);
+}
+
 double PointBounds::height() const
 {
 	return 0.0;

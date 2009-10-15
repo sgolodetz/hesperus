@@ -15,7 +15,7 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 PhysicsSystem::PhysicsSystem(const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree)
-:	m_narrowDetector(boundsManager), m_tree(tree)
+:	m_broadDetector(boundsManager), m_narrowDetector(boundsManager), m_tree(tree)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -119,13 +119,13 @@ void PhysicsSystem::detect_contacts(std::vector<Contact_CPtr>& contacts)
 		m_broadDetector.add_object(it->second.m_object);
 	}
 
-	typedef BroadPhaseCollisionDetector::ObjectPair ObjectPair;
-	std::vector<ObjectPair> potentialCollisions = m_broadDetector.potential_collisions();
+	typedef BroadPhaseCollisionDetector::ObjectPairs ObjectPairs;
+	const ObjectPairs& potentialCollisions = m_broadDetector.potential_collisions();
 
-	for(size_t i=0, size=potentialCollisions.size(); i<size; ++i)
+	for(ObjectPairs::const_iterator it=potentialCollisions.begin(), iend=potentialCollisions.end(); it!=iend; ++it)
 	{
-		PhysicsObject& objectA = *potentialCollisions[i].first;
-		PhysicsObject& objectB = *potentialCollisions[i].second;
+		PhysicsObject& objectA = *it->first;
+		PhysicsObject& objectB = *it->second;
 		boost::optional<Contact> contact = m_narrowDetector.object_vs_object(objectA, objectB);
 		if(contact) contacts.push_back(Contact_CPtr(new Contact(*contact)));
 	}

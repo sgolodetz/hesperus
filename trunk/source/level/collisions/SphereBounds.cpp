@@ -30,6 +30,11 @@ boost::optional<std::pair<Vector3d,Vector3d> > SphereBounds::determine_halfray_i
 	return determine_halfray_intersection_with_shape(s, v, sphere);
 }
 
+Vector3d SphereBounds::half_dimensions() const
+{
+	return Vector3d(m_radius, m_radius, m_radius);
+}
+
 double SphereBounds::height() const
 {
 	return m_radius * 2;
