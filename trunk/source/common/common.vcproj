@@ -1934,6 +1934,10 @@
 					Name=".cpp"
 					>
 					<File
+						RelativePath="..\level\physics\BasicContactResolver.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\physics\BoundsSupportMapping.cpp"
 						>
 					</File>
@@ -1943,6 +1947,10 @@
 					</File>
 					<File
 						RelativePath="..\level\physics\Contact.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\physics\ContactResolverRegistry.cpp"
 						>
 					</File>
 					<File
@@ -1985,6 +1993,10 @@
 				<Filter
 					Name=".h"
 					>
+					<File
+						RelativePath="..\level\physics\BasicContactResolver.h"
+						>
+					</File>
 					<File
 						RelativePath="..\level\physics\BoundsSupportMapping.h"
 						>

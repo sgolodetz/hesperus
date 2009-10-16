@@ -41,10 +41,10 @@ NarrowPhaseCollisionDetector::object_vs_object(PhysicsObject& objectA, PhysicsOb
 
 	SupportMapping_CPtr mapping, mappingA, mappingS;
 	Vector3d interiorPoint;
-	double distanceMoved;
-	construct_support_mappings(objectA, objectB, mapping, mappingA, mappingS, interiorPoint, distanceMoved);
+	Vector3d relativeMovement;
+	construct_support_mappings(objectA, objectB, mapping, mappingA, mappingS, interiorPoint, relativeMovement);
 	boost::optional<Contact> contact = xeno_collide(objectA, objectB, mapping, mappingA, mappingS,
-													interiorPoint, distanceMoved);
+													interiorPoint, relativeMovement);
 	return convert_to_world_contact(contact);
 }
 
@@ -77,8 +77,6 @@ NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object, const
 		{
 			const Vector3d& contactPoint = *transition.location;
 			const Vector3d& contactNormal = transition.plane->normal();
-			Vector3d penetration = contactPoint - pos;
-			double penetrationDepth = penetration.dot(contactNormal);	// note that |contactNormal| = 1
 
 			// Calculate the intersection time (as a number in [0,1]).
 			double contactDistSquared = (contactPoint - previousPos).length_squared();
@@ -86,7 +84,7 @@ NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object, const
 			assert(moveDistSquared > 0);
 			double time = sqrt(contactDistSquared / moveDistSquared);
 
-			return Contact(contactPoint, contactNormal, penetrationDepth, time, object);
+			return Contact(Vector3d(0,0,0), contactPoint, contactNormal, time, object);
 		}
 		case OnionUtil::RAY_TRANSITION_SE:
 		{
@@ -105,7 +103,7 @@ NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object, const
 void NarrowPhaseCollisionDetector::construct_support_mappings(const PhysicsObject& objectA, const PhysicsObject& objectB,
 															  SupportMapping_CPtr& mapping, SupportMapping_CPtr& mappingA,
 															  SupportMapping_CPtr& mappingS, Vector3d& interiorPoint,
-															  double& distanceMoved) const
+															  Vector3d& relativeMovement) const
 {
 	// Construct the support mapping in the reference frame of A. (In that frame, A is centred at the origin.)
 	// We'll be colliding a relative, swept version of B (called S) against a stationary A and then transforming
@@ -118,7 +116,7 @@ void NarrowPhaseCollisionDetector::construct_support_mappings(const PhysicsObjec
 
 	Vector3d bRelPos0 = bPos0 - aPos0;
 	Vector3d bRelPos1 = bPos1 - aPos1;
-	distanceMoved = (bRelPos1 - bRelPos0).length();
+	relativeMovement = bRelPos1 - bRelPos0;
 
 	// Construct the support mapping for the stationary A.
 	Bounds_CPtr aBounds = objectA.bounds(m_boundsManager);
@@ -149,27 +147,32 @@ NarrowPhaseCollisionDetector::convert_to_world_contact(const boost::optional<Con
 {
 	if(!relativeContact) return boost::none;
 	const Contact& rc = *relativeContact;
-	return Contact(rc.point() + rc.objectA().position(), rc.normal(), rc.penetration_depth(), rc.time(),
-				   rc.objectA(), rc.objectB());
+
+	// This makes the relative point on B relative to the centre of B rather than to the centre of A.
+	return Contact(rc.relative_pointA(),
+				   rc.relative_pointB() + rc.objectA().position() - rc.objectB()->position(),
+				   rc.normal(), rc.time(), rc.objectA(), rc.objectB());
 }
 
 Contact NarrowPhaseCollisionDetector::make_contact(const Vector3d& v0, const SupportMapping_CPtr& mappingA,
-												   const SupportMapping_CPtr& mappingS, double distanceMoved,
+												   const SupportMapping_CPtr& mappingB, const Vector3d& relativeMovement,
 												   PhysicsObject& objectA, PhysicsObject& objectB)
 {
 	Vector3d contactNormal = (-v0).normalize();
 	Vector3d contactPointA = (*mappingA)(-contactNormal);
-	Vector3d contactPointS = (*mappingS)(contactNormal);
-	Vector3d contactPoint = (contactPointA + contactPointS) / 2;
-	double penetrationDepth = contactPointA.distance(contactPointS);
-	double time = distanceMoved > 0 ? 1 - penetrationDepth/distanceMoved : 0;
-	return Contact(contactPoint, contactNormal, penetrationDepth, time, objectA, objectB);
+	Vector3d contactPointB = (*mappingB)(contactNormal);
+	double penetrationDepth = (contactPointB - contactPointA).dot(contactNormal);
+	assert(penetrationDepth > 0);
+	double contactDistanceMoved = relativeMovement.dot(contactNormal);
+	double time = contactDistanceMoved > 0 ? 1 - penetrationDepth/contactDistanceMoved : 0;
+	return Contact(contactPointA, contactPointB, contactNormal, time, objectA, objectB);
 }
 
 boost::optional<Contact>
 NarrowPhaseCollisionDetector::xeno_collide(PhysicsObject& objectA, PhysicsObject& objectB,
 										   const SupportMapping_CPtr& mapping, const SupportMapping_CPtr& mappingA,
-										   const SupportMapping_CPtr& mappingS, const Vector3d& v0, double distanceMoved)
+										   const SupportMapping_CPtr& mappingB, const Vector3d& v0,
+										   const Vector3d& relativeMovement)
 try
 {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,7 +207,7 @@ try
 		{
 			// v0 is closer to the origin than it is to v1, so (by the geometry of the situation) the origin
 			// must lie between v0 and v1 and thus be inside the Minkowski difference shape -> HIT.
-			return make_contact(v0, mappingA, mappingS, distanceMoved, objectA, objectB);
+			return make_contact(v0, mappingA, mappingB, relativeMovement, objectA, objectB);
 		}
 		else return boost::none;
 	}
@@ -299,7 +302,7 @@ try
 		n = (v2 - v1).cross(v3 - v1).normalize();
 		if(n.dot(v1) > 0)
 		{
-			return make_contact(v0, mappingA, mappingS, distanceMoved, objectA, objectB);
+			return make_contact(v0, mappingA, mappingB, relativeMovement, objectA, objectB);
 		}
 
 		// If the origin's not behind the portal, find the support plane in the direction of the portal normal.

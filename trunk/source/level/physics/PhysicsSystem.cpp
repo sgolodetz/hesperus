@@ -7,6 +7,7 @@
 
 #include <boost/pointer_cast.hpp>
 
+#include "ContactResolver.h"
 #include "ForceGenerator.h"
 #include "NormalPhysicsObject.h"
 #include "PhysicsObject.h"
@@ -28,6 +29,22 @@ PhysicsObjectHandle PhysicsSystem::register_object(const PhysicsObject_Ptr& obje
 	m_objects.insert(std::make_pair(id, ObjectData(wid, object)));
 	m_forceGeneratorRegistry.register_id(id);
 	return sid;
+}
+
+void PhysicsSystem::remove_contact_resolver(PhysicsMaterial material1, PhysicsMaterial material2)
+{
+	m_contactResolverRegistry.remove_resolver(material1, material2);
+}
+
+void PhysicsSystem::remove_force_generator(const PhysicsObjectHandle& handle, const std::string& forceName)
+{
+	m_forceGeneratorRegistry.remove_generator(*handle, forceName);
+}
+
+void PhysicsSystem::set_contact_resolver(PhysicsMaterial material1, PhysicsMaterial material2,
+										 const ContactResolver_CPtr& resolver)
+{
+	m_contactResolverRegistry.set_resolver(material1, material2, resolver);
 }
 
 void PhysicsSystem::set_force_generator(const PhysicsObjectHandle& handle, const std::string& forceName,
@@ -147,7 +164,31 @@ Resolve the contacts using the appropriate contact resolver for each pair of col
 */
 void PhysicsSystem::resolve_contacts(const std::vector<Contact_CPtr>& contacts)
 {
-	// NYI
+	// Step 1:	Sort the contacts in ascending order of occurrence.
+	std::vector<Contact_CPtr> sortedContacts(contacts);
+	std::sort(sortedContacts.begin(), sortedContacts.end(), ContactPred());
+
+	// Step 2:	Resolve each contact in turn. Note that resolving one contact may affect others,
+	//			which can't be handled completely without abandoning the sequential resolution
+	//			approach. What we do here is simply to recalculate the penetration depth of
+	//			each contact as we come to it, thus allowing e.g. contacts which have become
+	//			irrelevant as a result of another contact being resolved to be skipped.
+	const double PENETRATION_TOLERANCE = 0.001;
+	for(std::vector<Contact_CPtr>::const_iterator it=sortedContacts.begin(), iend=sortedContacts.end(); it!=iend; ++it)
+	{
+		const Contact& contact = **it;
+		double penetrationDepth = contact.penetration_depth();
+		if(penetrationDepth < PENETRATION_TOLERANCE) continue;
+
+		// Look up the appropriate contact resolver in the registry, based on the materials
+		// of the objects involved.
+		PhysicsMaterial materialA = contact.objectA().material();
+		PhysicsMaterial materialB = contact.objectB() ? contact.objectB()->material() : PM_WORLD;
+		ContactResolver_CPtr resolver = m_contactResolverRegistry.lookup_resolver(materialA, materialB);
+
+		// Resolve the contact using this resolver (if any).
+		if(resolver) resolver->resolve_contact(contact);
+	}
 }
 
 /**

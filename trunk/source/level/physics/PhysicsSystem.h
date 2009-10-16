@@ -14,8 +14,9 @@ using boost::weak_ptr;
 
 #include <source/util/IDAllocator.h>
 #include "BroadPhaseCollisionDetector.h"
-#include "NarrowPhaseCollisionDetector.h"
+#include "ContactResolverRegistry.h"
 #include "ForceGeneratorRegistry.h"
+#include "NarrowPhaseCollisionDetector.h"
 
 namespace hesp {
 
@@ -32,6 +33,14 @@ class PhysicsSystem
 {
 	//#################### NESTED CLASSES ####################
 private:
+	struct ContactPred
+	{
+		bool operator()(const Contact_CPtr& lhs, const Contact_CPtr& rhs) const
+		{
+			return lhs->time() < rhs->time();
+		}
+	};
+
 	struct ObjectData
 	{
 		weak_ptr<int> m_wid;
@@ -45,6 +54,7 @@ private:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	BroadPhaseCollisionDetector m_broadDetector;
+	ContactResolverRegistry m_contactResolverRegistry;
 	ForceGeneratorRegistry m_forceGeneratorRegistry;
 	IDAllocator m_idAllocator;
 	NarrowPhaseCollisionDetector m_narrowDetector;
@@ -58,6 +68,9 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	PhysicsObjectHandle register_object(const PhysicsObject_Ptr& object);
+	void remove_contact_resolver(PhysicsMaterial material1, PhysicsMaterial material2);
+	void remove_force_generator(const PhysicsObjectHandle& handle, const std::string& forceName);
+	void set_contact_resolver(PhysicsMaterial material1, PhysicsMaterial material2, const ContactResolver_CPtr& resolver);
 	void set_force_generator(const PhysicsObjectHandle& handle, const std::string& forceName, const ForceGenerator_CPtr& generator);
 	void update(int milliseconds);
 

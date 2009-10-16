@@ -23,6 +23,7 @@ using namespace hesp;
 #ifdef PS_TEST
 #include <source/level/collisions/AABBBounds.h>
 #include <source/level/collisions/BoundsManager.h>
+#include <source/level/physics/BasicContactResolver.h>
 #include <source/level/physics/ForceGenerator.h>
 #include <source/level/physics/NormalPhysicsObject.h>
 #include <source/level/physics/PhysicsSystem.h>
@@ -112,13 +113,14 @@ try
 
 	OnionTree_CPtr tree;
 	PhysicsSystem ps(boundsManager, tree);
+	ps.set_contact_resolver(PM_CHARACTER, PM_CHARACTER, ContactResolver_CPtr(new BasicContactResolver(0.1)));
 
-	PhysicsObject_Ptr objectA(new NormalPhysicsObject("G", "A", 1.0, PM_CHARACTER, Vector3d(-1,-1,0)));
-	PhysicsObject_Ptr objectB(new NormalPhysicsObject("G", "B", 1.0, PM_CHARACTER, Vector3d(3,0,0)));
+	PhysicsObject_Ptr objectA(new NormalPhysicsObject("G", "A", 1.0, PM_CHARACTER, Vector3d(1,1,1)));
+	PhysicsObject_Ptr objectB(new NormalPhysicsObject("G", "B", 1.0, PM_CHARACTER, Vector3d(4,1,1)));
 	PhysicsObjectHandle handleA = ps.register_object(objectA);
 	PhysicsObjectHandle handleB = ps.register_object(objectB);
 
-	ps.set_force_generator(handleA, "fA", ForceGenerator_CPtr(new FixedForceGenerator(Vector3d(4,0,0))));
+	ps.set_force_generator(handleA, "fA", ForceGenerator_CPtr(new FixedForceGenerator(Vector3d(2,0,0))));
 	ps.set_force_generator(handleB, "fB", ForceGenerator_CPtr(new FixedForceGenerator(Vector3d(-2,0,0))));
 
 	ps.update(1000);

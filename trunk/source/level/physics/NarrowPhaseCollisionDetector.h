@@ -35,10 +35,10 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void construct_support_mappings(const PhysicsObject& objectA, const PhysicsObject& objectB, SupportMapping_CPtr& mapping, SupportMapping_CPtr& mappingA, SupportMapping_CPtr& mappingS, Vector3d& interiorPoint, double& distanceMoved) const;
+	void construct_support_mappings(const PhysicsObject& objectA, const PhysicsObject& objectB, SupportMapping_CPtr& mapping, SupportMapping_CPtr& mappingA, SupportMapping_CPtr& mappingS, Vector3d& interiorPoint, Vector3d& relativeMovement) const;
 	boost::optional<Contact> convert_to_world_contact(const boost::optional<Contact>& relativeContact) const;
-	static Contact make_contact(const Vector3d& v0, const SupportMapping_CPtr& mappingA, const SupportMapping_CPtr& mappingS, double distanceMoved, PhysicsObject& objectA, PhysicsObject& objectB);
-	static boost::optional<Contact> xeno_collide(PhysicsObject& objectA, PhysicsObject& objectB, const SupportMapping_CPtr& mapping, const SupportMapping_CPtr& mappingA, const SupportMapping_CPtr& mappingS, const Vector3d& v0, double distanceMoved);
+	static Contact make_contact(const Vector3d& v0, const SupportMapping_CPtr& mappingA, const SupportMapping_CPtr& mappingB, const Vector3d& relativeMovement, PhysicsObject& objectA, PhysicsObject& objectB);
+	static boost::optional<Contact> xeno_collide(PhysicsObject& objectA, PhysicsObject& objectB, const SupportMapping_CPtr& mapping, const SupportMapping_CPtr& mappingA, const SupportMapping_CPtr& mappingB, const Vector3d& v0, const Vector3d& relativeMovement);
 };
 
 }

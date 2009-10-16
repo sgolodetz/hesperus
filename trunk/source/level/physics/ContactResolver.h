@@ -19,7 +19,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void resolve_contact(const Contact& contact, double restitutionCoefficient) const = 0;
+	virtual void resolve_contact(const Contact& contact) const = 0;
 };
 
 }
