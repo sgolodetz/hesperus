@@ -1880,54 +1880,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="collisions"
-				>
-				<Filter
-					Name=".cpp"
-					>
-					<File
-						RelativePath="..\level\collisions\AABBBounds.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\collisions\BoundsManager.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\collisions\PointBounds.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\collisions\SphereBounds.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".h"
-					>
-					<File
-						RelativePath="..\level\collisions\AABBBounds.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\collisions\Bounds.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\collisions\BoundsManager.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\collisions\PointBounds.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\collisions\SphereBounds.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
 				Name="physics"
 				>
 				<Filter
@@ -2063,6 +2015,54 @@
 					</File>
 					<File
 						RelativePath="..\level\physics\TranslatedSupportMapping.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="bounds"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\bounds\AABBBounds.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bounds\BoundsManager.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bounds\PointBounds.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bounds\SphereBounds.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\bounds\AABBBounds.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bounds\Bounds.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bounds\BoundsManager.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bounds\PointBounds.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\bounds\SphereBounds.h"
 						>
 					</File>
 				</Filter>

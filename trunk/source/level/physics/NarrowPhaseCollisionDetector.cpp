@@ -10,7 +10,7 @@
 #include <boost/tuple/tuple.hpp>
 
 #include <source/exceptions/Exception.h>
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/trees/OnionUtil.h>
 #include <source/math/Constants.h>
 #include <source/math/geom/Plane.h>

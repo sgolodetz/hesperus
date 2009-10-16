@@ -22,8 +22,8 @@
 #include <source/math/geom/GeomUtil.h>
 #include <source/level/HUDViewer.h>
 #include <source/level/LevelViewer.h>
-#include <source/level/collisions/Bounds.h>
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/Bounds.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/objects/base/ObjectCommand.h>
 #include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpBounds.h>

@@ -5,7 +5,7 @@
 
 #include "NormalPhysicsObject.h"
 
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/BoundsManager.h>
 
 namespace hesp {
 

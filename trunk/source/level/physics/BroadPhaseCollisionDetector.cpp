@@ -7,7 +7,7 @@
 
 #include <limits>
 
-#include <source/level/collisions/Bounds.h>
+#include <source/level/bounds/Bounds.h>
 #include "PhysicsObject.h"
 
 namespace hesp {

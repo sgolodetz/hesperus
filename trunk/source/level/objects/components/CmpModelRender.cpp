@@ -7,8 +7,8 @@
 
 #include <source/ogl/WrappedGL.h>
 
-#include <source/level/collisions/Bounds.h>
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/Bounds.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/models/AnimationController.h>
 #include <source/level/models/Model.h>
 #include <source/level/models/ModelManager.h>

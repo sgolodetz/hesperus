@@ -5,7 +5,7 @@
 
 #include "MinimusGotoPositionYoke.h"
 
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/nav/GlobalPathfinder.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavLink.h>

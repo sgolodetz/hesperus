@@ -13,16 +13,16 @@ using namespace hesp;
 
 //#define CD_TEST
 #ifdef CD_TEST
-#include <source/level/collisions/AABBBounds.h>
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/AABBBounds.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/physics/NarrowPhaseCollisionDetector.h>
 #include <source/level/physics/NormalPhysicsObject.h>
 #endif
 
 //#define PS_TEST
 #ifdef PS_TEST
-#include <source/level/collisions/AABBBounds.h>
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/AABBBounds.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/physics/BasicContactResolver.h>
 #include <source/level/physics/ForceGenerator.h>
 #include <source/level/physics/NormalPhysicsObject.h>

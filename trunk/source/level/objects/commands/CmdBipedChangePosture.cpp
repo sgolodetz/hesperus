@@ -5,8 +5,8 @@
 
 #include "CmdBipedChangePosture.h"
 
-#include <source/level/collisions/Bounds.h>
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/Bounds.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>

@@ -12,10 +12,10 @@ using boost::lexical_cast;
 
 #include <source/exceptions/Exception.h>
 #include <source/io/util/PropertyIO.h>
-#include <source/level/collisions/AABBBounds.h>
-#include <source/level/collisions/BoundsManager.h>
-#include <source/level/collisions/PointBounds.h>
-#include <source/level/collisions/SphereBounds.h>
+#include <source/level/bounds/AABBBounds.h>
+#include <source/level/bounds/BoundsManager.h>
+#include <source/level/bounds/PointBounds.h>
+#include <source/level/bounds/SphereBounds.h>
 #include <source/level/objects/base/ComponentPropertyTypeMap.h>
 #include <source/level/objects/base/ObjectSpecification.h>
 #include <source/xml/XMLParser.h>

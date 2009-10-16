@@ -19,8 +19,8 @@ using boost::lexical_cast;
 #include <source/io/files/DefinitionsFile.h>
 #include <source/io/files/DefinitionsSpecifierFile.h>
 #include <source/io/util/DirectoryFinder.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/brushes/BrushExpander.h>
-#include <source/level/collisions/BoundsManager.h>
 #include <source/util/PolygonTypes.h>
 using namespace hesp;
 

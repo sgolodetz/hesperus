@@ -6,8 +6,8 @@
 #include "FirstPersonCamera.h"
 
 #include <source/axes/NUVAxes.h>
-#include <source/level/collisions/Bounds.h>
-#include <source/level/collisions/BoundsManager.h>
+#include <source/level/bounds/Bounds.h>
+#include <source/level/bounds/BoundsManager.h>
 #include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpPosition.h>
