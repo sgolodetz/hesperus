@@ -72,12 +72,13 @@ void BasicContactResolver::resolve_object_world(const Contact& contact) const
 {
 	// Step 1:	Resolve interpenetration. For object-world contacts, this involves moving the object
 	//			back to the transition location, which is stored as point B in the contact structure.
-	contact.objectA().set_position(contact.pointB());
+	PhysicsObject& objectA = contact.objectA();
+	objectA.set_position(contact.pointB());
 
 	// Step 2:	Determine the new velocity of the object.
 
 	// Calculate the old separating velocity (in the normal direction).
-	double oldSepVelocity = contact.objectA().velocity().dot(contact.normal());
+	double oldSepVelocity = objectA.velocity().dot(contact.normal());
 
 	// If the contact is either separating or stationary, there's nothing to do.
 	if(oldSepVelocity >= 0) return;
@@ -85,10 +86,9 @@ void BasicContactResolver::resolve_object_world(const Contact& contact) const
 	// Calculate the new separating velocity (in the normal direction).
 	double newSepVelocity = -m_restitutionCoefficient * oldSepVelocity;
 
-	// TODO
-
-	// NYI
-	throw 23;
+	// Update the velocity of the object.
+	Vector3d deltaVelA = (newSepVelocity - oldSepVelocity) * contact.normal();
+	objectA.set_velocity(objectA.velocity() + deltaVelA);
 }
 
 }

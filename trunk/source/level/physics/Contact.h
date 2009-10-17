@@ -22,9 +22,10 @@ private:
 	Vector3d m_normal;							// the normal at the contact point
 	PhysicsObject& m_objectA;					// the first object involved in the collision
 	boost::optional<PhysicsObject&> m_objectB;	// the second object involved in the collision (if any)
-	Vector3d m_relativePointA;					// a relative point on object A representing the contact
-	Vector3d m_relativePointB;					// a relative point on object B representing the contact
-												// (if B is the world, then this is an absolute point)
+	Vector3d m_relativePointA;					// a point on the contact plane associated with object A
+												// (relative to A)
+	Vector3d m_relativePointB;					// a point on the contact plane associated with object B
+												// (relative to B, unless B is the world, in which case it's absolute)
 	double m_time;								// a number in [0,1] indicating when in the frame the contact occurred
 
 	//#################### CONSTRUCTORS ####################

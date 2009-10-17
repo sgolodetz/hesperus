@@ -36,10 +36,14 @@ Objects
 		{
 			Look = ( 1 -0.5 0 )
 		}
-		Physics;
-		Position
+		Simulation
 		{
+			BoundsGroup = "biped"
+			InverseMass = 0.02
+			Material = "character"
 			Position = ( 6 24 6 )
+			Posture = "stand"
+			Velocity = ( 0 0 0 )
 		}
 		UserBipedYoke;
 	}
@@ -76,10 +80,14 @@ Objects
 		{
 			Look = ( -1 0 0 )
 		}
-		Physics;
-		Position
+		Simulation
 		{
+			BoundsGroup = "biped"
+			InverseMass = 0.02
+			Material = "character"
 			Position = ( 20 20 6 )
+			Posture = "stand"
+			Velocity = ( 0 0 0 )
 		}
 	}
 	Object

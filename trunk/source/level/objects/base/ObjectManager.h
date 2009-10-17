@@ -32,6 +32,7 @@ typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<const class Message> Message_CPtr;
 typedef shared_ptr<class ModelManager> ModelManager_Ptr;
 typedef shared_ptr<const class ModelManager> ModelManager_CPtr;
+typedef shared_ptr<class PhysicsSystem> PhysicsSystem_Ptr;
 
 class ObjectManager
 {
@@ -53,6 +54,7 @@ private:
 	IDAllocator m_idAllocator;
 	ModelManager_Ptr m_modelManager;
 	std::map<ObjectID,Object> m_objects;
+	PhysicsSystem_Ptr m_physicsSystem;
 
 	ConstructionQueue m_constructionQueue;
 	DestructionQueue m_destructionQueue;
@@ -60,7 +62,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	ObjectManager(const ModelManager_Ptr& modelManager, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine);
+	ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine, const ModelManager_Ptr& modelManager);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -79,6 +81,7 @@ public:
 	const ModelManager_Ptr& model_manager();
 	ModelManager_CPtr model_manager() const;
 	int object_count() const;
+	const PhysicsSystem_Ptr& physics_system();
 	ObjectID player() const;
 	void post_message(const ObjectID& target, const Message_CPtr& msg);
 	void queue_child_for_destruction(const ObjectID& child, const ObjectID& parent);

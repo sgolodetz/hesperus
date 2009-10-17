@@ -9,8 +9,7 @@
 #include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpOrientation.h>
-#include <source/level/objects/components/ICmpPhysics.h>
-#include <source/level/objects/components/ICmpPosition.h>
+#include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/yokes/user/UserBipedYoke.h>
 #include <source/util/Properties.h>
 
@@ -28,8 +27,7 @@ void CmpUserBipedYoke::check_dependencies() const
 	check_dependency<ICmpBounds>();
 	check_dependency<ICmpMeshMovement>();
 	check_dependency<ICmpOrientation>();
-	check_dependency<ICmpPhysics>();
-	check_dependency<ICmpPosition>();
+	check_dependency<ICmpSimulation>();
 }
 
 std::vector<ObjectCommand_Ptr> CmpUserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,

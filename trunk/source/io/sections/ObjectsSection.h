@@ -25,7 +25,7 @@ class ObjectsSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static ObjectManager_Ptr load(std::istream& is, const ModelManager_Ptr& modelManager, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes);
+	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ModelManager_Ptr& modelManager);
 
 	//#################### SAVING METHODS ####################
 public:

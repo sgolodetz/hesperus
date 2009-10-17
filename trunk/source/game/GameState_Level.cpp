@@ -29,10 +29,11 @@
 #include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpOrientation.h>
-#include <source/level/objects/components/ICmpPhysics.h>
 #include <source/level/objects/components/ICmpPosition.h>
+#include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/MoveFunctions.h>
+#include <source/level/physics/PhysicsSystem.h>
 #include <source/util/UserInput.h>
 namespace bf = boost::filesystem;
 
@@ -78,6 +79,10 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 
 	do_yokes(milliseconds, input);
 	do_physics(milliseconds);
+#if 0
+	// PHYSTODO
+	do_physics_ex(milliseconds);
+#endif
 	do_animations(milliseconds);
 	do_activatables(input);
 
@@ -196,15 +201,23 @@ void GameState_Level::do_physics(int milliseconds)
 	std::vector<ObjectID> simulables = objectManager->group("Simulables");
 	for(size_t i=0, size=simulables.size(); i<size; ++i)
 	{
-		ICmpPhysics_Ptr cmpPhysics = objectManager->get_component(simulables[i], cmpPhysics);
-		Vector3d velocity = cmpPhysics->velocity();
-		cmpPhysics->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
-		if(MoveFunctions::single_move_without_navmesh(simulables[i], objectManager, cmpPhysics->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
+		ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(simulables[i], cmpSimulation);
+		Vector3d velocity = cmpSimulation->velocity();
+		cmpSimulation->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
+		if(MoveFunctions::single_move_without_navmesh(simulables[i], objectManager, cmpSimulation->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
 		{
 			// A collision occurred, so set the velocity back to zero.
-			cmpPhysics->set_velocity(Vector3d(0,0,0));
+			cmpSimulation->set_velocity(Vector3d(0,0,0));
 		}
 	}
+}
+
+// PHYSTODO
+void GameState_Level::do_physics_ex(int milliseconds)
+{
+	const BoundsManager_CPtr& boundsManager = m_level->object_manager()->bounds_manager();
+	OnionTree_CPtr tree = m_level->onion_tree();
+	m_level->object_manager()->physics_system()->update(boundsManager, tree, milliseconds);
 }
 
 void GameState_Level::do_yokes(int milliseconds, UserInput& input)

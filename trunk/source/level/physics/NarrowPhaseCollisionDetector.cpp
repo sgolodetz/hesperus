@@ -23,8 +23,9 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-NarrowPhaseCollisionDetector::NarrowPhaseCollisionDetector(const BoundsManager_CPtr& boundsManager)
-:	m_boundsManager(boundsManager)
+NarrowPhaseCollisionDetector::NarrowPhaseCollisionDetector(const BoundsManager_CPtr& boundsManager,
+														   const OnionTree_CPtr& tree)
+:	m_boundsManager(boundsManager), m_tree(tree)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -49,17 +50,13 @@ NarrowPhaseCollisionDetector::object_vs_object(PhysicsObject& objectA, PhysicsOb
 }
 
 boost::optional<Contact>
-NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object, const OnionTree_CPtr& tree) const
+NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object) const
 {
-	// If the object hasn't moved, no contact should be generated (we justifiably assume the object didn't
-	// start off embedded in a wall).
-	if(!object.previous_position()) return boost::none;
+	const Vector3d& previousPos = object.previous_position() ? *object.previous_position() : object.position();
 	const Vector3d& pos = object.position();
-	const Vector3d& previousPos = *object.previous_position();
-	if((pos - previousPos).length() < SMALL_EPSILON) return boost::none;
 
 	int mapIndex = m_boundsManager->lookup_bounds_index(object.bounds_group(), object.posture());
-	OnionUtil::Transition transition = OnionUtil::find_first_transition(mapIndex, previousPos, pos, tree);
+	OnionUtil::Transition transition = OnionUtil::find_first_transition(mapIndex, previousPos, pos, m_tree);
 
 	switch(transition.classifier)
 	{
@@ -70,8 +67,8 @@ NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object, const
 		}
 		case OnionUtil::RAY_SOLID:
 		{
-			// NYI
-			throw 23;
+			// PHYSTODO
+			return boost::none;
 		}
 		case OnionUtil::RAY_TRANSITION_ES:
 		{

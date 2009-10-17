@@ -51,7 +51,6 @@
 				<property name="AttachPoint" type="string"/>
 				<property name="Owner" type="ObjectID"/>
 			</component>
-			<component name="Physics"/>
 			<component name="Position">
 				<property name="Position" type="Vector3d"/>
 			</component>
@@ -64,6 +63,14 @@
 				<property name="Group" type="string"/>
 				<property name="Hotspots" type="[string]"/>
 				<property name="Script" type="string"/>
+			</component>
+			<component name="Simulation">
+				<property name="BoundsGroup" type="string"/>
+				<property name="InverseMass" type="double"/>
+				<property name="Material" type="string"/>
+				<property name="Position" type="Vector3d"/>
+				<property name="Posture" type="string"/>
+				<property name="Velocity" type="Vector3d"/>
 			</component>
 			<component name="UserBipedYoke"/>
 		</components>
@@ -90,8 +97,13 @@
 				<component name="MeshMovement"/>
 				<component name="MinimusScriptYoke"/>
 				<component name="Orientation"/>
-				<component name="Physics"/>
-				<component name="Position"/>
+				<component name="Simulation">
+					<property name="BoundsGroup" fixed='"biped"'/>
+					<property name="InverseMass" default='0.02'/>
+					<property name="Material" fixed='"character"'/>
+					<property name="Posture" default='"stand"'/>
+					<property name="Velocity" fixed='( 0 0 0 )'/>
+				</component>
 			</archetype>
 			<archetype name="Player">
 				<component name="BipedAnimChooser"/>
@@ -114,8 +126,13 @@
 				</component>
 				<component name="MeshMovement"/>
 				<component name="Orientation"/>
-				<component name="Physics"/>
-				<component name="Position"/>
+				<component name="Simulation">
+					<property name="BoundsGroup" fixed='"biped"'/>
+					<property name="InverseMass" default='0.02'/>
+					<property name="Material" fixed='"character"'/>
+					<property name="Posture" default='"stand"'/>
+					<property name="Velocity" fixed='( 0 0 0 )'/>
+				</component>
 				<component name="UserBipedYoke"/>
 			</archetype>
 		</archetypes>

@@ -23,15 +23,16 @@ class NarrowPhaseCollisionDetector
 	//#################### PRIVATE VARIABLES ####################
 private:
 	BoundsManager_CPtr m_boundsManager;
+	OnionTree_CPtr m_tree;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit NarrowPhaseCollisionDetector(const BoundsManager_CPtr& boundsManager);
+	explicit NarrowPhaseCollisionDetector(const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree);
 
 	//#################### PUBLIC METHODS ####################
 public:
 	boost::optional<Contact> object_vs_object(PhysicsObject& objectA, PhysicsObject& objectB) const;
-	boost::optional<Contact> object_vs_world(NormalPhysicsObject& object, const OnionTree_CPtr& tree) const;
+	boost::optional<Contact> object_vs_world(NormalPhysicsObject& object) const;
 
 	//#################### PRIVATE METHODS ####################
 private:

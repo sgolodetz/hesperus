@@ -9,8 +9,7 @@
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpOrientation.h>
-#include <source/level/objects/components/ICmpPhysics.h>
-#include <source/level/objects/components/ICmpPosition.h>
+#include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/yokes/minimus/MinimusScriptYoke.h>
 #include <source/util/Properties.h>
 namespace bf = boost::filesystem;
@@ -35,8 +34,7 @@ void CmpMinimusScriptYoke::check_dependencies() const
 	check_dependency<ICmpMeshMovement>();
 	check_dependency<ICmpModelRender>();
 	check_dependency<ICmpOrientation>();
-	check_dependency<ICmpPhysics>();
-	check_dependency<ICmpPosition>();
+	check_dependency<ICmpSimulation>();
 }
 
 std::vector<ObjectCommand_Ptr> CmpMinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,

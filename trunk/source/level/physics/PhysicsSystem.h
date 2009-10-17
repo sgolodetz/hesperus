@@ -13,10 +13,9 @@
 using boost::weak_ptr;
 
 #include <source/util/IDAllocator.h>
-#include "BroadPhaseCollisionDetector.h"
+#include "Contact.h"
 #include "ContactResolverRegistry.h"
 #include "ForceGeneratorRegistry.h"
-#include "NarrowPhaseCollisionDetector.h"
 
 namespace hesp {
 
@@ -53,17 +52,10 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
-	BroadPhaseCollisionDetector m_broadDetector;
 	ContactResolverRegistry m_contactResolverRegistry;
 	ForceGeneratorRegistry m_forceGeneratorRegistry;
 	IDAllocator m_idAllocator;
-	NarrowPhaseCollisionDetector m_narrowDetector;
 	std::map<int,ObjectData> m_objects;
-	OnionTree_CPtr m_tree;
-
-	//#################### CONSTRUCTORS ####################
-public:
-	explicit PhysicsSystem(const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -72,14 +64,14 @@ public:
 	void remove_force_generator(const PhysicsObjectHandle& handle, const std::string& forceName);
 	void set_contact_resolver(PhysicsMaterial material1, PhysicsMaterial material2, const ContactResolver_CPtr& resolver);
 	void set_force_generator(const PhysicsObjectHandle& handle, const std::string& forceName, const ForceGenerator_CPtr& generator);
-	void update(int milliseconds);
+	void update(const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree, int milliseconds);
 
 	//#################### PRIVATE METHODS ####################
 private:
 	void apply_hard_constraints(std::vector<Contact_CPtr>& contacts);
 	std::vector<std::vector<Contact_CPtr> > batch_contacts(const std::vector<Contact_CPtr>& contacts);
 	void check_objects();
-	void detect_contacts(std::vector<Contact_CPtr>& contacts);
+	void detect_contacts(std::vector<Contact_CPtr>& contacts, const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree);
 	void resolve_contacts(const std::vector<Contact_CPtr>& contacts);
 	void simulate_objects(int milliseconds);
 };

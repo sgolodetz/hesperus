@@ -7,17 +7,14 @@
 
 #include <boost/pointer_cast.hpp>
 
+#include "BroadPhaseCollisionDetector.h"
 #include "ContactResolver.h"
 #include "ForceGenerator.h"
+#include "NarrowPhaseCollisionDetector.h"
 #include "NormalPhysicsObject.h"
 #include "PhysicsObject.h"
 
 namespace hesp {
-
-//#################### CONSTRUCTORS ####################
-PhysicsSystem::PhysicsSystem(const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree)
-:	m_broadDetector(boundsManager), m_narrowDetector(boundsManager), m_tree(tree)
-{}
 
 //#################### PUBLIC METHODS ####################
 PhysicsObjectHandle PhysicsSystem::register_object(const PhysicsObject_Ptr& object)
@@ -53,7 +50,7 @@ void PhysicsSystem::set_force_generator(const PhysicsObjectHandle& handle, const
 	m_forceGeneratorRegistry.set_generator(*handle, forceName, generator);
 }
 
-void PhysicsSystem::update(int milliseconds)
+void PhysicsSystem::update(const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree, int milliseconds)
 {
 	typedef std::vector<Contact_CPtr> ContactSet;
 
@@ -65,7 +62,7 @@ void PhysicsSystem::update(int milliseconds)
 
 	// Step 3:	Generate all necessary contacts for them (including hard constraints).
 	ContactSet contacts;
-	detect_contacts(contacts);
+	detect_contacts(contacts, boundsManager, tree);
 	apply_hard_constraints(contacts);
 
 	// Step 4:	Batch the contacts into groups which might mutually interact.
@@ -86,7 +83,7 @@ Apply any hard constraints as additional contacts.
 */
 void PhysicsSystem::apply_hard_constraints(std::vector<Contact_CPtr>& contacts)
 {
-	// NYI
+	// PHYSTODO
 }
 
 /**
@@ -97,9 +94,9 @@ Group the contacts into batches which might interact with each other.
 */
 std::vector<std::vector<Contact_CPtr> > PhysicsSystem::batch_contacts(const std::vector<Contact_CPtr>& contacts)
 {
-	// FIXME: This is the simplest possible batching processor (for test purposes only) - it needs doing properly.
+	// PHYSTODO: This is the simplest possible batching processor (for test purposes only) - it needs doing properly.
 	std::vector<std::vector<Contact_CPtr> > batches;
-	batches.push_back(contacts);
+	if(!contacts.empty()) batches.push_back(contacts);
 	return batches;
 }
 
@@ -125,35 +122,43 @@ void PhysicsSystem::check_objects()
 /**
 Perform collision detection and generate any necessary contacts.
 
-@param contacts	Used to add to the array of contacts which need resolving
+@param contacts			Used to add to the array of contacts which need resolving
+@param boundsManager	The bounds manager which contains the bounds for all the objects
+@param tree				The tree representing the world for collision purposes
 */
-void PhysicsSystem::detect_contacts(std::vector<Contact_CPtr>& contacts)
+void PhysicsSystem::detect_contacts(std::vector<Contact_CPtr>& contacts,
+									const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree)
 {
+	BroadPhaseCollisionDetector broadDetector(boundsManager);
+	NarrowPhaseCollisionDetector narrowDetector(boundsManager, tree);
+
 	// Detect object-object contacts.
-	m_broadDetector.reset();
 	for(std::map<int,ObjectData>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
 	{
-		m_broadDetector.add_object(it->second.m_object);
+		broadDetector.add_object(it->second.m_object);
 	}
 
 	typedef BroadPhaseCollisionDetector::ObjectPairs ObjectPairs;
-	const ObjectPairs& potentialCollisions = m_broadDetector.potential_collisions();
+	const ObjectPairs& potentialCollisions = broadDetector.potential_collisions();
 
 	for(ObjectPairs::const_iterator it=potentialCollisions.begin(), iend=potentialCollisions.end(); it!=iend; ++it)
 	{
 		PhysicsObject& objectA = *it->first;
 		PhysicsObject& objectB = *it->second;
-		boost::optional<Contact> contact = m_narrowDetector.object_vs_object(objectA, objectB);
+		boost::optional<Contact> contact = narrowDetector.object_vs_object(objectA, objectB);
 		if(contact) contacts.push_back(Contact_CPtr(new Contact(*contact)));
 	}
 
-	// Detect object-world contacts for normal physics objects.
-	for(std::map<int,ObjectData>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+	if(tree)
 	{
-		NormalPhysicsObject_Ptr object = boost::dynamic_pointer_cast<NormalPhysicsObject,PhysicsObject>(it->second.m_object);
-		if(!object) continue;
-		boost::optional<Contact> contact = m_narrowDetector.object_vs_world(*object, m_tree);
-		if(contact) contacts.push_back(Contact_CPtr(new Contact(*contact)));
+		// Detect object-world contacts for normal physics objects.
+		for(std::map<int,ObjectData>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
+		{
+			NormalPhysicsObject_Ptr object = boost::dynamic_pointer_cast<NormalPhysicsObject,PhysicsObject>(it->second.m_object);
+			if(!object) continue;
+			boost::optional<Contact> contact = narrowDetector.object_vs_world(*object);
+			if(contact) contacts.push_back(Contact_CPtr(new Contact(*contact)));
+		}
 	}
 }
 

@@ -176,7 +176,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	modelManager = ModelNamesSection::load(is);
 	modelManager->load_all();
 
-	objectManager = ObjectsSection::load(is, modelManager, boundsManager, componentPropertyTypes, archetypes);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, modelManager);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
@@ -223,7 +223,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	modelManager = ModelNamesSection::load(is);
 	modelManager->load_all();
 
-	objectManager = ObjectsSection::load(is, modelManager, boundsManager, componentPropertyTypes, archetypes);
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, modelManager);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));

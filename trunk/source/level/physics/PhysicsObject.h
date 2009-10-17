@@ -23,6 +23,7 @@ class PhysicsObject
 {
 	//#################### FRIENDS ####################
 	friend class BroadPhaseCollisionDetector;
+	friend class NarrowPhaseCollisionDetector;
 	friend class PhysicsSystem;
 
 	//#################### PRIVATE VARIABLES ####################
@@ -51,24 +52,26 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	const Vector3d& accumulated_force() const;
-	void apply_force(const Vector3d& force);
-	void cache_previous_position();
-	void clear_accumulated_force();
 	double inverse_mass() const;
-	bool is_sleeping() const;
 	PhysicsMaterial material() const;
 	const Vector3d& position() const;
-	const boost::optional<Vector3d>& previous_position() const;
 	void set_position(const Vector3d& position);
-	void set_sleeping(bool sleeping);
 	void set_velocity(const Vector3d& velocity);
 	const Vector3d& velocity() const;
 
+	//#################### PROTECTED METHODS ####################
+protected:
+	const Vector3d& accumulated_force() const;
+
 	//#################### PRIVATE METHODS ####################
 private:
+	void apply_force(const Vector3d& force);
+	void clear_accumulated_force();
 	int id() const;
+	bool is_sleeping() const;
+	const boost::optional<Vector3d>& previous_position() const;
 	void set_id(int id);
+	void set_sleeping(bool sleeping);
 };
 
 }

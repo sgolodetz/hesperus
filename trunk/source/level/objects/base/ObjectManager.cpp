@@ -9,10 +9,12 @@
 #include <source/level/objects/components/ICmpInventory.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpOwnable.h>
-#include <source/level/objects/components/ICmpPhysics.h>
+#include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
 #include <source/level/objects/messages/MsgObjectPredestroyed.h>
+#include <source/level/physics/BasicContactResolver.h>
+#include <source/level/physics/PhysicsSystem.h>
 #include "ObjectSpecification.h"
 
 namespace hesp {
@@ -26,12 +28,23 @@ bool is_simulable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
 
 //#################### CONSTRUCTORS ####################
-ObjectManager::ObjectManager(const ModelManager_Ptr& modelManager, const BoundsManager_CPtr& boundsManager,
-							 const ComponentPropertyTypeMap& componentPropertyTypes,
-							 const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine)
-:	m_modelManager(modelManager), m_boundsManager(boundsManager), m_componentPropertyTypes(componentPropertyTypes),
-	m_archetypes(archetypes), m_aiEngine(aiEngine)
+ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes,
+							 const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine,
+							 const ModelManager_Ptr& modelManager)
+:	m_boundsManager(boundsManager),
+	m_componentPropertyTypes(componentPropertyTypes),
+	m_archetypes(archetypes),
+	m_aiEngine(aiEngine),
+	m_modelManager(modelManager),
+	m_physicsSystem(new PhysicsSystem)
 {
+	// Set up the physics system.
+	// PHYSTODO
+#if 0
+	m_physicsSystem->set_contact_resolver(PM_CHARACTER, PM_CHARACTER, ContactResolver_CPtr(new BasicContactResolver(0.1)));
+#endif
+
+	// Register object groupings.
 	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
 	register_group("Renderables", is_renderable);
@@ -148,6 +161,11 @@ ModelManager_CPtr ObjectManager::model_manager() const
 int ObjectManager::object_count() const
 {
 	return static_cast<int>(m_objects.size());
+}
+
+const PhysicsSystem_Ptr& ObjectManager::physics_system()
+{
+	return m_physicsSystem;
 }
 
 ObjectID ObjectManager::player() const
@@ -310,7 +328,7 @@ bool is_renderable(const ObjectID& id, const ObjectManager *objectManager)
 
 bool is_simulable(const ObjectID& id, const ObjectManager *objectManager)
 {
-	return !has_owner(id, objectManager) && objectManager->get_component<ICmpPhysics>(id) != NULL;
+	return !has_owner(id, objectManager) && objectManager->get_component<ICmpSimulation>(id) != NULL;
 }
 
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager)

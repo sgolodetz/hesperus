@@ -18,10 +18,10 @@
 #include <source/level/objects/components/CmpMinimusScriptYoke.h>
 #include <source/level/objects/components/CmpOrientation.h>
 #include <source/level/objects/components/CmpOwnable.h>
-#include <source/level/objects/components/CmpPhysics.h>
 #include <source/level/objects/components/CmpPosition.h>
 #include <source/level/objects/components/CmpProjectileWeaponUsable.h>
 #include <source/level/objects/components/CmpScriptedUsable.h>
+#include <source/level/objects/components/CmpSimulation.h>
 #include <source/level/objects/components/CmpUserBipedYoke.h>
 #include <source/util/Properties.h>
 
@@ -70,10 +70,10 @@ std::map<std::string,ObjectSpecification::ComponentLoader>& ObjectSpecification:
 		ADD_LOADER(MinimusScriptYoke);
 		ADD_LOADER(Orientation);
 		ADD_LOADER(Ownable);
-		ADD_LOADER(Physics);
 		ADD_LOADER(Position);
 		ADD_LOADER(ProjectileWeaponUsable);
 		ADD_LOADER(ScriptedUsable);
+		ADD_LOADER(Simulation);
 		ADD_LOADER(UserBipedYoke);
 		done = true;
 	}

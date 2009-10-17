@@ -20,8 +20,8 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	std::string group_type() const			{ return "Position"; }
-	static std::string static_group_type()	{ return "Position"; }
+	std::string group_type() const			{ return "Simulation"; }
+	static std::string static_group_type()	{ return "Simulation"; }
 
 	std::string own_type() const			{ return "Position"; }
 	static std::string static_own_type()	{ return "Position"; }

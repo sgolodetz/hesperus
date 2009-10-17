@@ -22,7 +22,7 @@ ObjectManager_Ptr ObjectsFile::load(const std::string& filename, const BoundsMan
 	std::ifstream is(filename.c_str());
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
 	ModelManager_Ptr modelManager = ModelNamesSection::load(is);
-	return ObjectsSection::load(is, modelManager, boundsManager, componentPropertyTypes, archetypes);
+	return ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, modelManager);
 }
 
 //#################### SAVING METHODS ####################
