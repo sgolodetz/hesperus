@@ -21,7 +21,7 @@ double PhysicsObject::inverse_mass() const									{ return m_inverseMass; }
 PhysicsMaterial PhysicsObject::material() const								{ return m_material; }
 const Vector3d& PhysicsObject::position() const								{ return m_position; }
 
-void PhysicsObject::set_position(const Vector3d& position)
+void PhysicsObject::set_position(Vector3d position)
 {
 	m_previousPosition = m_position;
 	m_position = position;

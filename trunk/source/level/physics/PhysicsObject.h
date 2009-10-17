@@ -55,7 +55,7 @@ public:
 	double inverse_mass() const;
 	PhysicsMaterial material() const;
 	const Vector3d& position() const;
-	void set_position(const Vector3d& position);
+	void set_position(Vector3d position);
 	void set_velocity(const Vector3d& velocity);
 	const Vector3d& velocity() const;
 
