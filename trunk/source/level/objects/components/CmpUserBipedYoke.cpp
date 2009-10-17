@@ -6,7 +6,6 @@
 #include "CmpUserBipedYoke.h"
 
 #include <source/exceptions/Exception.h>
-#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpSimulation.h>
@@ -24,7 +23,6 @@ IObjectComponent_Ptr CmpUserBipedYoke::load(const Properties&)
 //#################### PUBLIC METHODS ####################
 void CmpUserBipedYoke::check_dependencies() const
 {
-	check_dependency<ICmpBounds>();
 	check_dependency<ICmpMeshMovement>();
 	check_dependency<ICmpOrientation>();
 	check_dependency<ICmpSimulation>();

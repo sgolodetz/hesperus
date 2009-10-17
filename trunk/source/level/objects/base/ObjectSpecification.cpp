@@ -7,7 +7,6 @@
 
 #include <source/level/objects/components/CmpBasicModelRender.h>
 #include <source/level/objects/components/CmpBipedAnimChooser.h>
-#include <source/level/objects/components/CmpBounds.h>
 #include <source/level/objects/components/CmpCharacterModelRender.h>
 #include <source/level/objects/components/CmpConsumeActivatable.h>
 #include <source/level/objects/components/CmpDirectMovement.h>
@@ -59,7 +58,6 @@ std::map<std::string,ObjectSpecification::ComponentLoader>& ObjectSpecification:
 	{
 		ADD_LOADER(BasicModelRender);
 		ADD_LOADER(BipedAnimChooser);
-		ADD_LOADER(Bounds);
 		ADD_LOADER(CharacterModelRender);
 		ADD_LOADER(ConsumeActivatable);
 		ADD_LOADER(DirectMovement);

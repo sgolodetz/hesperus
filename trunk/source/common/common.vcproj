@@ -1446,30 +1446,6 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="&lt;Bounds&gt;"
-						>
-						<Filter
-							Name=".cpp"
-							>
-							<File
-								RelativePath="..\level\objects\components\CmpBounds.cpp"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name=".h"
-							>
-							<File
-								RelativePath="..\level\objects\components\CmpBounds.h"
-								>
-							</File>
-							<File
-								RelativePath="..\level\objects\components\ICmpBounds.h"
-								>
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
 						Name="&lt;Movement&gt;"
 						>
 						<Filter

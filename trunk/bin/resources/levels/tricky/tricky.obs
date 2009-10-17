@@ -10,11 +10,6 @@ Objects
 	Object
 	{
 		BipedAnimChooser;
-		Bounds
-		{
-			Group = "biped"
-			Posture = "stand"
-		}
 		CharacterModelRender
 		{
 			InclineBones = < ("",<("head",( 1 0 0 ))>) ; ("with_onehanded",<("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))>) >
@@ -50,11 +45,6 @@ Objects
 	Object
 	{
 		BipedAnimChooser;
-		Bounds
-		{
-			Group = "biped"
-			Posture = "stand"
-		}
 		CharacterModelRender
 		{
 			InclineBones = < ("",<("head",( 1 0 0 ))>) ; ("with_onehanded",<("head",( 1 0 0 ));("shoulder.r",( 1 0 0 ))>) >
@@ -96,11 +86,7 @@ Objects
 		{
 			ModelName = "Test-15"
 		}
-		Bounds
-		{
-			Group = "biped"
-			Posture = "stand"
-		}
+		DirectMovement;
 		ItemActivatable;
 		Orientation
 		{
@@ -112,9 +98,14 @@ Objects
 			AttachPoint = "tag_item.r"
 			Owner = -1
 		}
-		Position
+		Simulation
 		{
+			BoundsGroup = "biped"
+			InverseMass = 1.0
+			Material = "character"
 			Position = ( 8 15 6 )
+			Posture = "stand"
+			Velocity = ( 0 0 0 )
 		}
 	}
 	Object

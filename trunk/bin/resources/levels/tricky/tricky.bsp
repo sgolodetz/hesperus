@@ -891,11 +891,6 @@ Objects
 	Object
 	{
 		BipedAnimChooser;
-		Bounds
-		{
-			Group = "biped"
-			Posture = "stand"
-		}
 		Health
 		{
 			Health = 100
@@ -920,7 +915,7 @@ Objects
 		Simulation
 		{
 			BoundsGroup = "biped"
-			InverseMass = 1
+			InverseMass = 0.02
 			Material = "character"
 			Position = ( 6 24 6 )
 			Posture = "stand"
@@ -931,11 +926,6 @@ Objects
 	Object
 	{
 		BipedAnimChooser;
-		Bounds
-		{
-			Group = "biped"
-			Posture = "stand"
-		}
 		Health
 		{
 			Health = 100
@@ -960,7 +950,7 @@ Objects
 		Simulation
 		{
 			BoundsGroup = "biped"
-			InverseMass = 1
+			InverseMass = 0.02
 			Material = "character"
 			Position = ( 20 20 6 )
 			Posture = "stand"
@@ -974,11 +964,7 @@ Objects
 	Object
 	{
 		ItemActivatable;
-		Bounds
-		{
-			Group = "biped"
-			Posture = "stand"
-		}
+		DirectMovement;
 		Orientation
 		{
 			Look = ( 0 1 0 )
@@ -993,9 +979,14 @@ Objects
 		{
 			ModelName = "Test-15"
 		}
-		Position
+		Simulation
 		{
+			BoundsGroup = "biped"
+			InverseMass = 1
+			Material = "character"
 			Position = ( 8 15 6 )
+			Posture = "stand"
+			Velocity = ( 0 0 0 )
 		}
 	}
 	Object

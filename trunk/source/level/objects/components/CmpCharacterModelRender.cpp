@@ -15,11 +15,10 @@
 #include <source/util/Properties.h>
 #include "ICmpAnimChooser.h"
 #include "ICmpBasicModelRender.h"
-#include "ICmpBounds.h"
 #include "ICmpInventory.h"
 #include "ICmpOrientation.h"
 #include "ICmpOwnable.h"
-#include "ICmpPosition.h"
+#include "ICmpSimulation.h"
 
 namespace hesp {
 
@@ -41,10 +40,9 @@ IObjectComponent_Ptr CmpCharacterModelRender::load(const Properties& properties)
 void CmpCharacterModelRender::check_dependencies() const
 {
 	check_dependency<ICmpAnimChooser>();
-	check_dependency<ICmpBounds>();
 	check_dependency<ICmpInventory>();
 	check_dependency<ICmpOrientation>();
-	check_dependency<ICmpPosition>();
+	check_dependency<ICmpSimulation>();
 }
 
 void CmpCharacterModelRender::render() const

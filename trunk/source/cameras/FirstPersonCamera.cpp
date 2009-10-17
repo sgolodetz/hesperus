@@ -8,9 +8,8 @@
 #include <source/axes/NUVAxes.h>
 #include <source/level/bounds/Bounds.h>
 #include <source/level/bounds/BoundsManager.h>
-#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpOrientation.h>
-#include <source/level/objects/components/ICmpPosition.h>
+#include <source/level/objects/components/ICmpSimulation.h>
 
 namespace hesp {
 
@@ -47,15 +46,14 @@ Vector3d FirstPersonCamera::up() const
 
 void FirstPersonCamera::update()
 {
-	ICmpBounds_Ptr cmpBounds = m_objectManager->get_component(m_viewer, cmpBounds);
 	ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(m_viewer, cmpOrientation);
-	ICmpPosition_Ptr cmpPosition = m_objectManager->get_component(m_viewer, cmpPosition);
+	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_viewer, cmpSimulation);
 
-	const Vector3d& pos = cmpPosition->position();
+	const Vector3d& pos = cmpSimulation->position();
 	m_look = cmpOrientation->nuv_axes()->n();
 
 	// Calculate the viewer's eye position and where they're looking at.
-	const Bounds_CPtr& bounds = m_objectManager->bounds_manager()->bounds(cmpBounds->bounds_group(), cmpBounds->posture());
+	const Bounds_CPtr& bounds = m_objectManager->bounds_manager()->bounds(cmpSimulation->bounds_group(), cmpSimulation->posture());
 	m_eye = pos + Vector3d(0,0,bounds->height()/2 * 0.9);
 	m_at = m_eye + m_look;
 }

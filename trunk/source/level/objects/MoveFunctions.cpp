@@ -13,9 +13,9 @@
 #include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavMeshUtil.h>
 #include <source/level/nav/NavPolygon.h>
-#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpPosition.h>
+#include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/trees/TreeUtil.h>
 #include <source/math/geom/GeomUtil.h>
 
@@ -41,12 +41,12 @@ void MoveFunctions::move_with_navmesh(const ObjectID& objectID, const ObjectMana
 									  const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets,
 									  int milliseconds)
 {
-	ICmpBounds_Ptr cmpBounds = objectManager->get_component(objectID, cmpBounds);				assert(cmpBounds != NULL);
 	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
+	ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(objectID, cmpSimulation);	assert(cmpSimulation != NULL);
 
 	Move move;
 	move.dir = dir;
-	move.mapIndex = objectManager->bounds_manager()->lookup_bounds_index(cmpBounds->bounds_group(), cmpBounds->posture());
+	move.mapIndex = objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
 	move.timeRemaining = milliseconds / 1000.0;
 
 	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
@@ -72,15 +72,15 @@ bool MoveFunctions::single_move_without_navmesh(const ObjectID& objectID, const 
 {
 	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
 
-	ICmpBounds_Ptr cmpBounds = objectManager->get_component(objectID, cmpBounds);				assert(cmpBounds != NULL);
-	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);		assert(cmpMovement != NULL);
+	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(objectID, cmpMovement);
+	ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(objectID, cmpSimulation);	assert(cmpSimulation != NULL);
 
 	// Check to make sure we're not currently traversing a link: don't let the object be moved if we are.
-	if(cmpMovement->cur_traversal()) return true;
+	if(cmpMovement && cmpMovement->cur_traversal()) return true;
 
 	Move move;
 	move.dir = dir;
-	move.mapIndex = objectManager->bounds_manager()->lookup_bounds_index(cmpBounds->bounds_group(), cmpBounds->posture());
+	move.mapIndex = objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
 	move.timeRemaining = milliseconds / 1000.0;
 
 	return do_direct_move(objectID, objectManager, move, speed, tree);

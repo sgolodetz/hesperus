@@ -5,7 +5,6 @@
 
 #include "CmpMinimusScriptYoke.h"
 
-#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpOrientation.h>
@@ -30,7 +29,6 @@ IObjectComponent_Ptr CmpMinimusScriptYoke::load(const Properties& properties)
 //#################### PUBLIC METHODS ####################
 void CmpMinimusScriptYoke::check_dependencies() const
 {
-	check_dependency<ICmpBounds>();
 	check_dependency<ICmpMeshMovement>();
 	check_dependency<ICmpModelRender>();
 	check_dependency<ICmpOrientation>();

@@ -26,10 +26,8 @@
 #include <source/level/bounds/BoundsManager.h>
 #include <source/level/objects/base/ObjectCommand.h>
 #include <source/level/objects/components/ICmpActivatable.h>
-#include <source/level/objects/components/ICmpBounds.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpOrientation.h>
-#include <source/level/objects/components/ICmpPosition.h>
 #include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/MoveFunctions.h>
@@ -142,11 +140,10 @@ void GameState_Level::do_activatables(UserInput& input)
 	{
 		// TODO: Determine whether the activatable is in a visible leaf and skip further testing if not.
 
-		ICmpBounds_Ptr cmpBounds = objectManager->get_component(activatables[i], cmpBounds);
-		ICmpPosition_Ptr cmpPosition = objectManager->get_component(activatables[i], cmpPosition);
+		ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(activatables[i], cmpSimulation);
 
-		const Bounds_CPtr& bounds = objectManager->bounds_manager()->bounds(cmpBounds->bounds_group(), cmpBounds->posture());
-		const Vector3d& position = cmpPosition->position();
+		const Bounds_CPtr& bounds = objectManager->bounds_manager()->bounds(cmpSimulation->bounds_group(), cmpSimulation->posture());
+		const Vector3d& position = cmpSimulation->position();
 		Vector3d localEye = eye - position;		// the eye location in local model coordinates
 		boost::optional<std::pair<Vector3d,Vector3d> > result = bounds->determine_halfray_intersection(localEye, look);
 		if(result)

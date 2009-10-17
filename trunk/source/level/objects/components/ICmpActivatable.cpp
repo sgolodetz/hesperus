@@ -5,18 +5,16 @@
 
 #include "ICmpActivatable.h"
 
-#include "ICmpBounds.h"
 #include "ICmpModelRender.h"
-#include "ICmpPosition.h"
+#include "ICmpSimulation.h"
 
 namespace hesp {
 
 //#################### PUBLIC METHODS ####################
 void ICmpActivatable::check_dependencies() const
 {
-	check_dependency<ICmpBounds>();			// need bounds against which to do picking
 	check_dependency<ICmpModelRender>();
-	check_dependency<ICmpPosition>();
+	check_dependency<ICmpSimulation>();
 }
 
 }

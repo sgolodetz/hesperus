@@ -12,7 +12,7 @@
 #include <source/level/models/AnimationController.h>
 #include <source/level/models/Model.h>
 #include <source/level/models/ModelManager.h>
-#include "ICmpBounds.h"
+#include "ICmpSimulation.h"
 
 namespace hesp {
 
@@ -33,10 +33,10 @@ Model_CPtr CmpModelRender::model() const	{ return m_objectManager->model_manager
 
 void CmpModelRender::render_bounds(const Vector3d& p) const
 {
-	ICmpBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);
-	if(cmpBounds)
+	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);
+	if(cmpSimulation)
 	{
-		const Bounds_CPtr& bounds = m_objectManager->bounds_manager()->bounds(cmpBounds->bounds_group(), cmpBounds->posture());
+		const Bounds_CPtr& bounds = m_objectManager->bounds_manager()->bounds(cmpSimulation->bounds_group(), cmpSimulation->posture());
 		bounds->render(p);
 	}
 }

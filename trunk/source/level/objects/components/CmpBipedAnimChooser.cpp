@@ -9,11 +9,10 @@
 #include <source/level/nav/NavDataset.h>
 #include <source/level/objects/MoveFunctions.h>
 #include <source/util/Properties.h>
-#include "ICmpBounds.h"
 #include "ICmpInventory.h"
 #include "ICmpMeshMovement.h"
 #include "ICmpOwnable.h"
-#include "ICmpPosition.h"
+#include "ICmpSimulation.h"
 
 namespace hesp {
 
@@ -32,10 +31,9 @@ IObjectComponent_Ptr CmpBipedAnimChooser::load(const Properties&)
 //#################### PUBLIC METHODS ####################
 void CmpBipedAnimChooser::check_dependencies() const
 {
-	check_dependency<ICmpBounds>();
 	check_dependency<ICmpHealth>();
 	check_dependency<ICmpMeshMovement>();
-	check_dependency<ICmpPosition>();
+	check_dependency<ICmpSimulation>();
 }
 
 std::string CmpBipedAnimChooser::choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
@@ -117,13 +115,13 @@ std::string CmpBipedAnimChooser::determine_anim_extension() const
 
 bool CmpBipedAnimChooser::determine_crouching() const
 {
-	ICmpBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);	assert(cmpBounds != NULL);
-	return cmpBounds->posture() == "crouch";
+	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
+	return cmpSimulation->posture() == "crouch";
 }
 
 ICmpHealth::HealthStatus CmpBipedAnimChooser::determine_health_status() const
 {
-	ICmpHealth_Ptr cmpHealth = m_objectManager->get_component(m_objectID, cmpHealth);		assert(cmpHealth != NULL);
+	ICmpHealth_Ptr cmpHealth = m_objectManager->get_component(m_objectID, cmpHealth);	assert(cmpHealth != NULL);
 	return cmpHealth->status();
 }
 
@@ -133,8 +131,8 @@ CmpBipedAnimChooser::MovementType CmpBipedAnimChooser::determine_movement_type(c
 	MovementType movementType = UNKNOWN;
 
 	// Determine whether or not the biped's in the air.
-	ICmpBounds_Ptr cmpBounds = m_objectManager->get_component(m_objectID, cmpBounds);	assert(cmpBounds != NULL);
-	int mapIndex = m_objectManager->bounds_manager()->lookup_bounds_index(cmpBounds->bounds_group(), cmpBounds->posture());
+	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
+	int mapIndex = m_objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
 	if(!MoveFunctions::attempt_navmesh_acquisition(m_objectID, m_objectManager, polygons, tree, navDatasets[mapIndex]->nav_mesh()))
 	{
 		movementType = AIR;
