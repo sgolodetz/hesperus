@@ -22,11 +22,11 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void resolve_contact(const Contact& contact) const;
+	void resolve_contact(const Contact& contact, const OnionTree_CPtr& tree) const;
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void resolve_object_object(const Contact& contact) const;
+	void resolve_object_object(const Contact& contact, const OnionTree_CPtr& tree) const;
 	void resolve_object_world(const Contact& contact) const;
 };
 

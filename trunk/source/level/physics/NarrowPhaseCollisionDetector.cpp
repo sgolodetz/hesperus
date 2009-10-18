@@ -81,7 +81,7 @@ NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object) const
 			assert(moveDistSquared > 0);
 			double time = sqrt(contactDistSquared / moveDistSquared);
 
-			return Contact(Vector3d(0,0,0), contactPoint, contactNormal, time, object);
+			return Contact(Vector3d(0,0,0), contactPoint, contactNormal, time, object, mapIndex);
 		}
 		case OnionUtil::RAY_TRANSITION_SE:
 		{
@@ -148,12 +148,12 @@ NarrowPhaseCollisionDetector::convert_to_world_contact(const boost::optional<Con
 	// This makes the relative point on B relative to the centre of B rather than to the centre of A.
 	return Contact(rc.relative_pointA(),
 				   rc.relative_pointB() + rc.objectA().position() - rc.objectB()->position(),
-				   rc.normal(), rc.time(), rc.objectA(), rc.objectB());
+				   rc.normal(), rc.time(), rc.objectA(), rc.map_indexA(), rc.objectB(), rc.map_indexB());
 }
 
 Contact NarrowPhaseCollisionDetector::make_contact(const Vector3d& v0, const SupportMapping_CPtr& mappingA,
 												   const SupportMapping_CPtr& mappingB, const Vector3d& relativeMovement,
-												   PhysicsObject& objectA, PhysicsObject& objectB)
+												   PhysicsObject& objectA, PhysicsObject& objectB) const
 {
 	Vector3d contactNormal = (-v0).normalize();
 	Vector3d contactPointA = (*mappingA)(-contactNormal);
@@ -162,14 +162,18 @@ Contact NarrowPhaseCollisionDetector::make_contact(const Vector3d& v0, const Sup
 	assert(penetrationDepth > 0);
 	double contactDistanceMoved = relativeMovement.dot(contactNormal);
 	double time = contactDistanceMoved > 0 ? 1 - penetrationDepth/contactDistanceMoved : 0;
-	return Contact(contactPointA, contactPointB, contactNormal, time, objectA, objectB);
+	NormalPhysicsObject *nobjectA = dynamic_cast<NormalPhysicsObject*>(&objectA);
+	NormalPhysicsObject *nobjectB = dynamic_cast<NormalPhysicsObject*>(&objectB);
+	int mapIndexA = nobjectA ? m_boundsManager->lookup_bounds_index(nobjectA->bounds_group(), nobjectA->posture()) : -1;
+	int mapIndexB = nobjectB ? m_boundsManager->lookup_bounds_index(nobjectB->bounds_group(), nobjectB->posture()) : -1;
+	return Contact(contactPointA, contactPointB, contactNormal, time, objectA, mapIndexA, objectB, mapIndexB);
 }
 
 boost::optional<Contact>
 NarrowPhaseCollisionDetector::xeno_collide(PhysicsObject& objectA, PhysicsObject& objectB,
 										   const SupportMapping_CPtr& mapping, const SupportMapping_CPtr& mappingA,
 										   const SupportMapping_CPtr& mappingB, const Vector3d& v0,
-										   const Vector3d& relativeMovement)
+										   const Vector3d& relativeMovement) const
 try
 {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~

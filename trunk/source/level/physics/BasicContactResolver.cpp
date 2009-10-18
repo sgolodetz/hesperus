@@ -5,6 +5,7 @@
 
 #include "BasicContactResolver.h"
 
+#include <source/level/trees/OnionUtil.h>
 #include <source/math/Constants.h>
 #include "Contact.h"
 #include "PhysicsObject.h"
@@ -17,14 +18,14 @@ BasicContactResolver::BasicContactResolver(double restitutionCoefficient)
 {}
 
 //#################### PUBLIC METHODS ####################
-void BasicContactResolver::resolve_contact(const Contact& contact) const
+void BasicContactResolver::resolve_contact(const Contact& contact, const OnionTree_CPtr& tree) const
 {
-	if(contact.objectB())	resolve_object_object(contact);
+	if(contact.objectB())	resolve_object_object(contact, tree);
 	else					resolve_object_world(contact);
 }
 
 //#################### PRIVATE METHODS ####################
-void BasicContactResolver::resolve_object_object(const Contact& contact) const
+void BasicContactResolver::resolve_object_object(const Contact& contact, const OnionTree_CPtr& tree) const
 {
 	// Step 1:	Calculate what fractions of the resolution will apply to each of the two objects involved.
 	PhysicsObject& objectA = contact.objectA();
@@ -45,9 +46,47 @@ void BasicContactResolver::resolve_object_object(const Contact& contact) const
 	double depthA = penetrationDepth * fractionA;
 	double depthB = penetrationDepth * fractionB;
 
-	// Update the positions of the objects to resolve the interpenetration.
-	objectA.set_position(objectA.position() + contact.normal() * depthA);
-	objectB.set_position(objectB.position() - contact.normal() * depthB);
+	// Update the positions of the objects to resolve the interpenetration, without letting either object
+	// end up embedded in the world.
+	Vector3d newPosA = objectA.position() + contact.normal() * depthA;
+	Vector3d newPosB = objectB.position() - contact.normal() * depthB;
+
+	Vector3d fixedPosA = newPosA;
+	if(contact.map_indexA() != -1)
+	{
+		OnionUtil::Transition transitionA = OnionUtil::find_first_transition(contact.map_indexA(), objectA.position(), fixedPosA, tree);
+		switch(transitionA.classifier)
+		{
+		case OnionUtil::RAY_SOLID:
+			fixedPosA = objectA.position();
+			break;
+		case OnionUtil::RAY_TRANSITION_ES:
+			fixedPosA = *transitionA.location;
+			break;
+		default:
+			break;
+		}
+	}
+
+	Vector3d fixedPosB = newPosB + (fixedPosA - newPosA);
+	if(*contact.map_indexB() != -1)
+	{
+		OnionUtil::Transition transitionB = OnionUtil::find_first_transition(*contact.map_indexB(), objectB.position(), fixedPosB, tree);
+		switch(transitionB.classifier)
+		{
+		case OnionUtil::RAY_SOLID:
+			fixedPosB = objectB.position();
+			break;
+		case OnionUtil::RAY_TRANSITION_ES:
+			fixedPosB = *transitionB.location;
+			break;
+		default:
+			break;
+		}
+	}
+
+	objectA.set_position(fixedPosA);
+	objectB.set_position(fixedPosB);
 
 	// Step 3:	Determine the new velocities of the objects.
 

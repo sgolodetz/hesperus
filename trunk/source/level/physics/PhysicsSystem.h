@@ -72,7 +72,7 @@ private:
 	std::vector<std::vector<Contact_CPtr> > batch_contacts(const std::vector<Contact_CPtr>& contacts);
 	void check_objects();
 	void detect_contacts(std::vector<Contact_CPtr>& contacts, const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree);
-	void resolve_contacts(const std::vector<Contact_CPtr>& contacts);
+	void resolve_contacts(const std::vector<Contact_CPtr>& contacts, const OnionTree_CPtr& tree);
 	void simulate_objects(int milliseconds);
 };
 

@@ -11,12 +11,14 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 Contact::Contact(const Vector3d& relativePointA, const Vector3d& relativePointB, const Vector3d& normal, double time,
-				 PhysicsObject& objectA, const boost::optional<PhysicsObject&>& objectB)
+				 PhysicsObject& objectA, int mapIndexA, const boost::optional<PhysicsObject&>& objectB, const boost::optional<int>& mapIndexB)
 :	m_relativePointA(relativePointA), m_relativePointB(relativePointB), m_normal(normal), m_time(time),
-	m_objectA(objectA), m_objectB(objectB)
+	m_objectA(objectA), m_mapIndexA(mapIndexA), m_objectB(objectB), m_mapIndexB(mapIndexB)
 {}
 
 //#################### PUBLIC METHODS ####################
+int Contact::map_indexA() const									{ return m_mapIndexA; }
+const boost::optional<int>& Contact::map_indexB() const			{ return m_mapIndexB; }
 const Vector3d& Contact::normal() const							{ return m_normal; }
 PhysicsObject& Contact::objectA() const							{ return m_objectA; }
 const boost::optional<PhysicsObject&>& Contact::objectB() const	{ return m_objectB; }

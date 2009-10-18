@@ -71,7 +71,7 @@ void PhysicsSystem::update(const BoundsManager_CPtr& boundsManager, const OnionT
 	// Step 5:	Resolve each batch of contacts in turn.
 	for(std::vector<ContactSet>::const_iterator it=batches.begin(), iend=batches.end(); it!=iend; ++it)
 	{
-		resolve_contacts(*it);
+		resolve_contacts(*it, tree);
 	}
 }
 
@@ -166,8 +166,9 @@ void PhysicsSystem::detect_contacts(std::vector<Contact_CPtr>& contacts,
 Resolve the contacts using the appropriate contact resolver for each pair of colliding objects.
 
 @param contacts	The array of contacts which need resolving
+@param tree		The tree representing the world for collision purposes
 */
-void PhysicsSystem::resolve_contacts(const std::vector<Contact_CPtr>& contacts)
+void PhysicsSystem::resolve_contacts(const std::vector<Contact_CPtr>& contacts, const OnionTree_CPtr& tree)
 {
 	// Step 1:	Sort the contacts in ascending order of occurrence.
 	std::vector<Contact_CPtr> sortedContacts(contacts);
@@ -192,7 +193,7 @@ void PhysicsSystem::resolve_contacts(const std::vector<Contact_CPtr>& contacts)
 		ContactResolver_CPtr resolver = m_contactResolverRegistry.lookup_resolver(materialA, materialB);
 
 		// Resolve the contact using this resolver (if any).
-		if(resolver) resolver->resolve_contact(contact);
+		if(resolver) resolver->resolve_contact(contact, tree);
 	}
 }
 
