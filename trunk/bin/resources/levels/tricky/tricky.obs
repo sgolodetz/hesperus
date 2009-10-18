@@ -102,7 +102,7 @@ Objects
 		{
 			BoundsGroup = "biped"
 			InverseMass = 1.0
-			Material = "character"
+			Material = "item"
 			Position = ( 8 15 6 )
 			Posture = "stand"
 			Velocity = ( 0 0 0 )

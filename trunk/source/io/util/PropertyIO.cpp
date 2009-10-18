@@ -26,6 +26,7 @@ void PropertyIO::load_property(Properties& properties, const std::string& name, 
 		loadFuncs["double"] = load_typed_property<double>;
 		loadFuncs["int"] = load_typed_property<int>;
 		loadFuncs["ObjectID"] = load_typed_property<ObjectID>;
+		loadFuncs["PhysicsMaterial"] = load_typed_property<PhysicsMaterial>;
 		loadFuncs["string"] = load_typed_property<std::string>;
 		loadFuncs["Vector3d"] = load_typed_property<Vector3d>;
 		loadFuncs["[int]"] = load_typed_property<std::vector<int> >;
@@ -59,6 +60,7 @@ void PropertyIO::save_property(std::ostream& os, const Properties& properties, c
 		saveFuncs["double"] = save_typed_property<double>;
 		saveFuncs["int"] = save_typed_property<int>;
 		saveFuncs["ObjectID"] = save_typed_property<ObjectID>;
+		saveFuncs["PhysicsMaterial"] = save_typed_property<PhysicsMaterial>;
 		saveFuncs["string"] = save_typed_property<std::string>;
 		saveFuncs["Vector3d"] = save_typed_property<Vector3d>;
 		saveFuncs["[int]"] = save_typed_property<std::vector<int> >;

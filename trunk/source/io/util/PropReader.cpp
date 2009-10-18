@@ -9,6 +9,8 @@
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
 
+#include <source/exceptions/Exception.h>
+
 namespace hesp {
 
 //#################### PropReaderUtil - PUBLIC METHODS ####################
@@ -35,6 +37,16 @@ std::string PropReaderUtil::next_token(std::string& input)
 ObjectID PropReader<ObjectID>::read(std::string& input)
 {
 	return ObjectID(PropReader<int>::read(input));
+}
+
+PhysicsMaterial PropReader<PhysicsMaterial>::read(std::string& input)
+{
+	std::string tok = PropReaderUtil::next_sized_token(input);
+	if(tok == "bullet")			return PM_BULLET;
+	else if(tok == "character")	return PM_CHARACTER;
+	else if(tok == "item")		return PM_ITEM;
+	else if(tok == "world")		return PM_WORLD;
+	else						throw Exception("Unexpected physics material: " + tok);
 }
 
 std::string PropReader<std::string>::read(std::string& input)

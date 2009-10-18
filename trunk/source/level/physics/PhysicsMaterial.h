@@ -12,6 +12,7 @@ enum PhysicsMaterial
 {
 	PM_BULLET,
 	PM_CHARACTER,
+	PM_ITEM,
 	PM_WORLD,
 };
 

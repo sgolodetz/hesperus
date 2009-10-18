@@ -22,7 +22,7 @@ IObjectComponent_Ptr CmpSimulation::load(const Properties& properties)
 		properties.get<std::string>("BoundsGroup"),
 		properties.get<std::string>("Posture"),
 		properties.get<double>("InverseMass"),
-		PM_CHARACTER,	// PHYSTODO: Use the actual value
+		properties.get<PhysicsMaterial>("Material"),
 		properties.get<Vector3d>("Position"),
 		properties.get<Vector3d>("Velocity")
 	));
@@ -49,7 +49,7 @@ Properties CmpSimulation::save() const
 	Properties properties;
 	properties.set("BoundsGroup", bounds_group());
 	properties.set("InverseMass", m_physicsObject->inverse_mass());
-	properties.set("Material", std::string("character"));	// PHYSTODO: Use the actual value
+	properties.set("Material", m_physicsObject->material());
 	properties.set("Position", position());
 	properties.set("Posture", posture());
 	properties.set("Velocity", velocity());

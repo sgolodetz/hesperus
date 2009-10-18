@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <source/level/objects/base/ObjectID.h>
+#include <source/level/physics/PhysicsMaterial.h>
 #include <source/math/vectors/Vector3.h>
 
 namespace hesp {
@@ -43,6 +44,11 @@ template <> struct PropReader<ObjectID>
 template <typename T1, typename T2> struct PropReader<std::pair<T1,T2> >
 {
 	static std::pair<T1,T2> read(std::string& input);
+};
+
+template <> struct PropReader<PhysicsMaterial>
+{
+	static PhysicsMaterial read(std::string& input);
 };
 
 template <typename T> struct PropReader<std::set<T> >

@@ -63,7 +63,7 @@
 			<component name="Simulation">
 				<property name="BoundsGroup" type="string"/>
 				<property name="InverseMass" type="double"/>
-				<property name="Material" type="string"/>
+				<property name="Material" type="PhysicsMaterial"/>
 				<property name="Position" type="Vector3d"/>
 				<property name="Posture" type="string"/>
 				<property name="Velocity" type="Vector3d"/>

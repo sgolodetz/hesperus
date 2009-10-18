@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <source/level/objects/base/ObjectID.h>
+#include <source/level/physics/PhysicsMaterial.h>
 
 namespace hesp {
 
@@ -35,6 +36,11 @@ template <typename K, typename V> struct PropFormatter<std::map<K,V> >
 template <> struct PropFormatter<ObjectID>
 {
 	static std::string format(const ObjectID& input);
+};
+
+template <> struct PropFormatter<PhysicsMaterial>
+{
+	static std::string format(PhysicsMaterial input);
 };
 
 template <typename T> struct PropFormatter<std::set<T> >
