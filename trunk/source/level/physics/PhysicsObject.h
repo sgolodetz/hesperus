@@ -6,10 +6,13 @@
 #ifndef H_HESP_PHYSICSOBJECT
 #define H_HESP_PHYSICSOBJECT
 
+#include <list>
+
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/math/geom/Plane.h>
 #include <source/math/vectors/Vector3.h>
 #include "PhysicsMaterial.h"
 
@@ -34,6 +37,7 @@ private:
 	PhysicsMaterial m_material;
 	Vector3d m_position;
 	boost::optional<Vector3d> m_previousPosition;
+	std::list<Plane> m_recentPlanes;				// planes which the object has recently been in contact with
 	bool m_sleeping;
 	Vector3d m_velocity;
 
@@ -55,8 +59,10 @@ public:
 	double inverse_mass() const;
 	PhysicsMaterial material() const;
 	const Vector3d& position() const;
+	const std::list<Plane>& recent_planes() const;
 	void set_position(Vector3d position);
 	void set_velocity(const Vector3d& velocity);
+	void update_recent_planes(const Plane& plane);
 	const Vector3d& velocity() const;
 
 	//#################### PROTECTED METHODS ####################

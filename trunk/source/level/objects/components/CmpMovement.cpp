@@ -11,6 +11,7 @@
 #include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavMeshUtil.h>
 #include <source/level/nav/NavPolygon.h>
+#include <source/level/trees/OnionUtil.h>
 #include <source/math/geom/GeomUtil.h>
 #include "ICmpSimulation.h"
 
@@ -70,10 +71,65 @@ Properties CmpMovement::save() const
 }
 
 //#################### PRIVATE METHODS ####################
+/**
+@return	true, if a collision occurred, or false otherwise
+*/
 bool CmpMovement::do_direct_move(Move& move, double speed, const OnionTree_CPtr& tree)
 {
-	// NYI
-	throw 23;
+	bool collisionOccurred = false;
+
+	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
+
+	Vector3d source = cmpSimulation->position();
+	Vector3d dest = source + move.dir * speed * move.timeRemaining;
+
+	// Check the ray against the tree.
+	OnionUtil::Transition transition = OnionUtil::find_first_transition(move.mapIndex, source, dest, tree);
+	switch(transition.classifier)
+	{
+		case OnionUtil::RAY_EMPTY:
+		{
+			// It's perfectly fine to let the object move along this ray, as it doesn't intersect a wall.
+			break;
+		}
+		case OnionUtil::RAY_SOLID:
+		{
+			// We were on a wall (i.e. coplanar to it) prior to the move - prevent any further moves into the wall,
+			// and update the move direction to allow sliding along the wall instead.
+			update_move_direction_for_sliding(move);
+			move.timeRemaining -= 0.001;	// make this cost 1ms of time (otherwise the calling function will think we got stuck)
+			return true;
+		}
+		case OnionUtil::RAY_TRANSITION_ES:
+		{
+			// Stop the object going into a wall.
+			dest = *transition.location;
+			collisionOccurred = true;
+
+			// Record the transition plane.
+			cmpSimulation->update_recent_planes(*transition.plane);
+
+			// Update the move direction to allow sliding.
+			update_move_direction_for_sliding(move);
+
+			break;
+		}
+		case OnionUtil::RAY_TRANSITION_SE:
+		{
+			// This should never happen (since objects can't move into walls), but better let the object back into
+			// the world if it does happen.
+			break;
+		}
+	}
+
+	cmpSimulation->set_position(dest);
+
+	// Update the time remaining.
+	double moveLength = source.distance(dest);
+	double timeTaken = moveLength / speed;
+	move.timeRemaining -= timeTaken;
+
+	return collisionOccurred;
 }
 
 void CmpMovement::do_navmesh_move(Move& move, double speed, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavMesh_CPtr& navMesh)
@@ -204,8 +260,26 @@ void CmpMovement::do_traverse_move(Move& move, double speed, const std::vector<C
 
 void CmpMovement::update_move_direction_for_sliding(Move& move)
 {
-	// NYI
-	throw 23;
+	// Update the move direction to be along the wall (to allow sliding). To do this, we remove the
+	// component of the movement which is normal to the wall. To find the wall we're on, we look at
+	// all the 'recent' planes we've touched and choose one which we're trying to walk behind.
+
+	ICmpSimulation_CPtr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
+	
+	const Vector3d& source = cmpSimulation->position();
+	Vector3d dummyDest = source + move.dir;
+	const std::list<Plane>& recentPlanes = cmpSimulation->recent_planes();
+	for(std::list<Plane>::const_iterator it=recentPlanes.begin(), iend=recentPlanes.end(); it!=iend; ++it)
+	{
+		if(classify_point_against_plane(dummyDest, *it) == CP_BACK)
+		{
+			move.dir = project_vector_onto_plane(move.dir, *it);
+			if(move.dir.length() > SMALL_EPSILON) move.dir.normalize();
+			else move.timeRemaining = 0;
+
+			break;
+		}
+	}
 }
 
 }
