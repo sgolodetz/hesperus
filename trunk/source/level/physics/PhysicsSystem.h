@@ -68,7 +68,6 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void apply_hard_constraints(std::vector<Contact_CPtr>& contacts);
 	std::vector<std::vector<Contact_CPtr> > batch_contacts(const std::vector<Contact_CPtr>& contacts);
 	void check_objects();
 	void detect_contacts(std::vector<Contact_CPtr>& contacts, const BoundsManager_CPtr& boundsManager, const OnionTree_CPtr& tree);

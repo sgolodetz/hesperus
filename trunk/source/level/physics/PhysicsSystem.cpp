@@ -60,10 +60,9 @@ void PhysicsSystem::update(const BoundsManager_CPtr& boundsManager, const OnionT
 	// Step 2:	Do the physical simulation of the objects.
 	simulate_objects(milliseconds);
 
-	// Step 3:	Generate all necessary contacts for them (including hard constraints).
+	// Step 3:	Generate all necessary contacts for them.
 	ContactSet contacts;
 	detect_contacts(contacts, boundsManager, tree);
-	apply_hard_constraints(contacts);
 
 	// Step 4:	Batch the contacts into groups which might mutually interact.
 	std::vector<ContactSet> batches = batch_contacts(contacts);
@@ -76,16 +75,6 @@ void PhysicsSystem::update(const BoundsManager_CPtr& boundsManager, const OnionT
 }
 
 //#################### PRIVATE METHODS ####################
-/**
-Apply any hard constraints as additional contacts.
-
-@param contacts	Used to add to the array of contacts which need resolving
-*/
-void PhysicsSystem::apply_hard_constraints(std::vector<Contact_CPtr>& contacts)
-{
-	// PHYSTODO
-}
-
 /**
 Group the contacts into batches which might interact with each other.
 
