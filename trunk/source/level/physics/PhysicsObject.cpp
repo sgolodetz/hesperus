@@ -19,6 +19,7 @@ PhysicsObject::PhysicsObject(double inverseMass, PhysicsMaterial material, const
 PhysicsObject::~PhysicsObject() {}
 
 //#################### PUBLIC METHODS ####################
+void PhysicsObject::apply_force(const Vector3d& force)						{ m_accumulatedForce += force; }
 double PhysicsObject::inverse_mass() const									{ return m_inverseMass; }
 PhysicsMaterial PhysicsObject::material() const								{ return m_material; }
 const Vector3d& PhysicsObject::position() const								{ return m_position; }
@@ -51,7 +52,6 @@ const Vector3d& PhysicsObject::velocity() const								{ return m_velocity; }
 const Vector3d& PhysicsObject::accumulated_force() const					{ return m_accumulatedForce; }
 
 //#################### PRIVATE METHODS ####################
-void PhysicsObject::apply_force(const Vector3d& force)						{ m_accumulatedForce += force; }
 void PhysicsObject::clear_accumulated_force()								{ m_accumulatedForce = Vector3d(0,0,0); }
 int PhysicsObject::id() const												{ return m_id; }
 bool PhysicsObject::is_sleeping() const										{ return m_sleeping; }

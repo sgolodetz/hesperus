@@ -56,6 +56,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void apply_force(const Vector3d& force);
 	double inverse_mass() const;
 	PhysicsMaterial material() const;
 	const Vector3d& position() const;
@@ -71,7 +72,6 @@ protected:
 
 	//#################### PRIVATE METHODS ####################
 private:
-	void apply_force(const Vector3d& force);
 	void clear_accumulated_force();
 	int id() const;
 	bool is_sleeping() const;

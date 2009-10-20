@@ -37,9 +37,8 @@ private:
 	GUIComponent_Ptr construct_display();
 	void do_activatables(UserInput& input);
 	void do_animations(int milliseconds);
+	void do_gravity(int milliseconds);
 	void do_physics(int milliseconds);
-	// PHYSTODO
-	void do_physics_ex(int milliseconds);
 	void do_yokes(int milliseconds, UserInput& input);
 	void grab_input();
 	void ungrab_input();

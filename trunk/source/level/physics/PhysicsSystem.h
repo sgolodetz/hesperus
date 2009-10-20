@@ -36,7 +36,8 @@ private:
 	{
 		bool operator()(const Contact_CPtr& lhs, const Contact_CPtr& rhs) const
 		{
-			return lhs->time() < rhs->time();
+			return lhs->time() < rhs->time() ||
+				   (lhs->time() == rhs->time() && !lhs->objectB() && rhs->objectB());	// if the contacts occur simultaneously, prioritise object-world contacts
 		}
 	};
 

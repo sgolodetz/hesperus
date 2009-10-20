@@ -67,8 +67,17 @@ NarrowPhaseCollisionDetector::object_vs_world(NormalPhysicsObject& object) const
 		}
 		case OnionUtil::RAY_SOLID:
 		{
-			// PHYSTODO
-			return boost::none;
+			Vector3d dir = pos - previousPos;
+			if(dir.length_squared() >= EPSILON*EPSILON)
+			{
+				dir.normalize();
+				transition = OnionUtil::find_first_transition(mapIndex, previousPos - dir * 0.1, pos, m_tree);
+
+				// If we still haven't found a transition, there's probably no collision to handle.
+				// If we have, fall through to the next case.
+				if(transition.classifier != OnionUtil::RAY_TRANSITION_ES) return boost::none;
+			}
+			else return boost::none;
 		}
 		case OnionUtil::RAY_TRANSITION_ES:
 		{

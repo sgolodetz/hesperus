@@ -6,12 +6,9 @@ Physics Todos
 Short-Term / Urgent
 -------------------
 
-* Implement world collisions properly.
-  - Need a way to get recent transition planes (embed them in the physics object and rewrite the movement code to use these instead).
-* Get rid of GameState_Level::do_physics() and replace it with GameState_Level::do_physics_ex().
-  - Needs resting contacts to be handled properly.
-  - Needs world collisions to be implemented properly.
 * Make sure the physics system is being set up properly (i.e. with appropriate contact resolvers etc.)
+* Try and get rid of the gravity special-case.
+* Move recent planes into CmpMovement.
 
 ---------
 Long-Term

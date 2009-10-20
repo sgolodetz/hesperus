@@ -5,7 +5,10 @@
 
 #include "CmpSimulation.h"
 
+#include <source/level/physics/ForceGenerator.h>
 #include <source/level/physics/NormalPhysicsObject.h>
+#include <source/math/Constants.h>
+#include "ICmpMovement.h"
 
 namespace hesp {
 

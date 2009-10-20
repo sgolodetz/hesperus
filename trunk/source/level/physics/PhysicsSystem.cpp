@@ -168,7 +168,7 @@ void PhysicsSystem::resolve_contacts(const std::vector<Contact_CPtr>& contacts, 
 	//			approach. What we do here is simply to recalculate the penetration depth of
 	//			each contact as we come to it, thus allowing e.g. contacts which have become
 	//			irrelevant as a result of another contact being resolved to be skipped.
-	const double PENETRATION_TOLERANCE = 0.001;
+	const double PENETRATION_TOLERANCE = 0;
 	for(std::vector<Contact_CPtr>::const_iterator it=sortedContacts.begin(), iend=sortedContacts.end(); it!=iend; ++it)
 	{
 		const Contact& contact = **it;
@@ -204,7 +204,7 @@ void PhysicsSystem::simulate_objects(int milliseconds)
 		const ForceGenerators& generators = m_forceGeneratorRegistry.generators(object.id());
 		for(ForceGenerators::const_iterator jt=generators.begin(), jend=generators.end(); jt!=jend; ++jt)
 		{
-			jt->second->update_force(object, milliseconds);
+			jt->second->update_force(object);
 		}
 
 		object.update(milliseconds);

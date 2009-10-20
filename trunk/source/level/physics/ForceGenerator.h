@@ -19,7 +19,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual void update_force(PhysicsObject& object, int milliseconds) const = 0;
+	virtual void update_force(PhysicsObject& object) const = 0;
 };
 
 }

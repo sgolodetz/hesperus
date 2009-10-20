@@ -77,10 +77,6 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 
 	do_yokes(milliseconds, input);
 	do_physics(milliseconds);
-#if 0
-	// PHYSTODO
-	do_physics_ex(milliseconds);
-#endif
 	do_animations(milliseconds);
 	do_activatables(input);
 
@@ -187,9 +183,9 @@ void GameState_Level::do_animations(int milliseconds)
 	}
 }
 
-void GameState_Level::do_physics(int milliseconds)
+void GameState_Level::do_gravity(int milliseconds)
 {
-	// Apply gravity to simulable objects (i.e. those which have a physics component).
+	// Apply gravity to simulable objects (i.e. those which have a Simulation component).
 
 	// FIXME: Gravity strength should eventually be a level property.
 	const double GRAVITY_STRENGTH = 9.81;	// strength of gravity in Newtons
@@ -210,9 +206,11 @@ void GameState_Level::do_physics(int milliseconds)
 	}
 }
 
-// PHYSTODO
-void GameState_Level::do_physics_ex(int milliseconds)
+void GameState_Level::do_physics(int milliseconds)
 {
+	// Treat gravity as a special case.
+	do_gravity(milliseconds);
+
 	const BoundsManager_CPtr& boundsManager = m_level->object_manager()->bounds_manager();
 	OnionTree_CPtr tree = m_level->onion_tree();
 	m_level->object_manager()->physics_system()->update(boundsManager, tree, milliseconds);

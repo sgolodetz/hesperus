@@ -39,10 +39,9 @@ ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const Comp
 	m_physicsSystem(new PhysicsSystem)
 {
 	// Set up the physics system.
-	// PHYSTODO
-#if 0
 	m_physicsSystem->set_contact_resolver(PM_CHARACTER, PM_CHARACTER, ContactResolver_CPtr(new BasicContactResolver(0.1)));
-#endif
+	m_physicsSystem->set_contact_resolver(PM_CHARACTER, PM_WORLD, ContactResolver_CPtr(new BasicContactResolver(0.0)));
+	m_physicsSystem->set_contact_resolver(PM_ITEM, PM_WORLD, ContactResolver_CPtr(new BasicContactResolver(0.0)));
 
 	// Register object groupings.
 	register_group("Activatables", is_activatable);

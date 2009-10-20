@@ -5,6 +5,8 @@
 
 #include "NormalPhysicsObject.h"
 
+#include <cmath>
+
 #include <source/level/bounds/BoundsManager.h>
 
 namespace hesp {
@@ -42,6 +44,10 @@ void NormalPhysicsObject::update(int milliseconds)
 	Vector3d acceleration = inverse_mass() * accumulated_force();
 	set_position(position() + velocity() * t + 0.5 * acceleration * t * t);
 	set_velocity(velocity() + acceleration * t);
+
+	// Impose a small amount of damping.
+	const double DAMPING_FACTOR = 0.95;
+	set_velocity(velocity() * DAMPING_FACTOR);
 }
 
 }
