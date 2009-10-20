@@ -1219,22 +1219,6 @@
 				Name="objects"
 				>
 				<Filter
-					Name=".cpp"
-					>
-					<File
-						RelativePath="..\level\objects\MoveFunctions.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".h"
-					>
-					<File
-						RelativePath="..\level\objects\MoveFunctions.h"
-						>
-					</File>
-				</Filter>
-				<Filter
 					Name="base"
 					>
 					<Filter
@@ -1452,41 +1436,13 @@
 							Name=".cpp"
 							>
 							<File
-								RelativePath="..\level\objects\components\CmpDirectMovement.cpp"
-								>
-							</File>
-							<File
-								RelativePath="..\level\objects\components\CmpMeshMovement.cpp"
+								RelativePath="..\level\objects\components\CmpMovement.cpp"
 								>
 							</File>
 						</Filter>
 						<Filter
 							Name=".h"
 							>
-							<File
-								RelativePath="..\level\objects\components\CmpDirectMovement.h"
-								>
-							</File>
-							<File
-								RelativePath="..\level\objects\components\CmpMeshMovement.h"
-								>
-							</File>
-							<File
-								RelativePath="..\level\objects\components\ICmpDirectMovement.h"
-								>
-							</File>
-							<File
-								RelativePath="..\level\objects\components\ICmpMeshMovement.h"
-								>
-							</File>
-						</Filter>
-						<Filter
-							Name="&lt;new&gt;"
-							>
-							<File
-								RelativePath="..\level\objects\components\CmpMovement.cpp"
-								>
-							</File>
 							<File
 								RelativePath="..\level\objects\components\CmpMovement.h"
 								>

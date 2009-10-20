@@ -13,7 +13,7 @@
 #include <source/level/nav/NavMeshUtil.h>
 #include <source/level/objects/commands/CmdBipedSetLook.h>
 #include <source/level/objects/commands/CmdBipedWalk.h>
-#include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpMovement.h>
 #include <source/level/objects/components/ICmpSimulation.h>
 
 namespace hesp {
@@ -33,7 +33,7 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 		return std::vector<ObjectCommand_Ptr>();
 	}
 
-	ICmpMeshMovement_Ptr cmpMovement = m_objectManager->get_component(m_objectID, cmpMovement);		assert(cmpMovement != NULL);
+	ICmpMovement_CPtr cmpMovement = m_objectManager->get_component(m_objectID, cmpMovement);		assert(cmpMovement != NULL);
 	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
 
 	const Vector3d& source = cmpSimulation->position();

@@ -6,7 +6,7 @@
 #include "CmdBipedWalk.h"
 
 #include <source/level/objects/components/ICmpBipedAnimChooser.h>
-#include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpMovement.h>
 
 namespace hesp {
 
@@ -16,7 +16,7 @@ CmdBipedWalk::CmdBipedWalk(const ObjectID& objectID, const Vector3d& dir)
 {}
 
 //#################### PRIVATE METHODS ####################
-double CmdBipedWalk::lookup_speed(const ICmpMeshMovement_CPtr& cmpMovement) const
+double CmdBipedWalk::lookup_speed(const ICmpMovement_CPtr& cmpMovement) const
 {
 	return cmpMovement->walk_speed();
 }

@@ -12,7 +12,7 @@ namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<class ICmpBipedAnimChooser> ICmpBipedAnimChooser_Ptr;
-typedef shared_ptr<const class ICmpMeshMovement> ICmpMeshMovement_CPtr;
+typedef shared_ptr<const class ICmpMovement> ICmpMovement_CPtr;
 
 class CmdBipedMove : public ObjectCommand
 {
@@ -27,7 +27,7 @@ public:
 
 	//#################### PRIVATE ABSTRACT METHODS ####################
 private:
-	virtual double lookup_speed(const ICmpMeshMovement_CPtr& cmpMovement) const = 0;
+	virtual double lookup_speed(const ICmpMovement_CPtr& cmpMovement) const = 0;
 	virtual void set_anim_flag(const ICmpBipedAnimChooser_Ptr& cmpAnimChooser) const = 0;
 
 	//#################### PUBLIC METHODS ####################

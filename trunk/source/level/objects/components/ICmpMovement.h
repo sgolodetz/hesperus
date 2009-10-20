@@ -21,7 +21,13 @@ class ICmpMovement : public ObjectComponent
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	virtual bool attempt_navmesh_acquisition(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavMesh_CPtr& navMesh) = 0;
+	virtual int cur_nav_poly_index() const = 0;
 	virtual void move(const Vector3d& dir, double speed, int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
+	virtual double run_speed() const = 0;
+	virtual void set_navmesh_unacquired() = 0;
+	virtual bool single_move(const Vector3d& dir, double speed, int milliseconds, const OnionTree_CPtr& tree) = 0;
+	virtual bool traversing_link() const = 0;
+	virtual double walk_speed() const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -31,6 +37,10 @@ public:
 	std::string own_type() const			{ return "Movement"; }
 	static std::string static_own_type()	{ return "Movement"; }
 };
+
+//#################### TYPEDEFS ####################
+typedef shared_ptr<ICmpMovement> ICmpMovement_Ptr;
+typedef shared_ptr<const ICmpMovement> ICmpMovement_CPtr;
 
 }
 

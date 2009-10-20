@@ -24,7 +24,7 @@ Objects
 			Consumables = <>
 			Items = []
 		}
-		MeshMovement;
+		Movement;
 		Orientation
 		{
 			Look = ( 0 1 0 )

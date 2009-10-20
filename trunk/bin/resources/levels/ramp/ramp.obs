@@ -24,7 +24,7 @@ Objects
 			Consumables = <>
 			Items = []
 		}
-		MeshMovement;
+		Movement;
 		Orientation
 		{
 			Look = ( 1 -0.5 0 )
@@ -51,7 +51,7 @@ Objects
 			Health = 100
 			MaxHealth = 100
 		}
-		MeshMovement;
+		Movement;
 		Orientation
 		{
 			Look = ( -1 0 0 )

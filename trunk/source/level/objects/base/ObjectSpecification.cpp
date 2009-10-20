@@ -9,12 +9,11 @@
 #include <source/level/objects/components/CmpBipedAnimChooser.h>
 #include <source/level/objects/components/CmpCharacterModelRender.h>
 #include <source/level/objects/components/CmpConsumeActivatable.h>
-#include <source/level/objects/components/CmpDirectMovement.h>
 #include <source/level/objects/components/CmpHealth.h>
 #include <source/level/objects/components/CmpInventory.h>
 #include <source/level/objects/components/CmpItemActivatable.h>
-#include <source/level/objects/components/CmpMeshMovement.h>
 #include <source/level/objects/components/CmpMinimusScriptYoke.h>
+#include <source/level/objects/components/CmpMovement.h>
 #include <source/level/objects/components/CmpOrientation.h>
 #include <source/level/objects/components/CmpOwnable.h>
 #include <source/level/objects/components/CmpPosition.h>
@@ -60,12 +59,11 @@ std::map<std::string,ObjectSpecification::ComponentLoader>& ObjectSpecification:
 		ADD_LOADER(BipedAnimChooser);
 		ADD_LOADER(CharacterModelRender);
 		ADD_LOADER(ConsumeActivatable);
-		ADD_LOADER(DirectMovement);
 		ADD_LOADER(Health);
 		ADD_LOADER(Inventory);
 		ADD_LOADER(ItemActivatable);
-		ADD_LOADER(MeshMovement);
 		ADD_LOADER(MinimusScriptYoke);
+		ADD_LOADER(Movement);
 		ADD_LOADER(Orientation);
 		ADD_LOADER(Ownable);
 		ADD_LOADER(Position);

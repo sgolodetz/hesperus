@@ -27,10 +27,10 @@
 #include <source/level/objects/base/ObjectCommand.h>
 #include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpModelRender.h>
+#include <source/level/objects/components/ICmpMovement.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/components/ICmpYoke.h>
-#include <source/level/objects/MoveFunctions.h>
 #include <source/level/physics/PhysicsSystem.h>
 #include <source/util/UserInput.h>
 namespace bf = boost::filesystem;
@@ -198,10 +198,11 @@ void GameState_Level::do_physics(int milliseconds)
 	std::vector<ObjectID> simulables = objectManager->group("Simulables");
 	for(size_t i=0, size=simulables.size(); i<size; ++i)
 	{
+		ICmpMovement_Ptr cmpMovement = objectManager->get_component(simulables[i], cmpMovement);
 		ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(simulables[i], cmpSimulation);
 		Vector3d velocity = cmpSimulation->velocity();
 		cmpSimulation->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
-		if(MoveFunctions::single_move_without_navmesh(simulables[i], objectManager, cmpSimulation->velocity(), 7.0 /* FIXME */, m_level->onion_tree(), milliseconds))
+		if(cmpMovement->single_move(cmpSimulation->velocity(), 7.0 /* FIXME */, milliseconds, m_level->onion_tree()))
 		{
 			// A collision occurred, so set the velocity back to zero.
 			cmpSimulation->set_velocity(Vector3d(0,0,0));

@@ -12,7 +12,6 @@
 #include <source/level/objects/commands/CmdBipedTurn.h>
 #include <source/level/objects/commands/CmdBipedWalk.h>
 #include <source/level/objects/commands/CmdUseActiveItem.h>
-#include <source/level/objects/components/ICmpMeshMovement.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/math/Constants.h>
 #include <source/util/UserInput.h>
@@ -32,7 +31,6 @@ std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 
 	std::vector<ObjectCommand_Ptr> commands;
 
-	ICmpMeshMovement_Ptr cmpMovement = m_objectManager->get_component(m_objectID, cmpMovement);			assert(cmpMovement != NULL);
 	ICmpOrientation_Ptr cmpOrientation = m_objectManager->get_component(m_objectID, cmpOrientation);	assert(cmpOrientation != NULL);
 
 	NUVAxes_CPtr nuvAxes = cmpOrientation->nuv_axes();

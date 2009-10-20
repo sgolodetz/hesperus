@@ -24,7 +24,6 @@
 				<property name="Amount" type="int"/>
 				<property name="Type" type="string"/>
 			</component>
-			<component name="DirectMovement"/>
 			<component name="Health">
 				<property name="Health" type="int"/>
 				<property name="MaxHealth" type="int"/>
@@ -35,10 +34,10 @@
 				<property name="Items" type="{ObjectID}"/>
 			</component>
 			<component name="ItemActivatable"/>
-			<component name="MeshMovement"/>
 			<component name="MinimusScriptYoke">
 				<property name="Script" type="string"/>
 			</component>
+			<component name="Movement"/>
 			<component name="Orientation">
 				<property name="Look" type="Vector3d"/>
 			</component>
@@ -86,8 +85,8 @@
 					<property name="Consumables" default='&lt;&gt;'/>
 					<property name="Items" default='[]'/>
 				</component>
-				<component name="MeshMovement"/>
 				<component name="MinimusScriptYoke"/>
+				<component name="Movement"/>
 				<component name="Orientation"/>
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"biped"'/>
@@ -112,7 +111,7 @@
 					<property name="Consumables" default='&lt;&gt;'/>
 					<property name="Items" default='[]'/>
 				</component>
-				<component name="MeshMovement"/>
+				<component name="Movement"/>
 				<component name="Orientation"/>
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"biped"'/>

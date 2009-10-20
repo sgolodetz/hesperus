@@ -902,7 +902,7 @@ Objects
 			Consumables = <>
 			Items = [4]
 		}
-		MeshMovement;
+		Movement;
 		Orientation
 		{
 			Look = ( 0.894427 -0.447214 0 )
@@ -937,7 +937,7 @@ Objects
 			Consumables = <>
 			Items = [3]
 		}
-		MeshMovement;
+		Movement;
 		Orientation
 		{
 			Look = ( -1 0 0 )
@@ -964,7 +964,7 @@ Objects
 	Object
 	{
 		ItemActivatable;
-		DirectMovement;
+		Movement;
 		Orientation
 		{
 			Look = ( 0 1 0 )

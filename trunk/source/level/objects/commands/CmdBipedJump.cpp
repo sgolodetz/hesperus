@@ -8,7 +8,7 @@
 #include <source/level/bounds/BoundsManager.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavMesh.h>
-#include <source/level/objects/MoveFunctions.h>
+#include <source/level/objects/components/ICmpMovement.h>
 #include <source/level/objects/components/ICmpSimulation.h>
 
 namespace hesp {
@@ -22,12 +22,13 @@ CmdBipedJump::CmdBipedJump(const ObjectID& objectID, const Vector3d& dir)
 void CmdBipedJump::execute(const ObjectManager_Ptr& objectManager, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 						   const std::vector<NavDataset_Ptr>& navDatasets, int milliseconds)
 {
+	ICmpMovement_Ptr cmpMovement = objectManager->get_component(m_objectID, cmpMovement);			assert(cmpMovement != NULL);
 	ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(m_objectID, cmpSimulation);		assert(cmpSimulation != NULL);
 
 	int mapIndex = objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
 	NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
 
-	if(MoveFunctions::attempt_navmesh_acquisition(m_objectID, objectManager.get(), polygons, tree, navMesh))
+	if(cmpMovement->attempt_navmesh_acquisition(polygons, tree, navMesh))
 	{
 		// FIXME: The jump strength should eventually be a property of the entity.
 		const double JUMP_STRENGTH = 3;		// force of jump in Newtons

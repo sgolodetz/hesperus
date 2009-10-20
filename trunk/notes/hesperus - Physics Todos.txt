@@ -8,7 +8,6 @@ Short-Term / Urgent
 
 * Implement world collisions properly.
   - Need a way to get recent transition planes (embed them in the physics object and rewrite the movement code to use these instead).
-* Implement a new movement component and get rid of MoveFunctions.
 * Get rid of GameState_Level::do_physics() and replace it with GameState_Level::do_physics_ex().
   - Needs resting contacts to be handled properly.
   - Needs world collisions to be implemented properly.

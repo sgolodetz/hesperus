@@ -7,10 +7,9 @@
 
 #include <source/level/bounds/BoundsManager.h>
 #include <source/level/nav/NavDataset.h>
-#include <source/level/objects/MoveFunctions.h>
 #include <source/util/Properties.h>
 #include "ICmpInventory.h"
-#include "ICmpMeshMovement.h"
+#include "ICmpMovement.h"
 #include "ICmpOwnable.h"
 #include "ICmpSimulation.h"
 
@@ -32,7 +31,7 @@ IObjectComponent_Ptr CmpBipedAnimChooser::load(const Properties&)
 void CmpBipedAnimChooser::check_dependencies() const
 {
 	check_dependency<ICmpHealth>();
-	check_dependency<ICmpMeshMovement>();
+	check_dependency<ICmpMovement>();
 	check_dependency<ICmpSimulation>();
 }
 
@@ -131,9 +130,10 @@ CmpBipedAnimChooser::MovementType CmpBipedAnimChooser::determine_movement_type(c
 	MovementType movementType = UNKNOWN;
 
 	// Determine whether or not the biped's in the air.
-	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
+	ICmpMovement_Ptr cmpMovement = m_objectManager->get_component(m_objectID, cmpMovement);			assert(cmpMovement != NULL);
+	ICmpSimulation_CPtr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
 	int mapIndex = m_objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
-	if(!MoveFunctions::attempt_navmesh_acquisition(m_objectID, m_objectManager, polygons, tree, navDatasets[mapIndex]->nav_mesh()))
+	if(!cmpMovement->attempt_navmesh_acquisition(polygons, tree, navDatasets[mapIndex]->nav_mesh()))
 	{
 		movementType = AIR;
 	}

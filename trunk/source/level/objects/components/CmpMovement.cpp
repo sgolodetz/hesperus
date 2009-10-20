@@ -40,6 +40,11 @@ bool CmpMovement::attempt_navmesh_acquisition(const std::vector<CollisionPolygon
 	return m_curNavPolyIndex != -1;
 }
 
+int CmpMovement::cur_nav_poly_index() const
+{
+	return m_curNavPolyIndex;
+}
+
 void CmpMovement::move(const Vector3d& dir, double speed, int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 					   const std::vector<NavDataset_Ptr>& navDatasets)
 {
@@ -65,9 +70,51 @@ void CmpMovement::move(const Vector3d& dir, double speed, int milliseconds, cons
 	} while(move.timeRemaining > 0 && oldTimeRemaining - move.timeRemaining > 0.0001);
 }
 
+double CmpMovement::run_speed() const
+{
+	// FIXME: This should be loaded in.
+	return 10.0;	// in units/s
+}
+
 Properties CmpMovement::save() const
 {
 	return Properties();
+}
+
+/**
+@return	true, if a collision occurred, or false otherwise
+*/
+bool CmpMovement::single_move(const Vector3d& dir, double speed, int milliseconds, const OnionTree_CPtr& tree)
+{
+	// FIXME: The bool return here is unintuitive and should be replaced with something more sensible.
+
+	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
+
+	// Check to make sure we're not currently traversing a link: don't let the object be moved if we are.
+	if(m_curTraversal) return true;
+
+	Move move;
+	move.dir = dir;
+	move.mapIndex = m_objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
+	move.timeRemaining = milliseconds / 1000.0;
+
+	return do_direct_move(move, speed, tree);
+}
+
+void CmpMovement::set_navmesh_unacquired()
+{
+	m_curNavPolyIndex = -1;
+}
+
+bool CmpMovement::traversing_link() const
+{
+	return m_curTraversal != NULL;
+}
+
+double CmpMovement::walk_speed() const
+{
+	// FIXME: This should be loaded in.
+	return 5.0;		// in units/s
 }
 
 //#################### PRIVATE METHODS ####################

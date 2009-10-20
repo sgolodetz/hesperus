@@ -7,7 +7,7 @@
 
 #include <source/level/bounds/Bounds.h>
 #include <source/level/bounds/BoundsManager.h>
-#include <source/level/objects/components/ICmpMeshMovement.h>
+#include <source/level/objects/components/ICmpMovement.h>
 #include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/trees/OnionTree.h>
 #include <source/level/trees/TreeUtil.h>
@@ -25,11 +25,11 @@ void CmdBipedChangePosture::execute(const ObjectManager_Ptr& objectManager, cons
 {
 	// FIXME: Crouching is currently a "jolt" from one pose to another. It should really be a smooth transition.
 
-	ICmpMeshMovement_Ptr cmpMovement = objectManager->get_component(m_objectID, cmpMovement);		assert(cmpMovement != NULL);
+	ICmpMovement_Ptr cmpMovement = objectManager->get_component(m_objectID, cmpMovement);			assert(cmpMovement != NULL);
 	ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(m_objectID, cmpSimulation);		assert(cmpSimulation != NULL);
 
 	// Check that we're not currently traversing a nav link.
-	if(cmpMovement->cur_traversal()) return;
+	if(cmpMovement->traversing_link()) return;
 
 	Vector3d source = cmpSimulation->position();
 
@@ -53,7 +53,7 @@ void CmdBipedChangePosture::execute(const ObjectManager_Ptr& objectManager, cons
 	// If the posture change is ok, set the new posture and update the object position to reflect the centre of the new bounds.
 	cmpSimulation->set_posture(newPosture);
 	cmpSimulation->set_position(dest);
-	cmpMovement->set_cur_nav_poly_index(-1);
+	cmpMovement->set_navmesh_unacquired();
 }
 
 }
