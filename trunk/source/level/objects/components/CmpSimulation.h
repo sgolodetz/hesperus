@@ -53,13 +53,11 @@ public:
 	const std::string& bounds_group() const;
 	const Vector3d& position() const;
 	const std::string& posture() const;
-	const std::list<Plane>& recent_planes() const;
 	Properties save() const;
 	void set_object_manager(ObjectManager *objectManager);
 	void set_position(const Vector3d& position);
 	void set_posture(const std::string& posture);
 	void set_velocity(const Vector3d& velocity);
-	void update_recent_planes(const Plane& plane);
 	const Vector3d& velocity() const;
 };
 

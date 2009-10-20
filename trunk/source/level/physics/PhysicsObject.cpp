@@ -5,8 +5,6 @@
 
 #include "PhysicsObject.h"
 
-#include <source/math/geom/GeomUtil.h>
-
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
@@ -23,7 +21,6 @@ void PhysicsObject::apply_force(const Vector3d& force)						{ m_accumulatedForce
 double PhysicsObject::inverse_mass() const									{ return m_inverseMass; }
 PhysicsMaterial PhysicsObject::material() const								{ return m_material; }
 const Vector3d& PhysicsObject::position() const								{ return m_position; }
-const std::list<Plane>& PhysicsObject::recent_planes() const				{ return m_recentPlanes; }
 
 void PhysicsObject::set_position(Vector3d position)
 {
@@ -32,20 +29,6 @@ void PhysicsObject::set_position(Vector3d position)
 }
 
 void PhysicsObject::set_velocity(const Vector3d& velocity)					{ m_velocity = velocity; }
-
-void PhysicsObject::update_recent_planes(const Plane& plane)
-{
-	// Remove any recent planes which the object's no longer on.
-	for(std::list<Plane>::iterator it=m_recentPlanes.begin(), iend=m_recentPlanes.end(); it!=iend;)
-	{
-		if(classify_point_against_plane(m_position, *it) == CP_COPLANAR) ++it;
-		else it = m_recentPlanes.erase(it);
-	}
-
-	// Add the latest plane.
-	m_recentPlanes.push_front(plane);
-}
-
 const Vector3d& PhysicsObject::velocity() const								{ return m_velocity; }
 
 //#################### PROTECTED METHODS ####################

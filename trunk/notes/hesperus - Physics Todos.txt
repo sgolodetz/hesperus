@@ -8,11 +8,11 @@ Short-Term / Urgent
 
 * Make sure the physics system is being set up properly (i.e. with appropriate contact resolvers etc.)
 * Try and get rid of the gravity special-case.
-* Move recent planes into CmpMovement.
 
 ---------
 Long-Term
 ---------
 
 * Implement a proper contact batching processor.
+* Implement a proper sleep system.
 * Implement hard constraints (possibly).

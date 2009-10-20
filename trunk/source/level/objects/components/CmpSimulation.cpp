@@ -5,10 +5,7 @@
 
 #include "CmpSimulation.h"
 
-#include <source/level/physics/ForceGenerator.h>
 #include <source/level/physics/NormalPhysicsObject.h>
-#include <source/math/Constants.h>
-#include "ICmpMovement.h"
 
 namespace hesp {
 
@@ -45,11 +42,6 @@ const Vector3d& CmpSimulation::position() const
 const std::string& CmpSimulation::posture() const
 {
 	return m_physicsObject->posture();
-}
-
-const std::list<Plane>& CmpSimulation::recent_planes() const
-{
-	return m_physicsObject->recent_planes();
 }
 
 Properties CmpSimulation::save() const
@@ -93,11 +85,6 @@ void CmpSimulation::set_posture(const std::string& posture)
 void CmpSimulation::set_velocity(const Vector3d& velocity)
 {
 	m_physicsObject->set_velocity(velocity);
-}
-
-void CmpSimulation::update_recent_planes(const Plane& plane)
-{
-	m_physicsObject->update_recent_planes(plane);
 }
 
 const Vector3d& CmpSimulation::velocity() const

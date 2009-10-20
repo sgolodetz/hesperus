@@ -6,6 +6,9 @@
 #ifndef H_HESP_CMPMOVEMENT
 #define H_HESP_CMPMOVEMENT
 
+#include <list>
+
+#include <source/math/geom/Plane.h>
 #include "ICmpMovement.h"
 
 namespace hesp {
@@ -44,6 +47,9 @@ private:
 	// The details of the current nav link traversal (NULL if not currently traversing a link)
 	Traversal_CPtr m_curTraversal;
 
+	// Planes with which the object has recently been in contact
+	std::list<Plane> m_recentPlanes;
+
 	//#################### CONSTRUCTORS ####################
 public:
 	CmpMovement();
@@ -70,6 +76,7 @@ private:
 	void do_navmesh_move(Move& move, double speed, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavMesh_CPtr& navMesh);
 	void do_traverse_move(Move& move, double speed, const std::vector<CollisionPolygon_Ptr>& polygons, const NavMesh_CPtr& navMesh);
 	void update_move_direction_for_sliding(Move& move);
+	void update_recent_planes(const Plane& plane);
 };
 
 }

@@ -154,7 +154,7 @@ bool CmpMovement::do_direct_move(Move& move, double speed, const OnionTree_CPtr&
 			collisionOccurred = true;
 
 			// Record the transition plane.
-			cmpSimulation->update_recent_planes(*transition.plane);
+			update_recent_planes(*transition.plane);
 
 			// Update the move direction to allow sliding.
 			update_move_direction_for_sliding(move);
@@ -315,8 +315,7 @@ void CmpMovement::update_move_direction_for_sliding(Move& move)
 	
 	const Vector3d& source = cmpSimulation->position();
 	Vector3d dummyDest = source + move.dir;
-	const std::list<Plane>& recentPlanes = cmpSimulation->recent_planes();
-	for(std::list<Plane>::const_iterator it=recentPlanes.begin(), iend=recentPlanes.end(); it!=iend; ++it)
+	for(std::list<Plane>::const_iterator it=m_recentPlanes.begin(), iend=m_recentPlanes.end(); it!=iend; ++it)
 	{
 		if(classify_point_against_plane(dummyDest, *it) == CP_BACK)
 		{
@@ -327,6 +326,22 @@ void CmpMovement::update_move_direction_for_sliding(Move& move)
 			break;
 		}
 	}
+}
+
+void CmpMovement::update_recent_planes(const Plane& plane)
+{
+	ICmpSimulation_CPtr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
+
+	// Remove any recent planes which the object's no longer on.
+	const Vector3d& position = cmpSimulation->position();
+	for(std::list<Plane>::iterator it=m_recentPlanes.begin(), iend=m_recentPlanes.end(); it!=iend;)
+	{
+		if(classify_point_against_plane(position, *it) == CP_COPLANAR) ++it;
+		else it = m_recentPlanes.erase(it);
+	}
+
+	// Add the latest plane.
+	m_recentPlanes.push_front(plane);
 }
 
 }

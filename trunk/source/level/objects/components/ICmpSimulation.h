@@ -6,9 +6,6 @@
 #ifndef H_HESP_ICMPSIMULATION
 #define H_HESP_ICMPSIMULATION
 
-#include <list>
-
-#include <source/math/geom/Plane.h>
 #include "ICmpPosition.h"
 
 namespace hesp {
@@ -19,10 +16,8 @@ class ICmpSimulation : public ICmpPosition
 public:
 	virtual const std::string& bounds_group() const = 0;
 	virtual const std::string& posture() const = 0;
-	virtual const std::list<Plane>& recent_planes() const = 0;
 	virtual void set_posture(const std::string& posture) = 0;
 	virtual void set_velocity(const Vector3d& velocity) = 0;
-	virtual void update_recent_planes(const Plane& plane) = 0;
 	virtual const Vector3d& velocity() const = 0;
 
 	//#################### PUBLIC METHODS ####################
