@@ -21,14 +21,7 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 :	m_geomRenderer(geomRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis),
 	m_onionPolygons(onionPolygons), m_onionTree(onionTree), m_onionPortals(onionPortals),
 	m_navDatasets(navDatasets), m_objectManager(objectManager), m_modelManager(modelManager)
-{
-	// Build the collision -> nav poly index lookups.
-	int datasetCount = static_cast<int>(m_navDatasets.size());
-	for(int i=0; i<datasetCount; ++i)
-	{
-		m_navDatasets[i]->nav_mesh()->build_collision_to_nav_lookup();
-	}
-}
+{}
 
 //#################### PUBLIC METHODS ####################
 BSPTree_CPtr Level::bsp_tree() const
