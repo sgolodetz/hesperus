@@ -8,8 +8,8 @@
 #include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpInventory.h>
 #include <source/level/objects/components/ICmpModelRender.h>
+#include <source/level/objects/components/ICmpMovement.h>
 #include <source/level/objects/components/ICmpOwnable.h>
-#include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
 #include <source/level/objects/messages/MsgObjectPredestroyed.h>
@@ -23,8 +23,8 @@ namespace hesp {
 bool has_owner(const ObjectID& id, const ObjectManager *objectManager);
 bool is_activatable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_animatable(const ObjectID& id, const ObjectManager *objectManager);
+bool is_moveable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_renderable(const ObjectID& id, const ObjectManager *objectManager);
-bool is_simulable(const ObjectID& id, const ObjectManager *objectManager);
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
 
 //#################### CONSTRUCTORS ####################
@@ -46,8 +46,8 @@ ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const Comp
 	// Register object groupings.
 	register_group("Activatables", is_activatable);
 	register_group("Animatables", is_animatable);
+	register_group("Moveables", is_moveable);
 	register_group("Renderables", is_renderable);
-	register_group("Simulables", is_simulable);
 	register_group("Yokeables", is_yokeable);
 }
 
@@ -320,14 +320,14 @@ bool is_animatable(const ObjectID& id, const ObjectManager *objectManager)
 	else return false;	// animatable objects must have a ModelRender component
 }
 
+bool is_moveable(const ObjectID& id, const ObjectManager *objectManager)
+{
+	return !has_owner(id, objectManager) && objectManager->get_component<ICmpMovement>(id) != NULL;
+}
+
 bool is_renderable(const ObjectID& id, const ObjectManager *objectManager)
 {
 	return !has_owner(id, objectManager) && objectManager->get_component<ICmpRender>(id) != NULL;
-}
-
-bool is_simulable(const ObjectID& id, const ObjectManager *objectManager)
-{
-	return !has_owner(id, objectManager) && objectManager->get_component<ICmpSimulation>(id) != NULL;
 }
 
 bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager)

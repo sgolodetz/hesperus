@@ -185,17 +185,17 @@ void GameState_Level::do_animations(int milliseconds)
 
 void GameState_Level::do_gravity(int milliseconds)
 {
-	// Apply gravity to simulable objects (i.e. those which have a Simulation component).
+	// Apply gravity to moveable objects.
 
 	// FIXME: Gravity strength should eventually be a level property.
 	const double GRAVITY_STRENGTH = 9.81;	// strength of gravity in Newtons
 
 	const ObjectManager_Ptr& objectManager = m_level->object_manager();
-	std::vector<ObjectID> simulables = objectManager->group("Simulables");
-	for(size_t i=0, size=simulables.size(); i<size; ++i)
+	std::vector<ObjectID> moveables = objectManager->group("Moveables");
+	for(size_t i=0, size=moveables.size(); i<size; ++i)
 	{
-		ICmpMovement_Ptr cmpMovement = objectManager->get_component(simulables[i], cmpMovement);
-		ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(simulables[i], cmpSimulation);
+		ICmpMovement_Ptr cmpMovement = objectManager->get_component(moveables[i], cmpMovement);
+		ICmpSimulation_Ptr cmpSimulation = objectManager->get_component(moveables[i], cmpSimulation);
 		Vector3d velocity = cmpSimulation->velocity();
 		cmpSimulation->set_velocity(velocity + Vector3d(0,0,-GRAVITY_STRENGTH*(milliseconds/1000.0)));
 		if(cmpMovement->single_move(cmpSimulation->velocity(), 7.0 /* FIXME */, milliseconds, m_level->onion_tree()))

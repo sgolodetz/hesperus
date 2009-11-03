@@ -61,6 +61,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	bool attempt_navmesh_acquisition(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavMesh_CPtr& navMesh);
+	void check_dependencies() const;
 	int cur_nav_poly_index() const;
 	void move(const Vector3d& dir, double speed, int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
 	double run_speed() const;

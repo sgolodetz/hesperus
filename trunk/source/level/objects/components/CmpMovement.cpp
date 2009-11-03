@@ -40,6 +40,11 @@ bool CmpMovement::attempt_navmesh_acquisition(const std::vector<CollisionPolygon
 	return m_curNavPolyIndex != -1;
 }
 
+void CmpMovement::check_dependencies() const
+{
+	check_dependency<ICmpSimulation>();
+}
+
 int CmpMovement::cur_nav_poly_index() const
 {
 	return m_curNavPolyIndex;
