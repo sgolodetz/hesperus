@@ -61,6 +61,7 @@
 			</component>
 			<component name="Simulation">
 				<property name="BoundsGroup" type="string"/>
+				<property name="DampingFactor" type="double"/>
 				<property name="InverseMass" type="double"/>
 				<property name="Material" type="PhysicsMaterial"/>
 				<property name="Position" type="Vector3d"/>
@@ -90,6 +91,7 @@
 				<component name="Orientation"/>
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"biped"'/>
+					<property name="DampingFactor" fixed='0.95'/>
 					<property name="InverseMass" default='0.02'/>
 					<property name="Material" fixed='"character"'/>
 					<property name="Posture" default='"stand"'/>
@@ -115,6 +117,7 @@
 				<component name="Orientation"/>
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"biped"'/>
+					<property name="DampingFactor" fixed='0.95'/>
 					<property name="InverseMass" default='0.02'/>
 					<property name="Material" fixed='"character"'/>
 					<property name="Posture" default='"stand"'/>

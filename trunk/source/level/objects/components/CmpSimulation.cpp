@@ -10,9 +10,9 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpSimulation::CmpSimulation(const std::string& boundsGroup, const std::string& posture, double inverseMass,
+CmpSimulation::CmpSimulation(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass,
 							 PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity)
-:	m_initialData(new InitialData(boundsGroup, posture, inverseMass, material, position, velocity))
+:	m_initialData(new InitialData(boundsGroup, dampingFactor, posture, inverseMass, material, position, velocity))
 {}
 
 //#################### STATIC FACTORY METHODS ####################
@@ -20,6 +20,7 @@ IObjectComponent_Ptr CmpSimulation::load(const Properties& properties)
 {
 	return IObjectComponent_Ptr(new CmpSimulation(
 		properties.get<std::string>("BoundsGroup"),
+		properties.get<double>("DampingFactor"),
 		properties.get<std::string>("Posture"),
 		properties.get<double>("InverseMass"),
 		properties.get<PhysicsMaterial>("Material"),
@@ -48,6 +49,7 @@ Properties CmpSimulation::save() const
 {
 	Properties properties;
 	properties.set("BoundsGroup", bounds_group());
+	properties.set("DampingFactor", m_physicsObject->damping_factor());
 	properties.set("InverseMass", m_physicsObject->inverse_mass());
 	properties.set("Material", m_physicsObject->material());
 	properties.set("Position", position());
@@ -65,7 +67,7 @@ void CmpSimulation::set_object_manager(ObjectManager *objectManager)
 	// and we don't have one until the object manager has been set.
 	const PhysicsSystem_Ptr& physicsSystem = objectManager->physics_system();
 	m_physicsObject = new NormalPhysicsObject(
-		m_initialData->boundsGroup, m_initialData->posture, m_initialData->inverseMass,
+		m_initialData->boundsGroup, m_initialData->dampingFactor, m_initialData->posture, m_initialData->inverseMass,
 		m_initialData->material, m_initialData->position, m_initialData->velocity
 	);
 	m_physicsObjectHandle = physicsSystem->register_object(PhysicsObject_Ptr(m_physicsObject));

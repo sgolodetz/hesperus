@@ -17,14 +17,17 @@ private:
 	std::string m_boundsGroup;
 	std::string m_posture;
 
+	double m_dampingFactor;
+
 	//#################### CONSTRUCTORS ####################
 public:
-	NormalPhysicsObject(const std::string& boundsGroup, const std::string& posture, double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity = Vector3d(0,0,0));
+	NormalPhysicsObject(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity = Vector3d(0,0,0));
 
 	//#################### PUBLIC METHODS ####################
 public:
 	Bounds_CPtr bounds(const BoundsManager_CPtr& boundsManager) const;
 	const std::string& bounds_group() const;
+	double damping_factor() const;
 	const std::string& posture() const;
 	void set_posture(const std::string& posture);
 	void update(int milliseconds);

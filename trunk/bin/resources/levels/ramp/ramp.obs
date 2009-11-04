@@ -32,6 +32,7 @@ Objects
 		Simulation
 		{
 			BoundsGroup = "biped"
+			DampingFactor = 0.95
 			InverseMass = 0.02
 			Material = "character"
 			Position = ( 7 10 5 )

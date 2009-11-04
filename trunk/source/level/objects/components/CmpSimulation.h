@@ -21,15 +21,16 @@ private:
 	struct InitialData
 	{
 		std::string boundsGroup;
+		double dampingFactor;
 		std::string posture;
 		double inverseMass;
 		PhysicsMaterial material;
 		Vector3d position;
 		Vector3d velocity;
 
-		InitialData(const std::string& boundsGroup_, const std::string& posture_, double inverseMass_,
+		InitialData(const std::string& boundsGroup_, double dampingFactor_, const std::string& posture_, double inverseMass_,
 					PhysicsMaterial material_, const Vector3d& position_, const Vector3d& velocity_)
-		:	boundsGroup(boundsGroup_), posture(posture_), inverseMass(inverseMass_),
+		:	boundsGroup(boundsGroup_), dampingFactor(dampingFactor_), posture(posture_), inverseMass(inverseMass_),
 			material(material_), position(position_), velocity(velocity_)
 		{}
 	};
@@ -42,7 +43,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpSimulation(const std::string& boundsGroup, const std::string& posture, double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity);
+	explicit CmpSimulation(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

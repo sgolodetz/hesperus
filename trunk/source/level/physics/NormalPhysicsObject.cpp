@@ -12,9 +12,9 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-NormalPhysicsObject::NormalPhysicsObject(const std::string& boundsGroup, const std::string& posture, double inverseMass,
+NormalPhysicsObject::NormalPhysicsObject(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass,
 										 PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity)
-:	PhysicsObject(inverseMass, material, position, velocity), m_boundsGroup(boundsGroup), m_posture(posture)
+:	PhysicsObject(inverseMass, material, position, velocity), m_boundsGroup(boundsGroup), m_posture(posture), m_dampingFactor(dampingFactor)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -26,6 +26,11 @@ Bounds_CPtr NormalPhysicsObject::bounds(const BoundsManager_CPtr& boundsManager)
 const std::string& NormalPhysicsObject::bounds_group() const
 {
 	return m_boundsGroup;
+}
+
+double NormalPhysicsObject::damping_factor() const
+{
+	return m_dampingFactor;
 }
 
 const std::string& NormalPhysicsObject::posture() const
@@ -45,9 +50,8 @@ void NormalPhysicsObject::update(int milliseconds)
 	set_position(position() + velocity() * t + 0.5 * acceleration * t * t);
 	set_velocity(velocity() + acceleration * t);
 
-	// Impose a small amount of damping.
-	const double DAMPING_FACTOR = 0.95;
-	set_velocity(velocity() * DAMPING_FACTOR);
+	// Damp the velocity where necessary.
+	set_velocity(velocity() * m_dampingFactor);
 }
 
 }
