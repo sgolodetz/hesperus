@@ -14,11 +14,12 @@ class CmpProjectileWeaponUsable : public CmpUsable
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
+	double m_muzzleSpeed;
 	std::string m_projectileType;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpProjectileWeaponUsable(const std::string& usableGroup, const std::vector<std::string>& hotspots, const std::string& projectileType);
+	CmpProjectileWeaponUsable(const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed, const std::string& projectileType);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

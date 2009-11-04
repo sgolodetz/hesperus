@@ -135,6 +135,7 @@ Objects
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]
+			MuzzleSpeed = 20.0
 			ProjectileType = "PistolBullet"
 		}
 	}
@@ -162,6 +163,7 @@ Objects
 		{
 			Group = "Pistol"
 			Hotspots = ["root"]
+			MuzzleSpeed = 20.0
 			ProjectileType = "PistolBullet"
 		}
 	}

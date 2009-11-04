@@ -15,8 +15,9 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpProjectileWeaponUsable::CmpProjectileWeaponUsable(const std::string& usableGroup, const std::vector<std::string>& hotspots, const std::string& projectileType)
-:	CmpUsable(usableGroup, hotspots), m_projectileType(projectileType)
+CmpProjectileWeaponUsable::CmpProjectileWeaponUsable(const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed,
+													 const std::string& projectileType)
+:	CmpUsable(usableGroup, hotspots), m_muzzleSpeed(muzzleSpeed), m_projectileType(projectileType)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
@@ -24,6 +25,7 @@ IObjectComponent_Ptr CmpProjectileWeaponUsable::load(const Properties& propertie
 {
 	return IObjectComponent_Ptr(new CmpProjectileWeaponUsable(properties.get<std::string>("Group"),
 															  properties.get<std::vector<std::string> >("Hotspots"),
+															  properties.get<double>("MuzzleSpeed"),
 															  properties.get<std::string>("ProjectileType")));
 }
 
@@ -33,6 +35,7 @@ Properties CmpProjectileWeaponUsable::save() const
 	Properties properties;
 	properties.set("Group", usable_group());
 	properties.set("Hotspots", hotspots());
+	properties.set("MuzzleSpeed", m_muzzleSpeed);
 	properties.set("ProjectileType", m_projectileType);
 	return properties;
 }
