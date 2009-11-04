@@ -6,6 +6,7 @@
 #include "DefinitionsFile.h"
 
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/dynamic_bitset.hpp>
 #include <boost/lexical_cast.hpp>
 using boost::bad_lexical_cast;
 using boost::lexical_cast;
@@ -57,11 +58,7 @@ void DefinitionsFile::load(const std::string& filename, BoundsManager_Ptr& bound
 		// Load the object archetypes.
 		XMLElement_CPtr archetypesElt = objectsElt->find_unique_child("archetypes");
 		load_archetypes(archetypesElt, archetypes, componentPropertyTypes);
-
-		// TODO: Process any other subtrees when it becomes necessary.
 	}
-
-	// TODO: Process any other subtrees when it becomes necessary.
 }
 
 /**
@@ -139,8 +136,9 @@ BoundsManager_Ptr DefinitionsFile::load_bounds(const XMLElement_CPtr& boundsElt)
 {
 	typedef BoundsManager::BoundsGroup BoundsGroup;
 	std::vector<Bounds_CPtr> bounds;
-	std::map<std::string,int> boundsLookup;
 	std::map<std::string,BoundsGroup> boundsGroups;
+	std::map<std::string,int> boundsLookup;
+	boost::dynamic_bitset<> boundsNavFlags;
 
 	// Load the bounds.
 	typedef Bounds_Ptr(*BoundsLoader)(const XMLElement_CPtr&);
@@ -156,6 +154,7 @@ BoundsManager_Ptr DefinitionsFile::load_bounds(const XMLElement_CPtr& boundsElt)
 		const XMLElement_CPtr& boundElt = boundElts[i];
 		const std::string& boundName = boundElt->attribute("name");
 		const std::string& boundType = boundElt->attribute("type");
+		bool boundNavFlag = boundElt->attribute("nav") == "true";
 
 		BoundsLoaders::const_iterator jt = boundsLoaders.find(boundType);
 		if(jt != boundsLoaders.end())
@@ -163,6 +162,7 @@ BoundsManager_Ptr DefinitionsFile::load_bounds(const XMLElement_CPtr& boundsElt)
 			BoundsLoader loader = jt->second;
 			boundsLookup.insert(std::make_pair(boundName, static_cast<int>(bounds.size())));
 			bounds.push_back(loader(boundElt));
+			boundsNavFlags.push_back(boundNavFlag);
 		}
 		else throw Exception("No such bounds type: " + boundType);
 	}
@@ -184,7 +184,7 @@ BoundsManager_Ptr DefinitionsFile::load_bounds(const XMLElement_CPtr& boundsElt)
 		}
 	}
 
-	return BoundsManager_Ptr(new BoundsManager(bounds, boundsLookup, boundsGroups));
+	return BoundsManager_Ptr(new BoundsManager(bounds, boundsGroups, boundsLookup, boundsNavFlags));
 }
 
 void DefinitionsFile::load_component_property_types(const XMLElement_CPtr& componentsElt, ComponentPropertyTypeMap& componentPropertyTypes)

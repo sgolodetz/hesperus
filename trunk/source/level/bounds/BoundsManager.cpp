@@ -13,9 +13,9 @@ using boost::lexical_cast;
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-BoundsManager::BoundsManager(const std::vector<Bounds_CPtr>& bounds, const std::map<std::string,int>& boundsLookup,
-							 const std::map<std::string,BoundsGroup>& boundsGroups)
-:	m_bounds(bounds), m_boundsLookup(boundsLookup), m_boundsGroups(boundsGroups)
+BoundsManager::BoundsManager(const std::vector<Bounds_CPtr>& bounds, const std::map<std::string,BoundsGroup>& groups, const std::map<std::string,int>& lookup,
+							 const boost::dynamic_bitset<>& navFlags)
+:	m_bounds(bounds), m_groups(groups), m_lookup(lookup), m_navFlags(navFlags)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -37,8 +37,8 @@ int BoundsManager::bounds_count() const
 
 int BoundsManager::lookup_bounds_index(const std::string& groupName, const std::string& posture) const
 {
-	std::map<std::string,BoundsGroup>::const_iterator it = m_boundsGroups.find(groupName);
-	if(it != m_boundsGroups.end())
+	std::map<std::string,BoundsGroup>::const_iterator it = m_groups.find(groupName);
+	if(it != m_groups.end())
 	{
 		const BoundsGroup& group = it->second;
 		BoundsGroup::const_iterator jt = group.find(posture);
@@ -51,11 +51,16 @@ int BoundsManager::lookup_bounds_index(const std::string& groupName, const std::
 	else throw Exception("No such bounds group: " + groupName);
 }
 
+const boost::dynamic_bitset<>& BoundsManager::nav_flags() const
+{
+	return m_navFlags;
+}
+
 //#################### PRIVATE METHODS ####################
 int BoundsManager::lookup_bounds_index(const std::string& name) const
 {
-	std::map<std::string,int>::const_iterator it = m_boundsLookup.find(name);
-	if(it != m_boundsLookup.end()) return it->second;
+	std::map<std::string,int>::const_iterator it = m_lookup.find(name);
+	if(it != m_lookup.end()) return it->second;
 	else throw Exception("No such bounds: " + name);
 }
 

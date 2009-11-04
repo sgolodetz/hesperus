@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 
+#include <boost/dynamic_bitset.hpp>
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
@@ -26,12 +27,13 @@ public:
 	//#################### PRIVATE VARIABLES ####################
 private:
 	std::vector<Bounds_CPtr> m_bounds;
-	std::map<std::string,BoundsGroup> m_boundsGroups;
-	std::map<std::string,int> m_boundsLookup;
+	std::map<std::string,BoundsGroup> m_groups;
+	std::map<std::string,int> m_lookup;
+	boost::dynamic_bitset<> m_navFlags;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	BoundsManager(const std::vector<Bounds_CPtr>& bounds, const std::map<std::string,int>& boundsLookup, const std::map<std::string,BoundsGroup>& boundsGroups);
+	BoundsManager(const std::vector<Bounds_CPtr>& bounds, const std::map<std::string,BoundsGroup>& groups, const std::map<std::string,int>& lookup, const boost::dynamic_bitset<>& navFlags);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -39,6 +41,7 @@ public:
 	const Bounds_CPtr& bounds(const std::string& groupName, const std::string& posture) const;
 	int bounds_count() const;
 	int lookup_bounds_index(const std::string& groupName, const std::string& posture) const;
+	const boost::dynamic_bitset<>& nav_flags() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

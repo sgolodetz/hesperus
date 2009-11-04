@@ -75,7 +75,8 @@ void run(const std::string& definitionsSpecifierFilename, const std::string& tre
 	// For each separate map.
 	for(int i=0; i<mapCount; ++i)
 	{
-		// TODO: Skip this map if the bounds for it has its nav flag set to false.
+		// Skip this map if the bounds for it has its nav flag set to false.
+		if(!boundsManager->nav_flags()[i]) continue;
 
 		// Make a copy of the polygon array in which all the polygons that aren't
 		// in this map are set to non-walkable.
