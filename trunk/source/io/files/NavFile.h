@@ -7,7 +7,6 @@
 #define H_HESP_NAVFILE
 
 #include <string>
-#include <vector>
 
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
@@ -15,15 +14,16 @@ using boost::shared_ptr;
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
-typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<class NavManager> NavManager_Ptr;
+typedef shared_ptr<const class NavManager> NavManager_CPtr;
 
 struct NavFile
 {
 	//#################### LOADING METHODS ####################
-	static std::vector<NavDataset_Ptr> load(const std::string& filename);
+	static NavManager_Ptr load(const std::string& filename);
 
 	//#################### SAVING METHODS ####################
-	static void save(const std::string& filename, const std::vector<NavDataset_Ptr>& datasets);
+	static void save(const std::string& filename, const NavManager_CPtr& navManager);
 };
 
 }

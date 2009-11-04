@@ -16,6 +16,7 @@ using boost::lexical_cast;
 #include <source/level/nav/AdjacencyList.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavManager.h>
 #include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavPolygon.h>
 #include <source/level/nav/PathTable.h>
@@ -24,66 +25,69 @@ namespace hesp {
 
 //#################### LOADING METHODS ####################
 /**
-Loads an array of navigation datasets from the specified std::istream.
+Loads a set of navigation datasets from the specified std::istream.
 
 @param is	The std::istream
 @return		The navigation datasets
 */
-std::vector<NavDataset_Ptr> NavSection::load(std::istream& is)
+NavManager_Ptr NavSection::load(std::istream& is)
 {
-	std::vector<NavDataset_Ptr> datasets;
+	NavManager_Ptr navManager(new NavManager);
 
 	LineIO::read_checked_line(is, "Nav");
 	LineIO::read_checked_line(is, "{");
 
 	std::string line;
-	LineIO::read_line(is, line, "navigation dataset count");
-	int datasetCount;
-	try							{ datasetCount = lexical_cast<int,std::string>(line); }
-	catch(bad_lexical_cast&)	{ throw Exception("The navigation dataset count was not an integer"); }
-
-	for(int i=0; i<datasetCount; ++i)
+	for(;;)
 	{
-		LineIO::read_checked_line(is, "Dataset");
+		LineIO::read_line(is, line, "nav dataset");
+		if(line == "}") break;
+		if(line.substr(0,8) != "Dataset ") throw Exception("Expected 'Dataset <n>' but read: " + line);
+
+		int index;
+		try
+		{
+			index = lexical_cast<int>(line.substr(8));
+			if(index < 0) throw Exception("One of the dataset indices was < 0: " + line.substr(8));
+		}
+		catch(bad_lexical_cast&) { throw Exception("One of the dataset indices was not an integer: " + line); }
+
 		LineIO::read_checked_line(is, "{");
 
 		NavMesh_Ptr navMesh = read_navmesh(is);
 		AdjacencyList_Ptr adjList = read_adjacency_list(is);
 		PathTable_Ptr pathTable = read_path_table(is);
 
-		datasets.push_back(NavDataset_Ptr(new NavDataset(adjList, navMesh, pathTable)));
+		navManager->set_dataset(index, NavDataset_Ptr(new NavDataset(adjList, navMesh, pathTable)));
 
 		LineIO::read_checked_line(is, "}");
 	}
 
-	LineIO::read_checked_line(is, "}");
-
-	return datasets;
+	return navManager;
 }
 
 //#################### SAVING METHODS ####################
 /**
-Saves an array of navigation datasets to the specified std::ostream.
+Saves a set of navigation datasets to the specified std::ostream.
 
 @param os			The std::ostream
-@param datasets		The navigation datasets
+@param navManager	The navigation manager containing the datasets
 */
-void NavSection::save(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets)
+void NavSection::save(std::ostream& os, const NavManager_CPtr& navManager)
 {
 	os << "Nav\n";
 	os << "{\n";
 
-	// Output the datasets sequentially.
-	int datasetCount = static_cast<int>(datasets.size());
-	os << datasetCount << '\n';
-	for(int i=0; i<datasetCount; ++i)
+	// Output the datasets.
+	std::map<int,NavDataset_CPtr> datasets = navManager->datasets();
+	for(std::map<int,NavDataset_CPtr>::const_iterator it=datasets.begin(), iend=datasets.end(); it!=iend; ++it)
 	{
-		os << "Dataset\n";
+		os << "Dataset " << it->first << '\n';
 		os << "{\n";
 
-		write_navmesh(os, datasets[i]->nav_mesh());
-		write_adjacency_list(os, datasets[i]->adjacency_list());
-		write_path_table(os, datasets[i]->path_table());
+		write_navmesh(os, it->second->nav_mesh());
+		write_adjacency_list(os, it->second->adjacency_list());
+		write_path_table(os, it->second->path_table());
 
 		os << "}\n";
 	}

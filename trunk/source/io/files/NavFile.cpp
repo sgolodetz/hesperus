@@ -13,7 +13,7 @@
 namespace hesp {
 
 //#################### LOADING METHODS ####################
-std::vector<NavDataset_Ptr> NavFile::load(const std::string& filename)
+NavManager_Ptr NavFile::load(const std::string& filename)
 {
 	std::ifstream is(filename.c_str(), std::ios_base::binary);
 	if(is.fail()) throw Exception("Could not open " + filename + " for reading");
@@ -21,11 +21,11 @@ std::vector<NavDataset_Ptr> NavFile::load(const std::string& filename)
 }
 
 //#################### SAVING METHODS ####################
-void NavFile::save(const std::string& filename, const std::vector<NavDataset_Ptr>& datasets)
+void NavFile::save(const std::string& filename, const NavManager_CPtr& navManager)
 {
 	std::ofstream os(filename.c_str(), std::ios_base::binary);
 	if(os.fail()) throw Exception("Could not open " + filename + " for writing");
-	NavSection::save(os, datasets);
+	NavSection::save(os, navManager);
 }
 
 }

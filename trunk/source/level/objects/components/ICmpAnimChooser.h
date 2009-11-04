@@ -12,14 +12,14 @@
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
-typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<const class NavManager> NavManager_CPtr;
 typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
 class ICmpAnimChooser : public ObjectComponent
 {
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual std::string choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
+	virtual std::string choose_animation(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavManager_CPtr& navManager) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

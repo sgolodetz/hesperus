@@ -37,7 +37,7 @@ void MinimusScriptYoke::add_ref()
 }
 
 std::vector<ObjectCommand_Ptr> MinimusScriptYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
-																	const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+																	const OnionTree_CPtr& tree, const NavManager_CPtr& navManager)
 {
 	if(!m_initialised)
 	{
@@ -54,7 +54,7 @@ std::vector<ObjectCommand_Ptr> MinimusScriptYoke::generate_commands(UserInput& i
 
 	if(m_subyoke && m_subyoke->state() == YOKE_ACTIVE)
 	{
-		return m_subyoke->generate_commands(input, polygons, tree, navDatasets);
+		return m_subyoke->generate_commands(input, polygons, tree, navManager);
 	}
 	else return std::vector<ObjectCommand_Ptr>();
 }

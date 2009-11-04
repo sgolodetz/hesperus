@@ -16,11 +16,11 @@ namespace hesp {
 Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 			 const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 			 const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
-			 const OnionPortalVector& onionPortals, const NavDatasetVector& navDatasets,
+			 const OnionPortalVector& onionPortals, const NavManager_Ptr& navManager,
 			 const ObjectManager_Ptr& objectManager, const ModelManager_Ptr& modelManager)
 :	m_geomRenderer(geomRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis),
 	m_onionPolygons(onionPolygons), m_onionTree(onionTree), m_onionPortals(onionPortals),
-	m_navDatasets(navDatasets), m_objectManager(objectManager), m_modelManager(modelManager)
+	m_navManager(navManager), m_objectManager(objectManager), m_modelManager(modelManager)
 {}
 
 //#################### PUBLIC METHODS ####################
@@ -57,9 +57,9 @@ GeometryRenderer_CPtr Level::geom_renderer() const
 	return m_geomRenderer;
 }
 
-const std::vector<NavDataset_Ptr>& Level::nav_datasets() const
+NavManager_CPtr Level::nav_manager() const
 {
-	return m_navDatasets;
+	return m_navManager;
 }
 
 const ObjectManager_Ptr& Level::object_manager()

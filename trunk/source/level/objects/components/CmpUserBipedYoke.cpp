@@ -29,10 +29,10 @@ void CmpUserBipedYoke::check_dependencies() const
 }
 
 std::vector<ObjectCommand_Ptr> CmpUserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
-																   const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+																   const OnionTree_CPtr& tree, const NavManager_CPtr& navManager)
 {
 	if(!m_yoke) m_yoke.reset(new UserBipedYoke(m_objectID, m_objectManager));
-	return m_yoke->generate_commands(input, polygons, tree, navDatasets);
+	return m_yoke->generate_commands(input, polygons, tree, navManager);
 }
 
 Properties CmpUserBipedYoke::save() const

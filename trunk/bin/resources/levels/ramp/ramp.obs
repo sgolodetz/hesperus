@@ -51,7 +51,6 @@ Objects
 			Health = 100
 			MaxHealth = 100
 		}
-		Movement;
 		Orientation
 		{
 			Look = ( -1 0 0 )

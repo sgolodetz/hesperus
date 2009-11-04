@@ -13,6 +13,7 @@
 #include <source/gui/Screen.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavManager.h>
 #include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavPolygon.h>
 #include <source/level/objects/components/ICmpModelRender.h>
@@ -95,11 +96,10 @@ void LevelViewer::render_level() const
 
 void LevelViewer::render_navlinks() const
 {
-	const std::vector<NavDataset_Ptr>& navDatasets = m_level->nav_datasets();
-	int datasetCount = static_cast<int>(navDatasets.size());
-	for(int i=0; i<datasetCount; ++i)
+	const std::map<int,NavDataset_CPtr> navDatasets = m_level->nav_manager()->datasets();
+	for(std::map<int,NavDataset_CPtr>::const_iterator it=navDatasets.begin(), iend=navDatasets.end(); it!=iend; ++it)
 	{
-		const std::vector<NavLink_Ptr>& navLinks = navDatasets[i]->nav_mesh()->links();
+		const std::vector<NavLink_Ptr>& navLinks = it->second->nav_mesh()->links();
 		int linkCount = static_cast<int>(navLinks.size());
 		for(int j=0; j<linkCount; ++j)
 		{
@@ -120,16 +120,15 @@ void LevelViewer::render_navmeshes() const
 	Colour3d colours[] = { Colour3d(1,0,0), Colour3d(0,1,0), Colour3d(0,0,1) };
 	int colourCount = sizeof(colours)/sizeof(Colour3d);
 
-	const std::vector<NavDataset_Ptr>& navDatasets = m_level->nav_datasets();
+	const std::map<int,NavDataset_CPtr> navDatasets = m_level->nav_manager()->datasets();
 	const std::vector<CollisionPolygon_Ptr>& onionPolygons = m_level->onion_polygons();
 
-	int datasetCount = static_cast<int>(navDatasets.size());
-	for(int i=0; i<datasetCount; ++i)
+	for(std::map<int,NavDataset_CPtr>::const_iterator it=navDatasets.begin(), iend=navDatasets.end(); it!=iend; ++it)
 	{
-		int c = i % colourCount;
+		int c = it->first % colourCount;
 		glColor3d(colours[c].r, colours[c].g, colours[c].b);
 
-		const std::vector<NavPolygon_Ptr>& navPolys = navDatasets[i]->nav_mesh()->polygons();
+		const std::vector<NavPolygon_Ptr>& navPolys = it->second->nav_mesh()->polygons();
 		int polyCount = static_cast<int>(navPolys.size());
 		for(int j=0; j<polyCount; ++j)
 		{

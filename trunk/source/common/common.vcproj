@@ -858,6 +858,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\level\nav\NavManager.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\level\nav\NavMesh.cpp"
 						>
 					</File>
@@ -919,6 +923,10 @@
 					</File>
 					<File
 						RelativePath="..\level\nav\NavLink.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\nav\NavManager.h"
 						>
 					</File>
 					<File

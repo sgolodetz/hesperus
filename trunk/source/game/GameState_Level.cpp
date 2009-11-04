@@ -179,7 +179,7 @@ void GameState_Level::do_animations(int milliseconds)
 	for(size_t i=0, size=animatables.size(); i<size; ++i)
 	{
 		ICmpModelRender_Ptr cmpRender = objectManager->get_component(animatables[i], cmpRender);
-		cmpRender->update_animation(milliseconds, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets());
+		cmpRender->update_animation(milliseconds, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_manager());
 	}
 }
 
@@ -229,7 +229,7 @@ void GameState_Level::do_yokes(int milliseconds, UserInput& input)
 		ICmpYoke_Ptr cmpYoke = objectManager->get_component(yokeables[i], cmpYoke);
 		
 		// Use the object's yoke component to generate object commands.
-		std::vector<ObjectCommand_Ptr> commands = cmpYoke->generate_commands(input, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets());
+		std::vector<ObjectCommand_Ptr> commands = cmpYoke->generate_commands(input, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_manager());
 
 		// Append the object commands to the queue.
 		std::copy(commands.begin(), commands.end(), std::back_inserter(cmdQueue));
@@ -238,7 +238,7 @@ void GameState_Level::do_yokes(int milliseconds, UserInput& input)
 	// Step 2:	Execute the object commands.
 	for(std::list<ObjectCommand_Ptr>::const_iterator it=cmdQueue.begin(), iend=cmdQueue.end(); it!=iend; ++it)
 	{
-		(*it)->execute(objectManager, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_datasets(), milliseconds);
+		(*it)->execute(objectManager, m_level->onion_polygons(), m_level->onion_tree(), m_level->nav_manager(), milliseconds);
 	}
 }
 

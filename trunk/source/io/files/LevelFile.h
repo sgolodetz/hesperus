@@ -26,7 +26,7 @@ public:
 						 const std::vector<Image24_Ptr>& lightmaps,
 						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_CPtr& onionTree,
 						 const std::vector<OnionPortal_Ptr>& onionPortals,
-						 const std::vector<NavDataset_Ptr>& navDatasets,
+						 const NavManager_CPtr& navManager,
 						 const std::string& definitionsFilename,
 						 const ObjectManager_Ptr& objectManager);
 	static void save_unlit(const std::string& filename,
@@ -35,7 +35,7 @@ public:
 						   const LeafVisTable_CPtr& leafVis,
 						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_CPtr& onionTree,
 						   const std::vector<OnionPortal_Ptr>& onionPortals,
-						   const std::vector<NavDataset_Ptr>& navDatasets,
+						   const NavManager_CPtr& navManager,
 						   const std::string& definitionsFilename,
 						   const ObjectManager_Ptr& objectManager);
 

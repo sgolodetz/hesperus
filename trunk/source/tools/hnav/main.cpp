@@ -21,6 +21,7 @@ namespace bf = boost::filesystem;
 #include <source/level/nav/AdjacencyList.h>
 #include <source/level/nav/AdjacencyTable.h>
 #include <source/level/nav/NavDataset.h>
+#include <source/level/nav/NavManager.h>
 #include <source/level/nav/NavMeshGenerator.h>
 #include <source/level/nav/PathTableGenerator.h>
 #include <source/util/PolygonTypes.h>
@@ -69,11 +70,13 @@ void run(const std::string& definitionsSpecifierFilename, const std::string& tre
 	int mapCount = tree->map_count();
 	if(boundsCount != mapCount) throw Exception("There must be exactly one bounds per map in the onion tree");
 
-	std::vector<NavDataset_Ptr> datasets;
+	NavManager_Ptr navManager(new NavManager);
 
 	// For each separate map.
 	for(int i=0; i<mapCount; ++i)
 	{
+		// TODO: Skip this map if the bounds for it has its nav flag set to false.
+
 		// Make a copy of the polygon array in which all the polygons that aren't
 		// in this map are set to non-walkable.
 		int polyCount = static_cast<int>(polygons.size());
@@ -101,11 +104,11 @@ void run(const std::string& definitionsSpecifierFilename, const std::string& tre
 		// Generate the path table.
 		PathTable_Ptr pathTable = PathTableGenerator::floyd_warshall(adjTable);
 
-		datasets.push_back(NavDataset_Ptr(new NavDataset(adjList, mesh, pathTable)));
+		navManager->set_dataset(i, NavDataset_Ptr(new NavDataset(adjList, mesh, pathTable)));
 	}
 
 	// Write the navigation datasets to disk.
-	NavFile::save(outputFilename, datasets);
+	NavFile::save(outputFilename, navManager);
 }
 
 int main(int argc, char *argv[])

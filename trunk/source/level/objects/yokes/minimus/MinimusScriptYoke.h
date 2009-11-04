@@ -37,7 +37,7 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_ref();
-	std::vector<ObjectCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets);
+	std::vector<ObjectCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavManager_CPtr& navManager);
 	static void register_for_scripting(const ASXEngine_Ptr& engine);
 	void release();
 	static std::string type_string();

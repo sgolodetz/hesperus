@@ -59,7 +59,7 @@ Saves all the relevant pieces of information to the specified level file.
 @param onionPolygons			The polygons for the onion tree
 @param onionTree				The onion tree for the level
 @param onionPortals				The onion portals for the level
-@param navDatasets				The navigation datasets for the level
+@param navManager				The navigation manager containing the navigation datasets for the level
 @param definitionsFilename		The name of the definitions file for the level
 @param objectManager			The object manager containing the objects for the level
 */
@@ -70,7 +70,7 @@ void LevelFile::save_lit(const std::string& filename,
 						 const std::vector<Image24_Ptr>& lightmaps,
 						 const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_CPtr& onionTree,
 						 const std::vector<OnionPortal_Ptr>& onionPortals,
-						 const std::vector<NavDataset_Ptr>& navDatasets,
+						 const NavManager_CPtr& navManager,
 						 const std::string& definitionsFilename,
 						 const ObjectManager_Ptr& objectManager)
 {
@@ -86,7 +86,7 @@ void LevelFile::save_lit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPolygons", onionPolygons);
 	OnionTreeSection::save(os, onionTree);
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
-	NavSection::save(os, navDatasets);
+	NavSection::save(os, navManager);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
 	ModelNamesSection::save(os, objectManager->model_manager());
 	ObjectsSection::save(os, objectManager);
@@ -103,7 +103,7 @@ Saves all the relevant pieces of information to the specified level file.
 @param onionPolygons			The polygons for the onion tree
 @param onionTree				The onion tree for the level
 @param onionPortals				The onion portals for the level
-@param navDatasets				The navigation datasets for the level
+@param navManager				The navigation manager containing the navigation datasets for the level
 @param definitionsFilename		The name of the definitions file for the level
 @param objectManager			The object manager containing the objects for the level
 */
@@ -113,7 +113,7 @@ void LevelFile::save_unlit(const std::string& filename,
 						   const LeafVisTable_CPtr& leafVis,
 						   const std::vector<CollisionPolygon_Ptr>& onionPolygons, const OnionTree_CPtr& onionTree,
 						   const std::vector<OnionPortal_Ptr>& onionPortals,
-						   const std::vector<NavDataset_Ptr>& navDatasets,
+						   const NavManager_CPtr& navManager,
 						   const std::string& definitionsFilename,
 						   const ObjectManager_Ptr& objectManager)
 {
@@ -128,7 +128,7 @@ void LevelFile::save_unlit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPolygons", onionPolygons);
 	OnionTreeSection::save(os, onionTree);
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
-	NavSection::save(os, navDatasets);
+	NavSection::save(os, navManager);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
 	ModelNamesSection::save(os, objectManager->model_manager());
 	ObjectsSection::save(os, objectManager);
@@ -150,7 +150,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	std::vector<CollisionPolygon_Ptr> onionPolygons;
 	OnionTree_Ptr onionTree;
 	std::vector<OnionPortal_Ptr> onionPortals;
-	std::vector<NavDataset_Ptr> navDatasets;
+	NavManager_Ptr navManager;
 	std::string definitionsFilename;
 	ObjectManager_Ptr objectManager;
 	ModelManager_Ptr modelManager;
@@ -164,7 +164,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	PolygonsSection::load(is, "OnionPolygons", onionPolygons);
 	onionTree = OnionTreeSection::load(is);
 	PolygonsSection::load(is, "OnionPortals", onionPortals);
-	navDatasets = NavSection::load(is);
+	navManager = NavSection::load(is);
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
 	bf::path settingsDir = determine_settings_directory();
@@ -180,7 +180,7 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, objectManager, modelManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navManager, objectManager, modelManager));
 }
 
 /**
@@ -198,7 +198,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	std::vector<CollisionPolygon_Ptr> onionPolygons;
 	OnionTree_Ptr onionTree;
 	std::vector<OnionPortal_Ptr> onionPortals;
-	std::vector<NavDataset_Ptr> navDatasets;
+	NavManager_Ptr navManager;
 	std::string definitionsFilename;
 	ObjectManager_Ptr objectManager;
 	ModelManager_Ptr modelManager;
@@ -211,7 +211,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	PolygonsSection::load(is, "OnionPolygons", onionPolygons);
 	onionTree = OnionTreeSection::load(is);
 	PolygonsSection::load(is, "OnionPortals", onionPortals);
-	navDatasets = NavSection::load(is);
+	navManager = NavSection::load(is);
 	definitionsFilename = DefinitionsSpecifierSection::load(is);
 
 	bf::path settingsDir = determine_settings_directory();
@@ -227,7 +227,7 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navDatasets, objectManager, modelManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navManager, objectManager, modelManager));
 }
 
 }

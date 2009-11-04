@@ -13,8 +13,11 @@ namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<class AdjacencyList> AdjacencyList_Ptr;
+typedef shared_ptr<const class AdjacencyList> AdjacencyList_CPtr;
 typedef shared_ptr<class NavMesh> NavMesh_Ptr;
+typedef shared_ptr<const class NavMesh> NavMesh_CPtr;
 typedef shared_ptr<class PathTable> PathTable_Ptr;
+typedef shared_ptr<const class PathTable> PathTable_CPtr;
 
 /**
 An instance of this class stores all the necessary nav data for a particular AABB map.
@@ -36,8 +39,11 @@ public:
 	//#################### PUBLIC METHODS ####################
 public:
 	const AdjacencyList_Ptr& adjacency_list()	{ return m_adjList; }
+	AdjacencyList_CPtr adjacency_list() const	{ return m_adjList; }
 	const NavMesh_Ptr& nav_mesh()				{ return m_navMesh; }
+	NavMesh_CPtr nav_mesh() const				{ return m_navMesh; }
 	const PathTable_Ptr& path_table()			{ return m_pathTable; }
+	PathTable_CPtr path_table() const			{ return m_pathTable; }
 };
 
 //#################### TYPEDEFS ####################

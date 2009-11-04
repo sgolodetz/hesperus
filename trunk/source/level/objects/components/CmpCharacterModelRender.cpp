@@ -112,11 +112,11 @@ Properties CmpCharacterModelRender::save() const
 }
 
 void CmpCharacterModelRender::update_animation(int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons,
-											   const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+											   const OnionTree_CPtr& tree, const NavManager_CPtr& navManager)
 {
 	// Decide which animation should be playing, and update it.
 	ICmpAnimChooser_Ptr cmpAnimChooser = m_objectManager->get_component(m_objectID, cmpAnimChooser);	assert(cmpAnimChooser);
-	m_animController->request_animation(cmpAnimChooser->choose_animation(polygons, tree, navDatasets));
+	m_animController->request_animation(cmpAnimChooser->choose_animation(polygons, tree, navManager));
 	m_animController->update(milliseconds);
 
 	// Clear any existing pose modifiers.
@@ -172,7 +172,7 @@ void CmpCharacterModelRender::update_animation(int milliseconds, const std::vect
 		if(cmpItemRender)
 		{
 			cmpItemRender->update_child_animation(milliseconds, skeleton()->bone_hierarchy(), cmpItemOwnable->attach_point(),
-												  modelMatrix, polygons, tree, navDatasets);
+												  modelMatrix, polygons, tree, navManager);
 		}
 	}
 }

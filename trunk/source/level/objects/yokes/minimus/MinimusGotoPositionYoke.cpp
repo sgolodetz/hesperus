@@ -9,6 +9,7 @@
 #include <source/level/nav/GlobalPathfinder.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavManager.h>
 #include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavMeshUtil.h>
 #include <source/level/objects/commands/CmdBipedSetLook.h>
@@ -25,7 +26,7 @@ MinimusGotoPositionYoke::MinimusGotoPositionYoke(const ObjectID& objectID, Objec
 
 	//#################### PUBLIC METHODS ####################
 std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons,
-																		  const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets)
+																		  const OnionTree_CPtr& tree, const NavManager_CPtr& navManager)
 {
 	// Check to make sure the yoke's still active.
 	if(m_state != YOKE_ACTIVE)
@@ -41,8 +42,9 @@ std::vector<ObjectCommand_Ptr> MinimusGotoPositionYoke::generate_commands(UserIn
 	if(!m_path)
 	{
 		int mapIndex = m_objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
-		NavMesh_Ptr navMesh = navDatasets[mapIndex]->nav_mesh();
-		GlobalPathfinder pathfinder(navMesh, navDatasets[mapIndex]->adjacency_list(), navDatasets[mapIndex]->path_table());
+		NavDataset_CPtr navDataset = navManager->dataset(mapIndex);
+		NavMesh_CPtr navMesh = navDataset->nav_mesh();
+		GlobalPathfinder pathfinder(navMesh, navDataset->adjacency_list(), navDataset->path_table());
 
 		int suggestedSourcePoly = cmpMovement->cur_nav_poly_index();
 		int sourcePoly = NavMeshUtil::find_nav_polygon(source, suggestedSourcePoly, polygons, tree, navMesh);

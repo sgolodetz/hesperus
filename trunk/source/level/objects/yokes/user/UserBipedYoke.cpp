@@ -25,7 +25,7 @@ UserBipedYoke::UserBipedYoke(const ObjectID& objectID, ObjectManager *objectMana
 
 //#################### PUBLIC METHODS ####################
 std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
-																const std::vector<NavDataset_Ptr>& navDatasets)
+																const NavManager_CPtr& navManager)
 {
 	// FIXME: The key mappings should be defined externally, not hard-coded like this.
 

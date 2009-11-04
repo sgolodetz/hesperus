@@ -12,7 +12,7 @@
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
-typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<const class NavManager> NavManager_CPtr;
 typedef shared_ptr<const class NavMesh> NavMesh_CPtr;
 typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 
@@ -22,7 +22,7 @@ class ICmpMovement : public ObjectComponent
 public:
 	virtual bool attempt_navmesh_acquisition(const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavMesh_CPtr& navMesh) = 0;
 	virtual int cur_nav_poly_index() const = 0;
-	virtual void move(const Vector3d& dir, double speed, int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
+	virtual void move(const Vector3d& dir, double speed, int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavManager_CPtr& navManager) = 0;
 	virtual double run_speed() const = 0;
 	virtual void set_navmesh_unacquired() = 0;
 	virtual bool single_move(const Vector3d& dir, double speed, int milliseconds, const OnionTree_CPtr& tree) = 0;

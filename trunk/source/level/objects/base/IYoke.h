@@ -6,14 +6,12 @@
 #ifndef H_HESP_IYOKE
 #define H_HESP_IYOKE
 
-#include <vector>
-
 #include <source/util/PolygonTypes.h>
 
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
-typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<const class NavManager> NavManager_CPtr;
 typedef shared_ptr<class ObjectCommand> ObjectCommand_Ptr;
 typedef shared_ptr<const class OnionTree> OnionTree_CPtr;
 class UserInput;
@@ -39,7 +37,7 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
-	virtual std::vector<ObjectCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const std::vector<NavDataset_Ptr>& navDatasets) = 0;
+	virtual std::vector<ObjectCommand_Ptr> generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree, const NavManager_CPtr& navManager) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

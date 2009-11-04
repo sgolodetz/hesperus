@@ -94,7 +94,7 @@ try
 	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFile::load(onionPortalsFilename);
 
 	// Load the navigation data.
-	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
+	NavManager_Ptr navManager = NavFile::load(navFilename);
 
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
@@ -117,7 +117,7 @@ try
 						lightmaps,
 						onionPolygons, onionTree,
 						onionPortals,
-						navDatasets,
+						navManager,
 						definitionsFilename,
 						objectManager);
 }
@@ -153,7 +153,7 @@ try
 	std::vector<OnionPortal_Ptr> onionPortals = OnionPortalsFile::load(onionPortalsFilename);
 
 	// Load the navigation data.
-	std::vector<NavDataset_Ptr> navDatasets = NavFile::load(navFilename);
+	NavManager_Ptr navManager = NavFile::load(navFilename);
 
 	// Load the definitions specifier.
 	std::string definitionsFilename = DefinitionsSpecifierFile::load(definitionsSpecifierFilename);
@@ -175,7 +175,7 @@ try
 						  leafVis,
 						  onionPolygons, onionTree,
 						  onionPortals,
-						  navDatasets,
+						  navManager,
 						  definitionsFilename,
 						  objectManager);
 }

@@ -8,6 +8,7 @@
 #include <source/level/bounds/BoundsManager.h>
 #include <source/level/nav/NavDataset.h>
 #include <source/level/nav/NavLink.h>
+#include <source/level/nav/NavManager.h>
 #include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavMeshUtil.h>
 #include <source/level/nav/NavPolygon.h>
@@ -51,7 +52,7 @@ int CmpMovement::cur_nav_poly_index() const
 }
 
 void CmpMovement::move(const Vector3d& dir, double speed, int milliseconds, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
-					   const std::vector<NavDataset_Ptr>& navDatasets)
+					   const NavManager_CPtr& navManager)
 {
 	ICmpSimulation_Ptr cmpSimulation = m_objectManager->get_component(m_objectID, cmpSimulation);	assert(cmpSimulation != NULL);
 
@@ -60,7 +61,7 @@ void CmpMovement::move(const Vector3d& dir, double speed, int milliseconds, cons
 	move.mapIndex = m_objectManager->bounds_manager()->lookup_bounds_index(cmpSimulation->bounds_group(), cmpSimulation->posture());
 	move.timeRemaining = milliseconds / 1000.0;
 
-	NavMesh_Ptr navMesh = navDatasets[move.mapIndex]->nav_mesh();
+	NavMesh_CPtr navMesh = navManager->dataset(move.mapIndex)->nav_mesh();
 
 	double oldTimeRemaining;
 	do

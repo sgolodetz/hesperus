@@ -6,8 +6,6 @@
 #ifndef H_HESP_NAVSECTION
 #define H_HESP_NAVSECTION
 
-#include <vector>
-
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
@@ -16,7 +14,8 @@ namespace hesp {
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<class AdjacencyList> AdjacencyList_Ptr;
 typedef shared_ptr<const class AdjacencyList> AdjacencyList_CPtr;
-typedef shared_ptr<class NavDataset> NavDataset_Ptr;
+typedef shared_ptr<class NavManager> NavManager_Ptr;
+typedef shared_ptr<const class NavManager> NavManager_CPtr;
 typedef shared_ptr<class NavMesh> NavMesh_Ptr;
 typedef shared_ptr<const class NavMesh> NavMesh_CPtr;
 typedef shared_ptr<class PathTable> PathTable_Ptr;
@@ -26,11 +25,11 @@ class NavSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static std::vector<NavDataset_Ptr> load(std::istream& is);
+	static NavManager_Ptr load(std::istream& is);
 
 	//#################### SAVING METHODS ####################
 public:
-	static void save(std::ostream& os, const std::vector<NavDataset_Ptr>& datasets);
+	static void save(std::ostream& os, const NavManager_CPtr& navManager);
 
 	//#################### LOADING SUPPORT METHODS ####################
 private:
