@@ -64,11 +64,14 @@ public:
 //#################### TYPEDEFS ####################
 typedef Image<class Pixel8> Image8;
 typedef Image<class Pixel24> Image24;
+typedef Image<class Pixel32> Image32;
 
 typedef shared_ptr<Image8> Image8_Ptr;
 typedef shared_ptr<const Image8> Image8_CPtr;
 typedef shared_ptr<Image24> Image24_Ptr;
 typedef shared_ptr<const Image24> Image24_CPtr;
+typedef shared_ptr<Image32> Image32_Ptr;
+typedef shared_ptr<const Image32> Image32_CPtr;
 
 }
 

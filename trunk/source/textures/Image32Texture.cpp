@@ -1,9 +1,9 @@
 /***
- * hesperus: Image24Texture.cpp
+ * hesperus: Image32Texture.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "Image24Texture.h"
+#include "Image32Texture.h"
 
 #include <vector>
 
@@ -14,27 +14,28 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-Image24Texture::Image24Texture(const Image24_CPtr& image, bool clamp)
+Image32Texture::Image32Texture(const Image32_CPtr& image, bool clamp)
 :	Texture(clamp), m_image(image)
 {
 	reload();
 }
 
 //#################### PROTECTED METHODS ####################
-void Image24Texture::reload_image() const
+void Image32Texture::reload_image() const
 {
 	int width = m_image->width();
 	int height = m_image->height();
 	int size = width*height;
-	std::vector<unsigned char> pixels(size*3);
+	std::vector<unsigned char> pixels(size*4);
 	for(int i=0; i<size; ++i)
 	{
-		const Image24::Pixel& p = (*m_image)(i);
-		pixels[i*3]		= p.r();
-		pixels[i*3+1]	= p.g();
-		pixels[i*3+2]	= p.b();
+		const Image32::Pixel& p = (*m_image)(i);
+		pixels[i*4]		= p.r();
+		pixels[i*4+1]	= p.g();
+		pixels[i*4+2]	= p.b();
+		pixels[i*4+3]	= p.a();
 	}
-	gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, &pixels[0]);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, 4, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &pixels[0]);
 }
 
 }

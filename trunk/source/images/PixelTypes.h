@@ -89,6 +89,37 @@ public:
 	const unsigned char b() const	{ return m_b; }
 };
 
+/**
+This class represents 32-bit RGBA pixels.
+*/
+class Pixel32
+{
+	//#################### PRIVATE VARIABLES ####################
+private:
+	unsigned char m_r, m_g, m_b, m_a;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	// Note: Pixel types must be default constructible to make blank image construction easy.
+	Pixel32() : m_r(0), m_g(0), m_b(0), m_a(255) {}
+
+	Pixel32(unsigned char r, unsigned char g, unsigned char b, unsigned char a) : m_r(r), m_g(g), m_b(b), m_a(a) {}
+
+	//#################### PUBLIC OPERATORS ####################
+public:
+	bool operator==(const Pixel32& rhs) const
+	{
+		return m_r == rhs.m_r && m_g == rhs.m_g && m_b == rhs.m_b && m_a == rhs.m_a;
+	}
+
+	//#################### PUBLIC METHODS ####################
+public:
+	const unsigned char r() const	{ return m_r; }
+	const unsigned char g() const	{ return m_g; }
+	const unsigned char b() const	{ return m_b; }
+	const unsigned char a() const	{ return m_a; }
+};
+
 }
 
 #endif

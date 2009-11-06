@@ -49,6 +49,7 @@ public:
 //#################### TYPEDEFS ####################
 typedef SimpleImage<Pixel8> SimpleImage8;
 typedef SimpleImage<Pixel24> SimpleImage24;
+typedef SimpleImage<Pixel32> SimpleImage32;
 
 }
 

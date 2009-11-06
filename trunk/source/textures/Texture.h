@@ -21,11 +21,12 @@ class Texture
 {
 	//#################### PROTECTED VARIABLES ####################
 protected:
+	bool m_clamp;
 	mutable shared_ptr<GLuint> m_id;
 
 	//#################### CONSTRUCTORS ####################
 protected:
-	Texture();
+	explicit Texture(bool clamp);
 
 	//#################### DESTRUCTOR ####################
 public:
@@ -33,7 +34,7 @@ public:
 
 	//#################### PROTECTED ABSTRACT METHODS ####################
 protected:
-	virtual void reload() const = 0;
+	virtual void reload_image() const = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -41,6 +42,7 @@ public:
 
 	//#################### PROTECTED METHODS ####################
 protected:
+	void reload() const;
 	void set_id(GLuint id) const;
 };
 

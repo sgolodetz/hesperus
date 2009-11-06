@@ -5,6 +5,8 @@
 
 #include "Texture.h"
 
+#define GL_CLAMP_TO_EDGE 0x812F		// this wrapping mode is only defined in OpenGL 1.2, so it's not in the normal header (unfortunately)
+
 namespace hesp {
 
 //#################### HELPER CLASSES ####################
@@ -21,8 +23,12 @@ struct TextureDeleter
 //#################### CONSTRUCTORS ####################
 /**
 Constructs an empty texture (the subclass constructor will initialise it).
+
+@param clamp	Whether or not the texture should be clamped to its edges (rather than wrapped)
 */
-Texture::Texture() {}
+Texture::Texture(bool clamp)
+:	m_clamp(clamp)
+{}
 
 //#################### DESTRUCTOR ####################
 Texture::~Texture() {}
@@ -38,6 +44,32 @@ void Texture::bind() const
 }
 
 //#################### PROTECTED METHODS ####################
+/**
+Reloads the texture.
+*/
+void Texture::reload() const
+{
+	GLuint id;
+	glGenTextures(1, &id);
+	set_id(id);
+
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	// Enable trilinear filtering for this texture when minifying.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+	// Clamp the texture if necessary (useful for things like lightmaps, for example).
+	if(m_clamp)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
+
+	// Reload the actual image.
+	reload_image();
+}
+
 /**
 Sets the texture ID (for use by subclasses during reloading).
 

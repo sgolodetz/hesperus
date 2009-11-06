@@ -21,6 +21,11 @@ class ImageLoader
 	//#################### PUBLIC METHODS ####################
 public:
 	static Image24_Ptr load_image24(const std::string& filename);
+	static Image32_Ptr load_image32(const std::string& filename);
+
+	//#################### PRIVATE METHODS ####################
+private:
+	static std::string determine_extension(const std::string& filename);
 };
 
 }
