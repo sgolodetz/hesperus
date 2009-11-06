@@ -1511,6 +1511,10 @@
 								RelativePath="..\level\objects\components\CmpModelRender.cpp"
 								>
 							</File>
+							<File
+								RelativePath="..\level\objects\components\CmpSpriteRender.cpp"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name=".h"
@@ -1525,6 +1529,10 @@
 							</File>
 							<File
 								RelativePath="..\level\objects\components\CmpModelRender.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\CmpSpriteRender.h"
 								>
 							</File>
 							<File
