@@ -2027,6 +2027,34 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="sprites"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\sprites\Sprite.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\sprites\SpriteManager.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\sprites\Sprite.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\sprites\SpriteManager.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"
