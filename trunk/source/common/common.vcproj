@@ -2095,6 +2095,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\util\ResourceManager.h"
+					>
+				</File>
+				<File
 					RelativePath="..\util\UserInput.h"
 					>
 				</File>
@@ -2104,6 +2108,10 @@
 				>
 				<File
 					RelativePath="..\util\Properties.tpp"
+					>
+				</File>
+				<File
+					RelativePath="..\util\ResourceManager.tpp"
 					>
 				</File>
 			</Filter>
