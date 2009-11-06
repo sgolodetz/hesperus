@@ -5,6 +5,10 @@
 
 #include "OnionUtil.h"
 
+#include <boost/lexical_cast.hpp>
+using boost::lexical_cast;
+
+#include <source/exceptions/Exception.h>
 #include <source/math/geom/GeomUtil.h>
 #include "OnionTree.h"
 
@@ -14,7 +18,11 @@ namespace hesp {
 OnionUtil::Transition
 OnionUtil::find_first_transition(int mapIndex, const Vector3d& source, const Vector3d& dest, const OnionTree_CPtr& tree)
 {
-	return find_first_transition_sub(mapIndex, source, dest, tree->root());
+	if(0 <= mapIndex && mapIndex < tree->map_count())
+	{
+		return find_first_transition_sub(mapIndex, source, dest, tree->root());
+	}
+	else throw Exception("The onion tree does not contain a map with index " + lexical_cast<std::string>(mapIndex));
 }
 
 //#################### PRIVATE METHODS ####################
