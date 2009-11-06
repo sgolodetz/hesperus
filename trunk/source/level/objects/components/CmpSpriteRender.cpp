@@ -17,8 +17,9 @@ CmpSpriteRender::CmpSpriteRender(const std::string& spriteName, double width, do
 //#################### STATIC FACTORY METHODS ####################
 IObjectComponent_Ptr CmpSpriteRender::load(const Properties& properties)
 {
-	// NYI
-	throw 23;
+	return IObjectComponent_Ptr(new CmpSpriteRender(properties.get<std::string>("SpriteName"),
+													properties.get<double>("Width"),
+													properties.get<double>("Height")));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -35,8 +36,11 @@ void CmpSpriteRender::render() const
 
 Properties CmpSpriteRender::save() const
 {
-	// NYI
-	throw 23;
+	Properties properties;
+	properties.set("Height", m_height);
+	properties.set("SpriteName", m_spriteName);
+	properties.set("Width", m_width);
+	return properties;
 }
 
 }
