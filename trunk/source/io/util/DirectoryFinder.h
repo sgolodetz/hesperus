@@ -27,6 +27,7 @@ boost::filesystem::path determine_levels_directory();
 boost::filesystem::path determine_models_directory();
 boost::filesystem::path determine_scripts_directory();
 boost::filesystem::path determine_settings_directory();
+boost::filesystem::path determine_sprites_directory();
 boost::filesystem::path determine_textures_directory();
 
 }

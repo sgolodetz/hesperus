@@ -7,6 +7,16 @@
 
 namespace hesp {
 
-// TODO
+//#################### CONSTRUCTORS ####################
+Sprite::Sprite(const Texture_Ptr& texture)
+:	m_texture(texture)
+{}
+
+//#################### PUBLIC METHODS ####################
+void Sprite::render(const Vector3d& position, double width, double height) const
+{
+	// NYI
+	throw 23;
+}
 
 }

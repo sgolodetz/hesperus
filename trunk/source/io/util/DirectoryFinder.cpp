@@ -67,6 +67,11 @@ bf::path determine_settings_directory()
 	return determine_base_directory() / "resources/settings/";
 }
 
+bf::path determine_sprites_directory()
+{
+	return determine_base_directory() / "resources/sprites/";
+}
+
 bf::path determine_textures_directory()
 {
 	return determine_base_directory() / "resources/textures/";

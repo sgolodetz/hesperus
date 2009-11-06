@@ -18,6 +18,7 @@ namespace hesp {
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<class Sprite> Sprite_Ptr;
 
+// FIXME: SpriteManager works in essentially the same way as ModelManager. The commonality should be factored out.
 class SpriteManager
 {
 	//#################### PRIVATE VARIABLES ####################

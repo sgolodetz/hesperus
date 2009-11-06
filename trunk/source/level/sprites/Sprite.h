@@ -6,11 +6,29 @@
 #ifndef H_HESP_SPRITE
 #define H_HESP_SPRITE
 
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+
+#include <source/math/vectors/Vector3.h>
+
 namespace hesp {
+
+//#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<class Texture> Texture_Ptr;
 
 class Sprite
 {
-	// TODO
+	//#################### PRIVATE VARIABLES ####################
+private:
+	Texture_Ptr m_texture;
+
+	//#################### CONSTRUCTORS ####################
+public:
+	explicit Sprite(const Texture_Ptr& texture);
+
+	//#################### PUBLIC METHODS ####################
+public:
+	void render(const Vector3d& position, double width, double height) const;
 };
 
 }
