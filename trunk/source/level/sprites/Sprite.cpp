@@ -26,8 +26,9 @@ void Sprite::render(const Vector3d& spritePos, const Vector3d& cameraPos, double
 
 	Vector3d spriteU = Vector3d(0,0,1).cross(spriteN);
 	if(spriteU.length_squared() < EPSILON*EPSILON) spriteU = Vector3d(1,0,0).cross(spriteN);
+	spriteU.normalize();
 
-	Vector3d spriteV = spriteN.cross(spriteU);
+	Vector3d spriteV = spriteN.cross(spriteU);	// note: no need to normalize this
 
 	// Render the sprite.
 	glPushAttrib(GL_ENABLE_BIT);
@@ -38,10 +39,12 @@ void Sprite::render(const Vector3d& spritePos, const Vector3d& cameraPos, double
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
-	Vector3d tl = spritePos - spriteU + spriteV;
-	Vector3d tr = spritePos + spriteU + spriteV;
-	Vector3d bl = spritePos - spriteU - spriteV;
-	Vector3d br = spritePos + spriteU - spriteV;
+	Vector3d halfU = spriteU * width/2;
+	Vector3d halfV = spriteV * height/2;
+	Vector3d tl = spritePos - halfU + halfV;
+	Vector3d tr = spritePos + halfU + halfV;
+	Vector3d bl = spritePos - halfU - halfV;
+	Vector3d br = spritePos + halfU - halfV;
 
 	glColor3d(1,1,1);
 	glBegin(GL_QUADS);
