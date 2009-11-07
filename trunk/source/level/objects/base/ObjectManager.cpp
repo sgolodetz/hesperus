@@ -219,6 +219,11 @@ void ObjectManager::remove_listener(IObjectComponent *listener, const ObjectID& 
 	m_listenerTable.remove_listener(listener->object_id(), listener->group_type(), id);
 }
 
+const SpriteManager_Ptr& ObjectManager::sprite_manager()
+{
+	return m_spriteManager;
+}
+
 SpriteManager_CPtr ObjectManager::sprite_manager() const
 {
 	return m_spriteManager;

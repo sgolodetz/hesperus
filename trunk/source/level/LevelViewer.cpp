@@ -17,6 +17,7 @@
 #include <source/level/nav/NavMesh.h>
 #include <source/level/nav/NavPolygon.h>
 #include <source/level/objects/components/ICmpModelRender.h>
+#include <source/level/sprites/SpriteManager.h>
 #include <source/level/trees/BSPTree.h>
 #include "GeometryRenderer.h"
 
@@ -154,6 +155,8 @@ void LevelViewer::render_objects() const
 	glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
 
 	ObjectManager_Ptr objectManager = m_level->object_manager();
+	objectManager->sprite_manager()->set_camera_position(m_camera->eye());
+
 	std::vector<ObjectID> renderables = objectManager->group("Renderables");
 	ICmpModelRender_Ptr cmpFirstPersonRender;
 	for(size_t i=0, size=renderables.size(); i<size; ++i)

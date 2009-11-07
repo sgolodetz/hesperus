@@ -28,7 +28,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void render(const Vector3d& position, double width, double height) const;
+	void render(const Vector3d& spritePos, const Vector3d& cameraPos, double width, double height) const;
 };
 
 }

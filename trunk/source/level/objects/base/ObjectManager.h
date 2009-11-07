@@ -95,6 +95,7 @@ public:
 #if 0
 	template <typename T> void set_component(const ObjectID& id, const shared_ptr<T>& component);
 #endif
+	const SpriteManager_Ptr& sprite_manager();
 	SpriteManager_CPtr sprite_manager() const;
 
 	//#################### PRIVATE METHODS ####################

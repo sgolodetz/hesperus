@@ -33,8 +33,9 @@ void CmpSpriteRender::check_dependencies() const
 void CmpSpriteRender::render() const
 {
 	ICmpPosition_CPtr cmpPosition = m_objectManager->get_component(m_objectID, cmpPosition);
-	Sprite_CPtr sprite = m_objectManager->sprite_manager()->sprite(m_spriteName);
-	sprite->render(cmpPosition->position(), m_width, m_height);
+	SpriteManager_CPtr spriteManager = m_objectManager->sprite_manager();
+	Sprite_CPtr sprite = spriteManager->sprite(m_spriteName);
+	sprite->render(cmpPosition->position(), spriteManager->camera_position(), m_width, m_height);
 }
 
 Properties CmpSpriteRender::save() const
