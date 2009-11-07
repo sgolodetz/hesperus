@@ -2,6 +2,9 @@ ModelNames
 {
 	Percy
 }
+SpriteNames
+{
+}
 Objects
 {
 	Count = 1

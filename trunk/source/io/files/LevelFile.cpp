@@ -16,6 +16,7 @@ namespace bf = boost::filesystem;
 #include <source/io/sections/ObjectsSection.h>
 #include <source/io/sections/OnionTreeSection.h>
 #include <source/io/sections/PolygonsSection.h>
+#include <source/io/sections/SpriteNamesSection.h>
 #include <source/io/sections/TreeSection.h>
 #include <source/io/sections/VisSection.h>
 #include <source/io/util/DirectoryFinder.h>
@@ -88,7 +89,8 @@ void LevelFile::save_lit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navManager);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
-	ModelNamesSection::save(os, objectManager->model_manager());
+	ModelNamesSection().save(os, objectManager->model_manager());
+	SpriteNamesSection().save(os, objectManager->sprite_manager());
 	ObjectsSection::save(os, objectManager);
 }
 
@@ -130,7 +132,8 @@ void LevelFile::save_unlit(const std::string& filename,
 	PolygonsSection::save(os, "OnionPortals", onionPortals);
 	NavSection::save(os, navManager);
 	DefinitionsSpecifierSection::save(os, definitionsFilename);
-	ModelNamesSection::save(os, objectManager->model_manager());
+	ModelNamesSection().save(os, objectManager->model_manager());
+	SpriteNamesSection().save(os, objectManager->sprite_manager());
 	ObjectsSection::save(os, objectManager);
 }
 
@@ -152,8 +155,9 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	std::vector<OnionPortal_Ptr> onionPortals;
 	NavManager_Ptr navManager;
 	std::string definitionsFilename;
-	ObjectManager_Ptr objectManager;
 	ModelManager_Ptr modelManager;
+	SpriteManager_Ptr spriteManager;
+	ObjectManager_Ptr objectManager;
 
 	// Load the level data.
 	PolygonsSection::load(is, "Polygons", polygons);
@@ -173,14 +177,17 @@ Level_Ptr LevelFile::load_lit(std::istream& is)
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
 
-	modelManager = ModelNamesSection::load(is);
+	modelManager = ModelNamesSection().load(is);
 	modelManager->load_all();
 
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, modelManager);
+	spriteManager = SpriteNamesSection().load(is);
+	spriteManager->load_all();
+
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, modelManager, spriteManager);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new LitGeometryRenderer(polygons, lightmaps));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navManager, objectManager, modelManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navManager, objectManager));
 }
 
 /**
@@ -200,8 +207,9 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	std::vector<OnionPortal_Ptr> onionPortals;
 	NavManager_Ptr navManager;
 	std::string definitionsFilename;
-	ObjectManager_Ptr objectManager;
 	ModelManager_Ptr modelManager;
+	SpriteManager_Ptr spriteManager;
+	ObjectManager_Ptr objectManager;
 
 	// Load the level data.
 	PolygonsSection::load(is, "Polygons", polygons);
@@ -220,14 +228,17 @@ Level_Ptr LevelFile::load_unlit(std::istream& is)
 	std::map<std::string,ObjectSpecification> archetypes;
 	DefinitionsFile::load((settingsDir / definitionsFilename).file_string(), boundsManager, componentPropertyTypes, archetypes);
 
-	modelManager = ModelNamesSection::load(is);
+	modelManager = ModelNamesSection().load(is);
 	modelManager->load_all();
 
-	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, modelManager);
+	spriteManager = SpriteNamesSection().load(is);
+	spriteManager->load_all();
+
+	objectManager = ObjectsSection::load(is, boundsManager, componentPropertyTypes, archetypes, modelManager, spriteManager);
 
 	// Construct and return the level.
 	GeometryRenderer_Ptr geomRenderer(new UnlitGeometryRenderer(polygons));
-	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navManager, objectManager, modelManager));
+	return Level_Ptr(new Level(geomRenderer, tree, portals, leafVis, onionPolygons, onionTree, onionPortals, navManager, objectManager));
 }
 
 }

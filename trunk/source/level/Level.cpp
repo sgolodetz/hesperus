@@ -17,10 +17,10 @@ Level::Level(const GeometryRenderer_Ptr& geomRenderer, const BSPTree_Ptr& tree,
 			 const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 			 const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
 			 const OnionPortalVector& onionPortals, const NavManager_Ptr& navManager,
-			 const ObjectManager_Ptr& objectManager, const ModelManager_Ptr& modelManager)
+			 const ObjectManager_Ptr& objectManager)
 :	m_geomRenderer(geomRenderer), m_tree(tree), m_portals(portals), m_leafVis(leafVis),
 	m_onionPolygons(onionPolygons), m_onionTree(onionTree), m_onionPortals(onionPortals),
-	m_navManager(navManager), m_objectManager(objectManager), m_modelManager(modelManager)
+	m_navManager(navManager), m_objectManager(objectManager)
 {}
 
 //#################### PUBLIC METHODS ####################

@@ -2314,6 +2314,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\io\sections\SpriteNamesSection.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\io\sections\TreeSection.cpp"
 						>
 					</File>
@@ -2362,6 +2366,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\io\sections\ResourceNamesSection.h"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\SpriteNamesSection.h"
+						>
+					</File>
+					<File
 						RelativePath="..\io\sections\TreeSection.h"
 						>
 					</File>
@@ -2375,6 +2387,10 @@
 					>
 					<File
 						RelativePath="..\io\sections\PolygonsSection.tpp"
+						>
+					</File>
+					<File
+						RelativePath="..\io\sections\ResourceNamesSection.tpp"
 						>
 					</File>
 				</Filter>

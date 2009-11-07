@@ -30,13 +30,14 @@ bool is_yokeable(const ObjectID& id, const ObjectManager *objectManager);
 //#################### CONSTRUCTORS ####################
 ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes,
 							 const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine,
-							 const ModelManager_Ptr& modelManager)
+							 const ModelManager_Ptr& modelManager, const SpriteManager_Ptr& spriteManager)
 :	m_boundsManager(boundsManager),
 	m_componentPropertyTypes(componentPropertyTypes),
 	m_archetypes(archetypes),
 	m_aiEngine(aiEngine),
 	m_modelManager(modelManager),
-	m_physicsSystem(new PhysicsSystem)
+	m_physicsSystem(new PhysicsSystem),
+	m_spriteManager(spriteManager)
 {
 	// Set up the physics system.
 	m_physicsSystem->set_contact_resolver(PM_CHARACTER, PM_CHARACTER, ContactResolver_CPtr(new BasicContactResolver(0.1)));
@@ -216,6 +217,11 @@ in receiving broadcasted messsages about the specified object.
 void ObjectManager::remove_listener(IObjectComponent *listener, const ObjectID& id)
 {
 	m_listenerTable.remove_listener(listener->object_id(), listener->group_type(), id);
+}
+
+SpriteManager_CPtr ObjectManager::sprite_manager() const
+{
+	return m_spriteManager;
 }
 
 //#################### PRIVATE METHODS ####################

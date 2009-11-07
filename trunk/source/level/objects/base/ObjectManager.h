@@ -33,6 +33,8 @@ typedef shared_ptr<const class Message> Message_CPtr;
 typedef shared_ptr<class ModelManager> ModelManager_Ptr;
 typedef shared_ptr<const class ModelManager> ModelManager_CPtr;
 typedef shared_ptr<class PhysicsSystem> PhysicsSystem_Ptr;
+typedef shared_ptr<class SpriteManager> SpriteManager_Ptr;
+typedef shared_ptr<const class SpriteManager> SpriteManager_CPtr;
 
 class ObjectManager
 {
@@ -55,6 +57,7 @@ private:
 	ModelManager_Ptr m_modelManager;
 	std::map<ObjectID,Object> m_objects;
 	PhysicsSystem_Ptr m_physicsSystem;
+	SpriteManager_Ptr m_spriteManager;
 
 	ConstructionQueue m_constructionQueue;
 	DestructionQueue m_destructionQueue;
@@ -62,7 +65,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine, const ModelManager_Ptr& modelManager);
+	ObjectManager(const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ASXEngine_Ptr& aiEngine, const ModelManager_Ptr& modelManager, const SpriteManager_Ptr& spriteManager);
 
 	//#################### PUBLIC METHODS ####################
 public:
@@ -92,6 +95,7 @@ public:
 #if 0
 	template <typename T> void set_component(const ObjectID& id, const shared_ptr<T>& component);
 #endif
+	SpriteManager_CPtr sprite_manager() const;
 
 	//#################### PRIVATE METHODS ####################
 private:

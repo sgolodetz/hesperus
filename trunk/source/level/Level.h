@@ -47,7 +47,6 @@ private:
 	OnionPortalVector m_onionPortals;
 	NavManager_Ptr m_navManager;
 	ObjectManager_Ptr m_objectManager;
-	ModelManager_Ptr m_modelManager;
 
 	//#################### CONSTRUCTORS ####################
 public:
@@ -55,7 +54,7 @@ public:
 		  const PortalVector& portals, const LeafVisTable_Ptr& leafVis,
 		  const ColPolyVector& onionPolygons, const OnionTree_Ptr& onionTree,
 		  const OnionPortalVector& onionPortals, const NavManager_Ptr& navManager,
-		  const ObjectManager_Ptr& objectManager, const ModelManager_Ptr& modelManager);
+		  const ObjectManager_Ptr& objectManager);
 
 	//#################### PUBLIC METHODS ####################
 public:

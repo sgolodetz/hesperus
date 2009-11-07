@@ -20,12 +20,13 @@ typedef shared_ptr<class IObjectComponent> IObjectComponent_Ptr;
 typedef shared_ptr<class ModelManager> ModelManager_Ptr;
 typedef shared_ptr<class ObjectManager> ObjectManager_Ptr;
 class Properties;
+typedef shared_ptr<class SpriteManager> SpriteManager_Ptr;
 
 class ObjectsSection
 {
 	//#################### LOADING METHODS ####################
 public:
-	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ModelManager_Ptr& modelManager);
+	static ObjectManager_Ptr load(std::istream& is, const BoundsManager_CPtr& boundsManager, const ComponentPropertyTypeMap& componentPropertyTypes, const std::map<std::string,ObjectSpecification>& archetypes, const ModelManager_Ptr& modelManager, const SpriteManager_Ptr& spriteManager);
 
 	//#################### SAVING METHODS ####################
 public:

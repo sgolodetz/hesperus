@@ -1,15 +1,15 @@
 /***
- * hesperus: ModelNamesSection.cpp
+ * hesperus: SpriteNamesSection.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "ModelNamesSection.h"
+#include "SpriteNamesSection.h"
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-ModelNamesSection::ModelNamesSection()
-:	ResourceNamesSection("ModelNames", "model")
+SpriteNamesSection::SpriteNamesSection()
+:	ResourceNamesSection("SpriteNames", "sprite")
 {}
 
 }

@@ -18,6 +18,7 @@ namespace hesp {
 //#################### PUBLIC METHODS ####################
 void SpriteManager::register_sprite(const std::string& spriteName)		{ register_resource(spriteName); }
 const Sprite_Ptr& SpriteManager::sprite(const std::string& spriteName)	{ return resource(spriteName); }
+Sprite_CPtr SpriteManager::sprite(const std::string& spriteName) const	{ return resource(spriteName); }
 std::set<std::string> SpriteManager::sprite_names() const				{ return resource_names(); }
 
 //#################### PRIVATE METHODS ####################

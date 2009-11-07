@@ -24,14 +24,13 @@ namespace hesp {
 ObjectManager_Ptr ObjectsSection::load(std::istream& is, const BoundsManager_CPtr& boundsManager,
 									   const ComponentPropertyTypeMap& componentPropertyTypes,
 									   const std::map<std::string,ObjectSpecification>& archetypes,
-									   const ModelManager_Ptr& modelManager)
+									   const ModelManager_Ptr& modelManager, const SpriteManager_Ptr& spriteManager)
 {
 	// Set up the shared scripting engine.
 	ASXEngine_Ptr aiEngine(new ASXEngine);
 	MinimusScriptYoke::register_for_scripting(aiEngine);
 
-	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes, archetypes,
-													  aiEngine, modelManager));
+	ObjectManager_Ptr objectManager(new ObjectManager(boundsManager, componentPropertyTypes, archetypes, aiEngine, modelManager, spriteManager));
 
 	LineIO::read_checked_line(is, "Objects");
 	LineIO::read_checked_line(is, "{");

@@ -69,6 +69,11 @@
 				<property name="Posture" type="string"/>
 				<property name="Velocity" type="Vector3d"/>
 			</component>
+			<component name="SpriteRender">
+				<property name="Height" type="double"/>
+				<property name="SpriteName" type="string"/>
+				<property name="Width" type="double"/>
+			</component>
 			<component name="UserBipedYoke"/>
 		</components>
 		<archetypes>

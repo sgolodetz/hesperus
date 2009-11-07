@@ -6,22 +6,20 @@
 #ifndef H_HESP_MODELMANAGER
 #define H_HESP_MODELMANAGER
 
-#include <boost/shared_ptr.hpp>
-using boost::shared_ptr;
-
 #include <source/util/ResourceManager.h>
 
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<class Model> Model_Ptr;
+typedef shared_ptr<const class Model> Model_CPtr;
 
-class ModelManager : private ResourceManager<Model_Ptr>
+class ModelManager : public ResourceManager<Model>
 {
 	//#################### PUBLIC METHODS ####################
 public:
-	using ResourceManager<Model_Ptr>::load_all;
 	const Model_Ptr& model(const std::string& modelName);
+	Model_CPtr model(const std::string& modelName) const;
 	std::set<std::string> model_names() const;
 	void register_model(const std::string& modelName);
 

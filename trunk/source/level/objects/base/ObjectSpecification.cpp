@@ -20,6 +20,7 @@
 #include <source/level/objects/components/CmpProjectileWeaponUsable.h>
 #include <source/level/objects/components/CmpScriptedUsable.h>
 #include <source/level/objects/components/CmpSimulation.h>
+#include <source/level/objects/components/CmpSpriteRender.h>
 #include <source/level/objects/components/CmpUserBipedYoke.h>
 #include <source/util/Properties.h>
 
@@ -70,6 +71,7 @@ std::map<std::string,ObjectSpecification::ComponentLoader>& ObjectSpecification:
 		ADD_LOADER(ProjectileWeaponUsable);
 		ADD_LOADER(ScriptedUsable);
 		ADD_LOADER(Simulation);
+		ADD_LOADER(SpriteRender);
 		ADD_LOADER(UserBipedYoke);
 		done = true;
 	}
