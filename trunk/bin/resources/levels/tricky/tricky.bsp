@@ -1017,6 +1017,7 @@ Objects
 		}
 		ProjectileWeaponUsable
 		{
+			FiringInterval = 1000
 			Group = "Pistol"
 			Hotspots = ["root"]
 			MuzzleSpeed = 20
@@ -1045,6 +1046,7 @@ Objects
 		}
 		ProjectileWeaponUsable
 		{
+			FiringInterval = 1000
 			Group = "Pistol"
 			Hotspots = ["root"]
 			MuzzleSpeed = 20
