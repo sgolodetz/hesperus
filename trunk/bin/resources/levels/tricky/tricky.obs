@@ -10,7 +10,7 @@ SpriteNames
 }
 Objects
 {
-	Count = 6
+	Count = 5
 	Object
 	{
 		BipedAnimChooser;
@@ -171,19 +171,6 @@ Objects
 			Hotspots = ["root"]
 			MuzzleSpeed = 20.0
 			ProjectileType = "PistolBullet"
-		}
-	}
-	Object
-	{
-		Position
-		{
-			Position = ( 22 22 6 )
-		}
-		SpriteRender
-		{
-			Height = 2.0
-			SpriteName = "Test"
-			Width = 2.0
 		}
 	}
 }

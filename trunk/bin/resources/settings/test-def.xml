@@ -3,6 +3,7 @@
 		<bounds>
 			<bound name="biped_crouch" nav="true" type="aabb" sx="0.5" sy="0.5" sz="0.5"/>
 			<bound name="biped_stand" nav="true" type="aabb" sx="0.5" sy="0.5" sz="1"/>
+			<bound name="pistol_bullet" nav="false" type="sphere" radius="0.1"/>
 			<group name="biped">
 				<posture name="crouch" bound="biped_crouch"/>
 				<posture name="stand" bound="biped_stand"/>
@@ -103,6 +104,20 @@
 					<property name="Material" fixed='"character"'/>
 					<property name="Posture" default='"stand"'/>
 					<property name="Velocity" fixed='( 0 0 0 )'/>
+				</component>
+			</archetype>
+			<archetype name="PistolBullet">
+				<component name="Simulation">
+					<property name="BoundsGroup" fixed='"pistol_bullet"'/>
+					<property name="DampingFactor" fixed='1.0'/>
+					<property name="InverseMass" fixed='1.0'/>
+					<property name="Material" fixed='"bullet"'/>
+					<property name="Posture" fixed='"default"'/>
+				</component>
+				<component name="SpriteRender">
+					<property name="Height" fixed='0.2'/>
+					<property name="SpriteName" fixed='"Test"'/>
+					<property name="Width" fixed='0.2'/>
 				</component>
 			</archetype>
 			<archetype name="Player">
