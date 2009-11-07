@@ -5,10 +5,10 @@
 
 #include "BasicContactResolver.h"
 
+#include <source/level/physics/Contact.h>
+#include <source/level/physics/PhysicsObject.h>
 #include <source/level/trees/OnionUtil.h>
 #include <source/math/Constants.h>
-#include "Contact.h"
-#include "PhysicsObject.h"
 
 namespace hesp {
 
@@ -16,13 +16,6 @@ namespace hesp {
 BasicContactResolver::BasicContactResolver(double restitutionCoefficient)
 :	m_restitutionCoefficient(restitutionCoefficient)
 {}
-
-//#################### PUBLIC METHODS ####################
-void BasicContactResolver::resolve_contact(const Contact& contact, const OnionTree_CPtr& tree) const
-{
-	if(contact.objectB())	resolve_object_object(contact, tree);
-	else					resolve_object_world(contact);
-}
 
 //#################### PRIVATE METHODS ####################
 void BasicContactResolver::resolve_object_object(const Contact& contact, const OnionTree_CPtr& tree) const

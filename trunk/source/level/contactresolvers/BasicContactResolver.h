@@ -6,7 +6,7 @@
 #ifndef H_HESP_BASICCONTACTRESOLVER
 #define H_HESP_BASICCONTACTRESOLVER
 
-#include "ContactResolver.h"
+#include <source/level/physics/ContactResolver.h>
 
 namespace hesp {
 
@@ -19,10 +19,6 @@ private:
 	//#################### CONSTRUCTORS ####################
 public:
 	explicit BasicContactResolver(double restitutionCoefficient);
-
-	//#################### PUBLIC METHODS ####################
-public:
-	void resolve_contact(const Contact& contact, const OnionTree_CPtr& tree) const;
 
 	//#################### PRIVATE METHODS ####################
 private:

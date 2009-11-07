@@ -140,7 +140,7 @@ Objects
 			FiringInterval = 1000
 			Group = "Pistol"
 			Hotspots = ["root"]
-			MuzzleSpeed = 20.0
+			MuzzleSpeed = 50.0
 			ProjectileType = "PistolBullet"
 		}
 	}
@@ -169,7 +169,7 @@ Objects
 			FiringInterval = 1000
 			Group = "Pistol"
 			Hotspots = ["root"]
-			MuzzleSpeed = 20.0
+			MuzzleSpeed = 50.0
 			ProjectileType = "PistolBullet"
 		}
 	}

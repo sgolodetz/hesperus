@@ -21,7 +21,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	NormalPhysicsObject(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity = Vector3d(0,0,0));
+	NormalPhysicsObject(const std::string& boundsGroup, double dampingFactor, double inverseMass, PhysicsMaterial material, const ObjectID& owner, const Vector3d& position, const std::string& posture, const Vector3d& velocity = Vector3d(0,0,0));
 
 	//#################### PUBLIC METHODS ####################
 public:

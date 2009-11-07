@@ -12,9 +12,9 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-NormalPhysicsObject::NormalPhysicsObject(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass,
-										 PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity)
-:	PhysicsObject(inverseMass, material, position, velocity), m_boundsGroup(boundsGroup), m_posture(posture), m_dampingFactor(dampingFactor)
+NormalPhysicsObject::NormalPhysicsObject(const std::string& boundsGroup, double dampingFactor, double inverseMass, PhysicsMaterial material,
+										 const ObjectID& owner, const Vector3d& position, const std::string& posture, const Vector3d& velocity)
+:	PhysicsObject(inverseMass, material, owner, position, velocity), m_boundsGroup(boundsGroup), m_posture(posture), m_dampingFactor(dampingFactor)
 {}
 
 //#################### PUBLIC METHODS ####################

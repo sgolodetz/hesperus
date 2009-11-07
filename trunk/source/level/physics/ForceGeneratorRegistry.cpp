@@ -14,6 +14,9 @@ namespace hesp {
 //#################### PUBLIC METHODS ####################
 void ForceGeneratorRegistry::deregister_id(int id)
 {
+	// FIXME:	Need to remove force generators which act on objects other than the one with the specified ID but
+	//			rely on the given object to function (e.g. spring force generators where the object being destroyed
+	//			is referenced as the other endpoint of the spring).
 	std::map<int,ForceGenerators>::iterator it = m_generators.find(id);
 	if(it != m_generators.end()) m_generators.erase(it);
 	else throw Exception("No such ID in force generator registry: " + boost::lexical_cast<std::string,int>(id));

@@ -83,7 +83,7 @@ Group the contacts into batches which might interact with each other.
 */
 std::vector<std::vector<Contact_CPtr> > PhysicsSystem::batch_contacts(const std::vector<Contact_CPtr>& contacts)
 {
-	// PHYSTODO: This is the simplest possible batching processor (for test purposes only) - it needs doing properly.
+	// TODO: This is the simplest possible batching processor (for test purposes only) - it needs doing properly.
 	std::vector<std::vector<Contact_CPtr> > batches;
 	if(!contacts.empty()) batches.push_back(contacts);
 	return batches;

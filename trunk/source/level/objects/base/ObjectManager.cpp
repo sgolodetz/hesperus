@@ -5,6 +5,8 @@
 
 #include "ObjectManager.h"
 
+#include <source/level/contactresolvers/AbsorbProjectileContactResolver.h>
+#include <source/level/contactresolvers/BasicContactResolver.h>
 #include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpInventory.h>
 #include <source/level/objects/components/ICmpModelRender.h>
@@ -13,7 +15,6 @@
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
 #include <source/level/objects/messages/MsgObjectPredestroyed.h>
-#include <source/level/physics/BasicContactResolver.h>
 #include <source/level/physics/PhysicsSystem.h>
 #include "ObjectSpecification.h"
 
@@ -40,6 +41,7 @@ ObjectManager::ObjectManager(const BoundsManager_CPtr& boundsManager, const Comp
 	m_spriteManager(spriteManager)
 {
 	// Set up the physics system.
+	m_physicsSystem->set_contact_resolver(PM_BULLET, PM_WORLD, ContactResolver_CPtr(new AbsorbProjectileContactResolver(this, PM_BULLET)));
 	m_physicsSystem->set_contact_resolver(PM_CHARACTER, PM_CHARACTER, ContactResolver_CPtr(new BasicContactResolver(0.1)));
 	m_physicsSystem->set_contact_resolver(PM_CHARACTER, PM_WORLD, ContactResolver_CPtr(new BasicContactResolver(0.0)));
 	m_physicsSystem->set_contact_resolver(PM_ITEM, PM_WORLD, ContactResolver_CPtr(new BasicContactResolver(0.0)));

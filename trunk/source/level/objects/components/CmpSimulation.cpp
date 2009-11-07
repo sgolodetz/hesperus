@@ -66,9 +66,10 @@ void CmpSimulation::set_object_manager(ObjectManager *objectManager)
 	// can only be done at this point, because we need a handle to the physics system
 	// and we don't have one until the object manager has been set.
 	const PhysicsSystem_Ptr& physicsSystem = objectManager->physics_system();
+	assert(m_objectID.valid());
 	m_physicsObject = new NormalPhysicsObject(
-		m_initialData->boundsGroup, m_initialData->dampingFactor, m_initialData->posture, m_initialData->inverseMass,
-		m_initialData->material, m_initialData->position, m_initialData->velocity
+		m_initialData->boundsGroup, m_initialData->dampingFactor, m_initialData->inverseMass,
+		m_initialData->material, m_objectID, m_initialData->position, m_initialData->posture, m_initialData->velocity
 	);
 	m_physicsObjectHandle = physicsSystem->register_object(PhysicsObject_Ptr(m_physicsObject));
 	m_initialData.reset();

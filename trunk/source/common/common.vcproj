@@ -1846,10 +1846,6 @@
 					Name=".cpp"
 					>
 					<File
-						RelativePath="..\level\physics\BasicContactResolver.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\level\physics\BoundsSupportMapping.cpp"
 						>
 					</File>
@@ -1859,6 +1855,10 @@
 					</File>
 					<File
 						RelativePath="..\level\physics\Contact.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\physics\ContactResolver.cpp"
 						>
 					</File>
 					<File
@@ -1905,10 +1905,6 @@
 				<Filter
 					Name=".h"
 					>
-					<File
-						RelativePath="..\level\physics\BasicContactResolver.h"
-						>
-					</File>
 					<File
 						RelativePath="..\level\physics\BoundsSupportMapping.h"
 						>
@@ -2051,6 +2047,34 @@
 					</File>
 					<File
 						RelativePath="..\level\sprites\SpriteManager.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="contactresolvers"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\contactresolvers\AbsorbProjectileContactResolver.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\level\contactresolvers\BasicContactResolver.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\contactresolvers\AbsorbProjectileContactResolver.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\contactresolvers\BasicContactResolver.h"
 						>
 					</File>
 				</Filter>

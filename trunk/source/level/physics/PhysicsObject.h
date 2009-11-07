@@ -10,6 +10,7 @@
 #include <boost/shared_ptr.hpp>
 using boost::shared_ptr;
 
+#include <source/level/objects/base/ObjectID.h>
 #include <source/math/vectors/Vector3.h>
 #include "PhysicsMaterial.h"
 
@@ -32,6 +33,7 @@ private:
 	int m_id;
 	double m_inverseMass;
 	PhysicsMaterial m_material;
+	ObjectID m_owner;
 	Vector3d m_position;
 	boost::optional<Vector3d> m_previousPosition;
 	bool m_sleeping;
@@ -39,7 +41,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	PhysicsObject(double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity);
+	PhysicsObject(double inverseMass, PhysicsMaterial material, const ObjectID& owner, const Vector3d& position, const Vector3d& velocity);
 
 	//#################### DESTRUCTOR ####################
 public:
@@ -55,6 +57,7 @@ public:
 	void apply_force(const Vector3d& force);
 	double inverse_mass() const;
 	PhysicsMaterial material() const;
+	const ObjectID& owner() const;
 	const Vector3d& position() const;
 	void set_position(Vector3d position);
 	void set_velocity(const Vector3d& velocity);
