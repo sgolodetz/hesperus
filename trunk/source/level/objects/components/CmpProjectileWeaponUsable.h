@@ -36,6 +36,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void check_dependencies() const;
 	void process_message(const MsgTimeElapsed& msg);
 	Properties save() const;
 	void use();

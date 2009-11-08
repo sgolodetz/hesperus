@@ -44,6 +44,7 @@ public:
 	ObjectID active_item() const;
 	void add_consumables(const std::string& type, int amount);
 	void add_item(const ObjectID& id);
+	int consumables_count(const std::string& type) const;
 	void destroy_consumables(const std::string& type, int amount);
 	void process_message(const MsgObjectDestroyed& msg);
 	void process_message(const MsgObjectPredestroyed& msg);

@@ -65,6 +65,13 @@ void CmpInventory::add_item(const ObjectID& id)
 	if(cmpItemUsable) m_groups[cmpItemUsable->usable_group()].insert(id);
 }
 
+int CmpInventory::consumables_count(const std::string& type) const
+{
+	std::map<std::string,int>::const_iterator it = m_consumables.find(type);
+	if(it != m_consumables.end()) return it->second;
+	else return 0;
+}
+
 void CmpInventory::destroy_consumables(const std::string& type, int amount)
 {
 	// Check precondition.

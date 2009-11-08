@@ -2033,7 +2033,11 @@ Objects
 	}
 	Object
 	{
-		ItemActivatable;
+		ConsumeActivatable
+		{
+			Amount = 20
+			Type = "PistolBullet"
+		}
 		Movement;
 		Orientation
 		{

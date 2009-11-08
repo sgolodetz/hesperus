@@ -7,6 +7,7 @@
 
 #include <source/level/objects/messages/MsgTimeElapsed.h>
 #include <source/util/Properties.h>
+#include "ICmpInventory.h"
 #include "ICmpOwnable.h"
 
 namespace hesp {
@@ -29,6 +30,12 @@ IObjectComponent_Ptr CmpProjectileWeaponUsable::load(const Properties& propertie
 }
 
 //#################### PUBLIC METHODS ####################
+void CmpProjectileWeaponUsable::check_dependencies() const
+{
+	CmpUsable::check_dependencies();
+	check_dependency<ICmpOwnable>();
+}
+
 void CmpProjectileWeaponUsable::process_message(const MsgTimeElapsed& msg)
 {
 	m_timeTillCanFire -= msg.milliseconds();
@@ -51,29 +58,35 @@ void CmpProjectileWeaponUsable::use()
 {
 	if(m_timeTillCanFire == 0)
 	{
-		// TODO: Check that there's enough ammo.
-
 		// Determine the character which is firing the projectile (the owner of the weapon).
 		ICmpOwnable_CPtr cmpOwnable = m_objectManager->get_component(m_objectID, cmpOwnable);
-		ObjectID firer = cmpOwnable != NULL ? cmpOwnable->owner() : ObjectID();
+		ObjectID firer = cmpOwnable->owner();
+		if(!firer.valid()) throw Exception("Can't use a projectile weapon when it's not owned");
 
-		// Fire a bullet from each hotspot of the weapon (note that this in principle makes it easy to implement things like double-barrelled shotguns).
-		const std::vector<std::string>& spots = hotspots();
-		for(size_t i=0, size=spots.size(); i<size; ++i)
+		// Check that there's enough ammo.
+		ICmpInventory_Ptr cmpFirerInventory = m_objectManager->get_component(firer, cmpFirerInventory);
+		if(!cmpFirerInventory) throw Exception("The firer must have an inventory component");
+		if(cmpFirerInventory->consumables_count(m_projectileType) > 0)
 		{
-			boost::optional<Vector3d> pos = hotspot_position(spots[i]);
-			boost::optional<Vector3d> ori = hotspot_orientation(spots[i]);
-			if(pos && ori)
+			// Fire a bullet from each hotspot of the weapon (note that this in principle makes it easy to implement things like double-barrelled shotguns).
+			const std::vector<std::string>& spots = hotspots();
+			for(size_t i=0, size=spots.size(); i<size; ++i)
 			{
-				ObjectSpecification specification = m_objectManager->get_archetype(m_projectileType);
-				specification.set_component_property("Projectile", "Firer", firer);
-				specification.set_component_property("Simulation", "Position", *pos);
-				specification.set_component_property("Simulation", "Velocity", m_muzzleSpeed * *ori);
-				m_objectManager->queue_for_construction(specification);
+				boost::optional<Vector3d> pos = hotspot_position(spots[i]);
+				boost::optional<Vector3d> ori = hotspot_orientation(spots[i]);
+				if(pos && ori)
+				{
+					ObjectSpecification specification = m_objectManager->get_archetype(m_projectileType);
+					specification.set_component_property("Projectile", "Firer", firer);
+					specification.set_component_property("Simulation", "Position", *pos);
+					specification.set_component_property("Simulation", "Velocity", m_muzzleSpeed * *ori);
+					m_objectManager->queue_for_construction(specification);
+				}
 			}
-		}
 
-		m_timeTillCanFire = m_firingInterval;
+			cmpFirerInventory->destroy_consumables(m_projectileType, 1);
+			m_timeTillCanFire = m_firingInterval;
+		}
 	}
 }
 

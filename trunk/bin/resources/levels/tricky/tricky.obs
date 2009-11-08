@@ -92,7 +92,11 @@ Objects
 		{
 			ModelName = "Test-15"
 		}
-		ItemActivatable;
+		ConsumeActivatable
+		{
+			Amount = 20
+			Type = "PistolBullet"
+		}
 		Movement;
 		Orientation
 		{

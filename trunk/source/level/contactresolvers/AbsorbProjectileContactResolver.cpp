@@ -20,6 +20,7 @@ AbsorbProjectileContactResolver::AbsorbProjectileContactResolver(ObjectManager *
 //#################### PRIVATE METHODS ####################
 void AbsorbProjectileContactResolver::resolve_object_object(const Contact& contact, const OnionTree_CPtr& tree) const
 {
+	// Determine which of the two objects involved in the contact is which by examining the materials involved.
 	ObjectID projectile, other;
 	if(contact.objectA().material() == m_projectileMaterial)
 	{

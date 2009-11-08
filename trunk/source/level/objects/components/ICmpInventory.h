@@ -20,6 +20,7 @@ public:
 	virtual ObjectID active_item() const = 0;
 	virtual void add_consumables(const std::string& type, int amount) = 0;
 	virtual void add_item(const ObjectID& objectID) = 0;
+	virtual int consumables_count(const std::string& type) const = 0;
 	virtual void destroy_consumables(const std::string& type, int amount) = 0;
 	virtual void remove_item(const ObjectID& objectID) = 0;
 
