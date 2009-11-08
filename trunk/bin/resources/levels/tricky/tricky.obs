@@ -92,8 +92,8 @@ Objects
 		{
 			ModelName = "Test-15"
 		}
-		Movement;
 		ItemActivatable;
+		Movement;
 		Orientation
 		{
 			Look = ( 0 1 0 )

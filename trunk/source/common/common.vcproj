@@ -1772,6 +1772,10 @@
 							RelativePath="..\level\objects\messages\MsgObjectPredestroyed.cpp"
 							>
 						</File>
+						<File
+							RelativePath="..\level\objects\messages\MsgTimeElapsed.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name=".h"
@@ -1782,6 +1786,10 @@
 						</File>
 						<File
 							RelativePath="..\level\objects\messages\MsgObjectPredestroyed.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\messages\MsgTimeElapsed.h"
 							>
 						</File>
 					</Filter>

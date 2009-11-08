@@ -31,6 +31,7 @@
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/level/objects/components/ICmpSimulation.h>
 #include <source/level/objects/components/ICmpYoke.h>
+#include <source/level/objects/messages/MsgTimeElapsed.h>
 #include <source/level/physics/PhysicsSystem.h>
 #include <source/util/UserInput.h>
 namespace bf = boost::filesystem;
@@ -83,6 +84,9 @@ GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
 	// Safely create any new objects which were spawned during this update,
 	// and destroy any objects which were queued up for destruction.
 	m_level->object_manager()->flush_queues();
+
+	// Broadcast an elapsed time message so that time-sensitive components can update themselves.
+	m_level->object_manager()->broadcast_message(Message_CPtr(new MsgTimeElapsed(milliseconds)));
 
 	return GameState_Ptr();
 }

@@ -80,12 +80,35 @@ const BoundsManager_CPtr& ObjectManager::bounds_manager() const
 void ObjectManager::broadcast_message(const Message_CPtr& msg)
 {
 	std::set<ObjectID> msgObjs = msg->referenced_objects();
-	for(std::set<ObjectID>::const_iterator it=msgObjs.begin(), iend=msgObjs.end(); it!=iend; ++it)
+	if(msgObjs.empty())
 	{
-		std::vector<std::pair<ObjectID,std::string> > listeners = m_listenerTable.get_listeners(*it);
-		for(size_t j=0, size=listeners.size(); j<size; ++j)
+		// This isn't a message about particular objects: dispatch it to every component which can receive it.
+		for(std::map<ObjectID,Object>::const_iterator it=m_objects.begin(), iend=m_objects.end(); it!=iend; ++it)
 		{
-			IObjectComponent_Ptr listener = get_component<IObjectComponent>(listeners[j].first, listeners[j].second);
+			const Object& object = it->second;
+			for(Object::const_iterator jt=object.begin(), jend=object.end(); jt!=jend; ++jt)
+			{
+				IObjectComponent_Ptr component = jt->second;
+				msg->dispatch(component.get());
+			}
+		}
+	}
+	else
+	{
+		// This is a message about particular objects: only broadcast it to components which have registered an interest.
+
+		// Calculate the set of interested listeners.
+		std::set<std::pair<ObjectID,std::string> > listeners;
+		for(std::set<ObjectID>::const_iterator it=msgObjs.begin(), iend=msgObjs.end(); it!=iend; ++it)
+		{
+			std::vector<std::pair<ObjectID,std::string> > result = m_listenerTable.get_listeners(*it);
+			std::copy(result.begin(), result.end(), std::inserter(listeners, listeners.end()));
+		}
+
+		// Dispatch the message to each of them in turn.
+		for(std::set<std::pair<ObjectID,std::string> >::const_iterator it=listeners.begin(), iend=listeners.end(); it!=iend; ++it)
+		{
+			IObjectComponent_Ptr listener = get_component<IObjectComponent>(it->first, it->second);
 			if(listener) msg->dispatch(listener.get());
 		}
 	}

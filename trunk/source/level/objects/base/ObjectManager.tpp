@@ -23,18 +23,6 @@ shared_ptr<const T> ObjectManager::get_component(const ObjectID& id, const share
 	return get_component<const T>(id, T::static_group_type());
 }
 
-#if 0
-template <typename T>
-void ObjectManager::set_component(const ObjectID& id, const shared_ptr<T>& component)
-{
-	std::map<ObjectID,Object>::iterator it = m_objects.find(id);
-	if(it == m_objects.end()) throw Exception("Invalid object ID: " + boost::lexical_cast<std::string,int>(id.value()));
-
-	Object& object = it->second;
-	object[T::static_group_type()] = component;
-}
-#endif
-
 //#################### PRIVATE METHODS ####################
 template <typename T>
 shared_ptr<T> ObjectManager::get_component(const ObjectID& id, const std::string& group)
