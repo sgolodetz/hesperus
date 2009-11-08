@@ -142,6 +142,7 @@ Objects
 			Hotspots = ["root"]
 			MuzzleSpeed = 50.0
 			ProjectileType = "PistolBullet"
+			TimeTillCanFire = 0
 		}
 	}
 	Object
@@ -171,6 +172,7 @@ Objects
 			Hotspots = ["root"]
 			MuzzleSpeed = 50.0
 			ProjectileType = "PistolBullet"
+			TimeTillCanFire = 0
 		}
 	}
 }

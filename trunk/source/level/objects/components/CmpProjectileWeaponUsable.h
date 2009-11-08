@@ -28,7 +28,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpProjectileWeaponUsable(int firingInterval, const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed, const std::string& projectileType);
+	CmpProjectileWeaponUsable(int firingInterval, const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed, const std::string& projectileType, int timeTillCanFire);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

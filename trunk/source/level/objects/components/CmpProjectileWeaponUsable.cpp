@@ -12,8 +12,8 @@ namespace hesp {
 
 //#################### CONSTRUCTORS ####################
 CmpProjectileWeaponUsable::CmpProjectileWeaponUsable(int firingInterval, const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed,
-													 const std::string& projectileType)
-:	CmpUsable(usableGroup, hotspots), m_firingInterval(firingInterval), m_muzzleSpeed(muzzleSpeed), m_projectileType(projectileType), m_timeTillCanFire(0)
+													 const std::string& projectileType, int timeTillCanFire)
+:	CmpUsable(usableGroup, hotspots), m_firingInterval(firingInterval), m_muzzleSpeed(muzzleSpeed), m_projectileType(projectileType), m_timeTillCanFire(timeTillCanFire)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
@@ -23,7 +23,8 @@ IObjectComponent_Ptr CmpProjectileWeaponUsable::load(const Properties& propertie
 															  properties.get<std::string>("Group"),
 															  properties.get<std::vector<std::string> >("Hotspots"),
 															  properties.get<double>("MuzzleSpeed"),
-															  properties.get<std::string>("ProjectileType")));
+															  properties.get<std::string>("ProjectileType"),
+															  properties.get<int>("TimeTillCanFire")));
 }
 
 //#################### PUBLIC METHODS ####################
@@ -41,6 +42,7 @@ Properties CmpProjectileWeaponUsable::save() const
 	properties.set("Hotspots", hotspots());
 	properties.set("MuzzleSpeed", m_muzzleSpeed);
 	properties.set("ProjectileType", m_projectileType);
+	properties.set("TimeTillCanFire", m_timeTillCanFire);
 	return properties;
 }
 

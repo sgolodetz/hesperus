@@ -56,6 +56,7 @@
 				<property name="Hotspots" type="[string]"/>
 				<property name="MuzzleSpeed" type="double"/>
 				<property name="ProjectileType" type="string"/>
+				<property name="TimeTillCanFire" type="int"/>
 			</component>
 			<component name="ScriptedUsable">
 				<property name="Group" type="string"/>
