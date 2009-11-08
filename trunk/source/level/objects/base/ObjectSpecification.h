@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
@@ -24,26 +25,30 @@ class ObjectSpecification
 {
 	//#################### TYPEDEFS ####################
 private:
-	typedef std::map<std::string,Properties> ComponentMap;
+	typedef IObjectComponent_Ptr (*ComponentLoader)(const Properties&);
+	typedef std::map<std::string,std::pair<std::string,Properties> > ComponentMap;
 
 	//#################### PRIVATE VARIABLES ####################
 private:
 	ComponentMap m_components;
 
+	static bool s_mapsBuilt;
+	static std::map<std::string,ComponentLoader> s_componentLoaders;
+	static std::map<std::string,std::string> s_groupNames;
+
 	//#################### PUBLIC METHODS ####################
 public:
 	void add_component(const std::string& componentName, const Properties& properties);
 	std::vector<IObjectComponent_Ptr> instantiate_components() const;
-	template <typename T> void set_component_property(const std::string& componentName, const std::string& propertyName, const T& value);
+	template <typename T> void set_component_property(const std::string& groupName, const std::string& propertyName, const T& value);
 
-	//#################### COMPONENT LOADER TYPEDEFS ####################
+	//#################### LOOKUP METHODS ####################
 private:
-	typedef IObjectComponent_Ptr (*ComponentLoader)(const Properties&);
-
-	//#################### COMPONENT LOADER METHODS ####################
-private:
+	static void build_maps();
 	static std::map<std::string,ComponentLoader>& component_loaders();
+	static std::map<std::string,std::string>& group_names();
 	static IObjectComponent_Ptr invoke_component_loader(const std::string& componentName, const Properties& properties);
+	static std::string lookup_group(const std::string& componentName);
 };
 
 }

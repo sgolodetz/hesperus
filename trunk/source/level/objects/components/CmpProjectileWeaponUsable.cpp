@@ -7,6 +7,7 @@
 
 #include <source/level/objects/messages/MsgTimeElapsed.h>
 #include <source/util/Properties.h>
+#include "ICmpOwnable.h"
 
 namespace hesp {
 
@@ -52,6 +53,10 @@ void CmpProjectileWeaponUsable::use()
 	{
 		// TODO: Check that there's enough ammo.
 
+		// Determine the character which is firing the projectile (the owner of the weapon).
+		ICmpOwnable_CPtr cmpOwnable = m_objectManager->get_component(m_objectID, cmpOwnable);
+		ObjectID firer = cmpOwnable != NULL ? cmpOwnable->owner() : ObjectID();
+
 		// Fire a bullet from each hotspot of the weapon (note that this in principle makes it easy to implement things like double-barrelled shotguns).
 		const std::vector<std::string>& spots = hotspots();
 		for(size_t i=0, size=spots.size(); i<size; ++i)
@@ -61,6 +66,7 @@ void CmpProjectileWeaponUsable::use()
 			if(pos && ori)
 			{
 				ObjectSpecification specification = m_objectManager->get_archetype(m_projectileType);
+				specification.set_component_property("Projectile", "Firer", firer);
 				specification.set_component_property("Simulation", "Position", *pos);
 				specification.set_component_property("Simulation", "Velocity", m_muzzleSpeed * *ori);
 				m_objectManager->queue_for_construction(specification);

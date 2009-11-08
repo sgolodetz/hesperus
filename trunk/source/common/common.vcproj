@@ -1757,6 +1757,30 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="&lt;Projectile&gt;"
+						>
+						<Filter
+							Name=".cpp"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpBasicProjectile.cpp"
+								>
+							</File>
+						</Filter>
+						<Filter
+							Name=".h"
+							>
+							<File
+								RelativePath="..\level\objects\components\CmpBasicProjectile.h"
+								>
+							</File>
+							<File
+								RelativePath="..\level\objects\components\ICmpProjectile.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="messages"

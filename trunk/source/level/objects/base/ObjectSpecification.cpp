@@ -6,6 +6,7 @@
 #include "ObjectSpecification.h"
 
 #include <source/level/objects/components/CmpBasicModelRender.h>
+#include <source/level/objects/components/CmpBasicProjectile.h>
 #include <source/level/objects/components/CmpBipedAnimChooser.h>
 #include <source/level/objects/components/CmpCharacterModelRender.h>
 #include <source/level/objects/components/CmpConsumeActivatable.h>
@@ -26,11 +27,17 @@
 
 namespace hesp {
 
+//#################### STATIC VARIABLES ####################
+bool ObjectSpecification::s_mapsBuilt = false;
+std::map<std::string,ObjectSpecification::ComponentLoader> ObjectSpecification::s_componentLoaders;
+std::map<std::string,std::string> ObjectSpecification::s_groupNames;
+
 //#################### PUBLIC METHODS ####################
 void ObjectSpecification::add_component(const std::string& componentName, const Properties& properties)
 {
-	bool succeeded = m_components.insert(std::make_pair(componentName, properties)).second;
-	if(!succeeded) throw Exception("Existing component with same name: " + componentName);
+	std::string groupName = lookup_group(componentName);
+	bool succeeded = m_components.insert(std::make_pair(groupName, std::make_pair(componentName, properties))).second;
+	if(!succeeded) throw Exception("Existing component with same group: " + componentName);
 }
 
 std::vector<IObjectComponent_Ptr> ObjectSpecification::instantiate_components() const
@@ -40,46 +47,54 @@ std::vector<IObjectComponent_Ptr> ObjectSpecification::instantiate_components() 
 
 	for(ComponentMap::const_iterator it=m_components.begin(), iend=m_components.end(); it!=iend; ++it)
 	{
-		ret.push_back(invoke_component_loader(it->first, it->second));
+		ret.push_back(invoke_component_loader(it->second.first, it->second.second));
 	}
 
 	return ret;
 }
 
-//#################### COMPONENT LOADER METHODS ####################
-#define ADD_LOADER(c) componentLoaders[#c] = &Cmp##c::load
+//#################### LOOKUP METHODS ####################
+#define ADD_ELEMENTS(c) s_componentLoaders[#c] = &Cmp##c::load; s_groupNames[#c] = Cmp##c::static_group_type();
+
+void ObjectSpecification::build_maps()
+{
+	if(!s_mapsBuilt)
+	{
+		ADD_ELEMENTS(BasicModelRender);
+		ADD_ELEMENTS(BasicProjectile);
+		ADD_ELEMENTS(BipedAnimChooser);
+		ADD_ELEMENTS(CharacterModelRender);
+		ADD_ELEMENTS(ConsumeActivatable);
+		ADD_ELEMENTS(Health);
+		ADD_ELEMENTS(Inventory);
+		ADD_ELEMENTS(ItemActivatable);
+		ADD_ELEMENTS(MinimusScriptYoke);
+		ADD_ELEMENTS(Movement);
+		ADD_ELEMENTS(Orientation);
+		ADD_ELEMENTS(Ownable);
+		ADD_ELEMENTS(Position);
+		ADD_ELEMENTS(ProjectileWeaponUsable);
+		ADD_ELEMENTS(ScriptedUsable);
+		ADD_ELEMENTS(Simulation);
+		ADD_ELEMENTS(SpriteRender);
+		ADD_ELEMENTS(UserBipedYoke);
+		s_mapsBuilt = true;
+	}
+}
+
+#undef ADD_ELEMENTS
 
 std::map<std::string,ObjectSpecification::ComponentLoader>& ObjectSpecification::component_loaders()
 {
-	static std::map<std::string,ComponentLoader> componentLoaders;
-
-	static bool done = false;
-	if(!done)
-	{
-		ADD_LOADER(BasicModelRender);
-		ADD_LOADER(BipedAnimChooser);
-		ADD_LOADER(CharacterModelRender);
-		ADD_LOADER(ConsumeActivatable);
-		ADD_LOADER(Health);
-		ADD_LOADER(Inventory);
-		ADD_LOADER(ItemActivatable);
-		ADD_LOADER(MinimusScriptYoke);
-		ADD_LOADER(Movement);
-		ADD_LOADER(Orientation);
-		ADD_LOADER(Ownable);
-		ADD_LOADER(Position);
-		ADD_LOADER(ProjectileWeaponUsable);
-		ADD_LOADER(ScriptedUsable);
-		ADD_LOADER(Simulation);
-		ADD_LOADER(SpriteRender);
-		ADD_LOADER(UserBipedYoke);
-		done = true;
-	}
-
-	return componentLoaders;
+	build_maps();
+	return s_componentLoaders;
 }
 
-#undef ADD_LOADER
+std::map<std::string,std::string>& ObjectSpecification::group_names()
+{
+	build_maps();
+	return s_groupNames;
+}
 
 IObjectComponent_Ptr ObjectSpecification::invoke_component_loader(const std::string& componentName, const Properties& properties)
 {
@@ -87,6 +102,14 @@ IObjectComponent_Ptr ObjectSpecification::invoke_component_loader(const std::str
 	std::map<std::string,ComponentLoader>::iterator it = loaders.find(componentName);
 	if(it != loaders.end()) return (*(it->second))(properties);
 	else throw Exception("No loader registered for components of type " + componentName);
+}
+
+std::string ObjectSpecification::lookup_group(const std::string& componentName)
+{
+	std::map<std::string,std::string>& groupNames = group_names();
+	std::map<std::string,std::string>::const_iterator it = groupNames.find(componentName);
+	if(it != groupNames.end()) return it->second;
+	else throw Exception("No group specified for components of type: " + componentName);
 }
 
 }
