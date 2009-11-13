@@ -1664,6 +1664,10 @@
 								>
 							</File>
 							<File
+								RelativePath="..\level\objects\components\ICmpAmmoNeedingUsable.h"
+								>
+							</File>
+							<File
 								RelativePath="..\level\objects\components\ICmpUsable.h"
 								>
 							</File>
@@ -2131,6 +2135,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\util\TextRenderer.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\util\UserInput.cpp"
 					>
 				</File>
@@ -2152,6 +2160,10 @@
 				</File>
 				<File
 					RelativePath="..\util\ResourceManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\util\TextRenderer.h"
 					>
 				</File>
 				<File

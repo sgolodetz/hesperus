@@ -30,6 +30,11 @@ IObjectComponent_Ptr CmpProjectileWeaponUsable::load(const Properties& propertie
 }
 
 //#################### PUBLIC METHODS ####################
+const std::string& CmpProjectileWeaponUsable::ammo_type() const
+{
+	return m_projectileType;
+}
+
 void CmpProjectileWeaponUsable::check_dependencies() const
 {
 	CmpUsable::check_dependencies();

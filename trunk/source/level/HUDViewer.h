@@ -29,6 +29,7 @@ public:
 
 	//#################### PRIVATE METHODS ####################
 private:
+	void render_ammo(int w, int h) const;
 	void render_health_bar(int w, int h) const;
 };
 

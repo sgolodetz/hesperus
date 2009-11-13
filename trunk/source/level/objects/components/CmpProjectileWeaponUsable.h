@@ -6,9 +6,14 @@
 #ifndef H_HESP_CMPPROJECTILEWEAPONUSABLE
 #define H_HESP_CMPPROJECTILEWEAPONUSABLE
 
+#ifdef _MSC_VER
+	#pragma warning(disable:4250)	// Disable the spurious VC++ warning about inheritance via the dominance rule: that's what I intend here
+#endif
+
 #include <boost/optional.hpp>
 
 #include "CmpUsable.h"
+#include "ICmpAmmoNeedingUsable.h"
 
 namespace hesp {
 
@@ -16,7 +21,8 @@ namespace hesp {
 class MsgTimeElapsed;
 
 class CmpProjectileWeaponUsable
-:	public CmpUsable,
+:	public ICmpAmmoNeedingUsable,
+	public CmpUsable,
 	public MessageHandler<MsgTimeElapsed>
 {
 	//#################### PRIVATE VARIABLES ####################
@@ -36,6 +42,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	const std::string& ammo_type() const;
 	void check_dependencies() const;
 	void process_message(const MsgTimeElapsed& msg);
 	Properties save() const;

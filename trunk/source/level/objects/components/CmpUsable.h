@@ -10,7 +10,7 @@
 
 namespace hesp {
 
-class CmpUsable : public ICmpUsable
+class CmpUsable : public virtual ICmpUsable
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
