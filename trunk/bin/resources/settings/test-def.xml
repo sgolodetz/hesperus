@@ -54,11 +54,11 @@
 				<property name="Position" type="Vector3d"/>
 			</component>
 			<component name="ProjectileWeaponUsable">
+				<property name="AmmoType" type="string"/>
 				<property name="FiringInterval" type="int"/>
 				<property name="Group" type="string"/>
 				<property name="Hotspots" type="[string]"/>
 				<property name="MuzzleSpeed" type="double"/>
-				<property name="ProjectileType" type="string"/>
 				<property name="TimeTillCanFire" type="int"/>
 			</component>
 			<component name="ScriptedUsable">

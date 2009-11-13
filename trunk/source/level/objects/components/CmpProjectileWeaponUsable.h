@@ -27,14 +27,14 @@ class CmpProjectileWeaponUsable
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
+	std::string m_ammoType;
 	int m_firingInterval;				// the interval between firing one shot and the next (in milliseconds)
 	double m_muzzleSpeed;
-	std::string m_projectileType;
 	int m_timeTillCanFire;				// the time remaining until the weapon can fire (in milliseconds)
 
 	//#################### CONSTRUCTORS ####################
 public:
-	CmpProjectileWeaponUsable(int firingInterval, const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed, const std::string& projectileType, int timeTillCanFire);
+	CmpProjectileWeaponUsable(const std::string& ammoType, int firingInterval, const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed, int timeTillCanFire);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:

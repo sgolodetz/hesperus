@@ -13,26 +13,26 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpProjectileWeaponUsable::CmpProjectileWeaponUsable(int firingInterval, const std::string& usableGroup, const std::vector<std::string>& hotspots, double muzzleSpeed,
-													 const std::string& projectileType, int timeTillCanFire)
-:	CmpUsable(usableGroup, hotspots), m_firingInterval(firingInterval), m_muzzleSpeed(muzzleSpeed), m_projectileType(projectileType), m_timeTillCanFire(timeTillCanFire)
+CmpProjectileWeaponUsable::CmpProjectileWeaponUsable(const std::string& ammoType, int firingInterval, const std::string& usableGroup,
+													 const std::vector<std::string>& hotspots, double muzzleSpeed, int timeTillCanFire)
+:	CmpUsable(usableGroup, hotspots), m_ammoType(ammoType), m_firingInterval(firingInterval), m_muzzleSpeed(muzzleSpeed), m_timeTillCanFire(timeTillCanFire)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
 IObjectComponent_Ptr CmpProjectileWeaponUsable::load(const Properties& properties)
 {
-	return IObjectComponent_Ptr(new CmpProjectileWeaponUsable(properties.get<int>("FiringInterval"),
+	return IObjectComponent_Ptr(new CmpProjectileWeaponUsable(properties.get<std::string>("AmmoType"),
+															  properties.get<int>("FiringInterval"),
 															  properties.get<std::string>("Group"),
 															  properties.get<std::vector<std::string> >("Hotspots"),
 															  properties.get<double>("MuzzleSpeed"),
-															  properties.get<std::string>("ProjectileType"),
 															  properties.get<int>("TimeTillCanFire")));
 }
 
 //#################### PUBLIC METHODS ####################
 const std::string& CmpProjectileWeaponUsable::ammo_type() const
 {
-	return m_projectileType;
+	return m_ammoType;
 }
 
 void CmpProjectileWeaponUsable::check_dependencies() const
@@ -50,11 +50,11 @@ void CmpProjectileWeaponUsable::process_message(const MsgTimeElapsed& msg)
 Properties CmpProjectileWeaponUsable::save() const
 {
 	Properties properties;
+	properties.set("AmmoType", m_ammoType);
 	properties.set("FiringInterval", m_firingInterval);
 	properties.set("Group", usable_group());
 	properties.set("Hotspots", hotspots());
 	properties.set("MuzzleSpeed", m_muzzleSpeed);
-	properties.set("ProjectileType", m_projectileType);
 	properties.set("TimeTillCanFire", m_timeTillCanFire);
 	return properties;
 }
@@ -71,7 +71,7 @@ void CmpProjectileWeaponUsable::use()
 		// Check that there's enough ammo.
 		ICmpInventory_Ptr cmpFirerInventory = m_objectManager->get_component(firer, cmpFirerInventory);
 		if(!cmpFirerInventory) throw Exception("The firer must have an inventory component");
-		if(cmpFirerInventory->consumables_count(m_projectileType) > 0)
+		if(cmpFirerInventory->consumables_count(m_ammoType) > 0)
 		{
 			// Fire a bullet from each hotspot of the weapon (note that this in principle makes it easy to implement things like double-barrelled shotguns).
 			const std::vector<std::string>& spots = hotspots();
@@ -81,7 +81,7 @@ void CmpProjectileWeaponUsable::use()
 				boost::optional<Vector3d> ori = hotspot_orientation(spots[i]);
 				if(pos && ori)
 				{
-					ObjectSpecification specification = m_objectManager->get_archetype(m_projectileType);
+					ObjectSpecification specification = m_objectManager->get_archetype(m_ammoType);
 					specification.set_component_property("Projectile", "Firer", firer);
 					specification.set_component_property("Simulation", "Position", *pos);
 					specification.set_component_property("Simulation", "Velocity", m_muzzleSpeed * *ori);
@@ -89,7 +89,7 @@ void CmpProjectileWeaponUsable::use()
 				}
 			}
 
-			cmpFirerInventory->destroy_consumables(m_projectileType, 1);
+			cmpFirerInventory->destroy_consumables(m_ammoType, 1);
 			m_timeTillCanFire = m_firingInterval;
 		}
 	}
