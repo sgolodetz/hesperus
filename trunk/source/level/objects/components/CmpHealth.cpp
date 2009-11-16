@@ -21,9 +21,24 @@ IObjectComponent_Ptr CmpHealth::load(const Properties& properties)
 }
 
 //#################### PUBLIC METHODS ####################
+void CmpHealth::damage(int amount)
+{
+	// Note: More sophisticated implementations are possible (e.g. involving damage resistance, etc.).
+	if(status() == ALIVE)
+	{
+		m_health -= amount;
+		if(m_health < 0) m_health = 0;
+	}
+}
+
 int CmpHealth::health() const
 {
 	return m_health;
+}
+
+void CmpHealth::kill()
+{
+	m_health = -1;
 }
 
 int CmpHealth::max_health() const

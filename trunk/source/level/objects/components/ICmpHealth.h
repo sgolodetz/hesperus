@@ -23,7 +23,9 @@ public:
 
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
+	virtual void damage(int amount) = 0;
 	virtual int health() const = 0;
+	virtual void kill() = 0;
 	virtual int max_health() const = 0;
 	virtual HealthStatus status() const = 0;
 

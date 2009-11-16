@@ -17,8 +17,17 @@ AbsorbProjectileContactResolver::AbsorbProjectileContactResolver(ObjectManager *
 :	m_objectManager(objectManager), m_projectileMaterial(projectileMaterial)
 {}
 
+//#################### DESTRUCTOR ####################
+AbsorbProjectileContactResolver::~AbsorbProjectileContactResolver() {}
+
+//#################### PROTECTED METHODS ####################
+void AbsorbProjectileContactResolver::resolve_projectile_other(const ObjectID& projectile, const ObjectID& other) const
+{
+	m_objectManager->queue_for_destruction(projectile);
+}
+
 //#################### PRIVATE METHODS ####################
-void AbsorbProjectileContactResolver::resolve_object_object(const Contact& contact, const OnionTree_CPtr& tree) const
+void AbsorbProjectileContactResolver::resolve_object_object(const Contact& contact, const OnionTree_CPtr&) const
 {
 	// Determine which of the two objects involved in the contact is which by examining the materials involved.
 	ObjectID projectile, other;
@@ -34,11 +43,11 @@ void AbsorbProjectileContactResolver::resolve_object_object(const Contact& conta
 	}
 	else throw Exception("Inappropriate contact resolver: Neither of the objects involved in the contact had the specified projectile type");
 
-	// Destroy the projectile, as long as the non-projectile object is not the one that fired it.
+	// Resolve the contact, as long as the non-projectile object is not the one that fired the projectile.
 	ICmpProjectile_CPtr cmpProjectile = m_objectManager->get_component(projectile, cmpProjectile);
 	if(cmpProjectile && (!cmpProjectile->firer().valid() || cmpProjectile->firer() != other))
 	{
-		m_objectManager->queue_for_destruction(projectile);
+		resolve_projectile_other(projectile, other);
 	}
 }
 

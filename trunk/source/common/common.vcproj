@@ -2101,6 +2101,10 @@
 						RelativePath="..\level\contactresolvers\BounceContactResolver.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\level\contactresolvers\ProjectileDamageContactResolver.cpp"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name=".h"
@@ -2111,6 +2115,10 @@
 					</File>
 					<File
 						RelativePath="..\level\contactresolvers\BounceContactResolver.h"
+						>
+					</File>
+					<File
+						RelativePath="..\level\contactresolvers\ProjectileDamageContactResolver.h"
 						>
 					</File>
 				</Filter>

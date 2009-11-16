@@ -27,7 +27,9 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	void damage(int amount);
 	int health() const;
+	void kill();
 	int max_health() const;
 	Properties save() const;
 	HealthStatus status() const;

@@ -17,6 +17,7 @@
 				<property name="ModelName" type="string"/>
 			</component>
 			<component name="BasicProjectile">
+				<property name="DamageAmount" type="int"/>
 				<property name="Firer" type="ObjectID"/>
 			</component>
 			<component name="BipedAnimChooser"/>
@@ -111,7 +112,9 @@
 				</component>
 			</archetype>
 			<archetype name="PistolBullet">
-				<component name="BasicProjectile"/>
+				<component name="BasicProjectile">
+					<property name="DamageAmount" fixed='50'/>
+				</component>
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"pistol_bullet"'/>
 					<property name="DampingFactor" fixed='1.0'/>

@@ -15,6 +15,11 @@ class ICmpProjectile : public ObjectComponent
 	//#################### PUBLIC ABSTRACT METHODS ####################
 public:
 	/**
+	Returns the amount of damage done by the projectile.
+	*/
+	virtual int damage_amount() const = 0;
+
+	/**
 	Returns the ID of the character which fired the projectile.
 	*/
 	virtual const ObjectID& firer() const = 0;

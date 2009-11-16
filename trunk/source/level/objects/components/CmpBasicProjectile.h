@@ -19,11 +19,12 @@ class CmpBasicProjectile
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
+	int m_damageAmount;
 	ObjectID m_firer;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpBasicProjectile(const ObjectID& firer);
+	explicit CmpBasicProjectile(int damageAmount, const ObjectID& firer);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
@@ -31,6 +32,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
+	int damage_amount() const;
 	const ObjectID& firer() const;
 	void process_message(const MsgObjectDestroyed& msg);
 	void register_listening();

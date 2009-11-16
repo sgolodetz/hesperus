@@ -10,17 +10,22 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpBasicProjectile::CmpBasicProjectile(const ObjectID& firer)
-:	m_firer(firer)
+CmpBasicProjectile::CmpBasicProjectile(int damageAmount, const ObjectID& firer)
+:	m_damageAmount(damageAmount), m_firer(firer)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
 IObjectComponent_Ptr CmpBasicProjectile::load(const Properties& properties)
 {
-	return IObjectComponent_Ptr(new CmpBasicProjectile(properties.get<ObjectID>("Firer")));
+	return IObjectComponent_Ptr(new CmpBasicProjectile(properties.get<int>("DamageAmount"), properties.get<ObjectID>("Firer")));
 }
 
 //#################### PUBLIC METHODS ####################
+int CmpBasicProjectile::damage_amount() const
+{
+	return m_damageAmount;
+}
+
 const ObjectID& CmpBasicProjectile::firer() const
 {
 	return m_firer;
@@ -42,6 +47,7 @@ void CmpBasicProjectile::register_listening()
 Properties CmpBasicProjectile::save() const
 {
 	Properties properties;
+	properties.set("DamageAmount", m_damageAmount);
 	properties.set("Firer", m_firer);
 	return properties;
 }
