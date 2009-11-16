@@ -33,24 +33,7 @@ void quit_with_usage()
 }
 
 template <typename Poly>
-void run_compiler(const std::string& inputFilename, const std::string& outputFilename, const double weight)
-{
-	typedef shared_ptr<Poly> Poly_Ptr;
-	typedef std::vector<Poly_Ptr> PolyVector;
-
-	// Load the input polygons from disk.
-	PolyVector polygons;
-	GeometryFile::load(inputFilename, polygons);
-
-	// Build the BSP tree.
-	BSPTree_Ptr tree = BSPCompiler::build_tree(polygons, weight);
-
-	// Save the polygons and the BSP tree to the output file.
-	TreeFile::save(outputFilename, polygons, tree);
-}
-
-template <typename Poly>
-void run_compiler_ex(const std::string& inputGeometryFilename, const std::string& hintGeometryFilename, const std::string& outputTreeFilename, double weight)
+void run_compiler(const std::string& inputGeometryFilename, const std::string& hintGeometryFilename, const std::string& outputTreeFilename, double weight)
 {
 	typedef shared_ptr<Poly> Poly_Ptr;
 	typedef std::vector<Poly_Ptr> PolyVector;
@@ -91,8 +74,8 @@ try
 		catch(bad_lexical_cast&)	{ quit_with_usage(); }
 	}
 
-	if(args[1] == "-r") run_compiler_ex<TexturedPolygon>(inputGeometryFilename, hintGeometryFilename, outputTreeFilename, weight);
-	else if(args[1] == "-c") run_compiler_ex<CollisionPolygon>(inputGeometryFilename, hintGeometryFilename, outputTreeFilename, weight);
+	if(args[1] == "-r") run_compiler<TexturedPolygon>(inputGeometryFilename, hintGeometryFilename, outputTreeFilename, weight);
+	else if(args[1] == "-c") run_compiler<CollisionPolygon>(inputGeometryFilename, hintGeometryFilename, outputTreeFilename, weight);
 	else quit_with_usage();
 
 	return 0;
