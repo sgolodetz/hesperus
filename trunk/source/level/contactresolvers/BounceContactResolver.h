@@ -1,16 +1,16 @@
 /***
- * hesperus: BasicContactResolver.h
+ * hesperus: BounceContactResolver.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_BASICCONTACTRESOLVER
-#define H_HESP_BASICCONTACTRESOLVER
+#ifndef H_HESP_BOUNCECONTACTRESOLVER
+#define H_HESP_BOUNCECONTACTRESOLVER
 
 #include <source/level/physics/ContactResolver.h>
 
 namespace hesp {
 
-class BasicContactResolver : public ContactResolver
+class BounceContactResolver : public ContactResolver
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
@@ -18,7 +18,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit BasicContactResolver(double restitutionCoefficient);
+	explicit BounceContactResolver(double restitutionCoefficient);
 
 	//#################### PRIVATE METHODS ####################
 private:

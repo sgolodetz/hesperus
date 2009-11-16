@@ -2098,7 +2098,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\contactresolvers\BasicContactResolver.cpp"
+						RelativePath="..\level\contactresolvers\BounceContactResolver.cpp"
 						>
 					</File>
 				</Filter>
@@ -2110,7 +2110,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\level\contactresolvers\BasicContactResolver.h"
+						RelativePath="..\level\contactresolvers\BounceContactResolver.h"
 						>
 					</File>
 				</Filter>

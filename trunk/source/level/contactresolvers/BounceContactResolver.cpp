@@ -1,9 +1,9 @@
 /***
- * hesperus: BasicContactResolver.cpp
+ * hesperus: BounceContactResolver.cpp
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#include "BasicContactResolver.h"
+#include "BounceContactResolver.h"
 
 #include <source/level/physics/Contact.h>
 #include <source/level/physics/PhysicsObject.h>
@@ -13,12 +13,12 @@
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-BasicContactResolver::BasicContactResolver(double restitutionCoefficient)
+BounceContactResolver::BounceContactResolver(double restitutionCoefficient)
 :	m_restitutionCoefficient(restitutionCoefficient)
 {}
 
 //#################### PRIVATE METHODS ####################
-void BasicContactResolver::resolve_object_object(const Contact& contact, const OnionTree_CPtr& tree) const
+void BounceContactResolver::resolve_object_object(const Contact& contact, const OnionTree_CPtr& tree) const
 {
 	// Step 1:	Calculate what fractions of the resolution will apply to each of the two objects involved.
 	PhysicsObject& objectA = contact.objectA();
@@ -100,7 +100,7 @@ void BasicContactResolver::resolve_object_object(const Contact& contact, const O
 	objectB.set_velocity(objectB.velocity() + deltaVelB);
 }
 
-void BasicContactResolver::resolve_object_world(const Contact& contact) const
+void BounceContactResolver::resolve_object_world(const Contact& contact) const
 {
 	// Step 1:	Resolve interpenetration. For object-world contacts, this involves moving the object
 	//			back to the transition location, which is stored as point B in the contact structure.
