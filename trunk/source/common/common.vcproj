@@ -2123,6 +2123,26 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="forcegenerators"
+				>
+				<Filter
+					Name=".cpp"
+					>
+					<File
+						RelativePath="..\level\forcegenerators\WeightForceGenerator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".h"
+					>
+					<File
+						RelativePath="..\level\forcegenerators\WeightForceGenerator.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="util"

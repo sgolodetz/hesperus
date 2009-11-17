@@ -5,14 +5,15 @@
 
 #include "CmpSimulation.h"
 
+#include <source/level/forcegenerators/WeightForceGenerator.h>
 #include <source/level/physics/NormalPhysicsObject.h>
 
 namespace hesp {
 
 //#################### CONSTRUCTORS ####################
-CmpSimulation::CmpSimulation(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass,
+CmpSimulation::CmpSimulation(const std::string& boundsGroup, double dampingFactor, double gravityStrength, const std::string& posture, double inverseMass,
 							 PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity)
-:	m_initialData(new InitialData(boundsGroup, dampingFactor, posture, inverseMass, material, position, velocity))
+:	m_initialData(new InitialData(boundsGroup, dampingFactor, posture, inverseMass, material, position, velocity)), m_gravityStrength(gravityStrength)
 {}
 
 //#################### STATIC FACTORY METHODS ####################
@@ -21,6 +22,7 @@ IObjectComponent_Ptr CmpSimulation::load(const Properties& properties)
 	return IObjectComponent_Ptr(new CmpSimulation(
 		properties.get<std::string>("BoundsGroup"),
 		properties.get<double>("DampingFactor"),
+		properties.get<double>("GravityStrength"),
 		properties.get<std::string>("Posture"),
 		properties.get<double>("InverseMass"),
 		properties.get<PhysicsMaterial>("Material"),
@@ -50,6 +52,7 @@ Properties CmpSimulation::save() const
 	Properties properties;
 	properties.set("BoundsGroup", bounds_group());
 	properties.set("DampingFactor", m_physicsObject->damping_factor());
+	properties.set("GravityStrength", m_gravityStrength);
 	properties.set("InverseMass", m_physicsObject->inverse_mass());
 	properties.set("Material", m_physicsObject->material());
 	properties.set("Position", position());
@@ -73,6 +76,12 @@ void CmpSimulation::set_object_manager(ObjectManager *objectManager)
 	);
 	m_physicsObjectHandle = physicsSystem->register_object(PhysicsObject_Ptr(m_physicsObject));
 	m_initialData.reset();
+
+	// If the gravity strength is non-zero, add a weight force generator.
+	if(m_gravityStrength > 0)
+	{
+		physicsSystem->set_force_generator(m_physicsObjectHandle, "Weight", ForceGenerator_CPtr(new WeightForceGenerator(m_gravityStrength)));
+	}
 }
 
 void CmpSimulation::set_position(const Vector3d& position)

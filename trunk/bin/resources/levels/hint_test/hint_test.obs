@@ -36,6 +36,7 @@ Objects
 		{
 			BoundsGroup = "biped"
 			DampingFactor = 0.95
+			GravityStrength = 0
 			InverseMass = 0.02
 			Material = "character"
 			Position = ( 6 8 5 )

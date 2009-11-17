@@ -70,6 +70,7 @@
 			<component name="Simulation">
 				<property name="BoundsGroup" type="string"/>
 				<property name="DampingFactor" type="double"/>
+				<property name="GravityStrength" type="double"/>
 				<property name="InverseMass" type="double"/>
 				<property name="Material" type="PhysicsMaterial"/>
 				<property name="Position" type="Vector3d"/>
@@ -105,6 +106,7 @@
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"biped"'/>
 					<property name="DampingFactor" fixed='0.95'/>
+					<property name="GravityStrength" fixed='0'/>
 					<property name="InverseMass" default='0.02'/>
 					<property name="Material" fixed='"character"'/>
 					<property name="Posture" default='"stand"'/>
@@ -118,6 +120,7 @@
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"pistol_bullet"'/>
 					<property name="DampingFactor" fixed='1.0'/>
+					<property name="GravityStrength" fixed='0'/>
 					<property name="InverseMass" fixed='1.0'/>
 					<property name="Material" fixed='"bullet"'/>
 					<property name="Posture" fixed='"default"'/>
@@ -148,6 +151,7 @@
 				<component name="Simulation">
 					<property name="BoundsGroup" fixed='"biped"'/>
 					<property name="DampingFactor" fixed='0.95'/>
+					<property name="GravityStrength" fixed='0'/>
 					<property name="InverseMass" default='0.02'/>
 					<property name="Material" fixed='"character"'/>
 					<property name="Posture" default='"stand"'/>

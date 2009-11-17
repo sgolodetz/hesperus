@@ -37,13 +37,14 @@ private:
 
 	//#################### PRIVATE VARIABLES ####################
 private:
+	double m_gravityStrength;
 	shared_ptr<InitialData> m_initialData;
 	NormalPhysicsObject *m_physicsObject;
 	PhysicsObjectHandle m_physicsObjectHandle;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit CmpSimulation(const std::string& boundsGroup, double dampingFactor, const std::string& posture, double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity);
+	explicit CmpSimulation(const std::string& boundsGroup, double dampingFactor, double gravityStrength, const std::string& posture, double inverseMass, PhysicsMaterial material, const Vector3d& position, const Vector3d& velocity);
 
 	//#################### STATIC FACTORY METHODS ####################
 public:
