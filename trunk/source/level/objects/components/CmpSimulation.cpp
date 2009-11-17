@@ -5,7 +5,7 @@
 
 #include "CmpSimulation.h"
 
-#include <source/level/forcegenerators/WeightForceGenerator.h>
+#include <source/level/objects/forcegenerators/WeightForceGenerator.h>
 #include <source/level/physics/NormalPhysicsObject.h>
 
 namespace hesp {

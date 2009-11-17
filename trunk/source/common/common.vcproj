@@ -1874,6 +1874,62 @@
 						</Filter>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="contactresolvers"
+					>
+					<Filter
+						Name=".cpp"
+						>
+						<File
+							RelativePath="..\level\objects\contactresolvers\AbsorbProjectileContactResolver.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\contactresolvers\BounceContactResolver.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\contactresolvers\ProjectileDamageContactResolver.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name=".h"
+						>
+						<File
+							RelativePath="..\level\objects\contactresolvers\AbsorbProjectileContactResolver.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\contactresolvers\BounceContactResolver.h"
+							>
+						</File>
+						<File
+							RelativePath="..\level\objects\contactresolvers\ProjectileDamageContactResolver.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="forcegenerators"
+					>
+					<Filter
+						Name=".cpp"
+						>
+						<File
+							RelativePath="..\level\objects\forcegenerators\WeightForceGenerator.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name=".h"
+						>
+						<File
+							RelativePath="..\level\objects\forcegenerators\WeightForceGenerator.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="physics"
@@ -2083,62 +2139,6 @@
 					</File>
 					<File
 						RelativePath="..\level\sprites\SpriteManager.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="contactresolvers"
-				>
-				<Filter
-					Name=".cpp"
-					>
-					<File
-						RelativePath="..\level\contactresolvers\AbsorbProjectileContactResolver.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\contactresolvers\BounceContactResolver.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\level\contactresolvers\ProjectileDamageContactResolver.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".h"
-					>
-					<File
-						RelativePath="..\level\contactresolvers\AbsorbProjectileContactResolver.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\contactresolvers\BounceContactResolver.h"
-						>
-					</File>
-					<File
-						RelativePath="..\level\contactresolvers\ProjectileDamageContactResolver.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="forcegenerators"
-				>
-				<Filter
-					Name=".cpp"
-					>
-					<File
-						RelativePath="..\level\forcegenerators\WeightForceGenerator.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name=".h"
-					>
-					<File
-						RelativePath="..\level\forcegenerators\WeightForceGenerator.h"
 						>
 					</File>
 				</Filter>

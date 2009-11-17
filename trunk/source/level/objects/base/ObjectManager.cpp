@@ -5,15 +5,15 @@
 
 #include "ObjectManager.h"
 
-#include <source/level/contactresolvers/AbsorbProjectileContactResolver.h>
-#include <source/level/contactresolvers/BounceContactResolver.h>
-#include <source/level/contactresolvers/ProjectileDamageContactResolver.h>
 #include <source/level/objects/components/ICmpActivatable.h>
 #include <source/level/objects/components/ICmpInventory.h>
 #include <source/level/objects/components/ICmpModelRender.h>
 #include <source/level/objects/components/ICmpMovement.h>
 #include <source/level/objects/components/ICmpOwnable.h>
 #include <source/level/objects/components/ICmpYoke.h>
+#include <source/level/objects/contactresolvers/AbsorbProjectileContactResolver.h>
+#include <source/level/objects/contactresolvers/BounceContactResolver.h>
+#include <source/level/objects/contactresolvers/ProjectileDamageContactResolver.h>
 #include <source/level/objects/messages/MsgObjectDestroyed.h>
 #include <source/level/objects/messages/MsgObjectPredestroyed.h>
 #include <source/level/physics/PhysicsSystem.h>

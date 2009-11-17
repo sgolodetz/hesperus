@@ -2090,10 +2090,10 @@ Objects
 		ProjectileWeaponUsable
 		{
 			AmmoType = "PistolBullet"
-			FiringInterval = 1000
+			FiringInterval = 500
 			Group = "Pistol"
 			Hotspots = ["root"]
-			MuzzleSpeed = 50
+			MuzzleSpeed = 100
 			TimeTillCanFire = 0
 		}
 	}
@@ -2120,10 +2120,10 @@ Objects
 		ProjectileWeaponUsable
 		{
 			AmmoType = "PistolBullet"
-			FiringInterval = 1000
+			FiringInterval = 500
 			Group = "Pistol"
 			Hotspots = ["root"]
-			MuzzleSpeed = 50
+			MuzzleSpeed = 100
 			TimeTillCanFire = 0
 		}
 	}
