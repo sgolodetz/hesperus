@@ -17,6 +17,7 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
+#include <source/input/UserInput.h>
 #include <source/io/files/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/math/geom/GeomUtil.h>
@@ -33,7 +34,6 @@
 #include <source/level/objects/components/ICmpYoke.h>
 #include <source/level/objects/messages/MsgTimeElapsed.h>
 #include <source/level/physics/PhysicsSystem.h>
-#include <source/util/UserInput.h>
 namespace bf = boost::filesystem;
 
 namespace hesp {

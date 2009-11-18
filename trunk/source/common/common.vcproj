@@ -2166,10 +2166,6 @@
 					RelativePath="..\util\TextRenderer.cpp"
 					>
 				</File>
-				<File
-					RelativePath="..\util\UserInput.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name=".h"
@@ -2192,10 +2188,6 @@
 				</File>
 				<File
 					RelativePath="..\util\TextRenderer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\util\UserInput.h"
 					>
 				</File>
 			</Filter>
@@ -2832,6 +2824,26 @@
 				</File>
 				<File
 					RelativePath="..\audio\SoundSystem.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="input"
+			>
+			<Filter
+				Name=".cpp"
+				>
+				<File
+					RelativePath="..\input\UserInput.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".h"
+				>
+				<File
+					RelativePath="..\input\UserInput.h"
 					>
 				</File>
 			</Filter>

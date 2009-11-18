@@ -6,6 +6,7 @@
 #include "UserBipedYoke.h"
 
 #include <source/axes/NUVAxes.h>
+#include <source/input/UserInput.h>
 #include <source/level/objects/commands/CmdBipedChangePosture.h>
 #include <source/level/objects/commands/CmdBipedJump.h>
 #include <source/level/objects/commands/CmdBipedRun.h>
@@ -14,7 +15,6 @@
 #include <source/level/objects/commands/CmdUseActiveItem.h>
 #include <source/level/objects/components/ICmpOrientation.h>
 #include <source/math/Constants.h>
-#include <source/util/UserInput.h>
 
 namespace hesp {
 

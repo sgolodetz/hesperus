@@ -6,9 +6,9 @@
 #include "Button.h"
 
 #include <source/images/ImageLoader.h>
+#include <source/input/UserInput.h>
 #include <source/textures/Texture.h>
 #include <source/textures/TextureFactory.h>
-#include <source/util/UserInput.h>
 #include "Screen.h"
 
 namespace hesp {

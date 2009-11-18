@@ -11,7 +11,7 @@
 #include <SDL.h>
 
 #include <source/audio/SoundSystem.h>
-#include <source/util/UserInput.h>
+#include <source/input/UserInput.h>
 
 namespace hesp {
 
