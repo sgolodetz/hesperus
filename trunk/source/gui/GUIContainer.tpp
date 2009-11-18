@@ -22,7 +22,7 @@ void GUIContainer_THIS::fit(const Extents& extents, GUIComponent *parent)
 }
 
 GUIContainer_HEADER
-void GUIContainer_THIS::handle_input(UserInput& input)
+void GUIContainer_THIS::handle_input(InputState& input)
 {
 	for(std::vector<LaidOutGUIComponent>::const_iterator it=m_components.begin(), iend=m_components.end(); it!=iend; ++it)
 	{

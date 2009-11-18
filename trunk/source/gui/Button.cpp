@@ -6,7 +6,7 @@
 #include "Button.h"
 
 #include <source/images/ImageLoader.h>
-#include <source/input/UserInput.h>
+#include <source/input/InputState.h>
 #include <source/textures/Texture.h>
 #include <source/textures/TextureFactory.h>
 #include "Screen.h"
@@ -38,13 +38,13 @@ Button::Button(const std::string& inactiveFilename, const std::string& activeFil
 }
 
 //#################### PUBLIC METHODS ####################
-void Button::handle_input(UserInput& input)
+void Button::handle_input(InputState& input)
 {
 	switch(m_state)
 	{
 	case HOVERED:
-		if(input.mouse_button_down(UserInput::BUTTON_LEFT) &&
-		   m_extents->contains(input.mouse_pressed_x(UserInput::BUTTON_LEFT), input.mouse_pressed_y(UserInput::BUTTON_LEFT)))
+		if(input.mouse_button_down(MOUSE_BUTTON_LEFT) &&
+		   m_extents->contains(input.mouse_pressed_x(MOUSE_BUTTON_LEFT), input.mouse_pressed_y(MOUSE_BUTTON_LEFT)))
 		{
 			m_state = PRESSED;
 			if(m_mousePressedHandler) (*m_mousePressedHandler)();
@@ -63,7 +63,7 @@ void Button::handle_input(UserInput& input)
 		break;
 
 	case PRESSED:
-		if(!input.mouse_button_down(UserInput::BUTTON_LEFT))
+		if(!input.mouse_button_down(MOUSE_BUTTON_LEFT))
 		{
 			m_state = RELEASED;
 			if(m_mouseReleasedHandler && m_extents->contains(input.mouse_position_x(), input.mouse_position_y()))
@@ -78,7 +78,7 @@ void Button::handle_input(UserInput& input)
 		break;
 
 	case PRESSED_MOVED:
-		if(!input.mouse_button_down(UserInput::BUTTON_LEFT))
+		if(!input.mouse_button_down(MOUSE_BUTTON_LEFT))
 		{
 			m_state = RELEASED;
 		}

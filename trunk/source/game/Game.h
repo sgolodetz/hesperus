@@ -11,7 +11,7 @@
 #include <SDL.h>
 
 #include <source/audio/SoundSystem.h>
-#include <source/input/UserInput.h>
+#include <source/input/InputState.h>
 
 namespace hesp {
 
@@ -23,7 +23,7 @@ class Game
 	//#################### PRIVATE VARIABLES ####################
 private:
 	GameState_Ptr m_state;
-	UserInput m_input;
+	InputState m_input;
 	SoundSystem m_soundSystem;
 
 	bool m_mouseMotionSinceStateChange;		// whether or not the mouse has been moved since the last state change

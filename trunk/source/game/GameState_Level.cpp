@@ -17,7 +17,7 @@
 #include <source/gui/ExplicitLayout.h>
 #include <source/gui/Picture.h>
 #include <source/gui/Screen.h>
-#include <source/input/UserInput.h>
+#include <source/input/InputState.h>
 #include <source/io/files/LevelFile.h>
 #include <source/io/util/DirectoryFinder.h>
 #include <source/math/geom/GeomUtil.h>
@@ -60,7 +60,7 @@ void GameState_Level::leave()
 	ungrab_input();
 }
 
-GameState_Ptr GameState_Level::update(int milliseconds, UserInput& input)
+GameState_Ptr GameState_Level::update(int milliseconds, InputState& input)
 {
 	if(input.key_down(SDLK_ESCAPE))
 	{
@@ -113,7 +113,7 @@ GUIComponent_Ptr GameState_Level::construct_display()
 	return GUIComponent_Ptr(display);
 }
 
-void GameState_Level::do_activatables(UserInput& input)
+void GameState_Level::do_activatables(InputState& input)
 {
 	// Step 1:	Set all activatable objects to be unhighlighted when rendered.
 	const ObjectManager_Ptr& objectManager = m_level->object_manager();
@@ -162,11 +162,11 @@ void GameState_Level::do_activatables(UserInput& input)
 	if(!nearestObject.valid() || nearestDistSquared > RANGE*RANGE) return;
 
 	// Step 4:	If the player is trying to activate an object, activate the nearest object. Otherwise, set it to be highlighted.
-	if(input.mouse_button_down(UserInput::BUTTON_RIGHT))
+	if(input.mouse_button_down(MOUSE_BUTTON_RIGHT))
 	{
 		ICmpActivatable_Ptr cmpActivatable = objectManager->get_component(nearestObject, cmpActivatable);
 		cmpActivatable->activated_by(objectManager->player());
-		input.release_mouse_button(UserInput::BUTTON_RIGHT);
+		input.release_mouse_button(MOUSE_BUTTON_RIGHT);
 	}
 	else
 	{
@@ -220,7 +220,7 @@ void GameState_Level::do_physics(int milliseconds)
 	m_level->object_manager()->physics_system()->update(boundsManager, tree, milliseconds);
 }
 
-void GameState_Level::do_yokes(int milliseconds, UserInput& input)
+void GameState_Level::do_yokes(int milliseconds, InputState& input)
 {
 	// Step 1:	Generate the desired object commands for the yokeable objects and add them to the queue.
 	const ObjectManager_Ptr& objectManager = m_level->object_manager();

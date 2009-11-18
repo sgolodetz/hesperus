@@ -31,7 +31,7 @@ void GameState_Load::leave()
 	// Nothing to do
 }
 
-GameState_Ptr GameState_Load::update(int milliseconds, UserInput& input)
+GameState_Ptr GameState_Load::update(int milliseconds, InputState& input)
 {
 	// Ensure that the loading screen's been rendered before we try and load the level (render happens after updating).
 	if(m_firstTime)

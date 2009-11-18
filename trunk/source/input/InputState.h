@@ -1,30 +1,21 @@
 /***
- * hesperus: UserInput.h
+ * hesperus: InputState.h
  * Copyright Stuart Golodetz, 2009. All rights reserved.
  ***/
 
-#ifndef H_HESP_USERINPUT
-#define H_HESP_USERINPUT
+#ifndef H_HESP_INPUTSTATE
+#define H_HESP_INPUTSTATE
 
 #include <boost/dynamic_bitset.hpp>
 
 #include <sdl_keysym.h>
-#include <sdl_mouse.h>
+
+#include "MouseButton.h"
 
 namespace hesp {
 
-class UserInput
+class InputState
 {
-	//#################### ENUMERATIONS ####################
-public:
-	enum MouseButton
-	{
-		BUTTON_LEFT = SDL_BUTTON_LEFT,
-		BUTTON_MIDDLE = SDL_BUTTON_MIDDLE,
-		BUTTON_RIGHT = SDL_BUTTON_RIGHT,
-		BUTTON_LAST
-	};
-
 	//#################### PRIVATE VARIABLES ####################
 private:
 	boost::dynamic_bitset<> m_keyDown;
@@ -35,7 +26,7 @@ private:
 
 	//#################### CONSTRUCTORS ####################
 public:
-	UserInput();
+	InputState();
 
 	//#################### PUBLIC METHODS ####################
 public:

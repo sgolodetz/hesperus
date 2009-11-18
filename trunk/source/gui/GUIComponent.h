@@ -13,7 +13,7 @@ namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<struct Extents> Extents_Ptr;
-class UserInput;
+class InputState;
 
 class GUIComponent
 {
@@ -38,7 +38,7 @@ public:
 public:
 	const Extents& extents() const;
 	virtual void fit(const Extents& extents, GUIComponent *parent);
-	virtual void handle_input(UserInput& input);
+	virtual void handle_input(InputState& input);
 
 	//#################### PROTECTED METHODS ####################
 protected:

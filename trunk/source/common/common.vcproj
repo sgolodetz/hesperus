@@ -2835,7 +2835,19 @@
 				Name=".cpp"
 				>
 				<File
-					RelativePath="..\input\UserInput.cpp"
+					RelativePath="..\input\InputBinding.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\input\InputState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\input\KeyInputter.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\input\MouseButtonInputter.cpp"
 					>
 				</File>
 			</Filter>
@@ -2843,7 +2855,27 @@
 				Name=".h"
 				>
 				<File
-					RelativePath="..\input\UserInput.h"
+					RelativePath="..\input\InputBinding.h"
+					>
+				</File>
+				<File
+					RelativePath="..\input\InputState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\input\Inputter.h"
+					>
+				</File>
+				<File
+					RelativePath="..\input\KeyInputter.h"
+					>
+				</File>
+				<File
+					RelativePath="..\input\MouseButton.h"
+					>
+				</File>
+				<File
+					RelativePath="..\input\MouseButtonInputter.h"
 					>
 				</File>
 			</Filter>

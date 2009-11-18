@@ -6,7 +6,7 @@
 #include "UserBipedYoke.h"
 
 #include <source/axes/NUVAxes.h>
-#include <source/input/UserInput.h>
+#include <source/input/InputState.h>
 #include <source/level/objects/commands/CmdBipedChangePosture.h>
 #include <source/level/objects/commands/CmdBipedJump.h>
 #include <source/level/objects/commands/CmdBipedRun.h>
@@ -24,7 +24,7 @@ UserBipedYoke::UserBipedYoke(const ObjectID& objectID, ObjectManager *objectMana
 {}
 
 //#################### PUBLIC METHODS ####################
-std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
+std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(InputState& input, const std::vector<CollisionPolygon_Ptr>& polygons, const OnionTree_CPtr& tree,
 																const NavManager_CPtr& navManager)
 {
 	// FIXME: The key mappings should be defined externally, not hard-coded like this.
@@ -97,7 +97,7 @@ std::vector<ObjectCommand_Ptr> UserBipedYoke::generate_commands(UserInput& input
 	// ITEM USAGE
 	//~~~~~~~~~~~
 
-	if(input.mouse_button_down(UserInput::BUTTON_LEFT))
+	if(input.mouse_button_down(MOUSE_BUTTON_LEFT))
 	{
 		commands.push_back(ObjectCommand_Ptr(new CmdUseActiveItem(m_objectID)));
 	}

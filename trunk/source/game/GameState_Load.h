@@ -27,7 +27,7 @@ public:
 public:
 	void enter();
 	void leave();
-	GameState_Ptr update(int milliseconds, UserInput& input);
+	GameState_Ptr update(int milliseconds, InputState& input);
 
 	//#################### PRIVATE METHODS ####################
 private:

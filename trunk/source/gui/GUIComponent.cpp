@@ -30,7 +30,7 @@ void GUIComponent::fit(const Extents& extents, GUIComponent *parent)
 	m_parent = parent;
 }
 
-void GUIComponent::handle_input(UserInput& input)
+void GUIComponent::handle_input(InputState& input)
 {
 	// Note:	A default implementation is provided so that components which don't
 	//			need to handle input don't have to.

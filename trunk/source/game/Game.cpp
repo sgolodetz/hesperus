@@ -129,13 +129,13 @@ void Game::handle_mousebutton_down(const SDL_MouseButtonEvent& e)
 	switch(e.button)
 	{
 		case SDL_BUTTON_LEFT:
-			m_input.press_mouse_button(UserInput::BUTTON_LEFT, e.x, e.y);
+			m_input.press_mouse_button(MOUSE_BUTTON_LEFT, e.x, e.y);
 			break;
 		case SDL_BUTTON_MIDDLE:
-			m_input.press_mouse_button(UserInput::BUTTON_MIDDLE, e.x, e.y);
+			m_input.press_mouse_button(MOUSE_BUTTON_MIDDLE, e.x, e.y);
 			break;
 		case SDL_BUTTON_RIGHT:
-			m_input.press_mouse_button(UserInput::BUTTON_RIGHT, e.x, e.y);
+			m_input.press_mouse_button(MOUSE_BUTTON_RIGHT, e.x, e.y);
 			break;
 		default:
 			break;
@@ -147,13 +147,13 @@ void Game::handle_mousebutton_up(const SDL_MouseButtonEvent& e)
 	switch(e.button)
 	{
 		case SDL_BUTTON_LEFT:
-			m_input.release_mouse_button(UserInput::BUTTON_LEFT);
+			m_input.release_mouse_button(MOUSE_BUTTON_LEFT);
 			break;
 		case SDL_BUTTON_MIDDLE:
-			m_input.release_mouse_button(UserInput::BUTTON_MIDDLE);
+			m_input.release_mouse_button(MOUSE_BUTTON_MIDDLE);
 			break;
 		case SDL_BUTTON_RIGHT:
-			m_input.release_mouse_button(UserInput::BUTTON_RIGHT);
+			m_input.release_mouse_button(MOUSE_BUTTON_RIGHT);
 			break;
 		default:
 			break;

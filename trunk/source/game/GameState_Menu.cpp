@@ -40,7 +40,7 @@ void GameState_Menu::leave()
 	m_soundSystem.destroy_sound("menu");
 }
 
-GameState_Ptr GameState_Menu::update(int milliseconds, UserInput& input)
+GameState_Ptr GameState_Menu::update(int milliseconds, InputState& input)
 {
 	Screen& screen = Screen::instance();
 	screen.handle_input(input);

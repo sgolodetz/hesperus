@@ -13,7 +13,7 @@ namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
 typedef shared_ptr<class GUIComponent> GUIComponent_Ptr;
-class UserInput;
+class InputState;
 
 //#################### TYPEDEFS ####################
 typedef shared_ptr<class GameState> GameState_Ptr;
@@ -36,7 +36,7 @@ public:
 public:
 	virtual void enter() = 0;
 	virtual void leave() = 0;
-	virtual GameState_Ptr update(int milliseconds, UserInput& input) = 0;
+	virtual GameState_Ptr update(int milliseconds, InputState& input) = 0;
 
 	//#################### PUBLIC METHODS ####################
 public:

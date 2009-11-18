@@ -52,7 +52,7 @@ public:
 
 	//#################### PUBLIC METHODS ####################
 public:
-	void handle_input(UserInput& input);
+	void handle_input(InputState& input);
 	void render() const;
 
 	//#################### PRIVATE METHODS ####################
