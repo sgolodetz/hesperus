@@ -12,6 +12,7 @@
 namespace hesp {
 
 //#################### FORWARD DECLARATIONS ####################
+typedef shared_ptr<const class InputBinding> InputBinding_CPtr;
 class ObjectManager;
 
 /**
@@ -24,6 +25,7 @@ class UserBipedYoke : public IYoke
 private:
 	ObjectID m_objectID;
 	ObjectManager *m_objectManager;
+	InputBinding_CPtr m_inputBinding;
 
 	//#################### CONSTRUCTORS ####################
 public:

@@ -20,4 +20,11 @@ Inputter_CPtr InputBinding::operator()(Action action) const
 	else return Inputter_CPtr();
 }
 
+//#################### PUBLIC METHODS ####################
+bool InputBinding::down(Action action, const InputState& input) const
+{
+	Inputter_CPtr inputter = (*this)(action);
+	return inputter && inputter->down(input);
+}
+
 }

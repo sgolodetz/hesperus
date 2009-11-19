@@ -24,8 +24,8 @@ public:
 		ACT_MOVE_FORWARD,
 		ACT_STRAFE_LEFT,
 		ACT_STRAFE_RIGHT,
+		ACT_USE_ITEM,
 		ACT_WALK,
-		ACT_LAST,
 	};
 
 	//#################### PRIVATE VARIABLES ####################
@@ -39,6 +39,10 @@ public:
 	//#################### PUBLIC OPERATORS ####################
 public:
 	Inputter_CPtr operator()(Action action) const;
+
+	//#################### PUBLIC METHODS ####################
+public:
+	bool down(Action action, const InputState& input) const;
 };
 
 }

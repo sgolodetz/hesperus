@@ -11,7 +11,7 @@
 
 namespace hesp {
 
-class MouseButtonInputter
+class MouseButtonInputter : public Inputter
 {
 	//#################### PRIVATE VARIABLES ####################
 private:
