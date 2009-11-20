@@ -2151,6 +2151,10 @@
 				Name=".cpp"
 				>
 				<File
+					RelativePath="..\util\ConfigOptions.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\util\IDAllocator.cpp"
 					>
 				</File>
@@ -2170,6 +2174,10 @@
 			<Filter
 				Name=".h"
 				>
+				<File
+					RelativePath="..\util\ConfigOptions.h"
+					>
+				</File>
 				<File
 					RelativePath="..\util\IDAllocator.h"
 					>
@@ -2194,6 +2202,10 @@
 			<Filter
 				Name=".tpp"
 				>
+				<File
+					RelativePath="..\util\ConfigOptions.tpp"
+					>
+				</File>
 				<File
 					RelativePath="..\util\Properties.tpp"
 					>
@@ -2233,6 +2245,10 @@
 				<Filter
 					Name=".cpp"
 					>
+					<File
+						RelativePath="..\io\files\BindingFile.cpp"
+						>
+					</File>
 					<File
 						RelativePath="..\io\files\DefinitionsFile.cpp"
 						>
@@ -2277,6 +2293,10 @@
 				<Filter
 					Name=".h"
 					>
+					<File
+						RelativePath="..\io\files\BindingFile.h"
+						>
+					</File>
 					<File
 						RelativePath="..\io\files\BrushesFile.h"
 						>
@@ -2835,6 +2855,10 @@
 				Name=".cpp"
 				>
 				<File
+					RelativePath="..\input\InputAction.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\input\InputBinding.cpp"
 					>
 				</File>
@@ -2854,6 +2878,10 @@
 			<Filter
 				Name=".h"
 				>
+				<File
+					RelativePath="..\input\InputAction.h"
+					>
+				</File>
 				<File
 					RelativePath="..\input\InputBinding.h"
 					>

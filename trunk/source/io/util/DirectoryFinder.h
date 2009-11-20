@@ -25,6 +25,7 @@ boost::filesystem::path determine_executable_location();
 boost::filesystem::path determine_images_directory();
 boost::filesystem::path determine_levels_directory();
 boost::filesystem::path determine_models_directory();
+boost::filesystem::path determine_profiles_directory();
 boost::filesystem::path determine_scripts_directory();
 boost::filesystem::path determine_settings_directory();
 boost::filesystem::path determine_sprites_directory();

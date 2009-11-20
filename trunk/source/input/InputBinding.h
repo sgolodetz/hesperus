@@ -8,41 +8,28 @@
 
 #include <map>
 
+#include "InputAction.h"
 #include "Inputter.h"
 
 namespace hesp {
 
 class InputBinding
 {
-	//#################### ENUMERATIONS ####################
-public:
-	enum Action
-	{
-		ACT_CROUCH,
-		ACT_JUMP,
-		ACT_MOVE_BACKWARD,
-		ACT_MOVE_FORWARD,
-		ACT_STRAFE_LEFT,
-		ACT_STRAFE_RIGHT,
-		ACT_USE_ITEM,
-		ACT_WALK,
-	};
-
 	//#################### PRIVATE VARIABLES ####################
 private:
-	std::map<Action,Inputter_CPtr> m_inputters;
+	std::map<InputAction,Inputter_CPtr> m_inputters;
 
 	//#################### CONSTRUCTORS ####################
 public:
-	explicit InputBinding(const std::map<Action,Inputter_CPtr>& inputters);
+	explicit InputBinding(const std::map<InputAction,Inputter_CPtr>& inputters);
 
 	//#################### PUBLIC OPERATORS ####################
 public:
-	Inputter_CPtr operator()(Action action) const;
+	Inputter_CPtr operator()(InputAction action) const;
 
 	//#################### PUBLIC METHODS ####################
 public:
-	bool down(Action action, const InputState& input) const;
+	bool down(InputAction action, const InputState& input) const;
 };
 
 }

@@ -15,7 +15,7 @@ class Screen : public GUIContainer<ExplicitLayout>
 {
 	//#################### SINGLETON IMPLEMENTATION ####################
 private:
-	Screen() {}
+	Screen();
 	Screen(const Screen&);
 	Screen& operator=(const Screen&);
 public:

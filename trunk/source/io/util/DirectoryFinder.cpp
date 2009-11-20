@@ -57,6 +57,11 @@ bf::path determine_models_directory()
 	return determine_base_directory() / "resources/models/";
 }
 
+bf::path determine_profiles_directory()
+{
+	return determine_base_directory() / "resources/profiles/";
+}
+
 bf::path determine_scripts_directory()
 {
 	return determine_base_directory() / "resources/scripts/";

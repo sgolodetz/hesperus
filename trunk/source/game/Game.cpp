@@ -16,6 +16,7 @@
 #include <source/exceptions/Exception.h>
 #include <source/gui/Screen.h>
 #include <source/io/util/DirectoryFinder.h>
+#include <source/util/ConfigOptions.h>
 #include "GameState_Menu.h"
 namespace bf = boost::filesystem;
 
@@ -35,10 +36,19 @@ try
 		quit_with_error("Could not load configuration options - check the config.as script for problems");
 	}
 	ASXModule_Ptr configModule = configEngine.get_module("config");
-	int width						= configModule->get_global_variable<int>("width");
-	int height						= configModule->get_global_variable<int>("height");
-	bool fullScreen					= configModule->get_global_variable<bool>("fullScreen");
-	const std::string& levelName	= configModule->get_global_variable<std::string>("levelName");
+
+	// FIXME: These should eventually be loaded in in a more sensible way.
+	ConfigOptions& options = ConfigOptions::instance();
+	options.set("width",		configModule->get_global_variable<int>("width"));
+	options.set("height",		configModule->get_global_variable<int>("height"));
+	options.set("fullScreen",	configModule->get_global_variable<bool>("fullScreen"));
+	options.set("levelName",	configModule->get_global_variable<std::string>("levelName"));
+	options.set("profile",		configModule->get_global_variable<std::string>("profile"));
+
+	int width						= options.get<int>("width");
+	int height						= options.get<int>("height");
+	bool fullScreen					= options.get<bool>("fullScreen");
+	const std::string& levelName	= options.get<std::string>("levelName");
 
 	// Set up the window.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) quit(EXIT_FAILURE);

@@ -13,6 +13,8 @@
 namespace hesp {
 
 //#################### SINGLETON IMPLEMENTATION ####################
+Screen::Screen() {}
+
 Screen& Screen::instance()
 {
 	static Screen s_instance;

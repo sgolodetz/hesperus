@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib lodepng_d.lib angelscriptd.lib asx_d.lib propparser_d.lib"
+				AdditionalDependencies="SDLmain.lib SDL.lib opengl32.lib glu32.lib lodepng_d.lib angelscriptd.lib asx_d.lib propparser_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)/../../hesperus_libraries/asx-2.16.0/lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/boost_1_37_0-lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/lodepng-20080927/lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/propparser/lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/SDL-1.2.13/lib&quot;"
@@ -139,7 +139,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib lodepng.lib angelscript.lib asx.lib propparser.lib"
+				AdditionalDependencies="SDLmain.lib SDL.lib opengl32.lib glu32.lib lodepng.lib angelscript.lib asx.lib propparser.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)/../../hesperus_libraries/asx-2.16.0/lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/boost_1_37_0-lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/lodepng-20080927/lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/propparser/lib&quot;;&quot;$(SolutionDir)/../../hesperus_libraries/SDL-1.2.13/lib&quot;"
 				GenerateDebugInformation="true"
